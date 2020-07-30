@@ -100,21 +100,21 @@ static inline struct page * rb_insert_page_cache(struct inode * inode,
 struct rb_node
 {
 	/**
-	 * ºìºÚÊ÷½ÚµãµÄË«Ç×¡£
+	 * çº¢é»‘æ ‘èŠ‚ç‚¹çš„åŒäº²ã€‚
 	 */
 	struct rb_node *rb_parent;
 	/**
-	 * ºìºÚÊ÷½ÚµãÑÕÉ«¡£
+	 * çº¢é»‘æ ‘èŠ‚ç‚¹é¢œè‰²ã€‚
 	 */
 	int rb_color;
 #define	RB_RED		0
 #define	RB_BLACK	1
 	/**
-	 * ÓÒº¢×Ó
+	 * å³å­©å­
 	 */
 	struct rb_node *rb_right;
 	/**
-	 * ×óº¢×Ó
+	 * å·¦å­©å­
 	 */
 	struct rb_node *rb_left;
 };

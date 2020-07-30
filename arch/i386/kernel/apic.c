@@ -66,7 +66,7 @@ void ack_bad_irq(unsigned int irq)
 }
 
 /**
- * ¸ù¾İµÚ239ºÅÏòÁ¿ºÍµÍ¼¶ÖĞ¶Ï´¦Àí³ÌĞòapic_timer_interrupt()µÄµØÖ·ÉèÖÃIDTµÄÖĞ¶ÏÃÅ¡£
+ * æ ¹æ®ç¬¬239å·å‘é‡å’Œä½çº§ä¸­æ–­å¤„ç†ç¨‹åºapic_timer_interrupt()çš„åœ°å€è®¾ç½®IDTçš„ä¸­æ–­é—¨ã€‚
  */
 void __init apic_intr_init(void)
 {
@@ -962,9 +962,9 @@ static void __init setup_APIC_timer(unsigned int clocks)
  * APIC irq that way.
  */
 /**
- * ÓÃÓÚÒıµ¼CPU
- * Í¨¹ıÕıÔÚÆô¶¯µÄCPUµÄ±¾µØAPICÀ´¼ÆËãÔÚÒ»¸ö½ÚÅÄÄÚÊÕµ½ÁË¶àÉÙ¸ö×ÜÏßÊ±ÖÓĞÅºÅ¡£
- * Õâ¸öÈ·ÇĞµÄÖµ±»ÓÃÀ´¶Ô±¾µØËùÓĞAPIC±à³Ì¡£²¢ÓÉ´ËÔÚÃ¿¸ö½ÚÅÄ²úÉúÒ»´Î±¾µØÊ±ÖÓÖĞ¶Ï¡£
+ * ç”¨äºå¼•å¯¼CPU
+ * é€šè¿‡æ­£åœ¨å¯åŠ¨çš„CPUçš„æœ¬åœ°APICæ¥è®¡ç®—åœ¨ä¸€ä¸ªèŠ‚æ‹å†…æ”¶åˆ°äº†å¤šå°‘ä¸ªæ€»çº¿æ—¶é’Ÿä¿¡å·ã€‚
+ * è¿™ä¸ªç¡®åˆ‡çš„å€¼è¢«ç”¨æ¥å¯¹æœ¬åœ°æ‰€æœ‰APICç¼–ç¨‹ã€‚å¹¶ç”±æ­¤åœ¨æ¯ä¸ªèŠ‚æ‹äº§ç”Ÿä¸€æ¬¡æœ¬åœ°æ—¶é’Ÿä¸­æ–­ã€‚
  */
 int __init calibrate_APIC_clock(void)
 {
@@ -1115,15 +1115,15 @@ int setup_profiling_timer(unsigned int multiplier)
  * value into /proc/profile.
  */
 /**
- * smp_local_timer_interruptº¯ÊıÖ´ĞĞÃ¿¸öCPUµÄ¼ÆÊ±»î¶¯¡£
+ * smp_local_timer_interruptå‡½æ•°æ‰§è¡Œæ¯ä¸ªCPUçš„è®¡æ—¶æ´»åŠ¨ã€‚
  */
 inline void smp_local_timer_interrupt(struct pt_regs * regs)
 {
 	int cpu = smp_processor_id();
 
 	/**
-	 * ¼à¹ÜÄÚºË´úÂë¡£Ëü²ÉÓÃ·Ç³£¼òµ¥µÄÃÉÌØ¿¨ÂåËã·¨¡£
-	 * ÕâÑù£¬¿ª·¢Õß¿ÉÒÔ·¢ÏÖÄÚºË¾­³£ÔËĞĞÔÚÊ²Ã´µØ·½£¬ÒÔ¶ÔÏµÍ³½øĞĞ¸Ä½ø¡£
+	 * ç›‘ç®¡å†…æ ¸ä»£ç ã€‚å®ƒé‡‡ç”¨éå¸¸ç®€å•çš„è’™ç‰¹å¡æ´›ç®—æ³•ã€‚
+	 * è¿™æ ·ï¼Œå¼€å‘è€…å¯ä»¥å‘ç°å†…æ ¸ç»å¸¸è¿è¡Œåœ¨ä»€ä¹ˆåœ°æ–¹ï¼Œä»¥å¯¹ç³»ç»Ÿè¿›è¡Œæ”¹è¿›ã€‚
 	 */
 	profile_tick(CPU_PROFILING, regs);
 	if (--per_cpu(prof_counter, cpu) <= 0) {
@@ -1147,7 +1147,7 @@ inline void smp_local_timer_interrupt(struct pt_regs * regs)
 
 #ifdef CONFIG_SMP
 		/**
-		 * ¼ì²éµ±Ç°½ø³ÌÔËĞĞµÄÊ±¼ä²¢¸üĞÂÒ»Ğ©±¾µØCPUÍ³¼Æ¼ÆÊı¡£
+		 * æ£€æŸ¥å½“å‰è¿›ç¨‹è¿è¡Œçš„æ—¶é—´å¹¶æ›´æ–°ä¸€äº›æœ¬åœ°CPUç»Ÿè®¡è®¡æ•°ã€‚
 		 */
 		update_process_times(user_mode(regs));
 #endif
@@ -1174,12 +1174,12 @@ inline void smp_local_timer_interrupt(struct pt_regs * regs)
  *   interrupt as well. Thus we cannot inline the local irq ... ]
  */
 /**
- * ±¾µØÊ±ÖÓÖĞ¶Ï´¦Àíº¯ÊıµÄ¸ß¼¶ÖĞ¶Ï´¦Àíº¯Êı
+ * æœ¬åœ°æ—¶é’Ÿä¸­æ–­å¤„ç†å‡½æ•°çš„é«˜çº§ä¸­æ–­å¤„ç†å‡½æ•°
  */
 fastcall void smp_apic_timer_interrupt(struct pt_regs *regs)
 {
 	/**
-	 * »ñµÃCPUÂß¼­ºÅ
+	 * è·å¾—CPUé€»è¾‘å·
 	 */
 	int cpu = smp_processor_id();
 
@@ -1187,10 +1187,10 @@ fastcall void smp_apic_timer_interrupt(struct pt_regs *regs)
 	 * the NMI deadlock-detector uses this.
 	 */
 	/**
-	 * Ê¹irq_statµÄ¶ÔÓ¦ÏîµÄapic_timer_irqs¼ÓÒ»¡£
-	 * Õâ¸öÖµ²»Í£µÄ¼ÓÒ»£¬¿ÉÒÔÊ¹¿´ÃÅ¹·ÖĞ¶ÏÔÚdo_nmiÖĞ¼ì²âÕâ¸öÖµ¡£
-	 * Èç¹û¿´ÃÅ¹··¢ÏÖÕâ¸öÖµÃ»ÓĞ±ä»¯£¬ÄÇÃ´±íÊ¾ÏµÍ³¿ÉÄÜÓöµ½ËÀËø»òÊÇÆäËûÎÊÌâÁË¡£
-	 * ×ÜÖ®£¬Õâ²»ÊÇÒ»¸öºÃÊÂ£¬ËµÃ÷Ê±ÖÓÖĞ¶Ï¶¼³öÏÖÎÊÌâ£¬ÏµÍ³ĞÅÏ¢½«»á±»×ª´¢£¬ÒÔÊ¹¿ª·¢ÕßÓĞ»ú»á·¢ÏÖ´íÎó¡£
+	 * ä½¿irq_statçš„å¯¹åº”é¡¹çš„apic_timer_irqsåŠ ä¸€ã€‚
+	 * è¿™ä¸ªå€¼ä¸åœçš„åŠ ä¸€ï¼Œå¯ä»¥ä½¿çœ‹é—¨ç‹—ä¸­æ–­åœ¨do_nmiä¸­æ£€æµ‹è¿™ä¸ªå€¼ã€‚
+	 * å¦‚æœçœ‹é—¨ç‹—å‘ç°è¿™ä¸ªå€¼æ²¡æœ‰å˜åŒ–ï¼Œé‚£ä¹ˆè¡¨ç¤ºç³»ç»Ÿå¯èƒ½é‡åˆ°æ­»é”æˆ–æ˜¯å…¶ä»–é—®é¢˜äº†ã€‚
+	 * æ€»ä¹‹ï¼Œè¿™ä¸æ˜¯ä¸€ä¸ªå¥½äº‹ï¼Œè¯´æ˜æ—¶é’Ÿä¸­æ–­éƒ½å‡ºç°é—®é¢˜ï¼Œç³»ç»Ÿä¿¡æ¯å°†ä¼šè¢«è½¬å‚¨ï¼Œä»¥ä½¿å¼€å‘è€…æœ‰æœºä¼šå‘ç°é”™è¯¯ã€‚
 	 */
 	irq_stat[cpu].apic_timer_irqs++;
 
@@ -1199,7 +1199,7 @@ fastcall void smp_apic_timer_interrupt(struct pt_regs *regs)
 	 * because timer handling can be slow.
 	 */
 	/**
-	 * Ó¦´ğ±¾µØAPICÉÏµÄÖĞ¶Ï
+	 * åº”ç­”æœ¬åœ°APICä¸Šçš„ä¸­æ–­
 	 */
 	ack_APIC_irq();
 	/*
@@ -1209,8 +1209,8 @@ fastcall void smp_apic_timer_interrupt(struct pt_regs *regs)
 	 */
 	irq_enter();
 	/**
-	 * µ÷ÓÃsmp_local_timer_interruptº¯ÊıÖ´ĞĞÃ¿¸öCPUµÄ¼ÆÊ±»î¶¯¡£
-	 * Ö÷ÒªÊÇµ÷ÓÃprofile_tickºÍupdate_process_times¡£
+	 * è°ƒç”¨smp_local_timer_interruptå‡½æ•°æ‰§è¡Œæ¯ä¸ªCPUçš„è®¡æ—¶æ´»åŠ¨ã€‚
+	 * ä¸»è¦æ˜¯è°ƒç”¨profile_tickå’Œupdate_process_timesã€‚
 	 */
 	smp_local_timer_interrupt(regs);
 	irq_exit();

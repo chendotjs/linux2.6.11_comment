@@ -144,8 +144,8 @@ extern struct module __this_module;
 	__MODULE_INFO(parm, _parm, #_parm ":" desc)
 
 /**
- * ´´½¨Ò»¸öÃûÎª__mod_##type_device_tableµÄ¾Ö²¿±äÁ¿£¬Ö¸Ïòstruct pci_device_idÊı×é¡£
- * ÔÚÄÚºË¹¹½¨¹ı³ÌÖĞ£¬depmod³ÌĞòÔÚËùÓĞµÄÄ£¿éÖĞËÑË÷·ûºÅ£¬Èç¹ûÕÒµ½·ûºÅ£¬°ÑËü´ÓÄ£¿éÖĞ³é³ö£¬Ìí¼Óµ½ÎÄ¼şÖĞ¡£
+ * åˆ›å»ºä¸€ä¸ªåä¸º__mod_##type_device_tableçš„å±€éƒ¨å˜é‡ï¼ŒæŒ‡å‘struct pci_device_idæ•°ç»„ã€‚
+ * åœ¨å†…æ ¸æ„å»ºè¿‡ç¨‹ä¸­ï¼Œdepmodç¨‹åºåœ¨æ‰€æœ‰çš„æ¨¡å—ä¸­æœç´¢ç¬¦å·ï¼Œå¦‚æœæ‰¾åˆ°ç¬¦å·ï¼ŒæŠŠå®ƒä»æ¨¡å—ä¸­æŠ½å‡ºï¼Œæ·»åŠ åˆ°æ–‡ä»¶ä¸­ã€‚
  */
 #define MODULE_DEVICE_TABLE(type,name)		\
   MODULE_GENERIC_TABLE(type##_device,name)
@@ -204,13 +204,13 @@ void *__symbol_get_gpl(const char *symbol);
 	= { (unsigned long)&sym, __kstrtab_##sym }
 
 /**
- * ÈÃC±àÒëÆ÷Íù__ksymtab²¿·Ö¼ÓÈëÒ»¸ö×¨ÓÃ·ûºÅ¡£
+ * è®©Cç¼–è¯‘å™¨å¾€__ksymtabéƒ¨åˆ†åŠ å…¥ä¸€ä¸ªä¸“ç”¨ç¬¦å·ã€‚
  */
 #define EXPORT_SYMBOL(sym)					\
 	__EXPORT_SYMBOL(sym, "")
 
 /**
- * ÈÃC±àÒëÆ÷Íù__ksymtab_gpl²¿·Ö¼ÓÈëÒ»¸ö×¨ÓÃ·ûºÅ¡£
+ * è®©Cç¼–è¯‘å™¨å¾€__ksymtab_gpléƒ¨åˆ†åŠ å…¥ä¸€ä¸ªä¸“ç”¨ç¬¦å·ã€‚
  */
 #define EXPORT_SYMBOL_GPL(sym)					\
 	__EXPORT_SYMBOL(sym, "_gpl")

@@ -44,7 +44,7 @@
 #define CARDBUS_MEM_SIZE	(32*1024*1024)
 
 /**
- * ¶ÔÎ´³õÊ¼»¯PCIÉè±¸µÄBAR¼Ä´æÆ÷½øĞĞĞ´²Ù×÷¡£
+ * å¯¹æœªåˆå§‹åŒ–PCIè®¾å¤‡çš„BARå¯„å­˜å™¨è¿›è¡Œå†™æ“ä½œã€‚
  */
 static void __devinit
 pbus_assign_resources_sorted(struct pci_bus *bus)
@@ -70,7 +70,7 @@ pbus_assign_resources_sorted(struct pci_bus *bus)
 			bus->bridge_ctl |= PCI_BRIDGE_CTL_VGA;
 
 		/**
-		 * ½«Î´³õÊ¼»¯µÄPCIÉè±¸Ê¹ÓÃµÄ×ÊÔ´½øĞĞÅÅĞò¶ÔÆë£¬È»ºó¼Óµ½headÖĞ¡£
+		 * å°†æœªåˆå§‹åŒ–çš„PCIè®¾å¤‡ä½¿ç”¨çš„èµ„æºè¿›è¡Œæ’åºå¯¹é½ï¼Œç„¶ååŠ åˆ°headä¸­ã€‚
 		 */
 		pdev_sort_resources(dev, &head);
 	}
@@ -79,8 +79,8 @@ pbus_assign_resources_sorted(struct pci_bus *bus)
 		res = list->res;
 		idx = res - &list->dev->resource[0];
 		/**
-		 * ¶ÔÃ¿¸öÉè±¸£¬µ÷ÓÃpci_assign_resource³õÊ¼»¯ÕâĞ©PCIÉè±¸µÄBAR¼Ä´æÆ÷¡£
-		 * pci_assign_resourceº¯ÊıÁ½´Îµ÷ÓÃpci_bus_alloc_resource£¬µÚÒ»´ÎÊÔÍ¼´ÓÉÏÓÎ×ÜÏßµÄ¿ÉÔ¤¶Á´æ´¢Æ÷¿Õ¼äÎªµ±Ç°PCIÉè±¸·ÖÅä×ÊÔ´¡£µÚ¶ş´Î´Ó²»¿ÉÔ¤¶Á´æ´¢Æ÷¿Õ¼äÖĞ·ÖÅä×ÊÔ´¡£
+		 * å¯¹æ¯ä¸ªè®¾å¤‡ï¼Œè°ƒç”¨pci_assign_resourceåˆå§‹åŒ–è¿™äº›PCIè®¾å¤‡çš„BARå¯„å­˜å™¨ã€‚
+		 * pci_assign_resourceå‡½æ•°ä¸¤æ¬¡è°ƒç”¨pci_bus_alloc_resourceï¼Œç¬¬ä¸€æ¬¡è¯•å›¾ä»ä¸Šæ¸¸æ€»çº¿çš„å¯é¢„è¯»å­˜å‚¨å™¨ç©ºé—´ä¸ºå½“å‰PCIè®¾å¤‡åˆ†é…èµ„æºã€‚ç¬¬äºŒæ¬¡ä»ä¸å¯é¢„è¯»å­˜å‚¨å™¨ç©ºé—´ä¸­åˆ†é…èµ„æºã€‚
 		 */
 		pci_assign_resource(list->dev, idx);
 		tmp = list;
@@ -456,7 +456,7 @@ pci_bus_size_cardbus(struct pci_bus *bus)
 }
 
 /**
- * ĞŞ¸´ºÍ¶ÔÆëPCI×ÜÏßÊ÷ÏÂµÄËùÓĞPCIÉè±¸ËùÊ¹ÓÃµÄIOºÍ´æ´¢Æ÷µØÖ·¿Õ¼ä¡£
+ * ä¿®å¤å’Œå¯¹é½PCIæ€»çº¿æ ‘ä¸‹çš„æ‰€æœ‰PCIè®¾å¤‡æ‰€ä½¿ç”¨çš„IOå’Œå­˜å‚¨å™¨åœ°å€ç©ºé—´ã€‚
  */
 void __devinit
 pci_bus_size_bridges(struct pci_bus *bus)
@@ -477,7 +477,7 @@ pci_bus_size_bridges(struct pci_bus *bus)
 		case PCI_CLASS_BRIDGE_PCI:
 		default:
 			/**
-			 * µİ¹éµ÷ÓÃ£¬Ö±µ½ÕÒµ½µ±Ç°PCI×ÜÏßÊ÷×îµ×²ãµÄPCIÇÅ¡£
+			 * é€’å½’è°ƒç”¨ï¼Œç›´åˆ°æ‰¾åˆ°å½“å‰PCIæ€»çº¿æ ‘æœ€åº•å±‚çš„PCIæ¡¥ã€‚
 			 */
 			pci_bus_size_bridges(b);
 			break;
@@ -495,12 +495,12 @@ pci_bus_size_bridges(struct pci_bus *bus)
 
 	case PCI_CLASS_BRIDGE_PCI:
 		/**
-		 * ¼ì²éPCIÇÅËù¹ÜÀíµÄµØÖ·¿Õ¼äÊÇ·ñÖ§³ÖIO»òÕß¿ÉÔ¤¶ÁµÄ´æ´¢Æ÷¿Õ¼ä¡£Èç¹ûÖ§³Ö£¬Ôò½«resource²ÎÊıµÄÏàÓ¦×´Ì¬ÖÃ1.
+		 * æ£€æŸ¥PCIæ¡¥æ‰€ç®¡ç†çš„åœ°å€ç©ºé—´æ˜¯å¦æ”¯æŒIOæˆ–è€…å¯é¢„è¯»çš„å­˜å‚¨å™¨ç©ºé—´ã€‚å¦‚æœæ”¯æŒï¼Œåˆ™å°†resourceå‚æ•°çš„ç›¸åº”çŠ¶æ€ç½®1.
 		 */
 		pci_bridge_check_ranges(bus);
 	default:
 		/**
-		 * pbus_size_ioºÍpbus_size_memº¯ÊıĞŞ¸´²¢¶ÔÆëµ±Ç°PCIÇÅµÄIO¿Õ¼äºÍ´æ´¢Æ÷¿Õ¼ä¡£
+		 * pbus_size_ioå’Œpbus_size_memå‡½æ•°ä¿®å¤å¹¶å¯¹é½å½“å‰PCIæ¡¥çš„IOç©ºé—´å’Œå­˜å‚¨å™¨ç©ºé—´ã€‚
 		 */
 		pbus_size_io(bus);
 		/* If the bridge supports prefetchable range, size it
@@ -525,7 +525,7 @@ pci_bus_assign_resources(struct pci_bus *bus)
 	struct pci_dev *dev;
 
 	/**
-	 * ±éÀú²¢³õÊ¼»¯µ±Ç°PCI×ÜÏßÉÏµÄËùÓĞPCIÉè±¸µÄBAR¼Ä´æÆ÷¡£º¬PCI AgentÉè±¸ºÍPCIÇÅ¡£
+	 * éå†å¹¶åˆå§‹åŒ–å½“å‰PCIæ€»çº¿ä¸Šçš„æ‰€æœ‰PCIè®¾å¤‡çš„BARå¯„å­˜å™¨ã€‚å«PCI Agentè®¾å¤‡å’ŒPCIæ¡¥ã€‚
 	 */
 	pbus_assign_resources_sorted(bus);
 
@@ -536,7 +536,7 @@ pci_bus_assign_resources(struct pci_bus *bus)
 		}
 	}
 	/**
-	 * ±éÀú²¢µİ¹é£¬´¦ÀíËùÓĞÏÂÓÎ×ÜÏß¡£
+	 * éå†å¹¶é€’å½’ï¼Œå¤„ç†æ‰€æœ‰ä¸‹æ¸¸æ€»çº¿ã€‚
 	 */
 	list_for_each_entry(dev, &bus->devices, bus_list) {
 		b = dev->subordinate;
@@ -548,7 +548,7 @@ pci_bus_assign_resources(struct pci_bus *bus)
 		switch (dev->class >> 8) {
 		case PCI_CLASS_BRIDGE_PCI:
 			/**
-			 * ³õÊ¼»¯PCIÇÅµÄ´æ´¢Æ÷ºÍIO Base¡¢Limit¼Ä´æÆ÷¡£
+			 * åˆå§‹åŒ–PCIæ¡¥çš„å­˜å‚¨å™¨å’ŒIO Baseã€Limitå¯„å­˜å™¨ã€‚
 			 */
 			pci_setup_bridge(b);
 			break;
@@ -567,7 +567,7 @@ pci_bus_assign_resources(struct pci_bus *bus)
 EXPORT_SYMBOL(pci_bus_assign_resources);
 
 /**
- * ÉèÖÃPCIÉè±¸µÄBAR¼Ä´æÆ÷¡£
+ * è®¾ç½®PCIè®¾å¤‡çš„BARå¯„å­˜å™¨ã€‚
  */
 void __init
 pci_assign_unassigned_resources(void)
@@ -577,7 +577,7 @@ pci_assign_unassigned_resources(void)
 	/* Depth first, calculate sizes and alignments of all
 	   subordinate buses. */
 	/**
-	 * ĞŞ¸´ºÍ¶ÔÆëPCI×ÜÏßÊ÷ÏÂËùÓĞPCIÉè±¸(º¬PCIÇÅ)ËùÊ¹ÓÃµÄIOºÍ´æ´¢Æ÷µØÖ·¿Õ¼ä¡£
+	 * ä¿®å¤å’Œå¯¹é½PCIæ€»çº¿æ ‘ä¸‹æ‰€æœ‰PCIè®¾å¤‡(å«PCIæ¡¥)æ‰€ä½¿ç”¨çš„IOå’Œå­˜å‚¨å™¨åœ°å€ç©ºé—´ã€‚
 	 */
 	list_for_each_entry(bus, &pci_root_buses, node) {
 		pci_bus_size_bridges(bus);
@@ -585,11 +585,11 @@ pci_assign_unassigned_resources(void)
 	/* Depth last, allocate resources and update the hardware. */
 	list_for_each_entry(bus, &pci_root_buses, node) {
 		/**
-		 * ±éÀú²¢³õÊ¼»¯ËùÓĞPCIÉè±¸µÄBAR¼Ä´æÆ÷£¬³õÊ¼»¯ËùÓĞPCIÇÅµÄ´æ´¢Æ÷ºÍIO»ùÖ·¼Ä´æÆ÷¡¢ÏŞÖÆ¼Ä´æÆ÷¡£
+		 * éå†å¹¶åˆå§‹åŒ–æ‰€æœ‰PCIè®¾å¤‡çš„BARå¯„å­˜å™¨ï¼Œåˆå§‹åŒ–æ‰€æœ‰PCIæ¡¥çš„å­˜å‚¨å™¨å’ŒIOåŸºå€å¯„å­˜å™¨ã€é™åˆ¶å¯„å­˜å™¨ã€‚
 		 */
 		pci_bus_assign_resources(bus);
 		/**
-		 * Ê¹ÄÜËùÓĞPCIÇÅÉè±¸¡£
+		 * ä½¿èƒ½æ‰€æœ‰PCIæ¡¥è®¾å¤‡ã€‚
 		 */
 		pci_enable_bridges(bus);
 	}

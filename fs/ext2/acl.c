@@ -293,7 +293,7 @@ ext2_check_acl(struct inode *inode, int mask)
 }
 
 /**
- * ext2µÄpermissionÊµÏÖ·½·¨¡£
+ * ext2çš„permissionå®ç°æ–¹æ³•ã€‚
  */
 int
 ext2_permission(struct inode *inode, int mask, struct nameidata *nd)

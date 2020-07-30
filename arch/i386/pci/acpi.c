@@ -17,7 +17,7 @@ struct pci_bus * __devinit pci_acpi_scan_root(struct acpi_device *device, int do
 
 extern int pci_routeirq;
 /**
- * µ±Ê¹ÄÜACPIºó£¬pci×ÓÏµÍ³½«µ÷ÓÃ´Ëº¯Êı¡£
+ * å½“ä½¿èƒ½ACPIåï¼Œpciå­ç³»ç»Ÿå°†è°ƒç”¨æ­¤å‡½æ•°ã€‚
  */
 static int __init pci_acpi_init(void)
 {
@@ -31,12 +31,12 @@ static int __init pci_acpi_init(void)
 
 	printk(KERN_INFO "PCI: Using ACPI for IRQ routing\n");
 	/**
-	 * ¸üĞÂacpi_irq_penalty±í¡£ÓëIRQ¸ºÔØÆ½ºâÏà¹Ø¡£
+	 * æ›´æ–°acpi_irq_penaltyè¡¨ã€‚ä¸IRQè´Ÿè½½å¹³è¡¡ç›¸å…³ã€‚
 	 */
 	acpi_irq_penalty_init();
 	pcibios_scanned++;
 	/**
-	 * Ê¹ÓÃacpi_pci_irq_enableÎªµ±Ç°PCI×ÜÏßÊ÷ÉÏµÄËùÓĞPCIÉè±¸·ÖÅäirqºÅ¡£
+	 * ä½¿ç”¨acpi_pci_irq_enableä¸ºå½“å‰PCIæ€»çº¿æ ‘ä¸Šçš„æ‰€æœ‰PCIè®¾å¤‡åˆ†é…irqå·ã€‚
 	 */
 	pcibios_enable_irq = acpi_pci_irq_enable;
 

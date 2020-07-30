@@ -21,26 +21,26 @@
 #define KEYS_PER_NODE (NODE_SIZE / sizeof(sector_t))
 #define CHILDREN_PER_NODE (KEYS_PER_NODE + 1)
 
-/* Ó³Éä±íÃèÊö·û */
+/* æ˜ å°„è¡¨æè¿°ç¬¦ */
 struct dm_table {
-	/* ÒýÓÃ¼ÆÊý */
+	/* å¼•ç”¨è®¡æ•° */
 	atomic_t holders;
 
 	/* btree table */
-	/* BtreeµÄÉî¶È£¬ÊÇÎªÁË¼Ó¿ìÉÈÇøµ½Ä¿±êµÄ²éÕÒ¹ý³Ì */
+	/* Btreeçš„æ·±åº¦ï¼Œæ˜¯ä¸ºäº†åŠ å¿«æ‰‡åŒºåˆ°ç›®æ ‡çš„æŸ¥æ‰¾è¿‡ç¨‹ */
 	unsigned int depth;
-	/* Btree¸÷²ãµÄ½ÚµãÊý */
+	/* Btreeå„å±‚çš„èŠ‚ç‚¹æ•° */
 	unsigned int counts[MAX_DEPTH];	/* in nodes */
-	/* Btree¸÷²ãµÄË÷ÒýÖµ */
+	/* Btreeå„å±‚çš„ç´¢å¼•å€¼ */
 	sector_t *index[MAX_DEPTH];
 
-	/* Ó³Éä¹æÔòµÄÊýÄ¿ */
+	/* æ˜ å°„è§„åˆ™çš„æ•°ç›® */
 	unsigned int num_targets;
-	/* Æ«ÒÆÊý×éºÍÄ¿±êÊý×éÒÑ¾­·ÖÅäµÄÏîÊý */
+	/* åç§»æ•°ç»„å’Œç›®æ ‡æ•°ç»„å·²ç»åˆ†é…çš„é¡¹æ•° */
 	unsigned int num_allocated;
-	/* Æ«ÒÆÊý×éÖ¸Õë */
+	/* åç§»æ•°ç»„æŒ‡é’ˆ */
 	sector_t *highs;
-	/* Ä¿±êÊý×éÖ¸Õë */
+	/* ç›®æ ‡æ•°ç»„æŒ‡é’ˆ */
 	struct dm_target *targets;
 
 	/*
@@ -48,11 +48,11 @@ struct dm_table {
 	 * device.  This should be a combination of FMODE_READ
 	 * and FMODE_WRITE.
 	 */
-	/* Âß¼­Éè±¸µÄ¶ÁÐ´Ä£Ê½ */
+	/* é€»è¾‘è®¾å¤‡çš„è¯»å†™æ¨¡å¼ */
 	int mode;
 
 	/* a list of devices used by this table */
-	/* Ó³Éä±íÊ¹ÓÃµÄµÍ²ãÉè±¸Á´±í */
+	/* æ˜ å°„è¡¨ä½¿ç”¨çš„ä½Žå±‚è®¾å¤‡é“¾è¡¨ */
 	struct list_head devices;
 
 	/*
@@ -62,9 +62,9 @@ struct dm_table {
 	struct io_restrictions limits;
 
 	/* events get handed up using this callback */
-	/* Ó³Éä±íµÄÊÂ¼þ»Øµ÷º¯Êý */
+	/* æ˜ å°„è¡¨çš„äº‹ä»¶å›žè°ƒå‡½æ•° */
 	void (*event_fn)(void *);
-	/* Ó³Éä±íµÄÊÂ¼þ»Øµ÷²ÎÊý */
+	/* æ˜ å°„è¡¨çš„äº‹ä»¶å›žè°ƒå‚æ•° */
 	void *event_context;
 };
 
@@ -662,7 +662,7 @@ static void check_for_valid_limits(struct io_restrictions *rs)
 		rs->seg_boundary_mask = -1;
 }
 
-/* ½«Ä¿±ê¹æÔòÌí¼Óµ½DMÉè±¸µÄÄ¿±ê±íÖÐ */
+/* å°†ç›®æ ‡è§„åˆ™æ·»åŠ åˆ°DMè®¾å¤‡çš„ç›®æ ‡è¡¨ä¸­ */
 int dm_table_add_target(struct dm_table *t, const char *type,
 			sector_t start, sector_t len, char *params)
 {
@@ -670,29 +670,29 @@ int dm_table_add_target(struct dm_table *t, const char *type,
 	char **argv;
 	struct dm_target *tgt;
 
-	if ((r = check_space(t)))/* ¼ì²éÊÇ·ñÐèÒªÀ©Õ¹Æ«ÒÆÊý×éºÍÄ¿±êÊý×é£¬Èç¹ûÀ©Õ¹²»³É¹¦ÔòÍË³ö */
+	if ((r = check_space(t)))/* æ£€æŸ¥æ˜¯å¦éœ€è¦æ‰©å±•åç§»æ•°ç»„å’Œç›®æ ‡æ•°ç»„ï¼Œå¦‚æžœæ‰©å±•ä¸æˆåŠŸåˆ™é€€å‡º */
 		return r;
 
-	/* ÕÒµ½ÐÂ¹æÔò±£´æµÄÎ»ÖÃ²¢½«ÆäÇå0 */
+	/* æ‰¾åˆ°æ–°è§„åˆ™ä¿å­˜çš„ä½ç½®å¹¶å°†å…¶æ¸…0 */
 	tgt = t->targets + t->num_targets;
 	memset(tgt, 0, sizeof(*tgt));
 
-	if (!len) {/* È·±£¹æÔò³¤¶È²»Îª0 */
+	if (!len) {/* ç¡®ä¿è§„åˆ™é•¿åº¦ä¸ä¸º0 */
 		tgt->error = "zero-length target";
 		DMERR("%s", tgt->error);
 		return -EINVAL;
 	}
 
-	/* »ñµÃ¹æÔòµÄÄ¿±êÀàÐÍ */
+	/* èŽ·å¾—è§„åˆ™çš„ç›®æ ‡ç±»åž‹ */
 	tgt->type = dm_get_target_type(type);
-	if (!tgt->type) {/* Î´ÖªµÄ¹æÔòÀàÐÍ */
+	if (!tgt->type) {/* æœªçŸ¥çš„è§„åˆ™ç±»åž‹ */
 		tgt->error = "unknown target type";
 		DMERR("%s", tgt->error);
 		return -EINVAL;
 	}
 
 	tgt->table = t;
-	/* Ó³ÉäµÄÆðÊ¼Î»ÖÃ¼°³¤¶È */
+	/* æ˜ å°„çš„èµ·å§‹ä½ç½®åŠé•¿åº¦ */
 	tgt->begin = start;
 	tgt->len = len;
 	tgt->error = "Unknown error";
@@ -700,20 +700,20 @@ int dm_table_add_target(struct dm_table *t, const char *type,
 	/*
 	 * Does this target adjoin the previous one ?
 	 */
-	if (!adjoin(t, tgt)) {/* È·±£¹æÔòÖ®¼äÎÞ¼äÏ¶ */
+	if (!adjoin(t, tgt)) {/* ç¡®ä¿è§„åˆ™ä¹‹é—´æ— é—´éš™ */
 		tgt->error = "Gap in table";
 		r = -EINVAL;
 		goto bad;
 	}
 
-	/* ¶ÔÄ¿±ê²ÎÊý½øÐÐ·Ö½â */
+	/* å¯¹ç›®æ ‡å‚æ•°è¿›è¡Œåˆ†è§£ */
 	r = dm_split_args(&argc, &argv, params);
 	if (r) {
 		tgt->error = "couldn't split parameters (insufficient memory)";
 		goto bad;
 	}
 
-	/* ÓÉ¸÷¹æÔòÀàÐÍ¶Ô²ÎÊý½øÐÐ·ÖÎö */
+	/* ç”±å„è§„åˆ™ç±»åž‹å¯¹å‚æ•°è¿›è¡Œåˆ†æž */
 	r = tgt->type->ctr(tgt, argc, argv);
 	kfree(argv);
 	if (r)

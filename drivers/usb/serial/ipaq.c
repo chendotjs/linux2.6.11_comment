@@ -257,7 +257,7 @@ static struct usb_device_id ipaq_id_table [] = {
 	{ USB_DEVICE(0x0930, 0x0700) }, /* TOSHIBA USB Sync 0700 */
 	{ USB_DEVICE(0x0930, 0x0705) }, /* TOSHIBA Pocket PC e310 */
 	{ USB_DEVICE(0x0930, 0x0707) }, /* TOSHIBA Pocket PC e330 Series */
-	{ USB_DEVICE(0x0930, 0x0708) }, /* TOSHIBA Pocket PC e350 Series */
+	{ USB_DEVICE(0x0930, 0x0708) }, /* TOSHIBA Pocket PC e350Series */
 	{ USB_DEVICE(0x0930, 0x0706) }, /* TOSHIBA Pocket PC e740 */
 	{ USB_DEVICE(0x0930, 0x0709) }, /* TOSHIBA Pocket PC e750 Series */
 	{ USB_DEVICE(0x0930, 0x070A) }, /* TOSHIBA Pocket PC e400 Series */
@@ -479,7 +479,7 @@ static struct usb_device_id ipaq_id_table [] = {
 	{ USB_DEVICE(0x4113, 0x0211) }, /* Mobile Media Technology USB Sync */
 	{ USB_DEVICE(0x4113, 0x0400) }, /* Mobile Media Technology USB Sync */
 	{ USB_DEVICE(0x4113, 0x0410) }, /* Mobile Media Technology USB Sync */
-	{ USB_DEVICE(0x0CAD, 0x9001) }, /* Motorola PowerPad Pocket PC Device */
+	{ USB_DEVICE(0x0CAD, 0x9001) }, /* Motorola PowerPad Pocket PCDevice */
 	{ USB_DEVICE(0x0C44, 0x03A2) }, /* Motorola iDEN Smartphone */
 	{ USB_DEVICE(0x04E8, 0x6611) }, /* Samsung MITs USB Sync */
 	{ USB_DEVICE(0x04E8, 0x6613) }, /* Samsung MITs USB Sync */

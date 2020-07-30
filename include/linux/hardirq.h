@@ -61,8 +61,8 @@
 #define in_irq()		(hardirq_count())
 #define in_softirq()		(softirq_count())
 /**
- * ¼ì²écurrent_thread_info()->preempt_countµÄÓ²ÖĞ¶ÏºÍÈíÖĞ¶Ï¼ÆÊıÆ÷
- * Ö»ÒªÆäÖĞÒ»¸öÖµÎªÕıÊı£¬¾Í²úÉú·Ç0Öµ¡£
+ * æ£€æŸ¥current_thread_info()->preempt_countçš„ç¡¬ä¸­æ–­å’Œè½¯ä¸­æ–­è®¡æ•°å™¨
+ * åªè¦å…¶ä¸­ä¸€ä¸ªå€¼ä¸ºæ­£æ•°ï¼Œå°±äº§ç”Ÿé0å€¼ã€‚
  */
 #define in_interrupt()		(irq_count())
 

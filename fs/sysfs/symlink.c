@@ -80,9 +80,9 @@ exit1:
  *	@name:		name of the symlink.
  */
 /**
- * ÔÚsysfs²»Í¬×ÓÊ÷Ö®¼ä½¨Á¢·ûºÅÁ´½Ó¡£
- * ÀıÈç£¬ÔÚsysfs/busÏÂÃæ±£´æÁËËùÓĞÇı¶¯£¬ÔÚsysfs/devicesÏÂÃæ±£´æÁËËùÓĞÉè±¸¡£
- * ¿ÉÒÔÍ¨¹ı±¾º¯Êı½«Çı¶¯¹ÜÀíµÄÉè±¸Á´½ÓÆğÀ´¡£
+ * åœ¨sysfsä¸åŒå­æ ‘ä¹‹é—´å»ºç«‹ç¬¦å·é“¾æ¥ã€‚
+ * ä¾‹å¦‚ï¼Œåœ¨sysfs/busä¸‹é¢ä¿å­˜äº†æ‰€æœ‰é©±åŠ¨ï¼Œåœ¨sysfs/devicesä¸‹é¢ä¿å­˜äº†æ‰€æœ‰è®¾å¤‡ã€‚
+ * å¯ä»¥é€šè¿‡æœ¬å‡½æ•°å°†é©±åŠ¨ç®¡ç†çš„è®¾å¤‡é“¾æ¥èµ·æ¥ã€‚
  */
 int sysfs_create_link(struct kobject * kobj, struct kobject * target, char * name)
 {
@@ -104,7 +104,7 @@ int sysfs_create_link(struct kobject * kobj, struct kobject * target, char * nam
  *	@name:	name of the symlink to remove.
  */
 /**
- * É¾³ı·ûºÅÁ´½Ó¡£
+ * åˆ é™¤ç¬¦å·é“¾æ¥ã€‚
  */
 void sysfs_remove_link(struct kobject * kobj, char * name)
 {

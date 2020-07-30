@@ -102,12 +102,12 @@ static DEVICE_ATTR (pools, S_IRUGO, show_pools, NULL);
  * boundaries of 4KBytes.
  */
 /**
- * ´´½¨DMAÄÚ´æ·ÖÅä³Ø¡£
- *		name:		DMA³ØµÄÃû×Ö¡£
- *		dev:		Éè±¸¶ÔÏó¡£
- *		size:		³ØÖĞ·ÖÅäµÄ»º³åÇøµÄ´óĞ¡¡£
- *		align:		Ó²¼ş¶ÔÆë(ÒÔ×Ö½Ú±íÊ¾)¡£
- *		allocation:	Èç¹ûallocation²»Îª0£¬±íÊ¾ÄÚ´æ±ß½ç²»ÄÜ³¬Ô½allocation¡£±ÈÈç´«ÈëallocationÊÇ4096£¬±íÊ¾¸Ã³ØÖĞ·ÖÅäµÄ»º³åÇø²»ÄÜ¿çÔ½4KB±ß½ç¡£
+ * åˆ›å»ºDMAå†…å­˜åˆ†é…æ± ã€‚
+ *		name:		DMAæ± çš„åå­—ã€‚
+ *		dev:		è®¾å¤‡å¯¹è±¡ã€‚
+ *		size:		æ± ä¸­åˆ†é…çš„ç¼“å†²åŒºçš„å¤§å°ã€‚
+ *		align:		ç¡¬ä»¶å¯¹é½(ä»¥å­—èŠ‚è¡¨ç¤º)ã€‚
+ *		allocation:	å¦‚æœallocationä¸ä¸º0ï¼Œè¡¨ç¤ºå†…å­˜è¾¹ç•Œä¸èƒ½è¶…è¶Šallocationã€‚æ¯”å¦‚ä¼ å…¥allocationæ˜¯4096ï¼Œè¡¨ç¤ºè¯¥æ± ä¸­åˆ†é…çš„ç¼“å†²åŒºä¸èƒ½è·¨è¶Š4KBè¾¹ç•Œã€‚
  */
 struct dma_pool *
 dma_pool_create (const char *name, struct device *dev,
@@ -229,7 +229,7 @@ pool_free_page (struct dma_pool *pool, struct dma_page *page)
  * and that nothing will try to use the pool after this call.
  */
 /**
- * ÊÍ·ÅDMAÄÚ´æ·ÖÅä³Ø¡£
+ * é‡Šæ”¾DMAå†…å­˜åˆ†é…æ± ã€‚
  */
 void
 dma_pool_destroy (struct dma_pool *pool)
@@ -273,10 +273,10 @@ dma_pool_destroy (struct dma_pool *pool)
  * If such a memory block can't be allocated, null is returned.
  */
 /**
- * ´ÓDMA³ØÖĞ·ÖÅäÄÚ´æ¡£
- * 		mem_flags:		ÊÇÄÚ´æ·ÖÅä±êÖ¾¡£
- * 		handle:			·ÖÅäµÄDMAµØÖ·¡£
- * ·µ»ØÖµÊÇÄÚ´æµÄÄÚºËĞéÄâµØÖ·¡£
+ * ä»DMAæ± ä¸­åˆ†é…å†…å­˜ã€‚
+ * 		mem_flags:		æ˜¯å†…å­˜åˆ†é…æ ‡å¿—ã€‚
+ * 		handle:			åˆ†é…çš„DMAåœ°å€ã€‚
+ * è¿”å›å€¼æ˜¯å†…å­˜çš„å†…æ ¸è™šæ‹Ÿåœ°å€ã€‚
  */
 void *
 dma_pool_alloc (struct dma_pool *pool, int mem_flags, dma_addr_t *handle)
@@ -368,7 +368,7 @@ done:
  * unless it is first re-allocated.
  */
 /**
- * ÊÍ·ÅDMAÄÚ´æ¡£
+ * é‡Šæ”¾DMAå†…å­˜ã€‚
  */
 void
 dma_pool_free (struct dma_pool *pool, void *vaddr, dma_addr_t dma)

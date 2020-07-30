@@ -48,22 +48,22 @@
 #define endfor_fib_info() }
 
 /**
- * ÓÃÓÚ±éÀúÒ»¸öfib_infoÊµÀıÖĞËùÓĞµÄfib_nh½á¹¹¡£
- * for_nexthopsÑ­»·ÄÚµÄ´úÂë²»ÄÜ¸Ä±äËù±éÀúµÄÈÎºÎfib_nhÊµÀıµÄÄÚÈİ¡£
+ * ç”¨äºéå†ä¸€ä¸ªfib_infoå®ä¾‹ä¸­æ‰€æœ‰çš„fib_nhç»“æ„ã€‚
+ * for_nexthopså¾ªç¯å†…çš„ä»£ç ä¸èƒ½æ”¹å˜æ‰€éå†çš„ä»»ä½•fib_nhå®ä¾‹çš„å†…å®¹ã€‚
  */
 #define for_nexthops(fi) { int nhsel; const struct dn_fib_nh *nh;\
 	for(nhsel = 0, nh = (fi)->fib_nh; nhsel < (fi)->fib_nhs; nh++, nhsel++)
 
 /**
- * ÓÃÓÚ±éÀúÒ»¸öfib_infoÊµÀıÖĞËùÓĞµÄfib_nh½á¹¹¡£
- * change_nexthopsºê¿ªÊ¼Ò»¸öÕë¶ÔÕâĞ©fib_nh½á¹¹µÄÑ­»·£¬Ã¿Ò»¸öfib_nh½á¹¹ÓÃ¾Ö²¿±äÁ¿nh±íÊ¾¡£
- * ¾ÍÏó´ÓÕâ¸öºêµÄ×ÖÃæËù¸ø³öµÄ£¬¸Ãºê¿ÉÒÔÓÃÓÚ¸Ä±äÕâĞ©½á¹¹¡£
+ * ç”¨äºéå†ä¸€ä¸ªfib_infoå®ä¾‹ä¸­æ‰€æœ‰çš„fib_nhç»“æ„ã€‚
+ * change_nexthopså®å¼€å§‹ä¸€ä¸ªé’ˆå¯¹è¿™äº›fib_nhç»“æ„çš„å¾ªç¯ï¼Œæ¯ä¸€ä¸ªfib_nhç»“æ„ç”¨å±€éƒ¨å˜é‡nhè¡¨ç¤ºã€‚
+ * å°±è±¡ä»è¿™ä¸ªå®çš„å­—é¢æ‰€ç»™å‡ºçš„ï¼Œè¯¥å®å¯ä»¥ç”¨äºæ”¹å˜è¿™äº›ç»“æ„ã€‚
  */
 #define change_nexthops(fi) { int nhsel; struct dn_fib_nh *nh;\
 	for(nhsel = 0, nh = (struct dn_fib_nh *)((fi)->fib_nh); nhsel < (fi)->fib_nhs; nh++, nhsel++)
 
 /**
- * endfor_nexthopsºêÀ´½áÊøchange_nexthopsºÍfor_nexthops¿ªÊ¼µÄÑ­»·
+ * endfor_nexthopså®æ¥ç»“æŸchange_nexthopså’Œfor_nexthopså¼€å§‹çš„å¾ªç¯
  */
 #define endfor_nexthops(fi) }
 

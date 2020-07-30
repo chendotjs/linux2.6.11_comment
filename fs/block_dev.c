@@ -112,18 +112,18 @@ int sb_min_blocksize(struct super_block *sb, int size)
 EXPORT_SYMBOL(sb_min_blocksize);
 
 /**
- * ±»block_prepare_write£¬blkdev_writepage,blkdev_readpageµÈ¹ı³Ì»Øµ÷¡£
- * ÓÃÓÚ½«Ïà¶ÔÓÚÎÄ¼ş¿ªÊ¼´¦µÄÎÄ¼ş¿éºÅ×ª»»ÎªÏà¶ÔÓÚ¿éÉè±¸¿ªÊ¼´¦µÄÂß¼­¿éºÅ¡£
- * ¶Ô¿éÉè±¸À´Ëµ£¬ÕâÁ½¸öÊıÊÇÒ»ÑùµÄ
+ * è¢«block_prepare_writeï¼Œblkdev_writepage,blkdev_readpageç­‰è¿‡ç¨‹å›è°ƒã€‚
+ * ç”¨äºå°†ç›¸å¯¹äºæ–‡ä»¶å¼€å§‹å¤„çš„æ–‡ä»¶å—å·è½¬æ¢ä¸ºç›¸å¯¹äºå—è®¾å¤‡å¼€å§‹å¤„çš„é€»è¾‘å—å·ã€‚
+ * å¯¹å—è®¾å¤‡æ¥è¯´ï¼Œè¿™ä¸¤ä¸ªæ•°æ˜¯ä¸€æ ·çš„
  */
 static int
 blkdev_get_block(struct inode *inode, sector_t iblock,
 		struct buffer_head *bh, int create)
 {
 	/**
-	 * ¼ì²éÒ³ÖĞµÚÒ»¸ö¿éµÄ¿éºÅÊÇ·ñ³¬¹ı¿éÉè±¸µÄ×îºóÒ»¿éµÄË÷ÒıÖµ£¨´æ·ÅÔÚbdev->bd_inode->i_sizeÖĞµÄ¿éÉè±¸´óĞ¡³ıÒÔ´æ·Åbdev->bd_block_sizeÖĞµÄ¿é´óĞ¡µÃµ½¸ÃË÷ÒıÖµ£¬bdevÖ¸Ïò¿éÉè±¸ÃèÊö·û£©
-	 * Èç¹û³¬¹ı£¬ÄÇÃ´¶ÔÓÚĞ´²Ù×÷Ëü·µ»Ø-EIO£¬¶ÔÓÚ¶Á²Ù×÷·µ»Ø0(³¬³ö¿éÉè±¸¶ÁÒ²ÊÇ²»ÔÊĞíµÄ£¬µ«ÊÇ²»·µ»Ø´íÎó´úÂë)
-	 * ÄÚºË¿ÉÒÔ¶Ô¿éÉè±¸µÄ×îºóÊı¾İÊÔ×Å·¢³ö¶ÁÇëÇó£¬¶øµÃµ½µÄ»º³åÇøÖ»±»²¿·ÖÓ³Éä.
+	 * æ£€æŸ¥é¡µä¸­ç¬¬ä¸€ä¸ªå—çš„å—å·æ˜¯å¦è¶…è¿‡å—è®¾å¤‡çš„æœ€åä¸€å—çš„ç´¢å¼•å€¼ï¼ˆå­˜æ”¾åœ¨bdev->bd_inode->i_sizeä¸­çš„å—è®¾å¤‡å¤§å°é™¤ä»¥å­˜æ”¾bdev->bd_block_sizeä¸­çš„å—å¤§å°å¾—åˆ°è¯¥ç´¢å¼•å€¼ï¼ŒbdevæŒ‡å‘å—è®¾å¤‡æè¿°ç¬¦ï¼‰
+	 * å¦‚æœè¶…è¿‡ï¼Œé‚£ä¹ˆå¯¹äºå†™æ“ä½œå®ƒè¿”å›-EIOï¼Œå¯¹äºè¯»æ“ä½œè¿”å›0(è¶…å‡ºå—è®¾å¤‡è¯»ä¹Ÿæ˜¯ä¸å…è®¸çš„ï¼Œä½†æ˜¯ä¸è¿”å›é”™è¯¯ä»£ç )
+	 * å†…æ ¸å¯ä»¥å¯¹å—è®¾å¤‡çš„æœ€åæ•°æ®è¯•ç€å‘å‡ºè¯»è¯·æ±‚ï¼Œè€Œå¾—åˆ°çš„ç¼“å†²åŒºåªè¢«éƒ¨åˆ†æ˜ å°„.
 	 */
 	if (iblock >= max_block(I_BDEV(inode))) {
 		if (create)
@@ -138,15 +138,15 @@ blkdev_get_block(struct inode *inode, sector_t iblock,
 		return 0;
 	}
 	/**
-	 * ÉèÖÃ»º³åÇøÊ×²¿µÄb_dev×Ö¶ÎÎªb_dev
+	 * è®¾ç½®ç¼“å†²åŒºé¦–éƒ¨çš„b_devå­—æ®µä¸ºb_dev
 	 */
 	bh->b_bdev = I_BDEV(inode);
 	/**
-	 * ÉèÖÃ»º³åÇøÊ×²¿µÄb_blocknr×Ö¶ÎÎªÎÄ¼ş¿éºÅ¡£
+	 * è®¾ç½®ç¼“å†²åŒºé¦–éƒ¨çš„b_blocknrå­—æ®µä¸ºæ–‡ä»¶å—å·ã€‚
 	 */
 	bh->b_blocknr = iblock;
 	/**
-	 * ÉèÖÃ»º³åÇøÊ×²¿µÄBH_Mapped±êÖ¾£¬ÒÔ±íÃ÷»º³åÇøÊ×²¿µÄb_devºÍb_blocknr×Ö¶ÎÊÇÓĞĞ§µÄ¡£
+	 * è®¾ç½®ç¼“å†²åŒºé¦–éƒ¨çš„BH_Mappedæ ‡å¿—ï¼Œä»¥è¡¨æ˜ç¼“å†²åŒºé¦–éƒ¨çš„b_devå’Œb_blocknrå­—æ®µæ˜¯æœ‰æ•ˆçš„ã€‚
 	 */
 	set_buffer_mapped(bh);
 	return 0;
@@ -191,7 +191,7 @@ blkdev_direct_IO(int rw, struct kiocb *iocb, const struct iovec *iov,
 }
 
 /**
- * ¿éÉè±¸µÄwritepage·½·¨¡£
+ * å—è®¾å¤‡çš„writepageæ–¹æ³•ã€‚
  */
 static int blkdev_writepage(struct page *page, struct writeback_control *wbc)
 {
@@ -199,20 +199,20 @@ static int blkdev_writepage(struct page *page, struct writeback_control *wbc)
 }
 
 /**
- * ¿éÉè±¸µÄreadpage·½·¨¡£
+ * å—è®¾å¤‡çš„readpageæ–¹æ³•ã€‚
  */
 static int blkdev_readpage(struct file * file, struct page * page)
 {
 	/**
-	 * blkdev_get_blockº¯Êı°ÑÏà¶ÔÓÚÎÄ¼ş¿ªÊ¼´¦µÄÎÄ¼ş¿éºÅ×ª»»ÎªÏà¶ÔÓÚ¿éÉè±¸¿ªÊ¼´¦µÄÂß¼­¿éºÅ¡£
-	 * ¶Ô¿éÉè±¸À´Ëµ£¬ÕâÁ½¸öÖµÊÇÒ»ÑùµÄ¡£
+	 * blkdev_get_blockå‡½æ•°æŠŠç›¸å¯¹äºæ–‡ä»¶å¼€å§‹å¤„çš„æ–‡ä»¶å—å·è½¬æ¢ä¸ºç›¸å¯¹äºå—è®¾å¤‡å¼€å§‹å¤„çš„é€»è¾‘å—å·ã€‚
+	 * å¯¹å—è®¾å¤‡æ¥è¯´ï¼Œè¿™ä¸¤ä¸ªå€¼æ˜¯ä¸€æ ·çš„ã€‚
 	 */
 	return block_read_full_page(page, blkdev_get_block);
 }
 
 /**
- * ¿éÉè±¸ÎÄ¼şµÄaddress_space¶ÔÏóµÄprepare_write·½·¨
- * Ëüµ÷ÓÃÁËblock_prepare_write£¬Î¨Ò»µÄ²îÒìÊÇµÚ¶ş¸ö²ÎÊı¡£ËüÊÇÒ»¸öÖ¸Ïòº¯ÊıµÄÖ¸Õë£¬¸Ãº¯Êı°ÑÏà¶ÔÓÚÎÄ¼ş¿ªÊ¼´¦µÄÎÄ¼ş¿éºÅ×ª»»ÎªÏà¶ÔÓÚ¿éÉè±¸¿ªÊ¼´¦µÄÂß¼­¿éºÅ¡£
+ * å—è®¾å¤‡æ–‡ä»¶çš„address_spaceå¯¹è±¡çš„prepare_writeæ–¹æ³•
+ * å®ƒè°ƒç”¨äº†block_prepare_writeï¼Œå”¯ä¸€çš„å·®å¼‚æ˜¯ç¬¬äºŒä¸ªå‚æ•°ã€‚å®ƒæ˜¯ä¸€ä¸ªæŒ‡å‘å‡½æ•°çš„æŒ‡é’ˆï¼Œè¯¥å‡½æ•°æŠŠç›¸å¯¹äºæ–‡ä»¶å¼€å§‹å¤„çš„æ–‡ä»¶å—å·è½¬æ¢ä¸ºç›¸å¯¹äºå—è®¾å¤‡å¼€å§‹å¤„çš„é€»è¾‘å—å·ã€‚
  */
 static int blkdev_prepare_write(struct file *file, struct page *page, unsigned from, unsigned to)
 {
@@ -220,7 +220,7 @@ static int blkdev_prepare_write(struct file *file, struct page *page, unsigned f
 }
 
 /**
- * ÊµÏÖ¿éÉè±¸ÎÄ¼şµÄcommit_write·½·¨
+ * å®ç°å—è®¾å¤‡æ–‡ä»¶çš„commit_writeæ–¹æ³•
  */
 static int blkdev_commit_write(struct file *file, struct page *page, unsigned from, unsigned to)
 {
@@ -390,20 +390,20 @@ static int bdev_set(struct inode *inode, void *data)
 }
 
 /**
- * ËùÓĞµÄ¿éÉè±¸ÃèÊö·û±»²åÈëÔÚÒ»¸öÈ«¾ÖÁ´±íÖĞ£¬Á´±íÊ×²¿ÊÇÓÉ±äÁ¿all_bdevs±íÊ¾µÄ¡£
- * Á´±íÁ´±íËùÓÃµÄÖ¸ÕëÎ»ÓÚ¿éÉè±¸ÃèÊö·ûµÄbd_list×Ö¶ÎÖĞ¡£
+ * æ‰€æœ‰çš„å—è®¾å¤‡æè¿°ç¬¦è¢«æ’å…¥åœ¨ä¸€ä¸ªå…¨å±€é“¾è¡¨ä¸­ï¼Œé“¾è¡¨é¦–éƒ¨æ˜¯ç”±å˜é‡all_bdevsè¡¨ç¤ºçš„ã€‚
+ * é“¾è¡¨é“¾è¡¨æ‰€ç”¨çš„æŒ‡é’ˆä½äºå—è®¾å¤‡æè¿°ç¬¦çš„bd_listå­—æ®µä¸­ã€‚
  */
 static LIST_HEAD(all_bdevs);
 
 /**
- * ¸ù¾İÖ÷´ÎÉè±¸ºÅ»ñÈ¡¿éÉè±¸ÃèÊö·ûµÄµÄµØÖ·¡£
+ * æ ¹æ®ä¸»æ¬¡è®¾å¤‡å·è·å–å—è®¾å¤‡æè¿°ç¬¦çš„çš„åœ°å€ã€‚
  */
 struct block_device *bdget(dev_t dev)
 {
 	struct block_device *bdev;
 	struct inode *inode;
 
-	/* ÔÚdevÎÄ¼şÏµÍ³ÖĞÕÒµ½Éè±¸µÄinode */
+	/* åœ¨devæ–‡ä»¶ç³»ç»Ÿä¸­æ‰¾åˆ°è®¾å¤‡çš„inode */
 	inode = iget5_locked(bd_mnt->mnt_sb, hash(dev),
 			bdev_test, bdev_set, &dev);
 
@@ -456,7 +456,7 @@ void bdput(struct block_device *bdev)
 EXPORT_SYMBOL(bdput);
 
 /**
- * »ñµÃ¿éÉè±¸ÃèÊö·ûbdevµÄµØÖ·.¸Ãº¯Êı½ÓÊÕË÷Òı½áµã¶ÔÏóµÄµØÖ·
+ * è·å¾—å—è®¾å¤‡æè¿°ç¬¦bdevçš„åœ°å€.è¯¥å‡½æ•°æ¥æ”¶ç´¢å¼•ç»“ç‚¹å¯¹è±¡çš„åœ°å€
  */
 static struct block_device *bd_acquire(struct inode *inode)
 {
@@ -464,9 +464,9 @@ static struct block_device *bd_acquire(struct inode *inode)
 	spin_lock(&bdev_lock);
 	bdev = inode->i_bdev;
 	/**
-	 * ¼ì²éË÷Òı½áµã¶ÔÏóµÄi_bdev×Ö¶ÎÊÇ·ñ²»ÎªNULL.
-	 * Èç¹ûÊÇ,±íÃ÷¿éÉè±¸ÎÄ¼şÒÑ¾­´ò¿ªÁË.¸Ã×Ö¶Î´æ·ÅÁËÏàÓ¦¿éÃèÊö·ûµÄµØÖ·.
-	 * ÔÚÕâÖÖÇé¿öÏÂ,Ôö¼Óbd_inodeË÷Òı½áµãµÄÒıÓÃ¼ÆÊıÆ÷µÄÖµ,²¢·µ»ØÃèÊö·ûinode->i_bdevµÄµØÖ·
+	 * æ£€æŸ¥ç´¢å¼•ç»“ç‚¹å¯¹è±¡çš„i_bdevå­—æ®µæ˜¯å¦ä¸ä¸ºNULL.
+	 * å¦‚æœæ˜¯,è¡¨æ˜å—è®¾å¤‡æ–‡ä»¶å·²ç»æ‰“å¼€äº†.è¯¥å­—æ®µå­˜æ”¾äº†ç›¸åº”å—æè¿°ç¬¦çš„åœ°å€.
+	 * åœ¨è¿™ç§æƒ…å†µä¸‹,å¢åŠ bd_inodeç´¢å¼•ç»“ç‚¹çš„å¼•ç”¨è®¡æ•°å™¨çš„å€¼,å¹¶è¿”å›æè¿°ç¬¦inode->i_bdevçš„åœ°å€
 	 */
 	if (bdev && igrab(bdev->bd_inode)) {
 		spin_unlock(&bdev_lock);
@@ -474,8 +474,8 @@ static struct block_device *bd_acquire(struct inode *inode)
 	}
 
 	/**
-	 * ¿éÉè±¸ÎÄ¼şÃ»ÓĞ±»´ò¿ª.¸ù¾İÉè±¸ÎÄ¼şµÄÖ÷Éè±¸ºÅºÍ´ÎÉè±¸ºÅ,Ö´ĞĞbdget»ñµÃÃèÊö·ûµÄµØÖ·.
-	 * Èç¹ûÃèÊö·û²»´æÔÚ,bdget¾Í·ÖÅäÒ»¸ö.µ±È»,Ò²¿ÉÄÜ´æÔÚÃèÊö·ûÁË(±ÈÈçÆäËû¿éÉè±¸ÎÄ¼şÒÑ¾­·ÃÎÊÁË¸Ã¿éÉè±¸).
+	 * å—è®¾å¤‡æ–‡ä»¶æ²¡æœ‰è¢«æ‰“å¼€.æ ¹æ®è®¾å¤‡æ–‡ä»¶çš„ä¸»è®¾å¤‡å·å’Œæ¬¡è®¾å¤‡å·,æ‰§è¡Œbdgetè·å¾—æè¿°ç¬¦çš„åœ°å€.
+	 * å¦‚æœæè¿°ç¬¦ä¸å­˜åœ¨,bdgetå°±åˆ†é…ä¸€ä¸ª.å½“ç„¶,ä¹Ÿå¯èƒ½å­˜åœ¨æè¿°ç¬¦äº†(æ¯”å¦‚å…¶ä»–å—è®¾å¤‡æ–‡ä»¶å·²ç»è®¿é—®äº†è¯¥å—è®¾å¤‡).
 	 */
 	spin_unlock(&bdev_lock);
 	bdev = bdget(inode->i_rdev);
@@ -484,12 +484,12 @@ static struct block_device *bd_acquire(struct inode *inode)
 		if (inode->i_bdev)
 			__bd_forget(inode);
 		/**
-		 * ½«ÃèÊö·ûµØÖ·´æ·Åµ½inode->i_bdevÖĞ,ÒÔ±ã¼ÓËÙ½«À´¶ÔÏàÍ¬¿éÉè±¸ÎÄ¼şµÄ´ò¿ª²Ù×÷.
+		 * å°†æè¿°ç¬¦åœ°å€å­˜æ”¾åˆ°inode->i_bdevä¸­,ä»¥ä¾¿åŠ é€Ÿå°†æ¥å¯¹ç›¸åŒå—è®¾å¤‡æ–‡ä»¶çš„æ‰“å¼€æ“ä½œ.
 		 */
 		inode->i_bdev = bdev;
 		inode->i_mapping = bdev->bd_inode->i_mapping;
 		/**
-		 * ½«Ë÷Òı½áµã²åÈëµ½ÓÉbd_inodesÈ·Á¢µÄ¿éÉè±¸ÃèÊö·ûµÄÒÑ´ò¿ªË÷Òı½áµãÁ´±íÖĞ
+		 * å°†ç´¢å¼•ç»“ç‚¹æ’å…¥åˆ°ç”±bd_inodesç¡®ç«‹çš„å—è®¾å¤‡æè¿°ç¬¦çš„å·²æ‰“å¼€ç´¢å¼•ç»“ç‚¹é“¾è¡¨ä¸­
 		 */
 		list_add(&inode->i_devices, &bdev->bd_inodes);
 		spin_unlock(&bdev_lock);
@@ -508,7 +508,7 @@ void bd_forget(struct inode *inode)
 }
 
 /**
- * bd_claimº¯Êı½«block_deviceµÄholder×Ö¶ÎÉèÖÃÎªÒ»¸öÌØ¶¨µÄµØÖ·¡£
+ * bd_claimå‡½æ•°å°†block_deviceçš„holderå­—æ®µè®¾ç½®ä¸ºä¸€ä¸ªç‰¹å®šçš„åœ°å€ã€‚
  */
 int bd_claim(struct block_device *bdev, void *holder)
 {
@@ -548,7 +548,7 @@ int bd_claim(struct block_device *bdev, void *holder)
 EXPORT_SYMBOL(bd_claim);
 
 /**
- * bd_release½«bdevµÄbd_holder×Ö¶ÎÉèÖÃÎªNULL
+ * bd_releaseå°†bdevçš„bd_holderå­—æ®µè®¾ç½®ä¸ºNULL
  */
 void bd_release(struct block_device *bdev)
 {
@@ -635,16 +635,16 @@ static int do_open(struct block_device *bdev, struct file *file)
 	int part;
 
 	/**
-	 * ÔÚµ÷ÓÃdo_openÇ°£¬blkdev_open»áµ÷ÓÃbd_acquire£¬ÔÚbd_acquireÖĞ
-	 * inode->imapping×Ö¶Î»á±»ÉèÖÃÎªbdevË÷Òı½áµãÖĞÏàÓ¦×Ö¶ÎµÄÖµ¡£¸Ã×Ö¶ÎÖ¸ÏòµØÖ·¿Õ¼ä¶ÔÏó(address_space)
-	 * ÏÖÔÚ½«Ëü¸³¸øf_mapping
+	 * åœ¨è°ƒç”¨do_openå‰ï¼Œblkdev_openä¼šè°ƒç”¨bd_acquireï¼Œåœ¨bd_acquireä¸­
+	 * inode->imappingå­—æ®µä¼šè¢«è®¾ç½®ä¸ºbdevç´¢å¼•ç»“ç‚¹ä¸­ç›¸åº”å­—æ®µçš„å€¼ã€‚è¯¥å­—æ®µæŒ‡å‘åœ°å€ç©ºé—´å¯¹è±¡(address_space)
+	 * ç°åœ¨å°†å®ƒèµ‹ç»™f_mapping
 	 */
 	file->f_mapping = bdev->bd_inode->i_mapping;
 	lock_kernel();
 	/**
-	 * »ñÈ¡Óë¿éÉè±¸Ïà¹ØµÄgendiskÃèÊö·ûµØÖ·¡£
-	 * Èç¹û´ò¿ªµÄ¿éÉè±¸ÊÇÒ»¸ö·ÖÇø£¬Ôò·µ»ØµÄË÷ÒıÖµ´æ·ÅÔÚpartÖĞ£¬·ñÔòpartÎª0
-	 * get_gendiskº¯Êı¼òµ¥µÄÔÚkobjectÓ³ÉäÓòbdev_mapÉÏµ÷ÓÃkobj_lookupÀ´´«µİÉè±¸µÄÖ÷Éè±¸ºÅºÍ´ÎÉè±¸ºÅ¡£
+	 * è·å–ä¸å—è®¾å¤‡ç›¸å…³çš„gendiskæè¿°ç¬¦åœ°å€ã€‚
+	 * å¦‚æœæ‰“å¼€çš„å—è®¾å¤‡æ˜¯ä¸€ä¸ªåˆ†åŒºï¼Œåˆ™è¿”å›çš„ç´¢å¼•å€¼å­˜æ”¾åœ¨partä¸­ï¼Œå¦åˆ™partä¸º0
+	 * get_gendiskå‡½æ•°ç®€å•çš„åœ¨kobjectæ˜ å°„åŸŸbdev_mapä¸Šè°ƒç”¨kobj_lookupæ¥ä¼ é€’è®¾å¤‡çš„ä¸»è®¾å¤‡å·å’Œæ¬¡è®¾å¤‡å·ã€‚
 	 */
 	disk = get_gendisk(bdev->bd_dev, &part);
 	if (!disk) {
@@ -656,21 +656,21 @@ static int do_open(struct block_device *bdev, struct file *file)
 
 	down(&bdev->bd_sem);
 	/**
-	 * bdev->bd_openers!=0±íÊ¾Éè±¸ÒÑ¾­´ò¿ª¡£
+	 * bdev->bd_openers!=0è¡¨ç¤ºè®¾å¤‡å·²ç»æ‰“å¼€ã€‚
 	 */
-	if (!bdev->bd_openers) {/* »¹Ã»ÓĞ´ò¿ª */
+	if (!bdev->bd_openers) {/* è¿˜æ²¡æœ‰æ‰“å¼€ */
 		/**
-		 * µÚÒ»´Î·ÃÎÊ£¬ÒÔÇ°Ã»ÓĞ´ò¿ª¹ı
-		 * ¾Í³õÊ¼»¯ËüµÄbd_disk
+		 * ç¬¬ä¸€æ¬¡è®¿é—®ï¼Œä»¥å‰æ²¡æœ‰æ‰“å¼€è¿‡
+		 * å°±åˆå§‹åŒ–å®ƒçš„bd_disk
 		 */
 		bdev->bd_disk = disk;
 		bdev->bd_contains = bdev;
-		if (!part) {/* ÊÇÒ»¸öÕûÅÌ£¬¶ø²»ÊÇ·ÖÇø */
+		if (!part) {/* æ˜¯ä¸€ä¸ªæ•´ç›˜ï¼Œè€Œä¸æ˜¯åˆ†åŒº */
 			struct backing_dev_info *bdi;
 			if (disk->fops->open) {
 				/**
-				 * ¸ÃÅÌ¶¨ÒåÁË´ò¿ª·½·¨¡£¾ÍÖ´ĞĞËü
-				 * ¸Ã·½·¨ÊÇÓÉ¿éÉè±¸Çı¶¯³ÌĞò¶¨ÒåµÄ¶¨ÖÆº¯Êı¡£
+				 * è¯¥ç›˜å®šä¹‰äº†æ‰“å¼€æ–¹æ³•ã€‚å°±æ‰§è¡Œå®ƒ
+				 * è¯¥æ–¹æ³•æ˜¯ç”±å—è®¾å¤‡é©±åŠ¨ç¨‹åºå®šä¹‰çš„å®šåˆ¶å‡½æ•°ã€‚
 				 */
 				ret = disk->fops->open(bdev->bd_inode, file);
 				if (ret)
@@ -685,13 +685,13 @@ static int do_open(struct block_device *bdev, struct file *file)
 			}
 			if (bdev->bd_invalidated)
 				rescan_partitions(disk, bdev);
-		} else {/* Éè±¸ÊÇÒ»¸ö·ÖÇø */
+		} else {/* è®¾å¤‡æ˜¯ä¸€ä¸ªåˆ†åŒº */
 		 
 			struct hd_struct *p;
 			struct block_device *whole;
 			/**
-			 * ÔÙ´Îµ÷ÓÃbdget_disk¡£Õâ´Î²ÎÊı²»Ò»Ñù
-			 * »ñµÃÕûÅÌµÄ¿éÃèÊö·ûµØÖ·whole
+			 * å†æ¬¡è°ƒç”¨bdget_diskã€‚è¿™æ¬¡å‚æ•°ä¸ä¸€æ ·
+			 * è·å¾—æ•´ç›˜çš„å—æè¿°ç¬¦åœ°å€whole
 			 */
 			whole = bdget_disk(disk, 0);
 			ret = -ENOMEM;
@@ -701,18 +701,18 @@ static int do_open(struct block_device *bdev, struct file *file)
 			if (ret)
 				goto out_first;
 			/**
-			 * ÉèÖÃÃèÊö·û:devÊÇ·ÖÇø£¬ÔòÖ¸Ïò·ÖÇøËùÔÚÕûÅÌÃèÊö·û
-			 * ·ñÔòÖ¸Ïò¿éÉè±¸ÃèÊö·û
+			 * è®¾ç½®æè¿°ç¬¦:devæ˜¯åˆ†åŒºï¼Œåˆ™æŒ‡å‘åˆ†åŒºæ‰€åœ¨æ•´ç›˜æè¿°ç¬¦
+			 * å¦åˆ™æŒ‡å‘å—è®¾å¤‡æè¿°ç¬¦
 			 */
 			bdev->bd_contains = whole;
 			down(&whole->bd_sem);
 			/**
-			 * Ôö¼Óbd_part_count´Ó¶øËµÃ÷´ÅÅÌ·ÖÇøÉÏĞÂµÄ´ò¿ª²Ù×÷¡£
+			 * å¢åŠ bd_part_countä»è€Œè¯´æ˜ç£ç›˜åˆ†åŒºä¸Šæ–°çš„æ‰“å¼€æ“ä½œã€‚
 			 */
 			whole->bd_part_count++;
 			/**
-			 * ÓÃdisk->part[part - 1]µÄÖµÉèÖÃbdev->bd_part
-			 * ËüÊÇ·ÖÇøÃèÊö·ûhd_structµÄµØÖ·¡£
+			 * ç”¨disk->part[part - 1]çš„å€¼è®¾ç½®bdev->bd_part
+			 * å®ƒæ˜¯åˆ†åŒºæè¿°ç¬¦hd_structçš„åœ°å€ã€‚
 			 */
 			p = disk->part[part - 1];
 			bdev->bd_inode->i_data.backing_dev_info =
@@ -724,28 +724,28 @@ static int do_open(struct block_device *bdev, struct file *file)
 				goto out_first;
 			}
 			/**
-			 * Ôö¼Ó·ÖÇøÒıÓÃ¼ÆÊıÆ÷µÄÖµ¡£
+			 * å¢åŠ åˆ†åŒºå¼•ç”¨è®¡æ•°å™¨çš„å€¼ã€‚
 			 */
 			kobject_get(&p->kobj);
 			bdev->bd_part = p;
 			/**
-			 * ÉèÖÃË÷Òı½áµãÖĞ·ÖÇø´óĞ¡ºÍÉÈÇø´óĞ¡
+			 * è®¾ç½®ç´¢å¼•ç»“ç‚¹ä¸­åˆ†åŒºå¤§å°å’Œæ‰‡åŒºå¤§å°
 			 */
 			bd_set_size(bdev, (loff_t) p->nr_sects << 9);
 			up(&whole->bd_sem);
 		}
 	} else {
 		/** 
-		 * Éè±¸ÒÑ¾­´ò¿ªÁË
+		 * è®¾å¤‡å·²ç»æ‰“å¼€äº†
 		 */
 		put_disk(disk);
 		module_put(owner);
 		/**
-		 * bdev->bd_contains == bdev±íÊ¾Éè±¸ÊÇÒ»¸öÕûÅÌ
+		 * bdev->bd_contains == bdevè¡¨ç¤ºè®¾å¤‡æ˜¯ä¸€ä¸ªæ•´ç›˜
 		 */
 		if (bdev->bd_contains == bdev) {
 			/**
-			 * µ÷ÓÃ¿éÉè±¸µÄopen·½·¨¡£
+			 * è°ƒç”¨å—è®¾å¤‡çš„openæ–¹æ³•ã€‚
 			 */
 			if (bdev->bd_disk->fops->open) {
 				ret = bdev->bd_disk->fops->open(bdev->bd_inode, file);
@@ -753,9 +753,9 @@ static int do_open(struct block_device *bdev, struct file *file)
 					goto out;
 			}
 			/**
-			 * ¼ì²ébdev->bd_invalidated£¬Èç¹ûÓĞ±ØÒª¾Íµ÷ÓÃrescan_partitions
-			 * Èç¹ûÉèÖÃÁËbdev->bd_invalidated¾Íµ÷ÓÃrescan_partitionsÉ¨Ãè·ÖÇø±í²¢¸üĞÂ·ÖÇøÃèÊö·û¡£
-			 * ¸Ã±êÖ¾ÊÇÓÉcheck_disk_change¿éÉè±¸·½·¨Éè±¸µÄ£¬½öÊÊÓÃÓÚ¿ÉÒÆ¶¯Éè±¸(UÅÌ¡¢ÈíÅÌ??)¡£
+			 * æ£€æŸ¥bdev->bd_invalidatedï¼Œå¦‚æœæœ‰å¿…è¦å°±è°ƒç”¨rescan_partitions
+			 * å¦‚æœè®¾ç½®äº†bdev->bd_invalidatedå°±è°ƒç”¨rescan_partitionsæ‰«æåˆ†åŒºè¡¨å¹¶æ›´æ–°åˆ†åŒºæè¿°ç¬¦ã€‚
+			 * è¯¥æ ‡å¿—æ˜¯ç”±check_disk_changeå—è®¾å¤‡æ–¹æ³•è®¾å¤‡çš„ï¼Œä»…é€‚ç”¨äºå¯ç§»åŠ¨è®¾å¤‡(Uç›˜ã€è½¯ç›˜??)ã€‚
 			 */
 			if (bdev->bd_invalidated)
 				rescan_partitions(bdev->bd_disk, bdev);
@@ -766,7 +766,7 @@ static int do_open(struct block_device *bdev, struct file *file)
 		}
 	}
 	/**
-	 * ÎŞÂÛÈçºÎ£¬¶¼Ôö¼Ó´ò¿ª¼ÆÊı
+	 * æ— è®ºå¦‚ä½•ï¼Œéƒ½å¢åŠ æ‰“å¼€è®¡æ•°
 	 */
 	bdev->bd_openers++;
 	up(&bdev->bd_sem);
@@ -810,7 +810,7 @@ int blkdev_get(struct block_device *bdev, mode_t mode, unsigned flags)
 EXPORT_SYMBOL(blkdev_get);
 
 /**
- * ¿éÉè±¸ÎÄ¼şµÄÈ±Ê¡²Ù×÷-open
+ * å—è®¾å¤‡æ–‡ä»¶çš„ç¼ºçœæ“ä½œ-open
  */
 static int blkdev_open(struct inode * inode, struct file * filp)
 {
@@ -826,7 +826,7 @@ static int blkdev_open(struct inode * inode, struct file * filp)
 	filp->f_flags |= O_LARGEFILE;
 
 	/**
-	 * Ö´ĞĞbd_acquire´Ó¶ø»ñµÃ¿éÉè±¸ÃèÊö·ûbdevµÄµØÖ·¡£
+	 * æ‰§è¡Œbd_acquireä»è€Œè·å¾—å—è®¾å¤‡æè¿°ç¬¦bdevçš„åœ°å€ã€‚
 	 */
 	bdev = bd_acquire(inode);
 
@@ -835,19 +835,19 @@ static int blkdev_open(struct inode * inode, struct file * filp)
 		return res;
 
 	/**
-	 * ²»ÊÇ¶ÀÕ¼´ò¿ª£¬¾Í·µ»ØÁË
+	 * ä¸æ˜¯ç‹¬å æ‰“å¼€ï¼Œå°±è¿”å›äº†
 	 */
 	if (!(filp->f_flags & O_EXCL) )
 		return 0;
 
 	/**
-	 * ·ñÔòÊÇ¶ÀÕ¼´ò¿ª£¬¾Íµ÷ÓÃbd_claimÉèÖÃ¿éÉè±¸µÄ³ÖÓĞÕß¡£
+	 * å¦åˆ™æ˜¯ç‹¬å æ‰“å¼€ï¼Œå°±è°ƒç”¨bd_claimè®¾ç½®å—è®¾å¤‡çš„æŒæœ‰è€…ã€‚
 	 */
 	if (!(res = bd_claim(bdev, filp)))
 		return 0;
 
 	/**
-	 * bd_claimÊ§°ÜÁË£¬ËµÃ÷ÒÑ¾­±»ÆäËûÈËÕ¼ÓĞÁË£¬¾ÍÊÍ·Å¿éÉè±¸ÃèÊö·û²¢·µ»Ø´íÎó¡£
+	 * bd_claimå¤±è´¥äº†ï¼Œè¯´æ˜å·²ç»è¢«å…¶ä»–äººå æœ‰äº†ï¼Œå°±é‡Šæ”¾å—è®¾å¤‡æè¿°ç¬¦å¹¶è¿”å›é”™è¯¯ã€‚
 	 */
 	blkdev_put(bdev);
 	return res;
@@ -899,7 +899,7 @@ int blkdev_put(struct block_device *bdev)
 EXPORT_SYMBOL(blkdev_put);
 
 /**
- * È±Ê¡µÄ¿éÉè±¸ÎÄ¼ş²Ù×÷·½·¨-release
+ * ç¼ºçœçš„å—è®¾å¤‡æ–‡ä»¶æ“ä½œæ–¹æ³•-release
  */
 static int blkdev_close(struct inode * inode, struct file * filp)
 {
@@ -918,7 +918,7 @@ static ssize_t blkdev_file_write(struct file *file, const char __user *buf,
 }
 
 /**
- * È±Ê¡µÄ¿éÉè±¸ÎÄ¼ş²Ù×÷-aio_write
+ * ç¼ºçœçš„å—è®¾å¤‡æ–‡ä»¶æ“ä½œ-aio_write
  */
 static ssize_t blkdev_file_aio_write(struct kiocb *iocb, const char __user *buf,
 				   size_t count, loff_t pos)
@@ -945,7 +945,7 @@ struct address_space_operations def_blk_aops = {
 };
 
 /**
- * ´¦ÀíÉè±¸ÎÄ¼şµÄVFSÊ±£¬dentry_openº¯Êı»á¶¨ÖÆÎÄ¼ş¶ÔÏóµÄ·½·¨¡£ËüµÄf_op×Ö¶ÎÉèÖÃÎª±ídef_blk_fopsµÄµØÖ·
+ * å¤„ç†è®¾å¤‡æ–‡ä»¶çš„VFSæ—¶ï¼Œdentry_openå‡½æ•°ä¼šå®šåˆ¶æ–‡ä»¶å¯¹è±¡çš„æ–¹æ³•ã€‚å®ƒçš„f_opå­—æ®µè®¾ç½®ä¸ºè¡¨def_blk_fopsçš„åœ°å€
  */
 struct file_operations def_blk_fops = {
 	.open		= blkdev_open,

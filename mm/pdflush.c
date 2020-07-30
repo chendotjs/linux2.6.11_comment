@@ -44,7 +44,7 @@ static void start_one_pdflush_thread(void);
  * All the pdflush threads.  Protected by pdflush_lock
  */
 /**
- * ËùÓĞpdflushÄÚºËÏß³ÌµÄÃèÊö·ûÁ´±í¡£Í¨¹ıpdflush_lock×ÔĞıËø±£»¤¡£
+ * æ‰€æœ‰pdflushå†…æ ¸çº¿ç¨‹çš„æè¿°ç¬¦é“¾è¡¨ã€‚é€šè¿‡pdflush_lockè‡ªæ—‹é”ä¿æŠ¤ã€‚
  */
 static LIST_HEAD(pdflush_list);
 static DEFINE_SPINLOCK(pdflush_lock);
@@ -57,7 +57,7 @@ static DEFINE_SPINLOCK(pdflush_lock);
  * /proc/sys/vm/nr_pdflush_threads.
  */
 /**
- * ´æ·Å¿ÕÏĞpdflushÏß³ÌµÄ×ÜÊı¡£
+ * å­˜æ”¾ç©ºé—²pdflushçº¿ç¨‹çš„æ€»æ•°ã€‚
  */
 int nr_pdflush_threads = 0;
 
@@ -65,7 +65,7 @@ int nr_pdflush_threads = 0;
  * The time at which the pdflush thread pool last went empty
  */
 /**
- * pdflushÏß³ÌÁ´±í±äÎª¿ÕµÄÊ±¼ä(ÒÔjiffies±íÊ¾)
+ * pdflushçº¿ç¨‹é“¾è¡¨å˜ä¸ºç©ºçš„æ—¶é—´(ä»¥jiffiesè¡¨ç¤º)
  */
 static unsigned long last_empty_jifs;
 
@@ -89,33 +89,33 @@ static unsigned long last_empty_jifs;
  * state information between pdflush threads.  Protected by pdflush_lock.
  */
 /**
- * ÃèÊöpdflushÏß³ÌµÄÃèÊö·û
+ * æè¿°pdflushçº¿ç¨‹çš„æè¿°ç¬¦
  */
 struct pdflush_work {
 	/**
-	 * Ö¸ÏòÄÚºËÏß³ÌÃèÊö·ûµÄÖ¸Õë
+	 * æŒ‡å‘å†…æ ¸çº¿ç¨‹æè¿°ç¬¦çš„æŒ‡é’ˆ
 	 */
 	struct task_struct *who;	/* The thread */
 	/**
-	 * ÄÚºËÏß³ÌËùÖ´ĞĞµÄ»Øµ÷º¯Êı¡£
+	 * å†…æ ¸çº¿ç¨‹æ‰€æ‰§è¡Œçš„å›è°ƒå‡½æ•°ã€‚
 	 */
 	void (*fn)(unsigned long);	/* A callback function */
 	/**
-	 * ¸ø»Øµ÷º¯ÊıµÄ²ÎÊı¡£
+	 * ç»™å›è°ƒå‡½æ•°çš„å‚æ•°ã€‚
 	 */
 	unsigned long arg0;		/* An argument to the callback */
 	/**
-	 * Í¨¹ı´Ë½á¹¹Á´½Óµ½pdflush_list¡£
+	 * é€šè¿‡æ­¤ç»“æ„é“¾æ¥åˆ°pdflush_listã€‚
 	 */
 	struct list_head list;		/* On pdflush_list, when idle */
 	/**
-	 * ÄÚºËÏß³Ì¿ÉÓÃµÄÊ±¼ä¡£
+	 * å†…æ ¸çº¿ç¨‹å¯ç”¨çš„æ—¶é—´ã€‚
 	 */
 	unsigned long when_i_went_to_sleep;
 };
 
 /**
- * pdflusÄÚºËÏß³ÌµÄÖ´ĞĞº¯Êı¡£
+ * pdfluså†…æ ¸çº¿ç¨‹çš„æ‰§è¡Œå‡½æ•°ã€‚
  */
 static int __pdflush(struct pdflush_work *my_work)
 {
@@ -130,12 +130,12 @@ static int __pdflush(struct pdflush_work *my_work)
 		struct pdflush_work *pdf;
 
 		/**
-		 *  pdflushÏß³Ì¸ÕÖ´ĞĞÊ±£¬¼´½«×Ô¼º²åÈë¿ÕÏĞÁ´±í£¬²¢¿ªÊ¼Ë¯Ãß¡£
+		 *  pdflushçº¿ç¨‹åˆšæ‰§è¡Œæ—¶ï¼Œå³å°†è‡ªå·±æ’å…¥ç©ºé—²é“¾è¡¨ï¼Œå¹¶å¼€å§‹ç¡çœ ã€‚
 		 */
 		set_current_state(TASK_INTERRUPTIBLE);
 		list_move(&my_work->list, &pdflush_list);
 		/**
-		 * ½ø³Ì¿ªÊ¼Ë¯ÃßÊ±¼ä
+		 * è¿›ç¨‹å¼€å§‹ç¡çœ æ—¶é—´
 		 */
 		my_work->when_i_went_to_sleep = jiffies;
 		spin_unlock_irq(&pdflush_lock);
@@ -159,7 +159,7 @@ static int __pdflush(struct pdflush_work *my_work)
 		spin_unlock_irq(&pdflush_lock);
 
 		/**
-		 * ±»ÆäËû¹ı³Ì»½ĞÑºó£¬Ö´ĞĞ»Øµ÷º¯Êı½øĞĞË¢ĞÂÔàÒ³¡£
+		 * è¢«å…¶ä»–è¿‡ç¨‹å”¤é†’åï¼Œæ‰§è¡Œå›è°ƒå‡½æ•°è¿›è¡Œåˆ·æ–°è„é¡µã€‚
 		 */
 		(*my_work->fn)(my_work->arg0);
 
@@ -168,14 +168,14 @@ static int __pdflush(struct pdflush_work *my_work)
 		 * available threads?
 		 */
 		/**
-		 * pdflush_listÁ´±íÖĞµÄ×îºóÒ»Ïî¶ÔÓ¦µÄpdflushÄÚºËÏß³Ì¿ÕÏĞÊ±¼ä³¬¹ıÁË1Ãë
+		 * pdflush_listé“¾è¡¨ä¸­çš„æœ€åä¸€é¡¹å¯¹åº”çš„pdflushå†…æ ¸çº¿ç¨‹ç©ºé—²æ—¶é—´è¶…è¿‡äº†1ç§’
 		 */
 		if (jiffies - last_empty_jifs > 1 * HZ) {
 			/* unlocked list_empty() test is OK here */
-			if (list_empty(&pdflush_list)) {/* ¿ÕÏĞÁ´±íÎª¿Õ */
+			if (list_empty(&pdflush_list)) {/* ç©ºé—²é“¾è¡¨ä¸ºç©º */
 				/* unlocked test is OK here */
 				/**
-				 * ÏµÍ³ÖĞµÄpdflushÏß³ÌÊıÁ¿Ğ¡ÓÚ8¸ö£¬¾ÍĞÂ½¨Ò»¸öpdflushÏß³Ì¡£
+				 * ç³»ç»Ÿä¸­çš„pdflushçº¿ç¨‹æ•°é‡å°äº8ä¸ªï¼Œå°±æ–°å»ºä¸€ä¸ªpdflushçº¿ç¨‹ã€‚
 				 */
 				if (nr_pdflush_threads < MAX_PDFLUSH_THREADS)
 					start_one_pdflush_thread();
@@ -195,7 +195,7 @@ static int __pdflush(struct pdflush_work *my_work)
 			continue;
 		pdf = list_entry(pdflush_list.prev, struct pdflush_work, list);
 		/**
-		 * Èç¹û¿ÕÏĞÏß³ÌÁ´±íÖĞÉÏÒ»¸öÏß³ÌµÄ¿ÕÏĞÊ±¼ä³¬¹ı1Ãë£¬¾ÍÍË³öÏß³Ì¡£
+		 * å¦‚æœç©ºé—²çº¿ç¨‹é“¾è¡¨ä¸­ä¸Šä¸€ä¸ªçº¿ç¨‹çš„ç©ºé—²æ—¶é—´è¶…è¿‡1ç§’ï¼Œå°±é€€å‡ºçº¿ç¨‹ã€‚
 		 */
 		if (jiffies - pdf->when_i_went_to_sleep > 1 * HZ) {
 			/* Limit exit rate */
@@ -233,9 +233,9 @@ static int pdflush(void *dummy)
  * payload to it.
  */
 /**
- * ¼¤»î¿ÕÏĞµÄpdflushÏß³Ì¡£
- * fn:		ÓÉpdflushÖ´ĞĞµÄº¯Êı¡£
- * arg0:	²ÎÊı
+ * æ¿€æ´»ç©ºé—²çš„pdflushçº¿ç¨‹ã€‚
+ * fn:		ç”±pdflushæ‰§è¡Œçš„å‡½æ•°ã€‚
+ * arg0:	å‚æ•°
  */
 int pdflush_operation(void (*fn)(unsigned long), unsigned long arg0)
 {
@@ -246,26 +246,26 @@ int pdflush_operation(void (*fn)(unsigned long), unsigned long arg0)
 		BUG();		/* Hard to diagnose if it's deferred */
 
 	spin_lock_irqsave(&pdflush_lock, flags);
-	if (list_empty(&pdflush_list)) {/* Ã»ÓĞ¿ÕÏĞµÄpdflushÏß³Ì */
+	if (list_empty(&pdflush_list)) {/* æ²¡æœ‰ç©ºé—²çš„pdflushçº¿ç¨‹ */
 		spin_unlock_irqrestore(&pdflush_lock, flags);
 		ret = -1;
 	} else {
 		struct pdflush_work *pdf;
 
 		/**
-		 * ´Ó¿ÕÏĞÁ´±íÖĞÈ¡³öµÚÒ»¸ö¿ÕÏĞpdflushÏß³Ì¡£
+		 * ä»ç©ºé—²é“¾è¡¨ä¸­å–å‡ºç¬¬ä¸€ä¸ªç©ºé—²pdflushçº¿ç¨‹ã€‚
 		 */
 		pdf = list_entry(pdflush_list.next, struct pdflush_work, list);
 		list_del_init(&pdf->list);
 		if (list_empty(&pdflush_list))
 			last_empty_jifs = jiffies;
 		/**
-		 * ÉèÖÃÄÚºËÏß³ÌµÄ»Øµ÷º¯Êı¡£
+		 * è®¾ç½®å†…æ ¸çº¿ç¨‹çš„å›è°ƒå‡½æ•°ã€‚
 		 */
 		pdf->fn = fn;
 		pdf->arg0 = arg0;
 		/**
-		 * »½ĞÑ¿ÕÏĞÏß³Ì¡£
+		 * å”¤é†’ç©ºé—²çº¿ç¨‹ã€‚
 		 */
 		wake_up_process(pdf->who);
 		spin_unlock_irqrestore(&pdflush_lock, flags);

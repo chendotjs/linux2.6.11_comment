@@ -21,7 +21,7 @@
 #define dec_preempt_count() sub_preempt_count(1)
 
 /**
- * ÔÚthread_infoÃèÊö·ûÖĞÑ¡Ôñpreempt_count×Ö¶Î
+ * åœ¨thread_infoæè¿°ç¬¦ä¸­é€‰æ‹©preempt_countå­—æ®µ
  */
 #define preempt_count()	(current_thread_info()->preempt_count)
 
@@ -30,7 +30,7 @@
 asmlinkage void preempt_schedule(void);
 
 /**
- * Ê¹ÇÀÕ¼¼ÆÊı¼Ó1
+ * ä½¿æŠ¢å è®¡æ•°åŠ 1
  */
 #define preempt_disable() \
 do { \
@@ -39,7 +39,7 @@ do { \
 } while (0)
 
 /**
- * Ê¹ÇÀÕ¼¼ÆÊı¼õ1
+ * ä½¿æŠ¢å è®¡æ•°å‡1
  */
 #define preempt_enable_no_resched() \
 do { \
@@ -54,7 +54,7 @@ do { \
 } while (0)
 
 /**
- * Ê¹ÇÀÕ¼¼ÆÊı¼õ1£¬²¢ÔÚthread_infoÃèÊö·ûµÄTIF_NEED_RESCHED±êÖ¾±»ÖÃÎª1µÄÇé¿öÏÂ£¬µ÷ÓÃpreempt_schedule()
+ * ä½¿æŠ¢å è®¡æ•°å‡1ï¼Œå¹¶åœ¨thread_infoæè¿°ç¬¦çš„TIF_NEED_RESCHEDæ ‡å¿—è¢«ç½®ä¸º1çš„æƒ…å†µä¸‹ï¼Œè°ƒç”¨preempt_schedule()
  */
 #define preempt_enable() \
 do { \

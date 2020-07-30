@@ -16,7 +16,7 @@ static unsigned long doublefault_stack[DOUBLEFAULT_STACKSIZE];
 #define ptr_ok(x) ((x) > PAGE_OFFSET && (x) < PAGE_OFFSET + 0x1000000)
 
 /**
- * Òì³£ÖÐÖ¹´¦Àí³ÌÐò£¬µ±ÔÚ´¦ÀíÒ»¸öÒì³£Ê±£¬ÓÖ·¢ÉúÁËÒì³££¬¿ÉÄÜ»áµ÷ÓÃµ½ÕâÀï¡£
+ * å¼‚å¸¸ä¸­æ­¢å¤„ç†ç¨‹åºï¼Œå½“åœ¨å¤„ç†ä¸€ä¸ªå¼‚å¸¸æ—¶ï¼Œåˆå‘ç”Ÿäº†å¼‚å¸¸ï¼Œå¯èƒ½ä¼šè°ƒç”¨åˆ°è¿™é‡Œã€‚
  */
 static void doublefault_fn(void)
 {

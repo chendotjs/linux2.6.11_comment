@@ -361,32 +361,32 @@ struct i387_soft_struct {
 };
 
 /**
- * Ϊ����FPU��MMX��XMM�Ĵ�����ѡ����װ�������Ľṹ��
+ * 为处理FPU、MMX和XMM寄存器的选择性装入而引入的结构。
  */
 union i387_union {
 	/**
-	 * �ɾ���FPU��Ҳ������MMX��Ԫ��CPUģ��ʹ�á�
+	 * 由具有FPU，也可能有MMX单元的CPU模型使用。
 	 */
 	struct i387_fsave_struct	fsave;
 	/**
-	 * �ɾ���SSE��SSE2��չ���ܵ�CPUģ��ʹ�á�
+	 * 由具有SSE和SSE2扩展功能的CPU模型使用。
 	 */
 	struct i387_fxsave_struct	fxsave;
 	/**
-	 * ������ѧЭ��������CPUʹ��(��˭����������CPU?)
-	 * LINUXʹ������ģ��Э��������֧��������ʽоƬ��
-	 * ��������ȷʵ��������������������ǵ����۷�Χ�ڡ�
+	 * 由无数学协处理器的CPU使用(有谁还在用这种CPU?)
+	 * LINUX使用软件模拟协处理器来支持这种老式芯片。
+	 * 不过，这确实属于遗留问题而不在我们的讨论范围内。
 	 */
 	struct i387_soft_struct soft;
 };
 
 typedef struct {
 	/**
-	 * ͨ������£���ͨ���̵�����ֶε�ֵ��PAGE_OFFSET
-	 * �ں��߳���0xffffffff��
-	 * ����ͨ��get_fs��set_fs�궯̬�ĸı��ֵ��
-	 * ��������ں��ƹ���access_okִ�еİ�ȫ�Լ�飬����ϵͳ���õķ������̡�
-	 * ��ֱ�Ӱ��ں����ݶεĵ�ַ���ݸ����ǡ�
+	 * 通常情况下，普通进程的这个字段的值是PAGE_OFFSET
+	 * 内核线程是0xffffffff。
+	 * 可以通过get_fs和set_fs宏动态的改变该值。
+	 * 这就允许内核绕过由access_ok执行的安全性检查，调用系统调用的服务例程。
+	 * 并直接把内核数据段的地址传递给它们。
 	 */
 	unsigned long seg;
 } mm_segment_t;
@@ -394,7 +394,7 @@ typedef struct {
 struct thread_struct;
 
 /**
- * TSS��ʽ
+ * TSS格式
  */
 struct tss_struct {
 	unsigned short	back_link,__blh;
@@ -445,8 +445,8 @@ struct tss_struct {
 #define ARCH_MIN_TASKALIGN	16
 
 /**
- * ���̱��л���ȥ���ں˰�����Ӳ�������ı���������ṹ�С�
- * �������󲿷�CPU�Ĵ��������ǲ�����eax��ebx�����ļĴ�����
+ * 进程被切换出去后，内核把它的硬件上下文保存在这个结构中。
+ * 它包含大部分CPU寄存器，但是不包含eax、ebx这样的寄存器。
  */
 struct thread_struct {
 /* cached TLS descriptors. */
@@ -463,8 +463,8 @@ struct thread_struct {
 	unsigned long	cr2, trap_no, error_code;
 /* floating point info */
 	/**
-	 * Ϊ֧��ѡ����װ��FPU��MMX��XMM�Ĵ���������˽ṹ��
-	 * ���л�����ʱ�������̵���Щ�Ĵ���������i387�ṹ�С�
+	 * 为支持选择性装入FPU、MMX和XMM寄存器，引入此结构。
+	 * 当切换进程时，将进程的这些寄存器保存在i387结构中。
 	 */
 	union i387_union	i387;
 /* virtual 86 mode info */
@@ -601,8 +601,8 @@ static inline void rep_nop(void)
 	__asm__ __volatile__("rep;nop": : :"memory");
 }
 /**
- * ��Ϊһ��pause�������ָ�
- * ��P4����������ָ��������Ż���������ִ�С�
+ * 简化为一条pause汇编语言指令。
+ * 在P4中引入这条指令，它可以优化自旋锁的执行。
  */
 #define cpu_relax()	rep_nop()
 

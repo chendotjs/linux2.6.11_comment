@@ -142,7 +142,7 @@ changed:
 	return -EAGAIN;
 }
 
-/* 获得文件逻辑块编号对应的磁盘编号 */
+/* 鑾峰緱鏂囦欢閫昏緫鍧楃紪鍙峰搴旂殑纾佺洏缂栧彿 */
 static inline int get_block(struct inode * inode, sector_t block,
 			struct buffer_head *bh, int create)
 {

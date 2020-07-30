@@ -17,7 +17,7 @@
  * Bill Ryder - bryder@sgi.com formerly of Silicon Graphics, Inc.- wrote the 
  * FTDI_SIO implementation.
  *
- * Philipp Gühring - pg@futureware.at - added the Device ID of the USB relais
+ * Philipp Ghring - pg@futureware.at - added the Device ID of the USB relais
  * from Rudolf Gugler
  *
  */

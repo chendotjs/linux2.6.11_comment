@@ -140,8 +140,8 @@ out:
  *      NeilBrown <neilb@cse.unsw.edu.au>
  */
 /**
- * ´¦ÀíNFS¿Í»§¶ËlookupÇëÇó¡£
- * Ö÷Òª¸ºÔð¸ù¾Ý²éÕÒÄ¿Â¼µÄ¾ä±úfhpºÍÎÄ¼þÃûnameÕÒµ½Õâ¸öÄ¿Â¼ÏÂÓÐÕâ¸öÎÄ¼þÃûµÄÎÄ¼þ£¬²¢·µ»ØËüµÄÎÄ¼þ¾ä±ú¡£
+ * å¤„ç†NFSå®¢æˆ·ç«¯lookupè¯·æ±‚ã€‚
+ * ä¸»è¦è´Ÿè´£æ ¹æ®æŸ¥æ‰¾ç›®å½•çš„å¥æŸ„fhpå’Œæ–‡ä»¶ånameæ‰¾åˆ°è¿™ä¸ªç›®å½•ä¸‹æœ‰è¿™ä¸ªæ–‡ä»¶åçš„æ–‡ä»¶ï¼Œå¹¶è¿”å›žå®ƒçš„æ–‡ä»¶å¥æŸ„ã€‚
  */
 int
 nfsd_lookup(struct svc_rqst *rqstp, struct svc_fh *fhp, const char *name,
@@ -156,7 +156,7 @@ nfsd_lookup(struct svc_rqst *rqstp, struct svc_fh *fhp, const char *name,
 
 	/* Obtain dentry and export. */
 	/**
-	 * µ÷ÓÃfh_verify¶Ô´«¹ýÀ´µÄ¾ä±ú½øÐÐÐ£Ñé£¬Èç¹ûÊ§°Ü£¬Ôò·µ»Ø´íÎó£»³É¹¦Ôò·µ»ØdentryÖ¸ÕëºÍÕâ¸öÄ¿Â¼ËùÔÚµÄexport±íÐÅÏ¢£»
+	 * è°ƒç”¨fh_verifyå¯¹ä¼ è¿‡æ¥çš„å¥æŸ„è¿›è¡Œæ ¡éªŒï¼Œå¦‚æžœå¤±è´¥ï¼Œåˆ™è¿”å›žé”™è¯¯ï¼›æˆåŠŸåˆ™è¿”å›ždentryæŒ‡é’ˆå’Œè¿™ä¸ªç›®å½•æ‰€åœ¨çš„exportè¡¨ä¿¡æ¯ï¼›
 	 */
 	err = fh_verify(rqstp, fhp, S_IFDIR, MAY_EXEC);
 	if (err)
@@ -208,7 +208,7 @@ nfsd_lookup(struct svc_rqst *rqstp, struct svc_fh *fhp, const char *name,
 	} else {
 		fh_lock(fhp);
 		/**
-		 * ¸ù¾ÝÕâ¸ödentryÖ¸ÕëºÍÎÄ¼þÃûµ÷ÓÃlookup_dentryÕÒµ½ËùÐèÒªÎÄ¼þµÄdentryÖ¸Õë£»
+		 * æ ¹æ®è¿™ä¸ªdentryæŒ‡é’ˆå’Œæ–‡ä»¶åè°ƒç”¨lookup_dentryæ‰¾åˆ°æ‰€éœ€è¦æ–‡ä»¶çš„dentryæŒ‡é’ˆï¼›
 		 */
 		dentry = lookup_one_len(name, dparent, len);
 		err = PTR_ERR(dentry);
@@ -229,7 +229,7 @@ nfsd_lookup(struct svc_rqst *rqstp, struct svc_fh *fhp, const char *name,
 	 * dentry may be negative, it may need to be updated.
 	 */
 	/**
-	 * ¸ù¾ÝÕâ¸ödentryÖ¸ÕëºÍ²éÕÒÄ¿Â¼µÄexport±íÐÅÏ¢£¬×é½¨³öÕâ¸öÎÄ¼þµÄNFSÎÄ¼þ¾ä±ú£¬²¢·µ»ØÕâ¸ö¾ä±ú¡£
+	 * æ ¹æ®è¿™ä¸ªdentryæŒ‡é’ˆå’ŒæŸ¥æ‰¾ç›®å½•çš„exportè¡¨ä¿¡æ¯ï¼Œç»„å»ºå‡ºè¿™ä¸ªæ–‡ä»¶çš„NFSæ–‡ä»¶å¥æŸ„ï¼Œå¹¶è¿”å›žè¿™ä¸ªå¥æŸ„ã€‚
 	 */
 	err = fh_compose(resfh, exp, dentry, fhp);
 	if (!err && !dentry->d_inode)

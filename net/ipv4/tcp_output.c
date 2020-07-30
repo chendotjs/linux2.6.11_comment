@@ -43,14 +43,14 @@
 #include <linux/smp_lock.h>
 
 /* People can turn this off for buggy TCP's found in printers etc. */
-/* ÖØ´«Ê±£¬°ÑÊý¾Ý°üÔö´óÒ»Ð©£¬À´±ÜÃâÄ³Ð©Ð­ÒéÕ»µÄBUG */
+/* é‡ä¼ æ—¶ï¼ŒæŠŠæ•°æ®åŒ…å¢žå¤§ä¸€äº›ï¼Œæ¥é¿å…æŸäº›åè®®æ ˆçš„BUG */
 int sysctl_tcp_retrans_collapse = 1;
 
 /* This limits the percentage of the congestion window which we
  * will allow a single TSO frame to consume.  Building TSO frames
  * which are too large can cause TCP streams to be bursty.
  */
-/* µ¥¸öTSO¶Î¿ÉÏûºÄÓµÈû´°¿Ú±ÈÀý */
+/* å•ä¸ªTSOæ®µå¯æ¶ˆè€—æ‹¥å¡žçª—å£æ¯”ä¾‹ */
 int sysctl_tcp_tso_win_divisor = 8;
 
 static inline void update_send_head(struct sock *sk, struct tcp_sock *tp,
@@ -127,24 +127,24 @@ static void tcp_cwnd_restart(struct tcp_sock *tp, struct dst_entry *dst)
 }
 
 /**
- * µ±·¢ËÍµÄTCP¶ÎÓÐ¸ºÔØÊ±£¬Ôò¼ì²âÓµÈû´°¿ÚÏÐÖÃÊÇ·ñ³¬Ê±¡£
- * Èç¹û³¬Ê±£¬ÔòÊ¹ÓµÈû´°¿ÚÊ§Ð§²¢ÖØÐÂ¼ÆËãÓµÈû´°¿Ú¡£
+ * å½“å‘é€çš„TCPæ®µæœ‰è´Ÿè½½æ—¶ï¼Œåˆ™æ£€æµ‹æ‹¥å¡žçª—å£é—²ç½®æ˜¯å¦è¶…æ—¶ã€‚
+ * å¦‚æžœè¶…æ—¶ï¼Œåˆ™ä½¿æ‹¥å¡žçª—å£å¤±æ•ˆå¹¶é‡æ–°è®¡ç®—æ‹¥å¡žçª—å£ã€‚
  */
 static inline void tcp_event_data_sent(struct tcp_sock *tp,
 				       struct sk_buff *skb, struct sock *sk)
 {
 	u32 now = tcp_time_stamp;
 
-	/* ÓµÈû´°¿ÚÏÐÖÃÊ±¼ä³¬¹ýÁËRTO */
+	/* æ‹¥å¡žçª—å£é—²ç½®æ—¶é—´è¶…è¿‡äº†RTO */
 	if (!tp->packets_out && (s32)(now - tp->lsndtime) > tp->rto)
-		tcp_cwnd_restart(tp, __sk_dst_get(sk));/* Ê¹ÓµÈû´°¿ÚÊ§Ð§²¢ÖØÐÂ¼ÆËãÓµÈû´°¿Ú */
+		tcp_cwnd_restart(tp, __sk_dst_get(sk));/* ä½¿æ‹¥å¡žçª—å£å¤±æ•ˆå¹¶é‡æ–°è®¡ç®—æ‹¥å¡žçª—å£ */
 
-	tp->lsndtime = now;/* ¼ÇÂ¼TCP·¢ËÍÊ±¼ä */
+	tp->lsndtime = now;/* è®°å½•TCPå‘é€æ—¶é—´ */
 
 	/* If it is a reply for ato after last received
 	 * packet, enter pingpong mode.
 	 */
-	/* ¸ù¾Ý×î½ü½ÓÊÕ¶ÎµÄÊ±¼ä£¬À´È·ÈÏÊÇ·ñ½øÈëpingpongÄ£Ê½ */
+	/* æ ¹æ®æœ€è¿‘æŽ¥æ”¶æ®µçš„æ—¶é—´ï¼Œæ¥ç¡®è®¤æ˜¯å¦è¿›å…¥pingpongæ¨¡å¼ */
 	if ((u32)(now - tp->ack.lrcvtime) < tp->ack.ato)
 		tp->ack.pingpong = 1;
 }
@@ -272,7 +272,7 @@ static __inline__ u16 tcp_select_window(struct sock *sk)
  * SKB, or a fresh unique copy made by the retransmit engine.
  */
 /**
- * ·¢ËÍÒ»¸öTCP±¨ÎÄ
+ * å‘é€ä¸€ä¸ªTCPæŠ¥æ–‡
  */
 static int tcp_transmit_skb(struct sock *sk, struct sk_buff *skb)
 {
@@ -291,30 +291,30 @@ static int tcp_transmit_skb(struct sock *sk, struct sk_buff *skb)
 #define SYSCTL_FLAG_WSCALE	0x2
 #define SYSCTL_FLAG_SACK	0x4
 
-		sysctl_flags = 0;/* ±êÊ¶TCPÑ¡Ïî */
-		/* ¸ù¾ÝTCPÑ¡Ïîµ÷ÕûTCPÊ×²¿³¤¶È */
-		if (tcb->flags & TCPCB_FLAG_SYN) {/* Èç¹ûµ±Ç°¶ÎÊÇSYN¶Î£¬ÐèÒªÌØÊâ´¦ÀíÒ»ÏÂ */
-			/* SYN¶Î±ØÐëÍ¨¸æMSS£¬Òò´Ë±¨Í·¼ÓÉÏMSSÍ¨¸æÑ¡ÏîµÄ³¤¶È */
+		sysctl_flags = 0;/* æ ‡è¯†TCPé€‰é¡¹ */
+		/* æ ¹æ®TCPé€‰é¡¹è°ƒæ•´TCPé¦–éƒ¨é•¿åº¦ */
+		if (tcb->flags & TCPCB_FLAG_SYN) {/* å¦‚æžœå½“å‰æ®µæ˜¯SYNæ®µï¼Œéœ€è¦ç‰¹æ®Šå¤„ç†ä¸€ä¸‹ */
+			/* SYNæ®µå¿…é¡»é€šå‘ŠMSSï¼Œå› æ­¤æŠ¥å¤´åŠ ä¸ŠMSSé€šå‘Šé€‰é¡¹çš„é•¿åº¦ */
 			tcp_header_size = sizeof(struct tcphdr) + TCPOLEN_MSS;
-			if(sysctl_tcp_timestamps) {/* ÆôÓÃÁËÊ±¼ä´Á */
-				/* ±¨Í·¼ÓÉÏÊ±¼ä´Á±êÖ¾ */
+			if(sysctl_tcp_timestamps) {/* å¯ç”¨äº†æ—¶é—´æˆ³ */
+				/* æŠ¥å¤´åŠ ä¸Šæ—¶é—´æˆ³æ ‡å¿— */
 				tcp_header_size += TCPOLEN_TSTAMP_ALIGNED;
 				sysctl_flags |= SYSCTL_FLAG_TSTAMPS;
 			}
-			if(sysctl_tcp_window_scaling) {/* ´¦Àí´°¿ÚÀ©´óÒò×ÓÑ¡Ïî */
+			if(sysctl_tcp_window_scaling) {/* å¤„ç†çª—å£æ‰©å¤§å› å­é€‰é¡¹ */
 				tcp_header_size += TCPOLEN_WSCALE_ALIGNED;
 				sysctl_flags |= SYSCTL_FLAG_WSCALE;
 			}
-			if(sysctl_tcp_sack) {/* ´¦ÀíSACKÑ¡Ïî */
+			if(sysctl_tcp_sack) {/* å¤„ç†SACKé€‰é¡¹ */
 				sysctl_flags |= SYSCTL_FLAG_SACK;
 				if(!(sysctl_flags & SYSCTL_FLAG_TSTAMPS))
 					tcp_header_size += TCPOLEN_SACKPERM_ALIGNED;
 			}
-		} else if (tp->rx_opt.eff_sacks) {/* ·ÇSYN¶Î£¬µ«ÊÇÓÐSACK¿é */
+		} else if (tp->rx_opt.eff_sacks) {/* éžSYNæ®µï¼Œä½†æ˜¯æœ‰SACKå— */
 			/* A SACK is 2 pad bytes, a 2 byte header, plus
 			 * 2 32-bit sequence numbers for each SACK block.
 			 */
-			/* ¸ù¾ÝSACK¿éÊýµ÷ÕûTCPÊ×²¿³¤¶È */
+			/* æ ¹æ®SACKå—æ•°è°ƒæ•´TCPé¦–éƒ¨é•¿åº¦ */
 			tcp_header_size += (TCPOLEN_SACK_BASE_ALIGNED +
 					    (tp->rx_opt.eff_sacks * TCPOLEN_SACK_PERBLOCK));
 		}
@@ -331,44 +331,44 @@ static int tcp_transmit_skb(struct sock *sk, struct sk_buff *skb)
 		if (tcp_is_vegas(tp) && tcp_packets_in_flight(tp) == 0)
 			tcp_vegas_enable(tp);
 
-		/* ÔÚ±¨ÎÄÊ×²¿ÖÐ¼ÓÈëTCPÊ×²¿ */
+		/* åœ¨æŠ¥æ–‡é¦–éƒ¨ä¸­åŠ å…¥TCPé¦–éƒ¨ */
 		th = (struct tcphdr *) skb_push(skb, tcp_header_size);
-		/* ¸üÐÂTCPÊ×²¿Ö¸Õë */
+		/* æ›´æ–°TCPé¦–éƒ¨æŒ‡é’ˆ */
 		skb->h.th = th;
-		/* ÉèÖÃ±¨ÎÄµÄ´«Êä¿ØÖÆ¿é */
+		/* è®¾ç½®æŠ¥æ–‡çš„ä¼ è¾“æŽ§åˆ¶å— */
 		skb_set_owner_w(skb, sk);
 
 		/* Build TCP header and checksum it. */
-		/* Ìî³äTCPÊ×²¿ÖÐµÄÊý¾Ý */
+		/* å¡«å……TCPé¦–éƒ¨ä¸­çš„æ•°æ® */
 		th->source		= inet->sport;
 		th->dest		= inet->dport;
 		th->seq			= htonl(tcb->seq);
 		th->ack_seq		= htonl(tp->rcv_nxt);
 		*(((__u16 *)th) + 6)	= htons(((tcp_header_size >> 2) << 12) | tcb->flags);
-		/* ÉèÖÃTCPÊ×²¿µÄ½ÓÊÕ´°¿Ú */
+		/* è®¾ç½®TCPé¦–éƒ¨çš„æŽ¥æ”¶çª—å£ */
 		if (tcb->flags & TCPCB_FLAG_SYN) {
 			/* RFC1323: The window in SYN & SYN/ACK segments
 			 * is never scaled.
 			 */
-			th->window	= htons(tp->rcv_wnd);/* ¶ÔSYN¶ÎÀ´Ëµ£¬½ÓÊÕ´°¿Ú³õÊ¼ÖµÎªrcv_wnd */
+			th->window	= htons(tp->rcv_wnd);/* å¯¹SYNæ®µæ¥è¯´ï¼ŒæŽ¥æ”¶çª—å£åˆå§‹å€¼ä¸ºrcv_wnd */
 		} else {
-			/* ¶ÔÆäËû¶ÎÀ´Ëµ£¬µ÷ÓÃtcp_select_window¼ÆËãµ±Ç°½ÓÊÕ´°¿ÚµÄ´óÐ¡ */
+			/* å¯¹å…¶ä»–æ®µæ¥è¯´ï¼Œè°ƒç”¨tcp_select_windowè®¡ç®—å½“å‰æŽ¥æ”¶çª—å£çš„å¤§å° */
 			th->window	= htons(tcp_select_window(sk));
 		}
-		/* ³õÊ¼»¯Ð£ÑéÂëºÍ´øÍâÊý¾ÝÖ¸Õë */
+		/* åˆå§‹åŒ–æ ¡éªŒç å’Œå¸¦å¤–æ•°æ®æŒ‡é’ˆ */
 		th->check		= 0;
 		th->urg_ptr		= 0;
 
-		if (tp->urg_mode &&/* ·¢ËÍÊ±ÉèÖÃÁË½ô¼±·½Ê½ */
-		    between(tp->snd_up, tcb->seq+1, tcb->seq+0xFFFF)) {/* ½ô¼±Ö¸ÕëÔÚ±¨ÎÄÐòºÅ¿ªÊ¼µÄ65535·¶Î§ÄÚ */
-			/* ÉèÖÃ½ô¼±Ö¸ÕëºÍ´øÍâÊý¾Ý±êÖ¾Î» */
+		if (tp->urg_mode &&/* å‘é€æ—¶è®¾ç½®äº†ç´§æ€¥æ–¹å¼ */
+		    between(tp->snd_up, tcb->seq+1, tcb->seq+0xFFFF)) {/* ç´§æ€¥æŒ‡é’ˆåœ¨æŠ¥æ–‡åºå·å¼€å§‹çš„65535èŒƒå›´å†… */
+			/* è®¾ç½®ç´§æ€¥æŒ‡é’ˆå’Œå¸¦å¤–æ•°æ®æ ‡å¿—ä½ */
 			th->urg_ptr		= htons(tp->snd_up-tcb->seq);
 			th->urg			= 1;
 		}
 
-		/* ¿ªÊ¼¹¹½¨TCPÊ×²¿Ñ¡Ïî */
+		/* å¼€å§‹æž„å»ºTCPé¦–éƒ¨é€‰é¡¹ */
 		if (tcb->flags & TCPCB_FLAG_SYN) {
-			/* µ÷ÓÃtcp_syn_build_options¹¹½¨SYN¶ÎµÄÊ×²¿ */
+			/* è°ƒç”¨tcp_syn_build_optionsæž„å»ºSYNæ®µçš„é¦–éƒ¨ */
 			tcp_syn_build_options((__u32 *)(th + 1),
 					      tcp_advertise_mss(sk),
 					      (sysctl_flags & SYSCTL_FLAG_TSTAMPS),
@@ -378,30 +378,30 @@ static int tcp_transmit_skb(struct sock *sk, struct sk_buff *skb)
 					      tcb->when,
 		      			      tp->rx_opt.ts_recent);
 		} else {
-			/* ¹¹½¨ÆÕÍ¨¶ÎµÄÊ×²¿ */
+			/* æž„å»ºæ™®é€šæ®µçš„é¦–éƒ¨ */
 			tcp_build_and_update_options((__u32 *)(th + 1),
 						     tp, tcb->when);
 
 			TCP_ECN_send(sk, tp, skb, tcp_header_size);
 		}
-		/* ¼ÆËã´«Êä²ãµÄÐ£ÑéºÍ */
+		/* è®¡ç®—ä¼ è¾“å±‚çš„æ ¡éªŒå’Œ */
 		tp->af_specific->send_check(sk, th, skb->len, skb);
 
-		/* Èç¹û·¢ËÍµÄ¶ÎÓÐACK±êÖ¾£¬ÔòÍ¨ÖªÑÓÊ±È·ÈÏÄ£¿é£¬µÝ¼õ¿ìËÙ·¢ËÍACK¶ÎµÄÊýÁ¿£¬Í¬Ê±Í£Ö¹ÑÓÊ±È·ÈÏ¶¨Ê±Æ÷ */
+		/* å¦‚æžœå‘é€çš„æ®µæœ‰ACKæ ‡å¿—ï¼Œåˆ™é€šçŸ¥å»¶æ—¶ç¡®è®¤æ¨¡å—ï¼Œé€’å‡å¿«é€Ÿå‘é€ACKæ®µçš„æ•°é‡ï¼ŒåŒæ—¶åœæ­¢å»¶æ—¶ç¡®è®¤å®šæ—¶å™¨ */
 		if (tcb->flags & TCPCB_FLAG_ACK)
 			tcp_event_ack_sent(sk);
 
-		if (skb->len != tcp_header_size)/* ·¢ËÍµÄ¶ÎÓÐ¸ºÔØ£¬Ôò¼ì²âÓµÈû´°¿ÚÏÐÖÃÊÇ·ñ³¬Ê± */
+		if (skb->len != tcp_header_size)/* å‘é€çš„æ®µæœ‰è´Ÿè½½ï¼Œåˆ™æ£€æµ‹æ‹¥å¡žçª—å£é—²ç½®æ˜¯å¦è¶…æ—¶ */
 			tcp_event_data_sent(tp, skb, sk);
 
 		TCP_INC_STATS(TCP_MIB_OUTSEGS);
 
-		/* µ÷ÓÃIP²ãµÄ·¢ËÍº¯Êý·¢ËÍ±¨ÎÄ */
+		/* è°ƒç”¨IPå±‚çš„å‘é€å‡½æ•°å‘é€æŠ¥æ–‡ */
 		err = tp->af_specific->queue_xmit(skb, 0);
 		if (err <= 0)
 			return err;
 
-		/* Èç¹û·¢ËÍÊ§°Ü£¬ÔòÀàËÆÓÚ½ÓÊÕµ½ÏÔÊ½ÓµÈûÍ¨ÖªµÄ´¦Àí */
+		/* å¦‚æžœå‘é€å¤±è´¥ï¼Œåˆ™ç±»ä¼¼äºŽæŽ¥æ”¶åˆ°æ˜¾å¼æ‹¥å¡žé€šçŸ¥çš„å¤„ç† */
 		tcp_enter_cwr(tp);
 
 		/* NET_XMIT_CN is special. It does not guarantee,
@@ -451,20 +451,20 @@ static inline void tcp_tso_set_push(struct sk_buff *skb)
 /* Send _single_ skb sitting at the send head. This function requires
  * true push pending frames to setup probe timer etc.
  */
-/* Êä³ö·¢ËÍ¶ÓÁÐÉÏµÄµÚÒ»¸ö¶Î */
+/* è¾“å‡ºå‘é€é˜Ÿåˆ—ä¸Šçš„ç¬¬ä¸€ä¸ªæ®µ */
 void tcp_push_one(struct sock *sk, unsigned cur_mss)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
 	struct sk_buff *skb = sk->sk_send_head;
 
-	if (tcp_snd_test(tp, skb, cur_mss, TCP_NAGLE_PUSH)) {/* ÅÐ¶ÏÊÇ·ñ¿ÉÒÔÁ¢¼´·¢ËÍ£¬Ö÷ÒªÊÇ¿¼ÂÇÓµÈû¿ØÖÆ */
+	if (tcp_snd_test(tp, skb, cur_mss, TCP_NAGLE_PUSH)) {/* åˆ¤æ–­æ˜¯å¦å¯ä»¥ç«‹å³å‘é€ï¼Œä¸»è¦æ˜¯è€ƒè™‘æ‹¥å¡žæŽ§åˆ¶ */
 		/* Send it out now. */
-		/* ¼ÇÂ¼×îºó·¢ËÍÊ±¼ä */
+		/* è®°å½•æœ€åŽå‘é€æ—¶é—´ */
 		TCP_SKB_CB(skb)->when = tcp_time_stamp;
 		tcp_tso_set_push(skb);
-		/* ·¢ËÍ±¨ÎÄ */
+		/* å‘é€æŠ¥æ–‡ */
 		if (!tcp_transmit_skb(sk, skb_clone(skb, sk->sk_allocation))) {
-			/* ·¢ËÍ³É¹¦Ôò¸üÐÂ·¢ËÍ¶ÓÁÐÍ·¼°Ò»Ð©Í³¼ÆÊý¾Ý */
+			/* å‘é€æˆåŠŸåˆ™æ›´æ–°å‘é€é˜Ÿåˆ—å¤´åŠä¸€äº›ç»Ÿè®¡æ•°æ® */
 			sk->sk_send_head = NULL;
 			tp->snd_nxt = TCP_SKB_CB(skb)->end_seq;
 			tcp_packets_out_inc(sk, tp, skb);
@@ -661,7 +661,7 @@ int tcp_trim_head(struct sock *sk, struct sk_buff *skb, u32 len)
    NOTE2. tp->pmtu_cookie and tp->mss_cache are READ ONLY outside
    this function.			--ANK (980731)
  */
-/* Îª´«Êä¿ØÖÆ¿éÖÐÓëmssÏà¹ØµÄ³ÉÔ±½øÐÐÊý¾ÝÍ¬²½ */
+/* ä¸ºä¼ è¾“æŽ§åˆ¶å—ä¸­ä¸Žmssç›¸å…³çš„æˆå‘˜è¿›è¡Œæ•°æ®åŒæ­¥ */
 unsigned int tcp_sync_mss(struct sock *sk, u32 pmtu)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
@@ -674,30 +674,30 @@ unsigned int tcp_sync_mss(struct sock *sk, u32 pmtu)
 	/* Calculate base mss without TCP options:
 	   It is MMS_S - sizeof(tcphdr) of rfc1122
 	 */
-	/* ¸ù¾ÝpmtuµÃµ½MSS£¬¼ÆËã·½·¨ÊÇpmtu¼õÈ¥IPÊ×²¿³¤¶ÈºÍTCPÊ×²¿³¤¶È */
+	/* æ ¹æ®pmtuå¾—åˆ°MSSï¼Œè®¡ç®—æ–¹æ³•æ˜¯pmtuå‡åŽ»IPé¦–éƒ¨é•¿åº¦å’ŒTCPé¦–éƒ¨é•¿åº¦ */
 	mss_now = pmtu - tp->af_specific->net_header_len - sizeof(struct tcphdr);
 
 	/* Clamp it (mss_clamp does not include tcp options) */
-	if (mss_now > tp->rx_opt.mss_clamp)/* MSS²»ÄÜ³¬¹ý¸ÃÁ¬½ÓµÄ¶Ô¶ËMSSÉÏÏÞ */
+	if (mss_now > tp->rx_opt.mss_clamp)/* MSSä¸èƒ½è¶…è¿‡è¯¥è¿žæŽ¥çš„å¯¹ç«¯MSSä¸Šé™ */
 		mss_now = tp->rx_opt.mss_clamp;
 
 	/* Now subtract optional transport overhead */
-	/* ÔÙ¼õÈ¥IPºÍTCPÑ¡Ïî³¤¶È */
+	/* å†å‡åŽ»IPå’ŒTCPé€‰é¡¹é•¿åº¦ */
 	mss_now -= tp->ext_header_len + tp->ext2_header_len;
 
 	/* Then reserve room for full set of TCP options and 8 bytes of data */
-	if (mss_now < 48)/* MSSÒ²²»ÄÜÐ¡ÓÚ48 */
+	if (mss_now < 48)/* MSSä¹Ÿä¸èƒ½å°äºŽ48 */
 		mss_now = 48;
 
 	/* Now subtract TCP options size, not including SACKs */
 	mss_now -= tp->tcp_header_len - sizeof(struct tcphdr);
 
 	/* Bound mss with half of window */
-	if (tp->max_window && mss_now > (tp->max_window>>1))/* MSS²»ÄÜ³¬¹ý½ÓÊÕ·½Í¨¸æ¹ýµÄ½ÓÊÕ´°¿ÚµÄ×î´óÖµµÄÒ»°ë */
+	if (tp->max_window && mss_now > (tp->max_window>>1))/* MSSä¸èƒ½è¶…è¿‡æŽ¥æ”¶æ–¹é€šå‘Šè¿‡çš„æŽ¥æ”¶çª—å£çš„æœ€å¤§å€¼çš„ä¸€åŠ */
 		mss_now = max((tp->max_window>>1), 68U - tp->tcp_header_len);
 
 	/* And store cached results */
-	tp->pmtu_cookie = pmtu;/* ±£´æpmtu£¬²¢¸üÐÂmssµ½»º´æÖÐ */
+	tp->pmtu_cookie = pmtu;/* ä¿å­˜pmtuï¼Œå¹¶æ›´æ–°mssåˆ°ç¼“å­˜ä¸­ */
 	tp->mss_cache = tp->mss_cache_std = mss_now;
 
 	return mss_now;
@@ -710,35 +710,35 @@ unsigned int tcp_sync_mss(struct sock *sk, u32 pmtu)
  * cannot be large. However, taking into account rare use of URG, this
  * is not a big flaw.
  */
-/* ¼ÆËãµ±Ç°ÓÐÐ§MSS */
+/* è®¡ç®—å½“å‰æœ‰æ•ˆMSS */
 unsigned int tcp_current_mss(struct sock *sk, int large)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
 	struct dst_entry *dst = __sk_dst_get(sk);
 	unsigned int do_large, mss_now;
 
-	/* ´ÓÌ×½Ó¿ÚµÄÂ·ÓÉ»º´æÖÐÈ¡³öPMTU */
+	/* ä»Žå¥—æŽ¥å£çš„è·¯ç”±ç¼“å­˜ä¸­å–å‡ºPMTU */
 	mss_now = tp->mss_cache_std;
 	if (dst) {
 		u32 mtu = dst_pmtu(dst);
-		if (mtu != tp->pmtu_cookie ||/* PMTUÓë×î½üÒ»´Î¸üÐÂµÄPMTU²»ÏàµÈ */
+		if (mtu != tp->pmtu_cookie ||/* PMTUä¸Žæœ€è¿‘ä¸€æ¬¡æ›´æ–°çš„PMTUä¸ç›¸ç­‰ */
 		    tp->ext2_header_len != dst->header_len)
-			mss_now = tcp_sync_mss(sk, mtu);/* ¸üÐÂÓÐÐ§MSS */
+			mss_now = tcp_sync_mss(sk, mtu);/* æ›´æ–°æœ‰æ•ˆMSS */
 	}
 
 	do_large = (large &&
 		    (sk->sk_route_caps & NETIF_F_TSO) &&
-		    !tp->urg_mode);/* È·¶¨ÊÇ·ñÖ§³ÖTSO */
+		    !tp->urg_mode);/* ç¡®å®šæ˜¯å¦æ”¯æŒTSO */
 
-	if (do_large) {/* Ö§³ÖTSO£¬ÔòÐèÒªÖØÐÂ¼ÆËã·¢ËÍÊý¾Ý±¨µÄTCP¶Î³¤¶È */
+	if (do_large) {/* æ”¯æŒTSOï¼Œåˆ™éœ€è¦é‡æ–°è®¡ç®—å‘é€æ•°æ®æŠ¥çš„TCPæ®µé•¿åº¦ */
 		unsigned int large_mss, factor, limit;
 
-		/* TSOÄ£Ê½ÏÂ£¬TCP¶Î³¤¶ÈµÄ×î´ó³¤¶ÈÎª64K¼õÈ¥IPÊ×²¿¼°ÆäÑ¡Ïî¡¢TCPÊ×²¿µÄ³¤¶È */
+		/* TSOæ¨¡å¼ä¸‹ï¼ŒTCPæ®µé•¿åº¦çš„æœ€å¤§é•¿åº¦ä¸º64Kå‡åŽ»IPé¦–éƒ¨åŠå…¶é€‰é¡¹ã€TCPé¦–éƒ¨çš„é•¿åº¦ */
 		large_mss = 65535 - tp->af_specific->net_header_len -
 			tp->ext_header_len - tp->ext2_header_len -
 			tp->tcp_header_len;
 
-		/* ²»ÄÜ³¬¹ý½ÓÊÕ·½×î´ó½ÓÊÕ´°¿ÚµÄÒ»°ë */
+		/* ä¸èƒ½è¶…è¿‡æŽ¥æ”¶æ–¹æœ€å¤§æŽ¥æ”¶çª—å£çš„ä¸€åŠ */
 		if (tp->max_window && large_mss > (tp->max_window>>1))
 			large_mss = max((tp->max_window>>1),
 					68U - tp->tcp_header_len);
@@ -757,14 +757,14 @@ unsigned int tcp_current_mss(struct sock *sk, int large)
 		if (factor > limit)
 			factor = limit;
 
-		/* Ö§³ÖTSOµÄTCP³¤¶ÈÊÇµ±Ç°ÓÐÐ§MSSµÄÕûÊý±¶£¬ÎªÊ²Ã´?? */
+		/* æ”¯æŒTSOçš„TCPé•¿åº¦æ˜¯å½“å‰æœ‰æ•ˆMSSçš„æ•´æ•°å€ï¼Œä¸ºä»€ä¹ˆ?? */
 		tp->mss_cache = mss_now * factor;
 
 		mss_now = tp->mss_cache;
 	}
 
-	if (tp->rx_opt.eff_sacks)/* Ö§³ÖSACK */
-		/* ÔÚÓÐÐ§MSSÖÐ¼õÈ¥SACKÑ¡Ïî³¤¶È */
+	if (tp->rx_opt.eff_sacks)/* æ”¯æŒSACK */
+		/* åœ¨æœ‰æ•ˆMSSä¸­å‡åŽ»SACKé€‰é¡¹é•¿åº¦ */
 		mss_now -= (TCPOLEN_SACK_BASE_ALIGNED +
 			    (tp->rx_opt.eff_sacks * TCPOLEN_SACK_PERBLOCK));
 	return mss_now;
@@ -777,7 +777,7 @@ unsigned int tcp_current_mss(struct sock *sk, int large)
  * Returns 1, if no segments are in flight and we have queued segments, but
  * cannot send anything now because of SWS or another problem.
  */
-/* ½«TCP·¢ËÍ¶ÓÁÐÉÏµÄ¶Î·¢ËÍ³öÈ¥ */
+/* å°†TCPå‘é€é˜Ÿåˆ—ä¸Šçš„æ®µå‘é€å‡ºåŽ» */
 int tcp_write_xmit(struct sock *sk, int nonagle)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
@@ -787,9 +787,9 @@ int tcp_write_xmit(struct sock *sk, int nonagle)
 	 * In time closedown will finish, we empty the write queue and all
 	 * will be happy.
 	 */
-	if (sk->sk_state != TCP_CLOSE) {/* TCP_CLOSE×´Ì¬²»ÄÜ·¢ËÍÊý¾Ý */
+	if (sk->sk_state != TCP_CLOSE) {/* TCP_CLOSEçŠ¶æ€ä¸èƒ½å‘é€æ•°æ® */
 		struct sk_buff *skb;
-		int sent_pkts = 0;/* ÒÑ·¢ËÍ×Ü¶ÎÊý */
+		int sent_pkts = 0;/* å·²å‘é€æ€»æ®µæ•° */
 
 		/* Account for SACKS, we may need to fragment due to this.
 		 * It is just like the real MSS changing on us midstream.
@@ -798,39 +798,39 @@ int tcp_write_xmit(struct sock *sk, int nonagle)
 		 */
 		mss_now = tcp_current_mss(sk, 1);
 
-		while ((skb = sk->sk_send_head) &&/* ·¢ËÍ¶ÓÁÐ²»¿Õ£¬Ôò¼ÌÐø·¢ËÍ */
-		       tcp_snd_test(tp, skb, mss_now,/* ¼ì²âÓµÈû´°¿Ú´óÐ¡£¬Èç¹ûÎª0£¬Ôò²»ÄÜ·¢ËÍ¶Î */
+		while ((skb = sk->sk_send_head) &&/* å‘é€é˜Ÿåˆ—ä¸ç©ºï¼Œåˆ™ç»§ç»­å‘é€ */
+		       tcp_snd_test(tp, skb, mss_now,/* æ£€æµ‹æ‹¥å¡žçª—å£å¤§å°ï¼Œå¦‚æžœä¸º0ï¼Œåˆ™ä¸èƒ½å‘é€æ®µ */
 			       	    tcp_skb_is_last(sk, skb) ? nonagle :
 				    			       TCP_NAGLE_PUSH)) {
-			if (skb->len > mss_now) {/* Èç¹û¶Î³¤¶È³¬¹ýÁËMSS£¬Ôò½øÐÐ·Ö¶Î¡£Õâ¿ÉÄÜÊÇÓÉÓÚMSS·¢Éú±ä»¯ÒýÆðµÄ */
+			if (skb->len > mss_now) {/* å¦‚æžœæ®µé•¿åº¦è¶…è¿‡äº†MSSï¼Œåˆ™è¿›è¡Œåˆ†æ®µã€‚è¿™å¯èƒ½æ˜¯ç”±äºŽMSSå‘ç”Ÿå˜åŒ–å¼•èµ·çš„ */
 				if (tcp_fragment(sk, skb, mss_now))
 					break;
 			}
 
-			/* ¼ÇÂ¼±¨ÎÄ·¢ËÍÊ±¼ä£¬ÓÃÓÚRTT¼ÆËã */
+			/* è®°å½•æŠ¥æ–‡å‘é€æ—¶é—´ï¼Œç”¨äºŽRTTè®¡ç®— */
 			TCP_SKB_CB(skb)->when = tcp_time_stamp;
 			tcp_tso_set_push(skb);
-			/* ·¢ËÍTCP¶Î */
+			/* å‘é€TCPæ®µ */
 			if (tcp_transmit_skb(sk, skb_clone(skb, GFP_ATOMIC)))
-				break;/* Èç¹û·¢ËÍÊ§°Ü£¬ÔòÖÕÖ¹·¢ËÍ¹ý³Ì */
+				break;/* å¦‚æžœå‘é€å¤±è´¥ï¼Œåˆ™ç»ˆæ­¢å‘é€è¿‡ç¨‹ */
 
 			/* Advance the send_head.  This one is sent out.
 			 * This call will increment packets_out.
 			 */
-			/* ¸üÐÂ·¢ËÍ¶ÓÁÐÍ·£¬Í¬Ê±¸üÐÂsnd_nxt¼´ÏÂÒ»¸ö·¢ËÍ¶ÎµÄÐòºÅ£¬È»ºóÍ³¼Æ·¢ËÍµ«Ã»ÓÐÈ·ÈÏµÄ¶ÎÊý¡£×îºóÊÓÇé¿ö¸´Î»ÖØ´«¶¨Ê±Æ÷¡£ */
+			/* æ›´æ–°å‘é€é˜Ÿåˆ—å¤´ï¼ŒåŒæ—¶æ›´æ–°snd_nxtå³ä¸‹ä¸€ä¸ªå‘é€æ®µçš„åºå·ï¼Œç„¶åŽç»Ÿè®¡å‘é€ä½†æ²¡æœ‰ç¡®è®¤çš„æ®µæ•°ã€‚æœ€åŽè§†æƒ…å†µå¤ä½é‡ä¼ å®šæ—¶å™¨ã€‚ */
 			update_send_head(sk, tp, skb);
 
-			/* Èç¹û·¢ËÍµÄ¶ÎÐ¡ÓÚMSS£¬Ôò¸üÐÂ×î½ü·¢ËÍµÄÐ¡°üµÄÐòºÅ */
+			/* å¦‚æžœå‘é€çš„æ®µå°äºŽMSSï¼Œåˆ™æ›´æ–°æœ€è¿‘å‘é€çš„å°åŒ…çš„åºå· */
 			tcp_minshall_update(tp, mss_now, skb);
 			sent_pkts = 1;
 		}
 
-		if (sent_pkts) {/* Èç¹û±¾´Î·¢ËÍÁË±¨ÎÄ£¬Ôò¶ÔÓµÈû´°¿Ú½øÐÐÈ·ÈÏ¡£ */
+		if (sent_pkts) {/* å¦‚æžœæœ¬æ¬¡å‘é€äº†æŠ¥æ–‡ï¼Œåˆ™å¯¹æ‹¥å¡žçª—å£è¿›è¡Œç¡®è®¤ã€‚ */
 			tcp_cwnd_validate(sk, tp);
 			return 0;
 		}
 
-		/* ±¾´ÎÃ»ÓÐ·¢ËÍÊý¾Ý£¬Èç¹ûpackets_outÎª0²¢ÇÒ¶ÓÁÐ²»Îª¿Õ£¬Ôò±íÊ¾³É¹¦ */
+		/* æœ¬æ¬¡æ²¡æœ‰å‘é€æ•°æ®ï¼Œå¦‚æžœpackets_outä¸º0å¹¶ä¸”é˜Ÿåˆ—ä¸ä¸ºç©ºï¼Œåˆ™è¡¨ç¤ºæˆåŠŸ */
 		return !tp->packets_out && sk->sk_send_head;
 	}
 	return 0;
@@ -1073,7 +1073,7 @@ void tcp_simple_retransmit(struct sock *sk)
  * state updates are done by the caller.  Returns non-zero if an
  * error occurred which prevented the send.
  */
-/* µ±³¬Ê±»ò½ÓÊÕµ½·ÖÆ¬ICMPÊ±£¬ÖØ´«¶Î */
+/* å½“è¶…æ—¶æˆ–æŽ¥æ”¶åˆ°åˆ†ç‰‡ICMPæ—¶ï¼Œé‡ä¼ æ®µ */
 int tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
@@ -1085,10 +1085,10 @@ int tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb)
 	 */
 	if (atomic_read(&sk->sk_wmem_alloc) >
 	    min(sk->sk_wmem_queued + (sk->sk_wmem_queued >> 2), sk->sk_sndbuf))
-		return -EAGAIN;/* Ö»ÓÐ1/4µÄ·¢ËÍ»º´æÊÇÁô¸ø·Ö¶ÎÓÃµÄ£¬Èç¹û¹ý¶à£¬ÔòÔÝÊ±²»½øÐÐÖØ´« */
+		return -EAGAIN;/* åªæœ‰1/4çš„å‘é€ç¼“å­˜æ˜¯ç•™ç»™åˆ†æ®µç”¨çš„ï¼Œå¦‚æžœè¿‡å¤šï¼Œåˆ™æš‚æ—¶ä¸è¿›è¡Œé‡ä¼  */
 
 	if (before(TCP_SKB_CB(skb)->seq, tp->snd_una)) {
-		if (before(TCP_SKB_CB(skb)->end_seq, tp->snd_una))/* TCPÒÑ¾­È·ÈÏÁËÕû¸ö¶Î£¬ÔÙ½øÐÐÖØ´«ËµÃ÷ÓÐBUG */
+		if (before(TCP_SKB_CB(skb)->end_seq, tp->snd_una))/* TCPå·²ç»ç¡®è®¤äº†æ•´ä¸ªæ®µï¼Œå†è¿›è¡Œé‡ä¼ è¯´æ˜Žæœ‰BUG */
 			BUG();
 
 		if (sk->sk_route_caps & NETIF_F_TSO) {
@@ -1097,7 +1097,7 @@ int tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb)
 			tp->mss_cache = tp->mss_cache_std;
 		}
 
-		/* Èç¹ûÒÑ¾­ÊÕµ½²¿·Ö£¬ÔòÖ»ÐèÒªÖØ´«Ò»²¿·ÖÊý¾Ý£¬½«ÒÑ¾­È·ÈÏµÄ²¿·Ö½Ø¶Ï */
+		/* å¦‚æžœå·²ç»æ”¶åˆ°éƒ¨åˆ†ï¼Œåˆ™åªéœ€è¦é‡ä¼ ä¸€éƒ¨åˆ†æ•°æ®ï¼Œå°†å·²ç»ç¡®è®¤çš„éƒ¨åˆ†æˆªæ–­ */
 		if (tcp_trim_head(sk, skb, tp->snd_una - TCP_SKB_CB(skb)->seq))
 			return -ENOMEM;
 	}
@@ -1107,15 +1107,15 @@ int tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb)
 	 * case, when window is shrunk to zero. In this case
 	 * our retransmit serves as a zero window probe.
 	 */
-	if (!before(TCP_SKB_CB(skb)->seq, tp->snd_una+tp->snd_wnd)/* Èç¹û´ý·¢ËÍµÄ¶ÎÒÑ¾­²»ÔÚ·¢ËÍ´°¿ÚÄÚ£¬Ôò²»ÖØ´« */
-	    && TCP_SKB_CB(skb)->seq != tp->snd_una)/* ÕâÀïÊÇ·ÀÖ¹·¢ËÍ´°¿ÚÎª0£¬´ËÊ±ÐèÒª·¢ËÍ0Ì½²â´°¿Ú */
+	if (!before(TCP_SKB_CB(skb)->seq, tp->snd_una+tp->snd_wnd)/* å¦‚æžœå¾…å‘é€çš„æ®µå·²ç»ä¸åœ¨å‘é€çª—å£å†…ï¼Œåˆ™ä¸é‡ä¼  */
+	    && TCP_SKB_CB(skb)->seq != tp->snd_una)/* è¿™é‡Œæ˜¯é˜²æ­¢å‘é€çª—å£ä¸º0ï¼Œæ­¤æ—¶éœ€è¦å‘é€0æŽ¢æµ‹çª—å£ */
 		return -EAGAIN;
 
-	if (skb->len > cur_mss) {/* Êý¾Ý±¨³¤¶È´óÓÚMSS */
+	if (skb->len > cur_mss) {/* æ•°æ®æŠ¥é•¿åº¦å¤§äºŽMSS */
 		int old_factor = tcp_skb_pcount(skb);
 		int new_factor;
 
-		if (tcp_fragment(sk, skb, cur_mss))/* ½«±¨ÎÄ½øÐÐ·ÖÆ¬ */
+		if (tcp_fragment(sk, skb, cur_mss))/* å°†æŠ¥æ–‡è¿›è¡Œåˆ†ç‰‡ */
 			return -ENOMEM; /* We'll try again later. */
 
 		/* New SKB created, account for it. */
@@ -1125,7 +1125,7 @@ int tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb)
 	}
 
 	/* Collapse two adjacent packets if worthwhile and we can. */
-	if(!(TCP_SKB_CB(skb)->flags & TCPCB_FLAG_SYN) &&/* ÕâÊÇÎªÊÊÓ¦Ä³Ð©ÓÐÎÊÌâµÄ´òÓ¡»ú¶ø½øÐÐµÄ£¬²»ÊÇ¼õÐ¡±¨ÎÄ£¬¶øÊÇÊÊµ±Ôö´ó±¨ÎÄ */
+	if(!(TCP_SKB_CB(skb)->flags & TCPCB_FLAG_SYN) &&/* è¿™æ˜¯ä¸ºé€‚åº”æŸäº›æœ‰é—®é¢˜çš„æ‰“å°æœºè€Œè¿›è¡Œçš„ï¼Œä¸æ˜¯å‡å°æŠ¥æ–‡ï¼Œè€Œæ˜¯é€‚å½“å¢žå¤§æŠ¥æ–‡ */
 	   (skb->len < (cur_mss >> 1)) &&
 	   (skb->next != sk->sk_send_head) &&
 	   (skb->next != (struct sk_buff *)&sk->sk_write_queue) &&
@@ -1134,7 +1134,7 @@ int tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb)
 	   (sysctl_tcp_retrans_collapse != 0))
 		tcp_retrans_try_collapse(sk, skb, cur_mss);
 
-	/* ²éÕÒÂ·ÓÉ£¬²¢ÖØ½¨±¨ÎÄÊ×²¿ */
+	/* æŸ¥æ‰¾è·¯ç”±ï¼Œå¹¶é‡å»ºæŠ¥æ–‡é¦–éƒ¨ */
 	if(tp->af_specific->rebuild_header(sk))
 		return -EHOSTUNREACH; /* Routing failure or similar. */
 
@@ -1142,7 +1142,7 @@ int tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb)
 	 * retransmit when old data is attached.  So strip it off
 	 * since it is cheap to do so and saves bytes on the network.
 	 */
-	if(skb->len > 0 &&/* ´¦ÀíSolarisÏà¹ØµÄBUG */
+	if(skb->len > 0 &&/* å¤„ç†Solarisç›¸å…³çš„BUG */
 	   (TCP_SKB_CB(skb)->flags & TCPCB_FLAG_FIN) &&
 	   tp->snd_una == (TCP_SKB_CB(skb)->end_seq - 1)) {
 		if (!pskb_trim(skb, 0)) {
@@ -1157,20 +1157,20 @@ int tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb)
 	/* Make a copy, if the first transmission SKB clone we made
 	 * is still in somebody's hands, else make a clone.
 	 */
-	/* ¼ÇÂ¼·¢ËÍÊ±¼ä´Á */
+	/* è®°å½•å‘é€æ—¶é—´æˆ³ */
 	TCP_SKB_CB(skb)->when = tcp_time_stamp;
 	tcp_tso_set_push(skb);
 
-	/* ½«Êý¾Ý±¨·¢ËÍ³öÈ¥ */
+	/* å°†æ•°æ®æŠ¥å‘é€å‡ºåŽ» */
 	err = tcp_transmit_skb(sk, (skb_cloned(skb) ?
 				    pskb_copy(skb, GFP_ATOMIC):
 				    skb_clone(skb, GFP_ATOMIC)));
 
-	if (err == 0) {/* Èç¹ûÖØ´«³É¹¦£¬Ôò¸üÐÂÒ»Ð©¼ÆÊý */
+	if (err == 0) {/* å¦‚æžœé‡ä¼ æˆåŠŸï¼Œåˆ™æ›´æ–°ä¸€äº›è®¡æ•° */
 		/* Update global TCP statistics. */
 		TCP_INC_STATS(TCP_MIB_RETRANSSEGS);
 
-		tp->total_retrans++;/* ÖØ´«×Ü´ÎÊý */
+		tp->total_retrans++;/* é‡ä¼ æ€»æ¬¡æ•° */
 
 #if FASTRETRANS_DEBUG > 0
 		if (TCP_SKB_CB(skb)->sacked&TCPCB_SACKED_RETRANS) {
@@ -1179,10 +1179,10 @@ int tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb)
 		}
 #endif
 		TCP_SKB_CB(skb)->sacked |= TCPCB_RETRANS;
-		tp->retrans_out += tcp_skb_pcount(skb);/* ÖØ´«¶øÎ´È·ÈÏµÄ´ÎÊý */
+		tp->retrans_out += tcp_skb_pcount(skb);/* é‡ä¼ è€Œæœªç¡®è®¤çš„æ¬¡æ•° */
 
 		/* Save stamp of the first retransmit. */
-		if (!tp->retrans_stamp)/* ¼ÇÂ¼ÉÏÒ»´ÎÓµÈûÒÔÀ´µÚÒ»¸öÖØ´«¶ÎµÄÊ±¼ä£¬ÓÃÓÚÓµÈû³·Ïú */
+		if (!tp->retrans_stamp)/* è®°å½•ä¸Šä¸€æ¬¡æ‹¥å¡žä»¥æ¥ç¬¬ä¸€ä¸ªé‡ä¼ æ®µçš„æ—¶é—´ï¼Œç”¨äºŽæ‹¥å¡žæ’¤é”€ */
 			tp->retrans_stamp = TCP_SKB_CB(skb)->when;
 
 		tp->undo_retrans++;
@@ -1408,7 +1408,7 @@ int tcp_send_synack(struct sock *sk)
 /*
  * Prepare a SYN-ACK.
  */
-/* ¹¹ÔìÒ»¸ösyn+ack±¨ÎÄ */
+/* æž„é€ ä¸€ä¸ªsyn+ackæŠ¥æ–‡ */
 struct sk_buff * tcp_make_synack(struct sock *sk, struct dst_entry *dst,
 				 struct open_request *req)
 {
@@ -1417,28 +1417,28 @@ struct sk_buff * tcp_make_synack(struct sock *sk, struct dst_entry *dst,
 	int tcp_header_size;
 	struct sk_buff *skb;
 
-	/* ²»¹Ü·¢ËÍ»º´æÊÇ·ñÒÑ¾­´ïµ½ÉÏÏÞ£¬¶¼·ÖÅäskb */
+	/* ä¸ç®¡å‘é€ç¼“å­˜æ˜¯å¦å·²ç»è¾¾åˆ°ä¸Šé™ï¼Œéƒ½åˆ†é…skb */
 	skb = sock_wmalloc(sk, MAX_TCP_HEADER + 15, 1, GFP_ATOMIC);
 	if (skb == NULL)
 		return NULL;
 
 	/* Reserve space for headers. */
-	/* ÎªTCPÍ·±£Áô¿Õ¼ä */
+	/* ä¸ºTCPå¤´ä¿ç•™ç©ºé—´ */
 	skb_reserve(skb, MAX_TCP_HEADER);
 
 	skb->dst = dst_clone(dst);
 
-	/* ¸ù¾Ý½ÓÊÕµÄSYN¶ÎÖÐµÄÑ¡Ïî¼ÆËãSYN+ACK¶ÎµÄÊ×²¿³¤¶È */
+	/* æ ¹æ®æŽ¥æ”¶çš„SYNæ®µä¸­çš„é€‰é¡¹è®¡ç®—SYN+ACKæ®µçš„é¦–éƒ¨é•¿åº¦ */
 	tcp_header_size = (sizeof(struct tcphdr) + TCPOLEN_MSS +
 			   (req->tstamp_ok ? TCPOLEN_TSTAMP_ALIGNED : 0) +
 			   (req->wscale_ok ? TCPOLEN_WSCALE_ALIGNED : 0) +
 			   /* SACK_PERM is in the place of NOP NOP of TS */
 			   ((req->sack_ok && !req->tstamp_ok) ? TCPOLEN_SACKPERM_ALIGNED : 0));
-	/* ÔÚSKBÖÐÔ¤ÁôTCPÊ×²¿¿Õ¼ä²¢Çå0 */
+	/* åœ¨SKBä¸­é¢„ç•™TCPé¦–éƒ¨ç©ºé—´å¹¶æ¸…0 */
 	skb->h.th = th = (struct tcphdr *) skb_push(skb, tcp_header_size);
 
 	memset(th, 0, sizeof(struct tcphdr));
-	/* ÉèÖÃTCP¿ØÖÆ¿éÖÐµÄ¿ØÖÆ×Ö¶Î */
+	/* è®¾ç½®TCPæŽ§åˆ¶å—ä¸­çš„æŽ§åˆ¶å­—æ®µ */
 	th->syn = 1;
 	th->ack = 1;
 	if (dst->dev->features&NETIF_F_TSO)
@@ -1451,17 +1451,17 @@ struct sk_buff * tcp_make_synack(struct sock *sk, struct dst_entry *dst,
 	TCP_SKB_CB(skb)->sacked = 0;
 	skb_shinfo(skb)->tso_segs = 1;
 	skb_shinfo(skb)->tso_size = 0;
-	/* ÉèÖÃÊ×²¿ÖÐµÄÐòºÅ */
+	/* è®¾ç½®é¦–éƒ¨ä¸­çš„åºå· */
 	th->seq = htonl(TCP_SKB_CB(skb)->seq);
 	th->ack_seq = htonl(req->rcv_isn + 1);
-	/* ÇëÇó¿éÖÐrcv_wndÎª0£¬±íÊ¾±¾¶Ë´°¿Ú±»³õÊ¼»¯Îª0 */
+	/* è¯·æ±‚å—ä¸­rcv_wndä¸º0ï¼Œè¡¨ç¤ºæœ¬ç«¯çª—å£è¢«åˆå§‹åŒ–ä¸º0 */
 	if (req->rcv_wnd == 0) { /* ignored for retransmitted syns */
 		__u8 rcv_wscale; 
 		/* Set this up on the first call only */
-		/* ¸ù¾ÝÂ·ÓÉÏîÖÐ»ñÈ¡µÄ×î´óÍ¨¸æ´°¿Ú³õÊ¼»¯ÇëÇó¿éÖÐµÄ×î´óÍ¨¸æ´°¿Ú */
+		/* æ ¹æ®è·¯ç”±é¡¹ä¸­èŽ·å–çš„æœ€å¤§é€šå‘Šçª—å£åˆå§‹åŒ–è¯·æ±‚å—ä¸­çš„æœ€å¤§é€šå‘Šçª—å£ */
 		req->window_clamp = tp->window_clamp ? : dst_metric(dst, RTAX_WINDOW);
 		/* tcp_full_space because it is guaranteed to be the first packet */
-		/* ÉèÖÃ½ÓÊÕ´°¿Ú¡¢×î´óÍ¨¸æ´°¿Ú¡¢´°¿ÚÀ©´óÒò×Ó */
+		/* è®¾ç½®æŽ¥æ”¶çª—å£ã€æœ€å¤§é€šå‘Šçª—å£ã€çª—å£æ‰©å¤§å› å­ */
 		tcp_select_initial_window(tcp_full_space(sk), 
 			dst_metric(dst, RTAX_ADVMSS) - (req->tstamp_ok ? TCPOLEN_TSTAMP_ALIGNED : 0),
 			&req->rcv_wnd,
@@ -1472,20 +1472,20 @@ struct sk_buff * tcp_make_synack(struct sock *sk, struct dst_entry *dst,
 	}
 
 	/* RFC1323: The window in SYN & SYN/ACK segments is never scaled. */
-	/* ÉèÖÃÊ×²¿ÖÐµÄ´°¿Ú´óÐ¡ */
+	/* è®¾ç½®é¦–éƒ¨ä¸­çš„çª—å£å¤§å° */
 	th->window = htons(req->rcv_wnd);
 
-	/* ÉèÖÃ¿ØÖÆ¿éµÄ·¢ËÍÊ±¼ä */
+	/* è®¾ç½®æŽ§åˆ¶å—çš„å‘é€æ—¶é—´ */
 	TCP_SKB_CB(skb)->when = tcp_time_stamp;
-	/* ¸ù¾ÝSYN¶ÎÖÐµÄÑ¡Ïî£¬Éú³ÉSYN+ACK¶ÎÖÐµÄÑ¡Ïî£¬°üÀ¨MSS¡¢SACK¡¢´°¿ÚÀ©´óÒò×Ó¡¢Ê±¼ä´ÁµÈ */
+	/* æ ¹æ®SYNæ®µä¸­çš„é€‰é¡¹ï¼Œç”ŸæˆSYN+ACKæ®µä¸­çš„é€‰é¡¹ï¼ŒåŒ…æ‹¬MSSã€SACKã€çª—å£æ‰©å¤§å› å­ã€æ—¶é—´æˆ³ç­‰ */
 	tcp_syn_build_options((__u32 *)(th + 1), dst_metric(dst, RTAX_ADVMSS), req->tstamp_ok,
 			      req->sack_ok, req->wscale_ok, req->rcv_wscale,
 			      TCP_SKB_CB(skb)->when,
 			      req->ts_recent);
 
-	/* ³õÊ¼»¯Ê×²¿Ð£ÑéÖµ */
+	/* åˆå§‹åŒ–é¦–éƒ¨æ ¡éªŒå€¼ */
 	skb->csum = 0;
-	/* ÉèÖÃÊ×²¿³¤¶È */
+	/* è®¾ç½®é¦–éƒ¨é•¿åº¦ */
 	th->doff = (tcp_header_size >> 2);
 	TCP_INC_STATS(TCP_MIB_OUTSEGS);
 	return skb;
@@ -1544,15 +1544,15 @@ static inline void tcp_connect_init(struct sock *sk)
 /*
  * Build a SYN and send it off.
  */ 
-/* ¹¹Ôì²¢·¢ËÍSYN¶Î */
+/* æž„é€ å¹¶å‘é€SYNæ®µ */
 int tcp_connect(struct sock *sk)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
 	struct sk_buff *buff;
 
-	tcp_connect_init(sk);/* ³õÊ¼»¯´«Êä¿ØÖÆ¿éÖÐÓëÁ¬½ÓÏà¹ØµÄ³ÉÔ± */
+	tcp_connect_init(sk);/* åˆå§‹åŒ–ä¼ è¾“æŽ§åˆ¶å—ä¸­ä¸Žè¿žæŽ¥ç›¸å…³çš„æˆå‘˜ */
 
-	/* ÎªSYN¶Î·ÖÅä±¨ÎÄ²¢½øÐÐ³õÊ¼»¯ */
+	/* ä¸ºSYNæ®µåˆ†é…æŠ¥æ–‡å¹¶è¿›è¡Œåˆå§‹åŒ– */
 	buff = alloc_skb(MAX_TCP_HEADER + 15, sk->sk_allocation);
 	if (unlikely(buff == NULL))
 		return -ENOBUFS;
@@ -1576,16 +1576,16 @@ int tcp_connect(struct sock *sk)
 	TCP_SKB_CB(buff)->when = tcp_time_stamp;
 	tp->retrans_stamp = TCP_SKB_CB(buff)->when;
 
-	/* ½«±¨ÎÄÌí¼Óµ½·¢ËÍ¶ÓÁÐÉÏ */
+	/* å°†æŠ¥æ–‡æ·»åŠ åˆ°å‘é€é˜Ÿåˆ—ä¸Š */
 	__skb_queue_tail(&sk->sk_write_queue, buff);
 	sk_charge_skb(sk, buff);
 	tp->packets_out += tcp_skb_pcount(buff);
-	/* ·¢ËÍSYN¶Î */
+	/* å‘é€SYNæ®µ */
 	tcp_transmit_skb(sk, skb_clone(buff, GFP_KERNEL));
 	TCP_INC_STATS(TCP_MIB_ACTIVEOPENS);
 
 	/* Timer for repeating the SYN until an answer. */
-	/* Æô¶¯ÖØ´«¶¨Ê±Æ÷ */
+	/* å¯åŠ¨é‡ä¼ å®šæ—¶å™¨ */
 	tcp_reset_xmit_timer(sk, TCP_TIME_RETRANS, tp->rto);
 	return 0;
 }
@@ -1644,11 +1644,11 @@ void tcp_send_delayed_ack(struct sock *sk)
 }
 
 /* This routine sends an ack and also updates the window. */
-/* ÔÚÖ÷¶¯Á¬½ÓÊ±£¬Ïò·þÎñÆ÷¶Ë·¢ËÍACKÍê³ÉÁ¬½Ó£¬²¢¸üÐÂ´°¿Ú */
+/* åœ¨ä¸»åŠ¨è¿žæŽ¥æ—¶ï¼Œå‘æœåŠ¡å™¨ç«¯å‘é€ACKå®Œæˆè¿žæŽ¥ï¼Œå¹¶æ›´æ–°çª—å£ */
 void tcp_send_ack(struct sock *sk)
 {
 	/* If we have been reset, we may not send again. */
-	if (sk->sk_state != TCP_CLOSE) {/* ²»ÄÜ´¦ÓÚTCP_CLOSE×´Ì¬ */
+	if (sk->sk_state != TCP_CLOSE) {/* ä¸èƒ½å¤„äºŽTCP_CLOSEçŠ¶æ€ */
 		struct tcp_sock *tp = tcp_sk(sk);
 		struct sk_buff *buff;
 
@@ -1656,8 +1656,8 @@ void tcp_send_ack(struct sock *sk)
 		 * tcp_transmit_skb() will set the ownership to this
 		 * sock.
 		 */
-		buff = alloc_skb(MAX_TCP_HEADER, GFP_ATOMIC);/* ·ÖÅäÒ»¸öSKB */
-		if (buff == NULL) {/* Èç¹û·ÖÅäÊ§°Ü£¬ÔòÆô¶¯ÑÓÊ±È·ÈÏ¶¨Ê±Æ÷ */
+		buff = alloc_skb(MAX_TCP_HEADER, GFP_ATOMIC);/* åˆ†é…ä¸€ä¸ªSKB */
+		if (buff == NULL) {/* å¦‚æžœåˆ†é…å¤±è´¥ï¼Œåˆ™å¯åŠ¨å»¶æ—¶ç¡®è®¤å®šæ—¶å™¨ */
 			tcp_schedule_ack(tp);
 			tp->ack.ato = TCP_ATO_MIN;
 			tcp_reset_xmit_timer(sk, TCP_TIME_DACK, TCP_DELACK_MAX);
@@ -1665,7 +1665,7 @@ void tcp_send_ack(struct sock *sk)
 		}
 
 		/* Reserve space for headers and prepare control bits. */
-		/* ÉèÖÃSKBÖÐÏà¹ØµÄ²ÎÊý */
+		/* è®¾ç½®SKBä¸­ç›¸å…³çš„å‚æ•° */
 		skb_reserve(buff, MAX_TCP_HEADER);
 		buff->csum = 0;
 		TCP_SKB_CB(buff)->flags = TCPCB_FLAG_ACK;
@@ -1676,7 +1676,7 @@ void tcp_send_ack(struct sock *sk)
 		/* Send it off, this clears delayed acks for us. */
 		TCP_SKB_CB(buff)->seq = TCP_SKB_CB(buff)->end_seq = tcp_acceptable_seq(sk, tp);
 		TCP_SKB_CB(buff)->when = tcp_time_stamp;
-		/* ½«SKB·¢ËÍ³öÈ¥ */
+		/* å°†SKBå‘é€å‡ºåŽ» */
 		tcp_transmit_skb(sk, buff);
 	}
 }
@@ -1720,21 +1720,21 @@ static int tcp_xmit_probe_skb(struct sock *sk, int urgent)
 	return tcp_transmit_skb(sk, skb);
 }
 
-/* Êä³ö³ÖÐøÌ½²â¶Î */
+/* è¾“å‡ºæŒç»­æŽ¢æµ‹æ®µ */
 int tcp_write_wakeup(struct sock *sk)
 {
 	if (sk->sk_state != TCP_CLOSE) {
 		struct tcp_sock *tp = tcp_sk(sk);
 		struct sk_buff *skb;
 
-		if ((skb = sk->sk_send_head) != NULL &&/* ·¢ËÍ¶ÓÁÐ²»Îª¿Õ */
-		    before(TCP_SKB_CB(skb)->seq, tp->snd_una+tp->snd_wnd)) {/* ´ý·¢ËÍµÄ¶ÎÔÚ½ÓÊÕ´°¿ÚÄÚ */
+		if ((skb = sk->sk_send_head) != NULL &&/* å‘é€é˜Ÿåˆ—ä¸ä¸ºç©º */
+		    before(TCP_SKB_CB(skb)->seq, tp->snd_una+tp->snd_wnd)) {/* å¾…å‘é€çš„æ®µåœ¨æŽ¥æ”¶çª—å£å†… */
 			int err;
-			/* »ñÈ¡µ±Ç°µÄMSSÒÔ¼°´ý·Ö¶ÎµÄ¶Î³¤ */
+			/* èŽ·å–å½“å‰çš„MSSä»¥åŠå¾…åˆ†æ®µçš„æ®µé•¿ */
 			unsigned int mss = tcp_current_mss(sk, 0);
 			unsigned int seg_size = tp->snd_una+tp->snd_wnd-TCP_SKB_CB(skb)->seq;
 
-			/* ¶ÎÐòºÅ´óÓÚpushed_seq£¬Ôò¸üÐÂpushed_seq */
+			/* æ®µåºå·å¤§äºŽpushed_seqï¼Œåˆ™æ›´æ–°pushed_seq */
 			if (before(tp->pushed_seq, TCP_SKB_CB(skb)->end_seq))
 				tp->pushed_seq = TCP_SKB_CB(skb)->end_seq;
 
@@ -1742,11 +1742,11 @@ int tcp_write_wakeup(struct sock *sk)
 			 * but the window size is != 0
 			 * must have been a result SWS avoidance ( sender )
 			 */
-			if (seg_size < TCP_SKB_CB(skb)->end_seq - TCP_SKB_CB(skb)->seq ||/* ¶Î³¤´óÓÚÊ£ÓàµÈ´ý·¢ËÍÊý¾Ý */
-			    skb->len > mss) {/* ¶Î³¤´óÓÚµ±Ç°mss */
-				seg_size = min(seg_size, mss);/* ·Ö¶Î¶Î³¤È¡¶þÕßÐ¡Öµ */
+			if (seg_size < TCP_SKB_CB(skb)->end_seq - TCP_SKB_CB(skb)->seq ||/* æ®µé•¿å¤§äºŽå‰©ä½™ç­‰å¾…å‘é€æ•°æ® */
+			    skb->len > mss) {/* æ®µé•¿å¤§äºŽå½“å‰mss */
+				seg_size = min(seg_size, mss);/* åˆ†æ®µæ®µé•¿å–äºŒè€…å°å€¼ */
 				TCP_SKB_CB(skb)->flags |= TCPCB_FLAG_PSH;
-				if (tcp_fragment(sk, skb, seg_size))/* ½«Êý¾Ý·Ö¶Î */
+				if (tcp_fragment(sk, skb, seg_size))/* å°†æ•°æ®åˆ†æ®µ */
 					return -1;
 				/* SWS override triggered forced fragmentation.
 				 * Disable TSO, the connection is too sick. */
@@ -1758,7 +1758,7 @@ int tcp_write_wakeup(struct sock *sk)
 			} else if (!tcp_skb_pcount(skb))
 				tcp_set_skb_tso_segs(skb, tp->mss_cache_std);
 
-			/* ½«·Ö¶Î·¢ËÍ³öÈ¥ */
+			/* å°†åˆ†æ®µå‘é€å‡ºåŽ» */
 			TCP_SKB_CB(skb)->flags |= TCPCB_FLAG_PSH;
 			TCP_SKB_CB(skb)->when = tcp_time_stamp;
 			tcp_tso_set_push(skb);
@@ -1767,12 +1767,12 @@ int tcp_write_wakeup(struct sock *sk)
 				update_send_head(sk, tp, skb);
 			}
 			return err;
-		} else {/* ·¢ËÍ¶ÓÁÐÎª¿Õ */
-			/* Èç¹û´¦ÓÚ½ô¼±Ä£Ê½£¬¶à·¢ËÍÒ»¸öÐòºÅÎªSND.UNAµÄ¶Î¸ø¶Ô·½ */
+		} else {/* å‘é€é˜Ÿåˆ—ä¸ºç©º */
+			/* å¦‚æžœå¤„äºŽç´§æ€¥æ¨¡å¼ï¼Œå¤šå‘é€ä¸€ä¸ªåºå·ä¸ºSND.UNAçš„æ®µç»™å¯¹æ–¹ */
 			if (tp->urg_mode &&
 			    between(tp->snd_up, tp->snd_una+1, tp->snd_una+0xFFFF))
 				tcp_xmit_probe_skb(sk, TCPCB_URG);
-			/* ¹¹Ôì²¢·¢ËÍÒ»¸öÐòºÅÒÑÈ·ÈÏ£¬³¤¶ÈÎª0µÄ¶Î¸ø¶Ô¶Ë */
+			/* æž„é€ å¹¶å‘é€ä¸€ä¸ªåºå·å·²ç¡®è®¤ï¼Œé•¿åº¦ä¸º0çš„æ®µç»™å¯¹ç«¯ */
 			return tcp_xmit_probe_skb(sk, 0);
 		}
 	}
@@ -1787,10 +1787,10 @@ void tcp_send_probe0(struct sock *sk)
 	struct tcp_sock *tp = tcp_sk(sk);
 	int err;
 
-	/* Êä³ö³ÖÐøÌ½²â¶Î */
+	/* è¾“å‡ºæŒç»­æŽ¢æµ‹æ®µ */
 	err = tcp_write_wakeup(sk);
 
-	/* ÓÐÒÑ¾­·¢ËÍµ«ÊÇÎ´È·ÈÏµÄ¶Î£¬»òÕß·¢ËÍ¶ÓÁÐÎª¿Õ£¬¶¼ÎÞÐè·¢ËÍÌ½²â¶Î */
+	/* æœ‰å·²ç»å‘é€ä½†æ˜¯æœªç¡®è®¤çš„æ®µï¼Œæˆ–è€…å‘é€é˜Ÿåˆ—ä¸ºç©ºï¼Œéƒ½æ— éœ€å‘é€æŽ¢æµ‹æ®µ */
 	if (tp->packets_out || !sk->sk_send_head) {
 		/* Cancel probe timer, if it is not required. */
 		tp->probes_out = 0;
@@ -1798,23 +1798,23 @@ void tcp_send_probe0(struct sock *sk)
 		return;
 	}
 
-	if (err <= 0) {/* ÖØ´«³É¹¦£¬»òÕß²»ÊÇÓÉÓÚ±¾µØÓµÈû¶øµ¼ÖÂÊ§°Ü */
-		if (tp->backoff < sysctl_tcp_retries2)/* ¸üÐÂ¼ÆÊý */
+	if (err <= 0) {/* é‡ä¼ æˆåŠŸï¼Œæˆ–è€…ä¸æ˜¯ç”±äºŽæœ¬åœ°æ‹¥å¡žè€Œå¯¼è‡´å¤±è´¥ */
+		if (tp->backoff < sysctl_tcp_retries2)/* æ›´æ–°è®¡æ•° */
 			tp->backoff++;
 		tp->probes_out++;
-		/* ¸´Î»³ÖÐø¶¨Ê±Æ÷ */
+		/* å¤ä½æŒç»­å®šæ—¶å™¨ */
 		tcp_reset_xmit_timer (sk, TCP_TIME_PROBE0, 
 				      min(tp->rto << tp->backoff, TCP_RTO_MAX));
-	} else {/* ÓÉÓÚ±¾µØÓµÈû¶øÊ§°Ü */
+	} else {/* ç”±äºŽæœ¬åœ°æ‹¥å¡žè€Œå¤±è´¥ */
 		/* If packet was not sent due to local congestion,
 		 * do not backoff and do not remember probes_out.
 		 * Let local senders to fight for local resources.
 		 *
 		 * Use accumulated backoff yet.
 		 */
-		if (!tp->probes_out)/* ²»ÐèÒªÀÛ¼ÆÖØ´«¼ÆÊý */
+		if (!tp->probes_out)/* ä¸éœ€è¦ç´¯è®¡é‡ä¼ è®¡æ•° */
 			tp->probes_out=1;
-		/* ¸´Î»¶¨Ê±Æ÷£¬Ëõ¶Ì³¬Ê±Ê±¼ä */
+		/* å¤ä½å®šæ—¶å™¨ï¼Œç¼©çŸ­è¶…æ—¶æ—¶é—´ */
 		tcp_reset_xmit_timer (sk, TCP_TIME_PROBE0, 
 				      min(tp->rto << tp->backoff, TCP_RESOURCE_PROBE_INTERVAL));
 	}

@@ -32,8 +32,8 @@ struct list_head {
 #define LIST_HEAD_INIT(name) { &(name), &(name) }
 
 /**
- * ´´½¨Ò»¸öĞÂµÄÁ´±í¡£ÊÇĞÂÁ´±íÍ·µÄÕ¼Î»·û£¬²¢ÇÒÊÇÒ»¸öÑÆÔªËØ¡£
- * Í¬Ê±³õÊ¼»¯prevºÍnext×Ö¶Î£¬ÈÃËüÃÇÖ¸Ïòlist_name±äÁ¿±¾Éí¡£
+ * åˆ›å»ºä¸€ä¸ªæ–°çš„é“¾è¡¨ã€‚æ˜¯æ–°é“¾è¡¨å¤´çš„å ä½ç¬¦ï¼Œå¹¶ä¸”æ˜¯ä¸€ä¸ªå“‘å…ƒç´ ã€‚
+ * åŒæ—¶åˆå§‹åŒ–prevå’Œnextå­—æ®µï¼Œè®©å®ƒä»¬æŒ‡å‘list_nameå˜é‡æœ¬èº«ã€‚
  */
 #define LIST_HEAD(name) \
 	struct list_head name = LIST_HEAD_INIT(name)
@@ -67,7 +67,7 @@ static inline void __list_add(struct list_head *new,
  * This is good for implementing stacks.
  */
 /**
- * °ÑÔªËØ²åÈëÌØ¶¨ÔªËØÖ®ºó
+ * æŠŠå…ƒç´ æ’å…¥ç‰¹å®šå…ƒç´ ä¹‹å
  */
 static inline void list_add(struct list_head *new, struct list_head *head)
 {
@@ -83,7 +83,7 @@ static inline void list_add(struct list_head *new, struct list_head *head)
  * This is useful for implementing queues.
  */
 /**
- * °ÑÔªËØ²åµ½ÌØ¶¨ÔªËØÖ®Ç°¡£
+ * æŠŠå…ƒç´ æ’åˆ°ç‰¹å®šå…ƒç´ ä¹‹å‰ã€‚
  */
 static inline void list_add_tail(struct list_head *new, struct list_head *head)
 {
@@ -169,7 +169,7 @@ static inline void __list_del(struct list_head * prev, struct list_head * next)
  * in an undefined state.
  */
 /**
- * É¾³ıÌØ¶¨ÔªËØ
+ * åˆ é™¤ç‰¹å®šå…ƒç´ 
  */
 static inline void list_del(struct list_head *entry)
 {
@@ -261,7 +261,7 @@ static inline void list_move_tail(struct list_head *list,
  * @head: the list to test.
  */
 /**
- * ¼ì²éÖ¸¶¨µÄÁ´±íÊÇ·ñÎª¿Õ
+ * æ£€æŸ¥æŒ‡å®šçš„é“¾è¡¨æ˜¯å¦ä¸ºç©º
  */
 static inline int list_empty(const struct list_head *head)
 {
@@ -334,7 +334,7 @@ static inline void list_splice_init(struct list_head *list,
  * @member:	the name of the list_struct within the struct.
  */
 /** 
- * ·µ»ØÁ´±íËùÔÚ½á¹¹
+ * è¿”å›é“¾è¡¨æ‰€åœ¨ç»“æ„
  */
 #define list_entry(ptr, type, member) \
 	container_of(ptr, type, member)
@@ -345,7 +345,7 @@ static inline void list_splice_init(struct list_head *list,
  * @head:	the head for your list.
  */
 /**
- * É¨ÃèÖ¸¶¨µÄÁ´±í
+ * æ‰«ææŒ‡å®šçš„é“¾è¡¨
  */
 #define list_for_each(pos, head) \
 	for (pos = (head)->next; prefetch(pos->next), pos != (head); \
@@ -390,7 +390,7 @@ static inline void list_splice_init(struct list_head *list,
  * @member:	the name of the list_struct within the struct.
  */
 /**
- * Óëlist_for_eachÏàËÆ£¬µ«ÊÇ·µ»ØÃ¿¸öÁ´±í½áµãËùÔÚ½á¹¹
+ * ä¸list_for_eachç›¸ä¼¼ï¼Œä½†æ˜¯è¿”å›æ¯ä¸ªé“¾è¡¨ç»“ç‚¹æ‰€åœ¨ç»“æ„
  */
 #define list_for_each_entry(pos, head, member)				\
 	for (pos = list_entry((head)->next, typeof(*pos), member);	\
@@ -513,14 +513,14 @@ static inline void list_splice_init(struct list_head *list,
  * You lose the ability to access the tail in O(1).
  */
 /**
- * ÓÃÓÚÉ¢ÁĞ±íµÄË«ÏòÁ´±í¡£Ö¸ÏòÁ´±íµÄµÚÒ»¸öÔªËØ¡£
+ * ç”¨äºæ•£åˆ—è¡¨çš„åŒå‘é“¾è¡¨ã€‚æŒ‡å‘é“¾è¡¨çš„ç¬¬ä¸€ä¸ªå…ƒç´ ã€‚
  */
 struct hlist_head {
 	struct hlist_node *first;
 };
 
 /**
- * É¢ÁĞ±íÁ´±íÔªËØ¡£
+ * æ•£åˆ—è¡¨é“¾è¡¨å…ƒç´ ã€‚
  */
 struct hlist_node {
 	struct hlist_node *next, **pprev;

@@ -16,11 +16,11 @@ pci_dma_supported(struct pci_dev *hwdev, u64 mask)
 }
 
 /**
- * ½¨Á¢Ò»ÖÂĞÔÓ³Éä¡£
- *		hwdev:		device½á¹¹¡£
- *		size:		ËùĞèÒªµÄ»º³åÇøµÄ´óĞ¡¡£
- *		dma_handle:	±£´æÏà¹ØµÄ×ÜÏßµØÖ·¡£
- * ·µ»ØÖµÊÇ»º³åÇøµÄÄÚºËĞéÄâµØÖ·¡£
+ * å»ºç«‹ä¸€è‡´æ€§æ˜ å°„ã€‚
+ *		hwdev:		deviceç»“æ„ã€‚
+ *		size:		æ‰€éœ€è¦çš„ç¼“å†²åŒºçš„å¤§å°ã€‚
+ *		dma_handle:	ä¿å­˜ç›¸å…³çš„æ€»çº¿åœ°å€ã€‚
+ * è¿”å›å€¼æ˜¯ç¼“å†²åŒºçš„å†…æ ¸è™šæ‹Ÿåœ°å€ã€‚
  */
 static inline void *
 pci_alloc_consistent(struct pci_dev *hwdev, size_t size,
@@ -85,7 +85,7 @@ pci_dma_sync_single_for_cpu(struct pci_dev *hwdev, dma_addr_t dma_handle,
 }
 
 /**
- * Ë¢ĞÂÓëDMA»º³åÇø¶ÔÓ¦µÄ¸ßËÙ»º´æĞĞ¡£
+ * åˆ·æ–°ä¸DMAç¼“å†²åŒºå¯¹åº”çš„é«˜é€Ÿç¼“å­˜è¡Œã€‚
  */
 static inline void
 pci_dma_sync_single_for_device(struct pci_dev *hwdev, dma_addr_t dma_handle,
@@ -95,7 +95,7 @@ pci_dma_sync_single_for_device(struct pci_dev *hwdev, dma_addr_t dma_handle,
 }
 
 /**
- * Ê¹¸ßËÙ»º´æĞĞÎŞĞ§¡£
+ * ä½¿é«˜é€Ÿç¼“å­˜è¡Œæ— æ•ˆã€‚
  */
 static inline void
 pci_dma_sync_sg_for_cpu(struct pci_dev *hwdev, struct scatterlist *sg,

@@ -249,8 +249,8 @@ struct ext3_inode {
 	__le32	i_ctime;	/* Creation time */
 	__le32	i_mtime;	/* Modification time */
 	/**
-	 * É¾³ýÊ±¼ä¡£
-	 * ÔÚorphan inode»úÖÆÖÐ£¬½èÓÃ´Ë×Ö¶Î£¬½«orphan inodeÁ´½ÓÆðÀ´¡£
+	 * åˆ é™¤æ—¶é—´ã€‚
+	 * åœ¨orphan inodeæœºåˆ¶ä¸­ï¼Œå€Ÿç”¨æ­¤å­—æ®µï¼Œå°†orphan inodeé“¾æŽ¥èµ·æ¥ã€‚
 	 */
 	__le32	i_dtime;	/* Deletion Time */
 	__le16	i_gid;		/* Low 16 bits of Group Id */
@@ -462,7 +462,7 @@ struct ext3_super_block {
 /*E0*/	__le32	s_journal_inum;		/* inode number of journal file */
 	__le32	s_journal_dev;		/* device number of journal file */
 	/**
-	 * orphanÁ´±íÍ·¡£
+	 * orphané“¾è¡¨å¤´ã€‚
 	 */
 	__le32	s_last_orphan;		/* start of list of inodes to delete */
 	__le32	s_hash_seed[4];		/* HTREE hash seed */
@@ -491,7 +491,7 @@ static inline struct ext3_inode_info *EXT3_I(struct inode *inode)
 #endif
 
 /**
- * »ñµÃÏÂÒ»¸öorphan inode
+ * èŽ·å¾—ä¸‹ä¸€ä¸ªorphan inode
  */
 #define NEXT_ORPHAN(inode) EXT3_I(inode)->i_dtime
 

@@ -1,6 +1,6 @@
 /*
  *  This file was based upon code in Powertweak Linux (http://powertweak.sf.net)
- *  (C) 2000-2003  Dave Jones, Arjan van de Ven, Janne Pänkälä, Dominik Brodowski.
+ *  (C) 2000-2003  Dave Jones, Arjan van de Ven, Janne Pnkl, Dominik Brodowski.
  *
  *  Licensed under the terms of the GNU GPL License version 2.
  *

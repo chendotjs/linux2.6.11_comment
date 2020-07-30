@@ -29,7 +29,7 @@
  * gets called only when /all/ the files are closed.
  */
 /**
- * ext2µÄreleaseÊµÏÖ·½·¨¡£
+ * ext2çš„releaseå®ç°æ–¹æ³•ã€‚
  */
 static int ext2_release_file (struct inode * inode, struct file * filp)
 {
@@ -43,7 +43,7 @@ static int ext2_release_file (struct inode * inode, struct file * filp)
  * the ext2 filesystem.
  */
 /**
- * ext2ÎÄ¼şÏµÍ³µÄÎÄ¼ş²Ù×÷¡£
+ * ext2æ–‡ä»¶ç³»ç»Ÿçš„æ–‡ä»¶æ“ä½œã€‚
  */
 struct file_operations ext2_file_operations = {
 	.llseek		= generic_file_llseek,
@@ -62,7 +62,7 @@ struct file_operations ext2_file_operations = {
 };
 
 /**
- * ÆÕÍ¨ÎÄ¼şµÄË÷Òı½Úµã²Ù×÷·½·¨¡£
+ * æ™®é€šæ–‡ä»¶çš„ç´¢å¼•èŠ‚ç‚¹æ“ä½œæ–¹æ³•ã€‚
  */
 struct inode_operations ext2_file_inode_operations = {
 	.truncate	= ext2_truncate,

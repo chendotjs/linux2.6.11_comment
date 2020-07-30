@@ -380,9 +380,9 @@ void profile_hit(int type, void *__pc)
 #endif /* !CONFIG_SMP */
 
 /**
- * ÎªÄÚºË´úÂë¼à¹Ü²É¼¯Êı¾İ¡£
- * ÔÚµ¥CPUÉÏÓÉdo_timer_interruptµ÷ÓÃ¡£
- * ÔÚ¶àCPUÉÏÊÇÓÉsmp_local_timer_interruptµ÷ÓÃ¡£
+ * ä¸ºå†…æ ¸ä»£ç ç›‘ç®¡é‡‡é›†æ•°æ®ã€‚
+ * åœ¨å•CPUä¸Šç”±do_timer_interruptè°ƒç”¨ã€‚
+ * åœ¨å¤šCPUä¸Šæ˜¯ç”±smp_local_timer_interruptè°ƒç”¨ã€‚
  */
 void profile_tick(int type, struct pt_regs *regs)
 {

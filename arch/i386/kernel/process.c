@@ -295,10 +295,10 @@ __asm__(".section .text\n"
  * Create a kernel thread
  */
 /**
- * ´´½¨Ò»¸öĞÂµÄÄÚºËÏß³Ì
- * fn-ÒªÖ´ĞĞµÄÄÚºËº¯ÊıµÄµØÖ·¡£
- * arg-Òª´«µİ¸øº¯ÊıµÄ²ÎÊı
- * flags-Ò»×éclone±êÖ¾
+ * åˆ›å»ºä¸€ä¸ªæ–°çš„å†…æ ¸çº¿ç¨‹
+ * fn-è¦æ‰§è¡Œçš„å†…æ ¸å‡½æ•°çš„åœ°å€ã€‚
+ * arg-è¦ä¼ é€’ç»™å‡½æ•°çš„å‚æ•°
+ * flags-ä¸€ç»„cloneæ ‡å¿—
  */
 int kernel_thread(int (*fn)(void *), void * arg, unsigned long flags)
 {
@@ -307,8 +307,8 @@ int kernel_thread(int (*fn)(void *), void * arg, unsigned long flags)
 	memset(&regs, 0, sizeof(regs));
 
 	/**
-	 * ÄÚºËÕ»µØÖ·£¬ÎªÆä¸³³õÖµ¡£
-	 * do_fork½«´ÓÕâÀïÈ¡ÖµÀ´ÎªĞÂÏß³Ì³õÊ¼»¯CPU¡£
+	 * å†…æ ¸æ ˆåœ°å€ï¼Œä¸ºå…¶èµ‹åˆå€¼ã€‚
+	 * do_forkå°†ä»è¿™é‡Œå–å€¼æ¥ä¸ºæ–°çº¿ç¨‹åˆå§‹åŒ–CPUã€‚
 	 */
 	regs.ebx = (unsigned long) fn;
 	regs.edx = (unsigned long) arg;
@@ -317,8 +317,8 @@ int kernel_thread(int (*fn)(void *), void * arg, unsigned long flags)
 	regs.xes = __USER_DS;
 	regs.orig_eax = -1;
 	/**
-	 * °ÑeipÉèÖÃ³Ékernel_thread_helper£¬ÕâÑù£¬ĞÂÏß³Ì½«Ö´ĞĞfnº¯Êı¡£Èç¹ûº¯Êı½áÊø£¬½«Ö´ĞĞdo_exit
-	 * fnµÄ·µ»ØÖµ×÷Îªdo_exitµÄ²ÎÊı¡£
+	 * æŠŠeipè®¾ç½®æˆkernel_thread_helperï¼Œè¿™æ ·ï¼Œæ–°çº¿ç¨‹å°†æ‰§è¡Œfnå‡½æ•°ã€‚å¦‚æœå‡½æ•°ç»“æŸï¼Œå°†æ‰§è¡Œdo_exit
+	 * fnçš„è¿”å›å€¼ä½œä¸ºdo_exitçš„å‚æ•°ã€‚
 	 */
 	regs.eip = (unsigned long) kernel_thread_helper;
 	regs.xcs = __KERNEL_CS;
@@ -326,9 +326,9 @@ int kernel_thread(int (*fn)(void *), void * arg, unsigned long flags)
 
 	/* Ok, create the new process.. */
 	/**
-	 * CLONE_VM±ÜÃâ¸´ÖÆµ÷ÓÃ½ø³ÌµÄÒ³±í¡£ÓÉÓÚĞÂµÄÄÚºËÏß³ÌÎŞÂÛÈçºÎ¶¼²»»á·ÃÎÊÓÃ»§Ì¬µØÖ·¿Õ¼ä¡£
-	 * ËùÒÔ¸´ÖÆÖ»»áÔì³ÉÊ±¼äºÍ¿Õ¼äµÄÀË·Ñ¡£
-	 * CLONE_UNTRACED±êÖ¾±£Ö¤ÄÚºËÏß³Ì²»»á±»¸ú×Ù£¬¼´Ê¹µ÷ÓÃ½ø³Ì±»¸ú×Ù¡£
+	 * CLONE_VMé¿å…å¤åˆ¶è°ƒç”¨è¿›ç¨‹çš„é¡µè¡¨ã€‚ç”±äºæ–°çš„å†…æ ¸çº¿ç¨‹æ— è®ºå¦‚ä½•éƒ½ä¸ä¼šè®¿é—®ç”¨æˆ·æ€åœ°å€ç©ºé—´ã€‚
+	 * æ‰€ä»¥å¤åˆ¶åªä¼šé€ æˆæ—¶é—´å’Œç©ºé—´çš„æµªè´¹ã€‚
+	 * CLONE_UNTRACEDæ ‡å¿—ä¿è¯å†…æ ¸çº¿ç¨‹ä¸ä¼šè¢«è·Ÿè¸ªï¼Œå³ä½¿è°ƒç”¨è¿›ç¨‹è¢«è·Ÿè¸ªã€‚
 	 */
 	return do_fork(flags | CLONE_VM | CLONE_UNTRACED, 0, &regs, 0, NULL, NULL);
 }
@@ -337,7 +337,7 @@ int kernel_thread(int (*fn)(void *), void * arg, unsigned long flags)
  * Free current thread data structures etc..
  */
 /**
- * ´Ó½ø³ÌÃèÊö·ûÖĞ·ÖÀë³öÓëÏß³ÌÏà¹ØµÄÊı¾İ½á¹¹¡£Ö÷ÒªÊÇIOÈ¨ÏŞÎ»Í¼¡£
+ * ä»è¿›ç¨‹æè¿°ç¬¦ä¸­åˆ†ç¦»å‡ºä¸çº¿ç¨‹ç›¸å…³çš„æ•°æ®ç»“æ„ã€‚ä¸»è¦æ˜¯IOæƒé™ä½å›¾ã€‚
  */
 void exit_thread(void)
 {
@@ -594,25 +594,25 @@ handle_io_bitmap(struct thread_struct *next, struct tss_struct *tss)
  * for example.
  */
 /**
- * __switch_toº¯ÊıÖ´ĞĞ´ó¶àÊı½ø³ÌÇĞ»»µÄ¹¤×÷¡£
- * ½ø³ÌÇĞ»»µÄ¹¤×÷¿ªÊ¼ÓÚswitch_toºê£¬µ«ÊÇËüµÄÖ÷Òª¹¤×÷»¹ÊÇÓÉ__switch_toÍê³É¡£
- * Õâ¸öº¯ÊıÊÇ¼Ä´æÆ÷´«²ÎµÄº¯Êı¡£ÔÚswitch_toºêÖĞ£¬²ÎÊıÒÑ¾­±£´æÔÚeaxºÍedxÖĞÁË.
+ * __switch_toå‡½æ•°æ‰§è¡Œå¤§å¤šæ•°è¿›ç¨‹åˆ‡æ¢çš„å·¥ä½œã€‚
+ * è¿›ç¨‹åˆ‡æ¢çš„å·¥ä½œå¼€å§‹äºswitch_toå®ï¼Œä½†æ˜¯å®ƒçš„ä¸»è¦å·¥ä½œè¿˜æ˜¯ç”±__switch_toå®Œæˆã€‚
+ * è¿™ä¸ªå‡½æ•°æ˜¯å¯„å­˜å™¨ä¼ å‚çš„å‡½æ•°ã€‚åœ¨switch_toå®ä¸­ï¼Œå‚æ•°å·²ç»ä¿å­˜åœ¨eaxå’Œedxä¸­äº†.
  */
 struct task_struct fastcall * __switch_to(struct task_struct *prev_p, struct task_struct *next_p)
 {
 	struct thread_struct *prev = &prev_p->thread,
 				 *next = &next_p->thread;
 	/**
-	 * Í¨¹ı¶ÁÈ¡current_thread_info()->cpu,»ñµÃµ±Ç°½ø³ÌÔÚÄÄ¸öCPUÉÏÔËĞĞ.
-	 * ÒòÎªÔÚscheduleº¯ÊıÖĞÒÑ¾­µ÷ÓÃÁË½ûÓÃÇÀÕ¼,ËùÒÔÕâÀï¿ÉÒÔÖ±½ÓÊ¹ÓÃsmp_processor_id()
+	 * é€šè¿‡è¯»å–current_thread_info()->cpu,è·å¾—å½“å‰è¿›ç¨‹åœ¨å“ªä¸ªCPUä¸Šè¿è¡Œ.
+	 * å› ä¸ºåœ¨scheduleå‡½æ•°ä¸­å·²ç»è°ƒç”¨äº†ç¦ç”¨æŠ¢å ,æ‰€ä»¥è¿™é‡Œå¯ä»¥ç›´æ¥ä½¿ç”¨smp_processor_id()
 	 */
 	int cpu = smp_processor_id();
 	struct tss_struct *tss = &per_cpu(init_tss, cpu);
 
 	/* never put a printk in __switch_to... printk() calls wake_up*() indirectly */
 	/**
-	 * __unlazy_fpuºêÓĞÑ¡ÔñµÄ±£´æFPU\MMX\XMM¼Ä´æÆ÷µÄÄÚÈİ.
-	 * Ëü¿ÉÄÜ»áÑÓºó±£´æÕâĞ©¼Ä´æÆ÷µÄÄÚÈİ.
+	 * __unlazy_fpuå®æœ‰é€‰æ‹©çš„ä¿å­˜FPU\MMX\XMMå¯„å­˜å™¨çš„å†…å®¹.
+	 * å®ƒå¯èƒ½ä¼šå»¶åä¿å­˜è¿™äº›å¯„å­˜å™¨çš„å†…å®¹.
 	 */
 	__unlazy_fpu(prev_p);
 
@@ -620,8 +620,8 @@ struct task_struct fastcall * __switch_to(struct task_struct *prev_p, struct tas
 	 * Reload esp0, LDT and the page table pointer:
 	 */
 	/**
-	 * °Ñnext_p->thread.esp0×°Èë±¾µØCPUµÄTSSµÄesp0×Ö¶Î.
-	 * ÈÎºÎÓÉsysenter»ã±àÖ¸Áî²úÉúµÄ´ÓÓÃ»§Ì¬µ½ÄÚºËÌ¬µÄÌØÈ¨¼¶×ª»»½«°ÑÕâ¸öµØÖ·¸´ÖÆµ½esp¼Ä´æÆ÷.
+	 * æŠŠnext_p->thread.esp0è£…å…¥æœ¬åœ°CPUçš„TSSçš„esp0å­—æ®µ.
+	 * ä»»ä½•ç”±sysenteræ±‡ç¼–æŒ‡ä»¤äº§ç”Ÿçš„ä»ç”¨æˆ·æ€åˆ°å†…æ ¸æ€çš„ç‰¹æƒçº§è½¬æ¢å°†æŠŠè¿™ä¸ªåœ°å€å¤åˆ¶åˆ°espå¯„å­˜å™¨.
 	 */
 	load_esp0(tss, next);
 
@@ -629,7 +629,7 @@ struct task_struct fastcall * __switch_to(struct task_struct *prev_p, struct tas
 	 * Load the per-thread Thread-Local Storage descriptor.
 	 */
 	/**
-	 * ½«next_p½ø³ÌÊ¹ÓÃµÄÏß³Ì¾Ö²¿´æ´¢(TLS)¶Î×°Èë±¾µØCPUµÄÈ«¾ÖÃèÊö·û±í.
+	 * å°†next_pè¿›ç¨‹ä½¿ç”¨çš„çº¿ç¨‹å±€éƒ¨å­˜å‚¨(TLS)æ®µè£…å…¥æœ¬åœ°CPUçš„å…¨å±€æè¿°ç¬¦è¡¨.
 	 */
 	load_TLS(next, cpu);
 
@@ -638,7 +638,7 @@ struct task_struct fastcall * __switch_to(struct task_struct *prev_p, struct tas
 	 * those are always kernel segments while inside the kernel.
 	 */
 	/**
-	 * °ÑfsºÍgs¶Î¼Ä´æÆ÷µÄÄÚÈİ·Ö±ğ´æ·ÅÔÚprev_p->thread.fsºÍprev_p->thread.gsÖĞ.
+	 * æŠŠfså’Œgsæ®µå¯„å­˜å™¨çš„å†…å®¹åˆ†åˆ«å­˜æ”¾åœ¨prev_p->thread.fså’Œprev_p->thread.gsä¸­.
 	 */
 	asm volatile("movl %%fs,%0":"=m" (*(int *)&prev->fs));
 	asm volatile("movl %%gs,%0":"=m" (*(int *)&prev->gs));
@@ -647,13 +647,13 @@ struct task_struct fastcall * __switch_to(struct task_struct *prev_p, struct tas
 	 * Restore %fs and %gs if needed.
 	 */
 	/**
-	 * ²»¹ÜÊÇprev»¹ÊÇnext,Ö»ÒªËûÃÇÊ¹ÓÃÁËfsºÍgs,ÄÇÃ´,¶¼ĞèÒª½«nextÖĞµÄfs,gs¸üĞÂµ½¶Î¼Ä´æÆ÷.
-	 * ¼´Ê¹next²¢²»Ê¹ÓÃfs,µ«ÊÇÖ»ÒªprevÊ¹ÓÃÁË,Ò²ĞèÒª¸üĞÂ.ÕâÑù¿ÉÒÔ·ÀÖ¹nextÍ¨¹ıfs,gs·ÃÎÊprevµÄÊı¾İ.
+	 * ä¸ç®¡æ˜¯prevè¿˜æ˜¯next,åªè¦ä»–ä»¬ä½¿ç”¨äº†fså’Œgs,é‚£ä¹ˆ,éƒ½éœ€è¦å°†nextä¸­çš„fs,gsæ›´æ–°åˆ°æ®µå¯„å­˜å™¨.
+	 * å³ä½¿nextå¹¶ä¸ä½¿ç”¨fs,ä½†æ˜¯åªè¦prevä½¿ç”¨äº†,ä¹Ÿéœ€è¦æ›´æ–°.è¿™æ ·å¯ä»¥é˜²æ­¢nexté€šè¿‡fs,gsè®¿é—®prevçš„æ•°æ®.
 	 */
 	if (unlikely(prev->fs | prev->gs | next->fs | next->gs)) {
 		/**
-		 * loadsegment¿ÉÄÜ»á×°ÔØÒ»¸öÎŞĞ§µÄ¶Î¼Ä´æÆ÷.CPU¿ÉÄÜ»á²úÉúÒ»¸öÒì³£.
-		 * µ«ÊÇloadsegment»á²ÉÓÃ´úÂëĞŞÕı¼¼ÊõÀ´´¦ÀíÕâÖÖÇé¿ö.
+		 * loadsegmentå¯èƒ½ä¼šè£…è½½ä¸€ä¸ªæ— æ•ˆçš„æ®µå¯„å­˜å™¨.CPUå¯èƒ½ä¼šäº§ç”Ÿä¸€ä¸ªå¼‚å¸¸.
+		 * ä½†æ˜¯loadsegmentä¼šé‡‡ç”¨ä»£ç ä¿®æ­£æŠ€æœ¯æ¥å¤„ç†è¿™ç§æƒ…å†µ.
 		 */
 		loadsegment(fs, next->fs);
 		loadsegment(gs, next->gs);
@@ -663,7 +663,7 @@ struct task_struct fastcall * __switch_to(struct task_struct *prev_p, struct tas
 	 * Now maybe reload the debug registers
 	 */
 	/**
-	 * ÓÃdebugregÊı×éµÄÄÚÈİdr0..dr7ÖĞµÄ6¸öµ÷ÊÔ¼Ä´æÆ÷.ÕâÔÊĞí¶¨ÒåËÄ¸ö¶ÏµãÇøÓò.
+	 * ç”¨debugregæ•°ç»„çš„å†…å®¹dr0..dr7ä¸­çš„6ä¸ªè°ƒè¯•å¯„å­˜å™¨.è¿™å…è®¸å®šä¹‰å››ä¸ªæ–­ç‚¹åŒºåŸŸ.
 	 */
 	if (unlikely(next->debugreg[7])) {
 		loaddebug(next, 0);
@@ -676,19 +676,19 @@ struct task_struct fastcall * __switch_to(struct task_struct *prev_p, struct tas
 	}
 
 	/**
-	 * Èç¹û±ØÒª,¸üĞÂTSSÖĞµÄIOÎ»Í¼.µ±next»òÕßprevÓĞÆä×Ô¼ºµÄ¶¨ÖÆIOÈ¨ÏŞÎ»Í¼Ê±±ØĞëÕâÃ´×ö.
+	 * å¦‚æœå¿…è¦,æ›´æ–°TSSä¸­çš„IOä½å›¾.å½“nextæˆ–è€…prevæœ‰å…¶è‡ªå·±çš„å®šåˆ¶IOæƒé™ä½å›¾æ—¶å¿…é¡»è¿™ä¹ˆåš.
 	 */
 	if (unlikely(prev->io_bitmap_ptr || next->io_bitmap_ptr))
 		/**
-		 * handle_io_bitmap²¢²»Á¢¼´¸üĞÂÎ»Í¼,¶øÊÇ²ÉÓÃÒ»ÖÖÀÁÄ£Ê½µÄ·½·¨.
+		 * handle_io_bitmapå¹¶ä¸ç«‹å³æ›´æ–°ä½å›¾,è€Œæ˜¯é‡‡ç”¨ä¸€ç§æ‡’æ¨¡å¼çš„æ–¹æ³•.
 		 */
 		handle_io_bitmap(next, tss);
 
 	/**
-	 * return²úÉúµÄ»ã±àÖ¸ÁîÊÇmovl %edi, %eax,ret.
-	 * ÕâÀïÓĞ±£»¤eaxºÍ·µ»ØµØÖ·µÄÎÊÌâ.Çë×ĞÏ¸Àí½â.
-	 * ³ıÁËĞèÒªÀí½âswitch_toºêÖĞµÄjmpÖ¸ÁîÍâ,¶ÔÓÚÃ»ÓĞ²úÉúÇĞ»»,¶øÊÇµÚÒ»´Î¿ªÊ¼Ö´ĞĞµÄ½ø³Ì.
-	 * Ëü²¢²»»áÌø»Øswitch_to,¶øÊÇÕÒµ½ret_from_forkº¯ÊıµÄ³¬Ê¼µØÖ·.
+	 * returnäº§ç”Ÿçš„æ±‡ç¼–æŒ‡ä»¤æ˜¯movl %edi, %eax,ret.
+	 * è¿™é‡Œæœ‰ä¿æŠ¤eaxå’Œè¿”å›åœ°å€çš„é—®é¢˜.è¯·ä»”ç»†ç†è§£.
+	 * é™¤äº†éœ€è¦ç†è§£switch_toå®ä¸­çš„jmpæŒ‡ä»¤å¤–,å¯¹äºæ²¡æœ‰äº§ç”Ÿåˆ‡æ¢,è€Œæ˜¯ç¬¬ä¸€æ¬¡å¼€å§‹æ‰§è¡Œçš„è¿›ç¨‹.
+	 * å®ƒå¹¶ä¸ä¼šè·³å›switch_to,è€Œæ˜¯æ‰¾åˆ°ret_from_forkå‡½æ•°çš„è¶…å§‹åœ°å€.
 	 */
 	return prev_p;
 }

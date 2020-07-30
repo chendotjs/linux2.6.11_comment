@@ -1138,7 +1138,7 @@ svc_sock_update_bufs(struct svc_serv *serv)
  * Receive the next request on any socket.
  */
 /**
- * Õâ¸öº¯ÊıµÄÖ÷Òª×÷ÓÃÊÇÔÚÌ×½Ó×ÖÉÏ½ÓÊÜÒÑ¾­µ½´ïµÄÇëÇó£¬²¢°ÑËü·ÅÔÚsvc_rqst½á¹¹ÖĞ
+ * è¿™ä¸ªå‡½æ•°çš„ä¸»è¦ä½œç”¨æ˜¯åœ¨å¥—æ¥å­—ä¸Šæ¥å—å·²ç»åˆ°è¾¾çš„è¯·æ±‚ï¼Œå¹¶æŠŠå®ƒæ”¾åœ¨svc_rqstç»“æ„ä¸­
  */
 int
 svc_recv(struct svc_serv *serv, struct svc_rqst *rqstp, long timeout)

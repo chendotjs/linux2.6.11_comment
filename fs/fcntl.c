@@ -330,7 +330,7 @@ static long do_fcntl(int fd, unsigned int cmd, unsigned long arg,
 }
 
 /**
- * fcntlÏµÍ³µ÷ÓÃ£¬¿ÉÒÔÊµÏÖ¶ÔÎÄ¼ş¼ÓPOSIXËø¡£
+ * fcntlç³»ç»Ÿè°ƒç”¨ï¼Œå¯ä»¥å®ç°å¯¹æ–‡ä»¶åŠ POSIXé”ã€‚
  */
 asmlinkage long sys_fcntl(unsigned int fd, unsigned int cmd, unsigned long arg)
 {	

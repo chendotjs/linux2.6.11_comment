@@ -30,7 +30,7 @@ struct notifier_block br_device_notifier = {
  *     port state is checked when bridge is brought up.
  */
 /**
- * ���Ŵ���ע��������豸�¼��ص�������
+ * 网桥代码注册的网络设备事件回调函数。
  */
 static int br_device_event(struct notifier_block *unused, unsigned long event, void *ptr)
 {
@@ -48,7 +48,7 @@ static int br_device_event(struct notifier_block *unused, unsigned long event, v
 	switch (event) {
 	case NETDEV_CHANGEMTU:
 		/**
-		 * �����豸��MTU���޸�Ϊ���а��豸����СMTU��
+		 * 网桥设备的MTU被修改为所有绑定设备的最小MTU。
 		 */
 		dev_set_mtu(br->dev, br_min_mtu(br));
 		break;
@@ -60,14 +60,14 @@ static int br_device_event(struct notifier_block *unused, unsigned long event, v
 
 	case NETDEV_CHANGE:	/* device is up but carrier changed */
 		/**
-		 * ����������ص��豸������Ա����ʱ����IFF_UPû�б����ã�����ص�֪ͨ�¼������ԡ�
+		 * 当与网桥相关的设备被管理员禁用时（即IFF_UP没有被设置），相关的通知事件被忽略。
 		 */
 		if (!(br->dev->flags & IFF_UP))
 			break;
 
 		/**
-		 * ���֪ͨ�¼����Ա����ڼ���ԭ��������ϵͳ������ע���ز�״̬�ı仯��
-		 * ��һ�����豸ʧȥ���߼�⵽�ز�״̬ʱ(���߱��������߲���ʱ)��������Ŷ˿ڷֱ�br_stp_enable_port����br_stp_disable_port���û��߹رա�
+		 * 这个通知事件可以被用于几个原因。网桥子系统仅仅关注于载波状态的变化。
+		 * 当一个绑定设备失去或者检测到载波状态时(网线被拨出或者插入时)，相关网桥端口分别被br_stp_enable_port或者br_stp_disable_port启用或者关闭。
 		 */
 		if (netif_carrier_ok(dev)) {
 			if (p->state == BR_STATE_DISABLED)
@@ -80,8 +80,8 @@ static int br_device_event(struct notifier_block *unused, unsigned long event, v
 
 	case NETDEV_DOWN:
 		/**
-		 * ��һ�����豸������Ա����ʱ��������Ŷ˿�Ҳ���뱻��ֹ��
-		 * ������br_stp_disable_port�����ġ���������Ŷ˿��Ѿ��ر�ʱ�����ؽ��д˴�����
+		 * 当一个绑定设备被管理员禁用时，相关网桥端口也必须被禁止。
+		 * 这是由br_stp_disable_port处理的。当相关网桥端口已经关闭时，不必进行此处理。
 		 */
 		if (br->dev->flags & IFF_UP)
 			br_stp_disable_port(p);
@@ -89,7 +89,7 @@ static int br_device_event(struct notifier_block *unused, unsigned long event, v
 
 	case NETDEV_UP:
 		/**
-		 * ��һ�����豸������Ա��������IFF_UP�����ã�ʱ������������Ŷ˿ڴ��ڴ���״̬����������豸������ʱ��������Ŷ˿ڱ�br_stp_enabled_port������
+		 * 当一个绑定设备被管理员开启（即IFF_UP被设置）时，并且相关网桥端口处于传输状态、相关网桥设备被开启时，相关网桥端口被br_stp_enabled_port开启。
 		 */
 		if (netif_carrier_ok(dev) && (br->dev->flags & IFF_UP)) 
 			br_stp_enable_port(p);
@@ -98,7 +98,7 @@ static int br_device_event(struct notifier_block *unused, unsigned long event, v
 	case NETDEV_UNREGISTER:
 		spin_unlock_bh(&br->lock);
 		/**
-		 * ��һ�����豸ȡ��ע��ʱ��������Ŷ˿�Ҳ��br_del_ifɾ�������¼����������ı����½��С�
+		 * 当一个绑定设备取消注册时，相关网桥端口也被br_del_if删除。此事件不必在锁的保护下进行。
 		 */
 		br_del_if(br, dev);
 		goto done;

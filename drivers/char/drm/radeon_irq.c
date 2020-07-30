@@ -27,7 +27,7 @@
  *
  * Authors:
  *    Keith Whitwell <keith@tungstengraphics.com>
- *    Michel D�zer <michel@daenzer.net>
+ *    Michel D锟zer <michel@daenzer.net>
  */
 
 #include "drmP.h"

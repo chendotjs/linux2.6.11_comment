@@ -80,8 +80,8 @@ static struct ipv4_devconf ipv4_devconf_dflt = {
 static void rtmsg_ifa(int event, struct in_ifaddr *);
 
 /**
- * Í¨ÖªÆäËûÄÚºË×ÓÏµÍ³ÓĞ¹Ø±¾µØÖ·Éè±¸IPÅäÖÃµÄ±ä¸ü¡£
- * ÔÚ±¾µØ½Ó¿ÚÉÏÌí¼Ó£¬É¾³ıºÍĞŞ¸ÄµØÖ·Ê±·¢ËÍÍ¨Öª¡£
+ * é€šçŸ¥å…¶ä»–å†…æ ¸å­ç³»ç»Ÿæœ‰å…³æœ¬åœ°å€è®¾å¤‡IPé…ç½®çš„å˜æ›´ã€‚
+ * åœ¨æœ¬åœ°æ¥å£ä¸Šæ·»åŠ ï¼Œåˆ é™¤å’Œä¿®æ”¹åœ°å€æ—¶å‘é€é€šçŸ¥ã€‚
  */
 static struct notifier_block *inetaddr_chain;
 static void inet_del_ifa(struct in_device *in_dev, struct in_ifaddr **ifap,
@@ -95,7 +95,7 @@ static void devinet_sysctl_unregister(struct ipv4_devconf *p);
 /* Locks all the inet devices. */
 
 /**
- * ·ÖÅäÒ»¸öin_ifaddrÊı¾İ½á¹¹¡£µ±ÓÃ»§ĞÂÔöÒ»¸öĞÂµØÖ·ÖÁÒ»¸ö½Ó¿ÚÊ±£¬¾Í»á·ÖÅäÒ»¸öĞÂ½á¹¹¡£
+ * åˆ†é…ä¸€ä¸ªin_ifaddræ•°æ®ç»“æ„ã€‚å½“ç”¨æˆ·æ–°å¢ä¸€ä¸ªæ–°åœ°å€è‡³ä¸€ä¸ªæ¥å£æ—¶ï¼Œå°±ä¼šåˆ†é…ä¸€ä¸ªæ–°ç»“æ„ã€‚
  */
 static struct in_ifaddr *inet_alloc_ifa(void)
 {
@@ -118,8 +118,8 @@ static void inet_rcu_free_ifa(struct rcu_head *head)
 }
 
 /**
- * ÊÍ·ÅÒ»¸öin_ifaddrÊı¾İ½á¹¹¡£
- * É¾³ıµ¥Ò»µØÖ·Ê±£¬»òÕßÒ»ÆğÉ¾³ıËùÓĞÉè±¸µÄIPÅäÖÃÊ±£¬¾Í¿ÉÒÔ´¥·¢É¾³ı¡£
+ * é‡Šæ”¾ä¸€ä¸ªin_ifaddræ•°æ®ç»“æ„ã€‚
+ * åˆ é™¤å•ä¸€åœ°å€æ—¶ï¼Œæˆ–è€…ä¸€èµ·åˆ é™¤æ‰€æœ‰è®¾å¤‡çš„IPé…ç½®æ—¶ï¼Œå°±å¯ä»¥è§¦å‘åˆ é™¤ã€‚
  */
 static inline void inet_free_ifa(struct in_ifaddr *ifa)
 {
@@ -145,8 +145,8 @@ void in_dev_finish_destroy(struct in_device *idev)
 }
 
 /**
- * µ±Éè±¸ÉÏÅäÖÃµÚÒ»¸öipv4µØÖ·Ê±£¬¸Ãº¯Êı±»µ÷ÓÃ
- * Ëü·ÖÅäin_device½á¹¹£¬²¢½«ÆäÁ´½Óµ½Éè±¸¡£
+ * å½“è®¾å¤‡ä¸Šé…ç½®ç¬¬ä¸€ä¸ªipv4åœ°å€æ—¶ï¼Œè¯¥å‡½æ•°è¢«è°ƒç”¨
+ * å®ƒåˆ†é…in_deviceç»“æ„ï¼Œå¹¶å°†å…¶é“¾æ¥åˆ°è®¾å¤‡ã€‚
  */
 struct in_device *inetdev_init(struct net_device *dev)
 {
@@ -196,7 +196,7 @@ static void in_dev_rcu_put(struct rcu_head *head)
 }
 
 /**
- * °ÑIPÅäÖÃÉ¾³ı£¬inetdev_destroy¾ÍÊÇ°Ñinetdev_initÀïËù×öµÄÊÂÇé»¹Ô­¶øÒÑ£¬ÁíÍâ°ÑËùÓĞÁ¬½ÓµÄin_ifaddr½á¹¹¶¼É¾³ıµô¡£
+ * æŠŠIPé…ç½®åˆ é™¤ï¼Œinetdev_destroyå°±æ˜¯æŠŠinetdev_inité‡Œæ‰€åšçš„äº‹æƒ…è¿˜åŸè€Œå·²ï¼Œå¦å¤–æŠŠæ‰€æœ‰è¿æ¥çš„in_ifaddrç»“æ„éƒ½åˆ é™¤æ‰ã€‚
  */
 static void inetdev_destroy(struct in_device *in_dev)
 {
@@ -231,7 +231,7 @@ static void inetdev_destroy(struct in_device *in_dev)
 }
 
 /**
- * ÊäÈëÒ»¸öÉè±¸ºÍÁ½¸öIPµØÖ·£¬¸Ãº¯Êı¼ì²éÕâÁ½¸öµØÖ·ÊÇ·ñÊôÓÚÍ¬Ò»¸ö×ÓÍø¡£
+ * è¾“å…¥ä¸€ä¸ªè®¾å¤‡å’Œä¸¤ä¸ªIPåœ°å€ï¼Œè¯¥å‡½æ•°æ£€æŸ¥è¿™ä¸¤ä¸ªåœ°å€æ˜¯å¦å±äºåŒä¸€ä¸ªå­ç½‘ã€‚
  */
 int inet_addr_onlink(struct in_device *in_dev, u32 a, u32 b)
 {
@@ -249,9 +249,9 @@ int inet_addr_onlink(struct in_device *in_dev, u32 a, u32 b)
 }
 
 /**
- * Inet_del_ifa¾ÍÊÇ´ÓÏà¹Øin_deviceÊµÀıÉ¾³ıÒ»¸öin_ifaddr½á¹¹£¬Í¬Ê±È·±£Èç¹û¸ÃµØÖ·ÎªÖ÷ÒªµØÖ·£¬ËùÓĞÏà¹ØµÄ´ÎÒªµØÖ·Ò²»áÉ¾³ıµô£¬³ı·Ç¹ÜÀíÔ±¿ÌÒâÍ¨¹ı¸ÃÉè±¸µÄ/proc/sys/net/ipv4/conf/dev_name/promote_secondariesÎÄ¼şÀ´ÅäÖÃ¸ÃÉè±¸£¬²»ÒªÉ¾³ı´ÎÒªµØÖ·¡£
- * Ïà·´µÄ£¬µ±ÏàÅäµÄÖ÷ÒªµØÖ·±»É¾³ıÊ±£¬Ò»¸ö´ÎÒªµØÖ·¿ÉÒÔÌáÉı³ÉÖ÷ÒªµØÖ·¡£
- * 		destroy:		µ±×îºóÒ»¸öin_ifaddrÊµÀıÉ¾³ıÊ±£¬ÊÇ·ñÒª½«in_device½á¹¹É¾³ıµô¡£ËäÈ»°Ñ¿ÕµÄin_device½á¹¹É¾³ıÊÇÕı³£µÄ£¬µ«Å¼¶ûµ÷ÓÃÕß¿ÉÄÜ²»»á×öÕâ¼şÊÂ¡£ÀıÈç£¬µ±ËüÖªµÀºÜ¿ì¾Í»áĞÂÔöÒ»¸öĞÂµÄin_ifaddrÊ±¡£
+ * Inet_del_ifaå°±æ˜¯ä»ç›¸å…³in_deviceå®ä¾‹åˆ é™¤ä¸€ä¸ªin_ifaddrç»“æ„ï¼ŒåŒæ—¶ç¡®ä¿å¦‚æœè¯¥åœ°å€ä¸ºä¸»è¦åœ°å€ï¼Œæ‰€æœ‰ç›¸å…³çš„æ¬¡è¦åœ°å€ä¹Ÿä¼šåˆ é™¤æ‰ï¼Œé™¤éç®¡ç†å‘˜åˆ»æ„é€šè¿‡è¯¥è®¾å¤‡çš„/proc/sys/net/ipv4/conf/dev_name/promote_secondariesæ–‡ä»¶æ¥é…ç½®è¯¥è®¾å¤‡ï¼Œä¸è¦åˆ é™¤æ¬¡è¦åœ°å€ã€‚
+ * ç›¸åçš„ï¼Œå½“ç›¸é…çš„ä¸»è¦åœ°å€è¢«åˆ é™¤æ—¶ï¼Œä¸€ä¸ªæ¬¡è¦åœ°å€å¯ä»¥æå‡æˆä¸»è¦åœ°å€ã€‚
+ * 		destroy:		å½“æœ€åä¸€ä¸ªin_ifaddrå®ä¾‹åˆ é™¤æ—¶ï¼Œæ˜¯å¦è¦å°†in_deviceç»“æ„åˆ é™¤æ‰ã€‚è™½ç„¶æŠŠç©ºçš„in_deviceç»“æ„åˆ é™¤æ˜¯æ­£å¸¸çš„ï¼Œä½†å¶å°”è°ƒç”¨è€…å¯èƒ½ä¸ä¼šåšè¿™ä»¶äº‹ã€‚ä¾‹å¦‚ï¼Œå½“å®ƒçŸ¥é“å¾ˆå¿«å°±ä¼šæ–°å¢ä¸€ä¸ªæ–°çš„in_ifaddræ—¶ã€‚
  */
 static void inet_del_ifa(struct in_device *in_dev, struct in_ifaddr **ifap,
 			 int destroy)
@@ -307,8 +307,8 @@ static void inet_del_ifa(struct in_device *in_dev, struct in_ifaddr **ifap,
 }
 
 /**
- * inet_insert_ifa»áÔÚin_deviceÀïµÄÁ´±íÖĞÔö¼ÓÒ»¸öĞÂµÄin_ifaddr½á¹¹¡£
- * ´Ëº¯Êı»á¼ì²âÖØ¸´²¿·Ö£¬È»ºó£¬Èç¹ûËü·¢ÏÖÓĞ¸öµØÖ·´¦ÓÚÁíÒ»¸öµØÖ·µÄ×ÓÍøÄÚ£¬¾Í½«Æä±êÊ¶Îª´ÎÒª¡£
+ * inet_insert_ifaä¼šåœ¨in_deviceé‡Œçš„é“¾è¡¨ä¸­å¢åŠ ä¸€ä¸ªæ–°çš„in_ifaddrç»“æ„ã€‚
+ * æ­¤å‡½æ•°ä¼šæ£€æµ‹é‡å¤éƒ¨åˆ†ï¼Œç„¶åï¼Œå¦‚æœå®ƒå‘ç°æœ‰ä¸ªåœ°å€å¤„äºå¦ä¸€ä¸ªåœ°å€çš„å­ç½‘å†…ï¼Œå°±å°†å…¶æ ‡è¯†ä¸ºæ¬¡è¦ã€‚
  */
 static int inet_insert_ifa(struct in_ifaddr *ifa)
 {
@@ -362,8 +362,8 @@ static int inet_insert_ifa(struct in_ifaddr *ifa)
 }
 
 /**
- * ÕâÊÇÄÚº¬inet_insert_ifaµÄ·â×°º¯Êı¡£
- * Èç¹ûÏà¹ØÉè±¸Ã»ÓĞ´æÔÚin_device½á¹¹£¬¾Í½¨Á¢Ò»¸ö½á¹¹£¬È»ºó°Ñ127.x.x..xÕâÀàµØÖ·µÄscopeÉè³É±¾µØ£¨SCOPE_HOST£©¡£
+ * è¿™æ˜¯å†…å«inet_insert_ifaçš„å°è£…å‡½æ•°ã€‚
+ * å¦‚æœç›¸å…³è®¾å¤‡æ²¡æœ‰å­˜åœ¨in_deviceç»“æ„ï¼Œå°±å»ºç«‹ä¸€ä¸ªç»“æ„ï¼Œç„¶åæŠŠ127.x.x..xè¿™ç±»åœ°å€çš„scopeè®¾æˆæœ¬åœ°ï¼ˆSCOPE_HOSTï¼‰ã€‚
  */
 static int inet_set_ifa(struct net_device *dev, struct in_ifaddr *ifa)
 {
@@ -403,8 +403,8 @@ struct in_device *inetdev_by_index(int ifindex)
 /* Called only from RTNL semaphored context. No locks. */
 
 /**
- * ¸ø¶¨Ò»¸öÉè±¸¡¢Ò»¸öÍøÂçÇ°×ºprefixÓëÒ»¸öÑÚÂë£¬¸Ãº¯Êı±éÀú¸ÃÉè±¸ÉÏÅäÖÃµÄËùÓĞµÄÖ÷IPµØÖ·£¬À´²éÕÒÒ»¸öÓëÈë²ÎÊıprefix¼°ÑÚÂëÏàÆ¥ÅäµÄµØÖ·¡£
- * ³É¹¦Ê±·µ»ØÆ¥ÅäµØÖ·¡£
+ * ç»™å®šä¸€ä¸ªè®¾å¤‡ã€ä¸€ä¸ªç½‘ç»œå‰ç¼€prefixä¸ä¸€ä¸ªæ©ç ï¼Œè¯¥å‡½æ•°éå†è¯¥è®¾å¤‡ä¸Šé…ç½®çš„æ‰€æœ‰çš„ä¸»IPåœ°å€ï¼Œæ¥æŸ¥æ‰¾ä¸€ä¸ªä¸å…¥å‚æ•°prefixåŠæ©ç ç›¸åŒ¹é…çš„åœ°å€ã€‚
+ * æˆåŠŸæ—¶è¿”å›åŒ¹é…åœ°å€ã€‚
  */
 struct in_ifaddr *inet_ifa_byprefix(struct in_device *in_dev, u32 prefix,
 				    u32 mask)
@@ -419,7 +419,7 @@ struct in_ifaddr *inet_ifa_byprefix(struct in_device *in_dev, u32 prefix,
 }
 
 /**
- * RTM_DELADDRÑ¡ÏîÊµÏÖ£¬¶ÔÓ¦ipÃüÁîµÄdelete×ÓÃüÁî
+ * RTM_DELADDRé€‰é¡¹å®ç°ï¼Œå¯¹åº”ipå‘½ä»¤çš„deleteå­å‘½ä»¤
  */
 static int inet_rtm_deladdr(struct sk_buff *skb, struct nlmsghdr *nlh, void *arg)
 {
@@ -454,7 +454,7 @@ out:
 }
 
 /**
- * RTM_NEWADDRÑ¡ÏîÊµÏÖ£¬¶ÔÓ¦ipÃüÁîµÄadd×ÓÃüÁî
+ * RTM_NEWADDRé€‰é¡¹å®ç°ï¼Œå¯¹åº”ipå‘½ä»¤çš„addå­å‘½ä»¤
  */
 static int inet_rtm_newaddr(struct sk_buff *skb, struct nlmsghdr *nlh, void *arg)
 {
@@ -812,8 +812,8 @@ out:
 }
 
 /**
- * ¸Ãº¯ÊıÓÃÓÚÔÚÖ¸¶¨Éè±¸ÉÏËùÅäÖÃµÄÄÇĞ©IPµØÖ·ÖĞÑ¡³öÒ»¸öIPµØÖ·¡£
- * ´Ëº¯Êı½ÓÊÜÁíÍâÒ»¸ö¿ÉÑ¡²ÎÊıÊÇscope£¬¿ÉÓÃÓÚËõĞ¡²éÑ¯·¶Î§¡£
+ * è¯¥å‡½æ•°ç”¨äºåœ¨æŒ‡å®šè®¾å¤‡ä¸Šæ‰€é…ç½®çš„é‚£äº›IPåœ°å€ä¸­é€‰å‡ºä¸€ä¸ªIPåœ°å€ã€‚
+ * æ­¤å‡½æ•°æ¥å—å¦å¤–ä¸€ä¸ªå¯é€‰å‚æ•°æ˜¯scopeï¼Œå¯ç”¨äºç¼©å°æŸ¥è¯¢èŒƒå›´ã€‚
  */
 u32 inet_select_addr(const struct net_device *dev, u32 dst, int scope)
 {
@@ -943,7 +943,7 @@ u32 inet_confirm_addr(const struct net_device *dev, u32 dst, u32 local, int scop
  *	Device notifier
  */
 /**
- * ×¢²á¶Ôinetaddr_chainÁ´¸ĞĞËÈ¤µÄÊÂ¼ş(IPÅäÖÃ¸Ä±ä)¡£Ö÷ÒªÊÇÂ·ÓÉºÍNetfilterÎ±×°¶Ô´Ë¸ĞĞËÈ¤¡£
+ * æ³¨å†Œå¯¹inetaddr_chainé“¾æ„Ÿå…´è¶£çš„äº‹ä»¶(IPé…ç½®æ”¹å˜)ã€‚ä¸»è¦æ˜¯è·¯ç”±å’ŒNetfilterä¼ªè£…å¯¹æ­¤æ„Ÿå…´è¶£ã€‚
  */
 int register_inetaddr_notifier(struct notifier_block *nb)
 {
@@ -951,7 +951,7 @@ int register_inetaddr_notifier(struct notifier_block *nb)
 }
 
 /**
- * ×¢Ïú¶Ôinetaddr_chainÁ´¸ĞĞËÈ¤µÄÊÂ¼ş(IPÅäÖÃ¸Ä±ä)¡£
+ * æ³¨é”€å¯¹inetaddr_chainé“¾æ„Ÿå…´è¶£çš„äº‹ä»¶(IPé…ç½®æ”¹å˜)ã€‚
  */
 int unregister_inetaddr_notifier(struct notifier_block *nb)
 {
@@ -1093,7 +1093,7 @@ rtattr_failure:
 }
 
 /**
- * RTM_GETADDRÑ¡ÏîÊµÏÖ£¬¶ÔÓ¦ipÃüÁîµÄlist, lst, show£¬flush×ÓÃüÁî
+ * RTM_GETADDRé€‰é¡¹å®ç°ï¼Œå¯¹åº”ipå‘½ä»¤çš„list, lst, showï¼Œflushå­å‘½ä»¤
  */
 static int inet_dump_ifaddr(struct sk_buff *skb, struct netlink_callback *cb)
 {

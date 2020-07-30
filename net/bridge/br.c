@@ -30,13 +30,13 @@
 int (*br_should_route_hook) (struct sk_buff **pskb) = NULL;
 
 /**
- * ÍøÇÅ³õÊ¼»¯´úÂë
+ * ç½‘æ¡¥åˆå§‹åŒ–ä»£ç 
  */
 static int __init br_init(void)
 {
 	/**
-	 * Í¨¹ı´´½¨Ò»¸öSLAB»º´æÀ´³õÊ¼»¯×ª·¢Êı¾İ¿â¡£
-	 * Õâ¸ö»º´æÓÃÀ´·ÖÅänet_bridge_fdb_entryÊı¾İ½á¹¹¡£
+	 * é€šè¿‡åˆ›å»ºä¸€ä¸ªSLABç¼“å­˜æ¥åˆå§‹åŒ–è½¬å‘æ•°æ®åº“ã€‚
+	 * è¿™ä¸ªç¼“å­˜ç”¨æ¥åˆ†é…net_bridge_fdb_entryæ•°æ®ç»“æ„ã€‚
 	 */
 	br_fdb_init();
 
@@ -46,11 +46,11 @@ static int __init br_init(void)
 #endif
 
 	/**
-	 * Ê¼»¯º¯ÊıÖ¸Õëbr_ioctl_hook£¬ÒòÎª´¦ÀíioctlÃüÁîµÄº¯ÊıĞèÒªËü¡£
+	 * å§‹åŒ–å‡½æ•°æŒ‡é’ˆbr_ioctl_hookï¼Œå› ä¸ºå¤„ç†ioctlå‘½ä»¤çš„å‡½æ•°éœ€è¦å®ƒã€‚
  	 */
 	brioctl_set(br_ioctl_deviceless_stub);
 	/**
-	 * ³õÊ¼»¯º¯ÊıÖ¸Õëbr_handle_frame_hook£¬Õâ¸öº¯Êı´¦ÀíÈëÖ¡BPDU
+	 * åˆå§‹åŒ–å‡½æ•°æŒ‡é’ˆbr_handle_frame_hookï¼Œè¿™ä¸ªå‡½æ•°å¤„ç†å…¥å¸§BPDU
 	 */
 	br_handle_frame_hook = br_handle_frame;
 
@@ -59,8 +59,8 @@ static int __init br_init(void)
 	br_fdb_put_hook = br_fdb_put;
 #endif
 	/**
- 	 * ¹ınetdev_chainÍ¨ÖªÁ´×¢²áÒ»¸ö»Øµ÷º¯Êı¡£
- 	 * Ö÷ÒªÊÇÎªÁË¼à¿ØÓëÍøÇÅ°ó¶¨µÄÉè±¸ÊÂ¼ş¡£
+ 	 * è¿‡netdev_chainé€šçŸ¥é“¾æ³¨å†Œä¸€ä¸ªå›è°ƒå‡½æ•°ã€‚
+ 	 * ä¸»è¦æ˜¯ä¸ºäº†ç›‘æ§ä¸ç½‘æ¡¥ç»‘å®šçš„è®¾å¤‡äº‹ä»¶ã€‚
  	 */
 	register_netdevice_notifier(&br_device_notifier);
 
@@ -68,7 +68,7 @@ static int __init br_init(void)
 }
 
 /**
- * ÍøÇÅ·´³õÊ¼»¯´úÂë¡£
+ * ç½‘æ¡¥ååˆå§‹åŒ–ä»£ç ã€‚
  */
 static void __exit br_deinit(void)
 {

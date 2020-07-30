@@ -75,30 +75,30 @@ void dm_put_device(struct dm_target *ti, struct dm_dev *d);
 /*
  * Information about a target type
  */
-/* Ó³ÉäÄ¿±êÀàĞÍ */
+/* æ˜ å°„ç›®æ ‡ç±»å‹ */
 struct target_type {
-	/* Ó³ÉäÀàĞÍÃû³Æ£¬ÈçÏßĞÔ¡¢Ìõ´ø¡¢ÖÂ´í¡¢¾µÏñ¡¢¿ìÕÕµÈµÈ */
+	/* æ˜ å°„ç±»å‹åç§°ï¼Œå¦‚çº¿æ€§ã€æ¡å¸¦ã€è‡´é”™ã€é•œåƒã€å¿«ç…§ç­‰ç­‰ */
 	const char *name;
-	/* ÊµÏÖÄ£¿é */
+	/* å®ç°æ¨¡å— */
 	struct module *module;
-	/* °æ±¾ºÅ */
+	/* ç‰ˆæœ¬å· */
         unsigned version[3];
-	/* ¹¹Ôì¡¢Îö¹¹»Øµ÷º¯Êı */
+	/* æ„é€ ã€ææ„å›è°ƒå‡½æ•° */
 	dm_ctr_fn ctr;
 	dm_dtr_fn dtr;
-	/* Ó³Éä»Øµ÷º¯Êı */
+	/* æ˜ å°„å›è°ƒå‡½æ•° */
 	dm_map_fn map;
-	/* Íê³É»Øµ÷º¯Êı */
+	/* å®Œæˆå›è°ƒå‡½æ•° */
 	dm_endio_fn end_io;
-	/* ¹ÒÆğÇ°µÄ»Øµ÷º¯Êı */
+	/* æŒ‚èµ·å‰çš„å›è°ƒå‡½æ•° */
 	dm_presuspend_fn presuspend;
-	/* ¹ÒÆğºóµÄ»Øµ÷º¯Êı */
+	/* æŒ‚èµ·åçš„å›è°ƒå‡½æ•° */
 	dm_postsuspend_fn postsuspend;
-	/* »Ö¸´Ê±µÄ»Øµ÷º¯Êı */
+	/* æ¢å¤æ—¶çš„å›è°ƒå‡½æ•° */
 	dm_resume_fn resume;
-	/* ×´Ì¬±¨¸æ»Øµ÷º¯Êı */
+	/* çŠ¶æ€æŠ¥å‘Šå›è°ƒå‡½æ•° */
 	dm_status_fn status;
-	/* ÓÃÓÚÏò¸ÃÀàĞÍÓ³ÉäÄ¿±ê´«µİÏûÏ¢µÄ»Øµ÷º¯Êı */
+	/* ç”¨äºå‘è¯¥ç±»å‹æ˜ å°„ç›®æ ‡ä¼ é€’æ¶ˆæ¯çš„å›è°ƒå‡½æ•° */
 	dm_message_fn message;
 };
 
@@ -111,22 +111,22 @@ struct io_restrictions {
 	unsigned long		seg_boundary_mask;
 };
 
-/* Ó³ÉäÄ¿±êÃèÊö·û */
+/* æ˜ å°„ç›®æ ‡æè¿°ç¬¦ */
 struct dm_target {
-	/* ËùÊôÓ³Éä±í */
+	/* æ‰€å±æ˜ å°„è¡¨ */
 	struct dm_table *table;
-	/* Ó³ÉäÄ¿±êÀàĞÍ£¬Èçlinear¡¢striped¡¢errorµÈµÈ */
+	/* æ˜ å°„ç›®æ ‡ç±»å‹ï¼Œå¦‚linearã€stripedã€errorç­‰ç­‰ */
 	struct target_type *type;
 
 	/* target limits */
-	/* Õâ¸öÄ¿±êÔÚÓ³ÉäÉè±¸ÉÏµÄÆğÊ¼ÉÈÇø */
+	/* è¿™ä¸ªç›®æ ‡åœ¨æ˜ å°„è®¾å¤‡ä¸Šçš„èµ·å§‹æ‰‡åŒº */
 	sector_t begin;
-	/* Õâ¸öÄ¿±êÔÚÓ³ÉäÉè±¸ÉÏµÄ³¤¶È */
+	/* è¿™ä¸ªç›®æ ‡åœ¨æ˜ å°„è®¾å¤‡ä¸Šçš„é•¿åº¦ */
 	sector_t len;
 
 	/* FIXME: turn this into a mask, and merge with io_restrictions */
 	/* Always a power of 2 */
-	/* Ó³Éäµ½Õâ¸öÄ¿±êµÄIO±ØĞëÔÙ°´ÕÕÕâ¸öÉÈÇøÊıÏ¸·ÖÎª¸üĞ¡µÄIOÏÂ·¢Ö´ĞĞ£¬±ØĞëÎª2µÄÃİ */
+	/* æ˜ å°„åˆ°è¿™ä¸ªç›®æ ‡çš„IOå¿…é¡»å†æŒ‰ç…§è¿™ä¸ªæ‰‡åŒºæ•°ç»†åˆ†ä¸ºæ›´å°çš„IOä¸‹å‘æ‰§è¡Œï¼Œå¿…é¡»ä¸º2çš„å¹‚ */
 	sector_t split_io;
 
 	/*
@@ -136,11 +136,11 @@ struct dm_target {
 	struct io_restrictions limits;
 
 	/* target specific data */
-	/* Ë½ÓĞĞÅÏ¢£¬¸ù¾İÓ³ÉäÀàĞÍ²»Í¬¶ø²»Í¬ */
+	/* ç§æœ‰ä¿¡æ¯ï¼Œæ ¹æ®æ˜ å°„ç±»å‹ä¸åŒè€Œä¸åŒ */
 	void *private;
 
 	/* Used to provide an error string from the ctr */
-	/* Ó³Éä±í¹¹Ôì¹ı³ÌÖĞµÄ´íÎó×Ö·û´® */
+	/* æ˜ å°„è¡¨æ„é€ è¿‡ç¨‹ä¸­çš„é”™è¯¯å­—ç¬¦ä¸² */
 	char *error;
 };
 

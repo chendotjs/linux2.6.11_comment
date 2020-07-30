@@ -328,7 +328,7 @@ cleanup:
  * dentry->d_inode->i_sem: don't care
  */
 /**
- * ext2µÄlistxattrÊµÏÖ·½·¨¡£
+ * ext2çš„listxattrå®ç°æ–¹æ³•ã€‚
  */
 ssize_t
 ext2_listxattr(struct dentry *dentry, char *buffer, size_t size)

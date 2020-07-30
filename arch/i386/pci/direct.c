@@ -242,26 +242,26 @@ static int __init pci_check_type2(void)
 }
 
 /**
- * Ö±½ÓÌ½²âPCI×ÜÏß¡£
+ * ç›´æ¥æ¢æµ‹PCIæ€»çº¿ã€‚
  */
 static int __init pci_direct_init(void)
 {
 	struct resource *region, *region2;
 
 	/**
-	 * Èç¹ûBOOTÔÚÒıµ¼ÄÚºËÊ±¼ÓÈëÁË"pci=xxx"ÒÔ½ûÖ¹conf1ÀàĞÍ£¬Ôò×ªµ½type2¡£
+	 * å¦‚æœBOOTåœ¨å¼•å¯¼å†…æ ¸æ—¶åŠ å…¥äº†"pci=xxx"ä»¥ç¦æ­¢conf1ç±»å‹ï¼Œåˆ™è½¬åˆ°type2ã€‚
 	 */
 	if ((pci_probe & PCI_PROBE_CONF1) == 0)
 		goto type2;
 	/**
-	 * conf1Ê¹ÓÃ0xCF8ºÍ0xCFCÁ½¸ö¶Ë¿Ú·ÃÎÊÉè±¸µÄÅäÖÃ¿Õ¼ä¡£ÏÈÉêÇëÕâÁ½¸öÇøÓò¡£
+	 * conf1ä½¿ç”¨0xCF8å’Œ0xCFCä¸¤ä¸ªç«¯å£è®¿é—®è®¾å¤‡çš„é…ç½®ç©ºé—´ã€‚å…ˆç”³è¯·è¿™ä¸¤ä¸ªåŒºåŸŸã€‚
 	 */
 	region = request_region(0xCF8, 8, "PCI conf1");
 	if (!region)
 		goto type2;
 
 	/**
-	 * Ö§³Öconf1·ÃÎÊ¡£ËæºóÊ¹ÓÃpci_conf1_readºÍpci_conf1_writeº¯Êı·ÃÎÊPCI¿Õ¼ä¡£
+	 * æ”¯æŒconf1è®¿é—®ã€‚éšåä½¿ç”¨pci_conf1_readå’Œpci_conf1_writeå‡½æ•°è®¿é—®PCIç©ºé—´ã€‚
 	 */
 	if (pci_check_type1()) {
 		printk(KERN_INFO "PCI: Using configuration type 1\n");
@@ -281,7 +281,7 @@ static int __init pci_direct_init(void)
 		goto fail2;
 
 	/**
-	 * Ö§³Öconf2·ÃÎÊ£¬ÕâÊÇ±»x86·ÏÆúÁËµÄ·½·¨¡£Çë²Î¿¼pci_conf2_readºÍpci_conf2_writeº¯Êı¡£
+	 * æ”¯æŒconf2è®¿é—®ï¼Œè¿™æ˜¯è¢«x86åºŸå¼ƒäº†çš„æ–¹æ³•ã€‚è¯·å‚è€ƒpci_conf2_readå’Œpci_conf2_writeå‡½æ•°ã€‚
 	 */
 	if (pci_check_type2()) {
 		printk(KERN_INFO "PCI: Using configuration type 2\n");

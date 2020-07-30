@@ -1115,7 +1115,7 @@ out:
  * RPC receive timeout handler.
  */
 /**
- * RPC½ÓÊÕ³¬Ê±´¦Àí¡£
+ * RPCæ¥æ”¶è¶…æ—¶å¤„ç†ã€‚
  */
 static void
 xprt_timer(struct rpc_task *task)

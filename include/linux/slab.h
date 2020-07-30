@@ -44,8 +44,8 @@ typedef struct kmem_cache_s kmem_cache_t;
 #define SLAB_MUST_HWCACHE_ALIGN	0x00008000UL	/* force alignment */
 #define SLAB_STORE_USER		0x00010000UL	/* store the last owner for bug hunting */
 /**
- * Èç¹û´´½¨ÁËslab¸ßËÙ»º´æ²¢ÇÒ¸Ã±êÖ¾±»ÖÃÎ»£¬ÄÇÃ´»á½«Ò³¿ò¼ÇÂ¼Îª¿É»ØÊÕÒ³¡£
- * ÒÔÂú×ãÒ»Ğ©ÓÃ»§Ì¬ÇëÇó¡£
+ * å¦‚æœåˆ›å»ºäº†slabé«˜é€Ÿç¼“å­˜å¹¶ä¸”è¯¥æ ‡å¿—è¢«ç½®ä½ï¼Œé‚£ä¹ˆä¼šå°†é¡µæ¡†è®°å½•ä¸ºå¯å›æ”¶é¡µã€‚
+ * ä»¥æ»¡è¶³ä¸€äº›ç”¨æˆ·æ€è¯·æ±‚ã€‚
  */
 #define SLAB_RECLAIM_ACCOUNT	0x00020000UL	/* track pages allocated to indicate
 						   what is reclaimable later*/
@@ -87,14 +87,14 @@ extern struct cache_sizes malloc_sizes[];
 extern void *__kmalloc(size_t, int);
 
 /**
- * »ñµÃÆÕÍ¨¸ßËÙ»º´æÖĞµÄ¶ÔÏó¡£
+ * è·å¾—æ™®é€šé«˜é€Ÿç¼“å­˜ä¸­çš„å¯¹è±¡ã€‚
  */
 static inline void *kmalloc(size_t size, int flags)
 {
 	if (__builtin_constant_p(size)) {
 		int i = 0;
 		/**
-		 * ÕÒsize¶ÔÓ¦µÄ¼¸ºÎ·Ö²¼´óĞ¡Öµ¡£
+		 * æ‰¾sizeå¯¹åº”çš„å‡ ä½•åˆ†å¸ƒå¤§å°å€¼ã€‚
 		 */
 #define CACHE(x) \
 		if (size <= x) \
@@ -103,7 +103,7 @@ static inline void *kmalloc(size_t size, int flags)
 			i++;
 #include "kmalloc_sizes.h"
 		/**
-		 * ÔËĞĞµ½´Ë£¬ËµÃ÷Òª·ÖÅäµÄ¶ÔÏóÌ«´ó£¬²»ÄÜ·ÖÅäÕâÃ´´óµÄ¶ÔÏó¡£
+		 * è¿è¡Œåˆ°æ­¤ï¼Œè¯´æ˜è¦åˆ†é…çš„å¯¹è±¡å¤ªå¤§ï¼Œä¸èƒ½åˆ†é…è¿™ä¹ˆå¤§çš„å¯¹è±¡ã€‚
 		 */
 #undef CACHE
 		{
@@ -111,8 +111,8 @@ static inline void *kmalloc(size_t size, int flags)
 			__you_cannot_kmalloc_that_much();
 		}
 		/**
-		 * ÇëÇó·ÖÅäµÄsize¶ÔÓ¦µÄ¸ßËÙ»º´æÃèÊö·ûË÷ÒıºÅÎªi
-		 * ¸ù¾İGFP_DMA£¬ÔÚ²»Í¬µÄ¸ßËÙ»º´æÃèÊö·ûÖĞ·ÖÅä¶ÔÏó¡£
+		 * è¯·æ±‚åˆ†é…çš„sizeå¯¹åº”çš„é«˜é€Ÿç¼“å­˜æè¿°ç¬¦ç´¢å¼•å·ä¸ºi
+		 * æ ¹æ®GFP_DMAï¼Œåœ¨ä¸åŒçš„é«˜é€Ÿç¼“å­˜æè¿°ç¬¦ä¸­åˆ†é…å¯¹è±¡ã€‚
 		 */
 found:
 		return kmem_cache_alloc((flags & GFP_DMA) ?

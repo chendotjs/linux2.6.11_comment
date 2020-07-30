@@ -18,19 +18,19 @@
 
 #define SVC_CRED_NGROUPS	32
 /**
- * LinuxµÄRPC¼ø±ð»úÖÆÊµÏÖ
+ * Linuxçš„RPCé‰´åˆ«æœºåˆ¶å®žçŽ°
  */
 struct svc_cred {
 	/**
-	 * ·¢³öÇëÇóµÄÓÃ»§µÄÊýÖµ±êÊ¶·û
+	 * å‘å‡ºè¯·æ±‚çš„ç”¨æˆ·çš„æ•°å€¼æ ‡è¯†ç¬¦
 	 */
 	uid_t			cr_uid;
 	/**
-	 * ÓÃ»§µÄÖ÷Êý×Ö×é±êÊ¶·û
+	 * ç”¨æˆ·çš„ä¸»æ•°å­—ç»„æ ‡è¯†ç¬¦
 	 */
 	gid_t			cr_gid;
 	/**
-	 * ¸¨Öú×é±êÊ¶·û¡£ÊÇÒ»¸öÊý×é£¬ÓÃ»§µÄ¸¨Öú×é±êÊ¶·û·ÅÔÚÊý×éµÄÇ°¼¸¸öÎ»ÖÃ£¬Èç¹ûÃ»ÓÐÌíÂúÊý×éµÄ»°£¬Ôò½«ÒÔNOGROUP½áÊø¡£
+	 * è¾…åŠ©ç»„æ ‡è¯†ç¬¦ã€‚æ˜¯ä¸€ä¸ªæ•°ç»„ï¼Œç”¨æˆ·çš„è¾…åŠ©ç»„æ ‡è¯†ç¬¦æ”¾åœ¨æ•°ç»„çš„å‰å‡ ä¸ªä½ç½®ï¼Œå¦‚æžœæ²¡æœ‰æ·»æ»¡æ•°ç»„çš„è¯ï¼Œåˆ™å°†ä»¥NOGROUPç»“æŸã€‚
 	 */
 	struct group_info	*cr_group_info;
 };

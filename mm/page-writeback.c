@@ -65,7 +65,7 @@ static inline long sync_writeback_pages(void)
  * Start background writeback (via pdflush) at this percentage
  */
 /**
- * µ±ÄÚ´æÖĞµÄ»º³åÔàÒ³³¬¹ı´Ë±ÈÀıÊ±£¬¶ÔÒ³µ÷Õû»º´æÖĞµÄÒ³½øĞĞĞŞ¸ÄµÄº¯Êı»á»½ĞÑpdflush½ø³Ì£¬Ö´ĞĞ»Øµ÷º¯Êıbackgroud_writeout
+ * å½“å†…å­˜ä¸­çš„ç¼“å†²è„é¡µè¶…è¿‡æ­¤æ¯”ä¾‹æ—¶ï¼Œå¯¹é¡µè°ƒæ•´ç¼“å­˜ä¸­çš„é¡µè¿›è¡Œä¿®æ”¹çš„å‡½æ•°ä¼šå”¤é†’pdflushè¿›ç¨‹ï¼Œæ‰§è¡Œå›è°ƒå‡½æ•°backgroud_writeout
  */
 int dirty_background_ratio = 10;
 
@@ -79,9 +79,9 @@ int vm_dirty_ratio = 40;
  * (hundredths of a second)
  */
 /**
- * ÔàÒ³ÔÚ±£ÁôÒ»¶ÎÊ±¼äºó£¬ÄÚºËÏÔÊ½µÄ¿ªÊ¼IO´«Êä£¬°ÑÔàÒ³µÄÄÚÈİĞ´µ½´ÅÅÌ¡£
- * Õâ¸ö¹¤×÷Î¯ÍĞ¸øÁË±»¶¨ÆÚ»½ĞÑµÄpdflshÄÚºËÏß³Ì¡£Õâ¸öÏß³Ì±»»½ĞÑµÄÊ±¼äÓÉdirty_writeback_centisecs¾ö¶¨
- * Ò»°ãÊÇ1/500Ãë£¬µ«ÊÇ¿ÉÒÔÍ¨¹ıproc/sys/vm/dirty_writeback_centisecsµ÷Õû¡£
+ * è„é¡µåœ¨ä¿ç•™ä¸€æ®µæ—¶é—´åï¼Œå†…æ ¸æ˜¾å¼çš„å¼€å§‹IOä¼ è¾“ï¼ŒæŠŠè„é¡µçš„å†…å®¹å†™åˆ°ç£ç›˜ã€‚
+ * è¿™ä¸ªå·¥ä½œå§”æ‰˜ç»™äº†è¢«å®šæœŸå”¤é†’çš„pdflshå†…æ ¸çº¿ç¨‹ã€‚è¿™ä¸ªçº¿ç¨‹è¢«å”¤é†’çš„æ—¶é—´ç”±dirty_writeback_centisecså†³å®š
+ * ä¸€èˆ¬æ˜¯1/500ç§’ï¼Œä½†æ˜¯å¯ä»¥é€šè¿‡proc/sys/vm/dirty_writeback_centisecsè°ƒæ•´ã€‚
  */
 int dirty_writeback_centisecs = 5 * 100;
 
@@ -302,8 +302,8 @@ EXPORT_SYMBOL(balance_dirty_pages_ratelimited);
  * memory is less than the background threshold, or until we're all clean.
  */
 /**
- * ÏµÍ³µÄÉ¨ÃèÒ³¸ßËÙ»º´æÒÔËÑË÷ÒªË¢ĞÂµÄÔàÒ³,ÊÇpdflushµÄ»Øµ÷º¯ÊıÖ®Ò».
- * _min_pages:	ÒªË¢ĞÂµ½´ÅÅÌµÄ×îÉÙÒ³Êı¡£
+ * ç³»ç»Ÿçš„æ‰«æé¡µé«˜é€Ÿç¼“å­˜ä»¥æœç´¢è¦åˆ·æ–°çš„è„é¡µ,æ˜¯pdflushçš„å›è°ƒå‡½æ•°ä¹‹ä¸€.
+ * _min_pages:	è¦åˆ·æ–°åˆ°ç£ç›˜çš„æœ€å°‘é¡µæ•°ã€‚
  */
 static void background_writeout(unsigned long _min_pages)
 {
@@ -330,21 +330,21 @@ static void background_writeout(unsigned long _min_pages)
 		wbc.nr_to_write = MAX_WRITEBACK_PAGES;
 		wbc.pages_skipped = 0;
 		/**
-		 * µ÷ÓÃwriteback_inodes³¢ÊÔĞ´1024¸öÔàÒ³¡£
+		 * è°ƒç”¨writeback_inodeså°è¯•å†™1024ä¸ªè„é¡µã€‚
 		 */
 		writeback_inodes(&wbc);
 		/**
-		 * ¼ì²éÓĞĞ§Ğ´¹ıµÄÒ³µÄÊıÁ¿£¬²¢¼õÉÙĞèÒªĞ´µÄÒ³µÄ¸öÊı¡£
+		 * æ£€æŸ¥æœ‰æ•ˆå†™è¿‡çš„é¡µçš„æ•°é‡ï¼Œå¹¶å‡å°‘éœ€è¦å†™çš„é¡µçš„ä¸ªæ•°ã€‚
 		 */
 		min_pages -= MAX_WRITEBACK_PAGES - wbc.nr_to_write;
 		/**
-		 * Èç¹ûÒÑ¾­Ğ´¹ıµÄÒ³ÉÙÓÚ1024£¬»òÂÔ¹ıÁËÒ»Ğ©Ò³£¬Ôò¿ÉÄÜ¿éÉè±¸µÄÇëÇó¶ÓÁĞ´¦ÓÚÓµÈû×´Ì¬¡£
+		 * å¦‚æœå·²ç»å†™è¿‡çš„é¡µå°‘äº1024ï¼Œæˆ–ç•¥è¿‡äº†ä¸€äº›é¡µï¼Œåˆ™å¯èƒ½å—è®¾å¤‡çš„è¯·æ±‚é˜Ÿåˆ—å¤„äºæ‹¥å¡çŠ¶æ€ã€‚
 		 */
 		if (wbc.nr_to_write > 0 || wbc.pages_skipped > 0) {
 			/* Wrote less than expected */
 			/**
-			 * Èç¹û¿éÉè±¸µÄÇëÇó¶ÓÁĞ´¦ÓÚÓµÈû×´Ì¬£¬Ê¹µ±Ç°½ø³ÌÔÚÌØ¶¨µÄµÈ´ı¶ÓÁĞÉÏË¯Ãß100ms¡£
-			 * »òÕßÊ¹µ±Ç°½ø³ÌË¯Ãßµ½¶ÓÁĞ±äµÃ²»ÓµÈû¡£
+			 * å¦‚æœå—è®¾å¤‡çš„è¯·æ±‚é˜Ÿåˆ—å¤„äºæ‹¥å¡çŠ¶æ€ï¼Œä½¿å½“å‰è¿›ç¨‹åœ¨ç‰¹å®šçš„ç­‰å¾…é˜Ÿåˆ—ä¸Šç¡çœ 100msã€‚
+			 * æˆ–è€…ä½¿å½“å‰è¿›ç¨‹ç¡çœ åˆ°é˜Ÿåˆ—å˜å¾—ä¸æ‹¥å¡ã€‚
 			 */
 			blk_congestion_wait(WRITE, HZ/10);
 			if (!wbc.encountered_congestion)
@@ -359,13 +359,13 @@ static void background_writeout(unsigned long _min_pages)
  * -1 if all pdflush threads were busy.
  */
 /**
- * »½ĞÑpdflushÄÚºËÏß³Ì¡£
- * µ±ÄÚ´æ²»×ã£¬»òÕßÓÃ»§ÏÔÊ¾µØÇëÇóË¢ĞÂ²Ù×÷Ê±£¬»áÖ´ĞĞ´Ëº¯Êı¡£
- *     ÓÃ»§Ì¬½ø³Ì·¢³ösyncÏµÍ³µ÷ÓÃ¡£
- *     grow_buffersº¯Êı·ÖÅäÒ»¸öĞÂ»º³åÇøÒ³Ê±Ê§°Ü¡£
- *     Ò³¿ò»ØÊÕËã·¨µ÷ÓÃfree_more_memory»òtry_to_free_pages
- *     mempoll_allocº¯Êı·ÖÅäÒ»¸öĞÂµÄÄÚ´æ³ØÔªËØÊ±Ê§°Ü¡£
- * nr_pages:	Ó¦¸ÃË¢ĞÂµÄÔàÒ³ÊıÁ¿¡£0±íÊ¾ËùÓĞÔàÒ³¶¼Ó¦¸ÃĞ´»Ø´ÅÅÌ¡£
+ * å”¤é†’pdflushå†…æ ¸çº¿ç¨‹ã€‚
+ * å½“å†…å­˜ä¸è¶³ï¼Œæˆ–è€…ç”¨æˆ·æ˜¾ç¤ºåœ°è¯·æ±‚åˆ·æ–°æ“ä½œæ—¶ï¼Œä¼šæ‰§è¡Œæ­¤å‡½æ•°ã€‚
+ *     ç”¨æˆ·æ€è¿›ç¨‹å‘å‡ºsyncç³»ç»Ÿè°ƒç”¨ã€‚
+ *     grow_bufferså‡½æ•°åˆ†é…ä¸€ä¸ªæ–°ç¼“å†²åŒºé¡µæ—¶å¤±è´¥ã€‚
+ *     é¡µæ¡†å›æ”¶ç®—æ³•è°ƒç”¨free_more_memoryæˆ–try_to_free_pages
+ *     mempoll_allocå‡½æ•°åˆ†é…ä¸€ä¸ªæ–°çš„å†…å­˜æ± å…ƒç´ æ—¶å¤±è´¥ã€‚
+ * nr_pages:	åº”è¯¥åˆ·æ–°çš„è„é¡µæ•°é‡ã€‚0è¡¨ç¤ºæ‰€æœ‰è„é¡µéƒ½åº”è¯¥å†™å›ç£ç›˜ã€‚
  */
 int wakeup_bdflush(long nr_pages)
 {
@@ -376,7 +376,7 @@ int wakeup_bdflush(long nr_pages)
 		nr_pages = wbs.nr_dirty + wbs.nr_unstable;
 	}
 	/**
-	 * µ÷ÓÃpdflush_operation»½ĞÑ¿ÕÏĞpdflushÏß³Ì£¬²¢Î¯ÍĞËüÖ´ĞĞbackground_writeoutº¯Êı¡£
+	 * è°ƒç”¨pdflush_operationå”¤é†’ç©ºé—²pdflushçº¿ç¨‹ï¼Œå¹¶å§”æ‰˜å®ƒæ‰§è¡Œbackground_writeoutå‡½æ•°ã€‚
 	 */
 	return pdflush_operation(background_writeout, nr_pages);
 }
@@ -385,7 +385,7 @@ static void wb_timer_fn(unsigned long unused);
 static void laptop_timer_fn(unsigned long unused);
 
 /**
- * »ØĞ´¶¨Ê±Æ÷¡£
+ * å›å†™å®šæ—¶å™¨ã€‚
  */
 static struct timer_list wb_timer =
 			TIMER_INITIALIZER(wb_timer_fn, 0, 0);
@@ -408,7 +408,7 @@ static struct timer_list laptop_mode_wb_timer =
  * all dirty pages if they are all attached to "old" mappings.
  */
 /**
- * ¼ì²éÒ³¸ßËÙ»º´æÖĞÖĞÊÇ·ñÓĞ"Ôà"ÁËºÜ³¤Ê±¼äµÄÒ³¡£
+ * æ£€æŸ¥é¡µé«˜é€Ÿç¼“å­˜ä¸­ä¸­æ˜¯å¦æœ‰"è„"äº†å¾ˆé•¿æ—¶é—´çš„é¡µã€‚
  */
 static void wb_kupdate(unsigned long arg)
 {
@@ -427,36 +427,36 @@ static void wb_kupdate(unsigned long arg)
 	};
 
 	/**
-	 * ½«ÔàµÄ³¬¼¶¿éĞ´µ½´ÅÅÌÖĞ¡£
-	 * È·±£ÁËÈÎºÎ³¬¼¶¿éÔàµÄÊ±¼äÍ¨³£²»»á³¬¹ı5S¡£
+	 * å°†è„çš„è¶…çº§å—å†™åˆ°ç£ç›˜ä¸­ã€‚
+	 * ç¡®ä¿äº†ä»»ä½•è¶…çº§å—è„çš„æ—¶é—´é€šå¸¸ä¸ä¼šè¶…è¿‡5Sã€‚
 	 */
 	sync_supers();
 
 	get_writeback_state(&wbs);
 	/**
-	 * ½«µ±Ç°Ê±¼ä¼õÈ¥30Ãë£¬ÔçÓÚ´ËÊ±¼äµÄÒ³±»ÈÏÎªÊÇĞèÒª»ØĞ´µÄÒ³¡£±ÜÃâÕâĞ©Ò³±»¶öËÀ¡£
-	 * Ò²¾ÍÊÇËµ£¬Ò»¸öÒ³±£³ÖÎªÔàÒ³µÄ×î³¤Ê±¼äÊÇ30S¡£
+	 * å°†å½“å‰æ—¶é—´å‡å»30ç§’ï¼Œæ—©äºæ­¤æ—¶é—´çš„é¡µè¢«è®¤ä¸ºæ˜¯éœ€è¦å›å†™çš„é¡µã€‚é¿å…è¿™äº›é¡µè¢«é¥¿æ­»ã€‚
+	 * ä¹Ÿå°±æ˜¯è¯´ï¼Œä¸€ä¸ªé¡µä¿æŒä¸ºè„é¡µçš„æœ€é•¿æ—¶é—´æ˜¯30Sã€‚
 	 */
 	oldest_jif = jiffies - (dirty_expire_centisecs * HZ) / 100;
 	start_jif = jiffies;
 	next_jif = start_jif + (dirty_writeback_centisecs * HZ) / 100;
 	/**
-	 * ¸ù¾İpage_stateÈ·¶¨ÔÚÒ³¸ßËÙ»º´æÖĞÔàÒ³µÄ´óÖÂÊıÁ¿¡£
+	 * æ ¹æ®page_stateç¡®å®šåœ¨é¡µé«˜é€Ÿç¼“å­˜ä¸­è„é¡µçš„å¤§è‡´æ•°é‡ã€‚
 	 */
 	nr_to_write = wbs.nr_dirty + wbs.nr_unstable +
 			(inodes_stat.nr_inodes - inodes_stat.nr_unused);
 	/**
-	 * Ö±µ½ÔàÒ³¶¼±»Ğ´µ½´ÅÅÌÖĞ²ÅÍË³ö¡£
+	 * ç›´åˆ°è„é¡µéƒ½è¢«å†™åˆ°ç£ç›˜ä¸­æ‰é€€å‡ºã€‚
 	 */
 	while (nr_to_write > 0) {
 		wbc.encountered_congestion = 0;
 		wbc.nr_to_write = MAX_WRITEBACK_PAGES;
 		/**
-		 * ·´¸´µ÷ÓÃwriteback_inodes½«´ÅÅÌÖĞµÄÔàÒ³Ğ´»Øµ½´ÅÅÌ¡£
+		 * åå¤è°ƒç”¨writeback_inodeså°†ç£ç›˜ä¸­çš„è„é¡µå†™å›åˆ°ç£ç›˜ã€‚
 		 */
 		writeback_inodes(&wbc);
 		if (wbc.nr_to_write > 0) {
-			if (wbc.encountered_congestion)/* Èç¹ûÇëÇó¶ÓÁĞ±äµÃÓµÈû£¬¾ÍË¯ÃßÒ»¶ÎÊ±¼ä */
+			if (wbc.encountered_congestion)/* å¦‚æœè¯·æ±‚é˜Ÿåˆ—å˜å¾—æ‹¥å¡ï¼Œå°±ç¡çœ ä¸€æ®µæ—¶é—´ */
 				blk_congestion_wait(WRITE, HZ/10);
 			else
 				break;	/* All the old data is written */
@@ -464,7 +464,7 @@ static void wb_kupdate(unsigned long arg)
 		nr_to_write -= MAX_WRITEBACK_PAGES - wbc.nr_to_write;
 	}
 	/**
-	 * Èç¹û±¾´ÎÖ´ĞĞÊ±¼äÌ«³¤£¬µ¼ÖÂÏÂ´Î¶¨Ê±Æ÷±Èµ±Ç°Ê±¼äÍíÁË²»µ½Ò»Ãë£¬¾ÍÇ¿ÖÆÔÚ1Ãëºó²Å¿ªÊ¼ÏÂÒ»´Î´¦Àí¡£
+	 * å¦‚æœæœ¬æ¬¡æ‰§è¡Œæ—¶é—´å¤ªé•¿ï¼Œå¯¼è‡´ä¸‹æ¬¡å®šæ—¶å™¨æ¯”å½“å‰æ—¶é—´æ™šäº†ä¸åˆ°ä¸€ç§’ï¼Œå°±å¼ºåˆ¶åœ¨1ç§’åæ‰å¼€å§‹ä¸‹ä¸€æ¬¡å¤„ç†ã€‚
 	 */
 	if (time_before(next_jif, jiffies + HZ))
 		next_jif = jiffies + HZ;
@@ -489,13 +489,13 @@ int dirty_writeback_centisecs_handler(ctl_table *table, int write,
 }
 
 /**
- * ´ÅÅÌ»ØĞ´¶¨Ê±Æ÷º¯Êı¡£
+ * ç£ç›˜å›å†™å®šæ—¶å™¨å‡½æ•°ã€‚
  */
 static void wb_timer_fn(unsigned long unused)
 {
 	/**
-	 * ±¾º¯Êı»½ĞÑpdflushº¯Êı£¬²¢ÏòËü´«µİwb_kupdate
-	 * wb_kupdateº¯Êı±éÀúÒ³µ÷Õû»º´æËÑË÷³Â¾ÉµÄÔàË÷Òı½Úµã¡£
+	 * æœ¬å‡½æ•°å”¤é†’pdflushå‡½æ•°ï¼Œå¹¶å‘å®ƒä¼ é€’wb_kupdate
+	 * wb_kupdateå‡½æ•°éå†é¡µè°ƒæ•´ç¼“å­˜æœç´¢é™ˆæ—§çš„è„ç´¢å¼•èŠ‚ç‚¹ã€‚
 	 */
 	if (pdflush_operation(wb_kupdate, 0) < 0)
 		mod_timer(&wb_timer, jiffies + HZ); /* delay 1 second */

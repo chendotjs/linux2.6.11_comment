@@ -82,10 +82,10 @@ extern struct movsl_mask {
  * this function, memory access functions may still return -EFAULT.
  */
 /**
- * ¶ÔÏµÍ³µ÷ÓÃËù´«µÝµØÖ·µÄ¼ì²éÊÇÍ¨¹ýaccess_okºêÊµÏÖµÄ¡£
- * ËüÓÐÁ½¸ö·Ö±ðÎªaddrºÍsizeµÄ²ÎÊý¡£
- * ¸Ãºê¼ì²éaddrµ½addr+size-1Ö®¼äµÄµØÖ·Çø¼ä¡£
- * Ëüµ÷ÓÃ__range_ok£¬±¾ÖÊÉÏÖ´ÐÐÈçÏÂ¼ì²é£º
+ * å¯¹ç³»ç»Ÿè°ƒç”¨æ‰€ä¼ é€’åœ°å€çš„æ£€æŸ¥æ˜¯é€šè¿‡access_okå®å®žçŽ°çš„ã€‚
+ * å®ƒæœ‰ä¸¤ä¸ªåˆ†åˆ«ä¸ºaddrå’Œsizeçš„å‚æ•°ã€‚
+ * è¯¥å®æ£€æŸ¥addråˆ°addr+size-1ä¹‹é—´çš„åœ°å€åŒºé—´ã€‚
+ * å®ƒè°ƒç”¨__range_okï¼Œæœ¬è´¨ä¸Šæ‰§è¡Œå¦‚ä¸‹æ£€æŸ¥ï¼š
  * (u33)addr + (u33)size >= (u33)current->addr_limit.seg
  */
 #define access_ok(type,addr,size) (likely(__range_ok(addr,size) == 0))
@@ -108,8 +108,8 @@ extern struct movsl_mask {
  * See access_ok() for more details.
  */
 /**
- * º¯Êýverify_areaÖ´ÐÐÓëaccess_okºêÀàËÆµÄ¼ì²é£¬ËäÈ»Ëü±»ÈÏÎªÊÇ³Â¾É¹ýÊ±µÄ
- * µ«ÊÇÔÚÔ´´úÂëÖÐÈÔÈ»±»¹ã·ºÊ¹ÓÃ¡£
+ * å‡½æ•°verify_areaæ‰§è¡Œä¸Žaccess_okå®ç±»ä¼¼çš„æ£€æŸ¥ï¼Œè™½ç„¶å®ƒè¢«è®¤ä¸ºæ˜¯é™ˆæ—§è¿‡æ—¶çš„
+ * ä½†æ˜¯åœ¨æºä»£ç ä¸­ä»ç„¶è¢«å¹¿æ³›ä½¿ç”¨ã€‚
  */
 static inline int verify_area(int type, const void __user * addr, unsigned long size)
 {
@@ -131,15 +131,15 @@ static inline int verify_area(int type, const void __user * addr, unsigned long 
  */
 
 /**
- * Òì³£±íµÄ±íÏî
- * Ö÷ÒªµÄÒì³£±íÔÚ½¨Á¢ÄÚºËÓ³ÏóÊ±×Ô¶¯Éú³É¡£´æ·ÅÔÚÄÚºË´úÂë¶ÎµÄ__ex_table½Ú¡£
- * ËùÓÐÒì³£±íµÄÆðÊ¼ºÍÖÕÖ¹µØÖ·ÓÉ__start__ex_tableºÍ__stop__ex_table±êÊ¶¡£
+ * å¼‚å¸¸è¡¨çš„è¡¨é¡¹
+ * ä¸»è¦çš„å¼‚å¸¸è¡¨åœ¨å»ºç«‹å†…æ ¸æ˜ è±¡æ—¶è‡ªåŠ¨ç”Ÿæˆã€‚å­˜æ”¾åœ¨å†…æ ¸ä»£ç æ®µçš„__ex_tableèŠ‚ã€‚
+ * æ‰€æœ‰å¼‚å¸¸è¡¨çš„èµ·å§‹å’Œç»ˆæ­¢åœ°å€ç”±__start__ex_tableå’Œ__stop__ex_tableæ ‡è¯†ã€‚
  */
 struct exception_table_entry
 {
 	/**
-	 * insn-·ÃÎÊ½ø³ÌµØÖ·¿Õ¼äµÄÖ¸ÁîµÄÏßÐÔµØÖ·¡£
-	 * fixup-µ±Ö¸Áî·¢ÉúÒì³£Ê±£¬fixup¾ÍÊÇÒªµ÷ÓÃµÄ»ã±àÓïÑÔ´úÂëµÄµØÖ·¡£
+	 * insn-è®¿é—®è¿›ç¨‹åœ°å€ç©ºé—´çš„æŒ‡ä»¤çš„çº¿æ€§åœ°å€ã€‚
+	 * fixup-å½“æŒ‡ä»¤å‘ç”Ÿå¼‚å¸¸æ—¶ï¼Œfixupå°±æ˜¯è¦è°ƒç”¨çš„æ±‡ç¼–è¯­è¨€ä»£ç çš„åœ°å€ã€‚
 	 */
 	unsigned long insn, fixup;
 };
@@ -190,7 +190,7 @@ extern void __get_user_4(void);
  * On error, the variable @x is set to zero.
  */
 /**
- * ´ÓÓÃ»§¿Õ¼ä¶ÁÒ»¸öÕûÊý£¨1¡¢2¡¢4×Ö½Ú£©
+ * ä»Žç”¨æˆ·ç©ºé—´è¯»ä¸€ä¸ªæ•´æ•°ï¼ˆ1ã€2ã€4å­—èŠ‚ï¼‰
  */
 #define get_user(x,ptr)							\
 ({	int __ret_gu;							\
@@ -225,7 +225,7 @@ extern void __put_user_bad(void);
  * Returns zero on success, or -EFAULT on error.
  */
 /**
- * ÏòÓÃ»§¿Õ¼äÐ´ÈëÒ»¸öÕûÊý£¨1¡¢2¡¢4¸ö×Ö½Ú£©
+ * å‘ç”¨æˆ·ç©ºé—´å†™å…¥ä¸€ä¸ªæ•´æ•°ï¼ˆ1ã€2ã€4ä¸ªå­—èŠ‚ï¼‰
  */
 #define put_user(x,ptr)							\
   __put_user_check((__typeof__(*(ptr)))(x),(ptr),sizeof(*(ptr)))
@@ -496,7 +496,7 @@ __copy_from_user_inatomic(void *to, const void __user *from, unsigned long n)
 }
 
 /**
- * ´ÓÓÃ»§¿Õ¼ä¸´ÖÆÈÎÒâ´óÐ¡µÄ¿é¡£
+ * ä»Žç”¨æˆ·ç©ºé—´å¤åˆ¶ä»»æ„å¤§å°çš„å—ã€‚
  */
 static inline unsigned long
 __copy_from_user(void *to, const void __user *from, unsigned long n)
@@ -528,7 +528,7 @@ long __must_check __strncpy_from_user(char *dst,
  * consider using strnlen_user() instead.
  */
 /**
- * ·µ»ØÓÃ»§¿Õ¼äÒÔNULL½áÊøµÄ×Ö·û´®µÄ³¤¶È
+ * è¿”å›žç”¨æˆ·ç©ºé—´ä»¥NULLç»“æŸçš„å­—ç¬¦ä¸²çš„é•¿åº¦
  */
 #define strlen_user(str) strnlen_user(str, ~0UL >> 1)
 

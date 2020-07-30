@@ -31,7 +31,7 @@ typedef struct svc_buf	svc_buf;
 
 
 /**
- * NFS_NULLµ÷ÓÃµÄÊµÏÖ£¬¿Í»§¶ËÓÃ´ËÈ·¶¨·şÎñÆ÷ÊÇ·ñÏìÓ¦¡£
+ * NFS_NULLè°ƒç”¨çš„å®ç°ï¼Œå®¢æˆ·ç«¯ç”¨æ­¤ç¡®å®šæœåŠ¡å™¨æ˜¯å¦å“åº”ã€‚
  */
 static int
 nfsd_proc_null(struct svc_rqst *rqstp, void *argp, void *resp)

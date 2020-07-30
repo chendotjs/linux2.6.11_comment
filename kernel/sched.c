@@ -122,7 +122,7 @@
  */
 
 /**
- * ±¾ºê¼ÆËã½ø³ÌÔ­À´µÄÆ½¾ùË¯ÃßÊ±¼äµÄbonusÖµ¡£
+ * æœ¬å®è®¡ç®—è¿›ç¨‹åŸæ¥çš„å¹³å‡ç¡çœ æ—¶é—´çš„bonuså€¼ã€‚
  */
 #define CURRENT_BONUS(p) \
 	(NS_TO_JIFFIES((p)->sleep_avg) * MAX_BONUS / \
@@ -186,19 +186,19 @@ static unsigned int task_timeslice(task_t *p)
 typedef struct runqueue runqueue_t;
 
 /**
- * ½ø³ÌÓÅÏÈ¼¶Êı×é¡£Ã¿¸öCPU¶ÔÓ¦Ò»¸ö´Ë½á¹¹¡£
+ * è¿›ç¨‹ä¼˜å…ˆçº§æ•°ç»„ã€‚æ¯ä¸ªCPUå¯¹åº”ä¸€ä¸ªæ­¤ç»“æ„ã€‚
  */
 struct prio_array {
 	/**
-	 * Á´±íÖĞ½ø³ÌÃèÊö·ûµÄÊıÁ¿¡£
+	 * é“¾è¡¨ä¸­è¿›ç¨‹æè¿°ç¬¦çš„æ•°é‡ã€‚
 	 */
 	unsigned int nr_active;
 	/**
-	 * ÓÅÏÈÈ¨Êı×é¡£µ±ÇÒ½öµ±Ä³¸öÓÅÏÈÈ¨µÄ½ø³ÌÁ´±í²»Îª¿ÕÊ±ÉèÖÃÏàÓ¦µÄÎ»±êÖ¾¡£
+	 * ä¼˜å…ˆæƒæ•°ç»„ã€‚å½“ä¸”ä»…å½“æŸä¸ªä¼˜å…ˆæƒçš„è¿›ç¨‹é“¾è¡¨ä¸ä¸ºç©ºæ—¶è®¾ç½®ç›¸åº”çš„ä½æ ‡å¿—ã€‚
 	 */
 	unsigned long bitmap[BITMAP_SIZE];
 	/**
-	 * 140¸öÓÅÏÈÈ¨¶ÓÁĞµÄÍ·½áµã¡£
+	 * 140ä¸ªä¼˜å…ˆæƒé˜Ÿåˆ—çš„å¤´ç»“ç‚¹ã€‚
 	 */
 	struct list_head queue[MAX_PRIO];
 };
@@ -211,11 +211,11 @@ struct prio_array {
  * acquire operations must be ordered by ascending &runqueue.
  */
 /**
- * CPUÈÎÎñÔËĞĞ¶ÓÁĞ
+ * CPUä»»åŠ¡è¿è¡Œé˜Ÿåˆ—
  */
 struct runqueue {
 	/**
-	 * ±£»¤½ø³ÌÁ´±íµÄ×ÔĞıËø
+	 * ä¿æŠ¤è¿›ç¨‹é“¾è¡¨çš„è‡ªæ—‹é”
 	 */ 
 	spinlock_t lock;
 
@@ -224,17 +224,17 @@ struct runqueue {
 	 * remote CPUs use both these fields when doing load calculation.
 	 */
 	/**
-	 * ½ø³ÌÁ´±íÖĞ¿ÉÔËĞĞ½ø³ÌµÄÊıÁ¿¡£
+	 * è¿›ç¨‹é“¾è¡¨ä¸­å¯è¿è¡Œè¿›ç¨‹çš„æ•°é‡ã€‚
 	 */
 	unsigned long nr_running;
 #ifdef CONFIG_SMP
 	/**
-	 * »ùÓÚÔËĞĞ¶ÓÁĞÖĞ½ø³ÌµÄÆ½¾ùÊıÁ¿µÄCPU¸ºÔØÒò×Ó¡£
+	 * åŸºäºè¿è¡Œé˜Ÿåˆ—ä¸­è¿›ç¨‹çš„å¹³å‡æ•°é‡çš„CPUè´Ÿè½½å› å­ã€‚
 	 */
 	unsigned long cpu_load;
 #endif
 	/**
-	 * CPUÖ´ĞĞ½ø³ÌÇĞ»»µÄ´ÎÊı¡£
+	 * CPUæ‰§è¡Œè¿›ç¨‹åˆ‡æ¢çš„æ¬¡æ•°ã€‚
 	 */
 	unsigned long long nr_switches;
 
@@ -245,65 +245,65 @@ struct runqueue {
 	 * it on another CPU. Always updated under the runqueue lock:
 	 */
 	/**
-	 * ÏÈÇ°ÔÚÔËĞĞ¶ÓÁĞÁ´±íÖĞ¶øÏÖÔÚ Ë¯ÃßÔÚTASK_UNINTERRUPTIBLE×´Ì¬µÄ½ø³ÌµÄÊıÁ¿¡£
+	 * å…ˆå‰åœ¨è¿è¡Œé˜Ÿåˆ—é“¾è¡¨ä¸­è€Œç°åœ¨ ç¡çœ åœ¨TASK_UNINTERRUPTIBLEçŠ¶æ€çš„è¿›ç¨‹çš„æ•°é‡ã€‚
 	 */
 	unsigned long nr_uninterruptible;
 
 	/**
-	 * ¹ıÆÚ¶ÓÁĞÖĞ×îÀÏµÄ½ø³Ì±»²åÈë¶ÓÁĞµÄÊ±¼ä¡£
+	 * è¿‡æœŸé˜Ÿåˆ—ä¸­æœ€è€çš„è¿›ç¨‹è¢«æ’å…¥é˜Ÿåˆ—çš„æ—¶é—´ã€‚
 	 */
 	unsigned long expired_timestamp;
 	/**
-	 * ×î½üÒ»´Î¶¨Ê±Æ÷ÖĞ¶ÏµÄÊ±¼ä´ÁµÄÖµ¡£
+	 * æœ€è¿‘ä¸€æ¬¡å®šæ—¶å™¨ä¸­æ–­çš„æ—¶é—´æˆ³çš„å€¼ã€‚
 	 */
 	unsigned long long timestamp_last_tick;
 	/**
-	 * curr-µ±Ç°ÕıÔÚÔËĞĞ½ø³ÌµÄ½ø³ÌÃèÊö·ûÖ¸Õë(¶ÔÓÚ±¾µØCPUÀ´Ëµ£¬ËüÓëcurrentÏàÍ¬)¡£
-	 * idle-µ±Ç°CPUµÄswapper½ø³ÌµÄ½ø³ÌÃèÊö·ûÖ¸Õë¡£
+	 * curr-å½“å‰æ­£åœ¨è¿è¡Œè¿›ç¨‹çš„è¿›ç¨‹æè¿°ç¬¦æŒ‡é’ˆ(å¯¹äºæœ¬åœ°CPUæ¥è¯´ï¼Œå®ƒä¸currentç›¸åŒ)ã€‚
+	 * idle-å½“å‰CPUçš„swapperè¿›ç¨‹çš„è¿›ç¨‹æè¿°ç¬¦æŒ‡é’ˆã€‚
 	 */
 	task_t *curr, *idle;
 	/**
-	 * ÔÚ½ø³ÌÇĞ»»ÆÚ¼äÓÃÀ´´æ·Å±»Ìæ»»½ø³ÌµÄÄÚ´æÃèÊö·ûµÄµØÖ·¡£
+	 * åœ¨è¿›ç¨‹åˆ‡æ¢æœŸé—´ç”¨æ¥å­˜æ”¾è¢«æ›¿æ¢è¿›ç¨‹çš„å†…å­˜æè¿°ç¬¦çš„åœ°å€ã€‚
 	 */
 	struct mm_struct *prev_mm;
 	/**
-	 * active-Ö¸Ïò»î¶¯½ø³ÌµÄÁ´±íÊı×é
-	 * expired-Ö¸Ïò¹ıÆÚ½ø³ÌµÄÁ´±íÊı×é
-	 * arrays-»î¶¯½ø³ÌºÍ¹ıÆÚ½ø³ÌµÄÁ½¸ö¼¯ºÏ
+	 * active-æŒ‡å‘æ´»åŠ¨è¿›ç¨‹çš„é“¾è¡¨æ•°ç»„
+	 * expired-æŒ‡å‘è¿‡æœŸè¿›ç¨‹çš„é“¾è¡¨æ•°ç»„
+	 * arrays-æ´»åŠ¨è¿›ç¨‹å’Œè¿‡æœŸè¿›ç¨‹çš„ä¸¤ä¸ªé›†åˆ
 	 */
 	prio_array_t *active, *expired, arrays[2];
 	/**
-	 * ¹ıÆÚ½ø³ÌÖĞ¾²Ì¬ÓÅÏÈ¼¶×î¸ßµÄ½ø³Ì(È¨Öµ×îĞ¡)
+	 * è¿‡æœŸè¿›ç¨‹ä¸­é™æ€ä¼˜å…ˆçº§æœ€é«˜çš„è¿›ç¨‹(æƒå€¼æœ€å°)
 	 */
 	int best_expired_prio;
 	/**
-	 * ÏÈÇ°ÔÚÔËĞĞ¶ÓÁĞµÄÁ´±íÖĞ£¬¶øÏÖÔÚÕıµÈ´ıIO²Ù×÷½áÊøµÄ½ø³ÌµÄÊıÁ¿¡£
+	 * å…ˆå‰åœ¨è¿è¡Œé˜Ÿåˆ—çš„é“¾è¡¨ä¸­ï¼Œè€Œç°åœ¨æ­£ç­‰å¾…IOæ“ä½œç»“æŸçš„è¿›ç¨‹çš„æ•°é‡ã€‚
 	 */
 	atomic_t nr_iowait;
 
 #ifdef CONFIG_SMP
 	/**
-	 * µ±Ç°CPUµÄ»ù±¾µ÷¶ÈÓò
+	 * å½“å‰CPUçš„åŸºæœ¬è°ƒåº¦åŸŸ
 	 */
 	struct sched_domain *sd;
 
 	/* For active balancing */
 	/**
-	 * Èç¹ûÒª°ÑÒ»Ğ©½ø³Ì´Ó±¾µØÔËĞĞ¶ÓÁĞÇ¨ÒÆµ½ÁíÍâµÄÔËĞĞ¶ÓÁĞ£¬¾ÍÉèÖÃÕâ¸ö±êÖ¾¡£
+	 * å¦‚æœè¦æŠŠä¸€äº›è¿›ç¨‹ä»æœ¬åœ°è¿è¡Œé˜Ÿåˆ—è¿ç§»åˆ°å¦å¤–çš„è¿è¡Œé˜Ÿåˆ—ï¼Œå°±è®¾ç½®è¿™ä¸ªæ ‡å¿—ã€‚
 	 */
 	int active_balance;
 	/**
-	 * Î´Ê¹ÓÃ.
-	 * xie.baoyou×¢:´Ó´úÂëÉÏ¿´£¬Ó¦¸ÃÊÇÖ¸ĞèÒª½«±¾ÔËĞĞ¶ÓÁĞÖĞ£¬ÏòÄÄ¸öCPUÇ¨ÒÆÈÎÎñ¡£
+	 * æœªä½¿ç”¨.
+	 * xie.baoyouæ³¨:ä»ä»£ç ä¸Šçœ‹ï¼Œåº”è¯¥æ˜¯æŒ‡éœ€è¦å°†æœ¬è¿è¡Œé˜Ÿåˆ—ä¸­ï¼Œå‘å“ªä¸ªCPUè¿ç§»ä»»åŠ¡ã€‚
 	 */
 	int push_cpu;
 
 	/**
-	 * Ç¨ÒÆÄÚºËÏß³ÌµÄ½ø³ÌÃèÊö·ûÖ¸Õë
+	 * è¿ç§»å†…æ ¸çº¿ç¨‹çš„è¿›ç¨‹æè¿°ç¬¦æŒ‡é’ˆ
 	 */
 	task_t *migration_thread;
 	/**
-	 * ´ÓÔËĞĞ¶ÓÁĞÖĞ±»É¾³ıµÄ½ø³ÌµÄÁ´±í¡£
+	 * ä»è¿è¡Œé˜Ÿåˆ—ä¸­è¢«åˆ é™¤çš„è¿›ç¨‹çš„é“¾è¡¨ã€‚
 	 */
 	struct list_head migration_queue;
 #endif
@@ -352,7 +352,7 @@ struct runqueue {
 };
 
 /**
- * ËùÓĞCPUµÄÔËĞĞ¶ÓÁĞ¡£
+ * æ‰€æœ‰CPUçš„è¿è¡Œé˜Ÿåˆ—ã€‚
  */
 static DEFINE_PER_CPU(struct runqueue, runqueues);
 
@@ -360,19 +360,19 @@ static DEFINE_PER_CPU(struct runqueue, runqueues);
 	for (domain = cpu_rq(cpu)->sd; domain; domain = domain->parent)
 
 /**
- * ¸Ãºê²úÉúË÷ÒıÎªnµÄCPUµÄÔËĞĞ¶ÓÁĞµÄµØÖ·¡£
+ * è¯¥å®äº§ç”Ÿç´¢å¼•ä¸ºnçš„CPUçš„è¿è¡Œé˜Ÿåˆ—çš„åœ°å€ã€‚
  */
 #define cpu_rq(cpu)		(&per_cpu(runqueues, (cpu)))
 /**
- * ¸Ãºê²úÉú±¾µØCPUµÄÔËĞĞ¶ÓÁĞµÄµØÖ·¡£
+ * è¯¥å®äº§ç”Ÿæœ¬åœ°CPUçš„è¿è¡Œé˜Ÿåˆ—çš„åœ°å€ã€‚
  */
 #define this_rq()		(&__get_cpu_var(runqueues))
 /**
- * ¸Ãºê²úÉúÈÎÎñËùÔÚµÄÔËĞĞ¶ÓÁĞµÄµØÖ·¡£
+ * è¯¥å®äº§ç”Ÿä»»åŠ¡æ‰€åœ¨çš„è¿è¡Œé˜Ÿåˆ—çš„åœ°å€ã€‚
  */
 #define task_rq(p)		cpu_rq(task_cpu(p))
 /**
- * ¸Ãºê²úÉúË÷ÒıÎªnµÄCPUµÄÔËĞĞ¶ÓÁĞµÄµ±Ç°ÈÎÎñ¡£
+ * è¯¥å®äº§ç”Ÿç´¢å¼•ä¸ºnçš„CPUçš„è¿è¡Œé˜Ÿåˆ—çš„å½“å‰ä»»åŠ¡ã€‚
  */
 #define cpu_curr(cpu)		(cpu_rq(cpu)->curr)
 
@@ -652,7 +652,7 @@ static inline void sched_info_switch(task_t *prev, task_t *next)
  * Adding/removing a task to/from a priority array:
  */
 /**
- * ´ÓÔËĞĞ¶ÓÁĞµÄÁ´±íÖĞÉ¾³ıÒ»¸ö½ø³ÌµÄÃèÊö·û
+ * ä»è¿è¡Œé˜Ÿåˆ—çš„é“¾è¡¨ä¸­åˆ é™¤ä¸€ä¸ªè¿›ç¨‹çš„æè¿°ç¬¦
  */
 static void dequeue_task(struct task_struct *p, prio_array_t *array)
 {
@@ -663,7 +663,7 @@ static void dequeue_task(struct task_struct *p, prio_array_t *array)
 }
 
 /**
- * °Ñ½ø³ÌÃèÊö·û²åÈëÄ³¸öÔËĞĞ¶ÓÁĞµÄÁ´±í¡£
+ * æŠŠè¿›ç¨‹æè¿°ç¬¦æ’å…¥æŸä¸ªè¿è¡Œé˜Ÿåˆ—çš„é“¾è¡¨ã€‚
  */
 static void enqueue_task(struct task_struct *p, prio_array_t *array)
 {
@@ -706,7 +706,7 @@ static inline void enqueue_task_head(struct task_struct *p, prio_array_t *array)
  * Both properties are important to certain workloads.
  */
 /**
- * ¶ÁÈ¡currentµÄstatic_prioºÍsleep_avg×Ö¶Î£¬²¢¸ù¾İ¹«Ë¾¼ÆËã½ø³ÌµÄ¶¯Ì¬ÓÅÏÈ¼¶¡£
+ * è¯»å–currentçš„static_prioå’Œsleep_avgå­—æ®µï¼Œå¹¶æ ¹æ®å…¬å¸è®¡ç®—è¿›ç¨‹çš„åŠ¨æ€ä¼˜å…ˆçº§ã€‚
  */
 static int effective_prio(task_t *p)
 {
@@ -744,21 +744,21 @@ static inline void __activate_idle_task(task_t *p, runqueue_t *rq)
 }
 
 /**
- * ¸üĞÂ½ø³ÌµÄ¶¯Ì¬ÓÅÏÈ¼¶ºÍÆ½¾ùË¯ÃßÊ±¼ä¡£
- * p-½ø³ÌÃèÊö·û
- * now-ÓÉº¯Êısched_clock¼ÆËã³öµÄµ±Ç°Ê±¼ä´Á¡£
+ * æ›´æ–°è¿›ç¨‹çš„åŠ¨æ€ä¼˜å…ˆçº§å’Œå¹³å‡ç¡çœ æ—¶é—´ã€‚
+ * p-è¿›ç¨‹æè¿°ç¬¦
+ * now-ç”±å‡½æ•°sched_clockè®¡ç®—å‡ºçš„å½“å‰æ—¶é—´æˆ³ã€‚
  */
 static void recalc_task_prio(task_t *p, unsigned long long now)
 {
 	/**
-	 * timestampÊÇ½ø³Ì½øÈëË¯Ãß×´Ì¬µÄ½ø³ÌÇĞ»»µÄÊ±¼ä´Á¡£
-	 * __sleep_timeÊÇ½ø³Ì´ÓÉÏ´Î±»ÇĞ»»³öÈ¥ºó£¬¾­¹ıµÄÊ±¼ä¡£
+	 * timestampæ˜¯è¿›ç¨‹è¿›å…¥ç¡çœ çŠ¶æ€çš„è¿›ç¨‹åˆ‡æ¢çš„æ—¶é—´æˆ³ã€‚
+	 * __sleep_timeæ˜¯è¿›ç¨‹ä»ä¸Šæ¬¡è¢«åˆ‡æ¢å‡ºå»åï¼Œç»è¿‡çš„æ—¶é—´ã€‚
 	 */
 	unsigned long long __sleep_time = now - p->timestamp;
 	unsigned long sleep_time;
 
 	/**
-	 * Èç¹û½ø³ÌË¯ÃßÊ±¼ä³¬¹ı1Ãë£¬¾ÍËã³É1Ãë¡£
+	 * å¦‚æœè¿›ç¨‹ç¡çœ æ—¶é—´è¶…è¿‡1ç§’ï¼Œå°±ç®—æˆ1ç§’ã€‚
 	 */
 	if (__sleep_time > NS_MAX_SLEEP_AVG)
 		sleep_time = NS_MAX_SLEEP_AVG;
@@ -766,7 +766,7 @@ static void recalc_task_prio(task_t *p, unsigned long long now)
 		sleep_time = (unsigned long)__sleep_time;
 
 	/**
-	 * Ö»ÓĞµ±½ø³ÌË¯ÃßÊ±¼ä´óÓÚ0²ÅĞèÒª¸üĞÂÆ½¾ùË¯ÃßÊ±¼ä¡£
+	 * åªæœ‰å½“è¿›ç¨‹ç¡çœ æ—¶é—´å¤§äº0æ‰éœ€è¦æ›´æ–°å¹³å‡ç¡çœ æ—¶é—´ã€‚
 	 */
 	if (likely(sleep_time > 0)) {
 		/*
@@ -776,9 +776,9 @@ static void recalc_task_prio(task_t *p, unsigned long long now)
 		 * other processes.
 		 */
 		/**
-		 * Èç¹û½ø³Ì²»ÊÇÄÚºËÏß³Ì(mm!=NULL)£¬²¢ÇÒ½ø³Ì²»ÊÇ´ÓTASK_UNINTERRUPTIBLE×´Ì¬±»»½ĞÑ£¬²¢ÇÒË¯ÃßÊ±¼ä³¬¹ı¸ø¶¨µÄË¯ÃßÊ±¼ä¼«ÏŞ
-		 * ¾Í°ÑÆ½¾ùË¯ÃßÊ±¼äÉèÖÃÎªÏàµ±ÓÚ900¸öÊ±ÖÓ½ÚÅÄµÄÖµ¡£Õâ½ö½öÊÇ¾­ÑéÖµ¶øÒÑ£¬Ã»ÓĞÊ²Ã´¿ÆÑ§µÀÀí¡£
-		 * Ë¯ÃßÊ±¼ä¼«ÏŞÒÀÀµÓÚ½ø³ÌµÄ¾²Ì¬ÓÅÏÈ¼¶£¬Õâ¸ö¹æÔòµÄÄ¿µÄÊÇ±£Ö¤ÒÑ¾­ÔÚ²»¿ÉÖĞ¶ÏÄ£Ê½(Í¨³£ÊÇµÈ´ı´ÅÅÌIO)ÉÏ£¬Ë¯ÃßÁËºÜ¾ÃµÄ½ø³Ì»ñµÃ×ã¹»³¤µÄÆ½¾ùË¯ÃßÊ±¼ä£¬ÒÔÊ¹ÕâĞ©½ø³Ì¾¡¿ìµÃµ½·şÎñ¡£
+		 * å¦‚æœè¿›ç¨‹ä¸æ˜¯å†…æ ¸çº¿ç¨‹(mm!=NULL)ï¼Œå¹¶ä¸”è¿›ç¨‹ä¸æ˜¯ä»TASK_UNINTERRUPTIBLEçŠ¶æ€è¢«å”¤é†’ï¼Œå¹¶ä¸”ç¡çœ æ—¶é—´è¶…è¿‡ç»™å®šçš„ç¡çœ æ—¶é—´æé™
+		 * å°±æŠŠå¹³å‡ç¡çœ æ—¶é—´è®¾ç½®ä¸ºç›¸å½“äº900ä¸ªæ—¶é’ŸèŠ‚æ‹çš„å€¼ã€‚è¿™ä»…ä»…æ˜¯ç»éªŒå€¼è€Œå·²ï¼Œæ²¡æœ‰ä»€ä¹ˆç§‘å­¦é“ç†ã€‚
+		 * ç¡çœ æ—¶é—´æé™ä¾èµ–äºè¿›ç¨‹çš„é™æ€ä¼˜å…ˆçº§ï¼Œè¿™ä¸ªè§„åˆ™çš„ç›®çš„æ˜¯ä¿è¯å·²ç»åœ¨ä¸å¯ä¸­æ–­æ¨¡å¼(é€šå¸¸æ˜¯ç­‰å¾…ç£ç›˜IO)ä¸Šï¼Œç¡çœ äº†å¾ˆä¹…çš„è¿›ç¨‹è·å¾—è¶³å¤Ÿé•¿çš„å¹³å‡ç¡çœ æ—¶é—´ï¼Œä»¥ä½¿è¿™äº›è¿›ç¨‹å°½å¿«å¾—åˆ°æœåŠ¡ã€‚
 		 */
 		if (p->mm && p->activated != -1 &&
 			sleep_time > INTERACTIVE_SLEEP(p)) {
@@ -790,8 +790,8 @@ static void recalc_task_prio(task_t *p, unsigned long long now)
 			 * rapidly it will rise with sleep time.
 			 */
 			/**
-			 * CURRENT_BONUSºê¼ÆËã½ø³ÌÔ­À´µÄÆ½¾ùË¯ÃßÊ±¼äµÄbonusÖµ¡£Èç¹û10-bonus>0,¾ÍÓÃÕâ¸öÖµÓësleep_timeÏà³Ë¡£
-			 * ËùÒÔÆ½¾ùË¯ÃßÊ±¼äÔ½¶Ì£¬ËüÔö¼ÓµÃÔ½¿ì¡£
+			 * CURRENT_BONUSå®è®¡ç®—è¿›ç¨‹åŸæ¥çš„å¹³å‡ç¡çœ æ—¶é—´çš„bonuså€¼ã€‚å¦‚æœ10-bonus>0,å°±ç”¨è¿™ä¸ªå€¼ä¸sleep_timeç›¸ä¹˜ã€‚
+			 * æ‰€ä»¥å¹³å‡ç¡çœ æ—¶é—´è¶ŠçŸ­ï¼Œå®ƒå¢åŠ å¾—è¶Šå¿«ã€‚
 			 */
 			sleep_time *= (MAX_BONUS - CURRENT_BONUS(p)) ? : 1;
 
@@ -801,16 +801,16 @@ static void recalc_task_prio(task_t *p, unsigned long long now)
 			 * are likely to be waiting on I/O
 			 */
 			/**
-			 * Èç¹û²»ÊÇÄÚºËÏß³Ì£¬²¢ÇÒ´¦ÓÚTASK_UNINTERRUPTIBLE×´Ì¬¡£ÒÔÏÂÁ½ÖÖÇé¿öÊÇÎªÁË²»¶ÔË¯ÃßÊ±¼äºÜ³¤µÄÅú´¦Àí½ø³Ì¸øÓèÌ«¶àµÄ½±Àø¡£
+			 * å¦‚æœä¸æ˜¯å†…æ ¸çº¿ç¨‹ï¼Œå¹¶ä¸”å¤„äºTASK_UNINTERRUPTIBLEçŠ¶æ€ã€‚ä»¥ä¸‹ä¸¤ç§æƒ…å†µæ˜¯ä¸ºäº†ä¸å¯¹ç¡çœ æ—¶é—´å¾ˆé•¿çš„æ‰¹å¤„ç†è¿›ç¨‹ç»™äºˆå¤ªå¤šçš„å¥–åŠ±ã€‚
 			 */
 			if (p->activated == -1 && p->mm) {
 				/**
-				 * Èç¹ûÆ½¾ùË¯ÃßÊ±¼äÒÑ¾­³¬¹ı¼«ÏŞÁË£¬¾Í²»ÓÃÔÙµ÷ÕûÆ½¾ùË¯ÃßÊ±¼äÁË¡£
+				 * å¦‚æœå¹³å‡ç¡çœ æ—¶é—´å·²ç»è¶…è¿‡æé™äº†ï¼Œå°±ä¸ç”¨å†è°ƒæ•´å¹³å‡ç¡çœ æ—¶é—´äº†ã€‚
 				 */
 				if (p->sleep_avg >= INTERACTIVE_SLEEP(p))
 					sleep_time = 0;
 				else if (p->sleep_avg + sleep_time >=
-						INTERACTIVE_SLEEP(p)) {/* Èç¹û¼ÓÉÏ±¾´Îsleep_timeÊ±¼ä´óÓÚ¼«ÏŞË¯ÃßÊ±¼ä£¬¾Í½«Ë¯ÃßÊ±¼äÉèÖÃÎª×î´ó */
+						INTERACTIVE_SLEEP(p)) {/* å¦‚æœåŠ ä¸Šæœ¬æ¬¡sleep_timeæ—¶é—´å¤§äºæé™ç¡çœ æ—¶é—´ï¼Œå°±å°†ç¡çœ æ—¶é—´è®¾ç½®ä¸ºæœ€å¤§ */
 					p->sleep_avg = INTERACTIVE_SLEEP(p);
 					sleep_time = 0;
 				}
@@ -825,12 +825,12 @@ static void recalc_task_prio(task_t *p, unsigned long long now)
 			 * and the higher the priority boost gets as well.
 			 */
 			/**
-			 * ½«±¾´ÎË¯ÃßÊ±¼ä¼Óµ½Æ½¾ùË¯ÃßÊ±¼äÉÏ¡£
+			 * å°†æœ¬æ¬¡ç¡çœ æ—¶é—´åŠ åˆ°å¹³å‡ç¡çœ æ—¶é—´ä¸Šã€‚
 			 */
 			p->sleep_avg += sleep_time;
 
 			/**
-			 * Èç¹ûÆ½¾ùË¯ÃßÊ±¼ä³¬¹ı1Ãë£¬ÄÇÃ´¾Í½«Ëüµ÷ÕûÎª1Ãë¡£
+			 * å¦‚æœå¹³å‡ç¡çœ æ—¶é—´è¶…è¿‡1ç§’ï¼Œé‚£ä¹ˆå°±å°†å®ƒè°ƒæ•´ä¸º1ç§’ã€‚
 			 */
 			if (p->sleep_avg > NS_MAX_SLEEP_AVG)
 				p->sleep_avg = NS_MAX_SLEEP_AVG;
@@ -838,7 +838,7 @@ static void recalc_task_prio(task_t *p, unsigned long long now)
 	}
 
 	/**
-	 * ¸üĞÂ½ø³ÌµÄ¶¯Ì¬ÓÅÏÈ¼¶¡£
+	 * æ›´æ–°è¿›ç¨‹çš„åŠ¨æ€ä¼˜å…ˆçº§ã€‚
 	 */
 	p->prio = effective_prio(p);
 }
@@ -1119,10 +1119,10 @@ static inline int wake_idle(int cpu, task_t *p)
  * returns failure only if the task is already active.
  */
 /**
- * Í¨¹ı°Ñ½ø³Ì×´Ì¬ÉèÖÃÎªTASK_RUNNING£¬²¢°Ñ¸Ã½ø³Ì²åÈë±¾µØCPUµÄÔËĞĞ¶ÓÁĞÀ´»½ĞÑË¯Ãß»òÍ£Ö¹µÄ½ø³Ì
- * p-±»»½ĞÑ½ø³ÌµÄÃèÊö·û
- * state-¿ÉÒÔ±»»½ĞÑµÄ½ø³Ì×´Ì¬ÑÚÂë¡£
- * sync-Ò»¸ö±êÖ¾£¬ÓÃÀ´½ûÖ¹±»»½ĞÑµÄ½ø³ÌÇÀÕ¼±¾µØCPUÉÏÕıÔÚÔËĞĞµÄ½ø³Ì¡£
+ * é€šè¿‡æŠŠè¿›ç¨‹çŠ¶æ€è®¾ç½®ä¸ºTASK_RUNNINGï¼Œå¹¶æŠŠè¯¥è¿›ç¨‹æ’å…¥æœ¬åœ°CPUçš„è¿è¡Œé˜Ÿåˆ—æ¥å”¤é†’ç¡çœ æˆ–åœæ­¢çš„è¿›ç¨‹
+ * p-è¢«å”¤é†’è¿›ç¨‹çš„æè¿°ç¬¦
+ * state-å¯ä»¥è¢«å”¤é†’çš„è¿›ç¨‹çŠ¶æ€æ©ç ã€‚
+ * sync-ä¸€ä¸ªæ ‡å¿—ï¼Œç”¨æ¥ç¦æ­¢è¢«å”¤é†’çš„è¿›ç¨‹æŠ¢å æœ¬åœ°CPUä¸Šæ­£åœ¨è¿è¡Œçš„è¿›ç¨‹ã€‚
  */
 static int try_to_wake_up(task_t * p, unsigned int state, int sync)
 {
@@ -1137,20 +1137,20 @@ static int try_to_wake_up(task_t * p, unsigned int state, int sync)
 #endif
 
 	/**
-	 * µ÷ÓÃtask_rq_lockÀ´½ûÖ¹ÖĞ¶Ï£¬²¢»ñµÃ½ø³ÌËùÔÚCPUÉÏµÄÔËĞĞ¶ÓÁĞµÄËø(¿ÉÄÜÓëµ±Ç°CPUµÄÔËĞĞ¶ÓÁĞ²»Ò»Ñù£¬²¢ÇÒ±»»½ĞÑµÄ½ø³Ì¿ÉÄÜ²¢²»ÔÚ¶ÓÁĞÉÏ)
+	 * è°ƒç”¨task_rq_lockæ¥ç¦æ­¢ä¸­æ–­ï¼Œå¹¶è·å¾—è¿›ç¨‹æ‰€åœ¨CPUä¸Šçš„è¿è¡Œé˜Ÿåˆ—çš„é”(å¯èƒ½ä¸å½“å‰CPUçš„è¿è¡Œé˜Ÿåˆ—ä¸ä¸€æ ·ï¼Œå¹¶ä¸”è¢«å”¤é†’çš„è¿›ç¨‹å¯èƒ½å¹¶ä¸åœ¨é˜Ÿåˆ—ä¸Š)
 	 */
 	rq = task_rq_lock(p, &flags);
 	schedstat_inc(rq, ttwu_cnt);
 	old_state = p->state;
 	/**
-	 * Ö»»½ĞÑstate¶ÔÓ¦×´Ì¬µÄ½ø³Ì¡£Èç¹û±»»½ĞÑµÄ½ø³Ì×´Ì¬²»ÔÚstateÖĞ£¬Ö±½ÓÍË³ö¡£±¾´Î»½ĞÑÎŞĞ§¡£
-	 * ÀıÈç:Í¨¹ıĞÅºÅ¾Í²»»á»½ĞÑTASK_UNINTERRUPTIBLE×´Ì¬µÄ½ø³Ì¡£
+	 * åªå”¤é†’stateå¯¹åº”çŠ¶æ€çš„è¿›ç¨‹ã€‚å¦‚æœè¢«å”¤é†’çš„è¿›ç¨‹çŠ¶æ€ä¸åœ¨stateä¸­ï¼Œç›´æ¥é€€å‡ºã€‚æœ¬æ¬¡å”¤é†’æ— æ•ˆã€‚
+	 * ä¾‹å¦‚:é€šè¿‡ä¿¡å·å°±ä¸ä¼šå”¤é†’TASK_UNINTERRUPTIBLEçŠ¶æ€çš„è¿›ç¨‹ã€‚
 	 */
 	if (!(old_state & state))
 		goto out;
 
 	/**
-	 * Èç¹û½ø³ÌÒÑ¾­ÊôÓÚÄ³¸öÔËĞĞ¶ÓÁĞ£¬¾ÍÌø×ªµ½out_running£¬½«ËüµÄ×´Ì¬ĞŞ¸ÄÎªTASK_RUNNING×´Ì¬ºóÍË³ö¡£
+	 * å¦‚æœè¿›ç¨‹å·²ç»å±äºæŸä¸ªè¿è¡Œé˜Ÿåˆ—ï¼Œå°±è·³è½¬åˆ°out_runningï¼Œå°†å®ƒçš„çŠ¶æ€ä¿®æ”¹ä¸ºTASK_RUNNINGçŠ¶æ€åé€€å‡ºã€‚
 	 */
 	if (p->array)
 		goto out_running;
@@ -1160,22 +1160,22 @@ static int try_to_wake_up(task_t * p, unsigned int state, int sync)
 
 #ifdef CONFIG_SMP
 	/**
-	 * ÔÚSMPÉÏ£¬ĞèÒª¼ì²é±»»½ĞÑµÄ½ø³ÌÊÇ·ñÓ¦¸Ã´Ó×î½üÔËĞĞµÄCPUµÄÔËĞĞ¶ÓÁĞÇ¨ÒÆµ½ÁíÍâÒ»¸öCPUµÄÔËĞĞ¶ÓÁĞ¡£
+	 * åœ¨SMPä¸Šï¼Œéœ€è¦æ£€æŸ¥è¢«å”¤é†’çš„è¿›ç¨‹æ˜¯å¦åº”è¯¥ä»æœ€è¿‘è¿è¡Œçš„CPUçš„è¿è¡Œé˜Ÿåˆ—è¿ç§»åˆ°å¦å¤–ä¸€ä¸ªCPUçš„è¿è¡Œé˜Ÿåˆ—ã€‚
 	 */
 
 	/**
-	 * ±»»½ĞÑÈÎÎñÕıÔÚCPUÉÏÔËĞĞ£¬²»±Ø¿¼ÂÇÇ¨ÒÆÁË¡£
+	 * è¢«å”¤é†’ä»»åŠ¡æ­£åœ¨CPUä¸Šè¿è¡Œï¼Œä¸å¿…è€ƒè™‘è¿ç§»äº†ã€‚
 	 */
 	if (unlikely(task_running(rq, p)))
 		goto out_activate;
 
 	/**
-	 * ÓÅÏÈ½«½ø³Ì·Åµ½½ø³ÌËùÔÚCPUÉÏÔËĞĞ¡£
+	 * ä¼˜å…ˆå°†è¿›ç¨‹æ”¾åˆ°è¿›ç¨‹æ‰€åœ¨CPUä¸Šè¿è¡Œã€‚
 	 */
 	new_cpu = cpu;
 
 	/**
-	 * Èç¹û½ø³ÌËùÔÚCPU¾ÍÊÇµ±Ç°½ø³ÌËùÔÚCPU£¬»òÕß±»»½ĞÑ½ø³Ì²»ÔÊĞíÔÚµ±Ç°½ø³ÌËùÔÚCPUÉÏÔËĞĞ£¬ÄÇÃ´Ìø×ªµ½out_set_cpu
+	 * å¦‚æœè¿›ç¨‹æ‰€åœ¨CPUå°±æ˜¯å½“å‰è¿›ç¨‹æ‰€åœ¨CPUï¼Œæˆ–è€…è¢«å”¤é†’è¿›ç¨‹ä¸å…è®¸åœ¨å½“å‰è¿›ç¨‹æ‰€åœ¨CPUä¸Šè¿è¡Œï¼Œé‚£ä¹ˆè·³è½¬åˆ°out_set_cpu
 	 */
 	if (cpu == this_cpu || unlikely(!cpu_isset(this_cpu, p->cpus_allowed)))
 		goto out_set_cpu;
@@ -1192,13 +1192,13 @@ static int try_to_wake_up(task_t * p, unsigned int state, int sync)
 
 	/* Don't pull the task off an idle CPU to a busy one */
 	/**
-	 * Èç¹û±»»½ĞÑÈÎÎñËùÔÚµÄCPU¹¤×÷Á¿Ğ¡ÓÚµ±Ç°CPUµÄ¹¤×÷Á¿£¬Ò²Ìø×ªµ½out_set_cpu
+	 * å¦‚æœè¢«å”¤é†’ä»»åŠ¡æ‰€åœ¨çš„CPUå·¥ä½œé‡å°äºå½“å‰CPUçš„å·¥ä½œé‡ï¼Œä¹Ÿè·³è½¬åˆ°out_set_cpu
 	 */
 	if (load < SCHED_LOAD_SCALE/2 && this_load > SCHED_LOAD_SCALE/2)
 		goto out_set_cpu;
 
 	/**
-	 * ÊÔÍ¼½«½ø³ÌÇ¨ÒÆµ½±¾µØCPU¡£
+	 * è¯•å›¾å°†è¿›ç¨‹è¿ç§»åˆ°æœ¬åœ°CPUã€‚
 	 */
 	new_cpu = this_cpu; /* Wake to this CPU if we can */
 
@@ -1260,8 +1260,8 @@ out_set_cpu:
 out_activate:
 #endif /* CONFIG_SMP */
 	/**
-	 * Èç¹ûÊÇTASK_UNINTERRUPTIBLE£¬¾Íµİ¼õnr_uninterruptible
-	 * ²¢½«activatedÉèÎª-1,±íÊ¾½ø³ÌÊÇ´ÓTASK_UNINTERRUPTIBLE×´Ì¬±»»½ĞÑÕâ¸öÊÂÊµ¡£
+	 * å¦‚æœæ˜¯TASK_UNINTERRUPTIBLEï¼Œå°±é€’å‡nr_uninterruptible
+	 * å¹¶å°†activatedè®¾ä¸º-1,è¡¨ç¤ºè¿›ç¨‹æ˜¯ä»TASK_UNINTERRUPTIBLEçŠ¶æ€è¢«å”¤é†’è¿™ä¸ªäº‹å®ã€‚
 	 */
 	if (old_state == TASK_UNINTERRUPTIBLE) {
 		rq->nr_uninterruptible--;
@@ -1281,23 +1281,23 @@ out_activate:
 	 * to be considered on this CPU.)
 	 */
 	/**
-	 * activate_taskº¯ÊıÒÀ´ÎÖ´ĞĞÒÔÏÂ²½Öèå£º
-	 *     1:µ÷ÓÃsched_clock»ñµÃµ±Ç°Ê±¼ä´Á£¬Èç¹ûÄ¿±êCPU²»ÊÇ±¾µØCPU£¬ÄÇÃ´»¹»á²¹³¥Ê±ÖÓÖĞ¶ÏµÄÆ«²î¡£
-	 *     2:µ÷ÓÃrecalc_task_prio£¬¼ÆËã½ø³ÌµÄ¶¯Ì¬ÓÅÏÈ¼¶¡£
-	 *     3:¸ù¾İÇé¿öÉèÖÃactivated
-	 *     4:ÉèÖÃ½ø³ÌµÄÊ±¼ä´Á¡£
-	 *     5:½«½ø³Ì²åÈë½ø³Ì¼¯ºÏ¡£
+	 * activate_taskå‡½æ•°ä¾æ¬¡æ‰§è¡Œä»¥ä¸‹æ­¥éª¤æ¾¹
+	 *     1:è°ƒç”¨sched_clockè·å¾—å½“å‰æ—¶é—´æˆ³ï¼Œå¦‚æœç›®æ ‡CPUä¸æ˜¯æœ¬åœ°CPUï¼Œé‚£ä¹ˆè¿˜ä¼šè¡¥å¿æ—¶é’Ÿä¸­æ–­çš„åå·®ã€‚
+	 *     2:è°ƒç”¨recalc_task_prioï¼Œè®¡ç®—è¿›ç¨‹çš„åŠ¨æ€ä¼˜å…ˆçº§ã€‚
+	 *     3:æ ¹æ®æƒ…å†µè®¾ç½®activated
+	 *     4:è®¾ç½®è¿›ç¨‹çš„æ—¶é—´æˆ³ã€‚
+	 *     5:å°†è¿›ç¨‹æ’å…¥è¿›ç¨‹é›†åˆã€‚
 	 */
 	activate_task(p, rq, cpu == this_cpu);
 	/**
-	 * Èç¹ûÄ¿±êCPU²»ÊÇ±¾µØCPU£¬»òÕßÃ»ÓĞSYNC±êÖ¾£¬¾Í¼ì²éĞÂ½ø³ÌµÄ¶¯Ì¬ÓÅÏÈ¼¶ÊÇ·ñ±ÈÔËĞĞ¶ÓÁĞÖĞµ±Ç°½ø³ÌµÄÓÅÏÈ¼¶¸ß¡£
+	 * å¦‚æœç›®æ ‡CPUä¸æ˜¯æœ¬åœ°CPUï¼Œæˆ–è€…æ²¡æœ‰SYNCæ ‡å¿—ï¼Œå°±æ£€æŸ¥æ–°è¿›ç¨‹çš„åŠ¨æ€ä¼˜å…ˆçº§æ˜¯å¦æ¯”è¿è¡Œé˜Ÿåˆ—ä¸­å½“å‰è¿›ç¨‹çš„ä¼˜å…ˆçº§é«˜ã€‚
 	 */
 	if (!sync || cpu != this_cpu) {
-		if (TASK_PREEMPTS_CURR(p, rq))/* ½ø³ÌµÄÓÅÏÈ¼¶±ÈËùÔÚ¶ÓÁĞµÄµ±Ç°½ø³ÌÓÅÏÈ¼¶¸ß£¬ĞèÒªÇÀÕ¼¡£ */
+		if (TASK_PREEMPTS_CURR(p, rq))/* è¿›ç¨‹çš„ä¼˜å…ˆçº§æ¯”æ‰€åœ¨é˜Ÿåˆ—çš„å½“å‰è¿›ç¨‹ä¼˜å…ˆçº§é«˜ï¼Œéœ€è¦æŠ¢å ã€‚ */
 			/**
-			 * resched_taskº¯Êı½øĞĞ½ø³ÌÇÀÕ¼¡£
-			 * ÔÚµ¥´¦ÀíÆ÷ÉÏ£¬Ëü½ö½öÉèÖÃTIF_NEED_RESCHED±êÖ¾¡£ 
-			 * ÔÚ¶à´¦ÀíÆ÷ÉÏ£¬Ëü¿ÉÄÜ»á·¢ËÍIPI£¬Ç¿ÖÆÈÃCPU²úÉúµ÷¶È¡£
+			 * resched_taskå‡½æ•°è¿›è¡Œè¿›ç¨‹æŠ¢å ã€‚
+			 * åœ¨å•å¤„ç†å™¨ä¸Šï¼Œå®ƒä»…ä»…è®¾ç½®TIF_NEED_RESCHEDæ ‡å¿—ã€‚ 
+			 * åœ¨å¤šå¤„ç†å™¨ä¸Šï¼Œå®ƒå¯èƒ½ä¼šå‘é€IPIï¼Œå¼ºåˆ¶è®©CPUäº§ç”Ÿè°ƒåº¦ã€‚
 			 */
 			resched_task(rq->curr);
 	}
@@ -1305,17 +1305,17 @@ out_activate:
 
 out_running:
 	/**
-	 * ½«½ø³Ì×´Ì¬ÉèÖÃÎªÎªTASK_RUNNING£¬×¢ÒâÁ½¸öÁ÷³Ì»á×ßµ½ÕâÀï¡£
+	 * å°†è¿›ç¨‹çŠ¶æ€è®¾ç½®ä¸ºä¸ºTASK_RUNNINGï¼Œæ³¨æ„ä¸¤ä¸ªæµç¨‹ä¼šèµ°åˆ°è¿™é‡Œã€‚
 	 */
 	p->state = TASK_RUNNING;
 out:
 	/**
-	 * ¿ªÖĞ¶Ï²¢´ò¿ªÔËĞĞ¶ÓÁĞµÄËø¡£
+	 * å¼€ä¸­æ–­å¹¶æ‰“å¼€è¿è¡Œé˜Ÿåˆ—çš„é”ã€‚
 	 */
 	task_rq_unlock(rq, &flags);
 
 	/**
-	 * ·µ»Ø0:½ø³ÌÃ»ÓĞ±»»½ĞÑ¡£·ñÔò·µ»Ø1,½ø³Ì±»»½ĞÑ¡£
+	 * è¿”å›0:è¿›ç¨‹æ²¡æœ‰è¢«å”¤é†’ã€‚å¦åˆ™è¿”å›1,è¿›ç¨‹è¢«å”¤é†’ã€‚
 	 */
 	return success;
 }
@@ -1378,14 +1378,14 @@ void fastcall sched_fork(task_t *p)
 	 * the parent if the child exits early enough.
 	 */
 	/**
-	 * ÒòÎª×Ó½ø³ÌÃ»ÓĞÓÃÍêËüµÄÊ±¼äÆ¬(ÏÖÔÚ»¹Ã»ÓĞÔËĞĞ£¬²¢ÇÒ×Ó½ø³ÌµÄÊ±¼äÆ¬×ÜÊÇ´óÓÚ0,µ±È»¾ÍÃ»ÓĞÓÃÍêÁË)
-	 * ÕâÑù£¬ÉèÖÃfirst_time_slice£¬Èç¹û×Ó½ø³ÌÔÚËüµÄµÚÒ»¸öÊ±¼äÆ¬ÄÚÖÕÖ¹»òÕßÖ´ĞĞĞÂµÄ³ÌĞò£¬¾Í°Ñ×Ó½ø³ÌµÄÊ£ÓàÊ±¼ä½±Àø¸ø¸¸½ø³Ì¡£
+	 * å› ä¸ºå­è¿›ç¨‹æ²¡æœ‰ç”¨å®Œå®ƒçš„æ—¶é—´ç‰‡(ç°åœ¨è¿˜æ²¡æœ‰è¿è¡Œï¼Œå¹¶ä¸”å­è¿›ç¨‹çš„æ—¶é—´ç‰‡æ€»æ˜¯å¤§äº0,å½“ç„¶å°±æ²¡æœ‰ç”¨å®Œäº†)
+	 * è¿™æ ·ï¼Œè®¾ç½®first_time_sliceï¼Œå¦‚æœå­è¿›ç¨‹åœ¨å®ƒçš„ç¬¬ä¸€ä¸ªæ—¶é—´ç‰‡å†…ç»ˆæ­¢æˆ–è€…æ‰§è¡Œæ–°çš„ç¨‹åºï¼Œå°±æŠŠå­è¿›ç¨‹çš„å‰©ä½™æ—¶é—´å¥–åŠ±ç»™çˆ¶è¿›ç¨‹ã€‚
 	 */
 	p->first_time_slice = 1;
 	current->time_slice >>= 1;
 	p->timestamp = sched_clock();
 	/**
-	 * Èç¹ûµ±Ç°½ø³ÌµÄÊ±¼äÆ¬Îª1,ÄÇÃ´ÕâÒ»¸ötick½«±»·Ö¸ø×Ó½ø³Ì£¬¶øµ±Ç°½ø³ÌµÄÊ±¼äÆ¬±ä³É1.
+	 * å¦‚æœå½“å‰è¿›ç¨‹çš„æ—¶é—´ç‰‡ä¸º1,é‚£ä¹ˆè¿™ä¸€ä¸ªtickå°†è¢«åˆ†ç»™å­è¿›ç¨‹ï¼Œè€Œå½“å‰è¿›ç¨‹çš„æ—¶é—´ç‰‡å˜æˆ1.
 	 */
 	if (unlikely(!current->time_slice)) {
 		/*
@@ -1394,7 +1394,7 @@ void fastcall sched_fork(task_t *p)
 		 * runqueue lock is not a problem.
 		 */
 		/**
-		 * Ç¿ÖÆ½«time_sliceÉèÖÃ³É1,È»ºóµ÷ÓÃscheduler_tickµİ¼õÎª0.
+		 * å¼ºåˆ¶å°†time_sliceè®¾ç½®æˆ1,ç„¶åè°ƒç”¨scheduler_tické€’å‡ä¸º0.
 		 */
 		current->time_slice = 1;
 		preempt_disable();
@@ -1534,14 +1534,14 @@ void fastcall sched_exit(task_t * p)
  * details.)
  */
 /**
- * ½ø³ÌÇĞ»»»ØÀ´ºó£¬Ö´ĞĞµÄ´úÂë¡£
+ * è¿›ç¨‹åˆ‡æ¢å›æ¥åï¼Œæ‰§è¡Œçš„ä»£ç ã€‚
  */
 static void finish_task_switch(task_t *prev)
 	__releases(rq->lock)
 {
 	runqueue_t *rq = this_rq();
 	/**
-	 * Èç¹ûprevÊÇÒ»¸öÄÚºËÏß³Ì£¬ÄÇÃ´rq->prev_mm×Ö¶Î´æ·Å½è¸øprevµÄÄÚ´æÃèÊö·ûµÄµØÖ·¡£
+	 * å¦‚æœprevæ˜¯ä¸€ä¸ªå†…æ ¸çº¿ç¨‹ï¼Œé‚£ä¹ˆrq->prev_mmå­—æ®µå­˜æ”¾å€Ÿç»™prevçš„å†…å­˜æè¿°ç¬¦çš„åœ°å€ã€‚
 	 */
 	struct mm_struct *mm = rq->prev_mm;
 	unsigned long prev_task_flags;
@@ -1561,16 +1561,16 @@ static void finish_task_switch(task_t *prev)
 	 */
 	prev_task_flags = prev->flags;
 	/**
-	 * ´ò¿ªÖĞ¶Ï²¢ÊÍ·Å×ÔĞıËø¡£
+	 * æ‰“å¼€ä¸­æ–­å¹¶é‡Šæ”¾è‡ªæ—‹é”ã€‚
 	 */
 	finish_arch_switch(rq, prev);
 	/**
-	 * Ç°Ò»¸öÏß³ÌÊÇÄÚºËÏß³Ì£¬Ëü½èÓÃÁËÄ³Ò»¸öÓÃ»§Ïß³ÌµÄµØÖ·¿Õ¼ä£¬ÔÚ´Ë½«mm_structÒıÓÃ¼ÆÊı¼õ1.
+	 * å‰ä¸€ä¸ªçº¿ç¨‹æ˜¯å†…æ ¸çº¿ç¨‹ï¼Œå®ƒå€Ÿç”¨äº†æŸä¸€ä¸ªç”¨æˆ·çº¿ç¨‹çš„åœ°å€ç©ºé—´ï¼Œåœ¨æ­¤å°†mm_structå¼•ç”¨è®¡æ•°å‡1.
 	 */
 	if (mm)
 		mmdrop(mm);
 	/**
-	 * Ç°Ò»¸öÏß³Ì¿ÉÄÜÊÇÒ»¸ö½©ËÀ½ø³ÌÁË£¬ÊÍ·ÅËüµÄÃèÊö·ûµÄĞéÄâ´æ´¢Æ÷¡£
+	 * å‰ä¸€ä¸ªçº¿ç¨‹å¯èƒ½æ˜¯ä¸€ä¸ªåƒµæ­»è¿›ç¨‹äº†ï¼Œé‡Šæ”¾å®ƒçš„æè¿°ç¬¦çš„è™šæ‹Ÿå­˜å‚¨å™¨ã€‚
 	 */
 	if (unlikely(prev_task_flags & PF_DEAD))
 		put_task_struct(prev);
@@ -1594,7 +1594,7 @@ asmlinkage void schedule_tail(task_t *prev)
  * thread's register state.
  */
 /**
- * ½¨Á¢nextµÄµØÖ·¿Õ¼ä
+ * å»ºç«‹nextçš„åœ°å€ç©ºé—´
  */
 static inline
 task_t * context_switch(runqueue_t *rq, task_t *prev, task_t *next)
@@ -1603,23 +1603,23 @@ task_t * context_switch(runqueue_t *rq, task_t *prev, task_t *next)
 	struct mm_struct *oldmm = prev->active_mm;
 
 	/**
-	 * Èç¹ûÊÇÇĞ»»µ½Ò»¸öÄÚºËÏß³Ì£¬ĞÂ½ø³Ì¾ÍÊ¹ÓÃpreµÄµØÖ·¿Õ¼ä£¬±ÜÃâÁËTLBµÄÇĞ»»
+	 * å¦‚æœæ˜¯åˆ‡æ¢åˆ°ä¸€ä¸ªå†…æ ¸çº¿ç¨‹ï¼Œæ–°è¿›ç¨‹å°±ä½¿ç”¨preçš„åœ°å€ç©ºé—´ï¼Œé¿å…äº†TLBçš„åˆ‡æ¢
 	 */
 	if (unlikely(!mm)) {
 		next->active_mm = oldmm;
 		atomic_inc(&oldmm->mm_count);
 		/**
-		 * ×÷Îª¸ü½øÒ»²½µÄÓÅ»¯´ëÊ©£¬Èç¹ûĞÂ½ø³ÌÊÇÄÚºËÏß³Ì£¬¾Í½«½ø³ÌÉèÖÃÎªÀÁ¶èTLBÄ£Ê½
-		 * xie.baoyou×¢£ºÇëÏëÒ»ÏÂ£¬Èç¹ûÄÚºËÏß³ÌÇĞ»»³öÈ¥ºó£¬¿ÉÄÜÓÖ»á»Øµ½ÉÏÒ»¸ö½ø³Ì£¬´ËÊ±¾Í¸ù±¾²»ĞèÒªÇĞ»»µØÖ·¿Õ¼ä¡£
-		 * ½Ô´ó»¶Ï²£¬´ó¼Ò¶¼Ê¡ÊÂÁË£¬Õâ½Ğ¡°ÀÁÈËÓĞÀÁ¸£¡±
+		 * ä½œä¸ºæ›´è¿›ä¸€æ­¥çš„ä¼˜åŒ–æªæ–½ï¼Œå¦‚æœæ–°è¿›ç¨‹æ˜¯å†…æ ¸çº¿ç¨‹ï¼Œå°±å°†è¿›ç¨‹è®¾ç½®ä¸ºæ‡’æƒ°TLBæ¨¡å¼
+		 * xie.baoyouæ³¨ï¼šè¯·æƒ³ä¸€ä¸‹ï¼Œå¦‚æœå†…æ ¸çº¿ç¨‹åˆ‡æ¢å‡ºå»åï¼Œå¯èƒ½åˆä¼šå›åˆ°ä¸Šä¸€ä¸ªè¿›ç¨‹ï¼Œæ­¤æ—¶å°±æ ¹æœ¬ä¸éœ€è¦åˆ‡æ¢åœ°å€ç©ºé—´ã€‚
+		 * çš†å¤§æ¬¢å–œï¼Œå¤§å®¶éƒ½çœäº‹äº†ï¼Œè¿™å«â€œæ‡’äººæœ‰æ‡’ç¦â€
 		 */
 		enter_lazy_tlb(oldmm, next);
-	} else/* ·ñÔò¾ÍĞèÒªÇĞ»»ÄÚµØÖ·¿Õ¼ä¡£ */
+	} else/* å¦åˆ™å°±éœ€è¦åˆ‡æ¢å†…åœ°å€ç©ºé—´ã€‚ */
 		switch_mm(oldmm, mm, next);
 
 	/**
-	 * Èç¹ûÉÏÒ»¸öÏß³ÌÊÇÄÚºËÏß³Ì£¬¾Í°ÑprevÄÚ´æÃèÊö·ûµÄÖ¸Õë±£´æµ½ÔËĞĞ¶ÓÁĞµÄprev_mmÖĞ¡£
-	 * ²¢Çå¿Õrq->prev_mm
+	 * å¦‚æœä¸Šä¸€ä¸ªçº¿ç¨‹æ˜¯å†…æ ¸çº¿ç¨‹ï¼Œå°±æŠŠprevå†…å­˜æè¿°ç¬¦çš„æŒ‡é’ˆä¿å­˜åˆ°è¿è¡Œé˜Ÿåˆ—çš„prev_mmä¸­ã€‚
+	 * å¹¶æ¸…ç©ºrq->prev_mm
 	 */
 	if (unlikely(!prev->mm)) {
 		prev->active_mm = NULL;
@@ -1629,7 +1629,7 @@ task_t * context_switch(runqueue_t *rq, task_t *prev, task_t *next)
 
 	/* Here we just switch the register state and the stack. */
 	/**
-	 * ÖÕÓÚ¿ÉÒÔÕæÕıµÄÇĞ»»ÁË¡£
+	 * ç»ˆäºå¯ä»¥çœŸæ­£çš„åˆ‡æ¢äº†ã€‚
 	 */	
 	switch_to(prev, next, prev);
 
@@ -1891,15 +1891,15 @@ void pull_task(runqueue_t *src_rq, prio_array_t *src_array, task_t *p,
  * can_migrate_task - may task p from runqueue rq be migrated to this_cpu?
  */
 /**
- * µ±ÏÂÁĞÌõ¼ş¶¼Âú×ãÊ±£¬º¯Êı·µ»Ø1£¬·ñÔò±íÊ¾²»ÄÜÆ¯ÒÆÈÎÎñµ½ÆäËûCPU£º
- *     ½ø³ÌÃ»ÓĞÔÚÔËĞĞ£¨²»ÊÇrunning×´Ì¬£©£¬¶øÊÇÃ»ÓĞÔÚrqËùÔÚµÄCPUÉÏÕ¼ÓÃCPU¡£
- *         ÒòÎªÕâÑùµÄ½ø³ÌÇĞ»»µ½ÆäËûµÄCPUÉÏ£¬»áÊ¹ÆäÒ³±í»º´æÊ§Ğ§£¬´ï²»µ½Ìá¸ßĞÔÄÜµÄÄ¿µÄ¡£
- *     ±¾µØCPU°üº¬ÔÚ½ø³ÌÃèÊö·ûµÄcpus_allowedÎ»ÑÚÂëÖĞ
- *     ²¢ÇÒÂú×ãÒÔÏÂÌõ¼şÖ®Ò»£º
- *         ±¾µØCPU¿ÕÏĞ¡£Èç¹ûÖ§³Ö³¬Ïß³Ì¼¼Êõ£¬Ôò±¾µØÎïÀíĞ¾Æ¬ÖĞµÄÂß¼­CPU±ØĞë¿ÕÏĞ¡£
- *         ÄÚºËÔÚÆ½ºâµ÷¶ÈÓòÊ±Òò·´¸´½øĞĞ½ø³ÌÇ¨ÒÆ¶¼²»³É¹¦¶øÏİÈëÀ§¾³
- *         ±»Ç¨ÒÆµÄ½ø³Ì²»ÊÇ¡°¸ßËÙ»º´æÃüÖĞ¡±µÄ£¨×î½ü²»ÔøÔÚÔ¶³ÌCPUÉÏÔËĞĞ£¬Òò´ËÔ¶³ÌCPUÉÏµÄÓ²¼ş¸ßËÙ»º´æÖĞÃ»ÓĞ¸Ã½ø³ÌµÄÊı¾İ¡££©
- * Èç¹ûcan_migrate_task·µ»Ø1£¬move_tasks¾Íµ÷ÓÃpull_taskº¯Êı°ÑºòÑ¡½ø³ÌÇ¨ÒÆµ½±¾µØÔËĞĞ¶ÓÁĞÖĞ¡£
+ * å½“ä¸‹åˆ—æ¡ä»¶éƒ½æ»¡è¶³æ—¶ï¼Œå‡½æ•°è¿”å›1ï¼Œå¦åˆ™è¡¨ç¤ºä¸èƒ½æ¼‚ç§»ä»»åŠ¡åˆ°å…¶ä»–CPUï¼š
+ *     è¿›ç¨‹æ²¡æœ‰åœ¨è¿è¡Œï¼ˆä¸æ˜¯runningçŠ¶æ€ï¼‰ï¼Œè€Œæ˜¯æ²¡æœ‰åœ¨rqæ‰€åœ¨çš„CPUä¸Šå ç”¨CPUã€‚
+ *         å› ä¸ºè¿™æ ·çš„è¿›ç¨‹åˆ‡æ¢åˆ°å…¶ä»–çš„CPUä¸Šï¼Œä¼šä½¿å…¶é¡µè¡¨ç¼“å­˜å¤±æ•ˆï¼Œè¾¾ä¸åˆ°æé«˜æ€§èƒ½çš„ç›®çš„ã€‚
+ *     æœ¬åœ°CPUåŒ…å«åœ¨è¿›ç¨‹æè¿°ç¬¦çš„cpus_allowedä½æ©ç ä¸­
+ *     å¹¶ä¸”æ»¡è¶³ä»¥ä¸‹æ¡ä»¶ä¹‹ä¸€ï¼š
+ *         æœ¬åœ°CPUç©ºé—²ã€‚å¦‚æœæ”¯æŒè¶…çº¿ç¨‹æŠ€æœ¯ï¼Œåˆ™æœ¬åœ°ç‰©ç†èŠ¯ç‰‡ä¸­çš„é€»è¾‘CPUå¿…é¡»ç©ºé—²ã€‚
+ *         å†…æ ¸åœ¨å¹³è¡¡è°ƒåº¦åŸŸæ—¶å› åå¤è¿›è¡Œè¿›ç¨‹è¿ç§»éƒ½ä¸æˆåŠŸè€Œé™·å…¥å›°å¢ƒ
+ *         è¢«è¿ç§»çš„è¿›ç¨‹ä¸æ˜¯â€œé«˜é€Ÿç¼“å­˜å‘½ä¸­â€çš„ï¼ˆæœ€è¿‘ä¸æ›¾åœ¨è¿œç¨‹CPUä¸Šè¿è¡Œï¼Œå› æ­¤è¿œç¨‹CPUä¸Šçš„ç¡¬ä»¶é«˜é€Ÿç¼“å­˜ä¸­æ²¡æœ‰è¯¥è¿›ç¨‹çš„æ•°æ®ã€‚ï¼‰
+ * å¦‚æœcan_migrate_taskè¿”å›1ï¼Œmove_taskså°±è°ƒç”¨pull_taskå‡½æ•°æŠŠå€™é€‰è¿›ç¨‹è¿ç§»åˆ°æœ¬åœ°è¿è¡Œé˜Ÿåˆ—ä¸­ã€‚
  */
 static inline
 int can_migrate_task(task_t *p, runqueue_t *rq, int this_cpu,
@@ -1939,13 +1939,13 @@ int can_migrate_task(task_t *p, runqueue_t *rq, int this_cpu,
  * Called with both runqueues locked.
  */
 /**
- * °Ñ½ø³Ì´ÓÔ´ÔËĞĞ¶ÓÁĞÇ¨ÒÆµ½±¾µØÔËĞĞ¶ÓÁĞ
- * this_rq:±¾µØÔËĞĞ¶ÓÁĞÃèÊö·û¡£
- * this_cpu:±¾µØCPUÏÂ±ê¡£
- * busiest:Ô´ÔËĞĞ¶ÓÁĞÃèÊö·û¡£
- * max_nr_move:±»Ç¨ÒÆ½ø³ÌµÄ×î´óÊı¡£
- * sd:ÔÚÆäÖĞÖ´ĞĞÆ½ºâ²Ù×÷µÄµ÷¶ÈÓòµÄÃèÊö·ûµØÖ·¡£
- * idle:IDLE±êÖ¾¡£¿ÉÒÔÎªSCHED_IDLEºÍNOT_IDLE£¬µ±º¯Êı±»idle_balance¼ä½Óµ÷ÓÃÊ±£¬»¹¿ÉÄÜÊÇNEWLY_IDLE¡£
+ * æŠŠè¿›ç¨‹ä»æºè¿è¡Œé˜Ÿåˆ—è¿ç§»åˆ°æœ¬åœ°è¿è¡Œé˜Ÿåˆ—
+ * this_rq:æœ¬åœ°è¿è¡Œé˜Ÿåˆ—æè¿°ç¬¦ã€‚
+ * this_cpu:æœ¬åœ°CPUä¸‹æ ‡ã€‚
+ * busiest:æºè¿è¡Œé˜Ÿåˆ—æè¿°ç¬¦ã€‚
+ * max_nr_move:è¢«è¿ç§»è¿›ç¨‹çš„æœ€å¤§æ•°ã€‚
+ * sd:åœ¨å…¶ä¸­æ‰§è¡Œå¹³è¡¡æ“ä½œçš„è°ƒåº¦åŸŸçš„æè¿°ç¬¦åœ°å€ã€‚
+ * idle:IDLEæ ‡å¿—ã€‚å¯ä»¥ä¸ºSCHED_IDLEå’ŒNOT_IDLEï¼Œå½“å‡½æ•°è¢«idle_balanceé—´æ¥è°ƒç”¨æ—¶ï¼Œè¿˜å¯èƒ½æ˜¯NEWLY_IDLEã€‚
  */
 static int move_tasks(runqueue_t *this_rq, int this_cpu, runqueue_t *busiest,
 		      unsigned long max_nr_move, struct sched_domain *sd,
@@ -1966,7 +1966,7 @@ static int move_tasks(runqueue_t *this_rq, int this_cpu, runqueue_t *busiest,
 	 * on them.
 	 */
 	/**
-	 * Ê×ÏÈ·ÖÎöbusiestµÄ¹ıÆÚ½ø³Ì¡£ÕâÊÇÒòÎª¹ıÆÚ½ø³ÌÃ»ÓĞÕ¼ÓÃ»º´æ¡£À­»î¶¯Ïß³ÌÓĞµã»®²»À´¡£
+	 * é¦–å…ˆåˆ†æbusiestçš„è¿‡æœŸè¿›ç¨‹ã€‚è¿™æ˜¯å› ä¸ºè¿‡æœŸè¿›ç¨‹æ²¡æœ‰å ç”¨ç¼“å­˜ã€‚æ‹‰æ´»åŠ¨çº¿ç¨‹æœ‰ç‚¹åˆ’ä¸æ¥ã€‚
 	 */
 	if (busiest->expired->nr_active) {
 		array = busiest->expired;
@@ -1981,19 +1981,19 @@ new_array:
 	idx = 0;
 skip_bitmap:
 	/**
-	 * ÔÚÔËĞĞ¶ÓÁĞÖĞËÑË÷¿É±»Ç¨ÒÆµÄ½ø³Ì¡£´ÓÓÅÏÈ¼¶×î¸ßµÄÏß³Ì¿ªÊ¼²éÕÒ¡£
+	 * åœ¨è¿è¡Œé˜Ÿåˆ—ä¸­æœç´¢å¯è¢«è¿ç§»çš„è¿›ç¨‹ã€‚ä»ä¼˜å…ˆçº§æœ€é«˜çš„çº¿ç¨‹å¼€å§‹æŸ¥æ‰¾ã€‚
 	 */
 	if (!idx)
 		idx = sched_find_first_bit(array->bitmap);
 	else
 		idx = find_next_bit(array->bitmap, MAX_PRIO, idx);
 	/**
-	 * Èç¹ûÒÑ¾­ËÑË÷Íê¶ÓÁĞ¡£
+	 * å¦‚æœå·²ç»æœç´¢å®Œé˜Ÿåˆ—ã€‚
 	 */
 	if (idx >= MAX_PRIO) {
 		/**
-		 * Èç¹ûµ±Ç°ÊÇÔÚ¹ıÆÚ¶ÓÁĞÖĞËÑË÷£¬²¢ÇÒ»î¶¯¶ÓÁĞÖĞÓĞ½ø³Ì¡£
-		 * ¾Í×¼±¸ÔÚ»î¶¯¶ÓÁĞÖĞËÑË÷¡£
+		 * å¦‚æœå½“å‰æ˜¯åœ¨è¿‡æœŸé˜Ÿåˆ—ä¸­æœç´¢ï¼Œå¹¶ä¸”æ´»åŠ¨é˜Ÿåˆ—ä¸­æœ‰è¿›ç¨‹ã€‚
+		 * å°±å‡†å¤‡åœ¨æ´»åŠ¨é˜Ÿåˆ—ä¸­æœç´¢ã€‚
 		 */
 		if (array == busiest->expired && busiest->active->nr_active) {
 			array = busiest->active;
@@ -2001,13 +2001,13 @@ skip_bitmap:
 			goto new_array;
 		}
 		/**
-		 * Á½¸ö¶ÓÁĞÖĞ¶¼ËÑË÷¹ıÁË£¬ÍË³ö¡£
+		 * ä¸¤ä¸ªé˜Ÿåˆ—ä¸­éƒ½æœç´¢è¿‡äº†ï¼Œé€€å‡ºã€‚
 		 */
 		goto out;
 	}
 
 	/**
-	 * ¶Ô½ø³ÌÁ´±íÖĞµÄÃ¿¸ö½ø³Ì½øĞĞ±éÀú¡£
+	 * å¯¹è¿›ç¨‹é“¾è¡¨ä¸­çš„æ¯ä¸ªè¿›ç¨‹è¿›è¡Œéå†ã€‚
 	 */
 	head = array->queue + idx;
 	curr = head->prev;
@@ -2017,7 +2017,7 @@ skip_queue:
 	curr = curr->prev;
 
 	/**
-	 * ¶ÔÁ´±íÖĞµÄÃ¿¸öÏß³Ì£¬µ÷ÓÃcan_migrate_task£¬ÅĞ¶ÏËüÊÇ·ñÊÊºÏÇ¨ÒÆµ½±¾µØCPU¡£
+	 * å¯¹é“¾è¡¨ä¸­çš„æ¯ä¸ªçº¿ç¨‹ï¼Œè°ƒç”¨can_migrate_taskï¼Œåˆ¤æ–­å®ƒæ˜¯å¦é€‚åˆè¿ç§»åˆ°æœ¬åœ°CPUã€‚
 	 */
 	if (!can_migrate_task(tmp, busiest, this_cpu, sd, idle)) {
 		if (curr != head)
@@ -2035,10 +2035,10 @@ skip_queue:
 	schedstat_inc(busiest, pt_lost[idle]);
 
 	/**
-	 * µ±Ç°Ïß³ÌÊÊÓÚÇ¨ÒÆµ½±¾µØCPU¡£µ÷ÓÃpull_taskÖ´ĞĞÇ¨ÒÆ²Ù×÷¡£
-	 * ±¾ÖÊÉÏ£¬ËüÖ´ĞĞdequeue_task´ÓÔ¶³ÌÔËĞĞ¶ÓÁĞÉ¾³ı½ø³Ì¡£
-	 * È»ºóÖ´ĞĞenqueue_task°Ñ½ø³Ì²åÈë±¾µØÔËĞĞ¶ÓÁĞ¡£Èç¹û¸Õ±»Ç¨ÒÆµÄ½ø³Ì±Èµ±Ç°½ø³ÌÓµÓĞ¸ü¸ßµÄÓÅÏÈ¼¶£¬
-	 * ¾Íµ÷ÓÃresched_taskÇÀÕ¼±¾µØCPUµÄµ±Ç°½ø³Ì¡£
+	 * å½“å‰çº¿ç¨‹é€‚äºè¿ç§»åˆ°æœ¬åœ°CPUã€‚è°ƒç”¨pull_taskæ‰§è¡Œè¿ç§»æ“ä½œã€‚
+	 * æœ¬è´¨ä¸Šï¼Œå®ƒæ‰§è¡Œdequeue_taskä»è¿œç¨‹è¿è¡Œé˜Ÿåˆ—åˆ é™¤è¿›ç¨‹ã€‚
+	 * ç„¶åæ‰§è¡Œenqueue_taskæŠŠè¿›ç¨‹æ’å…¥æœ¬åœ°è¿è¡Œé˜Ÿåˆ—ã€‚å¦‚æœåˆšè¢«è¿ç§»çš„è¿›ç¨‹æ¯”å½“å‰è¿›ç¨‹æ‹¥æœ‰æ›´é«˜çš„ä¼˜å…ˆçº§ï¼Œ
+	 * å°±è°ƒç”¨resched_taskæŠ¢å æœ¬åœ°CPUçš„å½“å‰è¿›ç¨‹ã€‚
 	 */
 	pull_task(busiest, array, tmp, this_rq, dst_array, this_cpu);
 	pulled++;
@@ -2220,11 +2220,11 @@ static runqueue_t *find_busiest_queue(struct sched_group *group)
  * Called with this_rq unlocked.
  */
 /**
- * Î¬³Ö¶à´¦ÀíÆ÷ÏµÍ³ÖĞÔËĞĞ¶ÓÁĞµÄÆ½ºâ¡£
- * this_cpu-±¾µØCPUµÄÏÂ±ê¡£
- * this_rq-±¾µØÔËĞĞ¶ÓÁĞµÄÃèÊö·ûµÄµØÖ·¡£
- * sd-Ö¸Ïò±»¼ì²éµÄµ÷¶ÈÓòµÄÃèÊö·û¡£
- * idle-È¡ÖµÎªSCHED_IDLE»òNOT_IDLE¡£
+ * ç»´æŒå¤šå¤„ç†å™¨ç³»ç»Ÿä¸­è¿è¡Œé˜Ÿåˆ—çš„å¹³è¡¡ã€‚
+ * this_cpu-æœ¬åœ°CPUçš„ä¸‹æ ‡ã€‚
+ * this_rq-æœ¬åœ°è¿è¡Œé˜Ÿåˆ—çš„æè¿°ç¬¦çš„åœ°å€ã€‚
+ * sd-æŒ‡å‘è¢«æ£€æŸ¥çš„è°ƒåº¦åŸŸçš„æè¿°ç¬¦ã€‚
+ * idle-å–å€¼ä¸ºSCHED_IDLEæˆ–NOT_IDLEã€‚
  */
 static int load_balance(int this_cpu, runqueue_t *this_rq,
 			struct sched_domain *sd, enum idle_type idle)
@@ -2235,19 +2235,19 @@ static int load_balance(int this_cpu, runqueue_t *this_rq,
 	int nr_moved;
 
 	/**
-	 * »ñµÃÔËĞĞ¶ÓÁĞµÄ×ÔĞıËø¡£
+	 * è·å¾—è¿è¡Œé˜Ÿåˆ—çš„è‡ªæ—‹é”ã€‚
 	 */
 	spin_lock(&this_rq->lock);
 	schedstat_inc(sd, lb_cnt[idle]);
 
 	/**
-	 * find_busiest_groupº¯Êı·ÖÎöµ÷¶ÈÓòÖĞ¸÷×éµÄ¹¤×÷Á¿¡£
-	 * Ëü·µ»Ø×î·±Ã¦µÄ×éµÄsched_groupÃèÊö·ûµÄµØÖ·¡£¼ÙÉèÕâ¸ö×é²»°üÀ¨±¾µØCPU£¬º¯Êı»¹·µ»ØÎªÁË»Ö¸´Æ½ºâ¶ø±»Ç¨ÒÆµ½
-	 * ±¾µØÔËĞĞ¶ÓÁĞÖĞµÄ½ø³ÌÊı¡£Èç¹û×î·±Ã¦µÄ×é°üÀ¨±¾µØCPU»òÕßËùÓĞµÄ×é±¾À´¾ÍÊÇÆ½ºâµÄ£¬º¯Êı·µ»ØNULL¡£
+	 * find_busiest_groupå‡½æ•°åˆ†æè°ƒåº¦åŸŸä¸­å„ç»„çš„å·¥ä½œé‡ã€‚
+	 * å®ƒè¿”å›æœ€ç¹å¿™çš„ç»„çš„sched_groupæè¿°ç¬¦çš„åœ°å€ã€‚å‡è®¾è¿™ä¸ªç»„ä¸åŒ…æ‹¬æœ¬åœ°CPUï¼Œå‡½æ•°è¿˜è¿”å›ä¸ºäº†æ¢å¤å¹³è¡¡è€Œè¢«è¿ç§»åˆ°
+	 * æœ¬åœ°è¿è¡Œé˜Ÿåˆ—ä¸­çš„è¿›ç¨‹æ•°ã€‚å¦‚æœæœ€ç¹å¿™çš„ç»„åŒ…æ‹¬æœ¬åœ°CPUæˆ–è€…æ‰€æœ‰çš„ç»„æœ¬æ¥å°±æ˜¯å¹³è¡¡çš„ï¼Œå‡½æ•°è¿”å›NULLã€‚
 	 */
 	group = find_busiest_group(sd, this_cpu, &imbalance, idle);
 	/**
-	 * Èç¹ûfind_busiest_groupÔÚµ÷¶ÈÓòÖĞÃ»ÓĞÕÒµ½¼È²»°üÀ¨±¾µØCPUÓÖ·Ç³£·±Ã¦µÄ×é¡£¾ÍÊÍ·Å×ÔĞıËø£¬µ÷Õûµ÷¶ÈÓòÃèÊö·ûµÄ²ÎÊı£¬ÒÔÑÓ³Ù±¾µØCPUÏÂÒ»´Î¶Ôload_balanceµÄµ÷¶È¡£
+	 * å¦‚æœfind_busiest_groupåœ¨è°ƒåº¦åŸŸä¸­æ²¡æœ‰æ‰¾åˆ°æ—¢ä¸åŒ…æ‹¬æœ¬åœ°CPUåˆéå¸¸ç¹å¿™çš„ç»„ã€‚å°±é‡Šæ”¾è‡ªæ—‹é”ï¼Œè°ƒæ•´è°ƒåº¦åŸŸæè¿°ç¬¦çš„å‚æ•°ï¼Œä»¥å»¶è¿Ÿæœ¬åœ°CPUä¸‹ä¸€æ¬¡å¯¹load_balanceçš„è°ƒåº¦ã€‚
 	 */
 	if (!group) {
 		schedstat_inc(sd, lb_nobusyg[idle]);
@@ -2255,7 +2255,7 @@ static int load_balance(int this_cpu, runqueue_t *this_rq,
 	}
 
 	/**
-	 * find_busiest_queueÕÒµ½×éÖĞ×î·±Ã¦µÄCPU£¬º¯Êı·µ»ØÏàÓ¦ÔËĞĞ¶ÓÁĞµÄÃèÊö·ûµØÖ·busiest¡£
+	 * find_busiest_queueæ‰¾åˆ°ç»„ä¸­æœ€ç¹å¿™çš„CPUï¼Œå‡½æ•°è¿”å›ç›¸åº”è¿è¡Œé˜Ÿåˆ—çš„æè¿°ç¬¦åœ°å€busiestã€‚
 	 */
 	busiest = find_busiest_queue(group);
 	if (!busiest) {
@@ -2269,9 +2269,9 @@ static int load_balance(int this_cpu, runqueue_t *this_rq,
 	 * it could happen in theory.
 	 */
 	/**
-	 * ÕâÀïÎªÁË±£ÏÕÆğ¼û£¬È·±£busiest != this_rq
-	 * ÒòÎªÏÖÔÚÒÑ¾­»ñµÃÁËthis->lock¡£²¢ÇÒ½«Òª»ñµÃbusiest->lock
-	 * Èç¹ûÕâÁ½¸öÖµÏàµÈ£¬»áµ¼ÖÂÏµÍ³ËÀËø¡£
+	 * è¿™é‡Œä¸ºäº†ä¿é™©èµ·è§ï¼Œç¡®ä¿busiest != this_rq
+	 * å› ä¸ºç°åœ¨å·²ç»è·å¾—äº†this->lockã€‚å¹¶ä¸”å°†è¦è·å¾—busiest->lock
+	 * å¦‚æœè¿™ä¸¤ä¸ªå€¼ç›¸ç­‰ï¼Œä¼šå¯¼è‡´ç³»ç»Ÿæ­»é”ã€‚
 	 */
 	if (unlikely(busiest == this_rq)) {
 		WARN_ON(1);
@@ -2289,26 +2289,26 @@ static int load_balance(int this_cpu, runqueue_t *this_rq,
 		 * correctly treated as an imbalance.
 		 */
 		/**
-		 * »ñµÃbusiest->lock.
-		 * ×¢Òâ:ÕâÒ»²½±ØĞë·Ç³£Ğ¡ĞÄ£¬ÒòÎª¼«ÓĞ¿ÉÄÜËÀËø¡£
-		 * µ±²»ÄÜÁ¢¼´»ñµÃbusiest->lockÊ±£¬ĞèÒª±È½Ïthis_rqºÍbusiest£¬È·±£°´Ë³Ğò»ñµÃËø¡£
-		 * ÇëÏ¸ĞÄÁì»ádouble_lock_balanceº¯Êı¡£
+		 * è·å¾—busiest->lock.
+		 * æ³¨æ„:è¿™ä¸€æ­¥å¿…é¡»éå¸¸å°å¿ƒï¼Œå› ä¸ºææœ‰å¯èƒ½æ­»é”ã€‚
+		 * å½“ä¸èƒ½ç«‹å³è·å¾—busiest->lockæ—¶ï¼Œéœ€è¦æ¯”è¾ƒthis_rqå’Œbusiestï¼Œç¡®ä¿æŒ‰é¡ºåºè·å¾—é”ã€‚
+		 * è¯·ç»†å¿ƒé¢†ä¼šdouble_lock_balanceå‡½æ•°ã€‚
 		 */
 		double_lock_balance(this_rq, busiest);
 		/**
-		 * µ÷ÓÃmove_tasks£¬³¢ÊÔ´Ó×î·±Ã¦µÄÔËĞĞ¶ÓÁĞÖĞ°ÑÒ»Ğ©½ø³ÌÇ¨ÒÆµ½±¾µØÔËĞĞ¶ÓÁĞthis_rqÖĞ¡£
+		 * è°ƒç”¨move_tasksï¼Œå°è¯•ä»æœ€ç¹å¿™çš„è¿è¡Œé˜Ÿåˆ—ä¸­æŠŠä¸€äº›è¿›ç¨‹è¿ç§»åˆ°æœ¬åœ°è¿è¡Œé˜Ÿåˆ—this_rqä¸­ã€‚
 		 */
 		nr_moved = move_tasks(this_rq, this_cpu, busiest,
 						imbalance, sd, idle);
 		/**
-		 * ÊÍ·Åbusiest->lock£¬µ«ÊÇÈÔÈ»±£Áôthis_rq->lock
+		 * é‡Šæ”¾busiest->lockï¼Œä½†æ˜¯ä»ç„¶ä¿ç•™this_rq->lock
 		 */
 		spin_unlock(&busiest->lock);
 	}
 	spin_unlock(&this_rq->lock);
 
 	/**
-	 * Ã»ÓĞÇ¨ÒÆµ½ÈÎºÎÏß³Ìµ½±¾µØCPU¡£¶ÓÁĞÈÔÈ»²»Æ½ºâ¡£
+	 * æ²¡æœ‰è¿ç§»åˆ°ä»»ä½•çº¿ç¨‹åˆ°æœ¬åœ°CPUã€‚é˜Ÿåˆ—ä»ç„¶ä¸å¹³è¡¡ã€‚
 	 */
 	if (!nr_moved) {
 		schedstat_inc(sd, lb_failed[idle]);
@@ -2320,7 +2320,7 @@ static int load_balance(int this_cpu, runqueue_t *this_rq,
 			spin_lock(&busiest->lock);
 			if (!busiest->active_balance) {
 				/**
-				 * ÉèÖÃactive_balance±êÖ¾£¬±íÊ¾ĞèÒª½«ÈÎÎñ½øĞĞÇ¨ÒÆ¡£
+				 * è®¾ç½®active_balanceæ ‡å¿—ï¼Œè¡¨ç¤ºéœ€è¦å°†ä»»åŠ¡è¿›è¡Œè¿ç§»ã€‚
 				 */
 				busiest->active_balance = 1;
 				busiest->push_cpu = this_cpu;
@@ -2328,8 +2328,8 @@ static int load_balance(int this_cpu, runqueue_t *this_rq,
 			}
 			spin_unlock(&busiest->lock);
 			/**
-			 * ĞèÒª»½ĞÑmigrationÄÚºËÏß³Ì¡£Õâ¸öÄÚºËÏß³ÌË³×Åµ÷¶ÈÓòµÄÁ´ËÑË÷¡£Ñ°ÕÒ¿ÕÏĞCPU¡£
-			 * Èç¹ûÕÒµ½Ò»¸ö¿ÕÏĞCPU£¬¾Íµ÷ÓÃmove_tasks°ÑÒ»¸ö½ø³ÌÇ¨ÒÆµ½¿ÕÏĞÔËĞĞ¶ÓÁĞ¡£
+			 * éœ€è¦å”¤é†’migrationå†…æ ¸çº¿ç¨‹ã€‚è¿™ä¸ªå†…æ ¸çº¿ç¨‹é¡ºç€è°ƒåº¦åŸŸçš„é“¾æœç´¢ã€‚å¯»æ‰¾ç©ºé—²CPUã€‚
+			 * å¦‚æœæ‰¾åˆ°ä¸€ä¸ªç©ºé—²CPUï¼Œå°±è°ƒç”¨move_tasksæŠŠä¸€ä¸ªè¿›ç¨‹è¿ç§»åˆ°ç©ºé—²è¿è¡Œé˜Ÿåˆ—ã€‚
 			 */
 			if (wake)
 				wake_up_process(busiest->migration_thread);
@@ -2503,11 +2503,11 @@ static void active_load_balance(runqueue_t *busiest_rq, int busiest_cpu)
 #define CPU_OFFSET(cpu) (HZ * cpu / NR_CPUS)
 
 /**
- * ÔËĞĞ¶ÓÁĞÆ½ºâº¯Êı¡£Ã¿´Î¾­¹ıÒ»´ÎÊ±ÖÓ½ÚÅÄÊ±£¬±»scheduler_tickµ÷ÓÃ¡£
- * this_cpu-±¾µØCPUÏÂ±ê¡£
- * this_rq-±¾µØÔËĞĞ¶ÓÁĞµÄµØÖ·¡£
- * idle-ÊÇ·ñidle½ø³Ì¡£SCHED_IDLE:µ±Ç°CPU¿ÕÏĞ£¬¼´currentÊÇswapper½ø³Ì¡£
- *                    NOT_IDLE:µ±Ç°CPU²»¿ÕÏĞ¡£¼´current²»ÊÇswapper½ø³Ì¡£
+ * è¿è¡Œé˜Ÿåˆ—å¹³è¡¡å‡½æ•°ã€‚æ¯æ¬¡ç»è¿‡ä¸€æ¬¡æ—¶é’ŸèŠ‚æ‹æ—¶ï¼Œè¢«scheduler_tickè°ƒç”¨ã€‚
+ * this_cpu-æœ¬åœ°CPUä¸‹æ ‡ã€‚
+ * this_rq-æœ¬åœ°è¿è¡Œé˜Ÿåˆ—çš„åœ°å€ã€‚
+ * idle-æ˜¯å¦idleè¿›ç¨‹ã€‚SCHED_IDLE:å½“å‰CPUç©ºé—²ï¼Œå³currentæ˜¯swapperè¿›ç¨‹ã€‚
+ *                    NOT_IDLE:å½“å‰CPUä¸ç©ºé—²ã€‚å³currentä¸æ˜¯swapperè¿›ç¨‹ã€‚
  */
 static void rebalance_tick(int this_cpu, runqueue_t *this_rq,
 			   enum idle_type idle)
@@ -2518,7 +2518,7 @@ static void rebalance_tick(int this_cpu, runqueue_t *this_rq,
 
 	/* Update our load */
 	/**
-	 * Ê×ÏÈÈ·¶¨ÔËĞĞ¶ÓÁĞÖĞµÄ½ø³ÌÊı¡£²¢¸üĞÂÔËĞĞ¶ÓÁĞµÄÆ½¾ù¹¤×÷Á¿¡£
+	 * é¦–å…ˆç¡®å®šè¿è¡Œé˜Ÿåˆ—ä¸­çš„è¿›ç¨‹æ•°ã€‚å¹¶æ›´æ–°è¿è¡Œé˜Ÿåˆ—çš„å¹³å‡å·¥ä½œé‡ã€‚
 	 */
 	old_load = this_rq->cpu_load;
 	this_load = this_rq->nr_running * SCHED_LOAD_SCALE;
@@ -2532,8 +2532,8 @@ static void rebalance_tick(int this_cpu, runqueue_t *this_rq,
 	this_rq->cpu_load = (old_load + this_load) / 2;
 
 	/**
-	 * ÔÚËùÓĞµ÷¶ÈÓòÉÏÑ­»·¡£
-	 * Ñ­»·Â·¾¶´Ó»ù±¾Óò(this->sd)µ½×îÉÏ²ãÓò¡£
+	 * åœ¨æ‰€æœ‰è°ƒåº¦åŸŸä¸Šå¾ªç¯ã€‚
+	 * å¾ªç¯è·¯å¾„ä»åŸºæœ¬åŸŸ(this->sd)åˆ°æœ€ä¸Šå±‚åŸŸã€‚
 	 */
 	for_each_domain(this_cpu, sd) {
 		unsigned long interval;
@@ -2542,12 +2542,12 @@ static void rebalance_tick(int this_cpu, runqueue_t *this_rq,
 			continue;
 
 		/**
-		 * ¼ÆËãµ±Ç°µ÷¶ÈÓòµÄÆ½ºâ¼ä¸ôÊ±¼ä¡£ÓÉµ÷¶ÈÓò²ÎÊı¼°idle±êÖ¾¾ö¶¨¡£
+		 * è®¡ç®—å½“å‰è°ƒåº¦åŸŸçš„å¹³è¡¡é—´éš”æ—¶é—´ã€‚ç”±è°ƒåº¦åŸŸå‚æ•°åŠidleæ ‡å¿—å†³å®šã€‚
 		 */
 		interval = sd->balance_interval;
 		/**
-		 * Èç¹ûÔËĞĞ¶ÓÁĞÎª¿Õ£¬rebalance_tick¿ÉÒÔÒÔºÜ¸ßµÄÆµÂÊÔËĞĞ(´ó¸ÅÒ»µ½Á½¸öTICK´¦ÀíÒ»´Î¶ÔÓ¦ÓÚÂß¼­ºÍÎïÀíCPUµÄµ÷¶ÈÓò)¡£
-		 * ·ñÔò£¬½«Ê±¼ä¼ä¸ô³ËÒÔbusy_factor.´ó¸ÅÃ¿10ms´¦ÀíÒ»´ÎÂß¼­CPU¶ÔÓ¦µÄµ÷¶ÈÓò¡£Ã¿100ms´¦ÀíÒ»´ÎÎïÀíCPU¶ÔÓ¦µÄµ÷¶ÈÓò¡£
+		 * å¦‚æœè¿è¡Œé˜Ÿåˆ—ä¸ºç©ºï¼Œrebalance_tickå¯ä»¥ä»¥å¾ˆé«˜çš„é¢‘ç‡è¿è¡Œ(å¤§æ¦‚ä¸€åˆ°ä¸¤ä¸ªTICKå¤„ç†ä¸€æ¬¡å¯¹åº”äºé€»è¾‘å’Œç‰©ç†CPUçš„è°ƒåº¦åŸŸ)ã€‚
+		 * å¦åˆ™ï¼Œå°†æ—¶é—´é—´éš”ä¹˜ä»¥busy_factor.å¤§æ¦‚æ¯10mså¤„ç†ä¸€æ¬¡é€»è¾‘CPUå¯¹åº”çš„è°ƒåº¦åŸŸã€‚æ¯100mså¤„ç†ä¸€æ¬¡ç‰©ç†CPUå¯¹åº”çš„è°ƒåº¦åŸŸã€‚
 		 */ 
 		if (idle != SCHED_IDLE)
 			interval *= sd->busy_factor;
@@ -2558,7 +2558,7 @@ static void rebalance_tick(int this_cpu, runqueue_t *this_rq,
 			interval = 1;
 
 		/**
-		 * Èç¹ûÒÑ¾­µ½´ïÁËµ±Ç°µ÷¶ÈÓòµÄÊ±ÏŞ£¬¾Íµ÷ÓÃload_balance£¬´Ó¶øÔÚµ÷¶ÈÓòÉÏÖ´ĞĞÖØĞÂÆ½ºâµÄ²Ù×÷¡£
+		 * å¦‚æœå·²ç»åˆ°è¾¾äº†å½“å‰è°ƒåº¦åŸŸçš„æ—¶é™ï¼Œå°±è°ƒç”¨load_balanceï¼Œä»è€Œåœ¨è°ƒåº¦åŸŸä¸Šæ‰§è¡Œé‡æ–°å¹³è¡¡çš„æ“ä½œã€‚
 		 */
 		if (j - sd->last_balance >= interval) {
 			if (load_balance(this_cpu, this_rq, sd, idle)) {
@@ -2614,7 +2614,7 @@ EXPORT_PER_CPU_SYMBOL(kstat);
  * if a better static_prio task has expired:
  */
 /**
- * Èç¹ûµ±Ç°½ø³ÌµÄ¾²Ì¬ÓÅÏÈ¼¶´óÓÚÒ»¸ö¹ıÆÚ½ø³ÌµÄ¾²Ì¬ÓÅÏÈ¼¶£¬Ôò·µ»Ø1
+ * å¦‚æœå½“å‰è¿›ç¨‹çš„é™æ€ä¼˜å…ˆçº§å¤§äºä¸€ä¸ªè¿‡æœŸè¿›ç¨‹çš„é™æ€ä¼˜å…ˆçº§ï¼Œåˆ™è¿”å›1
  */
 #define EXPIRED_STARVING(rq) \
 	((STARVATION_LIMIT && ((rq)->expired_timestamp && \
@@ -2628,7 +2628,7 @@ EXPORT_PER_CPU_SYMBOL(kstat);
  * @cputime: the cpu time spent in user space since the last update
  */
 /**
- * ¼ì²é½ø³Ì¶¨Ê±Æ÷£¬Çë²Î¼ûsettimerºÍalarmÏµÍ³µ÷ÓÃ
+ * æ£€æŸ¥è¿›ç¨‹å®šæ—¶å™¨ï¼Œè¯·å‚è§settimerå’Œalarmç³»ç»Ÿè°ƒç”¨
  */
 static inline void account_it_virt(struct task_struct * p, cputime_t cputime)
 {
@@ -2651,7 +2651,7 @@ static inline void account_it_virt(struct task_struct * p, cputime_t cputime)
  * @cputime: the cpu time spent in user and kernel space since the last update
  */
 /**
- * ¼ì²é½ø³Ì¶¨Ê±Æ÷£¬Çë²Î¼ûsettimerºÍalarmÏµÍ³µ÷ÓÃ
+ * æ£€æŸ¥è¿›ç¨‹å®šæ—¶å™¨ï¼Œè¯·å‚è§settimerå’Œalarmç³»ç»Ÿè°ƒç”¨
  */
 static void account_it_prof(struct task_struct *p, cputime_t cputime)
 {
@@ -2675,8 +2675,8 @@ static void account_it_prof(struct task_struct *p, cputime_t cputime)
  * @cputime: the cpu time spent in user and kernel space since the last update
  */
 /**
- * ¼ì²éÊÇ·ñÒÑ¾­µ½´ïCPUÊ±ÏŞ£¬Èç¹ûÊÇ£¬Ïòcurrent½ø³Ì·¢ËÍSIGXCPUºÍSGKILLĞÅºÅ¡£
- * Õâ¸öÏŞÖÆÊÇÓÉ½ø³ÌÃèÊö·ûµÄsignal->rlim[RLIMIT_CPU].rlim_cur×Ö¶Î¿ØÖÆµÄ
+ * æ£€æŸ¥æ˜¯å¦å·²ç»åˆ°è¾¾CPUæ—¶é™ï¼Œå¦‚æœæ˜¯ï¼Œå‘currentè¿›ç¨‹å‘é€SIGXCPUå’ŒSGKILLä¿¡å·ã€‚
+ * è¿™ä¸ªé™åˆ¶æ˜¯ç”±è¿›ç¨‹æè¿°ç¬¦çš„signal->rlim[RLIMIT_CPU].rlim_curå­—æ®µæ§åˆ¶çš„
  */ 
 static void check_rlimit(struct task_struct *p, cputime_t cputime)
 {
@@ -2703,7 +2703,7 @@ static void check_rlimit(struct task_struct *p, cputime_t cputime)
  * @cputime: the cpu time spent in user space since the last update
  */
 /**
- * ¼ì²é½ø³ÌÔÚÓÃ»§Ì¬ÏÂÔËĞĞÁË¶à³¤Ê±¼ä¡£
+ * æ£€æŸ¥è¿›ç¨‹åœ¨ç”¨æˆ·æ€ä¸‹è¿è¡Œäº†å¤šé•¿æ—¶é—´ã€‚
  */
 void account_user_time(struct task_struct *p, cputime_t cputime)
 {
@@ -2711,19 +2711,19 @@ void account_user_time(struct task_struct *p, cputime_t cputime)
 	cputime64_t tmp;
 
 	/**
-	 * ¸üĞÂ½ø³ÌÃèÊö·ûµÄutime×Ö¶Î(½ø³ÌÔÚÓÃ»§Ì¬ÏÂËù¾­¹ıµÄ½ÚÅÄÊı)
+	 * æ›´æ–°è¿›ç¨‹æè¿°ç¬¦çš„utimeå­—æ®µ(è¿›ç¨‹åœ¨ç”¨æˆ·æ€ä¸‹æ‰€ç»è¿‡çš„èŠ‚æ‹æ•°)
 	 */
 	p->utime = cputime_add(p->utime, cputime);
 
 	/* Check for signals (SIGVTALRM, SIGPROF, SIGXCPU & SIGKILL). */
 	
 	/**
-	 * ¼ì²éÊÇ·ñÒÑ¾­µ½´ïCPUÊ±ÏŞ£¬Èç¹ûÊÇ£¬Ïòcurrent½ø³Ì·¢ËÍSIGXCPUºÍSGKILLĞÅºÅ¡£
-	 * Õâ¸öÏŞÖÆÊÇÓÉ½ø³ÌÃèÊö·ûµÄsignal->rlim[RLIMIT_CPU].rlim_cur×Ö¶Î¿ØÖÆµÄ
+	 * æ£€æŸ¥æ˜¯å¦å·²ç»åˆ°è¾¾CPUæ—¶é™ï¼Œå¦‚æœæ˜¯ï¼Œå‘currentè¿›ç¨‹å‘é€SIGXCPUå’ŒSGKILLä¿¡å·ã€‚
+	 * è¿™ä¸ªé™åˆ¶æ˜¯ç”±è¿›ç¨‹æè¿°ç¬¦çš„signal->rlim[RLIMIT_CPU].rlim_curå­—æ®µæ§åˆ¶çš„
 	 */	
 	check_rlimit(p, cputime);
 	/**
-	 * ¼ì²é½ø³Ì¶¨Ê±Æ÷
+	 * æ£€æŸ¥è¿›ç¨‹å®šæ—¶å™¨
 	 */
 	account_it_virt(p, cputime);
 	account_it_prof(p, cputime);
@@ -2743,7 +2743,7 @@ void account_user_time(struct task_struct *p, cputime_t cputime)
  * @cputime: the cpu time spent in kernel space since the last update
  */
 /**
- * ¼ì²é½ø³ÌÔÚÄÚºËÌ¬ÔËĞĞÁË¶à³¤Ê±¼ä¡£
+ * æ£€æŸ¥è¿›ç¨‹åœ¨å†…æ ¸æ€è¿è¡Œäº†å¤šé•¿æ—¶é—´ã€‚
  */
 void account_system_time(struct task_struct *p, int hardirq_offset,
 			 cputime_t cputime)
@@ -2753,15 +2753,15 @@ void account_system_time(struct task_struct *p, int hardirq_offset,
 	cputime64_t tmp;
 
 	/**
-	 * ¸üĞÂ½ø³ÌÃèÊö·ûµÄstime×Ö¶Î
+	 * æ›´æ–°è¿›ç¨‹æè¿°ç¬¦çš„stimeå­—æ®µ
 	 */
 	p->stime = cputime_add(p->stime, cputime);
 
 	/* Check for signals (SIGPROF, SIGXCPU & SIGKILL). */
 	if (likely(p->signal && p->exit_state < EXIT_ZOMBIE)) {
 		/**
-		 * ¼ì²éÊÇ·ñÒÑ¾­µ½´ïCPUÊ±ÏŞ£¬Èç¹ûÊÇ£¬Ïòcurrent½ø³Ì·¢ËÍSIGXCPUºÍSGKILLĞÅºÅ¡£
-		 * Õâ¸öÏŞÖÆÊÇÓÉ½ø³ÌÃèÊö·ûµÄsignal->rlim[RLIMIT_CPU].rlim_cur×Ö¶Î¿ØÖÆµÄ
+		 * æ£€æŸ¥æ˜¯å¦å·²ç»åˆ°è¾¾CPUæ—¶é™ï¼Œå¦‚æœæ˜¯ï¼Œå‘currentè¿›ç¨‹å‘é€SIGXCPUå’ŒSGKILLä¿¡å·ã€‚
+		 * è¿™ä¸ªé™åˆ¶æ˜¯ç”±è¿›ç¨‹æè¿°ç¬¦çš„signal->rlim[RLIMIT_CPU].rlim_curå­—æ®µæ§åˆ¶çš„
 		 */
 		check_rlimit(p, cputime);
 		account_it_prof(p, cputime);
@@ -2810,8 +2810,8 @@ void account_steal_time(struct task_struct *p, cputime_t steal)
  * timeslices.
  */
 /**
- * Î¬³Öµ±Ç°×îĞÂµÄtime_slice¼ÆÊıÆ÷
- * Ã¿´ÎÊ±ÖÓ½ÚÅÄµ½À´Ê±£¬scheduler_tickº¯Êı½«±»µ÷ÓÃ£¬ÒÔÖ´ĞĞÓëµ÷¶ÈÏà¹ØµÄ²Ù×÷¡£
+ * ç»´æŒå½“å‰æœ€æ–°çš„time_sliceè®¡æ•°å™¨
+ * æ¯æ¬¡æ—¶é’ŸèŠ‚æ‹åˆ°æ¥æ—¶ï¼Œscheduler_tickå‡½æ•°å°†è¢«è°ƒç”¨ï¼Œä»¥æ‰§è¡Œä¸è°ƒåº¦ç›¸å…³çš„æ“ä½œã€‚
  */
 void scheduler_tick(void)
 {
@@ -2820,38 +2820,38 @@ void scheduler_tick(void)
 	task_t *p = current;
 
 	/**
-	 * °Ñ×ª»»ÎªÄÉÃëµÄTSCµÄµ±Ç°Öµ´æÈë±¾µØÔËĞĞ¶ÓÁĞµÄtimestamp_last_tickÖĞ¡£Õâ¸öÊ±¼ä´ÁÓÉsched_clock»ñµÃ¡£
+	 * æŠŠè½¬æ¢ä¸ºçº³ç§’çš„TSCçš„å½“å‰å€¼å­˜å…¥æœ¬åœ°è¿è¡Œé˜Ÿåˆ—çš„timestamp_last_tickä¸­ã€‚è¿™ä¸ªæ—¶é—´æˆ³ç”±sched_clockè·å¾—ã€‚
 	 */
 	rq->timestamp_last_tick = sched_clock();
 
 	/**
-	 * ¼ì²éµ±Ç°½ø³ÌÊÇ·ñÊÇidle½ø³Ì¡£
+	 * æ£€æŸ¥å½“å‰è¿›ç¨‹æ˜¯å¦æ˜¯idleè¿›ç¨‹ã€‚
 	 */
 	if (p == rq->idle) {
 		/**
-		 * ¼ì²éÔËĞĞ¶ÓÁĞÖĞ³ıÁËIDLE½ø³ÌÍâ£¬ÊÇ·ñ»¹ÓĞÆäËû¿ÉÔËĞĞ½ø³Ì¡£
-		 * Èç¹ûÓĞ£¬¾ÍÉèÖÃµ±Ç°½ø³ÌµÄTIF_NEED_SCHEDULED×Ö¶Î£¬ÒÔÇ¿ÆÈ½øĞĞµ÷¶È¡£
+		 * æ£€æŸ¥è¿è¡Œé˜Ÿåˆ—ä¸­é™¤äº†IDLEè¿›ç¨‹å¤–ï¼Œæ˜¯å¦è¿˜æœ‰å…¶ä»–å¯è¿è¡Œè¿›ç¨‹ã€‚
+		 * å¦‚æœæœ‰ï¼Œå°±è®¾ç½®å½“å‰è¿›ç¨‹çš„TIF_NEED_SCHEDULEDå­—æ®µï¼Œä»¥å¼ºè¿«è¿›è¡Œè°ƒåº¦ã€‚
 		 */
 		if (wake_priority_sleeper(rq))
 			goto out;
 		rebalance_tick(cpu, rq, SCHED_IDLE);
 		/**
-		 * Ã»ÓĞ±ØÒª¸üĞÂIDLE½ø³ÌµÄÊ±¼äÆ¬¼ÆÊıÆ÷£¬ËùÒÔ´Ë´¦Ö±½Ó·µ»Ø¡£
+		 * æ²¡æœ‰å¿…è¦æ›´æ–°IDLEè¿›ç¨‹çš„æ—¶é—´ç‰‡è®¡æ•°å™¨ï¼Œæ‰€ä»¥æ­¤å¤„ç›´æ¥è¿”å›ã€‚
 		 */
 		return;
 	}
 
 	/* Task might have expired already, but not scheduled off yet */
 	/**
-	 * ¼ì²écurrent->arrayÊÇ·ñÖ¸Ïò±¾µØÔËĞĞ¶ÓÁĞµÄ»î¶¯Á´±í¡£
-	 * Èç¹û²»ÊÇ£¬ËµÃ÷½ø³ÌÒÑ¾­¹ıÆÚµ«»¹Ã»ÓĞ±»Ìæ»»£¬ÉèÖÃTIF_NEED_SCHEDULED±êÖ¾£¬ÒÔÇ¿ÖÆ½øĞĞÖØĞÂµ÷¶È¡£
+	 * æ£€æŸ¥current->arrayæ˜¯å¦æŒ‡å‘æœ¬åœ°è¿è¡Œé˜Ÿåˆ—çš„æ´»åŠ¨é“¾è¡¨ã€‚
+	 * å¦‚æœä¸æ˜¯ï¼Œè¯´æ˜è¿›ç¨‹å·²ç»è¿‡æœŸä½†è¿˜æ²¡æœ‰è¢«æ›¿æ¢ï¼Œè®¾ç½®TIF_NEED_SCHEDULEDæ ‡å¿—ï¼Œä»¥å¼ºåˆ¶è¿›è¡Œé‡æ–°è°ƒåº¦ã€‚
 	 */ 
 	if (p->array != rq->active) {
 		set_tsk_need_resched(p);
 		goto out;
 	}
 	/**
-	 * »ñµÃÔËĞĞ¶ÓÁĞµÄ×ÔĞıËø¡£
+	 * è·å¾—è¿è¡Œé˜Ÿåˆ—çš„è‡ªæ—‹é”ã€‚
 	 */
 	spin_lock(&rq->lock);
 	/*
@@ -2862,37 +2862,37 @@ void scheduler_tick(void)
 	 * to use up their timeslices at their highest priority levels.
 	 */
 	/**
-	 * µİ¼õµ±Ç°½ø³ÌµÄÊ±¼äÆ¬¼ÆÊıÆ÷£¬²¢¼ì²éÊÇ·ñÒÑ¾­ÓÃÍêÊ±¼äÆ¬¡£
-	 * ÓÉÓÚ½ø³ÌµÄµ÷¶ÈÀàĞÍ²»Í¬£¬º¯ÊıËùÖ´ĞĞµÄ²Ù×÷Ò²ÓĞºÜ´ó²î±ğ¡£
+	 * é€’å‡å½“å‰è¿›ç¨‹çš„æ—¶é—´ç‰‡è®¡æ•°å™¨ï¼Œå¹¶æ£€æŸ¥æ˜¯å¦å·²ç»ç”¨å®Œæ—¶é—´ç‰‡ã€‚
+	 * ç”±äºè¿›ç¨‹çš„è°ƒåº¦ç±»å‹ä¸åŒï¼Œå‡½æ•°æ‰€æ‰§è¡Œçš„æ“ä½œä¹Ÿæœ‰å¾ˆå¤§å·®åˆ«ã€‚
 	 */
-	if (rt_task(p)) {/* Èç¹ûÊÇÊµÊ±½ø³Ì£¬¾Í½øÒ»²½¸ù¾İÊÇFIFO»¹ÊÇRRÀàĞÍµÄÊµÊ±½ø³Ì */
+	if (rt_task(p)) {/* å¦‚æœæ˜¯å®æ—¶è¿›ç¨‹ï¼Œå°±è¿›ä¸€æ­¥æ ¹æ®æ˜¯FIFOè¿˜æ˜¯RRç±»å‹çš„å®æ—¶è¿›ç¨‹ */
 		/*
 		 * RR tasks need a special form of timeslice management.
 		 * FIFO tasks have no timeslices.
 		 */
 		/**
-		 * ¶ÔSCHED_RRÀàĞÍµÄÊµÊ±½ø³Ì£¬ĞèÒªµİ¼õËüµÄÊ±¼äÆ¬¡£
-		 * ¶ÔSCHED_FIFOÀàĞÍµÄÊµÊ±½ø³Ì£¬Ê²Ã´¶¼²»×ö£¬ÍË³ö¡£
+		 * å¯¹SCHED_RRç±»å‹çš„å®æ—¶è¿›ç¨‹ï¼Œéœ€è¦é€’å‡å®ƒçš„æ—¶é—´ç‰‡ã€‚
+		 * å¯¹SCHED_FIFOç±»å‹çš„å®æ—¶è¿›ç¨‹ï¼Œä»€ä¹ˆéƒ½ä¸åšï¼Œé€€å‡ºã€‚
 		 */
 		if ((p->policy == SCHED_RR) && !--p->time_slice) {
 			/**
-			 * ¶ÔSCHED_RRÀàĞÍµÄÊµÊ±½ø³Ì£¬Èç¹ûËüµÄÊ±¼äÆ¬ÒÑ¾­ÓÃÍê£¬¾ÍÖ´ĞĞ´ËÏÂ¶¯×÷£¬ÒÔ´ïµ½ÇÀÕ¼µ±Ç°½ø³ÌµÄÄ¿µÄ¡£
-			 * Èç¹û±ØÒªµÄ»°£¬¾Í¾¡¿ìÇÀÕ¼¡£
+			 * å¯¹SCHED_RRç±»å‹çš„å®æ—¶è¿›ç¨‹ï¼Œå¦‚æœå®ƒçš„æ—¶é—´ç‰‡å·²ç»ç”¨å®Œï¼Œå°±æ‰§è¡Œæ­¤ä¸‹åŠ¨ä½œï¼Œä»¥è¾¾åˆ°æŠ¢å å½“å‰è¿›ç¨‹çš„ç›®çš„ã€‚
+			 * å¦‚æœå¿…è¦çš„è¯ï¼Œå°±å°½å¿«æŠ¢å ã€‚
 			 */
-			p->time_slice = task_timeslice(p);/* ÖØĞÂ¼ÆËãËüµÄÊ±¼äÆ¬,Ëü¸ù¾İ½ø³ÌµÄ¾²Ì¬ÓÅÏÈ¼¶À´¼ÆËãËüµÄÊ±¼äÆ¬¡£ */
+			p->time_slice = task_timeslice(p);/* é‡æ–°è®¡ç®—å®ƒçš„æ—¶é—´ç‰‡,å®ƒæ ¹æ®è¿›ç¨‹çš„é™æ€ä¼˜å…ˆçº§æ¥è®¡ç®—å®ƒçš„æ—¶é—´ç‰‡ã€‚ */
 			/**
-			 * Ö±µ½ÕâÀï£¬ËµÃ÷½ø³ÌÒ»¶¨²»ÊÇµÚÒ»´ÎÔËĞĞÁË£¬ËüÒÑ¾­ÓÃÍêÁËÒ»´ÎËüµÄÊ±¼äÆ¬£¬½«first_time_sliceÖÃÎª0.
-			 * ÕâÑù£¬Ëü¼´Ê¹ÍË³ö£¬Ò²²»»á½«Ê£ÓàµÄÊ±¼äÆ¬»¹¸ø¸¸½ø³ÌÁË¡£
+			 * ç›´åˆ°è¿™é‡Œï¼Œè¯´æ˜è¿›ç¨‹ä¸€å®šä¸æ˜¯ç¬¬ä¸€æ¬¡è¿è¡Œäº†ï¼Œå®ƒå·²ç»ç”¨å®Œäº†ä¸€æ¬¡å®ƒçš„æ—¶é—´ç‰‡ï¼Œå°†first_time_sliceç½®ä¸º0.
+			 * è¿™æ ·ï¼Œå®ƒå³ä½¿é€€å‡ºï¼Œä¹Ÿä¸ä¼šå°†å‰©ä½™çš„æ—¶é—´ç‰‡è¿˜ç»™çˆ¶è¿›ç¨‹äº†ã€‚
 			 */
 			p->first_time_slice = 0;
 			/**
-			 * ÉèÖÃµ÷¶È±êÖ¾£¬ÒÔ´ïµ½¾¡¿ìÇÀÕ¼µÄÄ¿µÄ¡£
+			 * è®¾ç½®è°ƒåº¦æ ‡å¿—ï¼Œä»¥è¾¾åˆ°å°½å¿«æŠ¢å çš„ç›®çš„ã€‚
 			 */
 			set_tsk_need_resched(p);
 
 			/* put it at the end of the queue: */
 			/**
-			 * ½«ÊµÊ±½ø³Ì·Åµ½¶ÓÁĞÄ©Î²¡£ÕâÑù£¬Èç´ËÁ´±íÖĞ»¹ÓĞÆäËûÍ¬ÓÅÏÈ¼¶µÄRR½ø³Ì£¬ÆäËû½ø³Ì¾ÍÄÜ¹»µÃµ½ÔËĞĞÁË¡£
+			 * å°†å®æ—¶è¿›ç¨‹æ”¾åˆ°é˜Ÿåˆ—æœ«å°¾ã€‚è¿™æ ·ï¼Œå¦‚æ­¤é“¾è¡¨ä¸­è¿˜æœ‰å…¶ä»–åŒä¼˜å…ˆçº§çš„RRè¿›ç¨‹ï¼Œå…¶ä»–è¿›ç¨‹å°±èƒ½å¤Ÿå¾—åˆ°è¿è¡Œäº†ã€‚
 			 */
 			requeue_task(p, rq->active);
 		}
@@ -2900,57 +2900,57 @@ void scheduler_tick(void)
 	}
 
 	/**
-	 * ÔËĞĞµ½´Ë£¬ËµÃ÷½ø³ÌÊÇÆÕÍ¨½ø³Ì¡£ÏÖÔÚ¿ªÊ¼¸üĞÂÆÕÍ¨½ø³ÌµÄÊ±¼äÆ¬¡£
+	 * è¿è¡Œåˆ°æ­¤ï¼Œè¯´æ˜è¿›ç¨‹æ˜¯æ™®é€šè¿›ç¨‹ã€‚ç°åœ¨å¼€å§‹æ›´æ–°æ™®é€šè¿›ç¨‹çš„æ—¶é—´ç‰‡ã€‚
 	 */
-	if (!--p->time_slice) {/* Ê×ÏÈµİ¼õÆÕÍ¨½ø³ÌµÄÊ±¼äÆ¬¼ÆÊıÆ÷¡£Èç¹ûÓÃÍê£¬¼ÌĞøÖ´ĞĞÒÔÏÂ²Ù×÷ */
+	if (!--p->time_slice) {/* é¦–å…ˆé€’å‡æ™®é€šè¿›ç¨‹çš„æ—¶é—´ç‰‡è®¡æ•°å™¨ã€‚å¦‚æœç”¨å®Œï¼Œç»§ç»­æ‰§è¡Œä»¥ä¸‹æ“ä½œ */
 		/**
-		 * ¼ÈÈ»ÓÃÍêÁË£¬¾Í½«µ±Ç°½ø³Ì´Ó»î¶¯¼¯ºÏÖĞÕª³ı¡£
+		 * æ—¢ç„¶ç”¨å®Œäº†ï¼Œå°±å°†å½“å‰è¿›ç¨‹ä»æ´»åŠ¨é›†åˆä¸­æ‘˜é™¤ã€‚
 		 */
 		dequeue_task(p, rq->active);
 		/**
-		 * µ±È»£¬µ±Ç°½ø³Ì¼ÈÈ»ÒÑ¾­¹ıÆÚ£¬¾Í±ØĞëÉèÖÃÖØĞÂµ÷¶È±êÖ¾£¬ÒÔ±ãÔÚÖĞ¶Ï·µ»ØÇ°µ÷ÓÃscheduleÑ¡ÔñÁíÍâÒ»¸ö½ø³ÌÀ´ÔËĞĞ¡£
+		 * å½“ç„¶ï¼Œå½“å‰è¿›ç¨‹æ—¢ç„¶å·²ç»è¿‡æœŸï¼Œå°±å¿…é¡»è®¾ç½®é‡æ–°è°ƒåº¦æ ‡å¿—ï¼Œä»¥ä¾¿åœ¨ä¸­æ–­è¿”å›å‰è°ƒç”¨scheduleé€‰æ‹©å¦å¤–ä¸€ä¸ªè¿›ç¨‹æ¥è¿è¡Œã€‚
 		 */
 		set_tsk_need_resched(p);
 		/**
-		 * ¸üĞÂµ±Ç°½ø³ÌµÄ¶¯Ì¬ÓÅÏÈ¼¶¡£
-		 * effective_prio¸ù¾İµ±Ç°½ø³ÌµÄstatic_prioºÍsleep_avg×Ö¶Î£¬¼ÆËã½ø³ÌµÄ¶¯Ì¬ÓÅÏÈ¼¶¡£
+		 * æ›´æ–°å½“å‰è¿›ç¨‹çš„åŠ¨æ€ä¼˜å…ˆçº§ã€‚
+		 * effective_prioæ ¹æ®å½“å‰è¿›ç¨‹çš„static_prioå’Œsleep_avgå­—æ®µï¼Œè®¡ç®—è¿›ç¨‹çš„åŠ¨æ€ä¼˜å…ˆçº§ã€‚
 		 */
 		p->prio = effective_prio(p);
 		/**
-		 * ÖØÌî½ø³ÌµÄÊ±¼äÆ¬
+		 * é‡å¡«è¿›ç¨‹çš„æ—¶é—´ç‰‡
 		 */
 		p->time_slice = task_timeslice(p);
 		/**
-		 * ¼ÈÈ»µ±Ç°½ø³ÌµÄÒ»¸öÊ±¼äÆ¬ÒÑ¾­ÓÃÍê£¬µ±È»¾ÍĞèÒªÇå³ıfirst_time_slice±êÖ¾ÁË¡£
+		 * æ—¢ç„¶å½“å‰è¿›ç¨‹çš„ä¸€ä¸ªæ—¶é—´ç‰‡å·²ç»ç”¨å®Œï¼Œå½“ç„¶å°±éœ€è¦æ¸…é™¤first_time_sliceæ ‡å¿—äº†ã€‚
 		 */
 		p->first_time_slice = 0;
 
 		/**
-		 * Èç¹û±¾µØÔËĞĞ¶ÓÁĞµÄexpired_timestampÎª0,±íÊ¾¹ıÆÚ½ø³Ì¼¯ºÏÎª¿Õ¡£
-		 * ²¢ÇÒµ±Ç°½ø³ÌÂíÉÏ¾Í»á±ä³É¹ıÆÚ½ø³Ì£¬ÄÇÃ´½«µ±Ç°jiffies¸³¸øexpired_timestamp
-		 * expired_timestamp±íÊ¾µ±Ç°¶ÓÁĞÖĞ£¬¹ıÆÚ¶ÓÁĞÖĞ×îÀÏ½ø³Ì±»²åÈë¹ıÆÚ¶ÓÁĞµÄÊ±¼ä¡£
+		 * å¦‚æœæœ¬åœ°è¿è¡Œé˜Ÿåˆ—çš„expired_timestampä¸º0,è¡¨ç¤ºè¿‡æœŸè¿›ç¨‹é›†åˆä¸ºç©ºã€‚
+		 * å¹¶ä¸”å½“å‰è¿›ç¨‹é©¬ä¸Šå°±ä¼šå˜æˆè¿‡æœŸè¿›ç¨‹ï¼Œé‚£ä¹ˆå°†å½“å‰jiffiesèµ‹ç»™expired_timestamp
+		 * expired_timestampè¡¨ç¤ºå½“å‰é˜Ÿåˆ—ä¸­ï¼Œè¿‡æœŸé˜Ÿåˆ—ä¸­æœ€è€è¿›ç¨‹è¢«æ’å…¥è¿‡æœŸé˜Ÿåˆ—çš„æ—¶é—´ã€‚
 		 */
 		if (!rq->expired_timestamp)
 			rq->expired_timestamp = jiffies;
 		/**
-		 * °Ñµ±Ç°½ø³Ì²åÈë¹ıÆÚ¼¯ºÏ»òÕß»î¶¯¼¯ºÏ¡£
-		 * TASK_INTERACTIVEÅĞ¶Ïµ±Ç°½ø³ÌÊÇ·ñÊÇÒ»¸ö½»»¥Ê½½ø³Ì¡£
-		 * TASK_INTERACTIVEºê¼ì²éÔËĞĞ¶ÓÁĞÖĞµÄµÚÒ»¸ö¹ıÆÚ½ø³ÌµÄµÈ´ıÊ±¼äÊÇ·ñÒÑ¾­³¬¹ı1000¸öÊ±ÖÓ½ÚÅÄ³ËÒÔÔËĞĞ¶ÓÁĞÖĞµÄ¿ÉÔËĞĞ½ø³ÌÊı+1£¬Èç¹ûÊÇ·µ»Ø1.
-		 *                     Èç¹ûµ±Ç°½ø³ÌµÄ¾²Ì¬ÓÅÏÈ¼¶´óÓÚ¹ıÆÚ½ø³ÌµÄ¾²Ì¬ÓÅÏÈ¼¶£¬Ò²·µ»Ø1.
+		 * æŠŠå½“å‰è¿›ç¨‹æ’å…¥è¿‡æœŸé›†åˆæˆ–è€…æ´»åŠ¨é›†åˆã€‚
+		 * TASK_INTERACTIVEåˆ¤æ–­å½“å‰è¿›ç¨‹æ˜¯å¦æ˜¯ä¸€ä¸ªäº¤äº’å¼è¿›ç¨‹ã€‚
+		 * TASK_INTERACTIVEå®æ£€æŸ¥è¿è¡Œé˜Ÿåˆ—ä¸­çš„ç¬¬ä¸€ä¸ªè¿‡æœŸè¿›ç¨‹çš„ç­‰å¾…æ—¶é—´æ˜¯å¦å·²ç»è¶…è¿‡1000ä¸ªæ—¶é’ŸèŠ‚æ‹ä¹˜ä»¥è¿è¡Œé˜Ÿåˆ—ä¸­çš„å¯è¿è¡Œè¿›ç¨‹æ•°+1ï¼Œå¦‚æœæ˜¯è¿”å›1.
+		 *                     å¦‚æœå½“å‰è¿›ç¨‹çš„é™æ€ä¼˜å…ˆçº§å¤§äºè¿‡æœŸè¿›ç¨‹çš„é™æ€ä¼˜å…ˆçº§ï¼Œä¹Ÿè¿”å›1.
 		 */
 		if (!TASK_INTERACTIVE(p) || EXPIRED_STARVING(rq)) {
 			/**
-			 * µ±Ç°½ø³Ì²»ÊÇ½»»¥Ê½½ø³Ì£¬»òÕß¹ıÆÚ¶ÓÁĞÖĞÓĞÓÅÏÈ¼¶¸ü¸ßµÄ½ø³Ì£¬ÄÇÃ´½«µ±Ç°½ø³Ì²åÈëµ½¹ıÆÚ¶ÓÁĞ¡£
+			 * å½“å‰è¿›ç¨‹ä¸æ˜¯äº¤äº’å¼è¿›ç¨‹ï¼Œæˆ–è€…è¿‡æœŸé˜Ÿåˆ—ä¸­æœ‰ä¼˜å…ˆçº§æ›´é«˜çš„è¿›ç¨‹ï¼Œé‚£ä¹ˆå°†å½“å‰è¿›ç¨‹æ’å…¥åˆ°è¿‡æœŸé˜Ÿåˆ—ã€‚
 			 */
 			enqueue_task(p, rq->expired);
 			/**
-			 * Èç¹ûµ±Ç°½ø³ÌÊÇ¹ıÆÚ¶ÓÁĞÖĞÓÅÏÈ¼¶×î¸ßµÄµÍ£¬¾Í¸üĞÂ¹ıÆÚ¶ÓÁĞµÄ×î¸ßÓÅÏÈ¼¶¡£
+			 * å¦‚æœå½“å‰è¿›ç¨‹æ˜¯è¿‡æœŸé˜Ÿåˆ—ä¸­ä¼˜å…ˆçº§æœ€é«˜çš„ä½ï¼Œå°±æ›´æ–°è¿‡æœŸé˜Ÿåˆ—çš„æœ€é«˜ä¼˜å…ˆçº§ã€‚
 			 */
 			if (p->static_prio < rq->best_expired_prio)
 				rq->best_expired_prio = p->static_prio;
 		} else
-			enqueue_task(p, rq->active);/* ½ø³ÌÊÇ½»»¥Ê½½ø³Ì£¬²¢ÇÒ±È¹ıÆÚ¶ÓÁĞÖĞËùÓĞ½ø³ÌµÄ¾²Ì¬ÓÅÏÈ¼¶¸ß£¬ÄÇÃ´¾Í½«Ëü¼Óµ½»î¶¯¶ÓÁĞÖĞ¡£ÕâÊµ¼ÊÉÏÊÇ¶Ô½»»¥Ê½½ø³ÌµÄÓÅ´ı¡£ */
-	} else {/* ÆÕÍ¨½ø³ÌµÄÊ±¼äÆ¬»¹Ã»ÓĞÓÃÍê£¬ĞèÒª½øÒ»²½¼ì²éÊÇ·ñÊ±¼äÆ¬Ì«³¤ */
+			enqueue_task(p, rq->active);/* è¿›ç¨‹æ˜¯äº¤äº’å¼è¿›ç¨‹ï¼Œå¹¶ä¸”æ¯”è¿‡æœŸé˜Ÿåˆ—ä¸­æ‰€æœ‰è¿›ç¨‹çš„é™æ€ä¼˜å…ˆçº§é«˜ï¼Œé‚£ä¹ˆå°±å°†å®ƒåŠ åˆ°æ´»åŠ¨é˜Ÿåˆ—ä¸­ã€‚è¿™å®é™…ä¸Šæ˜¯å¯¹äº¤äº’å¼è¿›ç¨‹çš„ä¼˜å¾…ã€‚ */
+	} else {/* æ™®é€šè¿›ç¨‹çš„æ—¶é—´ç‰‡è¿˜æ²¡æœ‰ç”¨å®Œï¼Œéœ€è¦è¿›ä¸€æ­¥æ£€æŸ¥æ˜¯å¦æ—¶é—´ç‰‡å¤ªé•¿ */
 		/*
 		 * Prevent a too long timeslice allowing a task to monopolize
 		 * the CPU. We do this by splitting up the timeslice into
@@ -2968,7 +2968,7 @@ void scheduler_tick(void)
 		 * delta range with at least TIMESLICE_GRANULARITY to requeue.
 		 */
 		/**
-		 * ¼ì²éµ±Ç°½ø³ÌµÄÊ±¼äÆ¬ÊÇ·ñÌ«³¤£¬ÒòÎª¶ÔÓÚ½»»¥Ê½½ø³ÌÀ´Ëµ£¬ËüÊ±¼äÆ¬ÓÃÍêºó£¬¿ÉÄÜ»áÔÙ²åÈëµ½»î¶¯¶ÓÁĞ£¬¿ÉÄÜµ¼ÖÂÕâÖÖ½ø³ÌµÄÊ±¼äÆ¬ÌØ±ğ³¤¡£
+		 * æ£€æŸ¥å½“å‰è¿›ç¨‹çš„æ—¶é—´ç‰‡æ˜¯å¦å¤ªé•¿ï¼Œå› ä¸ºå¯¹äºäº¤äº’å¼è¿›ç¨‹æ¥è¯´ï¼Œå®ƒæ—¶é—´ç‰‡ç”¨å®Œåï¼Œå¯èƒ½ä¼šå†æ’å…¥åˆ°æ´»åŠ¨é˜Ÿåˆ—ï¼Œå¯èƒ½å¯¼è‡´è¿™ç§è¿›ç¨‹çš„æ—¶é—´ç‰‡ç‰¹åˆ«é•¿ã€‚
 		 */
 		if (TASK_INTERACTIVE(p) && !((task_timeslice(p) -
 			p->time_slice) % TIMESLICE_GRANULARITY(p)) &&
@@ -2981,12 +2981,12 @@ void scheduler_tick(void)
 	}
 out_unlock:
 	/**
-	 * ÊÍ·Å×ÔĞıËø¡£
+	 * é‡Šæ”¾è‡ªæ—‹é”ã€‚
 	 */
 	spin_unlock(&rq->lock);
 out:
 	/**
-	 * µ÷ÓÃrebalance_tickº¯Êı£¬¸Ãº¯ÊıÓ¦¸Ã±£Ö¤²»Í¬CPUµÄÔËĞĞ¶ÓÁĞ°üº¬ÊıÁ¿»ù±¾ÏàÍ¬µÄ¿ÉÔËĞĞ½ø³Ì¡£
+	 * è°ƒç”¨rebalance_tickå‡½æ•°ï¼Œè¯¥å‡½æ•°åº”è¯¥ä¿è¯ä¸åŒCPUçš„è¿è¡Œé˜Ÿåˆ—åŒ…å«æ•°é‡åŸºæœ¬ç›¸åŒçš„å¯è¿è¡Œè¿›ç¨‹ã€‚
 	 */
 	rebalance_tick(cpu, rq, NOT_IDLE);
 }
@@ -3038,10 +3038,10 @@ static inline void wake_sleeping_dependent(int this_cpu, runqueue_t *this_rq)
 }
 
 /**
- * scheduleº¯Êı»á¼ì²éÔËĞĞ¶ÓÁĞÖĞÊ£ÓàµÄ¿ÉÔËĞĞ½ø³ÌÊı¡£Èç¹ûÓĞ¿ÉÔËĞĞµÄ½ø³Ì£¬ËüÓÃµ÷ÓÃdependent_sleeper
- * dependent_sleeperÔÚ¾ø´ó¶àÊıÇé¿öÏÂ»áÁ¢¼´·µ»Ø0¡£
- * µ«ÊÇ£¬Èç¹ûÄÚºËÖ§³Ö³¬Ïß³Ì¼¼Êõ£¬º¯Êı¼ì²éÒª±»Ñ¡ÖĞÖ´ĞĞµÄ½ø³Ì£¬ÆäÓÅÏÈ¼¶ÊÇ·ñ±ÈÒÑ¾­ÔÚÏàÍ¬ÎïÀíCPUµÄÄ³¸öÂß¼­CPUÉÏÔËĞĞµÄĞÖµÜ½ø³ÌÓÅÏÈ¼¶µÍ
- * ÔÚÕâÖÖÌØÊâÇé¿öÏÂ£¬schedule¾Ü¾øÑ¡ÔñµÍÓÅÏÈ¼¶µÄ½ø³Ì£¬¶øÈ¥Ö´ĞĞswapper½ø³Ì¡£
+ * scheduleå‡½æ•°ä¼šæ£€æŸ¥è¿è¡Œé˜Ÿåˆ—ä¸­å‰©ä½™çš„å¯è¿è¡Œè¿›ç¨‹æ•°ã€‚å¦‚æœæœ‰å¯è¿è¡Œçš„è¿›ç¨‹ï¼Œå®ƒç”¨è°ƒç”¨dependent_sleeper
+ * dependent_sleeperåœ¨ç»å¤§å¤šæ•°æƒ…å†µä¸‹ä¼šç«‹å³è¿”å›0ã€‚
+ * ä½†æ˜¯ï¼Œå¦‚æœå†…æ ¸æ”¯æŒè¶…çº¿ç¨‹æŠ€æœ¯ï¼Œå‡½æ•°æ£€æŸ¥è¦è¢«é€‰ä¸­æ‰§è¡Œçš„è¿›ç¨‹ï¼Œå…¶ä¼˜å…ˆçº§æ˜¯å¦æ¯”å·²ç»åœ¨ç›¸åŒç‰©ç†CPUçš„æŸä¸ªé€»è¾‘CPUä¸Šè¿è¡Œçš„å…„å¼Ÿè¿›ç¨‹ä¼˜å…ˆçº§ä½
+ * åœ¨è¿™ç§ç‰¹æ®Šæƒ…å†µä¸‹ï¼Œscheduleæ‹’ç»é€‰æ‹©ä½ä¼˜å…ˆçº§çš„è¿›ç¨‹ï¼Œè€Œå»æ‰§è¡Œswapperè¿›ç¨‹ã€‚
  */
 static inline int dependent_sleeper(int this_cpu, runqueue_t *this_rq)
 {
@@ -3052,7 +3052,7 @@ static inline int dependent_sleeper(int this_cpu, runqueue_t *this_rq)
 	task_t *p;
 
 	/**
-	 * ²»Ö§³Ö³¬Ïß³Ì
+	 * ä¸æ”¯æŒè¶…çº¿ç¨‹
 	 */
 	if (!(sd->flags & SD_SHARE_CPUPOWER))
 		return 0;
@@ -3161,14 +3161,14 @@ EXPORT_SYMBOL(sub_preempt_count);
  * schedule() is the main scheduler function.
  */
 /**
- * µ÷¶Èº¯Êı¡£
+ * è°ƒåº¦å‡½æ•°ã€‚
  */
 asmlinkage void __sched schedule(void)
 {
 	long *switch_count;
 	/**
-	 * nextÖ¸Ïò±»Ñ¡ÖĞµÄ½ø³Ì£¬Õâ¸ö½ø³Ì½«È¡´úµ±Ç°½ø³ÌÔÚCPUÉÏÖ´ĞĞ¡£
-	 * Èç¹ûÏµÍ³ÖĞÃ»ÓĞÓÅÏÈ¼¶¸ßÓÚµ±Ç°½ø³Ì£¬ÄÇÃ´next»áºÍcurrentÏàµÈ¡£²»·¢ÉúÈÎºÎÇĞ»»¡£
+	 * nextæŒ‡å‘è¢«é€‰ä¸­çš„è¿›ç¨‹ï¼Œè¿™ä¸ªè¿›ç¨‹å°†å–ä»£å½“å‰è¿›ç¨‹åœ¨CPUä¸Šæ‰§è¡Œã€‚
+	 * å¦‚æœç³»ç»Ÿä¸­æ²¡æœ‰ä¼˜å…ˆçº§é«˜äºå½“å‰è¿›ç¨‹ï¼Œé‚£ä¹ˆnextä¼šå’Œcurrentç›¸ç­‰ã€‚ä¸å‘ç”Ÿä»»ä½•åˆ‡æ¢ã€‚
 	 */
 	task_t *prev, *next;
 	runqueue_t *rq;
@@ -3195,15 +3195,15 @@ asmlinkage void __sched schedule(void)
 
 need_resched:
 	/**
-	 * ÏÈ½ûÖ¹ÇÀÕ¼£¬ÔÙ³õÊ¼»¯Ò»Ğ©±äÁ¿¡£
-	 * ´Ë´¦ĞèÒª½ûÖ¹ÇÀÕ¼£¬ÒòÎªºóÃæĞèÒª·ÃÎÊÈÎÎñµÄÔËĞĞ¶ÓÁĞ¡£½ûÖ¹ÇÀÕ¼ºó¿ÉÒÔ·ÀÖ¹½ø³ÌÆ®ÒÆ¡£
+	 * å…ˆç¦æ­¢æŠ¢å ï¼Œå†åˆå§‹åŒ–ä¸€äº›å˜é‡ã€‚
+	 * æ­¤å¤„éœ€è¦ç¦æ­¢æŠ¢å ï¼Œå› ä¸ºåé¢éœ€è¦è®¿é—®ä»»åŠ¡çš„è¿è¡Œé˜Ÿåˆ—ã€‚ç¦æ­¢æŠ¢å åå¯ä»¥é˜²æ­¢è¿›ç¨‹é£˜ç§»ã€‚
 	 */
 	preempt_disable();
 	prev = current;
 	/**
-	 * ÊÍ·Å´óÄÚºËËø¡£µ±ÄÚºËÇÀÕ¼´ò¿ªÊ±£¬²¢ÇÒµ±Ç°ÖĞ¶ÏÕıÔÚÇÀÕ¼µ±Ç°½ø³Ì£¬ÄÇÃ´»á½«lock_depthÖÃÎª-1.
-	 * ÕâÑù£¬²»»áÊÍ·ÅÄÚºËËø¡£Ö»ÓĞµ±½ø³Ì»ñµÃÁË´óÄÚºËËø²¢ÇÒÊÇÖ÷¶¯µ÷¶È³öÀ´Ê±£¬²Å»áÊÍ·ÅËø¡£
-	 * ×¢Òâ£¬ÊÍ·ÅËø²¢²»»áĞŞ¸Älock_depth¡£µ±½ø³Ì»Ö¸´Ö´ĞĞºó£¬Èç¹ûlock_depth>=0£¬¾Í»áÔÙ´Î»ñµÃ´óÄÚºËËø¡£
+	 * é‡Šæ”¾å¤§å†…æ ¸é”ã€‚å½“å†…æ ¸æŠ¢å æ‰“å¼€æ—¶ï¼Œå¹¶ä¸”å½“å‰ä¸­æ–­æ­£åœ¨æŠ¢å å½“å‰è¿›ç¨‹ï¼Œé‚£ä¹ˆä¼šå°†lock_depthç½®ä¸º-1.
+	 * è¿™æ ·ï¼Œä¸ä¼šé‡Šæ”¾å†…æ ¸é”ã€‚åªæœ‰å½“è¿›ç¨‹è·å¾—äº†å¤§å†…æ ¸é”å¹¶ä¸”æ˜¯ä¸»åŠ¨è°ƒåº¦å‡ºæ¥æ—¶ï¼Œæ‰ä¼šé‡Šæ”¾é”ã€‚
+	 * æ³¨æ„ï¼Œé‡Šæ”¾é”å¹¶ä¸ä¼šä¿®æ”¹lock_depthã€‚å½“è¿›ç¨‹æ¢å¤æ‰§è¡Œåï¼Œå¦‚æœlock_depth>=0ï¼Œå°±ä¼šå†æ¬¡è·å¾—å¤§å†…æ ¸é”ã€‚
 	 */
 	release_kernel_lock(prev);
 need_resched_nonpreemptible:
@@ -3220,7 +3220,7 @@ need_resched_nonpreemptible:
 
 	schedstat_inc(rq, sched_cnt);
 	/**
-	 * ¼ÆËãµ±Ç°½ø³ÌµÄÔËĞĞÊ±¼ä¡£²»³¬¹ı1Ãë¡£
+	 * è®¡ç®—å½“å‰è¿›ç¨‹çš„è¿è¡Œæ—¶é—´ã€‚ä¸è¶…è¿‡1ç§’ã€‚
 	 */
 	now = sched_clock();
 	if (likely(now - prev->timestamp < NS_MAX_SLEEP_AVG))
@@ -3233,34 +3233,34 @@ need_resched_nonpreemptible:
 	 * delay them losing their interactive status
 	 */
 	/**
-	 * ¶ÔÓĞ½Ï³¤Ë¯ÃßÊ±¼äµÄ½ø³Ì£¬½øĞĞÒ»¶¨½±Àø¡£
+	 * å¯¹æœ‰è¾ƒé•¿ç¡çœ æ—¶é—´çš„è¿›ç¨‹ï¼Œè¿›è¡Œä¸€å®šå¥–åŠ±ã€‚
 	 */
 	run_time /= (CURRENT_BONUS(prev) ? : 1);
 
 	/**
-	 * ÔÚ¿ªÊ¼Ñ°ÕÒ¿ÉÔËĞĞ½ø³ÌÖ®Ç°£¬ĞèÒª¹ØÖĞ¶Ï²¢»ñµÃ±£»¤ÔËĞĞ¶ÓÁĞµÄ×ÔĞıËø¡£
+	 * åœ¨å¼€å§‹å¯»æ‰¾å¯è¿è¡Œè¿›ç¨‹ä¹‹å‰ï¼Œéœ€è¦å…³ä¸­æ–­å¹¶è·å¾—ä¿æŠ¤è¿è¡Œé˜Ÿåˆ—çš„è‡ªæ—‹é”ã€‚
 	 */
 	spin_lock_irq(&rq->lock);
 
 	/**
-	 * µ±Ç°½ø³Ì¿ÉÄÜÊÇÒ»¸öÕıÔÚ×¼±¸±»ÖÕÖ¹µÄ½ø³Ì¡£¿ÉÄÜÏÖÔÚÊÇÍ¨¹ıdo_exit½øÈëscheduleº¯Êı¡£
+	 * å½“å‰è¿›ç¨‹å¯èƒ½æ˜¯ä¸€ä¸ªæ­£åœ¨å‡†å¤‡è¢«ç»ˆæ­¢çš„è¿›ç¨‹ã€‚å¯èƒ½ç°åœ¨æ˜¯é€šè¿‡do_exitè¿›å…¥scheduleå‡½æ•°ã€‚
 	 */
 	if (unlikely(prev->flags & PF_DEAD))
 		prev->state = EXIT_DEAD;
 
 	switch_count = &prev->nivcsw;
 	/**
-	 * Èç¹û½ø³Ì²»ÊÇTASK_RUNNING×´Ì¬£¬²¢ÇÒÃ»ÓĞ±»ÄÚºËÇÀÕ¼¡£¾Í°Ñ¸Ã½ø³Ì´ÓÔËĞĞ¶ÓÁĞÖĞÉ¾³ı¡£
+	 * å¦‚æœè¿›ç¨‹ä¸æ˜¯TASK_RUNNINGçŠ¶æ€ï¼Œå¹¶ä¸”æ²¡æœ‰è¢«å†…æ ¸æŠ¢å ã€‚å°±æŠŠè¯¥è¿›ç¨‹ä»è¿è¡Œé˜Ÿåˆ—ä¸­åˆ é™¤ã€‚
 	 */ 
 	if (prev->state && !(preempt_count() & PREEMPT_ACTIVE)) {
 		switch_count = &prev->nvcsw;
 		/**
-		 * Èç¹û½ø³ÌÊÇ±»ĞÅºÅ´ò¶ÏµÄ£¬¾Í½«ËüÉèÖÃ³ÉTASK_RUNNING
+		 * å¦‚æœè¿›ç¨‹æ˜¯è¢«ä¿¡å·æ‰“æ–­çš„ï¼Œå°±å°†å®ƒè®¾ç½®æˆTASK_RUNNING
 		 */
 		if (unlikely((prev->state & TASK_INTERRUPTIBLE) &&
 				unlikely(signal_pending(prev))))
 			prev->state = TASK_RUNNING;
-		else {/* ½«Ëü´ÓÔËĞĞ¶ÓÁĞÖĞÉ¾³ı */
+		else {/* å°†å®ƒä»è¿è¡Œé˜Ÿåˆ—ä¸­åˆ é™¤ */
 			if (prev->state == TASK_UNINTERRUPTIBLE)
 				rq->nr_uninterruptible++;
 			deactivate_task(prev, rq);
@@ -3269,19 +3269,19 @@ need_resched_nonpreemptible:
 
 	cpu = smp_processor_id();
 	/**
-	 * ¼ì²éÊÇ·ñÓĞ¿ÉÔËĞĞµÄ½ø³Ì¡£
+	 * æ£€æŸ¥æ˜¯å¦æœ‰å¯è¿è¡Œçš„è¿›ç¨‹ã€‚
 	 */
-	if (unlikely(!rq->nr_running)) {/* Ã»ÓĞÁË */
+	if (unlikely(!rq->nr_running)) {/* æ²¡æœ‰äº† */
 go_idle:
 		/**
-		 * ÔËĞĞ¶ÓÁĞÖĞÃ»ÓĞ¿ÉÔËĞĞµÄ½ø³Ì´æÔÚ£¬µ÷ÓÃidle_balance£¬´ÓÁíÍâÒ»¸öÔËĞĞ¶ÓÁĞÇ¨ÒÆÒ»Ğ©¿ÉÔËĞĞ½ø³Ìµ½±¾µØÔËĞĞ¶ÓÁĞÖĞ¡£
+		 * è¿è¡Œé˜Ÿåˆ—ä¸­æ²¡æœ‰å¯è¿è¡Œçš„è¿›ç¨‹å­˜åœ¨ï¼Œè°ƒç”¨idle_balanceï¼Œä»å¦å¤–ä¸€ä¸ªè¿è¡Œé˜Ÿåˆ—è¿ç§»ä¸€äº›å¯è¿è¡Œè¿›ç¨‹åˆ°æœ¬åœ°è¿è¡Œé˜Ÿåˆ—ä¸­ã€‚
 		 */
 		idle_balance(cpu, rq);
-		if (!rq->nr_running) {/* Ã»ÓĞÇ¨ÒÆĞÂ½ø³Ìµ½±¾ÔËĞĞ¶ÓÁĞ¡£ */
+		if (!rq->nr_running) {/* æ²¡æœ‰è¿ç§»æ–°è¿›ç¨‹åˆ°æœ¬è¿è¡Œé˜Ÿåˆ—ã€‚ */
 			next = rq->idle;
 			rq->expired_timestamp = 0;
 			/**
-			 * wake_sleeping_dependentÖØĞÂµ÷¶È¿ÕÏĞCPUÖĞµÄ¿ÉÔËĞĞ½ø³Ì¡£Ö÷ÒªÊÇ´¦ÓÚ³¬Ïß³ÌµÄÇé¿ö¡£
+			 * wake_sleeping_dependenté‡æ–°è°ƒåº¦ç©ºé—²CPUä¸­çš„å¯è¿è¡Œè¿›ç¨‹ã€‚ä¸»è¦æ˜¯å¤„äºè¶…çº¿ç¨‹çš„æƒ…å†µã€‚
 			 */
 			wake_sleeping_dependent(cpu, rq);
 			/*
@@ -3289,13 +3289,13 @@ go_idle:
 			 * the runqueue, so break out if we got new
 			 * tasks meanwhile:
 			 */
-			if (!rq->nr_running)/* Èç¹ûÖ§³Ö³¬Ïß³Ì£¬²¢ÇÒÆäËûÂß¼­CPUÒ²Ã»ÓĞ¿ÉÔËĞĞ½ø³Ì£¬ÄÇÃ´Ö»ºÃÔËĞĞIDLE½ø³ÌÁË¡£ */
+			if (!rq->nr_running)/* å¦‚æœæ”¯æŒè¶…çº¿ç¨‹ï¼Œå¹¶ä¸”å…¶ä»–é€»è¾‘CPUä¹Ÿæ²¡æœ‰å¯è¿è¡Œè¿›ç¨‹ï¼Œé‚£ä¹ˆåªå¥½è¿è¡ŒIDLEè¿›ç¨‹äº†ã€‚ */
 				goto switch_tasks;
 		}
-	} else {/* ÓĞ¿ÉÄÜÔËĞĞµÄ½ø³Ì */
+	} else {/* æœ‰å¯èƒ½è¿è¡Œçš„è¿›ç¨‹ */
 		/**
-		 * dependent_sleeperÒ»°ã·µ»ØÎª0,µ«ÊÇÈç¹ûÄÚºËÖ§³Ö³¬Ïß³Ì¼¼Êõ£¬º¯Êı¼ì²éÒª±»Ñ¡ÖĞÖ´ĞĞµÄ½ø³Ì¡£
-		 * ÆäÓÅÏÈ¼¶ÊÇ·ñ±Èµ±Ç°ÒÑ¾­ÔÚÏàÍ¬ÎïÀíCPUµÄÂß¼­CPUÉÏÔËĞĞµÄĞÖµÜ½ø³ÌµÄÓÅÏÈ¼¶£¬Èç¹ûĞÂ½ø³ÌÓÅÏÈ¼¶µÍ£¬¾Í¾Ü¾øÑ¡ÔñµÍÓÅÏÈ¼¶½ø³Ì£¬¶øÈ¥Ö´ĞĞswapper½ø³Ì¡£
+		 * dependent_sleeperä¸€èˆ¬è¿”å›ä¸º0,ä½†æ˜¯å¦‚æœå†…æ ¸æ”¯æŒè¶…çº¿ç¨‹æŠ€æœ¯ï¼Œå‡½æ•°æ£€æŸ¥è¦è¢«é€‰ä¸­æ‰§è¡Œçš„è¿›ç¨‹ã€‚
+		 * å…¶ä¼˜å…ˆçº§æ˜¯å¦æ¯”å½“å‰å·²ç»åœ¨ç›¸åŒç‰©ç†CPUçš„é€»è¾‘CPUä¸Šè¿è¡Œçš„å…„å¼Ÿè¿›ç¨‹çš„ä¼˜å…ˆçº§ï¼Œå¦‚æœæ–°è¿›ç¨‹ä¼˜å…ˆçº§ä½ï¼Œå°±æ‹’ç»é€‰æ‹©ä½ä¼˜å…ˆçº§è¿›ç¨‹ï¼Œè€Œå»æ‰§è¡Œswapperè¿›ç¨‹ã€‚
 		 */
 		if (dependent_sleeper(cpu, rq)) {
 			next = rq->idle;
@@ -3311,12 +3311,12 @@ go_idle:
 	}
 
 	/**
-	 * ÔËĞĞµ½´Ë£¬ËµÃ÷ÔËĞĞ¶ÓÁĞÖĞÓĞÏß³Ì¿É±»ÔËĞĞ¡£
+	 * è¿è¡Œåˆ°æ­¤ï¼Œè¯´æ˜è¿è¡Œé˜Ÿåˆ—ä¸­æœ‰çº¿ç¨‹å¯è¢«è¿è¡Œã€‚
 	 */
 	array = rq->active;
 	if (unlikely(!array->nr_active)) {
 		/**
-		 * »î¶¯¶ÓÁĞÖĞÃ»ÓĞ¿ÉÔËĞĞ½ø³ÌÁË¡£½»»»»î¶¯¼¯ºÏºÍ¹ıÆÚ¼¯ºÏ¡£
+		 * æ´»åŠ¨é˜Ÿåˆ—ä¸­æ²¡æœ‰å¯è¿è¡Œè¿›ç¨‹äº†ã€‚äº¤æ¢æ´»åŠ¨é›†åˆå’Œè¿‡æœŸé›†åˆã€‚
 		 */
 		/*
 		 * Switch the active and expired arrays.
@@ -3331,26 +3331,26 @@ go_idle:
 		schedstat_inc(rq, sched_noswitch);
 
 	/**
-	 * ÏÖÔÚ¿ªÊ¼ÔÚ»î¶¯¼¯ºÏÖĞËÑË÷Ò»¸ö¿ÉÔËĞĞµÄ½ø³Ì¡£
-	 * Ê×ÏÈËÑË÷µÚÒ»¸ö·Ç0Î»£¬²¢ÕÒµ½¶ÔÓ¦µÄÁ´±í¡£
+	 * ç°åœ¨å¼€å§‹åœ¨æ´»åŠ¨é›†åˆä¸­æœç´¢ä¸€ä¸ªå¯è¿è¡Œçš„è¿›ç¨‹ã€‚
+	 * é¦–å…ˆæœç´¢ç¬¬ä¸€ä¸ªé0ä½ï¼Œå¹¶æ‰¾åˆ°å¯¹åº”çš„é“¾è¡¨ã€‚
 	 */
 	idx = sched_find_first_bit(array->bitmap);
 	queue = array->queue + idx;
 	/**
-	 * ½«ÏÂÒ»¸ö¿ÉÔËĞĞ½ø³ÌÃèÊö·û·Åµ½nextÖĞ
+	 * å°†ä¸‹ä¸€ä¸ªå¯è¿è¡Œè¿›ç¨‹æè¿°ç¬¦æ”¾åˆ°nextä¸­
 	 */
 	next = list_entry(queue->next, task_t, run_list);
 
 	/**
-	 * Èç¹û½ø³ÌÊÇÒ»¸öÆÕÍ¨½ø³Ì£¬²¢ÇÒÊÇ´ÓTASK_INTERRUPTIBLE»òÕßTASK_STOPPED×´Ì¬±»»½ĞÑ¡£
-	 * ¾Í°Ñ×Ô´Ó½ø³Ì²åÈëÔËĞĞ¶ÓÁĞ¿ªÊ¼Ëù¾­¹ıµÄÄÉÃëÊı¼Óµ½Æ½¾ùË¯ÃßÊ±¼äÖĞ¡£
+	 * å¦‚æœè¿›ç¨‹æ˜¯ä¸€ä¸ªæ™®é€šè¿›ç¨‹ï¼Œå¹¶ä¸”æ˜¯ä»TASK_INTERRUPTIBLEæˆ–è€…TASK_STOPPEDçŠ¶æ€è¢«å”¤é†’ã€‚
+	 * å°±æŠŠè‡ªä»è¿›ç¨‹æ’å…¥è¿è¡Œé˜Ÿåˆ—å¼€å§‹æ‰€ç»è¿‡çš„çº³ç§’æ•°åŠ åˆ°å¹³å‡ç¡çœ æ—¶é—´ä¸­ã€‚
 	 */
 	if (!rt_task(next) && next->activated > 0) {
 		unsigned long long delta = now - next->timestamp;
 
 		/**
-		 * Èç¹ûÊÇ±»ÏµÍ³µ÷ÓÃ·şÎñÀı³Ì»òÕßÄÚºËÏß³ÌËù»½ĞÑ£¬¾ÍÖ»Ôö¼Ó²¿·ÖË¯ÃßÊ±¼ä(30%)
-		 * ·ñÔòÔö¼Ó100%µÄË¯ÃßÊ±¼ä¡£ÕâÑù£¬½»»¥Ê½½ø³ÌÓÉÓÚ¾­³£±»ÖĞ¶Ï´ò¶Ï£¬ËüµÄË¯ÃßÊ±¼ä»áÔö¼ÓµÃ¸ü¿ì¡£
+		 * å¦‚æœæ˜¯è¢«ç³»ç»Ÿè°ƒç”¨æœåŠ¡ä¾‹ç¨‹æˆ–è€…å†…æ ¸çº¿ç¨‹æ‰€å”¤é†’ï¼Œå°±åªå¢åŠ éƒ¨åˆ†ç¡çœ æ—¶é—´(30%)
+		 * å¦åˆ™å¢åŠ 100%çš„ç¡çœ æ—¶é—´ã€‚è¿™æ ·ï¼Œäº¤äº’å¼è¿›ç¨‹ç”±äºç»å¸¸è¢«ä¸­æ–­æ‰“æ–­ï¼Œå®ƒçš„ç¡çœ æ—¶é—´ä¼šå¢åŠ å¾—æ›´å¿«ã€‚
 		 */
 		if (next->activated == 1)
 			delta = delta * (ON_RUNQUEUE_WEIGHT * 128 / 100) / 128;
@@ -3363,37 +3363,37 @@ go_idle:
 	next->activated = 0;
 switch_tasks:
 	/**
-	 * ÔËĞĞµ½ÕâÀï£¬¿ªÊ¼½øĞĞ½ø³ÌÇĞ»»ÁË¡£
+	 * è¿è¡Œåˆ°è¿™é‡Œï¼Œå¼€å§‹è¿›è¡Œè¿›ç¨‹åˆ‡æ¢äº†ã€‚
 	 */
 	if (next == rq->idle)
 		schedstat_inc(rq, sched_goidle);
 	/**
-	 * prefetchÌáÊ¾CPU¿ØÖÆµ¥Ôª°ÑnextµÄ½ø³ÌÃèÊö·ûµÄµÚÒ»²¿·Ö×Ö¶ÎµÄÄÚÈİ×°ÈëÓ²¼ş¸ßËÙ»º´æ¡£
-	 * Õâ¸ÄÉÆÁËscheduleµÄĞÔÄÜ¡£
+	 * prefetchæç¤ºCPUæ§åˆ¶å•å…ƒæŠŠnextçš„è¿›ç¨‹æè¿°ç¬¦çš„ç¬¬ä¸€éƒ¨åˆ†å­—æ®µçš„å†…å®¹è£…å…¥ç¡¬ä»¶é«˜é€Ÿç¼“å­˜ã€‚
+	 * è¿™æ”¹å–„äº†scheduleçš„æ€§èƒ½ã€‚
 	 */
 	prefetch(next);
 	/**
-	 * Çå³ıTIF_NEED_RESCHED±êÖ¾¡£
+	 * æ¸…é™¤TIF_NEED_RESCHEDæ ‡å¿—ã€‚
 	 */
 	clear_tsk_need_resched(prev);
 	/**
-	 * ¼ÇÂ¼CPUÕıÔÚ¾­Àú¾²Ö¹×´Ì¬¡£Ö÷ÒªÓëRCUÏà¹Ø¡£
+	 * è®°å½•CPUæ­£åœ¨ç»å†é™æ­¢çŠ¶æ€ã€‚ä¸»è¦ä¸RCUç›¸å…³ã€‚
 	 */
 	rcu_qsctr_inc(task_cpu(prev));
 
 	/**
-	 * ¼õÉÙprevµÄÆ½¾ùË¯ÃßÊ±¼ä
+	 * å‡å°‘prevçš„å¹³å‡ç¡çœ æ—¶é—´
 	 */
 	prev->sleep_avg -= run_time;
 	if ((long)prev->sleep_avg <= 0)
 		prev->sleep_avg = 0;
 	/**
-	 * ¸üĞÂ½ø³ÌµÄÊ±¼ä´Á
+	 * æ›´æ–°è¿›ç¨‹çš„æ—¶é—´æˆ³
 	 */
 	prev->timestamp = prev->last_ran = now;
 
 	sched_info_switch(prev, next);
-	if (likely(prev != next)) {/* prevºÍnext²»Í¬£¬ĞèÒªÇĞ»» */
+	if (likely(prev != next)) {/* prevå’Œnextä¸åŒï¼Œéœ€è¦åˆ‡æ¢ */
 		next->timestamp = now;
 		rq->nr_switches++;
 		rq->curr = next;
@@ -3401,36 +3401,36 @@ switch_tasks:
 
 		prepare_arch_switch(rq, next);
 		/**
-		 * context_switchÖ´ĞĞÕæÕıµÄ½ø³ÌÇĞ»»
+		 * context_switchæ‰§è¡ŒçœŸæ­£çš„è¿›ç¨‹åˆ‡æ¢
 		 */
 		prev = context_switch(rq, prev, next);
 
 		/**
-		 * µ±½ø³ÌÔÙ´Î±»ÇĞ»»½øÀ´ºó£¬ÒÔÏÂ´úÂë±»½Ó×ÅÔËĞĞ¡£
-		 * µ«ÊÇ´ËÊ±prev²¢²»Ö¸Ïòµ±Ç°½ø³Ì£¬¶øÊÇÖ¸´úÂë´ÓÄÄÒ»¸ö½ø³ÌÇĞ»»µ½±¾½ø³Ì¡£
-		 * ÓÉÓÚ´ËÊ±ÒÑ¾­½øĞĞÁË½ø³Ì¿Õ¼äµÄÇĞ»»£¬¼Ä´æÆ÷ÖĞ»º´æµÄ±äÁ¿µÈ¶¼²»ÔÙÓĞĞ§£¬ËùÒÔÓÃbarrier²úÉúÒ»¸öÓÅ»¯ÆÁÕÏ¡£
+		 * å½“è¿›ç¨‹å†æ¬¡è¢«åˆ‡æ¢è¿›æ¥åï¼Œä»¥ä¸‹ä»£ç è¢«æ¥ç€è¿è¡Œã€‚
+		 * ä½†æ˜¯æ­¤æ—¶prevå¹¶ä¸æŒ‡å‘å½“å‰è¿›ç¨‹ï¼Œè€Œæ˜¯æŒ‡ä»£ç ä»å“ªä¸€ä¸ªè¿›ç¨‹åˆ‡æ¢åˆ°æœ¬è¿›ç¨‹ã€‚
+		 * ç”±äºæ­¤æ—¶å·²ç»è¿›è¡Œäº†è¿›ç¨‹ç©ºé—´çš„åˆ‡æ¢ï¼Œå¯„å­˜å™¨ä¸­ç¼“å­˜çš„å˜é‡ç­‰éƒ½ä¸å†æœ‰æ•ˆï¼Œæ‰€ä»¥ç”¨barrieräº§ç”Ÿä¸€ä¸ªä¼˜åŒ–å±éšœã€‚
 		 */
 		barrier();
 
 		/**
-		 * ¶ÔÇ°Ò»¸ö½ø³Ì½øĞĞÒ»Ğ©ÊÕÎ²¹¤×÷£¬±ÈÈç¼õÉÙËüµÄmm_struct,task_structµÄÒıÓÃ¼ÆÊıµÈ¡£
+		 * å¯¹å‰ä¸€ä¸ªè¿›ç¨‹è¿›è¡Œä¸€äº›æ”¶å°¾å·¥ä½œï¼Œæ¯”å¦‚å‡å°‘å®ƒçš„mm_struct,task_structçš„å¼•ç”¨è®¡æ•°ç­‰ã€‚
 		 */
 		finish_task_switch(prev);
-	} else/* Èç¹ûprevºÍnextÊÇÍ¬Ò»¸ö½ø³Ì£¬¾Í²»×ö½ø³ÌÇĞ»»¡£µ±prevÈÔÈ»ÊÇµ±Ç°»î¶¯¼¯ºÏÖĞµÄ×î¸ßÓÅÏÈ¼¶½ø³ÌÊ±£¬ÕâÊÇÓĞ¿ÉÄÜ·¢ÉúµÄ¡£ */
+	} else/* å¦‚æœprevå’Œnextæ˜¯åŒä¸€ä¸ªè¿›ç¨‹ï¼Œå°±ä¸åšè¿›ç¨‹åˆ‡æ¢ã€‚å½“prevä»ç„¶æ˜¯å½“å‰æ´»åŠ¨é›†åˆä¸­çš„æœ€é«˜ä¼˜å…ˆçº§è¿›ç¨‹æ—¶ï¼Œè¿™æ˜¯æœ‰å¯èƒ½å‘ç”Ÿçš„ã€‚ */
 		spin_unlock_irq(&rq->lock);
 
 	/**
-	 * ÔÚÇ°¼¸¾äÖĞ(context_switchÖ®ºó)£¬prev´ú±íµÄÊÇ´ÓÄÄ¸ö½ø³ÌÇĞ»»µ½±¾½ø³Ì¡£
-	 * ÔÚ¼ÌĞø½øĞĞµ÷¶ÈÖ®Ç°(Òò´ËÔÚcontext_switchÖĞ¿ªÁËÖĞ¶Ï£¬¿ÉÄÜ¸ÕÇĞ»Ø±¾½ø³Ì¾ÍÀ´ÁËÖĞ¶Ï£¬²¢ĞèÒªÖØĞÂµ÷¶È)£¬½«prevÉèÖÃ³Éµ±Ç°½ø³Ì¡£
+	 * åœ¨å‰å‡ å¥ä¸­(context_switchä¹‹å)ï¼Œprevä»£è¡¨çš„æ˜¯ä»å“ªä¸ªè¿›ç¨‹åˆ‡æ¢åˆ°æœ¬è¿›ç¨‹ã€‚
+	 * åœ¨ç»§ç»­è¿›è¡Œè°ƒåº¦ä¹‹å‰(å› æ­¤åœ¨context_switchä¸­å¼€äº†ä¸­æ–­ï¼Œå¯èƒ½åˆšåˆ‡å›æœ¬è¿›ç¨‹å°±æ¥äº†ä¸­æ–­ï¼Œå¹¶éœ€è¦é‡æ–°è°ƒåº¦)ï¼Œå°†prevè®¾ç½®æˆå½“å‰è¿›ç¨‹ã€‚
 	 */
 	prev = current;
 	/**
-	 * ÖØĞÂ»ñµÃ´óÄÚºËËø¡£
+	 * é‡æ–°è·å¾—å¤§å†…æ ¸é”ã€‚
 	 */
 	if (unlikely(reacquire_kernel_lock(prev) < 0))
 		goto need_resched_nonpreemptible;
 	/**
-	 * ´ò¿ªÇÀÕ¼£¬²¢¼ì²éÊÇ·ñĞèÒªÖØĞÂµ÷¶È¡£
+	 * æ‰“å¼€æŠ¢å ï¼Œå¹¶æ£€æŸ¥æ˜¯å¦éœ€è¦é‡æ–°è°ƒåº¦ã€‚
 	 */
 	preempt_enable_no_resched();
 	if (unlikely(test_thread_flag(TIF_NEED_RESCHED)))
@@ -3457,8 +3457,8 @@ asmlinkage void __sched preempt_schedule(void)
 	 * we do not want to preempt the current task.  Just return..
 	 */
 	/**
-	 * ¼ì²éÊÇ·ñÔÊĞí±¾µØÖĞ¶Ï£¬µ±Ç°ÇÀÕ¼¼ÆÊıÊÇ·ñÎª0£¬Á½¸öÌõ¼ş¶¼Âú×ãµÄ»°£¬¾ÍÖ´ĞĞµ÷¶È
-	 * ·ñÔò·µ»Ø¡£
+	 * æ£€æŸ¥æ˜¯å¦å…è®¸æœ¬åœ°ä¸­æ–­ï¼Œå½“å‰æŠ¢å è®¡æ•°æ˜¯å¦ä¸º0ï¼Œä¸¤ä¸ªæ¡ä»¶éƒ½æ»¡è¶³çš„è¯ï¼Œå°±æ‰§è¡Œè°ƒåº¦
+	 * å¦åˆ™è¿”å›ã€‚
 	 */
 	if (unlikely(ti->preempt_count || irqs_disabled()))
 		return;
@@ -3473,8 +3473,8 @@ need_resched:
 #ifdef CONFIG_PREEMPT_BKL
 	saved_lock_depth = task->lock_depth;
 	/**
-	 * ÒòÎª´ËÊ±²»ÊÇÖ÷¶¯µ÷¶È³öÈ¥£¬¶øÊÇ±»ÇÀÕ¼³öÈ¥µÄ£¬ËùÒÔÁÙÊ±½«lock_depthÉèÖÃ³É-1.
-	 * ÕâÑùscheduleº¯Êı»áÎóÈÏÎªÃ»ÓĞ´óÄÚºËËø£¬³ö¾Í²»»áup(kernel_sem)ÁË¡£
+	 * å› ä¸ºæ­¤æ—¶ä¸æ˜¯ä¸»åŠ¨è°ƒåº¦å‡ºå»ï¼Œè€Œæ˜¯è¢«æŠ¢å å‡ºå»çš„ï¼Œæ‰€ä»¥ä¸´æ—¶å°†lock_depthè®¾ç½®æˆ-1.
+	 * è¿™æ ·scheduleå‡½æ•°ä¼šè¯¯è®¤ä¸ºæ²¡æœ‰å¤§å†…æ ¸é”ï¼Œå‡ºå°±ä¸ä¼šup(kernel_sem)äº†ã€‚
 	 */
 	task->lock_depth = -1;
 #endif
@@ -3536,7 +3536,7 @@ need_resched:
 #endif /* CONFIG_PREEMPT */
 
 /**
- * ·Ç»¥³â½ø³ÌÓÉdefault_wake_function»½ĞÑ¡£ËüÊÇtry_to_wake_upµÄÒ»¸ö¼òµ¥·â×°¡£
+ * éäº’æ–¥è¿›ç¨‹ç”±default_wake_functionå”¤é†’ã€‚å®ƒæ˜¯try_to_wake_upçš„ä¸€ä¸ªç®€å•å°è£…ã€‚
  */
 int default_wake_function(wait_queue_t *curr, unsigned mode, int sync, void *key)
 {
@@ -3629,7 +3629,7 @@ void fastcall __wake_up_sync(wait_queue_head_t *q, unsigned int mode, int nr_exc
 EXPORT_SYMBOL_GPL(__wake_up_sync);	/* For internal use only */
 
 /**
- * Íê³ÉÔ­ÓïµÄup·½·¨¡£½ÓÊÕcompletionµÄµØÖ·Îª²ÎÊı¡£
+ * å®ŒæˆåŸè¯­çš„upæ–¹æ³•ã€‚æ¥æ”¶completionçš„åœ°å€ä¸ºå‚æ•°ã€‚
  */
 void fastcall complete(struct completion *x)
 {
@@ -3637,7 +3637,7 @@ void fastcall complete(struct completion *x)
 
 	spin_lock_irqsave(&x->wait.lock, flags);
 	/**
-	 * µİÔödone²¢»½ĞÑwaitµÈ´ı¶ÓÁĞÉÏË¯ÃßµÄ»¥³â½ø³Ì¡£
+	 * é€’å¢doneå¹¶å”¤é†’waitç­‰å¾…é˜Ÿåˆ—ä¸Šç¡çœ çš„äº’æ–¥è¿›ç¨‹ã€‚
 	 */
 	x->done++;
 	__wake_up_common(&x->wait, TASK_UNINTERRUPTIBLE | TASK_INTERRUPTIBLE,
@@ -3659,27 +3659,27 @@ void fastcall complete_all(struct completion *x)
 EXPORT_SYMBOL(complete_all);
 
 /**
- * Íê³ÉÔ­ÓïµÄdown²Ù×÷¡£
+ * å®ŒæˆåŸè¯­çš„downæ“ä½œã€‚
  */
 void fastcall __sched wait_for_completion(struct completion *x)
 {
 	might_sleep();
 	/**
-	 * ×¢ÒâËøµÄÓÃ·¨£¬ÕâÊÇËüÓëĞÅºÅÁ¿µÄ²î±ğËùÔÚ¡£xie.baoyou×¢
-	 * ËüµÄËø±£»¤ÁËÕû¸öº¯ÊıÌå£¬²¢ÇÒÔÚcompleteÖĞÒ²ÊÇÕâÑù£¬È·±£ÁËcompleteºÍwait_for_completionÔÚSMPÖĞ²»»á²¢·¢Ö´ĞĞ¡£
-	 * ¶øĞÅºÅÁ¿Ö÷ÒªÊÇ±£»¤down
+	 * æ³¨æ„é”çš„ç”¨æ³•ï¼Œè¿™æ˜¯å®ƒä¸ä¿¡å·é‡çš„å·®åˆ«æ‰€åœ¨ã€‚xie.baoyouæ³¨
+	 * å®ƒçš„é”ä¿æŠ¤äº†æ•´ä¸ªå‡½æ•°ä½“ï¼Œå¹¶ä¸”åœ¨completeä¸­ä¹Ÿæ˜¯è¿™æ ·ï¼Œç¡®ä¿äº†completeå’Œwait_for_completionåœ¨SMPä¸­ä¸ä¼šå¹¶å‘æ‰§è¡Œã€‚
+	 * è€Œä¿¡å·é‡ä¸»è¦æ˜¯ä¿æŠ¤down
 	 */
 	spin_lock_irq(&x->wait.lock);
 	/**
-	 * ÅĞ¶Ïx->done,ÕâÊÇÒòÎªÔÚSMPÖĞ£¬¿ÉÄÜÓĞÆäËû½ø³ÌÒÑ¾­µ÷ÓÃÁËcomplete¡£
-	 * ±ØĞëÏÈ¼ì²é
+	 * åˆ¤æ–­x->done,è¿™æ˜¯å› ä¸ºåœ¨SMPä¸­ï¼Œå¯èƒ½æœ‰å…¶ä»–è¿›ç¨‹å·²ç»è°ƒç”¨äº†completeã€‚
+	 * å¿…é¡»å…ˆæ£€æŸ¥
 	 */
 	if (!x->done) {
 		DECLARE_WAITQUEUE(wait, current);
 
 		wait.flags |= WQ_FLAG_EXCLUSIVE;
 		/**
-		 * Ã»ÓĞup²Ù×÷£¬²Å¼ÓÈëµ½µÈ´ı¶ÓÁĞÉÏ¡£
+		 * æ²¡æœ‰upæ“ä½œï¼Œæ‰åŠ å…¥åˆ°ç­‰å¾…é˜Ÿåˆ—ä¸Šã€‚
 		 */
 		__add_wait_queue_tail(&x->wait, &wait);
 		do {
@@ -3687,9 +3687,9 @@ void fastcall __sched wait_for_completion(struct completion *x)
 			spin_unlock_irq(&x->wait.lock);
 			schedule();
 			spin_lock_irq(&x->wait.lock);
-		} while (!x->done);/* ×¢Òâ:ÅĞ¶ÏÌõ¼şÔÚ×ÔĞıËøµÄ±£»¤ÖĞ */
+		} while (!x->done);/* æ³¨æ„:åˆ¤æ–­æ¡ä»¶åœ¨è‡ªæ—‹é”çš„ä¿æŠ¤ä¸­ */
 		/**
-		 * »¹ÔÚËøµÄ±£»¤ÖĞ£¬ËùÒÔÍËµ½Íâ²ãµ÷ÓÃspin_unlock_irqÊÇ¶ÔµÄ
+		 * è¿˜åœ¨é”çš„ä¿æŠ¤ä¸­ï¼Œæ‰€ä»¥é€€åˆ°å¤–å±‚è°ƒç”¨spin_unlock_irqæ˜¯å¯¹çš„
 		 */
 		__remove_wait_queue(&x->wait, &wait);
 	}
@@ -3814,9 +3814,9 @@ EXPORT_SYMBOL(wait_for_completion_interruptible_timeout);
 	spin_unlock_irqrestore(&q->lock, flags);
 
 /**
- * Óësleep_onº¯ÊıÊÇÒ»ÑùµÄ¡£
- * µ«ÉÔÓĞ²»Í¬£¬Ëü°Ñµ±Ç°½ø³ÌµÄ×´Ì¬ÉèÖÃÎªTASK_INTERRUPTIBLE¶ø²»ÊÇTASK_UNINTERRUPTIBLE¡£
- * Òò´Ë£¬ÊÚÊÜÒ»¸öĞÅºÅ¾Í¿ÉÒÔ»½ĞÑµ±Ç°½ø³Ì¡£
+ * ä¸sleep_onå‡½æ•°æ˜¯ä¸€æ ·çš„ã€‚
+ * ä½†ç¨æœ‰ä¸åŒï¼Œå®ƒæŠŠå½“å‰è¿›ç¨‹çš„çŠ¶æ€è®¾ç½®ä¸ºTASK_INTERRUPTIBLEè€Œä¸æ˜¯TASK_UNINTERRUPTIBLEã€‚
+ * å› æ­¤ï¼Œæˆå—ä¸€ä¸ªä¿¡å·å°±å¯ä»¥å”¤é†’å½“å‰è¿›ç¨‹ã€‚
  */
 void fastcall __sched interruptible_sleep_on(wait_queue_head_t *q)
 {
@@ -3847,9 +3847,9 @@ long fastcall __sched interruptible_sleep_on_timeout(wait_queue_head_t *q, long 
 EXPORT_SYMBOL(interruptible_sleep_on_timeout);
 
 /**
- * ¸Ãº¯Êı°Ñµ±Ç°½ø³ÌµÄ×´Ì¬ÉèÖÃÎªTASK_UNINTERRUPTIBLE£¬²¢°ÑËü²åÈëµ½ÌØ¶¨µÄµÈ´ı¶ÓÁĞ¡£
- * È»ºó£¬Ëüµ÷ÓÃµ÷¶È³ÌĞò£¬ÖØĞÂ¿ªÊ¼ÁíÍâÒ»¸ö³ÌĞòµÄÖ´ĞĞ¡£
- * µ±Ë¯Ãß½ø³Ì±»»½ĞÑÊ±£¬µ÷¶È³ÌĞòÖØĞÂ¿ªÊ¼Ö´ĞĞsleep_onº¯Êı£¬°Ñ¸Ã½ø³Ì´ÓµÈ´ı¶ÓÁĞÖĞÉ¾³ı¡£
+ * è¯¥å‡½æ•°æŠŠå½“å‰è¿›ç¨‹çš„çŠ¶æ€è®¾ç½®ä¸ºTASK_UNINTERRUPTIBLEï¼Œå¹¶æŠŠå®ƒæ’å…¥åˆ°ç‰¹å®šçš„ç­‰å¾…é˜Ÿåˆ—ã€‚
+ * ç„¶åï¼Œå®ƒè°ƒç”¨è°ƒåº¦ç¨‹åºï¼Œé‡æ–°å¼€å§‹å¦å¤–ä¸€ä¸ªç¨‹åºçš„æ‰§è¡Œã€‚
+ * å½“ç¡çœ è¿›ç¨‹è¢«å”¤é†’æ—¶ï¼Œè°ƒåº¦ç¨‹åºé‡æ–°å¼€å§‹æ‰§è¡Œsleep_onå‡½æ•°ï¼ŒæŠŠè¯¥è¿›ç¨‹ä»ç­‰å¾…é˜Ÿåˆ—ä¸­åˆ é™¤ã€‚
  */
 void fastcall __sched sleep_on(wait_queue_head_t *q)
 {
@@ -3938,7 +3938,7 @@ EXPORT_SYMBOL(set_user_nice);
  * does similar things.
  */
 /**
- * ´¦ÀíniceÏµÍ³µ÷ÓÃ
+ * å¤„ç†niceç³»ç»Ÿè°ƒç”¨
  */
 asmlinkage long sys_nice(int increment)
 {
@@ -3951,11 +3951,11 @@ asmlinkage long sys_nice(int increment)
 	 * and we have a single winner.
 	 */
 	/**
-	 * ¸ºÖµÏàµ±ÓÚÇëÇóÓÅÏÈ¼¶Ôö¼Ó¡£²¢ÇëÇó³¬¼¶ÓÃ»§ÌØÈ¨¡£
+	 * è´Ÿå€¼ç›¸å½“äºè¯·æ±‚ä¼˜å…ˆçº§å¢åŠ ã€‚å¹¶è¯·æ±‚è¶…çº§ç”¨æˆ·ç‰¹æƒã€‚
 	 */
 	if (increment < 0) {
 		/**
-		 * µ÷ÓÃcapableºËÊµ½ø³ÌÊÇ·ñÓĞCAP_SYS_NICEÈ¨ÄÜ¡£
+		 * è°ƒç”¨capableæ ¸å®è¿›ç¨‹æ˜¯å¦æœ‰CAP_SYS_NICEæƒèƒ½ã€‚
 		 */
 		if (!capable(CAP_SYS_NICE))
 			return -EPERM;
@@ -3963,13 +3963,13 @@ asmlinkage long sys_nice(int increment)
 			increment = -40;
 	}
 	/**
-	 * ¾¡¹Üincrement²ÎÊı¿ÉÒÔÓĞÈÎºÎÖµ¡£µ«ÊÇ´óÓÚ40µÄÖµ»á±»½ØÎª40¡£
+	 * å°½ç®¡incrementå‚æ•°å¯ä»¥æœ‰ä»»ä½•å€¼ã€‚ä½†æ˜¯å¤§äº40çš„å€¼ä¼šè¢«æˆªä¸º40ã€‚
 	 */
 	if (increment > 40)
 		increment = 40;
 
 	/**
-	 * ½«½ø³ÌµÄstatic_prio×ª»»ÎªniceÖµ,²¢¼ÓÉÏincrement
+	 * å°†è¿›ç¨‹çš„static_prioè½¬æ¢ä¸ºniceå€¼,å¹¶åŠ ä¸Šincrement
 	 */
 	nice = PRIO_TO_NICE(current->static_prio) + increment;
 	if (nice < -20)
@@ -3978,15 +3978,15 @@ asmlinkage long sys_nice(int increment)
 		nice = 19;
 
 	/**
-	 * µ÷ÓÃsecurity_task_setnice°²È«¹³×Ó¡£
+	 * è°ƒç”¨security_task_setniceå®‰å…¨é’©å­ã€‚
 	 */
 	retval = security_task_setnice(current, nice);
 	if (retval)
 		return retval;
 
 	/**
-	 * set_user_niceÕæÕıÉèÖÃ½ø³ÌµÄ¾²Ì¬ÓÅÏÈ¼¶¡£ËüÊ×ÏÈ»á»ñµÃ±¾µØÔËĞĞ¶ÓÁĞµÄËø¡£
-	 * Èç¹ûĞèÒª£¬»áµ÷ÓÃresched_taskº¯ÊıÒÔÔÊĞíÆäËû½ø³ÌÇÀÕ¼µ±Ç°½ø³Ì¡£
+	 * set_user_niceçœŸæ­£è®¾ç½®è¿›ç¨‹çš„é™æ€ä¼˜å…ˆçº§ã€‚å®ƒé¦–å…ˆä¼šè·å¾—æœ¬åœ°è¿è¡Œé˜Ÿåˆ—çš„é”ã€‚
+	 * å¦‚æœéœ€è¦ï¼Œä¼šè°ƒç”¨resched_taskå‡½æ•°ä»¥å…è®¸å…¶ä»–è¿›ç¨‹æŠ¢å å½“å‰è¿›ç¨‹ã€‚
 	 */
 	set_user_nice(current, nice);
 	return 0;
@@ -4143,11 +4143,11 @@ recheck:
 EXPORT_SYMBOL_GPL(sched_setscheduler);
 
 /**
- * ÊµÏÖsys_sched_setschedulerÏµÍ³µ÷ÓÃ¡£
- * Ëü¼ì²éÓÉ²ÎÊıpolicyÖ¸¶¨µÄµ÷¶È²ßÂÔºÍÓÉ²ÎÊıparam->sched_priorityÖ¸¶¨µÄĞÂÓÅÏÈ¼¶ÊÇ·ñÓĞĞ§£¬
- * Ëü»¹¼ì²é½ø³ÌÊÇ·ñÓĞCAP_SYS_NICEÈ¨ÄÜ¡£»òÕß½ø³ÌµÄÓµÓĞÕßÊÇ·ñÓĞ³¬¼¶ÓÃ»§µÄÈ¨ÏŞ¡£
- * Èç¹ûÂú×ã£¬¾Í°Ñ½ø³Ì´ÓËüµÄÔËĞĞ¶ÓÁĞ£¨Èç¹ûÊÇ¿ÉÔËĞĞµÄ£©ÖĞÉ¾³ı£¬¸üĞÂ½ø³ÌµÄ¾²Ì¬ÓÅÏÈ¼¶¡£ÊµÊ±ÓÅÏÈ¼¶ºÍ¶¯Ì¬ÓÅÏÈ¼¶¡£°Ñ½ø³Ì²å»Øµ½ÔËĞĞ¶ÓÁĞ¡£
- * ×îºó£¬Èç¹ûĞèÒª£¬¾Íµ÷ÓÃresched_taskÇÀÕ¼ÔËĞĞ¶ÓÁĞµÄµ±Ç°½ø³Ì¡£
+ * å®ç°sys_sched_setschedulerç³»ç»Ÿè°ƒç”¨ã€‚
+ * å®ƒæ£€æŸ¥ç”±å‚æ•°policyæŒ‡å®šçš„è°ƒåº¦ç­–ç•¥å’Œç”±å‚æ•°param->sched_priorityæŒ‡å®šçš„æ–°ä¼˜å…ˆçº§æ˜¯å¦æœ‰æ•ˆï¼Œ
+ * å®ƒè¿˜æ£€æŸ¥è¿›ç¨‹æ˜¯å¦æœ‰CAP_SYS_NICEæƒèƒ½ã€‚æˆ–è€…è¿›ç¨‹çš„æ‹¥æœ‰è€…æ˜¯å¦æœ‰è¶…çº§ç”¨æˆ·çš„æƒé™ã€‚
+ * å¦‚æœæ»¡è¶³ï¼Œå°±æŠŠè¿›ç¨‹ä»å®ƒçš„è¿è¡Œé˜Ÿåˆ—ï¼ˆå¦‚æœæ˜¯å¯è¿è¡Œçš„ï¼‰ä¸­åˆ é™¤ï¼Œæ›´æ–°è¿›ç¨‹çš„é™æ€ä¼˜å…ˆçº§ã€‚å®æ—¶ä¼˜å…ˆçº§å’ŒåŠ¨æ€ä¼˜å…ˆçº§ã€‚æŠŠè¿›ç¨‹æ’å›åˆ°è¿è¡Œé˜Ÿåˆ—ã€‚
+ * æœ€åï¼Œå¦‚æœéœ€è¦ï¼Œå°±è°ƒç”¨resched_taskæŠ¢å è¿è¡Œé˜Ÿåˆ—çš„å½“å‰è¿›ç¨‹ã€‚
  */
 static int do_sched_setscheduler(pid_t pid, int policy, struct sched_param __user *param)
 {
@@ -4452,7 +4452,7 @@ static inline void __cond_resched(void)
 }
 
 /**
- * Èç¹ûÓĞ±ØÒª£¬¾ÍÖØĞÂµ÷¶È
+ * å¦‚æœæœ‰å¿…è¦ï¼Œå°±é‡æ–°è°ƒåº¦
  */
 int __sched cond_resched(void)
 {
@@ -5382,7 +5382,7 @@ extern void __devinit arch_destroy_sched_domains(void);
 #else
 #ifdef CONFIG_SCHED_SMT
 /**
- * Èç¹ûÖ§³Ö³¬Ïß³Ì¼¼Êõ£¬ÄÇÃ´cpu_domains¾ÍÊÇµ×²ãµ÷¶ÈÓò¡£
+ * å¦‚æœæ”¯æŒè¶…çº¿ç¨‹æŠ€æœ¯ï¼Œé‚£ä¹ˆcpu_domainså°±æ˜¯åº•å±‚è°ƒåº¦åŸŸã€‚
  */
 static DEFINE_PER_CPU(struct sched_domain, cpu_domains);
 static struct sched_group sched_group_cpus[NR_CPUS];
@@ -5393,7 +5393,7 @@ static int __devinit cpu_to_cpu_group(int cpu)
 #endif
 
 /**
- * ËùÓĞÎïÀíCPUµÄµ÷¶ÈÓòÃèÊö·û¡£
+ * æ‰€æœ‰ç‰©ç†CPUçš„è°ƒåº¦åŸŸæè¿°ç¬¦ã€‚
  */
 static DEFINE_PER_CPU(struct sched_domain, phys_domains);
 static struct sched_group sched_group_phys[NR_CPUS];

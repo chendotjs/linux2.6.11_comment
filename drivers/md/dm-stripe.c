@@ -12,29 +12,29 @@
 #include <linux/bio.h>
 #include <linux/slab.h>
 
-/* ×é³ÉÌõ´øµÄÉè±¸ */
+/* ç»„æˆæ¡å¸¦çš„è®¾å¤‡ */
 struct stripe {
-	/* Ìõ´øËùÔÚµÄµ×²ãÉè±¸ */
+	/* æ¡å¸¦æ‰€åœ¨çš„åº•å±‚è®¾å¤‡ */
 	struct dm_dev *dev;
-	/* Ìõ´øÔÚµ×²ãÉè±¸µÄÆğÊ¼ÉÈÇø±àºÅ */
+	/* æ¡å¸¦åœ¨åº•å±‚è®¾å¤‡çš„èµ·å§‹æ‰‡åŒºç¼–å· */
 	sector_t physical_start;
 };
 
-/* Ìõ´øÓ³ÉäË½ÓĞÊı¾İ½á¹¹ */
+/* æ¡å¸¦æ˜ å°„ç§æœ‰æ•°æ®ç»“æ„ */
 struct stripe_c {
-	/* ×é³ÉÌõ´øµÄÉè±¸Êı */
+	/* ç»„æˆæ¡å¸¦çš„è®¾å¤‡æ•° */
 	uint32_t stripes;
 
 	/* The size of this target / num. stripes */
-	/* ×é³ÉÄ¿±êµÄ¿éÉè±¸µÄÓĞĞ§³¤¶È */
+	/* ç»„æˆç›®æ ‡çš„å—è®¾å¤‡çš„æœ‰æ•ˆé•¿åº¦ */
 	sector_t stripe_width;
 
 	/* stripe chunk size */
-	/* ÓÃÓÚ¼ÆËãÌõ´ø³¤¶È£¬¼ÙÉè¿é³¤¶ÈÎª2^n£¬Ôòchunk_shiftÎª1<<(n+1)£¬chunk_maskÎª0x11...1£¬¼´2^n-1 */
+	/* ç”¨äºè®¡ç®—æ¡å¸¦é•¿åº¦ï¼Œå‡è®¾å—é•¿åº¦ä¸º2^nï¼Œåˆ™chunk_shiftä¸º1<<(n+1)ï¼Œchunk_maskä¸º0x11...1ï¼Œå³2^n-1 */
 	uint32_t chunk_shift;
 	sector_t chunk_mask;
 
-	/* Ìõ´øÊı×é */
+	/* æ¡å¸¦æ•°ç»„ */
 	struct stripe stripe[0];
 };
 
@@ -75,7 +75,7 @@ static int get_stripe(struct dm_target *ti, struct stripe_c *sc,
  * Construct a striped mapping.
  * <number of stripes> <chunk size (2^^n)> [<dev_path> <offset>]+
  */
-/* Ìõ´øÓ³ÉäµÄ¹¹Ôìº¯Êı */
+/* æ¡å¸¦æ˜ å°„çš„æ„é€ å‡½æ•° */
 static int stripe_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 {
 	struct stripe_c *sc;
@@ -86,18 +86,18 @@ static int stripe_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	int r;
 	unsigned int i;
 
-	if (argc < 2) {/* ÖÁÉÙÓĞnumber_of_stripesºÍchunk_sizeÁ½¸ö²ÎÊı */
+	if (argc < 2) {/* è‡³å°‘æœ‰number_of_stripeså’Œchunk_sizeä¸¤ä¸ªå‚æ•° */
 		ti->error = "dm-stripe: Not enough arguments";
 		return -EINVAL;
 	}
 
-	stripes = simple_strtoul(argv[0], &end, 10);/* ½âÎöÌõ´øÊıÁ¿ */
+	stripes = simple_strtoul(argv[0], &end, 10);/* è§£ææ¡å¸¦æ•°é‡ */
 	if (*end) {
 		ti->error = "dm-stripe: Invalid stripe count";
 		return -EINVAL;
 	}
 
-	chunk_size = simple_strtoul(argv[1], &end, 10);/* ½âÎöÌõ´ø³¤¶È */
+	chunk_size = simple_strtoul(argv[1], &end, 10);/* è§£ææ¡å¸¦é•¿åº¦ */
 	if (*end) {
 		ti->error = "dm-stripe: Invalid chunk_size";
 		return -EINVAL;
@@ -106,14 +106,14 @@ static int stripe_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	/*
 	 * chunk_size is a power of two
 	 */
-	if (!chunk_size || (chunk_size & (chunk_size - 1)) ||/* Ìõ´ø²»Ó¦µ±Îª0£¬Ò²±ØĞëÊÇ2µÄÃİ£¬²¢ÇÒ²»ÄÜĞ¡ÓÚÒ»¸öÒ³Ãæ */
+	if (!chunk_size || (chunk_size & (chunk_size - 1)) ||/* æ¡å¸¦ä¸åº”å½“ä¸º0ï¼Œä¹Ÿå¿…é¡»æ˜¯2çš„å¹‚ï¼Œå¹¶ä¸”ä¸èƒ½å°äºä¸€ä¸ªé¡µé¢ */
 	    (chunk_size < (PAGE_SIZE >> SECTOR_SHIFT))) {
 		ti->error = "dm-stripe: Invalid chunk size";
 		return -EINVAL;
 	}
 
 	width = ti->len;
-	if (sector_div(width, stripes)) {/* Ó³ÉäÄ¿±ê³¤¶È±ØĞëÄÜ¹»Õû³ıÌõ´øÊı */
+	if (sector_div(width, stripes)) {/* æ˜ å°„ç›®æ ‡é•¿åº¦å¿…é¡»èƒ½å¤Ÿæ•´é™¤æ¡å¸¦æ•° */
 		ti->error = "dm-stripe: Target length not divisable by "
 		    "number of stripes";
 		return -EINVAL;
@@ -122,13 +122,13 @@ static int stripe_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	/*
 	 * Do we have enough arguments for that many stripes ?
 	 */
-	if (argc != (2 + 2 * stripes)) {/* Ìõ´øÊı±ØĞëÓëºóÃæµÄ²ÎÊıÊıÄ¿Æ¥Åä */
+	if (argc != (2 + 2 * stripes)) {/* æ¡å¸¦æ•°å¿…é¡»ä¸åé¢çš„å‚æ•°æ•°ç›®åŒ¹é… */
 		ti->error = "dm-stripe: Not enough destinations "
 			"specified";
 		return -EINVAL;
 	}
 
-	sc = alloc_context(stripes);/* ·ÖÅäÌõ´øË½ÓĞÊı¾İ½á¹¹ */
+	sc = alloc_context(stripes);/* åˆ†é…æ¡å¸¦ç§æœ‰æ•°æ®ç»“æ„ */
 	if (!sc) {
 		ti->error = "dm-stripe: Memory allocation for striped context "
 		    "failed";
@@ -139,7 +139,7 @@ static int stripe_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	sc->stripe_width = width;
 	ti->split_io = chunk_size;
 
-	/* ¼ÆËãchunk_maskºÍchunk_shift£¬ÓÃÓÚ¿ìËÙ¼ÆËã */
+	/* è®¡ç®—chunk_maskå’Œchunk_shiftï¼Œç”¨äºå¿«é€Ÿè®¡ç®— */
 	sc->chunk_mask = ((sector_t) chunk_size) - 1;
 	for (sc->chunk_shift = 0; chunk_size; sc->chunk_shift++)
 		chunk_size >>= 1;
@@ -148,7 +148,7 @@ static int stripe_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	/*
 	 * Get the stripe destinations.
 	 */
-	for (i = 0; i < stripes; i++) {/* ½âÎöÌõ´øÉè±¸ */
+	for (i = 0; i < stripes; i++) {/* è§£ææ¡å¸¦è®¾å¤‡ */
 		argv += 2;
 
 		r = get_stripe(ti, sc, i, argv);
@@ -166,7 +166,7 @@ static int stripe_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	return 0;
 }
 
-/* Îö¹¹º¯Êı£¬ÊÍ·ÅÌõ´øÓ³ÉäË½ÓĞÊı¾İ½á¹¹²¢½â³ı¶ÔÉè±¸µÄÒıÓÃ */
+/* ææ„å‡½æ•°ï¼Œé‡Šæ”¾æ¡å¸¦æ˜ å°„ç§æœ‰æ•°æ®ç»“æ„å¹¶è§£é™¤å¯¹è®¾å¤‡çš„å¼•ç”¨ */
 static void stripe_dtr(struct dm_target *ti)
 {
 	unsigned int i;
@@ -183,16 +183,16 @@ static int stripe_map(struct dm_target *ti, struct bio *bio,
 {
 	struct stripe_c *sc = (struct stripe_c *) ti->private;
 
-	/* ¼ÆËãBIOÔÚÄ¿±êÖĞÆ«ÒÆ */
+	/* è®¡ç®—BIOåœ¨ç›®æ ‡ä¸­åç§» */
 	sector_t offset = bio->bi_sector - ti->begin;
-	/* ¼ÆËãÌõ´øºÅ */
+	/* è®¡ç®—æ¡å¸¦å· */
 	sector_t chunk = offset >> sc->chunk_shift;
-	/* ¸ù¾İÌõ´øºÅ¼ÆËãÉè±¸±àºÅ */
+	/* æ ¹æ®æ¡å¸¦å·è®¡ç®—è®¾å¤‡ç¼–å· */
 	uint32_t stripe = sector_div(chunk, sc->stripes);
 
-	/* ×ª»»Éè±¸ÎªÌõ´øÓ³ÉäÖĞµÄÉè±¸ */
+	/* è½¬æ¢è®¾å¤‡ä¸ºæ¡å¸¦æ˜ å°„ä¸­çš„è®¾å¤‡ */
 	bio->bi_bdev = sc->stripe[stripe].dev->bdev;
-	/* ×ª»»ÉÈÇøºÅ */
+	/* è½¬æ¢æ‰‡åŒºå· */
 	bio->bi_sector = sc->stripe[stripe].physical_start +
 	    (chunk << sc->chunk_shift) + (offset & sc->chunk_mask);
 	return 1;

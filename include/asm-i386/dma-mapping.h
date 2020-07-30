@@ -18,8 +18,8 @@ void dma_free_coherent(struct device *dev, size_t size,
 
 
 /**
- * Á÷Ê½DMAÓ³ÉäÊÇÃ¿´ÎÊı¾İ´«ËÍÇ°½¨Á¢Ó³Éä£¬ÕâÊ±£¬Çı¶¯³ÌĞòĞèÒªÊ×ÏÈÀûÓÃ·ÖÅäÆ÷¶¯Ì¬·ÖÅäÄÚ´æ»º³åÇø¡£
- * dma_map_singleµÄ×÷ÓÃÊÇ½¨Á¢Á÷Ê½DMAÓ³Éä¡£Ëü½ÓÊÕ»º³åÇøµÄÏßĞÔµØÖ·£¬·µ»ØÏàÓ¦µÄ×ÜÏßµØÖ·¡£
+ * æµå¼DMAæ˜ å°„æ˜¯æ¯æ¬¡æ•°æ®ä¼ é€å‰å»ºç«‹æ˜ å°„ï¼Œè¿™æ—¶ï¼Œé©±åŠ¨ç¨‹åºéœ€è¦é¦–å…ˆåˆ©ç”¨åˆ†é…å™¨åŠ¨æ€åˆ†é…å†…å­˜ç¼“å†²åŒºã€‚
+ * dma_map_singleçš„ä½œç”¨æ˜¯å»ºç«‹æµå¼DMAæ˜ å°„ã€‚å®ƒæ¥æ”¶ç¼“å†²åŒºçš„çº¿æ€§åœ°å€ï¼Œè¿”å›ç›¸åº”çš„æ€»çº¿åœ°å€ã€‚
  */
 static inline dma_addr_t
 dma_map_single(struct device *dev, void *ptr, size_t size,
@@ -31,7 +31,7 @@ dma_map_single(struct device *dev, void *ptr, size_t size,
 }
 
 /**
- * ÊÍ·ÅÁ÷Ê½DMAÓ³Éä
+ * é‡Šæ”¾æµå¼DMAæ˜ å°„
  */
 static inline void
 dma_unmap_single(struct device *dev, dma_addr_t dma_addr, size_t size,
@@ -41,9 +41,9 @@ dma_unmap_single(struct device *dev, dma_addr_t dma_addr, size_t size,
 }
 
 /**
- * Ó³ÉäÒ»¸ö·ÖÉ¢¡¢¾Û¼¯DMA¡£
- *		nents:		´«ÈëµÄ·ÖÉ¢±íÈë¿ÚµÄÊıÁ¿¡£
- * ·µ»ØÖµÊÇÒª´«ËÍµÄDMA»º³åÇøÊı¡£¿ÉÄÜĞ¡ÓÚnents¡£
+ * æ˜ å°„ä¸€ä¸ªåˆ†æ•£ã€èšé›†DMAã€‚
+ *		nents:		ä¼ å…¥çš„åˆ†æ•£è¡¨å…¥å£çš„æ•°é‡ã€‚
+ * è¿”å›å€¼æ˜¯è¦ä¼ é€çš„DMAç¼“å†²åŒºæ•°ã€‚å¯èƒ½å°äºnentsã€‚
  */
 static inline int
 dma_map_sg(struct device *dev, struct scatterlist *sg, int nents,
@@ -64,7 +64,7 @@ dma_map_sg(struct device *dev, struct scatterlist *sg, int nents,
 }
 
 /**
- * ÏëÒª½«¸ß¶ËÄÚ´æÇøÓÃÓÚDMAÊ±£¬¿ÉÒÔÊ¹ÓÃpci_map_page»òÕßdma_map_page
+ * æƒ³è¦å°†é«˜ç«¯å†…å­˜åŒºç”¨äºDMAæ—¶ï¼Œå¯ä»¥ä½¿ç”¨pci_map_pageæˆ–è€…dma_map_page
  */
 static inline dma_addr_t
 dma_map_page(struct device *dev, struct page *page, unsigned long offset,
@@ -75,7 +75,7 @@ dma_map_page(struct device *dev, struct page *page, unsigned long offset,
 }
 
 /**
- * ÊÍ·Å¸ß¶ËÄÚ´æ»º³åÇø
+ * é‡Šæ”¾é«˜ç«¯å†…å­˜ç¼“å†²åŒº
  */
 static inline void
 dma_unmap_page(struct device *dev, dma_addr_t dma_address, size_t size,
@@ -85,7 +85,7 @@ dma_unmap_page(struct device *dev, dma_addr_t dma_address, size_t size,
 }
 
 /**
- * ½â³ı·ÖÉ¢¡¢¾Û¼¯IOÓ³Éä¡£
+ * è§£é™¤åˆ†æ•£ã€èšé›†IOæ˜ å°„ã€‚
  */
 static inline void
 dma_unmap_sg(struct device *dev, struct scatterlist *sg, int nhwentries,
@@ -123,10 +123,10 @@ dma_sync_single_range_for_device(struct device *dev, dma_addr_t dma_handle,
 }
 
 /**
- * ÔÚ¶Á»º³åÇøÇ°£¬ÒòÎªDMAĞ´ÄÚ´æÊ±£¬Ó²¼ş¸ßËÙ»º´æ²»»á¸ĞÖªµ½ÄÚ´æÊı¾İµÄ±ä»¯
- * ËùÒÔ£¬ĞèÒªµ÷ÓÃ´Ëº¯ÊıÊ¹ÓÃÏàÓ¦µÄÓ²¼ş¸ßËÙ»º´æÊ§Ğ§¡£
- * ÔÚx86ÖĞ£¬´Ëº¯ÊıÎª¿Õ£¬½ö½öÊÇÒòÎªx86Î¬»¤ÁËÓ²¼ş¸ßËÙ»º´æºÍDMAÖ®¼äµÄÒ»ÖÂĞÔ¡£
- * ÆäËûÆ½Ì¨Ôò²»Ò»¶¨ÁË¡£
+ * åœ¨è¯»ç¼“å†²åŒºå‰ï¼Œå› ä¸ºDMAå†™å†…å­˜æ—¶ï¼Œç¡¬ä»¶é«˜é€Ÿç¼“å­˜ä¸ä¼šæ„ŸçŸ¥åˆ°å†…å­˜æ•°æ®çš„å˜åŒ–
+ * æ‰€ä»¥ï¼Œéœ€è¦è°ƒç”¨æ­¤å‡½æ•°ä½¿ç”¨ç›¸åº”çš„ç¡¬ä»¶é«˜é€Ÿç¼“å­˜å¤±æ•ˆã€‚
+ * åœ¨x86ä¸­ï¼Œæ­¤å‡½æ•°ä¸ºç©ºï¼Œä»…ä»…æ˜¯å› ä¸ºx86ç»´æŠ¤äº†ç¡¬ä»¶é«˜é€Ÿç¼“å­˜å’ŒDMAä¹‹é—´çš„ä¸€è‡´æ€§ã€‚
+ * å…¶ä»–å¹³å°åˆ™ä¸ä¸€å®šäº†ã€‚
  */
 static inline void
 dma_sync_sg_for_cpu(struct device *dev, struct scatterlist *sg, int nelems,
@@ -135,8 +135,8 @@ dma_sync_sg_for_cpu(struct device *dev, struct scatterlist *sg, int nelems,
 }
 
 /**
- * Çı¶¯³ÌĞòÔÚ¿ªÊ¼´ÓRAMµ½Éè±¸µÄDMAÊı¾İ´«ËÍÇ°£¬Ó¦¸Ãµ÷ÓÃdma_sync_sg_for_device
- * ËüË¢ĞÂÓëDMA»º³åÇø¶ÔÓ¦µÄ¸ßËÙ»º´æĞĞ¡£È·±£Ğ´µ½ÄÚ´æµÄÊı¾İ£¬È·ÊµĞ´µ½ÕæÊµµÄÄÚ´æÖĞÁË¡£
+ * é©±åŠ¨ç¨‹åºåœ¨å¼€å§‹ä»RAMåˆ°è®¾å¤‡çš„DMAæ•°æ®ä¼ é€å‰ï¼Œåº”è¯¥è°ƒç”¨dma_sync_sg_for_device
+ * å®ƒåˆ·æ–°ä¸DMAç¼“å†²åŒºå¯¹åº”çš„é«˜é€Ÿç¼“å­˜è¡Œã€‚ç¡®ä¿å†™åˆ°å†…å­˜çš„æ•°æ®ï¼Œç¡®å®å†™åˆ°çœŸå®çš„å†…å­˜ä¸­äº†ã€‚
  */
 static inline void
 dma_sync_sg_for_device(struct device *dev, struct scatterlist *sg, int nelems,
@@ -166,7 +166,7 @@ dma_supported(struct device *dev, u64 mask)
 }
 
 /**
- * ¼ì²é×ÜÏßÊÇ·ñ¿ÉÒÔ½ÓÊÕ¸ø¶¨´óĞ¡µÄ×ÜÏßµØÖ·¡£Èç¹û¿ÉÒÔ£¬ÔòÍ¨Öª×ÜÏß²ã£º¸ø¶¨µÄÍâÎ§Éè±¸½«Ê¹ÓÃ¸Ã´óĞ¡µÄ×ÜÏßµØÖ·¡£
+ * æ£€æŸ¥æ€»çº¿æ˜¯å¦å¯ä»¥æ¥æ”¶ç»™å®šå¤§å°çš„æ€»çº¿åœ°å€ã€‚å¦‚æœå¯ä»¥ï¼Œåˆ™é€šçŸ¥æ€»çº¿å±‚ï¼šç»™å®šçš„å¤–å›´è®¾å¤‡å°†ä½¿ç”¨è¯¥å¤§å°çš„æ€»çº¿åœ°å€ã€‚
  */
 static inline int
 dma_set_mask(struct device *dev, u64 mask)

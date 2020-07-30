@@ -65,7 +65,7 @@ static int  nfs_statfs(struct super_block *, struct kstatfs *);
 static int  nfs_show_options(struct seq_file *, struct vfsmount *);
 
 /**
- * ÍøÂçÎÄ¼şÏµÍ³µÄ³¬¼¶¿é²Ù×÷¡£
+ * ç½‘ç»œæ–‡ä»¶ç³»ç»Ÿçš„è¶…çº§å—æ“ä½œã€‚
  */
 static struct super_operations nfs_sops = { 
 	.alloc_inode	= nfs_alloc_inode,
@@ -1389,7 +1389,7 @@ static struct super_block *nfs_get_sb(struct file_system_type *fs_type,
 	init_nfsv4_state(server);
 
 	/**
-	 * ÏÂÃæ±È½ÏdataÖĞµÄ°æ±¾ĞÅÏ¢Óëµ±Ç°NFS_MOUNT°æ±¾ÊÇ·ñÒ»ÖÂ
+	 * ä¸‹é¢æ¯”è¾ƒdataä¸­çš„ç‰ˆæœ¬ä¿¡æ¯ä¸å½“å‰NFS_MOUNTç‰ˆæœ¬æ˜¯å¦ä¸€è‡´
 	 */
 	if (data->version != NFS_MOUNT_VERSION) {
 		printk("nfs warning: mount version %s than kernel\n",
@@ -1444,7 +1444,7 @@ static struct super_block *nfs_get_sb(struct file_system_type *fs_type,
 	}
 
 	/**
-	 * ³õÊÔ»¯super_blockµÄÏàÓ¦ĞÅÏ¢
+	 * åˆè¯•åŒ–super_blockçš„ç›¸åº”ä¿¡æ¯
 	 */
 	error = nfs_fill_super(s, data, flags & MS_VERBOSE ? 1 : 0);
 	if (error) {
@@ -1483,9 +1483,9 @@ static struct file_system_type nfs_fs_type = {
 	.get_sb		= nfs_get_sb,
 	.kill_sb	= nfs_kill_super,
 	/**
-	 * ~FS_REQUIRES_DEV			:²»ĞèÒªÉè±¸
-	 * ~FS_NO_DCACHE			:ĞèÒªÄ¿Â¼»º´æ
-	 * ~FS_NO_PRELIM			:ĞèÒª½øĞĞÄ¿Â¼»º´æµÄÔ¤¶Á
+	 * ~FS_REQUIRES_DEV			:ä¸éœ€è¦è®¾å¤‡
+	 * ~FS_NO_DCACHE			:éœ€è¦ç›®å½•ç¼“å­˜
+	 * ~FS_NO_PRELIM			:éœ€è¦è¿›è¡Œç›®å½•ç¼“å­˜çš„é¢„è¯»
 	 */
 	.fs_flags	= FS_ODD_RENAME|FS_REVAL_DOT|FS_BINARY_MOUNTDATA,
 };
@@ -1916,7 +1916,7 @@ void nfs_destroy_inodecache(void)
  * Initialize NFS
  */
 /**
- * ³õÊ¼»¯NFSÎÄ¼şÏµÍ³¡£
+ * åˆå§‹åŒ–NFSæ–‡ä»¶ç³»ç»Ÿã€‚
  */
 static int __init init_nfs_fs(void)
 {
@@ -1948,8 +1948,8 @@ static int __init init_nfs_fs(void)
 	rpc_proc_register(&nfs_rpcstat);
 #endif
 	/**
-	 * ³õÊ¼»¯NFSÎÄ¼şÏµÍ³½á¹¹¡£²¢×¢²áNFSÎÄ¼şÏµÍ³¡£
-	 * ÆäÖĞget_sb³õÊ¼»¯ÎªÖ¸Ïòº¯Êınfs_get_sb£¬¸ºÔğÔÚmountÍøÂçÎÄ¼şÏµÍ³Ê±¶ÁÈëNSFµÄSuperBlockĞÅÏ¢¡£
+	 * åˆå§‹åŒ–NFSæ–‡ä»¶ç³»ç»Ÿç»“æ„ã€‚å¹¶æ³¨å†ŒNFSæ–‡ä»¶ç³»ç»Ÿã€‚
+	 * å…¶ä¸­get_sbåˆå§‹åŒ–ä¸ºæŒ‡å‘å‡½æ•°nfs_get_sbï¼Œè´Ÿè´£åœ¨mountç½‘ç»œæ–‡ä»¶ç³»ç»Ÿæ—¶è¯»å…¥NSFçš„SuperBlockä¿¡æ¯ã€‚
 	 */
         err = register_filesystem(&nfs_fs_type);
 	if (err)

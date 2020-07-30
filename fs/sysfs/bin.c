@@ -179,7 +179,7 @@ struct file_operations bin_fops = {
  *
  */
 /**
- * ´´½¨¶þ½øÖÆÊôÐÔ¡£
+ * åˆ›å»ºäºŒè¿›åˆ¶å±žæ€§ã€‚
  */
 int sysfs_create_bin_file(struct kobject * kobj, struct bin_attribute * attr)
 {
@@ -196,7 +196,7 @@ int sysfs_create_bin_file(struct kobject * kobj, struct bin_attribute * attr)
  *
  */
 /**
- * É¾³ý¶þ½øÖÆÊôÐÔ¡£
+ * åˆ é™¤äºŒè¿›åˆ¶å±žæ€§ã€‚
  */
 int sysfs_remove_bin_file(struct kobject * kobj, struct bin_attribute * attr)
 {

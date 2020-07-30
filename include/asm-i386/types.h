@@ -52,8 +52,8 @@ typedef unsigned long long u64;
 /* DMA addresses come in generic and 64-bit flavours.  */
 
 /**
- * dma_addr_t´ú±íÒ»¸öÍ¨ÓÃµÄ×ÜÏßµØÖ·¡£
- * ÔÚx86ÖĞ£¬¶ÔÓ¦Ò»¸ö32Î»³¤µÄÕûÊı¡£³ı·ÇÄÚºËÖ§³ÖPAE£¬ÕâÊ±dma_addr_t´ú±íÒ»¸ö64Î»µÄÕûÊı
+ * dma_addr_tä»£è¡¨ä¸€ä¸ªé€šç”¨çš„æ€»çº¿åœ°å€ã€‚
+ * åœ¨x86ä¸­ï¼Œå¯¹åº”ä¸€ä¸ª32ä½é•¿çš„æ•´æ•°ã€‚é™¤éå†…æ ¸æ”¯æŒPAEï¼Œè¿™æ—¶dma_addr_tä»£è¡¨ä¸€ä¸ª64ä½çš„æ•´æ•°
  */
 #ifdef CONFIG_HIGHMEM64G
 typedef u64 dma_addr_t;
@@ -68,7 +68,7 @@ typedef u64 sector_t;
 #endif
 
 /**
- * ¸ßËÙ»º´æ¶ÔÏóÃèÊö·û¡£½«slabÖĞµÄ¿ÕÏĞ¶ÔÏóÁ´½ÓÆğÀ´¡£
+ * é«˜é€Ÿç¼“å­˜å¯¹è±¡æè¿°ç¬¦ã€‚å°†slabä¸­çš„ç©ºé—²å¯¹è±¡é“¾æ¥èµ·æ¥ã€‚
  */
 typedef unsigned short kmem_bufctl_t;
 

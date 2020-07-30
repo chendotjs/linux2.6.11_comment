@@ -48,58 +48,58 @@ struct class_device;
 struct class_simple;
 
 /**
- * ÄÚºËËùÖ§³ÖµÄÃ¿Ò»ÖÖ×ÜÏßÀàĞÍ¶¼ÓÉÒ»¸öbus_typeÃèÊö¡£
+ * å†…æ ¸æ‰€æ”¯æŒçš„æ¯ä¸€ç§æ€»çº¿ç±»å‹éƒ½ç”±ä¸€ä¸ªbus_typeæè¿°ã€‚
  */
 struct bus_type {
 	/**
-	 * ×ÜÏßÀàĞÍµÄÃû³Æ¡£ÀıÈç"pci"
+	 * æ€»çº¿ç±»å‹çš„åç§°ã€‚ä¾‹å¦‚"pci"
 	 */
 	char			* name;
 
 	/**
-	 * Óë×ÜÏßÀàĞÍÏà¹ØµÄkobject×ÓÏµÍ³¡£ÕâĞ©×ÓÏµÍ³²¢²»ÔÚsysfsµÄ¶¥²ã¡£
-	 * Ò»¸ö×ÜÏß°üº¬Á½¸ökset£¬·Ö±ğ´ú±íÁË×ÜÏßµÄÇı¶¯³ÌĞòºÍ²åÈë×ÜÏßµÄËùÓĞÉè±¸¡£
+	 * ä¸æ€»çº¿ç±»å‹ç›¸å…³çš„kobjectå­ç³»ç»Ÿã€‚è¿™äº›å­ç³»ç»Ÿå¹¶ä¸åœ¨sysfsçš„é¡¶å±‚ã€‚
+	 * ä¸€ä¸ªæ€»çº¿åŒ…å«ä¸¤ä¸ªksetï¼Œåˆ†åˆ«ä»£è¡¨äº†æ€»çº¿çš„é©±åŠ¨ç¨‹åºå’Œæ’å…¥æ€»çº¿çš„æ‰€æœ‰è®¾å¤‡ã€‚
 	 */
 	struct subsystem	subsys;
 	/**
-	 * Çı¶¯³ÌĞòµÄkobject¼¯ºÏ
+	 * é©±åŠ¨ç¨‹åºçš„kobjecté›†åˆ
 	 */
 	struct kset		drivers;
 	/**
-	 * Éè±¸µÄkobject¼¯ºÏ
+	 * è®¾å¤‡çš„kobjecté›†åˆ
 	 */
 	struct kset		devices;
 
 	/**
-	 * Ö¸Ïò¶ÔÏóµÄÖ¸Õë£¬¸Ã¶ÔÏó°üº¬×ÜÏßÊôĞÔºÍÓÃÓÚµ¼³ö´ËÊôĞÔµ½sysfsÎÄ¼şÏµÍ³µÄ·½·¨
+	 * æŒ‡å‘å¯¹è±¡çš„æŒ‡é’ˆï¼Œè¯¥å¯¹è±¡åŒ…å«æ€»çº¿å±æ€§å’Œç”¨äºå¯¼å‡ºæ­¤å±æ€§åˆ°sysfsæ–‡ä»¶ç³»ç»Ÿçš„æ–¹æ³•
 	 */
 	struct bus_attribute	* bus_attrs;
 	/**
-	 * Ö¸Ïò¶ÔÏóµÄÖ¸Õë£¬¸Ã¶ÔÏó°üº¬Éè±¸ÊôĞÔºÍÓÃÓÚµ¼³ö´ËÊôĞÔµ½sysfsÎÄ¼şÏµÍ³µÄ·½·¨
+	 * æŒ‡å‘å¯¹è±¡çš„æŒ‡é’ˆï¼Œè¯¥å¯¹è±¡åŒ…å«è®¾å¤‡å±æ€§å’Œç”¨äºå¯¼å‡ºæ­¤å±æ€§åˆ°sysfsæ–‡ä»¶ç³»ç»Ÿçš„æ–¹æ³•
 	 */
 	struct device_attribute	* dev_attrs;
 	/**
-	 * Ö¸Ïò¶ÔÏóµÄÖ¸Õë£¬¸Ã¶ÔÏó°üº¬Çı¶¯³ÌĞòÊôĞÔºÍÓÃÓÚµ¼³ö´ËÊôĞÔµ½sysfsÎÄ¼şÏµÍ³µÄ·½·¨
+	 * æŒ‡å‘å¯¹è±¡çš„æŒ‡é’ˆï¼Œè¯¥å¯¹è±¡åŒ…å«é©±åŠ¨ç¨‹åºå±æ€§å’Œç”¨äºå¯¼å‡ºæ­¤å±æ€§åˆ°sysfsæ–‡ä»¶ç³»ç»Ÿçš„æ–¹æ³•
 	 */
 	struct driver_attribute	* drv_attrs;
 
 	/**
-	 * ¼ìÑé¸ø¶¨µÄÉè±¸Çı¶¯³ÌĞòÊÇ·ñÖ§³ÖÌØ¶¨Éè±¸µÄ·½·¨.
-	 * µ±Ò»¸ö×ÜÏßÉÏµÄĞÂÉè±¸»òÕßĞÂÇı¶¯³ÌĞò±»Ìí¼ÓÊ±£¬»áÒ»´Î»ò¶à´Îµ÷ÓÃÕâ¸öº¯Êı¡£Èç¹ûÖ¸¶¨µÄÇı¶¯³ÌĞòÄÜ¹»´¦ÀíÖ¸¶¨µÄÉè±¸£¬¸Ãº¯Êı·µ»Ø·Ç0Öµ¡£
+	 * æ£€éªŒç»™å®šçš„è®¾å¤‡é©±åŠ¨ç¨‹åºæ˜¯å¦æ”¯æŒç‰¹å®šè®¾å¤‡çš„æ–¹æ³•.
+	 * å½“ä¸€ä¸ªæ€»çº¿ä¸Šçš„æ–°è®¾å¤‡æˆ–è€…æ–°é©±åŠ¨ç¨‹åºè¢«æ·»åŠ æ—¶ï¼Œä¼šä¸€æ¬¡æˆ–å¤šæ¬¡è°ƒç”¨è¿™ä¸ªå‡½æ•°ã€‚å¦‚æœæŒ‡å®šçš„é©±åŠ¨ç¨‹åºèƒ½å¤Ÿå¤„ç†æŒ‡å®šçš„è®¾å¤‡ï¼Œè¯¥å‡½æ•°è¿”å›é0å€¼ã€‚
 	 */
 	int		(*match)(struct device * dev, struct device_driver * drv);
 	/**
-	 * ×¢²áÉè±¸Ê±µ÷ÓÃµÄ·½·¨
-	 * ÔÚÎªÓÃ»§¿Õ¼ä²úÉúÈÈ²å²¦ÊÂ¼şÇ°£¬Õâ¸ö·½·¨ÔÊĞí×ÜÏßÌí¼Ó»·¾³±äÁ¿¡£
+	 * æ³¨å†Œè®¾å¤‡æ—¶è°ƒç”¨çš„æ–¹æ³•
+	 * åœ¨ä¸ºç”¨æˆ·ç©ºé—´äº§ç”Ÿçƒ­æ’æ‹¨äº‹ä»¶å‰ï¼Œè¿™ä¸ªæ–¹æ³•å…è®¸æ€»çº¿æ·»åŠ ç¯å¢ƒå˜é‡ã€‚
 	 */
 	int		(*hotplug) (struct device *dev, char **envp, 
 				    int num_envp, char *buffer, int buffer_size);
 	/**
-	 * ±£´æÓ²¼şÉè±¸µÄÉÏÏÂÎÄ×´Ì¬²¢¸Ä±äÉè±¸¹©µç×´Ì¬µÄ·½·¨
+	 * ä¿å­˜ç¡¬ä»¶è®¾å¤‡çš„ä¸Šä¸‹æ–‡çŠ¶æ€å¹¶æ”¹å˜è®¾å¤‡ä¾›ç”µçŠ¶æ€çš„æ–¹æ³•
 	 */
 	int		(*suspend)(struct device * dev, pm_message_t state);
 	/**
-	 * ¸Ä±ä¹©µç×´Ì¬ºÍ»Ö¸´Ó²¼şÉè±¸ÉÏÏÂÎÄµÄ·½·¨
+	 * æ”¹å˜ä¾›ç”µçŠ¶æ€å’Œæ¢å¤ç¡¬ä»¶è®¾å¤‡ä¸Šä¸‹æ–‡çš„æ–¹æ³•
 	 */
 	int		(*resume)(struct device * dev);
 };
@@ -125,7 +125,7 @@ int bus_for_each_drv(struct bus_type * bus, struct device_driver * start,
 
 /* driverfs interface for exporting bus attributes */
 /**
- * ×ÜÏßÊôĞÔ¡£
+ * æ€»çº¿å±æ€§ã€‚
  */
 struct bus_attribute {
 	struct attribute	attr;
@@ -134,7 +134,7 @@ struct bus_attribute {
 };
 
 /**
- * ¶¨ÒåÒ»¸ö×ÜÏßÊôĞÔ¡£
+ * å®šä¹‰ä¸€ä¸ªæ€»çº¿å±æ€§ã€‚
  */
 #define BUS_ATTR(_name,_mode,_show,_store)	\
 struct bus_attribute bus_attr_##_name = __ATTR(_name,_mode,_show,_store)
@@ -143,54 +143,54 @@ extern int bus_create_file(struct bus_type *, struct bus_attribute *);
 extern void bus_remove_file(struct bus_type *, struct bus_attribute *);
 
 /**
- * Çı¶¯³ÌĞòÃèÊö·û
+ * é©±åŠ¨ç¨‹åºæè¿°ç¬¦
  */
 struct device_driver {
 	/**
-	 * Çı¶¯³ÌĞòµÄÃû³Æ
+	 * é©±åŠ¨ç¨‹åºçš„åç§°
 	 */
 	char			* name;
 	/**
-	 * Ö¸Ïò×ÜÏßÃèÊö·ûµÄÖ¸Õë¡£
+	 * æŒ‡å‘æ€»çº¿æè¿°ç¬¦çš„æŒ‡é’ˆã€‚
 	 */
 	struct bus_type		* bus;
 
 	/**
-	 * ½ûÖ¹Ğ¶ÔØÉè±¸Çı¶¯³ÌĞòµÄĞÅºÅÁ¿¡£
+	 * ç¦æ­¢å¸è½½è®¾å¤‡é©±åŠ¨ç¨‹åºçš„ä¿¡å·é‡ã€‚
 	 */
 	struct semaphore	unload_sem;
 	/**
-	 * ÄÚÇ¶kobject
+	 * å†…åµŒkobject
 	 */
 	struct kobject		kobj;
 	/**
-	 * Çı¶¯³ÌĞòËùÖ§³ÖµÄËùÓĞÉè±¸×é³ÉµÄÁ´±íµÄÊ×²¿¡£
+	 * é©±åŠ¨ç¨‹åºæ‰€æ”¯æŒçš„æ‰€æœ‰è®¾å¤‡ç»„æˆçš„é“¾è¡¨çš„é¦–éƒ¨ã€‚
 	 */
 	struct list_head	devices;
 
 	/**
-	 * Çı¶¯³ÌĞòËùÔÚÄ£¿é£¨Èç¹ûÓĞµÄ»°£©
+	 * é©±åŠ¨ç¨‹åºæ‰€åœ¨æ¨¡å—ï¼ˆå¦‚æœæœ‰çš„è¯ï¼‰
 	 */
 	struct module 		* owner;
 
 	/**
-	 * Ì½²âÉè±¸µÄ·½·¨
+	 * æ¢æµ‹è®¾å¤‡çš„æ–¹æ³•
 	 */
 	int	(*probe)	(struct device * dev);
 	/**
-	 * ÒÆ×ßÉè±¸µÄ·½·¨£¨¼ì²âÉè±¸Çı¶¯³ÌĞòÊÇ·ñ¿ÉÒÔ¿ØÖÆ¸ÃÉè±¸£©
+	 * ç§»èµ°è®¾å¤‡çš„æ–¹æ³•ï¼ˆæ£€æµ‹è®¾å¤‡é©±åŠ¨ç¨‹åºæ˜¯å¦å¯ä»¥æ§åˆ¶è¯¥è®¾å¤‡ï¼‰
 	 */
 	int 	(*remove)	(struct device * dev);
 	/**
-	 * Éè±¸¶ÏµçÊ±µ÷ÓÃµÄ·½·¨¡£
+	 * è®¾å¤‡æ–­ç”µæ—¶è°ƒç”¨çš„æ–¹æ³•ã€‚
 	 */
 	void	(*shutdown)	(struct device * dev);
 	/**
-	 * Éè±¸ÖÃÓÚµÍ¹¦ÂÊ×´Ì¬Ê±Ëùµ÷ÓÃµÄ·½·¨
+	 * è®¾å¤‡ç½®äºä½åŠŸç‡çŠ¶æ€æ—¶æ‰€è°ƒç”¨çš„æ–¹æ³•
 	 */
 	int	(*suspend)	(struct device * dev, u32 state, u32 level);
 	/**
-	 * Éè±¸»Ö¸´Õı³£×´Ì¬Ê±Ëùµ÷ÓÃµÄ·½·¨
+	 * è®¾å¤‡æ¢å¤æ­£å¸¸çŠ¶æ€æ—¶æ‰€è°ƒç”¨çš„æ–¹æ³•
 	 */
 	int	(*resume)	(struct device * dev, u32 level);
 };
@@ -206,7 +206,7 @@ extern struct device_driver *driver_find(const char *name, struct bus_type *bus)
 
 /* driverfs interface for exporting driver attributes */
 /**
- * Çı¶¯³ÌĞòÊôĞÔ¡£
+ * é©±åŠ¨ç¨‹åºå±æ€§ã€‚
  */
 struct driver_attribute {
 	struct attribute	attr;
@@ -215,7 +215,7 @@ struct driver_attribute {
 };
 
 /**
- * ¶¨ÒåÒ»¸öÇı¶¯³ÌĞòÊôĞÔ¡£
+ * å®šä¹‰ä¸€ä¸ªé©±åŠ¨ç¨‹åºå±æ€§ã€‚
  */
 #define DRIVER_ATTR(_name,_mode,_show,_store)	\
 struct driver_attribute driver_attr_##_name = __ATTR(_name,_mode,_show,_store)
@@ -228,11 +228,11 @@ extern void driver_remove_file(struct device_driver *, struct driver_attribute *
  * device classes
  */
 /**
- * Éè±¸Àà¡£ËùÓĞµÄÀà¶ÔÏó¶¼ÊôÓÚÓë/sys/classÄ¿Â¼Ïà¶ÔÓ¦µÄclass_subsys×ÓÏµÍ³¡£
+ * è®¾å¤‡ç±»ã€‚æ‰€æœ‰çš„ç±»å¯¹è±¡éƒ½å±äºä¸/sys/classç›®å½•ç›¸å¯¹åº”çš„class_subsyså­ç³»ç»Ÿã€‚
  */
 struct class {
 	/**
-	 * ÀàÃû³Æ¡£½«ÏÔÊ¾ÔÚ/sys/classÖĞ¡£
+	 * ç±»åç§°ã€‚å°†æ˜¾ç¤ºåœ¨/sys/classä¸­ã€‚
 	 */
 	char			* name;
 
@@ -241,26 +241,26 @@ struct class {
 	struct list_head	interfaces;
 
 	/**
-	 * Ò»¸öÀà±»×¢²áºó£¬½«´´½¨¸Ã×Ö¶ÎÖ¸ÏòµÄÊı×éÖĞµÄËùÓĞÊôĞÔ¡£
+	 * ä¸€ä¸ªç±»è¢«æ³¨å†Œåï¼Œå°†åˆ›å»ºè¯¥å­—æ®µæŒ‡å‘çš„æ•°ç»„ä¸­çš„æ‰€æœ‰å±æ€§ã€‚
 	 */
 	struct class_attribute		* class_attrs;
 	/**
-	 * ¸ÃÀàÌí¼ÓµÄÉè±¸µÄÄ¬ÈÏÊôĞÔ¡£
+	 * è¯¥ç±»æ·»åŠ çš„è®¾å¤‡çš„é»˜è®¤å±æ€§ã€‚
 	 */
 	struct class_device_attribute	* class_dev_attrs;
 
 	/**
-	 * Éè±¸ÈÈ²å²¦Ê±£¬µ÷ÓÃ´Ë»Øµ÷º¯ÊıÎªÓ¦ÓÃ³ÌĞò´´½¨»·¾³±äÁ¿¡£
+	 * è®¾å¤‡çƒ­æ’æ‹¨æ—¶ï¼Œè°ƒç”¨æ­¤å›è°ƒå‡½æ•°ä¸ºåº”ç”¨ç¨‹åºåˆ›å»ºç¯å¢ƒå˜é‡ã€‚
 	 */
 	int	(*hotplug)(struct class_device *dev, char **envp, 
 			   int num_envp, char *buffer, int buffer_size);
 
 	/**
-	 * °ÑÉè±¸´ÓÀàÖĞÉ¾³ıÊ±£¬µ÷ÓÃrelease·½·¨¡£
+	 * æŠŠè®¾å¤‡ä»ç±»ä¸­åˆ é™¤æ—¶ï¼Œè°ƒç”¨releaseæ–¹æ³•ã€‚
 	 */
 	void	(*release)(struct class_device *dev);
 	/**
-	 * µ±Àà±»ÊÍ·ÅÊ±£¬µ÷ÓÃ´Ë·½·¨¡£
+	 * å½“ç±»è¢«é‡Šæ”¾æ—¶ï¼Œè°ƒç”¨æ­¤æ–¹æ³•ã€‚
 	 */
 	void	(*class_release)(struct class *class);
 };
@@ -363,82 +363,82 @@ extern void class_simple_device_remove(dev_t dev);
 
 
 /**
- * Éè±¸Çı¶¯³ÌĞòÄ£ĞÍÖĞµÄÃ¿¸öÉè±¸ÓÉdevice±íÊ¾
+ * è®¾å¤‡é©±åŠ¨ç¨‹åºæ¨¡å‹ä¸­çš„æ¯ä¸ªè®¾å¤‡ç”±deviceè¡¨ç¤º
  */
 struct device {
 	/**
-	 * Ö¸ÏòĞÖµÜÉè±¸µÄÖ¸Õë
+	 * æŒ‡å‘å…„å¼Ÿè®¾å¤‡çš„æŒ‡é’ˆ
 	 */
 	struct list_head node;		/* node in sibling list */
 	/**
-	 * Ö¸ÏòÁ¬ÓÚÍ¬Ò»ÀàĞÍ×ÜÂ·ÏßÉÏµÄÉè±¸Á´±íµÄÖ¸Õë¡£
+	 * æŒ‡å‘è¿äºåŒä¸€ç±»å‹æ€»è·¯çº¿ä¸Šçš„è®¾å¤‡é“¾è¡¨çš„æŒ‡é’ˆã€‚
 	 */
 	struct list_head bus_list;	/* node in bus's list */
 	/**
-	 * Ö¸ÏòÉè±¸Çı¶¯³ÌĞòÁ´±íµÄÖ¸Õë¡£
+	 * æŒ‡å‘è®¾å¤‡é©±åŠ¨ç¨‹åºé“¾è¡¨çš„æŒ‡é’ˆã€‚
 	 */
 	struct list_head driver_list;
 	/**
-	 * ×ÓÉè±¸Á´±íµÄÊ×²¿
+	 * å­è®¾å¤‡é“¾è¡¨çš„é¦–éƒ¨
 	 */
 	struct list_head children;
 	/**
-	 * Ö¸Ïò¸¸Éè±¸µÄÖ¸Õë
-	 * ¸¸Éè±¸¡£¼´¸ÃÉè±¸ËùÊôµÄÉè±¸¡£
-	 * ´ó¶àÊıÇé¿öÏÂ£¬Ò»¸ö¸¸Éè±¸Í¨³£ÊÇÄ³ÖÖ×ÜÏß»òÕßÊÇËŞÖ÷¿ØÖÆÆ÷¡£
-	 * Èç¹ûparentÎªNULL£¬±íÊ¾¸ÃÉè±¸ÊÇ¶¥²ãÉè±¸¡£
+	 * æŒ‡å‘çˆ¶è®¾å¤‡çš„æŒ‡é’ˆ
+	 * çˆ¶è®¾å¤‡ã€‚å³è¯¥è®¾å¤‡æ‰€å±çš„è®¾å¤‡ã€‚
+	 * å¤§å¤šæ•°æƒ…å†µä¸‹ï¼Œä¸€ä¸ªçˆ¶è®¾å¤‡é€šå¸¸æ˜¯æŸç§æ€»çº¿æˆ–è€…æ˜¯å®¿ä¸»æ§åˆ¶å™¨ã€‚
+	 * å¦‚æœparentä¸ºNULLï¼Œè¡¨ç¤ºè¯¥è®¾å¤‡æ˜¯é¡¶å±‚è®¾å¤‡ã€‚
 	 */
 	struct device 	* parent;
 
 	/**
-	 * ÄÚÇ¶kobject¡£
-	 * Í¨¹ı¸Ã×Ö¶Î½«Éè±¸Á¬½Óµ½½á¹¹ÌåÏµÖĞ¡£
-	 * ×÷ÎªÍ¨ÓÃ×¼Ôò£¬device->kobj->parentºÍdevice->parent->kobjÊÇÏàÍ¬µÄ¡£
+	 * å†…åµŒkobjectã€‚
+	 * é€šè¿‡è¯¥å­—æ®µå°†è®¾å¤‡è¿æ¥åˆ°ç»“æ„ä½“ç³»ä¸­ã€‚
+	 * ä½œä¸ºé€šç”¨å‡†åˆ™ï¼Œdevice->kobj->parentå’Œdevice->parent->kobjæ˜¯ç›¸åŒçš„ã€‚
 	 */
 	struct kobject kobj;
 	/**
-	 * Á¬½Óµ½×ÜÏßÉÏÉè±¸µÄÎ»ÖÃ
-	 * ÔÚ×ÜÏßÉÏÎ¨Ò»±êÊ¶¸ÃÉè±¸µÄ×Ö·û´®¡£ÈçPCIÉè±¸Ê¹ÓÃÁË±ê×¼PCI ID¸ñÊ½£¬Ëü°üÀ¨:Óò±àºÅ¡¢×ÜÏß±àºÅ¡¢Éè±¸±àºÅºÍ¹¦ÄÜ±àºÅ¡£
+	 * è¿æ¥åˆ°æ€»çº¿ä¸Šè®¾å¤‡çš„ä½ç½®
+	 * åœ¨æ€»çº¿ä¸Šå”¯ä¸€æ ‡è¯†è¯¥è®¾å¤‡çš„å­—ç¬¦ä¸²ã€‚å¦‚PCIè®¾å¤‡ä½¿ç”¨äº†æ ‡å‡†PCI IDæ ¼å¼ï¼Œå®ƒåŒ…æ‹¬:åŸŸç¼–å·ã€æ€»çº¿ç¼–å·ã€è®¾å¤‡ç¼–å·å’ŒåŠŸèƒ½ç¼–å·ã€‚
 	 */
 	char	bus_id[BUS_ID_SIZE];	/* position on parent bus */
 
 	/**
-	 * Ö¸ÏòËùÁ¬½Ó×ÜÏßµÄÖ¸Õë
-	 * ±êÊ¶¸ÃÉè±¸Á¬½ÓÔÚºÎÖÖÀàĞÍµÄ×ÜÏßÉÏ¡£
+	 * æŒ‡å‘æ‰€è¿æ¥æ€»çº¿çš„æŒ‡é’ˆ
+	 * æ ‡è¯†è¯¥è®¾å¤‡è¿æ¥åœ¨ä½•ç§ç±»å‹çš„æ€»çº¿ä¸Šã€‚
 	 */
 	struct bus_type	* bus;		/* type of bus device is on */
 	/**
-	 * Ö¸Ïò¿ØÖÆÉè±¸Çı¶¯³ÌĞòµÄÖ¸Õë
+	 * æŒ‡å‘æ§åˆ¶è®¾å¤‡é©±åŠ¨ç¨‹åºçš„æŒ‡é’ˆ
 	 */
 	struct device_driver *driver;	/* which driver has allocated this
 					   device */
 	/**
-	 * Ö¸ÏòÇı¶¯³ÌĞòË½ÓĞÊı¾İµÄÖ¸Õë
+	 * æŒ‡å‘é©±åŠ¨ç¨‹åºç§æœ‰æ•°æ®çš„æŒ‡é’ˆ
 	 */
 	void		*driver_data;	/* data private to the driver */
 	
 	/**
-	 * Ö¸ÏòÒÅÁôÉè±¸Çı¶¯³ÌĞòË½ÓĞÊı¾İµÄÖ¸Õë
+	 * æŒ‡å‘é—ç•™è®¾å¤‡é©±åŠ¨ç¨‹åºç§æœ‰æ•°æ®çš„æŒ‡é’ˆ
 	 */
 	void		*platform_data;	/* Platform specific data (e.g. ACPI,
 					   BIOS data relevant to device) */
 	/**
-	 * µçÔ´¹ÜÀíĞÅÏ¢
+	 * ç”µæºç®¡ç†ä¿¡æ¯
 	 */
 	struct dev_pm_info	power;
 
 	/**
-	 * Ğ¶ÔØÉè±¸Çı¶¯³ÌĞòÊ±µçÔ´½øÈëµÄ×´Ì¬
+	 * å¸è½½è®¾å¤‡é©±åŠ¨ç¨‹åºæ—¶ç”µæºè¿›å…¥çš„çŠ¶æ€
 	 */
 	u32		detach_state;	/* State to enter when device is
 					   detached from its driver. */
 
 	/**
-	 * Ö¸ÏòÉè±¸µÄDMAÆÁ±Î×ÖµÄÖ¸Õë
+	 * æŒ‡å‘è®¾å¤‡çš„DMAå±è”½å­—çš„æŒ‡é’ˆ
 	 */
 	u64		*dma_mask;	/* dma mask (if dma'able device) */
 	/**
-	 * Éè±¸µÄÒ»ÖÂĞÔDMAµÄÆÁ±Î×Ö
+	 * è®¾å¤‡çš„ä¸€è‡´æ€§DMAçš„å±è”½å­—
 	 */
 	u64		coherent_dma_mask;/* Like dma_mask, but for
 					     alloc_coherent mappings as
@@ -447,18 +447,18 @@ struct device {
 					     allocations such descriptors. */
 
 	/**
-	 * DMA»º³å³ØÁ´±íµÄÊ×²¿
+	 * DMAç¼“å†²æ± é“¾è¡¨çš„é¦–éƒ¨
 	 */
 	struct list_head	dma_pools;	/* dma pools (if dma'ble) */
 
 	/**
-	 * Ö¸ÏòÉè±¸ËùÊ¹ÓÃµÄÒ»ÖÂĞÔDMA´æ´¢Æ÷ÃèÊö·ûµÄÖ¸Õë
+	 * æŒ‡å‘è®¾å¤‡æ‰€ä½¿ç”¨çš„ä¸€è‡´æ€§DMAå­˜å‚¨å™¨æè¿°ç¬¦çš„æŒ‡é’ˆ
 	 */
 	struct dma_coherent_mem	*dma_mem; /* internal for coherent mem
 					     override */
 
 	/**
-	 * ÊÍ·Å»Øµ÷º¯Êı
+	 * é‡Šæ”¾å›è°ƒå‡½æ•°
 	 */
 	void	(*release)(struct device * dev);
 };
@@ -506,7 +506,7 @@ extern void driver_attach(struct device_driver * drv);
 /* driverfs interface for exporting device attributes */
 
 /**
- * Éè±¸ÊôĞÔ¡£
+ * è®¾å¤‡å±æ€§ã€‚
  */
 struct device_attribute {
 	struct attribute	attr;
@@ -515,7 +515,7 @@ struct device_attribute {
 };
 
 /**
- * ³õÊ¼»¯Ò»¸öÉè±¸ÊôĞÔ¡£
+ * åˆå§‹åŒ–ä¸€ä¸ªè®¾å¤‡å±æ€§ã€‚
  */
 #define DEVICE_ATTR(_name,_mode,_show,_store) \
 struct device_attribute dev_attr_##_name = __ATTR(_name,_mode,_show,_store)

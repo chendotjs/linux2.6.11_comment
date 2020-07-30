@@ -120,7 +120,7 @@ char *kobject_get_path(struct kobject *kobj, int gfp_mask)
  *	@kobj:	object in question.
  */
 /**
- * ²¿·Ö³õÊ¼»¯kobject¶ÔÏó¡£
+ * éƒ¨åˆ†åˆå§‹åŒ–kobjectå¯¹è±¡ã€‚
  */
 void kobject_init(struct kobject * kobj)
 {
@@ -155,8 +155,8 @@ static void unlink(struct kobject * kobj)
  *	@kobj:	object.
  */
 /**
- * ½«kobject¶ÔÏó¼ÓÈëµ½ksetÖĞ¡£
- * ĞèÒªÊ×ÏÈ½«kobjectµÄkset³ÉÔ±Ö¸ÏòÄ¿±êkset¡£
+ * å°†kobjectå¯¹è±¡åŠ å…¥åˆ°ksetä¸­ã€‚
+ * éœ€è¦é¦–å…ˆå°†kobjectçš„ksetæˆå‘˜æŒ‡å‘ç›®æ ‡ksetã€‚
  */
 int kobject_add(struct kobject * kobj)
 {
@@ -203,7 +203,7 @@ int kobject_add(struct kobject * kobj)
  *	@kobj:	object in question.
  */
 /**
- * ³õÊ¼»¯²¢Ìí¼ÓÒ»¸ö¶ÔÏóµ½ksetÖĞ¡£²¢½«ÆäÏàÓ¦µÄÄ¿Â¼Ôö¼Óµ½sysfsÎÄ¼şÏµÍ³ÖĞ¡£
+ * åˆå§‹åŒ–å¹¶æ·»åŠ ä¸€ä¸ªå¯¹è±¡åˆ°ksetä¸­ã€‚å¹¶å°†å…¶ç›¸åº”çš„ç›®å½•å¢åŠ åˆ°sysfsæ–‡ä»¶ç³»ç»Ÿä¸­ã€‚
  */
 int kobject_register(struct kobject * kobj)
 {
@@ -232,7 +232,7 @@ int kobject_register(struct kobject * kobj)
  *	@kobj->name array.
  */
 /**
- * ÉèÖÃkobject¶ÔÏóµÄÃû³Æ¡£²»ÒªÖ±½ÓÊ¹ÓÃ×Ö·û´®¸´ÖÆ¡£
+ * è®¾ç½®kobjectå¯¹è±¡çš„åç§°ã€‚ä¸è¦ç›´æ¥ä½¿ç”¨å­—ç¬¦ä¸²å¤åˆ¶ã€‚
  */
 int kobject_set_name(struct kobject * kobj, const char * fmt, ...)
 {
@@ -309,7 +309,7 @@ int kobject_rename(struct kobject * kobj, char *new_name)
  * 	@kobj:	object.
  */
 /**
- * ´ÓksetÖĞÉ¾³ıkobject¡£
+ * ä»ksetä¸­åˆ é™¤kobjectã€‚
  */
 void kobject_del(struct kobject * kobj)
 {
@@ -323,7 +323,7 @@ void kobject_del(struct kobject * kobj)
  *	@kobj:	object going away.
  */
 /**
- * ´ÓksetÖĞÉ¾³ıkobject²¢µİ¼õkobjectµÄÒıÓÃ¼ÆÊı¡£
+ * ä»ksetä¸­åˆ é™¤kobjectå¹¶é€’å‡kobjectçš„å¼•ç”¨è®¡æ•°ã€‚
  */
 void kobject_unregister(struct kobject * kobj)
 {
@@ -337,7 +337,7 @@ void kobject_unregister(struct kobject * kobj)
  *	@kobj:	object.
  */
 /**
- * Ôö¼Ókobject¶ÔÏóµÄÒıÓÃ¼ÆÊı¡£
+ * å¢åŠ kobjectå¯¹è±¡çš„å¼•ç”¨è®¡æ•°ã€‚
  */
 struct kobject * kobject_get(struct kobject * kobj)
 {
@@ -381,7 +381,7 @@ static void kobject_release(struct kref *kref)
  *	Decrement the refcount, and if 0, call kobject_cleanup().
  */
 /**
- * ¼õĞ¡kobject¶ÔÏóµÄÒıÓÃ¼ÆÊı¡£
+ * å‡å°kobjectå¯¹è±¡çš„å¼•ç”¨è®¡æ•°ã€‚
  */
 void kobject_put(struct kobject * kobj)
 {
@@ -431,7 +431,7 @@ int kset_add(struct kset * k)
  */
 
 /**
- * ×¢²ákset
+ * æ³¨å†Œkset
  */
 int kset_register(struct kset * k)
 {
@@ -446,7 +446,7 @@ int kset_register(struct kset * k)
  */
 
 /**
- * ·´×¢²ákset
+ * åæ³¨å†Œkset
  */
 void kset_unregister(struct kset * k)
 {

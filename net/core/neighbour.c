@@ -60,7 +60,7 @@ static int pneigh_ifdown(struct neigh_table *tbl, struct net_device *dev);
 void neigh_changeaddr(struct neigh_table *tbl, struct net_device *dev);
 
 /**
- * ËùÓĞµÄÁÚ¾ÓĞ­ÒéÁ´±í¡£ÓÉneigh_tbl_lockÀ´¼ÓÒÔ±£»¤¡£
+ * æ‰€æœ‰çš„é‚»å±…åè®®é“¾è¡¨ã€‚ç”±neigh_tbl_lockæ¥åŠ ä»¥ä¿æŠ¤ã€‚
  */
 static struct neigh_table *neigh_tables;
 static struct file_operations neigh_stat_seq_fops;
@@ -96,14 +96,14 @@ static struct file_operations neigh_stat_seq_fops;
    list of neighbour tables. This list is used only in process context,
  */
 /**
- * ±£»¤ÁÚ¾ÓĞ­ÒéÁ´±íµÄËø¡£
+ * ä¿æŠ¤é‚»å±…åè®®é“¾è¡¨çš„é”ã€‚
  */
 static DEFINE_RWLOCK(neigh_tbl_lock);
 
 /**
- * ¸Ãº¯ÊıÓÃÓÚ´¦Àíneighbour½á¹¹²»ÄÜÉ¾³ıµÄÁÙÊ±Çé¿ö¡£ÒòÎªÓĞÈËÈÔÒªµ÷ÓÃÕâ¸öneighbour½á¹¹¡£
- * º¯Êıneigh_blackhole»á¶ªÆúÔÚÊäÈë½Ó¿ÚÉÏ½ÓÊÕµÄÈÎºÎ°ü¡£
- * ÎªÁËÈ·±£ÈÎºÎÊÔÍ¼¸øÁÚ¾Ó´«ËÍ°üµÄĞĞÎª²»»á·¢Éú£¬ÕâÑù´¦ÀíÊÇ±ØĞëµÄ¡£ÒòÎªÁÚ¾ÓµÄÊı¾İ½á¹¹½«Òª±»É¾³ı¡£
+ * è¯¥å‡½æ•°ç”¨äºå¤„ç†neighbourç»“æ„ä¸èƒ½åˆ é™¤çš„ä¸´æ—¶æƒ…å†µã€‚å› ä¸ºæœ‰äººä»è¦è°ƒç”¨è¿™ä¸ªneighbourç»“æ„ã€‚
+ * å‡½æ•°neigh_blackholeä¼šä¸¢å¼ƒåœ¨è¾“å…¥æ¥å£ä¸Šæ¥æ”¶çš„ä»»ä½•åŒ…ã€‚
+ * ä¸ºäº†ç¡®ä¿ä»»ä½•è¯•å›¾ç»™é‚»å±…ä¼ é€åŒ…çš„è¡Œä¸ºä¸ä¼šå‘ç”Ÿï¼Œè¿™æ ·å¤„ç†æ˜¯å¿…é¡»çš„ã€‚å› ä¸ºé‚»å±…çš„æ•°æ®ç»“æ„å°†è¦è¢«åˆ é™¤ã€‚
  */
 static int neigh_blackhole(struct sk_buff *skb)
 {
@@ -123,7 +123,7 @@ unsigned long neigh_rand_reach_time(unsigned long base)
 }
 
 /**
- * Í¬²½ÇåÀíÁÚ¾ÓÏî»º´æ¡£
+ * åŒæ­¥æ¸…ç†é‚»å±…é¡¹ç¼“å­˜ã€‚
  */
 static int neigh_forced_gc(struct neigh_table *tbl)
 {
@@ -131,20 +131,20 @@ static int neigh_forced_gc(struct neigh_table *tbl)
 	int i;
 
 	/**
-	 * Ç¿ÖÆ»ØÊÕ¼ÆÊı¡£
+	 * å¼ºåˆ¶å›æ”¶è®¡æ•°ã€‚
 	 */
 	NEIGH_CACHE_STAT_INC(tbl, forced_gc_runs);
 
 	write_lock_bh(&tbl->lock);
 	/**
-	 * ±éÀúhash±íÖĞµÄÃ¿Ò»¸öÍ°¡£
+	 * éå†hashè¡¨ä¸­çš„æ¯ä¸€ä¸ªæ¡¶ã€‚
 	 */
 	for (i = 0; i <= tbl->hash_mask; i++) {
 		struct neighbour *n, **np;
 
 		np = &tbl->hash_buckets[i];
 		/**
-		 * ±éÀúÍ°ÖĞµÄÃ¿Ò»¸öÔªËØ¡£
+		 * éå†æ¡¶ä¸­çš„æ¯ä¸€ä¸ªå…ƒç´ ã€‚
 		 */
 		while ((n = *np) != NULL) {
 			/* Neighbour record may be discarded if:
@@ -153,8 +153,8 @@ static int neigh_forced_gc(struct neigh_table *tbl)
 			 */
 			write_lock(&n->lock);
 			/**
-			 * µ±ÒıÓÃ¼ÆÊıÎª1£¬ËµÃ÷Ã»ÓĞË­ÔÚÊ¹ÓÃÁÚ¾ÓÏî¡£
-			 * Í¬Ê±£¬¹ÜÀíÔ±ÊÖ¹¤Ìí¼ÓµÄÏî²»ÄÜÉ¾³ı¡£
+			 * å½“å¼•ç”¨è®¡æ•°ä¸º1ï¼Œè¯´æ˜æ²¡æœ‰è°åœ¨ä½¿ç”¨é‚»å±…é¡¹ã€‚
+			 * åŒæ—¶ï¼Œç®¡ç†å‘˜æ‰‹å·¥æ·»åŠ çš„é¡¹ä¸èƒ½åˆ é™¤ã€‚
 			 */
 			if (atomic_read(&n->refcnt) == 1 &&
 			    !(n->nud_state & NUD_PERMANENT)) {
@@ -171,7 +171,7 @@ static int neigh_forced_gc(struct neigh_table *tbl)
 	}
 
 	/**
-	 * ¼ÇÂ¼×îºóÒ»´ÎÇåÀíµÄÊ±¼ä¡£
+	 * è®°å½•æœ€åä¸€æ¬¡æ¸…ç†çš„æ—¶é—´ã€‚
 	 */
 	tbl->last_flush = jiffies;
 
@@ -201,7 +201,7 @@ static void pneigh_queue_purge(struct sk_buff_head *list)
 }
 
 /**
- * µ±Ò»¸ö±¾µØÉè±¸µÄL2µØÖ··¢Éú±ä»¯Ê±£¬ÁÚ¾ÓĞ­Òéµ÷ÓÃ¸Ãº¯ÊıÀ´¸üĞÂĞ­ÒéµÄ»º´æ¡£
+ * å½“ä¸€ä¸ªæœ¬åœ°è®¾å¤‡çš„L2åœ°å€å‘ç”Ÿå˜åŒ–æ—¶ï¼Œé‚»å±…åè®®è°ƒç”¨è¯¥å‡½æ•°æ¥æ›´æ–°åè®®çš„ç¼“å­˜ã€‚
  */
 void neigh_changeaddr(struct neigh_table *tbl, struct net_device *dev)
 {
@@ -210,34 +210,34 @@ void neigh_changeaddr(struct neigh_table *tbl, struct net_device *dev)
 	write_lock_bh(&tbl->lock);
 
 	/**
-	 * ±éÀúÁÚ¾ÓÍ°
+	 * éå†é‚»å±…æ¡¶
 	 */
 	for (i=0; i <= tbl->hash_mask; i++) {
 		struct neighbour *n, **np;
 
 		np = &tbl->hash_buckets[i];
 		/**
-		 * ±éÀúËùÓĞÁÚ¾ÓÏî¡£
+		 * éå†æ‰€æœ‰é‚»å±…é¡¹ã€‚
 		 */
 		while ((n = *np) != NULL) {
 			/**
-			 * ¸ÃÁÚ¾ÓÏîÃ»ÓĞÓë¹Ø±ÕÉè±¸¹ØÁª£¬´¦ÀíÏÂÒ»¸öÁÚ¾ÓÏî¡£
+			 * è¯¥é‚»å±…é¡¹æ²¡æœ‰ä¸å…³é—­è®¾å¤‡å…³è”ï¼Œå¤„ç†ä¸‹ä¸€ä¸ªé‚»å±…é¡¹ã€‚
 			 */
 			if (dev && n->dev != dev) {
 				np = &n->next;
 				continue;
 			}
 			/**
-			 * Í£ÓÃÁÚ¾Ó£¬µ«ÊÇ²»»áÁ¢¼´É¾³ı¡£
+			 * åœç”¨é‚»å±…ï¼Œä½†æ˜¯ä¸ä¼šç«‹å³åˆ é™¤ã€‚
 			 */
 			*np = n->next;
 			write_lock_bh(&n->lock);
 			/**
-			 * ±ê¼ÇÎªÍ£ÓÃ¡£À¬»ø»ØÊÕ½ø³Ì»á¸ºÔğ´¦ÀíÕâĞ©Í£ÓÃÏî¡£
+			 * æ ‡è®°ä¸ºåœç”¨ã€‚åƒåœ¾å›æ”¶è¿›ç¨‹ä¼šè´Ÿè´£å¤„ç†è¿™äº›åœç”¨é¡¹ã€‚
 			 */
 			n->dead = 1;
 			/**
-			 * Í£Ö¹ËùÓĞÎ´¾öµÄ¶¨Ê±Æ÷¡£
+			 * åœæ­¢æ‰€æœ‰æœªå†³çš„å®šæ—¶å™¨ã€‚
 			 */
 			neigh_del_timer(n);
 			write_unlock_bh(&n->lock);
@@ -249,8 +249,8 @@ void neigh_changeaddr(struct neigh_table *tbl, struct net_device *dev)
 }
 
 /**
- * ÆäËûµÄÄÚºË×ÓÏµÍ³Òªµ÷ÓÃ¸Ãº¯Êı£¬ÒÔÍ¨ÖªÁÚ¾Ó×ÓÏµÍ³ÓĞ¹ØÉè±¸ºÍL3µØÖ·µÄ±ä»¯¡£
- * L3µØÖ·µÄ¸Ä±äµÄÍ¨ÖªÓÉL3Ğ­ÒéËÍ³ö¡£
+ * å…¶ä»–çš„å†…æ ¸å­ç³»ç»Ÿè¦è°ƒç”¨è¯¥å‡½æ•°ï¼Œä»¥é€šçŸ¥é‚»å±…å­ç³»ç»Ÿæœ‰å…³è®¾å¤‡å’ŒL3åœ°å€çš„å˜åŒ–ã€‚
+ * L3åœ°å€çš„æ”¹å˜çš„é€šçŸ¥ç”±L3åè®®é€å‡ºã€‚
  */
 int neigh_ifdown(struct neigh_table *tbl, struct net_device *dev)
 {
@@ -269,7 +269,7 @@ int neigh_ifdown(struct neigh_table *tbl, struct net_device *dev)
 			*np = n->next;
 			write_lock(&n->lock);
 			/**
-			 * Í£Ö¹ËùÓĞÎ´¾öµÄ¶¨Ê±Æ÷¡£
+			 * åœæ­¢æ‰€æœ‰æœªå†³çš„å®šæ—¶å™¨ã€‚
 			 */
 			neigh_del_timer(n);
 			n->dead = 1;
@@ -285,12 +285,12 @@ int neigh_ifdown(struct neigh_table *tbl, struct net_device *dev)
 				   it to safe state.
 				 */
 				/**
-				 * µ÷ÓÃskb_queue_purge£¬½«ËùÓĞÔÚarp_queue¶ÓÁĞÖĞ´ı´¦ÀíµÄ°ü¶ªÆú¡£
+				 * è°ƒç”¨skb_queue_purgeï¼Œå°†æ‰€æœ‰åœ¨arp_queueé˜Ÿåˆ—ä¸­å¾…å¤„ç†çš„åŒ…ä¸¢å¼ƒã€‚
 				 */
 				skb_queue_purge(&n->arp_queue);
 				n->output = neigh_blackhole;
 				/**
-				 * ½«Ïà¹ØÁÚ¾ÓÏîµÄ×´Ì¬¸ÄÎªNUD_NOARPÌ¬£¬ÕâÑùÊÔÍ¼Ê¹ÓÃ¸ÃÁÚ¾ÓÏîµÄÈÎºÎÁ÷Á¿²»ÔÙ»á´¥·¢solicitationÇëÇó¡£
+				 * å°†ç›¸å…³é‚»å±…é¡¹çš„çŠ¶æ€æ”¹ä¸ºNUD_NOARPæ€ï¼Œè¿™æ ·è¯•å›¾ä½¿ç”¨è¯¥é‚»å±…é¡¹çš„ä»»ä½•æµé‡ä¸å†ä¼šè§¦å‘solicitationè¯·æ±‚ã€‚
 				 */
 				if (n->nud_state & NUD_VALID)
 					n->nud_state = NUD_NOARP;
@@ -308,7 +308,7 @@ int neigh_ifdown(struct neigh_table *tbl, struct net_device *dev)
 
 	del_timer_sync(&tbl->proxy_timer);
 	/**
-	 * pneigh_ifdownÇåÀí´úÀí»º´æºÍ´úÀí·şÎñÆ÷µÄproxy_queue¶ÓÁĞÖĞµÄÏà¹ØÏî¡£
+	 * pneigh_ifdownæ¸…ç†ä»£ç†ç¼“å­˜å’Œä»£ç†æœåŠ¡å™¨çš„proxy_queueé˜Ÿåˆ—ä¸­çš„ç›¸å…³é¡¹ã€‚
 	 */
 	pneigh_queue_purge(&tbl->proxy_queue);
 	return 0;
@@ -322,32 +322,32 @@ static struct neighbour *neigh_alloc(struct neigh_table *tbl)
 
 	entries = atomic_inc_return(&tbl->entries) - 1;
 	/**
-	 * µ±Ç°·ÖÅäµÄÁÚ¾Ó½á¹¹ÊıÄ¿´óÓÚÅäÖÃµÄ·§Öµ
+	 * å½“å‰åˆ†é…çš„é‚»å±…ç»“æ„æ•°ç›®å¤§äºé…ç½®çš„é˜€å€¼
 	 */
 	if (entries >= tbl->gc_thresh3 ||
 	    (entries >= tbl->gc_thresh2 &&
 	     time_after(now, tbl->last_flush + 5 * HZ))) {
 	    /**
-	     * À¬»ø»ØÊÕÆ÷ÊÔÍ¼ÊÍ·ÅÄ³¿éÄÚ´æ
+	     * åƒåœ¾å›æ”¶å™¨è¯•å›¾é‡Šæ”¾æŸå—å†…å­˜
 	     */
 		if (!neigh_forced_gc(tbl) &&
 		    entries >= tbl->gc_thresh3)
 		    /**
-		     * ÎŞ·¨Íê³É·ÖÅä£¬Ê§°Ü¡£
+		     * æ— æ³•å®Œæˆåˆ†é…ï¼Œå¤±è´¥ã€‚
 		     */
 			goto out_entries;
 	}
 
 	/**
-	 * ·ÖÅäÒ»¿éÄÚ´æ¡£
+	 * åˆ†é…ä¸€å—å†…å­˜ã€‚
 	 */
 	n = kmem_cache_alloc(tbl->kmem_cachep, SLAB_ATOMIC);
 	if (!n)
 		goto out_entries;
 
 	/**
-	 * ³õÊ¼»¯Ò»Ğ©Öµ¡£
-	 * ÀıÈç£¬Ç¶ÈëµÄ¶¨Ê±Æ÷¡¢ÒıÓÃ¼ÆÊıÆ÷¡¢Ö¸Ïò¹ØÁªµÄneigh_table£¨ÁÚ¾ÓĞ­Òé£©½á¹¹µÄÖ¸ÕëºÍ¶Ô·ÖÅäµÄneighbour½á¹¹ÊıÄ¿µÄÕûÌåÍ³¼Æ¡£
+	 * åˆå§‹åŒ–ä¸€äº›å€¼ã€‚
+	 * ä¾‹å¦‚ï¼ŒåµŒå…¥çš„å®šæ—¶å™¨ã€å¼•ç”¨è®¡æ•°å™¨ã€æŒ‡å‘å…³è”çš„neigh_tableï¼ˆé‚»å±…åè®®ï¼‰ç»“æ„çš„æŒ‡é’ˆå’Œå¯¹åˆ†é…çš„neighbourç»“æ„æ•°ç›®çš„æ•´ä½“ç»Ÿè®¡ã€‚
 	 */
 	skb_queue_head_init(&n->arp_queue);
 	rwlock_init(&n->lock);
@@ -372,7 +372,7 @@ out_entries:
 }
 
 /**
- * ·ÖÅäÁÚ¾Ó×ÓÏµÍ³ËùÓÃµÄhash±í¡£
+ * åˆ†é…é‚»å±…å­ç³»ç»Ÿæ‰€ç”¨çš„hashè¡¨ã€‚
  */
 static struct neighbour **neigh_hash_alloc(unsigned int entries)
 {
@@ -392,7 +392,7 @@ static struct neighbour **neigh_hash_alloc(unsigned int entries)
 }
 
 /**
- * ÊÍ·ÅÁÚ¾Ó×ÓÏµÍ³Ê¹ÓÃµÄhash±í¡£
+ * é‡Šæ”¾é‚»å±…å­ç³»ç»Ÿä½¿ç”¨çš„hashè¡¨ã€‚
  */
 static void neigh_hash_free(struct neighbour **hash, unsigned int entries)
 {
@@ -405,7 +405,7 @@ static void neigh_hash_free(struct neighbour **hash, unsigned int entries)
 }
 
 /**
- * À©³äÁÚ¾Ó×ÓÏµÍ³Ê¹ÓÃµÄhash±í¡£
+ * æ‰©å……é‚»å±…å­ç³»ç»Ÿä½¿ç”¨çš„hashè¡¨ã€‚
  */
 static void neigh_hash_grow(struct neigh_table *tbl, unsigned long new_entries)
 {
@@ -444,7 +444,7 @@ static void neigh_hash_grow(struct neigh_table *tbl, unsigned long new_entries)
 }
 
 /**
- * ¼ì²éÒª²éÕÒµÄÔªËØÊÇ·ñ´æÔÚ£¬²¢ÇÒÔÚ²éÕÒ³É¹¦Ê±·µ»ØÖ¸Ïò¸ÃÔªËØµÄÖ¸Õë¡£
+ * æ£€æŸ¥è¦æŸ¥æ‰¾çš„å…ƒç´ æ˜¯å¦å­˜åœ¨ï¼Œå¹¶ä¸”åœ¨æŸ¥æ‰¾æˆåŠŸæ—¶è¿”å›æŒ‡å‘è¯¥å…ƒç´ çš„æŒ‡é’ˆã€‚
  */
 struct neighbour *neigh_lookup(struct neigh_table *tbl, const void *pkey,
 			       struct net_device *dev)
@@ -468,7 +468,7 @@ struct neighbour *neigh_lookup(struct neigh_table *tbl, const void *pkey,
 }
 
 /**
- * ÁÚ¾Ó»º´æ²éÕÒ£¬Ö»ÔÚDECNetĞ­ÒéÖĞÊ¹ÓÃ¡£
+ * é‚»å±…ç¼“å­˜æŸ¥æ‰¾ï¼Œåªåœ¨DECNetåè®®ä¸­ä½¿ç”¨ã€‚
  */
 struct neighbour *neigh_lookup_nodev(struct neigh_table *tbl, const void *pkey)
 {
@@ -491,14 +491,14 @@ struct neighbour *neigh_lookup_nodev(struct neigh_table *tbl, const void *pkey)
 }
 
 /**
- * ´´½¨Ò»¸öÁÚ¾ÓÏî¡£ÒÔÏÂÇé¿ö»á½øĞĞÁÚ¾ÓÏîµÄ´´½¨:
- *		´«ÊäÇëÇó
- *		ÊÕµ½solicitationÇëÇó
- *		ÊÖ¹¤Ìí¼Ó
- *		tbl£º		±íÊ¾Ê¹ÓÃµÄÁÚ¾ÓĞ­Òé¡£ÉèÖÃÕâ¸ö²ÎÊıµÄ·½Ê½ºÜ¼òµ¥£ºÈç¹ûµ÷ÓÃÕßÀ´×ÔIPV4³ÌĞò£¨Ò²¾ÍÊÇËµ£¬À´×Ôarp_rcv£©£¬¾ÍÉèÎªarp_tblµÈµÈ¡£
- *		Pkey£º		±íÊ¾L3µØÖ·¡£Ö®ËùÒÔ³ÆÎªpkeyÊÇÒòÎªËüÔÚ»º´æ²éÕÒÖĞ±»ÓÃ×÷²éÕÒ¹Ø¼ü×Ö¡£
- *		dev£º		ÓëÒª´´½¨µÄÁÚ¾ÓÏîÏà¹ØµÄÉè±¸¡£ÒòÎªÃ¿¸öneighbourÏî¶¼ÓëÒ»¸öL3µØÖ·Ïà¹ØÁª£¬²¢ÇÒºóÕß×ÜÊÇÓëÒ»¸öÉè±¸Ïà¹ØÁª£¬ËùÒÔneighbourÊµÀı¾ÍÓëÒ»¸öÉè±¸Ïà¹ØÁª¡£
- *		·µ»ØÖµÊÇÖ¸Ïò´´½¨µÄneighbour½á¹¹µÄÖ¸Õë¡£
+ * åˆ›å»ºä¸€ä¸ªé‚»å±…é¡¹ã€‚ä»¥ä¸‹æƒ…å†µä¼šè¿›è¡Œé‚»å±…é¡¹çš„åˆ›å»º:
+ *		ä¼ è¾“è¯·æ±‚
+ *		æ”¶åˆ°solicitationè¯·æ±‚
+ *		æ‰‹å·¥æ·»åŠ 
+ *		tblï¼š		è¡¨ç¤ºä½¿ç”¨çš„é‚»å±…åè®®ã€‚è®¾ç½®è¿™ä¸ªå‚æ•°çš„æ–¹å¼å¾ˆç®€å•ï¼šå¦‚æœè°ƒç”¨è€…æ¥è‡ªIPV4ç¨‹åºï¼ˆä¹Ÿå°±æ˜¯è¯´ï¼Œæ¥è‡ªarp_rcvï¼‰ï¼Œå°±è®¾ä¸ºarp_tblç­‰ç­‰ã€‚
+ *		Pkeyï¼š		è¡¨ç¤ºL3åœ°å€ã€‚ä¹‹æ‰€ä»¥ç§°ä¸ºpkeyæ˜¯å› ä¸ºå®ƒåœ¨ç¼“å­˜æŸ¥æ‰¾ä¸­è¢«ç”¨ä½œæŸ¥æ‰¾å…³é”®å­—ã€‚
+ *		devï¼š		ä¸è¦åˆ›å»ºçš„é‚»å±…é¡¹ç›¸å…³çš„è®¾å¤‡ã€‚å› ä¸ºæ¯ä¸ªneighbouré¡¹éƒ½ä¸ä¸€ä¸ªL3åœ°å€ç›¸å…³è”ï¼Œå¹¶ä¸”åè€…æ€»æ˜¯ä¸ä¸€ä¸ªè®¾å¤‡ç›¸å…³è”ï¼Œæ‰€ä»¥neighbourå®ä¾‹å°±ä¸ä¸€ä¸ªè®¾å¤‡ç›¸å…³è”ã€‚
+ *		è¿”å›å€¼æ˜¯æŒ‡å‘åˆ›å»ºçš„neighbourç»“æ„çš„æŒ‡é’ˆã€‚
  */
 struct neighbour *neigh_create(struct neigh_table *tbl, const void *pkey,
 			       struct net_device *dev)
@@ -507,8 +507,8 @@ struct neighbour *neigh_create(struct neigh_table *tbl, const void *pkey,
 	int key_len = tbl->key_len;
 	int error;
 	/**
-	 * ÓÃneigh_allocº¯ÊıÀ´·ÖÅä´æ´¢¿Õ¼ä¡£
-	 * ¸Ãº¯ÊıÒ²ÓÃÓÚ³õÊ¼»¯Ò»Ğ©²ÎÊı£¬ÀıÈç£¬Ç¶ÈëµÄ¶¨Ê±Æ÷¡¢ÒıÓÃ¼ÆÊıÆ÷¡¢Ö¸Ïò¹ØÁªµÄneigh_table£¨ÁÚ¾ÓĞ­Òé£©½á¹¹µÄÖ¸ÕëºÍ¶Ô·ÖÅäµÄneighbour½á¹¹ÊıÄ¿µÄÕûÌåÍ³¼Æ¡£
+	 * ç”¨neigh_allocå‡½æ•°æ¥åˆ†é…å­˜å‚¨ç©ºé—´ã€‚
+	 * è¯¥å‡½æ•°ä¹Ÿç”¨äºåˆå§‹åŒ–ä¸€äº›å‚æ•°ï¼Œä¾‹å¦‚ï¼ŒåµŒå…¥çš„å®šæ—¶å™¨ã€å¼•ç”¨è®¡æ•°å™¨ã€æŒ‡å‘å…³è”çš„neigh_tableï¼ˆé‚»å±…åè®®ï¼‰ç»“æ„çš„æŒ‡é’ˆå’Œå¯¹åˆ†é…çš„neighbourç»“æ„æ•°ç›®çš„æ•´ä½“ç»Ÿè®¡ã€‚
 	 */
 	struct neighbour *n1, *rc, *n = neigh_alloc(tbl);
 
@@ -518,20 +518,20 @@ struct neighbour *neigh_create(struct neigh_table *tbl, const void *pkey,
 	}
 
 	/**
-	 * ÔÚkey_lenµÄ°ïÖúÏÂ£¬pkey±»¸´ÖÆµ½ÁÚ¾ÓÊı¾İ½á¹¹ÖĞ¡£Key_lenÌá¹©±»¸´ÖÆµÄÊı¾İµÄ³¤¶È¡£
-	 * ÕâÊÇ±ØÒªµÄ£¬ÒòÎªneighbour½á¹¹ÊÇ±»ÓëĞ­ÒéÎŞ¹ØµÄ»º´æ²éÕÒº¯ÊıÊ¹ÓÃ£¬²¢ÇÒ¸÷ÖÖÁÚ¾ÓĞ­Òé±íÊ¾µØÖ·µÄ×Ö½Ú³¤¶È²»Í¬¡£
+	 * åœ¨key_lençš„å¸®åŠ©ä¸‹ï¼Œpkeyè¢«å¤åˆ¶åˆ°é‚»å±…æ•°æ®ç»“æ„ä¸­ã€‚Key_lenæä¾›è¢«å¤åˆ¶çš„æ•°æ®çš„é•¿åº¦ã€‚
+	 * è¿™æ˜¯å¿…è¦çš„ï¼Œå› ä¸ºneighbourç»“æ„æ˜¯è¢«ä¸åè®®æ— å…³çš„ç¼“å­˜æŸ¥æ‰¾å‡½æ•°ä½¿ç”¨ï¼Œå¹¶ä¸”å„ç§é‚»å±…åè®®è¡¨ç¤ºåœ°å€çš„å­—èŠ‚é•¿åº¦ä¸åŒã€‚
 	 */
 	memcpy(n->primary_key, pkey, key_len);
 	/**
-	 * ÓÉÓÚneighbourÏîÖĞ°üÀ¨ÁË¶Ônet_device½á¹¹ÖĞdevµÄÒıÓÃ£¬ÄÚºË»áÊ¹ÓÃdev_holdÀ´¶ÔºóÕßµÄÒıÓÃ¼ÆÊıÆ÷¼Ó£¬ÒÔ´Ë±£Ö¤¸ÃÉè±¸ÔÚneighbour½á¹¹´æÔÚÊ±²»»á±»É¾³ı¡£
+	 * ç”±äºneighbouré¡¹ä¸­åŒ…æ‹¬äº†å¯¹net_deviceç»“æ„ä¸­devçš„å¼•ç”¨ï¼Œå†…æ ¸ä¼šä½¿ç”¨dev_holdæ¥å¯¹åè€…çš„å¼•ç”¨è®¡æ•°å™¨åŠ ï¼Œä»¥æ­¤ä¿è¯è¯¥è®¾å¤‡åœ¨neighbourç»“æ„å­˜åœ¨æ—¶ä¸ä¼šè¢«åˆ é™¤ã€‚
 	 */
 	n->dev = dev;
 	dev_hold(dev);
 
 	/* Protocol specific setup. */
 	/**
-	 * neighbour½á¹¹ÓĞÁ½ÖÖ³õÊ¼»¯·½Ê½£ºÒ»ÖÖÓÉÁÚ¾ÓĞ­ÒéÖ´ĞĞ£¬Ò»ÖÖÓÉÉè±¸Ö´ĞĞ¡£
-	 * Ğ­ÒéÖ´ĞĞµÄ³õÊ¼»¯¿¿µ÷ÓÃneigh_table->constructorº¯ÊıÍê³É¡£
+	 * neighbourç»“æ„æœ‰ä¸¤ç§åˆå§‹åŒ–æ–¹å¼ï¼šä¸€ç§ç”±é‚»å±…åè®®æ‰§è¡Œï¼Œä¸€ç§ç”±è®¾å¤‡æ‰§è¡Œã€‚
+	 * åè®®æ‰§è¡Œçš„åˆå§‹åŒ–é è°ƒç”¨neigh_table->constructorå‡½æ•°å®Œæˆã€‚
 	 */
 	if (tbl->constructor &&	(error = tbl->constructor(n)) < 0) {
 		rc = ERR_PTR(error);
@@ -540,9 +540,9 @@ struct neighbour *neigh_create(struct neigh_table *tbl, const void *pkey,
 
 	/* Device specific setup. */
 	/**
-	 * Éè±¸Ö´ĞĞµÄ³õÊ¼»¯¹¤×÷ÓÉneigh_setupĞéº¯ÊıÍê³É¡£
-	 * Êµ¼ÊÉÏÖ»ÓĞÉÙÊıÉè±¸¶¨ÒåÁËÕâ¸öº¯Êı¡£ÀıÈç£¬shaperĞéÄâÉè±¸Ê¹ÓÃÕâ¸öÉèÖÃº¯ÊıÀ´±£Ö¤ËüÓëARPÌá¹©Ò»¸öÌØÊâneigh_ops½á¹¹µÄÊµÀıÏà¹ØÁª¡£
-	 * Ò»Ğ©WANÉè±¸³öÓÚÀàËÆµÄÔ­ÒòÊ¹ÓÃÒ»¸öÉèÖÃº¯Êı¡£
+	 * è®¾å¤‡æ‰§è¡Œçš„åˆå§‹åŒ–å·¥ä½œç”±neigh_setupè™šå‡½æ•°å®Œæˆã€‚
+	 * å®é™…ä¸Šåªæœ‰å°‘æ•°è®¾å¤‡å®šä¹‰äº†è¿™ä¸ªå‡½æ•°ã€‚ä¾‹å¦‚ï¼Œshaperè™šæ‹Ÿè®¾å¤‡ä½¿ç”¨è¿™ä¸ªè®¾ç½®å‡½æ•°æ¥ä¿è¯å®ƒä¸ARPæä¾›ä¸€ä¸ªç‰¹æ®Šneigh_opsç»“æ„çš„å®ä¾‹ç›¸å…³è”ã€‚
+	 * ä¸€äº›WANè®¾å¤‡å‡ºäºç±»ä¼¼çš„åŸå› ä½¿ç”¨ä¸€ä¸ªè®¾ç½®å‡½æ•°ã€‚
 	 */
 	if (n->parms->neigh_setup &&
 	    (error = n->parms->neigh_setup(n)) < 0) {
@@ -551,14 +551,14 @@ struct neighbour *neigh_create(struct neigh_table *tbl, const void *pkey,
 	}
 
 	/**
-	 * ÉèÖÃ´´½¨µÄÁÚ¾ÓÏîµÄconfirmed×Ö¶Î£¬±íÊ¾¸ÃÁÚ¾ÓÊÇ¿Éµ½´ïµÄ¡£
-	 * Õı³£Çé¿öÏÂ£¬¸Ã×Ö¶ÎÓÉ¿Éµ½´ïĞÔÖ¤Ã÷À´¸üĞÂ£¬²¢ÇÒÆäÖµÉèÎªÓÃjiffies±íÊ¾µÄµ±Ç°Ê±¼ä¡£
-	 * µ«ÔÚÕâÀï£¬´ÓĞÂ½¨µÄ½Ç¶ÈÀ´Ëµ£¬neigh_create»á°ÑconfirmedÖµ¼õÈ¥Ò»Ğ¡¶ÎÊ±¼ä£¨reachable_timeÖµµÄÒ»°ë£©£¬ÕâÑù¾ÍÊ¹µÃÁÚ¾Ó×´Ì¬ÄÜ±ÈÆ½³£ºÍÒªÇóÓĞ¿Éµ½´ïĞÔÖ¤¾İÊ±£¬ÉÔ¿ìÒ»µã×ªÒÆµ½NUD_STALE×´Ì¬¡£
+	 * è®¾ç½®åˆ›å»ºçš„é‚»å±…é¡¹çš„confirmedå­—æ®µï¼Œè¡¨ç¤ºè¯¥é‚»å±…æ˜¯å¯åˆ°è¾¾çš„ã€‚
+	 * æ­£å¸¸æƒ…å†µä¸‹ï¼Œè¯¥å­—æ®µç”±å¯åˆ°è¾¾æ€§è¯æ˜æ¥æ›´æ–°ï¼Œå¹¶ä¸”å…¶å€¼è®¾ä¸ºç”¨jiffiesè¡¨ç¤ºçš„å½“å‰æ—¶é—´ã€‚
+	 * ä½†åœ¨è¿™é‡Œï¼Œä»æ–°å»ºçš„è§’åº¦æ¥è¯´ï¼Œneigh_createä¼šæŠŠconfirmedå€¼å‡å»ä¸€å°æ®µæ—¶é—´ï¼ˆreachable_timeå€¼çš„ä¸€åŠï¼‰ï¼Œè¿™æ ·å°±ä½¿å¾—é‚»å±…çŠ¶æ€èƒ½æ¯”å¹³å¸¸å’Œè¦æ±‚æœ‰å¯åˆ°è¾¾æ€§è¯æ®æ—¶ï¼Œç¨å¿«ä¸€ç‚¹è½¬ç§»åˆ°NUD_STALEçŠ¶æ€ã€‚
 	 */
 	n->confirmed = jiffies - (n->parms->base_reachable_time << 1);
 
 	/**
-	 * Ò»µ©ÁÚ¾ÓÏî±»³õÊ¼»¯ºó£¬¾ÍÊ¹ÓÃÁÚ¾ÓĞ­ÒéÌá¹©µÄhashº¯Êı½«ËüÔö¼Óµ½Ö÷Òª»º´æÖĞ¡£
+	 * ä¸€æ—¦é‚»å±…é¡¹è¢«åˆå§‹åŒ–åï¼Œå°±ä½¿ç”¨é‚»å±…åè®®æä¾›çš„hashå‡½æ•°å°†å®ƒå¢åŠ åˆ°ä¸»è¦ç¼“å­˜ä¸­ã€‚
 	 */
 	write_lock_bh(&tbl->lock);
 
@@ -597,7 +597,7 @@ out_neigh_release:
 }
 
 /**
- * °´Ä¿µÄµØ½øĞĞ´úÀíÊ±£¬ËÑË÷±»´úÀíµÄµØÖ·¡£
+ * æŒ‰ç›®çš„åœ°è¿›è¡Œä»£ç†æ—¶ï¼Œæœç´¢è¢«ä»£ç†çš„åœ°å€ã€‚
  */
 struct pneigh_entry * pneigh_lookup(struct neigh_table *tbl, const void *pkey,
 				    struct net_device *dev, int creat)
@@ -651,7 +651,7 @@ out:
 }
 
 /**
- * °´Ä¿µÄµØ½øĞĞ´úÀíÊ±£¬É¾³ı±»´úÀíµÄÏî¡£
+ * æŒ‰ç›®çš„åœ°è¿›è¡Œä»£ç†æ—¶ï¼Œåˆ é™¤è¢«ä»£ç†çš„é¡¹ã€‚
  */
 int pneigh_delete(struct neigh_table *tbl, const void *pkey,
 		  struct net_device *dev)
@@ -725,14 +725,14 @@ void neigh_destroy(struct neighbour *neigh)
 	}
 
 	/**
-	 * Í£Ö¹ËùÓĞÎ´¾öµÄ¶¨Ê±Æ÷¡£ÀíÂÛÉÏ£¬ÔÚÖ´ĞĞneigh_destroyº¯ÊıÊ±£¬²»Ó¦¸ÃÓĞÈÎºÎ¶¨Ê±Æ÷ÊÇÎ´¾öµÄ¡£
-	 * ÒòÎªneigh_releaseµ÷ÓÃneigh_destroyµÄÌõ¼şÊÇÒıÓÃ¼ÆÊıÆ÷Îª0£¬¶øÇÒ¶¨Ê±Æ÷ÔËĞĞÊ±×ÜÊÇ±£³Ö¶ÔÒªÉ¾³ıµÄÊı¾İ½á¹¹µÄÒıÓÃ¡£
+	 * åœæ­¢æ‰€æœ‰æœªå†³çš„å®šæ—¶å™¨ã€‚ç†è®ºä¸Šï¼Œåœ¨æ‰§è¡Œneigh_destroyå‡½æ•°æ—¶ï¼Œä¸åº”è¯¥æœ‰ä»»ä½•å®šæ—¶å™¨æ˜¯æœªå†³çš„ã€‚
+	 * å› ä¸ºneigh_releaseè°ƒç”¨neigh_destroyçš„æ¡ä»¶æ˜¯å¼•ç”¨è®¡æ•°å™¨ä¸º0ï¼Œè€Œä¸”å®šæ—¶å™¨è¿è¡Œæ—¶æ€»æ˜¯ä¿æŒå¯¹è¦åˆ é™¤çš„æ•°æ®ç»“æ„çš„å¼•ç”¨ã€‚
 	 */
 	if (neigh_del_timer(neigh))
 		printk(KERN_WARNING "Impossible event.\n");
 
 	/**
-	 * ÊÍ·ÅËùÓĞ¶ÔÍâ²¿Êı¾İ½á¹¹µÄÒıÓÃ¡£ÀıÈç£¬¹ØÁªµÄÉè±¸¼°»º´æµÄL2Ö¡Í·¡£
+	 * é‡Šæ”¾æ‰€æœ‰å¯¹å¤–éƒ¨æ•°æ®ç»“æ„çš„å¼•ç”¨ã€‚ä¾‹å¦‚ï¼Œå…³è”çš„è®¾å¤‡åŠç¼“å­˜çš„L2å¸§å¤´ã€‚
 	 */
 	while ((hh = neigh->hh) != NULL) {
 		neigh->hh = hh->hh_next;
@@ -740,7 +740,7 @@ void neigh_destroy(struct neighbour *neigh)
 
 		write_seqlock_bh(&hh->hh_lock);
 		/**
-		 * ÉèÖÃ»º´æµÄL2Ö¡Í·ÖĞµÄhh_cache->hh_output×Ö¶ÎÎªneigh_blackhole¡£
+		 * è®¾ç½®ç¼“å­˜çš„L2å¸§å¤´ä¸­çš„hh_cache->hh_outputå­—æ®µä¸ºneigh_blackholeã€‚
 		 */
 		hh->hh_output = neigh_blackhole;
 		write_unlock_bh(&hh->hh_lock);
@@ -749,7 +749,7 @@ void neigh_destroy(struct neighbour *neigh)
 	}
 
 	/**
-	 * Èç¹ûarp_queue¶ÓÁĞ·Ç¿Õ£¬¾ÍÒª½«ÆäÇå¿Õ£¨É¾³ıÆäËùÓĞÔªËØ£©¡£
+	 * å¦‚æœarp_queueé˜Ÿåˆ—éç©ºï¼Œå°±è¦å°†å…¶æ¸…ç©ºï¼ˆåˆ é™¤å…¶æ‰€æœ‰å…ƒç´ ï¼‰ã€‚
 	 */
 	skb_queue_purge(&neigh->arp_queue);
 
@@ -759,11 +759,11 @@ void neigh_destroy(struct neighbour *neigh)
 	NEIGH_PRINTK2("neigh %p is destroyed.\n", neigh);
 
 	/**
-	 * ½«±íÊ¾Ö÷»úÊ¹ÓÃµÄneighbourÏî×ÜÊıµÄÈ«¾Ö¼ÆÊıÆ÷¼õ1¡£
+	 * å°†è¡¨ç¤ºä¸»æœºä½¿ç”¨çš„neighbouré¡¹æ€»æ•°çš„å…¨å±€è®¡æ•°å™¨å‡1ã€‚
 	 */
 	atomic_dec(&neigh->tbl->entries);
 	/**
-	 * ÊÍ·Å¸Ãneighbour½á¹¹¡£
+	 * é‡Šæ”¾è¯¥neighbourç»“æ„ã€‚
 	 */
 	kmem_cache_free(neigh->tbl->kmem_cachep, neigh);
 }
@@ -774,7 +774,7 @@ void neigh_destroy(struct neighbour *neigh)
    Called with write_locked neigh.
  */
 /**
- * Ö´ĞĞ¿Éµ½´ïĞÔÈ·ÈÏ¡£Í¬Ê±½«neighbour->outputÉèÖÃÎªneigh_ops->output¡£
+ * æ‰§è¡Œå¯åˆ°è¾¾æ€§ç¡®è®¤ã€‚åŒæ—¶å°†neighbour->outputè®¾ç½®ä¸ºneigh_ops->outputã€‚
  */
 static void neigh_suspect(struct neighbour *neigh)
 {
@@ -794,11 +794,11 @@ static void neigh_suspect(struct neighbour *neigh)
    Called with write_locked neigh.
  */
 /**
- * ÎŞÂÛÊ²Ã´Ê±ºò½øÈëNUD_REACHABLE×´Ì¬£¬ÁÚ¾Ó»ù´¡½á¹¹¾Íµ÷ÓÃneigh_connectº¯Êı£¬½«neigh->outputº¯ÊıÖ¸Ïòneigh_ops->connected_output¡£
- * ¿ÉÄÜµÄ´¥·¢µã°üº¬:
- *		 	ÊÕµ½Ò»¸ösolicitationÓ¦´ğ
- *			L4ÈÏÖ¤
- *	 		ÈË¹¤ÅäÖÃ
+ * æ— è®ºä»€ä¹ˆæ—¶å€™è¿›å…¥NUD_REACHABLEçŠ¶æ€ï¼Œé‚»å±…åŸºç¡€ç»“æ„å°±è°ƒç”¨neigh_connectå‡½æ•°ï¼Œå°†neigh->outputå‡½æ•°æŒ‡å‘neigh_ops->connected_outputã€‚
+ * å¯èƒ½çš„è§¦å‘ç‚¹åŒ…å«:
+ *		 	æ”¶åˆ°ä¸€ä¸ªsolicitationåº”ç­”
+ *			L4è®¤è¯
+ *	 		äººå·¥é…ç½®
  */
 static void neigh_connect(struct neighbour *neigh)
 {
@@ -813,7 +813,7 @@ static void neigh_connect(struct neighbour *neigh)
 }
 
 /**
- * ÁÚ¾Ó×ÓÏµÍ³À¬»ø»ØÊÕ¶¨Ê±Æ÷¡£ÕâÊÇÒ»¸öÖÜÆÚĞÔ¶¨Ê±Æ÷£¬ÓÃÓÚÈ·±£ÄÚ´æ²»»áÀË·ÑÔÚÃ»ÓÃµÄÊı¾İ½á¹¹ÉÏ¡£
+ * é‚»å±…å­ç³»ç»Ÿåƒåœ¾å›æ”¶å®šæ—¶å™¨ã€‚è¿™æ˜¯ä¸€ä¸ªå‘¨æœŸæ€§å®šæ—¶å™¨ï¼Œç”¨äºç¡®ä¿å†…å­˜ä¸ä¼šæµªè´¹åœ¨æ²¡ç”¨çš„æ•°æ®ç»“æ„ä¸Šã€‚
  */
 static void neigh_periodic_timer(unsigned long arg)
 {
@@ -829,7 +829,7 @@ static void neigh_periodic_timer(unsigned long arg)
 	 *	periodically recompute ReachableTime from random function
 	 */
 	/**
-	 * Èç¹ûÓëÉÏ´ÎÊ±¼äÏà²î5·ÖÖÓ£¬ÄÇÃ´ÖØĞÂÉèÖÃÅäÖÃ²ÎÊıÖĞµÄreachable_timeÊ±¼ä¡£
+	 * å¦‚æœä¸ä¸Šæ¬¡æ—¶é—´ç›¸å·®5åˆ†é’Ÿï¼Œé‚£ä¹ˆé‡æ–°è®¾ç½®é…ç½®å‚æ•°ä¸­çš„reachable_timeæ—¶é—´ã€‚
 	 */
 	if (time_after(now, tbl->last_rand + 300 * HZ)) {
 		struct neigh_parms *p;
@@ -840,13 +840,13 @@ static void neigh_periodic_timer(unsigned long arg)
 	}
 
 	/**
-	 * ´ÓÉÏ´ÎÉ¨ÃèµÄÍ°¿ªÊ¼É¨Ãè¡£
+	 * ä»ä¸Šæ¬¡æ‰«æçš„æ¡¶å¼€å§‹æ‰«æã€‚
 	 */
 	np = &tbl->hash_buckets[tbl->hash_chain_gc];
 	tbl->hash_chain_gc = ((tbl->hash_chain_gc + 1) & tbl->hash_mask);
 
 	/**
-	 * Ã¿´ÎÖ»É¨ÃèÒ»¸öÍ°¡£
+	 * æ¯æ¬¡åªæ‰«æä¸€ä¸ªæ¡¶ã€‚
 	 */
 	while ((n = *np) != NULL) {
 		unsigned int state;
@@ -855,7 +855,7 @@ static void neigh_periodic_timer(unsigned long arg)
 
 		state = n->nud_state;
 		/**
-		 * ÕâÁ½ÖÖ×´Ì¬µÄÁÚ¾ÓÏî²»±»»ØÊÕ¡£
+		 * è¿™ä¸¤ç§çŠ¶æ€çš„é‚»å±…é¡¹ä¸è¢«å›æ”¶ã€‚
 		 */
 		if (state & (NUD_PERMANENT | NUD_IN_TIMER)) {
 			write_unlock(&n->lock);
@@ -863,22 +863,22 @@ static void neigh_periodic_timer(unsigned long arg)
 		}
 
 		/**
-		 * neigh->confirmed±íÊ¾Ò»¸ö×îĞÂµÄÊ±¼ä´Á
+		 * neigh->confirmedè¡¨ç¤ºä¸€ä¸ªæœ€æ–°çš„æ—¶é—´æˆ³
 		 */
 		if (time_before(n->used, n->confirmed))
 			n->used = n->confirmed;
 
 		/**
-		 * Èç¹ûÒıÓÃ¼ÆÊıÎª1£¬±íÊ¾Ã»ÓĞË­ÔÚÒıÓÃ¸Ã½á¹¹ÁË¡£
-		 * Í¬Ê±£¬Èç¹û¶ÔÏó×´Ì¬ÎªNUD_FAILED£¬±íÊ¾ÎŞĞ§µÄÁÚ¾ÓÏî£¬¿ÉÒÔÉ¾³ı¡£
-		 * »òÕßÈç¹ûµ±Ç°Ê±¼äÒÑ¾­³¬¹ıÎÈ¶¨ÆÚ£¬Ò²¿ÉÒÔÉ¾³ıËü¡£
+		 * å¦‚æœå¼•ç”¨è®¡æ•°ä¸º1ï¼Œè¡¨ç¤ºæ²¡æœ‰è°åœ¨å¼•ç”¨è¯¥ç»“æ„äº†ã€‚
+		 * åŒæ—¶ï¼Œå¦‚æœå¯¹è±¡çŠ¶æ€ä¸ºNUD_FAILEDï¼Œè¡¨ç¤ºæ— æ•ˆçš„é‚»å±…é¡¹ï¼Œå¯ä»¥åˆ é™¤ã€‚
+		 * æˆ–è€…å¦‚æœå½“å‰æ—¶é—´å·²ç»è¶…è¿‡ç¨³å®šæœŸï¼Œä¹Ÿå¯ä»¥åˆ é™¤å®ƒã€‚
 		 */
 		if (atomic_read(&n->refcnt) == 1 &&
 		    (state == NUD_FAILED ||
 		     time_after(now, n->used + n->parms->gc_staletime))) {
 			*np = n->next;
 			/**
-			 * ÔÚËøµÄ±£»¤ÏÂÉèÖÃdead±êÖ¾£¬ÄÇÃ´ÆäËûÄÚºË´úÂë½«²»»áÔÙÊÔÍ¼Ê¹ÓÃÕâ¸öÏî¡£
+			 * åœ¨é”çš„ä¿æŠ¤ä¸‹è®¾ç½®deadæ ‡å¿—ï¼Œé‚£ä¹ˆå…¶ä»–å†…æ ¸ä»£ç å°†ä¸ä¼šå†è¯•å›¾ä½¿ç”¨è¿™ä¸ªé¡¹ã€‚
 			 */
 			n->dead = 1;
 			write_unlock(&n->lock);
@@ -917,8 +917,8 @@ static __inline__ int neigh_max_probes(struct neighbour *n)
 /* Called when a timer expires for a neighbour entry. */
 
 /**
- * µ±ÓÃneigh_allocº¯Êı´´½¨Ò»¸öneighbourÏîÊ±£¬»áÎªËü´´½¨Ò»¸ö×´Ì¬×ª»»¶¨Ê±Æ÷¡£
- * ¸Ã¶¨Ê±Æ÷µÄ»Øµ÷º¯Êı±»³õÊ¼»¯Îªneigh_timer_handlerº¯Êı¡£
+ * å½“ç”¨neigh_allocå‡½æ•°åˆ›å»ºä¸€ä¸ªneighbouré¡¹æ—¶ï¼Œä¼šä¸ºå®ƒåˆ›å»ºä¸€ä¸ªçŠ¶æ€è½¬æ¢å®šæ—¶å™¨ã€‚
+ * è¯¥å®šæ—¶å™¨çš„å›è°ƒå‡½æ•°è¢«åˆå§‹åŒ–ä¸ºneigh_timer_handlerå‡½æ•°ã€‚
  */
 static void neigh_timer_handler(unsigned long arg)
 {
@@ -1081,20 +1081,20 @@ out_unlock_bh:
 }
 
 /**
- * µ±ÏµÍ³Ì½²âµ½ÁÚ¾ÓµÄL2µØÖ··¢Éú±ä»¯£¬Ëü¾Íµ÷ÓÃneigh_update_hhsº¯ÊıÀ´´¦Àí¡£
+ * å½“ç³»ç»Ÿæ¢æµ‹åˆ°é‚»å±…çš„L2åœ°å€å‘ç”Ÿå˜åŒ–ï¼Œå®ƒå°±è°ƒç”¨neigh_update_hhså‡½æ•°æ¥å¤„ç†ã€‚
  */
 static __inline__ void neigh_update_hhs(struct neighbour *neigh)
 {
 	struct hh_cache *hh;
 	/**
-	 * µ÷ÓÃÉè±¸Çı¶¯³ÌĞòÌá¹©µÄheader_cache_updateº¯ÊıÀ´Íê³É¸üĞÂ
+	 * è°ƒç”¨è®¾å¤‡é©±åŠ¨ç¨‹åºæä¾›çš„header_cache_updateå‡½æ•°æ¥å®Œæˆæ›´æ–°
 	 */
 	void (*update)(struct hh_cache*, struct net_device*, unsigned char *) =
 		neigh->dev->header_cache_update;
 
 	if (update) {
 		/**
-		 * ÒÀ´Î¸üĞÂÄÇ¸öÁÚ¾ÓÊ¹ÓÃµÄËùÓĞ»º´æÖ¡Í·¡£
+		 * ä¾æ¬¡æ›´æ–°é‚£ä¸ªé‚»å±…ä½¿ç”¨çš„æ‰€æœ‰ç¼“å­˜å¸§å¤´ã€‚
 		 */
 		for (hh = neigh->hh; hh; hh = hh->hh_next) {
 			write_lock_bh(&hh->hh_lock);
@@ -1127,11 +1127,11 @@ static __inline__ void neigh_update_hhs(struct neighbour *neigh)
    Caller MUST hold reference count on the entry.
  */
 /**
- * ÓÃÓÚ¸üĞÂneighbour½á¹¹Á´Â·²ãµØÖ·µÄÍ¨ÓÃº¯Êı¡£
- *		neigh£º		Ö¸ÏòÒª¸üĞÂµÄneighbour½á¹¹¡£
- *		lladdr£º	ĞÂµÄÁ´Â·²ã£¨L2£©µØÖ·¡£Lladdr²¢²»×ÜÊÇ³õÊ¼»¯ÎªÒ»¸öĞÂÖµ¡£ÀıÈç£¬µ±µ÷ÓÃneigh_updateÀ´É¾³ıÒ»¸öneighbour½á¹¹Ê±£¨ÉèÖÃÆä×´Ì¬ÎªNUD_FAILED£¬²Î¼û"É¾³ıÁÚ¾Ó"Ò»½Ú£©£¬»á¸ølladdr´«ÈëÒ»¸öNULLÖµ¡£
- *		new£º		ĞÂµÄNUD×´Ì¬¡£
- *		flags£º		ÓÃÓÚ´«´ïĞÅÏ¢£¬ÀıÈç£¬ÊÇ·ñÒª¸²¸ÇÒ»¸öÒÑÓĞµÄÁ´Â·²ãµØÖ·µÈ¡£
+ * ç”¨äºæ›´æ–°neighbourç»“æ„é“¾è·¯å±‚åœ°å€çš„é€šç”¨å‡½æ•°ã€‚
+ *		neighï¼š		æŒ‡å‘è¦æ›´æ–°çš„neighbourç»“æ„ã€‚
+ *		lladdrï¼š	æ–°çš„é“¾è·¯å±‚ï¼ˆL2ï¼‰åœ°å€ã€‚Lladdrå¹¶ä¸æ€»æ˜¯åˆå§‹åŒ–ä¸ºä¸€ä¸ªæ–°å€¼ã€‚ä¾‹å¦‚ï¼Œå½“è°ƒç”¨neigh_updateæ¥åˆ é™¤ä¸€ä¸ªneighbourç»“æ„æ—¶ï¼ˆè®¾ç½®å…¶çŠ¶æ€ä¸ºNUD_FAILEDï¼Œå‚è§"åˆ é™¤é‚»å±…"ä¸€èŠ‚ï¼‰ï¼Œä¼šç»™lladdrä¼ å…¥ä¸€ä¸ªNULLå€¼ã€‚
+ *		newï¼š		æ–°çš„NUDçŠ¶æ€ã€‚
+ *		flagsï¼š		ç”¨äºä¼ è¾¾ä¿¡æ¯ï¼Œä¾‹å¦‚ï¼Œæ˜¯å¦è¦è¦†ç›–ä¸€ä¸ªå·²æœ‰çš„é“¾è·¯å±‚åœ°å€ç­‰ã€‚
  */
 int neigh_update(struct neighbour *neigh, const u8 *lladdr, u8 new,
 		 u32 flags)
@@ -1151,19 +1151,19 @@ int neigh_update(struct neighbour *neigh, const u8 *lladdr, u8 new,
 	err    = -EPERM;
 
 	/**
-	 * Ö»ÓĞ¹ÜÀíÃüÁî£¨NEIGH_UPDATE_F_ADMIN£©¿ÉÒÔ¸Ä±äµ±Ç°ÊÇNUD_NOARPÌ¬»òNUD_PERMANENTÌ¬µÄÁÚ¾ÓµÄ×´Ì¬¡£
+	 * åªæœ‰ç®¡ç†å‘½ä»¤ï¼ˆNEIGH_UPDATE_F_ADMINï¼‰å¯ä»¥æ”¹å˜å½“å‰æ˜¯NUD_NOARPæ€æˆ–NUD_PERMANENTæ€çš„é‚»å±…çš„çŠ¶æ€ã€‚
 	 */
 	if (!(flags & NEIGH_UPDATE_F_ADMIN) && 
 	    (old & (NUD_NOARP | NUD_PERMANENT)))
 		goto out;
 
 	/**
-	 * µ±ĞÂ×´Ì¬new²»ÊÇÒ»¸öÓĞĞ§×´Ì¬Ê±£¬Èç¹ûËüÊÇNUD_NONEÌ¬»òNUD_INCOMPLETEÌ¬£¬¾ÍÒªÍ£Ö¹Æô¶¯ÁËµÄÁÚ¾Ó¶¨Ê±Æ÷¡£
+	 * å½“æ–°çŠ¶æ€newä¸æ˜¯ä¸€ä¸ªæœ‰æ•ˆçŠ¶æ€æ—¶ï¼Œå¦‚æœå®ƒæ˜¯NUD_NONEæ€æˆ–NUD_INCOMPLETEæ€ï¼Œå°±è¦åœæ­¢å¯åŠ¨äº†çš„é‚»å±…å®šæ—¶å™¨ã€‚
 	 */
 	if (!(new & NUD_VALID)) {
 		neigh_del_timer(neigh);
 		/**
-		 * Èç¹û¾É×´Ì¬ÊÇNUD_CONNECTEDÌ¬£¬ÔòÊ¹ÓÃneigh_suspectº¯Êı½«¸ÃÁÚ¾ÓÏî±êÊ¶Îª¿ÉÒÉµÄ¡£
+		 * å¦‚æœæ—§çŠ¶æ€æ˜¯NUD_CONNECTEDæ€ï¼Œåˆ™ä½¿ç”¨neigh_suspectå‡½æ•°å°†è¯¥é‚»å±…é¡¹æ ‡è¯†ä¸ºå¯ç–‘çš„ã€‚
 		 */
 		if (old & NUD_CONNECTED)
 			neigh_suspect(neigh);
@@ -1228,7 +1228,7 @@ int neigh_update(struct neighbour *neigh, const u8 *lladdr, u8 new,
 	if (new != old) {
 		neigh_del_timer(neigh);
 		/**
-		 * ĞÂ×´Ì¬ÊÇÒ»¸öºÏ·¨Ì¬£¬Èç¹ûÆäÒªÇó¶¨Ê±Æ÷£¨NUD_IN_TIMER£©£¬ÔòÁÚ¾Ó¶¨Ê±Æ÷¾Í»áÖØĞÂÆô¶¯¡£
+		 * æ–°çŠ¶æ€æ˜¯ä¸€ä¸ªåˆæ³•æ€ï¼Œå¦‚æœå…¶è¦æ±‚å®šæ—¶å™¨ï¼ˆNUD_IN_TIMERï¼‰ï¼Œåˆ™é‚»å±…å®šæ—¶å™¨å°±ä¼šé‡æ–°å¯åŠ¨ã€‚
 		 */
 		if (new & NUD_IN_TIMER) {
 			neigh_hold(neigh);
@@ -1241,15 +1241,15 @@ int neigh_update(struct neighbour *neigh, const u8 *lladdr, u8 new,
 	}
 
 	/**
-	 * ¸Ãº¯ÊıµÄÊäÈë²ÎÊıÖĞÌá¹©ÁËÒ»¸öĞÂµÄÁ´Â·²ãµØÖ·£¨Ò²¾ÍÊÇËµ£¬lladdr·Ç¿Õ£©
+	 * è¯¥å‡½æ•°çš„è¾“å…¥å‚æ•°ä¸­æä¾›äº†ä¸€ä¸ªæ–°çš„é“¾è·¯å±‚åœ°å€ï¼ˆä¹Ÿå°±æ˜¯è¯´ï¼Œlladdréç©ºï¼‰
 	 */
 	if (lladdr != neigh->ha) {
 		/**
-		 * ¸Ä±äÁ´Â·²ãµØÖ·
+		 * æ”¹å˜é“¾è·¯å±‚åœ°å€
 		 */
 		memcpy(&neigh->ha, lladdr, dev->addr_len);
 		/**
-		 * ËùÓĞ»º´æµÄÖ¡Í·¶¼ÒªÍ¬²½¸üĞÂ
+		 * æ‰€æœ‰ç¼“å­˜çš„å¸§å¤´éƒ½è¦åŒæ­¥æ›´æ–°
 		 */
 		neigh_update_hhs(neigh);
 		if (!(new & NUD_CONNECTED))
@@ -1266,7 +1266,7 @@ int neigh_update(struct neighbour *neigh, const u8 *lladdr, u8 new,
 	else
 		neigh_suspect(neigh);
 	/**
-	 * ¾É×´Ì¬²»ÊÇNUD_VALIDÌ¬²¢ÇÒĞÂ×´Ì¬ÊÇNUD_VALIDÌ¬Ê±£¬Ö÷»ú±ØĞë½«ÔÚÁÚ¾Óarp_queue¶ÓÁĞÖĞµÈ´ı·¢ËÍµÄ°ü¶¼·¢ËÍ³öÈ¥¡£
+	 * æ—§çŠ¶æ€ä¸æ˜¯NUD_VALIDæ€å¹¶ä¸”æ–°çŠ¶æ€æ˜¯NUD_VALIDæ€æ—¶ï¼Œä¸»æœºå¿…é¡»å°†åœ¨é‚»å±…arp_queueé˜Ÿåˆ—ä¸­ç­‰å¾…å‘é€çš„åŒ…éƒ½å‘é€å‡ºå»ã€‚
 	 */
 	if (!(old & NUD_VALID)) {
 		struct sk_buff *skb;
@@ -1294,13 +1294,13 @@ out:
 	write_unlock_bh(&neigh->lock);
 #ifdef CONFIG_ARPD
 	/**
-	 * Èç¹û±àÒëÄÚºËÊ±Ñ¡ÔñÁËÖ§³Öarpd£¬²¢ÇÒarpd¾­¹ıÊÊµ±ÅäÖÃ£¨Ò²¾ÍÊÇapp_probes>0£©
+	 * å¦‚æœç¼–è¯‘å†…æ ¸æ—¶é€‰æ‹©äº†æ”¯æŒarpdï¼Œå¹¶ä¸”arpdç»è¿‡é€‚å½“é…ç½®ï¼ˆä¹Ÿå°±æ˜¯app_probes>0ï¼‰
 	 */
 	if (notify && neigh->parms->app_probes)
 		/**
-		 * ½«ÏÂÁĞÊÂ¼şÍ¨Öªarpd½ø³Ì:
-		 *		×´Ì¬´ÓNUD_VALIDÌ¬ĞŞ¸ÄÎªÎŞĞ§Ì¬¡£
- 		 *		Á´Â·²ãµØÖ··¢Éú±ä»¯¡£
+		 * å°†ä¸‹åˆ—äº‹ä»¶é€šçŸ¥arpdè¿›ç¨‹:
+		 *		çŠ¶æ€ä»NUD_VALIDæ€ä¿®æ”¹ä¸ºæ— æ•ˆæ€ã€‚
+ 		 *		é“¾è·¯å±‚åœ°å€å‘ç”Ÿå˜åŒ–ã€‚
 		 */
 		neigh_app_notify(neigh);
 #endif
@@ -1359,7 +1359,7 @@ static void neigh_hh_init(struct neighbour *n, struct dst_entry *dst,
    but resolution is not made yet.
  */
 /**
- * ¸Ãº¯ÊıÊÇÎªÁË±£Ö¤ÏòÏÂ¼æÈİ£¬ÔÚÒıÈëÁÚ¾Ó»ù´¡½á¹¹ÒÔÇ°£¬ÓÉËü¸ºÔğµ÷ÓÃdev_queue_xmitº¯Êı£¬¼´Ê¹L2µØÖ·»¹Ã»ÓĞ×¼±¸ºÃ¡£
+ * è¯¥å‡½æ•°æ˜¯ä¸ºäº†ä¿è¯å‘ä¸‹å…¼å®¹ï¼Œåœ¨å¼•å…¥é‚»å±…åŸºç¡€ç»“æ„ä»¥å‰ï¼Œç”±å®ƒè´Ÿè´£è°ƒç”¨dev_queue_xmitå‡½æ•°ï¼Œå³ä½¿L2åœ°å€è¿˜æ²¡æœ‰å‡†å¤‡å¥½ã€‚
  */
 int neigh_compat_output(struct sk_buff *skb)
 {
@@ -1378,7 +1378,7 @@ int neigh_compat_output(struct sk_buff *skb)
 
 /* Slow and careful. */
 /**
- * ¸Ãº¯ÊıÔÚÊı¾İ´«ÊäÇ°½«L3µØÖ·½âÎöÎªL2µØÖ·¡£Òò´Ë£¬µ±L3µØÖ·ºÍL2µØÖ·µÄ¶ÔÓ¦¹ØÏµ»¹Ã»ÓĞ±»½¨Á¢»òÕßĞèÒª¶ÔÆäÈ·ÈÏÊ±£¬¾Í»áÓÃµ½¸Ãº¯Êı¡£
+ * è¯¥å‡½æ•°åœ¨æ•°æ®ä¼ è¾“å‰å°†L3åœ°å€è§£æä¸ºL2åœ°å€ã€‚å› æ­¤ï¼Œå½“L3åœ°å€å’ŒL2åœ°å€çš„å¯¹åº”å…³ç³»è¿˜æ²¡æœ‰è¢«å»ºç«‹æˆ–è€…éœ€è¦å¯¹å…¶ç¡®è®¤æ—¶ï¼Œå°±ä¼šç”¨åˆ°è¯¥å‡½æ•°ã€‚
  */
 int neigh_resolve_output(struct sk_buff *skb)
 {
@@ -1395,25 +1395,25 @@ int neigh_resolve_output(struct sk_buff *skb)
 		int err;
 		struct net_device *dev = neigh->dev;
 		/**
-		 * Éè±¸¿ÉÒÔÊ¹ÓÃÖ¡Í·»º´æ£¨Ò²¾ÍÊÇËµ£¬ÉèÖÃÁËhard_header_cache£©£¬µ«ÊÇÖ¡Í·»¹Ã»ÓĞ×¼±¸ºÃ£¨!dst->hh£©
+		 * è®¾å¤‡å¯ä»¥ä½¿ç”¨å¸§å¤´ç¼“å­˜ï¼ˆä¹Ÿå°±æ˜¯è¯´ï¼Œè®¾ç½®äº†hard_header_cacheï¼‰ï¼Œä½†æ˜¯å¸§å¤´è¿˜æ²¡æœ‰å‡†å¤‡å¥½ï¼ˆ!dst->hhï¼‰
 		 */
 		if (dev->hard_header_cache && !dst->hh) {
 			write_lock_bh(&neigh->lock);
 			if (!dst->hh)
 				/**
-				 * ´´½¨hh_cache»º´æÏî£¬²¢½«ÆäÁ´½Óµ½dst->hhÂ·ÓÉ±í»º´æÏîÉÏ¡£
+				 * åˆ›å»ºhh_cacheç¼“å­˜é¡¹ï¼Œå¹¶å°†å…¶é“¾æ¥åˆ°dst->hhè·¯ç”±è¡¨ç¼“å­˜é¡¹ä¸Šã€‚
 				 */
 				neigh_hh_init(neigh, dst, dst->ops->protocol);
 			/**
-			 * ³õÊ¼»¯²¢»º´æL2Ö¡Í·¡£
+			 * åˆå§‹åŒ–å¹¶ç¼“å­˜L2å¸§å¤´ã€‚
 			 */
 			err = dev->hard_header(skb, dev, ntohs(skb->protocol),
 					       neigh->ha, NULL, skb->len);
 			write_unlock_bh(&neigh->lock);
-		} else {/* Éè±¸²»Ö§³ÖÖ¡Í·»º´æ */
+		} else {/* è®¾å¤‡ä¸æ”¯æŒå¸§å¤´ç¼“å­˜ */
 			read_lock_bh(&neigh->lock);
 			/**
-			 * Ê¹ÓÃhard_headerÀ´Ìî³äL2Ö¡Í·¡£
+			 * ä½¿ç”¨hard_headeræ¥å¡«å……L2å¸§å¤´ã€‚
 			 */
 			err = dev->hard_header(skb, dev, ntohs(skb->protocol),
 					       neigh->ha, NULL, skb->len);
@@ -1437,8 +1437,8 @@ out_kfree_skb:
 
 /* As fast as possible without hh cache */
 /**
- * ¸Ãº¯ÊıÖ»ÊÇÌî³äL2Ö¡Í·£¬È»ºóµ÷ÓÃneigh_ops->queue_xmit¡£Òò´Ë£¬ËüÏ£ÍûL2µØÖ·±»½âÎö¡£
- * Neighbour½á¹¹ÔÚNUD_COONECTED×´Ì¬»áÓÃµ½Õâ¸öº¯Êı¡£
+ * è¯¥å‡½æ•°åªæ˜¯å¡«å……L2å¸§å¤´ï¼Œç„¶åè°ƒç”¨neigh_ops->queue_xmitã€‚å› æ­¤ï¼Œå®ƒå¸Œæœ›L2åœ°å€è¢«è§£æã€‚
+ * Neighbourç»“æ„åœ¨NUD_COONECTEDçŠ¶æ€ä¼šç”¨åˆ°è¿™ä¸ªå‡½æ•°ã€‚
  */
 int neigh_connected_output(struct sk_buff *skb)
 {
@@ -1463,7 +1463,7 @@ int neigh_connected_output(struct sk_buff *skb)
 }
 
 /**
- * ´úÀíÑÓ³Ù¶¨Ê±Æ÷´¦Àíº¯Êı¡£
+ * ä»£ç†å»¶è¿Ÿå®šæ—¶å™¨å¤„ç†å‡½æ•°ã€‚
  */
 static void neigh_proxy_process(unsigned long arg)
 {
@@ -1591,7 +1591,7 @@ void neigh_table_init(struct neigh_table *tbl)
 	unsigned long phsize;
 
 	/**
-	 * ³õÊ¼»¯Ò»Ğ©²ÎÊı
+	 * åˆå§‹åŒ–ä¸€äº›å‚æ•°
 	 */
 	atomic_set(&tbl->parms.refcnt, 1);
 	INIT_RCU_HEAD(&tbl->parms.rcu_head);
@@ -1600,7 +1600,7 @@ void neigh_table_init(struct neigh_table *tbl)
 
 	if (!tbl->kmem_cachep)
 		/**
-		 * Îªneighbour½á¹¹·ÖÅäÔ¤±¸µÄÄÚ´æ³Ø¡£
+		 * ä¸ºneighbourç»“æ„åˆ†é…é¢„å¤‡çš„å†…å­˜æ± ã€‚
 		 */
 		tbl->kmem_cachep = kmem_cache_create(tbl->id,
 						     tbl->entry_size,
@@ -1611,7 +1611,7 @@ void neigh_table_init(struct neigh_table *tbl)
 		panic("cannot create neighbour cache");
 
 	/**
-	 * ·ÖÅäÒ»¸öneigh_statistics½á¹¹À´ÊÕ¼¯Ğ­ÒéµÄÍ³¼ÆĞÅÏ¢¡£
+	 * åˆ†é…ä¸€ä¸ªneigh_statisticsç»“æ„æ¥æ”¶é›†åè®®çš„ç»Ÿè®¡ä¿¡æ¯ã€‚
 	 */
 	tbl->stats = alloc_percpu(struct neigh_statistics);
 	if (!tbl->stats)
@@ -1619,7 +1619,7 @@ void neigh_table_init(struct neigh_table *tbl)
 	
 #ifdef CONFIG_PROC_FS
 	/**
-	 * ÔÚ/proc/netÖĞ½¨Á¢Ò»¸öÎÄ¼ş£¬ÓÃÓÚ×ª´¢»º´æµÄÄÚÈİ¡£ÎÄ¼şÃûÀ´×ÔÓÚneigh_table->id¡£
+	 * åœ¨/proc/netä¸­å»ºç«‹ä¸€ä¸ªæ–‡ä»¶ï¼Œç”¨äºè½¬å‚¨ç¼“å­˜çš„å†…å®¹ã€‚æ–‡ä»¶åæ¥è‡ªäºneigh_table->idã€‚
 	 */
 	tbl->pde = create_proc_entry(tbl->id, 0, proc_net_stat);
 	if (!tbl->pde) 
@@ -1630,8 +1630,8 @@ void neigh_table_init(struct neigh_table *tbl)
 
 	tbl->hash_mask = 1;
 	/**
-	 * ·ÖÅäÁ½¸öhash±í£ºhash_bucketsºÍphash_buckets¡£
-	 * ÕâÁ½¸ö±í·Ö±ğ×÷Îª½âÎö¹ıµÄµØÖ·¹ØÁª»º´æºÍ´úÀíµÄµØÖ·Êı¾İ¿â¡£
+	 * åˆ†é…ä¸¤ä¸ªhashè¡¨ï¼šhash_bucketså’Œphash_bucketsã€‚
+	 * è¿™ä¸¤ä¸ªè¡¨åˆ†åˆ«ä½œä¸ºè§£æè¿‡çš„åœ°å€å…³è”ç¼“å­˜å’Œä»£ç†çš„åœ°å€æ•°æ®åº“ã€‚
 	 */
 	tbl->hash_buckets = neigh_hash_alloc(tbl->hash_mask + 1);
 
@@ -1647,7 +1647,7 @@ void neigh_table_init(struct neigh_table *tbl)
 
 	rwlock_init(&tbl->lock);
 	/**
-	 * Æô¶¯gc_timerÀ¬»ø»ØÊÕ¶¨Ê±Æ÷
+	 * å¯åŠ¨gc_timeråƒåœ¾å›æ”¶å®šæ—¶å™¨
 	 */
 	init_timer(&tbl->gc_timer);
 	tbl->gc_timer.data     = (unsigned long)tbl;
@@ -1656,7 +1656,7 @@ void neigh_table_init(struct neigh_table *tbl)
 	add_timer(&tbl->gc_timer);
 
 	/**
-	 * ³õÊ¼»¯£¨µ«ÊÇ²»Æô¶¯£©proxy_timer´úÀí¶¨Ê±Æ÷ºÍÏà¹ØµÄproxy_queue¶ÓÁĞ¡£
+	 * åˆå§‹åŒ–ï¼ˆä½†æ˜¯ä¸å¯åŠ¨ï¼‰proxy_timerä»£ç†å®šæ—¶å™¨å’Œç›¸å…³çš„proxy_queueé˜Ÿåˆ—ã€‚
 	 */
 	init_timer(&tbl->proxy_timer);
 	tbl->proxy_timer.data	  = (unsigned long)tbl;
@@ -1666,7 +1666,7 @@ void neigh_table_init(struct neigh_table *tbl)
 	tbl->last_flush = now;
 	tbl->last_rand	= now + tbl->parms.reachable_time * 20;
 	/**
-	 * Ìí¼Óneigh_table½á¹¹µ½neigh_tablesÈ«¾ÖÁĞ±íÖĞ¡£
+	 * æ·»åŠ neigh_tableç»“æ„åˆ°neigh_tableså…¨å±€åˆ—è¡¨ä¸­ã€‚
 	 */
 	write_lock(&neigh_tbl_lock);
 	tbl->next	= neigh_tables;
@@ -1675,7 +1675,7 @@ void neigh_table_init(struct neigh_table *tbl)
 }
 
 /**
- * ³·Ïúneigh_table_initÔÚ³õÊ¼»¯Ê±×öµÄ¹¤×÷¡£²¢ÇÒ»áÇåÀíÔÚĞ­ÒéÉú´æÆÚÄÚ·ÖÅä¸ø¸ÃĞ­ÒéµÄÈÎºÎ×ÊÔ´£¬Èç¶¨Ê±Æ÷ºÍ¶ÓÁĞ¡£
+ * æ’¤é”€neigh_table_initåœ¨åˆå§‹åŒ–æ—¶åšçš„å·¥ä½œã€‚å¹¶ä¸”ä¼šæ¸…ç†åœ¨åè®®ç”Ÿå­˜æœŸå†…åˆ†é…ç»™è¯¥åè®®çš„ä»»ä½•èµ„æºï¼Œå¦‚å®šæ—¶å™¨å’Œé˜Ÿåˆ—ã€‚
  */
 int neigh_table_clear(struct neigh_table *tbl)
 {
@@ -2295,9 +2295,9 @@ static struct file_operations neigh_stat_seq_fops = {
 
 #ifdef CONFIG_ARPD
 /**
- * ÏòÓÃ»§Ì¬³ÌĞò·¢ËÍÍ¨Öª£¬´¦Àísolicitations¡£
- * Éú³ÉµÄÏûÏ¢ÀàĞÍÊÇRTM_GETNETGH¡£
- * ÓÉsolicit(arp_solicit)µ÷ÓÃ¡£
+ * å‘ç”¨æˆ·æ€ç¨‹åºå‘é€é€šçŸ¥ï¼Œå¤„ç†solicitationsã€‚
+ * ç”Ÿæˆçš„æ¶ˆæ¯ç±»å‹æ˜¯RTM_GETNETGHã€‚
+ * ç”±solicit(arp_solicit)è°ƒç”¨ã€‚
  */
 void neigh_app_ns(struct neighbour *n)
 {
@@ -2318,10 +2318,10 @@ void neigh_app_ns(struct neighbour *n)
 	netlink_broadcast(rtnl, skb, 0, RTMGRP_NEIGH, GFP_ATOMIC);
 }
 /**
- * ÏòÓ¦ÓÃ³ÌĞò·¢ËÍÍ¨Öª¡£
- *		Ò»¸öneighbourÒÑ±»ÒÆµ½NUD_FAILEDÌ¬£¬²»¾ÃÖ®ºó¾Í»á±»À¬»ø»ØÊÕÆ÷É¾³ı¡£ÕâÖÖÇé¿öÏÂ£¬Õâ¸ö×´Ì¬µÄ±ä»¯ºÍ¶Ôneigh_app_notifyµÄµ÷ÓÃÊÇÓÉneigh_periodic_timer´¦Àí¡£
- *		Ò»¸öÁÚ¾ÓµÄ×´Ì¬´ÓÒ»¸öÓĞĞ§Ì¬±äÎªÒ»¸öÎŞĞ§Ì¬£¬»òÕßÁÚ¾ÓµÄL2µØÖ··¢Éú±ä»¯Ê±£¬ÓÉneigh_updateº¯ÊıÀ´´¦Àí×´Ì¬µÄ±ä»¯ºÍµ÷ÓÃneigh_app_notify¡£
- * neigh_app_notifyº¯ÊıÉú³ÉµÄÏûÏ¢ÀàĞÍÊÇRTM_NEWNEIGH¡£
+ * å‘åº”ç”¨ç¨‹åºå‘é€é€šçŸ¥ã€‚
+ *		ä¸€ä¸ªneighbourå·²è¢«ç§»åˆ°NUD_FAILEDæ€ï¼Œä¸ä¹…ä¹‹åå°±ä¼šè¢«åƒåœ¾å›æ”¶å™¨åˆ é™¤ã€‚è¿™ç§æƒ…å†µä¸‹ï¼Œè¿™ä¸ªçŠ¶æ€çš„å˜åŒ–å’Œå¯¹neigh_app_notifyçš„è°ƒç”¨æ˜¯ç”±neigh_periodic_timerå¤„ç†ã€‚
+ *		ä¸€ä¸ªé‚»å±…çš„çŠ¶æ€ä»ä¸€ä¸ªæœ‰æ•ˆæ€å˜ä¸ºä¸€ä¸ªæ— æ•ˆæ€ï¼Œæˆ–è€…é‚»å±…çš„L2åœ°å€å‘ç”Ÿå˜åŒ–æ—¶ï¼Œç”±neigh_updateå‡½æ•°æ¥å¤„ç†çŠ¶æ€çš„å˜åŒ–å’Œè°ƒç”¨neigh_app_notifyã€‚
+ * neigh_app_notifyå‡½æ•°ç”Ÿæˆçš„æ¶ˆæ¯ç±»å‹æ˜¯RTM_NEWNEIGHã€‚
  */
 static void neigh_app_notify(struct neighbour *n)
 {

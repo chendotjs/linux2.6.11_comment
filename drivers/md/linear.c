@@ -119,13 +119,13 @@ static int linear_run (mddev_t *mddev)
 	sector_t start;
 	sector_t curr_offset;
 	struct list_head *tmp;
-	/* ·ÖÅäÏßĞÔRAIDÊı¾İ½á¹¹ */
+	/* åˆ†é…çº¿æ€§RAIDæ•°æ®ç»“æ„ */
 	conf = kmalloc (sizeof (*conf) + mddev->raid_disks*sizeof(dev_info_t),
 			GFP_KERNEL);
 	if (!conf)
 		goto out;
 	memset(conf, 0, sizeof(*conf) + mddev->raid_disks*sizeof(dev_info_t));
-	mddev->private = conf;/* ½«ËüÓëRAIDÉè±¸¹ØÁª */
+	mddev->private = conf;/* å°†å®ƒä¸RAIDè®¾å¤‡å…³è” */
 
 	/*
 	 * Find the smallest device.
@@ -233,14 +233,14 @@ static int linear_stop (mddev_t *mddev)
 	return 0;
 }
 
-/* Ìá½»ÏßĞÔRAIDµÄIOÇëÇó */
+/* æäº¤çº¿æ€§RAIDçš„IOè¯·æ±‚ */
 static int linear_make_request (request_queue_t *q, struct bio *bio)
 {
 	mddev_t *mddev = q->queuedata;
 	dev_info_t *tmp_dev;
 	sector_t block;
 
-	/* Í³¼Æ¼ÆÊı */
+	/* ç»Ÿè®¡è®¡æ•° */
 	if (bio_data_dir(bio)==WRITE) {
 		disk_stat_inc(mddev->gendisk, writes);
 		disk_stat_add(mddev->gendisk, write_sectors, bio_sectors(bio));
@@ -249,11 +249,11 @@ static int linear_make_request (request_queue_t *q, struct bio *bio)
 		disk_stat_add(mddev->gendisk, read_sectors, bio_sectors(bio));
 	}
 
-	/* Í¨¹ı¶ş·Ö·¨²éÕÒ¸ø¶¨ÇëÇóËùÔÚµÄ³ÉÔ±´ÅÅÌ */
+	/* é€šè¿‡äºŒåˆ†æ³•æŸ¥æ‰¾ç»™å®šè¯·æ±‚æ‰€åœ¨çš„æˆå‘˜ç£ç›˜ */
 	tmp_dev = which_dev(mddev, bio->bi_sector);
 	block = bio->bi_sector >> 1;
     
-	if (unlikely(block >= (tmp_dev->size + tmp_dev->offset)/* Òª·ÃÎÊµÄÉÈÇø±àºÅÂäÔÚ³ÉÔ±´ÅÅÌµÄ·¶Î§Ö®Íâ */
+	if (unlikely(block >= (tmp_dev->size + tmp_dev->offset)/* è¦è®¿é—®çš„æ‰‡åŒºç¼–å·è½åœ¨æˆå‘˜ç£ç›˜çš„èŒƒå›´ä¹‹å¤– */
 		     || block < tmp_dev->offset)) {
 		char b[BDEVNAME_SIZE];
 
@@ -263,29 +263,29 @@ static int linear_make_request (request_queue_t *q, struct bio *bio)
 			bdevname(tmp_dev->rdev->bdev, b),
 			(unsigned long long)tmp_dev->size,
 		        (unsigned long long)tmp_dev->offset);
-		/* ÏòÉÏ²ã·µ»ØÊ§°Ü£¬²¢·µ»Ø0±íÊ¾´¦ÀíÍê±Ï */
+		/* å‘ä¸Šå±‚è¿”å›å¤±è´¥ï¼Œå¹¶è¿”å›0è¡¨ç¤ºå¤„ç†å®Œæ¯• */
 		bio_io_error(bio, bio->bi_size);
 		return 0;
 	}
 	if (unlikely(bio->bi_sector + (bio->bi_size >> 9) >
-		     (tmp_dev->offset + tmp_dev->size)<<1)) {/* ÇëÇó¿çÔ½ÁËÁ½¸ö³ÉÔ±´ÅÅÌ */
+		     (tmp_dev->offset + tmp_dev->size)<<1)) {/* è¯·æ±‚è·¨è¶Šäº†ä¸¤ä¸ªæˆå‘˜ç£ç›˜ */
 		/* This bio crosses a device boundary, so we have to
 		 * split it.
 		 */
 		struct bio_pair *bp;
-		/* ½«ÇëÇó·ÖÁÑ³ÉÁ½¸öBIOÇëÇó */
+		/* å°†è¯·æ±‚åˆ†è£‚æˆä¸¤ä¸ªBIOè¯·æ±‚ */
 		bp = bio_split(bio, bio_split_pool, 
 			       (bio->bi_sector + (bio->bi_size >> 9) -
 				(tmp_dev->offset + tmp_dev->size))<<1);
-		if (linear_make_request(q, &bp->bio1))/* Èç¹û·µ»Ø0±íÊ¾ÒÑ¾­´¦ÀíÍê±Ï£¬·ñÔòµ÷ÓÃgeneric_make_request´¦Àí */
+		if (linear_make_request(q, &bp->bio1))/* å¦‚æœè¿”å›0è¡¨ç¤ºå·²ç»å¤„ç†å®Œæ¯•ï¼Œå¦åˆ™è°ƒç”¨generic_make_requestå¤„ç† */
 			generic_make_request(&bp->bio1);
-		if (linear_make_request(q, &bp->bio2))/* ÒÔÍ¬ÑùµÄ·½·¨´¦ÀíµÚ¶ş¸öBIOÇëÇó */
+		if (linear_make_request(q, &bp->bio2))/* ä»¥åŒæ ·çš„æ–¹æ³•å¤„ç†ç¬¬äºŒä¸ªBIOè¯·æ±‚ */
 			generic_make_request(&bp->bio2);
 		bio_pair_release(bp);
 		return 0;
 	}
 
-	/* ÔËĞĞµ½ÕâÀï£¬ËµÃ÷ÇëÇó´¦ÓÚ´ÅÅÌÖ®ÄÚ£¬ĞŞ¸ÄÄ¿±êÉè±¸¼°ÉÈÇøºÅ£¬²¢·µ»Ø1ÇëÇóÉÏ²ã¼ÌĞø´¦Àí */
+	/* è¿è¡Œåˆ°è¿™é‡Œï¼Œè¯´æ˜è¯·æ±‚å¤„äºç£ç›˜ä¹‹å†…ï¼Œä¿®æ”¹ç›®æ ‡è®¾å¤‡åŠæ‰‡åŒºå·ï¼Œå¹¶è¿”å›1è¯·æ±‚ä¸Šå±‚ç»§ç»­å¤„ç† */
 	bio->bi_bdev = tmp_dev->rdev->bdev;
 	bio->bi_sector = bio->bi_sector - (tmp_dev->offset << 1) + tmp_dev->rdev->data_offset;
 

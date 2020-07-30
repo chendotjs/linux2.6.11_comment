@@ -91,29 +91,29 @@
 
 static void scsi_disk_release(struct kref *kref);
 
-/* SCSI´ÅÅÌÃèÊö·û */
+/* SCSIç£ç›˜æè¿°ç¬¦ */
 struct scsi_disk {
-	/* Çı¶¯ÃèÊö·û£¬×ÜÊÇsd_template */
+	/* é©±åŠ¨æè¿°ç¬¦ï¼Œæ€»æ˜¯sd_template */
 	struct scsi_driver *driver;	/* always &sd_template */
-	/* SCSIÉè±¸ÃèÊö·û */
+	/* SCSIè®¾å¤‡æè¿°ç¬¦ */
 	struct scsi_device *device;
-	/* ½á¹¹ÒıÓÃ¼ÆÊı */
+	/* ç»“æ„å¼•ç”¨è®¡æ•° */
 	struct kref	kref;
-	/* Í¨ÓÃ´ÅÅÌĞÅÏ¢ */
+	/* é€šç”¨ç£ç›˜ä¿¡æ¯ */
 	struct gendisk	*disk;
-	/* ´ò¿ª(Ê¹ÓÃ¼ÆÊıÆ÷) */
+	/* æ‰“å¼€(ä½¿ç”¨è®¡æ•°å™¨) */
 	unsigned int	openers;	/* protected by BKL for now, yuck */
-	/* ´ÅÅÌÈİÁ¿£¬ÒÔ512×Ö½ÚÎªµ¥Î»¡£Í¨¹ıREAD CAPACITY */
+	/* ç£ç›˜å®¹é‡ï¼Œä»¥512å­—èŠ‚ä¸ºå•ä½ã€‚é€šè¿‡READ CAPACITY */
 	sector_t	capacity;	/* size in 512-byte sectors */
-	/* SCSI´ÅÅÌË÷Òı£¬ÏµÍ³ÄÚÎ¨Ò»£¬ÓÃÀ´È·¶¨Í¨ÓÃ´ÅÅÌµÄÉè±¸ºÅºÍÉè±¸Ãû */
+	/* SCSIç£ç›˜ç´¢å¼•ï¼Œç³»ç»Ÿå†…å”¯ä¸€ï¼Œç”¨æ¥ç¡®å®šé€šç”¨ç£ç›˜çš„è®¾å¤‡å·å’Œè®¾å¤‡å */
 	u32		index;
-	/* Îª1±íÊ¾Õâ¸ö´ÅÅÌÓĞ½éÖÊ´æÔÚ */
+	/* ä¸º1è¡¨ç¤ºè¿™ä¸ªç£ç›˜æœ‰ä»‹è´¨å­˜åœ¨ */
 	u8		media_present;
-	/* ´ÅÅÌÉè±¸ÊÇ·ñĞ´±£»¤ */
+	/* ç£ç›˜è®¾å¤‡æ˜¯å¦å†™ä¿æŠ¤ */
 	u8		write_prot;
-	/* Write cache enbale×´Ì¬£¬Èç¹ûÎª1£¬ËµÃ÷Ğ´²Ù×÷µÄÊ±ºò¿ÉÒÔÊ¹ÓÃcache¡£Èç¹ûÎª0£¬Ôò±ØĞëµÈ´ıÕæÕıĞ´µ½½éÖÊÉÏ²ÅÄÜ·µ»Ø³É¹¦ */
+	/* Write cache enbaleçŠ¶æ€ï¼Œå¦‚æœä¸º1ï¼Œè¯´æ˜å†™æ“ä½œçš„æ—¶å€™å¯ä»¥ä½¿ç”¨cacheã€‚å¦‚æœä¸º0ï¼Œåˆ™å¿…é¡»ç­‰å¾…çœŸæ­£å†™åˆ°ä»‹è´¨ä¸Šæ‰èƒ½è¿”å›æˆåŠŸ */
 	unsigned	WCE : 1;	/* state of disk WCE bit */
-	/* Read cache disable×´Ì¬¡£Î´Ê¹ÓÃ¡£ */
+	/* Read cache disableçŠ¶æ€ã€‚æœªä½¿ç”¨ã€‚ */
 	unsigned	RCD : 1;	/* state of disk RCD bit, unused */
 };
 
@@ -913,7 +913,7 @@ static int media_not_present(struct scsi_disk *sdkp, struct scsi_request *srp)
 /*
  * spinup disk - called only in sd_revalidate_disk()
  */
-/* ·¢ËÍÃüÁîÊ¹´ÅÅÌ×ªÆğÀ´ */
+/* å‘é€å‘½ä»¤ä½¿ç£ç›˜è½¬èµ·æ¥ */
 static void
 sd_spinup_disk(struct scsi_disk *sdkp, char *diskname,
 	       struct scsi_request *SRpnt, unsigned char *buffer) {
@@ -1376,7 +1376,7 @@ defaults:
  *	performs disk spin up, read_capacity, etc.
  *	@disk: struct gendisk we care about
  **/
-/* Ğ£Ñé´ÅÅÌ£¬»ñµÃ´ÅÅÌ²ÎÊıĞÅÏ¢ */
+/* æ ¡éªŒç£ç›˜ï¼Œè·å¾—ç£ç›˜å‚æ•°ä¿¡æ¯ */
 static int sd_revalidate_disk(struct gendisk *disk)
 {
 	struct scsi_disk *sdkp = scsi_disk(disk);
@@ -1390,10 +1390,10 @@ static int sd_revalidate_disk(struct gendisk *disk)
 	 * If the device is offline, don't try and read capacity or any
 	 * of the other niceties.
 	 */
-	if (!scsi_device_online(sdp))/* Éè±¸²»ÔÚÏß£¬ÍË³ö */
+	if (!scsi_device_online(sdp))/* è®¾å¤‡ä¸åœ¨çº¿ï¼Œé€€å‡º */
 		goto out;
 
-	/* ·ÖÅäSCSIÇëÇóÃèÊö·û£¬ºóĞøµÄÌ½²â¶¼Í¨¹ıSCSI½øĞĞ */
+	/* åˆ†é…SCSIè¯·æ±‚æè¿°ç¬¦ï¼Œåç»­çš„æ¢æµ‹éƒ½é€šè¿‡SCSIè¿›è¡Œ */
 	sreq = scsi_allocate_request(sdp, GFP_KERNEL);
 	if (!sreq) {
 		printk(KERN_WARNING "(sd_revalidate_disk:) Request allocation "
@@ -1401,7 +1401,7 @@ static int sd_revalidate_disk(struct gendisk *disk)
 		goto out;
 	}
 
-	/* ½ÓÊÕÏìÓ¦µÄ»º³åÇø */
+	/* æ¥æ”¶å“åº”çš„ç¼“å†²åŒº */
 	buffer = kmalloc(512, GFP_KERNEL | __GFP_DMA);
 	if (!buffer) {
 		printk(KERN_WARNING "(sd_revalidate_disk:) Memory allocation "
@@ -1417,24 +1417,24 @@ static int sd_revalidate_disk(struct gendisk *disk)
 	sdkp->WCE = 0;
 	sdkp->RCD = 0;
 
-	/* ·¢ËÍÃüÁîÊ¹´ÅÅÌ×ªÆğÀ´ */
+	/* å‘é€å‘½ä»¤ä½¿ç£ç›˜è½¬èµ·æ¥ */
 	sd_spinup_disk(sdkp, disk->disk_name, sreq, buffer);
 
 	/*
 	 * Without media there is no reason to ask; moreover, some devices
 	 * react badly if we do.
 	 */
-	if (sdkp->media_present) {/* ÓĞ´ÅÅÌ½éÖÊ´æÔÚ */
-		/* ¶ÁÈ¡´ÅÅÌÈİÁ¿ */
+	if (sdkp->media_present) {/* æœ‰ç£ç›˜ä»‹è´¨å­˜åœ¨ */
+		/* è¯»å–ç£ç›˜å®¹é‡ */
 		sd_read_capacity(sdkp, disk->disk_name, sreq, buffer);
-		if (sdp->removable)/* ¶ÁÈ¡´ÅÅÌ±£»¤±êÖ¾ */
+		if (sdp->removable)/* è¯»å–ç£ç›˜ä¿æŠ¤æ ‡å¿— */
 			sd_read_write_protect_flag(sdkp, disk->disk_name,
 					sreq, buffer);
-		/* ¶ÁÈ¡»º´æÀàĞÍ */
+		/* è¯»å–ç¼“å­˜ç±»å‹ */
 		sd_read_cache_type(sdkp, disk->disk_name, sreq, buffer);
 	}
 
-	/* ÉèÖÃÍ¨ÓÃ½á¹¹ÖĞµÄ´ÅÅÌµÄÈİÁ¿ */
+	/* è®¾ç½®é€šç”¨ç»“æ„ä¸­çš„ç£ç›˜çš„å®¹é‡ */
 	set_capacity(disk, sdkp->capacity);
 	kfree(buffer);
 
@@ -1462,7 +1462,7 @@ static int sd_revalidate_disk(struct gendisk *disk)
  *	Assume sd_attach is not re-entrant (for time being)
  *	Also think about sd_attach() and sd_remove() running coincidentally.
  **/
-/* SCSI´ÅÅÌÇı¶¯Èë¿Ú£¬ÓÉÓÚSCSI×ÜÏß²¢²»Æ¥ÅäÇı¶¯ºÍÉè±¸£¬Òò´Ë´«ÈëµÄÉè±¸²¢²»Ò»¶¨ÄÜ±»¸ÃÇı¶¯¹ÜÀí */
+/* SCSIç£ç›˜é©±åŠ¨å…¥å£ï¼Œç”±äºSCSIæ€»çº¿å¹¶ä¸åŒ¹é…é©±åŠ¨å’Œè®¾å¤‡ï¼Œå› æ­¤ä¼ å…¥çš„è®¾å¤‡å¹¶ä¸ä¸€å®šèƒ½è¢«è¯¥é©±åŠ¨ç®¡ç† */
 static int sd_probe(struct device *dev)
 {
 	struct scsi_device *sdp = to_scsi_device(dev);
@@ -1472,7 +1472,7 @@ static int sd_probe(struct device *dev)
 	int error;
 
 	error = -ENODEV;
-	/* Èç¹ûSCSIÉè±¸²»ÊÇ´ÅÅÌ»òÕß´Å¹âÅÌ£¬ÔòÍË³ö */
+	/* å¦‚æœSCSIè®¾å¤‡ä¸æ˜¯ç£ç›˜æˆ–è€…ç£å…‰ç›˜ï¼Œåˆ™é€€å‡º */
 	if ((sdp->type != TYPE_DISK) && (sdp->type != TYPE_MOD))
 		goto out;
 
@@ -1480,7 +1480,7 @@ static int sd_probe(struct device *dev)
 			 sdp->host->host_no, sdp->channel, sdp->id, sdp->lun));
 
 	error = -ENOMEM;
-	/* ·ÖÅäÒ»¸öscsi_diskÃèÊö·û */
+	/* åˆ†é…ä¸€ä¸ªscsi_diskæè¿°ç¬¦ */
 	sdkp = kmalloc(sizeof(*sdkp), GFP_KERNEL);
 	if (!sdkp)
 		goto out;
@@ -1488,12 +1488,12 @@ static int sd_probe(struct device *dev)
 	memset (sdkp, 0, sizeof(*sdkp));
 	kref_init(&sdkp->kref);
 
-	/* ·ÖÅäÍ¨ÓÃ´ÅÅÌÃèÊö·û£¬SCSI´ÅÅÌ×î¶à16¸ö·ÖÇø */
+	/* åˆ†é…é€šç”¨ç£ç›˜æè¿°ç¬¦ï¼ŒSCSIç£ç›˜æœ€å¤š16ä¸ªåˆ†åŒº */
 	gd = alloc_disk(16);
 	if (!gd)
 		goto out_free;
 
-	/* ·ÖÅä´ÅÅÌÃû£¬Èçsda-sdz£¬sdaa-sdzz */
+	/* åˆ†é…ç£ç›˜åï¼Œå¦‚sda-sdzï¼Œsdaa-sdzz */
 	if (!idr_pre_get(&sd_index_idr, GFP_KERNEL))
 		goto out_put;
 
@@ -1501,7 +1501,7 @@ static int sd_probe(struct device *dev)
 	error = idr_get_new(&sd_index_idr, NULL, &index);
 	spin_unlock(&sd_index_lock);
 
-	/* Éè±¸ÊıÁ¿Ì«¶à£¬ÍË³ö */
+	/* è®¾å¤‡æ•°é‡å¤ªå¤šï¼Œé€€å‡º */
 	if (index >= SD_MAX_DISKS)
 		error = -EBUSY;
 	if (error)
@@ -1513,19 +1513,19 @@ static int sd_probe(struct device *dev)
 	sdkp->index = index;
 	sdkp->openers = 0;
 
-	/* ÉèÖÃ³¬Ê±Ê±¼ä */
+	/* è®¾ç½®è¶…æ—¶æ—¶é—´ */
 	if (!sdp->timeout) {
 		if (sdp->type == TYPE_DISK)
 			sdp->timeout = SD_TIMEOUT;
-		else/* ´Å¹âÅÌ³¬Ê±Ê±¼äÓ¦µ±³¤Ò»µã */
+		else/* ç£å…‰ç›˜è¶…æ—¶æ—¶é—´åº”å½“é•¿ä¸€ç‚¹ */
 			sdp->timeout = SD_MOD_TIMEOUT;
 	}
 
-	/* ¼ÆËãÉè±¸µÄÖ÷´ÎÉè±¸ºÅ£¬ÌØÊâµÄ¼ÆËã·½·¨ÊÇÎªÁËÓë2.4¼æÈİ */
+	/* è®¡ç®—è®¾å¤‡çš„ä¸»æ¬¡è®¾å¤‡å·ï¼Œç‰¹æ®Šçš„è®¡ç®—æ–¹æ³•æ˜¯ä¸ºäº†ä¸2.4å…¼å®¹ */
 	gd->major = sd_major((index & 0xf0) >> 4);
 	gd->first_minor = ((index & 0xf) << 4) | (index & 0xfff00);
 	gd->minors = 16;
-	/* ÉèÖÃ´ÅÅÌ»Øµ÷ */
+	/* è®¾ç½®ç£ç›˜å›è°ƒ */
 	gd->fops = &sd_fops;
 
 	if (index < 26) {
@@ -1543,10 +1543,10 @@ static int sd_probe(struct device *dev)
 
 	strcpy(gd->devfs_name, sdp->devfs_name);
 
-	/* ½«Çı¶¯¡¢Éè±¸¡¢Í¨ÓÃ´ÅÅÌÊı¾İ½á¹¹¹ØÁªÆğÀ´ */
+	/* å°†é©±åŠ¨ã€è®¾å¤‡ã€é€šç”¨ç£ç›˜æ•°æ®ç»“æ„å…³è”èµ·æ¥ */
 	gd->private_data = &sdkp->driver;
 
-	/* ·¢ËÍSCSIÃüÁî»ñÈ¡Éè±¸ĞÅÏ¢²¢ÉèÖÃÃèÊö·û×Ö¶Î */
+	/* å‘é€SCSIå‘½ä»¤è·å–è®¾å¤‡ä¿¡æ¯å¹¶è®¾ç½®æè¿°ç¬¦å­—æ®µ */
 	sd_revalidate_disk(gd);
 
 	gd->driverfs_dev = &sdp->sdev_gendev;
@@ -1556,7 +1556,7 @@ static int sd_probe(struct device *dev)
 	gd->queue = sdkp->device->request_queue;
 
 	dev_set_drvdata(dev, sdkp);
-	/* ½«¸ÃÉè±¸Ìí¼Óµ½Í¨ÓÃ¿éIOÏµÍ³ÖĞ */
+	/* å°†è¯¥è®¾å¤‡æ·»åŠ åˆ°é€šç”¨å—IOç³»ç»Ÿä¸­ */
 	add_disk(gd);
 
 	printk(KERN_NOTICE "Attached scsi %sdisk %s at scsi%d, channel %d, "

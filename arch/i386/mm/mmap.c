@@ -52,7 +52,7 @@ static inline unsigned long mmap_base(struct mm_struct *mm)
  * process VM image, sets up which VM layout function to use:
  */
 /**
- * 选择进程线性区的布局
+ * 閫夋嫨杩涚▼绾挎�у尯鐨勫竷灞�
  */
 void arch_pick_mmap_layout(struct mm_struct *mm)
 {

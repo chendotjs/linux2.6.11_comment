@@ -2861,7 +2861,7 @@ int radeon_cp_getparam( DRM_IOCTL_ARGS )
 	/*
 	 * This ioctl() doesn't work on 64-bit platforms because hw_lock is a
 	 * pointer which can't fit into an int-sized variable.  According to
-	 * Michel Dänzer, the ioctl() is only used on embedded platforms, so
+	 * Michel Dnzer, the ioctl() is only used on embedded platforms, so
 	 * not supporting it shouldn't be a problem.  If the same functionality
 	 * is needed on 64-bit platforms, a new ioctl() would have to be added,
 	 * so backwards-compatibility for the embedded platforms can be

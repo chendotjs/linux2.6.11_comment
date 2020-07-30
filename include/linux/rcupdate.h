@@ -184,7 +184,7 @@ static inline int rcu_pending(int cpu)
  * It is illegal to block while in an RCU read-side critical section.
  */
 /**
- * rcuµÄ¶ÁËø£¬¼òµ¥µÄ½ûÓÃÇÀÕ¼¼´¿É¡£
+ * rcuçš„è¯»é”ï¼Œç®€å•çš„ç¦ç”¨æŠ¢å å³å¯ã€‚
  */
 #define rcu_read_lock()		preempt_disable()
 
@@ -194,7 +194,7 @@ static inline int rcu_pending(int cpu)
  * See rcu_read_lock() for more information.
  */
 /**
- * ÊÍ·ÅrcuµÄ¶ÁËø£¬¼òµ¥µÄ´ò¿ªÇÀÕ¼¼´¿É¡£
+ * é‡Šæ”¾rcuçš„è¯»é”ï¼Œç®€å•çš„æ‰“å¼€æŠ¢å å³å¯ã€‚
  */
 #define rcu_read_unlock()	preempt_enable()
 

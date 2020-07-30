@@ -405,7 +405,7 @@ acpi_ev_gpe_detect (
 	/* Examine all GPE blocks attached to this interrupt level */
 
 	/**
-	 * acpi_gbl_gpe_lockÓÉACPI´úÂëÓëOS¹²Ïí¡£
+	 * acpi_gbl_gpe_lockç”±ACPIä»£ç ä¸OSå…±äº«ã€‚
 	 */
 	acpi_os_acquire_lock (acpi_gbl_gpe_lock, ACPI_ISR);
 	gpe_block = gpe_xrupt_list->gpe_block_list_head;
@@ -423,7 +423,7 @@ acpi_ev_gpe_detect (
 			/* Read the Status Register */
 
 			/**
-			 * ¼ì²éGPEx_STS¼Ä´æÆ÷
+			 * æ£€æŸ¥GPEx_STSå¯„å­˜å™¨
 			 */
 			status = acpi_hw_low_level_read (ACPI_GPE_REGISTER_WIDTH, &status_reg,
 					 &gpe_register_info->status_address);
@@ -434,7 +434,7 @@ acpi_ev_gpe_detect (
 			/* Read the Enable Register */
 
 			/**
-			 * ¼ì²éGPEx_EN¼Ä´æÆ÷¡£
+			 * æ£€æŸ¥GPEx_ENå¯„å­˜å™¨ã€‚
 			 */
 			status = acpi_hw_low_level_read (ACPI_GPE_REGISTER_WIDTH, &enable_reg,
 					 &gpe_register_info->enable_address);
@@ -449,7 +449,7 @@ acpi_ev_gpe_detect (
 			/* First check if there is anything active at all in this register */
 
 			/**
-			 * ¸ù¾İGPEx_STSºÍGPEx_EN¼Ä´æÆ÷È·¶¨´¦ÀíÆ÷ÏµÍ³ÖĞÊÇ·ñ´æÔÚGPEÊÂ¼ş¡£
+			 * æ ¹æ®GPEx_STSå’ŒGPEx_ENå¯„å­˜å™¨ç¡®å®šå¤„ç†å™¨ç³»ç»Ÿä¸­æ˜¯å¦å­˜åœ¨GPEäº‹ä»¶ã€‚
 			 */
 			enabled_status_byte = (u8) (status_reg & enable_reg);
 			if (!enabled_status_byte) {
@@ -463,7 +463,7 @@ acpi_ev_gpe_detect (
 			for (j = 0; j < ACPI_GPE_REGISTER_WIDTH; j++) {
 				/* Examine one GPE bit */
 				/**
-				 *´æÔÚGPEÊÂ¼ş¡£
+				 *å­˜åœ¨GPEäº‹ä»¶ã€‚
 				 */
 				if (enabled_status_byte & acpi_gbl_decode_to8bit[j]) {
 					/*
@@ -471,8 +471,8 @@ acpi_ev_gpe_detect (
 					 * or method.
 					 */
 					/**
-					 * acpi_ev_gpe_dispatchÖ´ĞĞASLÖĞ¶¨ÒåµÄACPI´úÂë¡£
-					 * ×îÖÕÊÇÔÚ¹¤×÷¶ÓÁĞÖĞ½âÊÍÖ´ĞĞASL³ÌĞò¡£
+					 * acpi_ev_gpe_dispatchæ‰§è¡ŒASLä¸­å®šä¹‰çš„ACPIä»£ç ã€‚
+					 * æœ€ç»ˆæ˜¯åœ¨å·¥ä½œé˜Ÿåˆ—ä¸­è§£é‡Šæ‰§è¡ŒASLç¨‹åºã€‚
 					 */
 					int_status |= acpi_ev_gpe_dispatch (
 							  &gpe_block->event_info[(i * ACPI_GPE_REGISTER_WIDTH) + j],

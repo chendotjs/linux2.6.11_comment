@@ -47,27 +47,27 @@ struct inode;
 #define SYS_RECVMSG	17		/* sys_recvmsg(2)		*/
 
 /**
- * Ì×¿Ú×´Ì¬
+ * å¥—å£çŠ¶æ€
  */
 typedef enum {
 	/**
-	 * Ì×¿ÚÉĞÎ´·ÖÅä£¬Î´Ê¹ÓÃ
+	 * å¥—å£å°šæœªåˆ†é…ï¼Œæœªä½¿ç”¨
 	 */
 	SS_FREE = 0,			/* not allocated		*/
 	/**
-	 * ¸ÃÌ×¿ÚÎ´ÓëÈÎºÎÒ»¸ö¶Ô·½¶Ë¿ÚÁ¬½Ó
+	 * è¯¥å¥—å£æœªä¸ä»»ä½•ä¸€ä¸ªå¯¹æ–¹ç«¯å£è¿æ¥
 	 */
 	SS_UNCONNECTED,			/* unconnected to any socket	*/
 	/**
-	 * ÕıÔÚÁ¬½Ó¹ı³ÌÖĞ
+	 * æ­£åœ¨è¿æ¥è¿‡ç¨‹ä¸­
 	 */
 	SS_CONNECTING,			/* in process of connecting	*/
 	/**
-	 * ÒÑ¾­Óë¶Ô·½¶Ë¿ÚÁ¬½Ó
+	 * å·²ç»ä¸å¯¹æ–¹ç«¯å£è¿æ¥
 	 */
 	SS_CONNECTED,			/* connected to socket		*/
 	/**
-	 * ÕıÔÚ¶Ï¿ªÁ¬½ÓµÄ¹ı³ÌÖĞ
+	 * æ­£åœ¨æ–­å¼€è¿æ¥çš„è¿‡ç¨‹ä¸­
 	 */
 	SS_DISCONNECTING		/* in process of disconnecting	*/
 } socket_state;
@@ -77,15 +77,15 @@ typedef enum {
 #ifdef __KERNEL__
 
 /**
- * ¸ÃÌ×¿Ú·¢ËÍ¶ÓÁĞÊÇ·ñÒÑÂú
+ * è¯¥å¥—å£å‘é€é˜Ÿåˆ—æ˜¯å¦å·²æ»¡
  */
 #define SOCK_ASYNC_NOSPACE	0
 /**
- * ±êÊ¶Ó¦ÓÃ³ÌĞòÍ¨¹ırecvµ÷ÓÃÊ±£¬ÊÇ·ñÔÚµÈ´ıÊı¾İµÄ½ÓÊÕ
+ * æ ‡è¯†åº”ç”¨ç¨‹åºé€šè¿‡recvè°ƒç”¨æ—¶ï¼Œæ˜¯å¦åœ¨ç­‰å¾…æ•°æ®çš„æ¥æ”¶
  */
 #define SOCK_ASYNC_WAITDATA	1
 /**
- * ·ÇÒì²½µÄÇé¿öÏÂ£¬·¢ËÍ¶ÓÁĞÊÇ·ñÒÑÂú
+ * éå¼‚æ­¥çš„æƒ…å†µä¸‹ï¼Œå‘é€é˜Ÿåˆ—æ˜¯å¦å·²æ»¡
  */
 #define SOCK_NOSPACE		2
 
@@ -105,15 +105,15 @@ typedef enum {
  *		  For writing rarp and other similar things on the user level.
  */
 /**
- * Ì×¿ÚÀàĞÍ
+ * å¥—å£ç±»å‹
  */
 enum sock_type {
-	SOCK_STREAM	= 1,/* »ùÓÚÁ¬½ÓµÄÌ×¿Ú */
-	SOCK_DGRAM	= 2,/* »ùÓÚÊı¾İ±¨µÄÌ×¿Ú */
-	SOCK_RAW	= 3,/* Ô­Ê¼Ì×½Ó¿Ú */
-	SOCK_RDM	= 4,/* ¿É¿¿´«ËÍ±¨ÎÄÌ×½Ó¿Ú */
-	SOCK_SEQPACKET	= 5,/* Ë³Ğò·Ö×éÌ×½Ó¿Ú */
-	SOCK_PACKET	= 10,/* »ìÔÓÄ£Ê½Ì×½Ó¿Ú */
+	SOCK_STREAM	= 1,/* åŸºäºè¿æ¥çš„å¥—å£ */
+	SOCK_DGRAM	= 2,/* åŸºäºæ•°æ®æŠ¥çš„å¥—å£ */
+	SOCK_RAW	= 3,/* åŸå§‹å¥—æ¥å£ */
+	SOCK_RDM	= 4,/* å¯é ä¼ é€æŠ¥æ–‡å¥—æ¥å£ */
+	SOCK_SEQPACKET	= 5,/* é¡ºåºåˆ†ç»„å¥—æ¥å£ */
+	SOCK_PACKET	= 10,/* æ··æ‚æ¨¡å¼å¥—æ¥å£ */
 };
 
 #define SOCK_MAX (SOCK_PACKET + 1)
@@ -133,43 +133,43 @@ enum sock_type {
  *  @passcred - credentials (used only in Unix Sockets (aka PF_LOCAL))
  */
 /**
- * socketÌ×¿Ú½á¹¹
+ * socketå¥—å£ç»“æ„
  */
 struct socket {
 	/**
-	 * Ì×¿Ú×´Ì¬£¬ÈçSS_FREE
+	 * å¥—å£çŠ¶æ€ï¼Œå¦‚SS_FREE
 	 */
 	socket_state		state;
 	/**
-	 * Ì×¿Ú±êÖ¾Î»£¬ÈçSOCK_ASYNC_NOSPACE
+	 * å¥—å£æ ‡å¿—ä½ï¼Œå¦‚SOCK_ASYNC_NOSPACE
 	 */
 	unsigned long		flags;
 	/**
-	 * ´«Êä²ãÌá¹©µÄ½Ó¿Ú·½·¨¡£Èçinet_stream_ops£¬inet_dgram_ops£¬inet_sockraw_ops
+	 * ä¼ è¾“å±‚æä¾›çš„æ¥å£æ–¹æ³•ã€‚å¦‚inet_stream_opsï¼Œinet_dgram_opsï¼Œinet_sockraw_ops
 	 */
 	struct proto_ops	*ops;
 	/**
-	 * Òì²½Í¨Öª¶ÓÁĞ¡£ÓÃÓÚÒì²½IO
+	 * å¼‚æ­¥é€šçŸ¥é˜Ÿåˆ—ã€‚ç”¨äºå¼‚æ­¥IO
 	 */
 	struct fasync_struct	*fasync_list;
 	/**
-	 * ÓëÌ×¿ÚÏà¹ØÁªµÄÎÄ¼şÖ¸Õë¡£
+	 * ä¸å¥—å£ç›¸å…³è”çš„æ–‡ä»¶æŒ‡é’ˆã€‚
 	 */
 	struct file		*file;
 	/**
-	 * ÓëÌ×¿ÚÏà¹ØÁªµÄ´«Êä¿ØÖÆ¿é¡£
+	 * ä¸å¥—å£ç›¸å…³è”çš„ä¼ è¾“æ§åˆ¶å—ã€‚
 	 */
 	struct sock		*sk;
 	/**
-	 * µÈ´ı¸ÃÌ×¿ÚµÄ½ø³ÌÁĞ±í¡£
+	 * ç­‰å¾…è¯¥å¥—å£çš„è¿›ç¨‹åˆ—è¡¨ã€‚
 	 */
 	wait_queue_head_t	wait;
 	/**
-	 * Ì×¿ÚÀàĞÍ£¬ÈçSOCK_STREAM¡£
+	 * å¥—å£ç±»å‹ï¼Œå¦‚SOCK_STREAMã€‚
 	 */
 	short			type;
 	/**
-	 * ÊÇ·ñÉèÖÃÁËSO_PASSCREDÑ¡Ïî¡£
+	 * æ˜¯å¦è®¾ç½®äº†SO_PASSCREDé€‰é¡¹ã€‚
 	 */
 	unsigned char		passcred;
 };
@@ -182,15 +182,15 @@ struct msghdr;
 struct module;
 
 /**
- * ´«Êä²ãÏòÌ×½Ó¿Ú²ãÌá¹©µÄ½Ó¿Ú
+ * ä¼ è¾“å±‚å‘å¥—æ¥å£å±‚æä¾›çš„æ¥å£
  */
 struct proto_ops {
 	/**
-	 * Ğ­Òé×å
+	 * åè®®æ—
 	 */
 	int		family;
 	/**
-	 * ËùÊôÄ£¿é
+	 * æ‰€å±æ¨¡å—
 	 */
 	struct module	*owner;
 	int		(*release)   (struct socket *sock);

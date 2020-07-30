@@ -42,22 +42,22 @@
 #include <linux/rwsem.h>
 
 /**
- * �ں��ź����ṹ
+ * 内核信号量结构
  */
 struct semaphore {
 	/**
-	 * �����ֵ����0����ʾ��Դ�ǿ��еġ��������0����ʾ�ź�����æ�ģ�����û�н����ڵȴ������Դ��
-	 * ���countΪ������ʾ��Դæ������������һ�������ڵȴ���
-	 * ������ע�⣬��ֵ���������ȴ��Ľ���������
+	 * 如果该值大于0，表示资源是空闲的。如果等于0，表示信号量是忙的，但是没有进程在等待这个资源。
+	 * 如果count为负，表示资源忙，并且至少有一个进程在等待。
+	 * 但是请注意，负值并不代表等待的进程数量。
 	 */
 	atomic_t count;
 	/**
-	 * ���һ����־����ʾ�Ƿ���һЩ�������ź�����˯�ߡ�
+	 * 存放一个标志，表示是否有一些进程在信号量上睡眠。
 	 */
 	int sleepers;
 	/**
-	 * ��ŵȴ����������ĵ�ַ����ǰ�ȴ���Դ������˯�߽��̶�������������С�
-	 * ���count>=0����ô���������Ӧ���ǿյġ�
+	 * 存放等待队列链表的地址。当前等待资源的所有睡眠进程都放在这个链表中。
+	 * 如果count>=0，那么这个链表就应该是空的。
 	 */
 	wait_queue_head_t wait;
 };
@@ -77,11 +77,11 @@ struct semaphore {
 	struct semaphore name = __SEMAPHORE_INITIALIZER(name,count)
 
 /**
- * DECLARE_MUTEX��̬����semaphore�ṹ�ı���������count�ֶγ�ʼ��Ϊ1
+ * DECLARE_MUTEX静态分配semaphore结构的变量，并将count字段初始化为1
  */
 #define DECLARE_MUTEX(name) __DECLARE_SEMAPHORE_GENERIC(name,1)
 /**
- * DECLARE_MUTEX��̬����semaphore�ṹ�ı���������count�ֶγ�ʼ��Ϊ0
+ * DECLARE_MUTEX静态分配semaphore结构的变量，并将count字段初始化为0
  */
 #define DECLARE_MUTEX_LOCKED(name) __DECLARE_SEMAPHORE_GENERIC(name,0)
 
@@ -99,7 +99,7 @@ static inline void sema_init (struct semaphore *sem, int val)
 }
 
 /**
- * ��ʼ��semaphore��count�ֶγ�ʼ��Ϊ1
+ * 初始化semaphore将count字段初始化为1
  */
 static inline void init_MUTEX (struct semaphore *sem)
 {
@@ -107,7 +107,7 @@ static inline void init_MUTEX (struct semaphore *sem)
 }
 
 /**
- * ��ʼ��semaphore��count�ֶγ�ʼ��Ϊ0
+ * 初始化semaphore将count字段初始化为0
  */
 static inline void init_MUTEX_LOCKED (struct semaphore *sem)
 {
@@ -130,7 +130,7 @@ fastcall void __up(struct semaphore * sem);
  * routine that actually waits. See arch/i386/kernel/semaphore.c
  */
 /**
- * ������ϣ������ں��ź�����ʱ������down������
+ * 当进程希望获得内核信号量锁时，调用down函数。
  */
 static inline void down(struct semaphore * sem)
 {
@@ -138,18 +138,18 @@ static inline void down(struct semaphore * sem)
 	__asm__ __volatile__(
 		"# atomic down operation\n\t"
 		/**
-		 * ���ȼ��ٲ����sem->count��ֵ
-		 * ���Ϊ����˵������ǰ����0�򸺣��͹���
-		 * ����ļ�һ������ԭ�ӵ�
-		 * ��ע�⵱count<0ʱ����ʱ-1�ǲ���ȷ�ģ���Ϊ���ý��̻ᱻ���𣬶�û�������Ļ���ź�����
-		 * ���ָ�countֵ��ʱ��������down�У���__down�С�
+		 * 首先减少并检查sem->count的值
+		 * 如果为负（说明减少前就是0或负）就挂起
+		 * 这里的减一操作是原子的
+		 * 请注意当count<0时，此时-1是不正确的，因为调用进程会被挂起，而没有真正的获得信号量。
+		 * 它恢复count值的时机，不在down中，在__down中。
 		 */
 		LOCK "decl %0\n\t"     /* --sem->count */
 		"js 2f\n"
 		"1:\n"
 		/**
-		 * Ϊ���ˣ�����__down_failed
-		 * __down_failed�ᱣ�����������__down
+		 * 为负了，调用__down_failed
+		 * __down_failed会保存参数并调用__down
 		 */
 		LOCK_SECTION_START("")
 		"2:\tlea %0,%%eax\n\t"
@@ -219,30 +219,30 @@ static inline int down_trylock(struct semaphore * sem)
  * jumps for both down() and up().
  */
 /**
- * �ͷ��ź���
+ * 释放信号量
  */
 static inline void up(struct semaphore * sem)
 {
 	__asm__ __volatile__(
 		"# atomic up operation\n\t"
 		/**
-		 * ��������count��ֵ
+		 * 首先增加count的值
 		 */
 		LOCK "incl %0\n\t"     /* ++sem->count */
 		/**
-		 * ����countֵ�������ǰС�ڵ���0����ô�н����ڵȴ�������2f�����ѵȴ����̡�
+		 * 测试count值，如果当前小于等于0，那么有进程在等待，跳到2f，唤醒等待进程。
 		 */
 		"jle 2f\n"
 		/**
-		 * ���е������ʾcount>0���������κ����飬���ء�
-		 * ע��1����Ĵ����ڵ����Ķ��С��˴����Ǻ����Ľ�������
+		 * 运行到这里表示count>0，不用做任何事情，返回。
+		 * 注意1后面的代码在单独的段中。此处就是函数的结束处。
 		 */
 		"1:\n"
 		LOCK_SECTION_START("")
 		/**
-		 * ����__up_wakeup��ע�����ǴӼĴ������εġ�
-		 * �����յ��õ���__up���ٵ���wakeup��
-		 * eax�Ĵ����д��ݵ��ǵ�һ������sem
+		 * 调用__up_wakeup，注意它是从寄存器传参的。
+		 * 它最终调用的是__up，再调用wakeup。
+		 * eax寄存器中传递的是第一个参数sem
 		 */
 		"2:\tlea %0,%%eax\n\t"
 		"call __up_wakeup\n\t"

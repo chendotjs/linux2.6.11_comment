@@ -22,35 +22,35 @@ struct sockaddr_ll
 /* Packet types */
 
 /**
- * ��ʾ֡�����ͣ��������� L2 ��Ŀ�ĵ�ַ��������
+ * 表示帧的类型，分类是由 L2 的目的地址来决定的
  */
 /**
- * ����Ŀ�ĵ�ַ���յ����������豸��L2��ַ��ȡ����仰˵��������Ƿ��������ġ�
+ * 包的目的地址与收到它的网络设备的L2地址相等。换句话说，这个包是发给本机的。
  */
 #define PACKET_HOST		0		/* To us		*/
 /**
- * ����Ŀ�ĵ�ַ��һ���㲥��ַ��������㲥��ַҲ���յ�������������豸�Ĺ㲥��ַ��
+ * 包的目的地址是一个广播地址，而这个广播地址也是收到这个包的网络设备的广播地址。
  */
 #define PACKET_BROADCAST	1		/* To all		*/
 /**
- * ����Ŀ�ĵ�ַ��һ���ಥ��ַ��������ಥ��ַ���յ�������������豸��ע��Ķಥ��ַ��
+ * 包的目的地址是一个多播地址，而这个多播地址是收到这个包的网络设备所注册的多播地址。
  */
 #define PACKET_MULTICAST	2		/* To group		*/
 /**
- * ����Ŀ�ĵ�ַ���յ����������豸�ĵ�ַ��ȫ��ͬ�������ǵ������ಥ���ǹ㲥������ˣ����������ת������û�����ã�������ᱻ������
+ * 包的目的地址与收到它的网络设备的地址完全不同（不管是单播，多播还是广播），因此，如果本机的转发功能没有启用，这个包会被丢弃。
  */
 #define PACKET_OTHERHOST	3		/* To someone else 	*/
 /**
- * ����������������õ������ǵĹ��ܰ��� Decnet Э�飬������Ϊÿ������tap������һ�ݷ������ĺ�����
+ * 这个包将被发出。用到这个标记的功能包括 Decnet 协议，或者是为每个网络tap都复制一份发出包的函数。
  */
 #define PACKET_OUTGOING		4		/* Outgoing of any type */
 /* These ones are invisible by user level */
 /**
- * ��������� loopback �豸�������������ǣ��ڴ��� loopback �豸ʱ���ں˿�������һЩ��ʵ�豸����Ҫ�Ĳ�����
+ * 这个包发向 loopback 设备。由于有这个标记，在处理 loopback 设备时，内核可以跳过一些真实设备才需要的操作。
  */
 #define PACKET_LOOPBACK		5		/* MC/BRD frame looped back */
 /**
- * ������ɿ���·�ɴ������·�ɡ�����·�ɹ�����2.6�ں����Ѿ�ȥ���ˡ�
+ * 这个包由快速路由代码查找路由。快速路由功能在2.6内核中已经去掉了。
  */
 #define PACKET_FASTROUTE	6		/* Fastrouted frame	*/
 

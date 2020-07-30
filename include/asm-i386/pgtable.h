@@ -32,7 +32,7 @@
 #define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
 extern unsigned long empty_zero_page[1024];
 /**
- * ½ø³Ì0µÄÒ³È«¾ÖÄ¿Â¼¡£
+ * è¿›ç¨‹0çš„é¡µå…¨å±€ç›®å½•ã€‚
  */
 extern pgd_t swapper_pg_dir[1024];
 extern kmem_cache_t *pgd_cache;
@@ -80,16 +80,16 @@ void paging_init(void);
  * area for the same reason. ;)
  */
 /**
- * µÚÒ»¸ö·ÇÁ¬ÐøÓ³ÉäµÄÄÚ´æÇøÓëÁ¬ÐøÓ³ÉäµÄÏßÐÔÇøÄ©Î²Ö®¼äµÄ°²È«Çø´óÐ¡¡£
+ * ç¬¬ä¸€ä¸ªéžè¿žç»­æ˜ å°„çš„å†…å­˜åŒºä¸Žè¿žç»­æ˜ å°„çš„çº¿æ€§åŒºæœ«å°¾ä¹‹é—´çš„å®‰å…¨åŒºå¤§å°ã€‚
  */
 #define VMALLOC_OFFSET	(8*1024*1024)
 /**
- * Îª·ÇÁ¬ÐøÄÚ´æÇø±£ÁôµÄÏßÐÔµØÖ·µÄÆðÊ¼µØÖ·¡£
+ * ä¸ºéžè¿žç»­å†…å­˜åŒºä¿ç•™çš„çº¿æ€§åœ°å€çš„èµ·å§‹åœ°å€ã€‚
  */
 #define VMALLOC_START	(((unsigned long) high_memory + vmalloc_earlyreserve + \
 			2*VMALLOC_OFFSET-1) & ~(VMALLOC_OFFSET-1))
 /**
- * Îª·ÇÁ¬ÐøÄÚ´æÇø±£ÁôµÄÏßÐÔµØÖ·µÄ½áÊøµØÖ·¡£
+ * ä¸ºéžè¿žç»­å†…å­˜åŒºä¿ç•™çš„çº¿æ€§åœ°å€çš„ç»“æŸåœ°å€ã€‚
  */
 #ifdef CONFIG_HIGHMEM
 # define VMALLOC_END	(PKMAP_BASE-2*PAGE_SIZE)
@@ -413,8 +413,8 @@ extern void noexec_setup(const char *str);
 #endif /* !CONFIG_DISCONTIGMEM */
 
 /**
- * Óëremap_pfn_rangeÀàËÆ£¬µ«ÊÇ½«IOÄÚ´æÓ³ÉäÎªÐéÄâµØÖ·¡£
- * ³ýÁËSPARCÍâ£¬ÆäËûÌåÏµ½á¹¹ÖÐ£¬ÕâÁ½¸öº¯ÊýÊÇÒ»ÑùµÄ¡£
+ * ä¸Žremap_pfn_rangeç±»ä¼¼ï¼Œä½†æ˜¯å°†IOå†…å­˜æ˜ å°„ä¸ºè™šæ‹Ÿåœ°å€ã€‚
+ * é™¤äº†SPARCå¤–ï¼Œå…¶ä»–ä½“ç³»ç»“æž„ä¸­ï¼Œè¿™ä¸¤ä¸ªå‡½æ•°æ˜¯ä¸€æ ·çš„ã€‚
  */
 #define io_remap_page_range(vma, vaddr, paddr, size, prot)		\
 		remap_pfn_range(vma, vaddr, (paddr) >> PAGE_SHIFT, size, prot)

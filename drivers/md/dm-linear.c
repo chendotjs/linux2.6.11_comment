@@ -15,11 +15,11 @@
 /*
  * Linear: maps a linear range of a device.
  */
-/* ÏßĞÔÓ³ÉäµÄË½ÓĞÊı¾İ½á¹¹ */
+/* çº¿æ€§æ˜ å°„çš„ç§æœ‰æ•°æ®ç»“æ„ */
 struct linear_c {
-	/* Ä¿±êÉè±¸ */
+	/* ç›®æ ‡è®¾å¤‡ */
 	struct dm_dev *dev;
-	/* ÔÚÄ¿±êÉè±¸ÉÏµÄÆğÊ¼µØÖ· */
+	/* åœ¨ç›®æ ‡è®¾å¤‡ä¸Šçš„èµ·å§‹åœ°å€ */
 	sector_t start;
 };
 
@@ -30,25 +30,25 @@ static int linear_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 {
 	struct linear_c *lc;
 
-	if (argc != 2) {/* Ö»ĞèÒªÄ¿±êÉè±¸ºÍÆğÊ¼ÉÈÇøÁ½¸ö²ÎÊı */
+	if (argc != 2) {/* åªéœ€è¦ç›®æ ‡è®¾å¤‡å’Œèµ·å§‹æ‰‡åŒºä¸¤ä¸ªå‚æ•° */
 		ti->error = "dm-linear: Invalid argument count";
 		return -EINVAL;
 	}
 
-	/* ·ÖÅäË½ÓĞÊı¾İ½á¹¹ */
+	/* åˆ†é…ç§æœ‰æ•°æ®ç»“æ„ */
 	lc = kmalloc(sizeof(*lc), GFP_KERNEL);
 	if (lc == NULL) {
 		ti->error = "dm-linear: Cannot allocate linear context";
 		return -ENOMEM;
 	}
 
-	/* ½âÎöÆğÊ¼ÉÈÇø */
+	/* è§£æèµ·å§‹æ‰‡åŒº */
 	if (sscanf(argv[1], SECTOR_FORMAT, &lc->start) != 1) {
 		ti->error = "dm-linear: Invalid device sector";
 		goto bad;
 	}
 
-	/* ½âÎöÉè±¸Ãû³Æ */
+	/* è§£æè®¾å¤‡åç§° */
 	if (dm_get_device(ti, argv[0], lc->start, ti->len,
 			  dm_table_get_mode(ti->table), &lc->dev)) {
 		ti->error = "dm-linear: Device lookup failed";
@@ -63,7 +63,7 @@ static int linear_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	return -EINVAL;
 }
 
-/* Îö¹¹º¯Êı£¬ÊÍ·ÅË½ÓĞÊı¾İ½á¹¹ */
+/* ææ„å‡½æ•°ï¼Œé‡Šæ”¾ç§æœ‰æ•°æ®ç»“æ„ */
 static void linear_dtr(struct dm_target *ti)
 {
 	struct linear_c *lc = (struct linear_c *) ti->private;
@@ -72,7 +72,7 @@ static void linear_dtr(struct dm_target *ti)
 	kfree(lc);
 }
 
-/* ×ª»»BIOÇëÇó */
+/* è½¬æ¢BIOè¯·æ±‚ */
 static int linear_map(struct dm_target *ti, struct bio *bio,
 		      union map_info *map_context)
 {

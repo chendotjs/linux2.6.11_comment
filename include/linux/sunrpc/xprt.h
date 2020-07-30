@@ -84,15 +84,15 @@ struct rpc_rqst {
 	 * This is the user-visible part
 	 */
 	/**
-	 * RPC¿Í»§´«Êä½Ó¿Ú 
+	 * RPCå®¢æˆ·ä¼ è¾“æ¥å£ 
 	 */
 	struct rpc_xprt *	rq_xprt;		/* RPC client */
 	/**
-	 * ·¢ËÍ»º´æ 
+	 * å‘é€ç¼“å­˜ 
 	 */
 	struct xdr_buf		rq_snd_buf;		/* send buffer */
 	/** 
-	 * ½ÓÊÕ»º´æ 
+	 * æ¥æ”¶ç¼“å­˜ 
 	 */
 	struct xdr_buf		rq_rcv_buf;		/* recv buffer */
 
@@ -100,11 +100,11 @@ struct rpc_rqst {
 	 * This is the private part
 	 */
 	/**
-	 * RPCÈÎÎñ 
+	 * RPCä»»åŠ¡ 
 	 */
 	struct rpc_task *	rq_task;	/* RPC task data */
 	/**
-	 * ÇëÇóID 
+	 * è¯·æ±‚ID 
 	 */
 	__u32			rq_xid;		/* request XID */
 	int			rq_cong;	/* has incremented xprt->cong */
@@ -112,7 +112,7 @@ struct rpc_rqst {
 	u32			rq_seqno;	/* gss seq no. used on req. */
 
 	/**
-	 * ½«ÇëÇóÁ´½Óµ½Á´±í
+	 * å°†è¯·æ±‚é“¾æ¥åˆ°é“¾è¡¨
 	 */
 	struct list_head	rq_list;
 
@@ -121,7 +121,7 @@ struct rpc_rqst {
 							 */
 	unsigned long		rq_majortimeo;	/* major timeout alarm */
 	/**
-	 * ³¬Ê±²ÎÊı 
+	 * è¶…æ—¶å‚æ•° 
 	 */
 	unsigned long		rq_timeout;	/* Current timeout value */
 	unsigned int		rq_retries;	/* # of retries */
@@ -129,7 +129,7 @@ struct rpc_rqst {
 	 * For authentication (e.g. auth_des)
 	 */
 	/**
-	 * ¼ø±ğÊı¾İ 
+	 * é‰´åˆ«æ•°æ® 
 	 */
 	u32			rq_creddata[2];
 	
@@ -137,7 +137,7 @@ struct rpc_rqst {
 	 * Partial send handling
 	 */
 	/**
-	 * ÒÑ¾­´«ÊäµÄ×Ö½ÚÊı 
+	 * å·²ç»ä¼ è¾“çš„å­—èŠ‚æ•° 
 	 */
 	u32			rq_bytes_sent;	/* Bytes we have sent */
 
@@ -153,37 +153,37 @@ struct rpc_rqst {
 #define XPRT_COPY_DATA		(1 << 3)
 
 /**
- * Õâ¸ö½á¹¹¶¨ÒåÁËÔ¶³Ì¹ı³Ìµ÷ÓÃÊ±Êµ¼Ê½øĞĞÍøÂç´«ÊäËùĞèÒªµÄÊı¾İ¡£
+ * è¿™ä¸ªç»“æ„å®šä¹‰äº†è¿œç¨‹è¿‡ç¨‹è°ƒç”¨æ—¶å®é™…è¿›è¡Œç½‘ç»œä¼ è¾“æ‰€éœ€è¦çš„æ•°æ®ã€‚
  */
 struct rpc_xprt {
 	/**
-	 * BSD socket²ã 
+	 * BSD socketå±‚ 
 	 */
 	struct socket *		sock;		/* BSD socket layer */
 	/**
-	 * INET²ã 
+	 * INETå±‚ 
 	 */
 	struct sock *		inet;		/* INET layer */
 
 	/**
-	 * ³¬Ê±½Ó¿Ú¡£
+	 * è¶…æ—¶æ¥å£ã€‚
 	 */
 	struct rpc_timeout	timeout;	/* timeout parms */
 	/**
-	 * ·şÎñÆ÷µØÖ· 
+	 * æœåŠ¡å™¨åœ°å€ 
 	 */
 	struct sockaddr_in	addr;		/* server address */
 	/**
-	 * IPĞ­Òé 
+	 * IPåè®® 
 	 */
 	int			prot;		/* IP protocol */
 
 	/**
-	 * ÓµÈû×´Ì¬
+	 * æ‹¥å¡çŠ¶æ€
 	 */
 	unsigned long		cong;		/* current congestion */
 	/**
-	 * ÓµÈû´°¿Ú
+	 * æ‹¥å¡çª—å£
 	 */
 	unsigned long		cwnd;		/* congestion window */
 
@@ -191,36 +191,36 @@ struct rpc_xprt {
 				sndsize;	/* socket send buffer size */
 
 	/**
-	 * µÈ´ı·¢ËÍµÄÇëÇó 
+	 * ç­‰å¾…å‘é€çš„è¯·æ±‚ 
 	 */
 	struct rpc_wait_queue	sending;	/* requests waiting to send */
 	struct rpc_wait_queue	resend;		/* requests waiting to resend */
 	/**
-	 * ÕıÔÚ·¢ËÍµÄÇëÇó 
+	 * æ­£åœ¨å‘é€çš„è¯·æ±‚ 
 	 */
 	struct rpc_wait_queue	pending;	/* requests in flight */
 	/** 
-	 * µÈ´ıÇëÇó²ÛµÄÇëÇó 
+	 * ç­‰å¾…è¯·æ±‚æ§½çš„è¯·æ±‚ 
 	 */
 	struct rpc_wait_queue	backlog;	/* waiting for slot */
 	/**
-	 * ¿ÕÏĞÇëÇó²Û 
+	 * ç©ºé—²è¯·æ±‚æ§½ 
 	 */
 	struct list_head	free;		/* free slots */
 	struct rpc_rqst *	slot;		/* slot table storage */
 	unsigned int		max_reqs;	/* total slots */
 	unsigned long		sockstate;	/* Socket state */
 	/**
-	 * ÕıÔÚ¹Ø±Õ
+	 * æ­£åœ¨å…³é—­
 	 */
 	unsigned char		shutdown   : 1,	/* being shut down */
 	/**
-	 * Ã»ÓĞÓµÈû¿ØÖÆ
+	 * æ²¡æœ‰æ‹¥å¡æ§åˆ¶
 	 */
 				nocong	   : 1,	/* no congestion control */
 				resvport   : 1, /* use a reserved port */
 	/**
-	 * Ê¹ÓÃTCP
+	 * ä½¿ç”¨TCP
 	 */
 				stream     : 1;	/* TCP */
 
@@ -233,7 +233,7 @@ struct rpc_xprt {
 	 * State of TCP reply receive stuff
 	 */
 	/**
-	 * TCP´ğ¸´½ÓÊÕ×´Ì¬ 
+	 * TCPç­”å¤æ¥æ”¶çŠ¶æ€ 
 	 */
 	u32			tcp_recm,	/* Fragment header */
 				tcp_xid,	/* Current XID */

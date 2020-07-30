@@ -138,7 +138,7 @@
 extern spinlock_t  dma_spin_lock;
 
 /**
- * »ñµÃDMA×ÔĞıËø£¬²¢¹Ø±Õ±¾µØÉè±¸ÖĞ¶Ï¡£
+ * è·å¾—DMAè‡ªæ—‹é”ï¼Œå¹¶å…³é—­æœ¬åœ°è®¾å¤‡ä¸­æ–­ã€‚
  */
 static __inline__ unsigned long claim_dma_lock(void)
 {
@@ -148,7 +148,7 @@ static __inline__ unsigned long claim_dma_lock(void)
 }
 
 /**
- * ÊÍ·ÅDMA×ÔĞıËø¡£
+ * é‡Šæ”¾DMAè‡ªæ—‹é”ã€‚
  */
 static __inline__ void release_dma_lock(unsigned long flags)
 {
@@ -157,7 +157,7 @@ static __inline__ void release_dma_lock(unsigned long flags)
 
 /* enable/disable a specific DMA channel */
 /**
- * ÆôÓÃÒ»¸öDMAÍ¨µÀ¡£µ±DMAÍ¨µÀÖĞ°üº¬ÁËºÏ·¨µÄÊı¾İÊ±ÆôÓÃÍ¨µÀ¡£
+ * å¯ç”¨ä¸€ä¸ªDMAé€šé“ã€‚å½“DMAé€šé“ä¸­åŒ…å«äº†åˆæ³•çš„æ•°æ®æ—¶å¯ç”¨é€šé“ã€‚
  */
 static __inline__ void enable_dma(unsigned int dmanr)
 {
@@ -168,7 +168,7 @@ static __inline__ void enable_dma(unsigned int dmanr)
 }
 
 /**
- * ¹Ø±ÕÒ»¸öDMAÍ¨µÀ¡£ÔÚÅäÖÃ¿ØÖÆÆ÷Ç°Ó¦µ±½ûÓÃDMAÍ¨µÀ¡£
+ * å…³é—­ä¸€ä¸ªDMAé€šé“ã€‚åœ¨é…ç½®æ§åˆ¶å™¨å‰åº”å½“ç¦ç”¨DMAé€šé“ã€‚
  */
 static __inline__ void disable_dma(unsigned int dmanr)
 {
@@ -186,8 +186,8 @@ static __inline__ void disable_dma(unsigned int dmanr)
  * --- only be used while holding the DMA lock ! ---
  */
 /**
- * Çå³ıDMAµÄ´¥·¢Æ÷¡£´¥·¢Æ÷ÓÃÓÚ¿ØÖÆ¶Ô16Î»¼Ä´æÆ÷µÄ·ÃÎÊ£¬ÎÒÃÇ¿ÉÒÔÍ¨¹ıÁ½¸öÁ¬ĞøµÄ8Î»²Ù×÷·ÃÎÊ¸Ã¼Ä´æÆ÷¡£
- * ´¥·¢Æ÷ÓÃÓÚÑ¡ÔñĞ´ÈëµÄ¸ß×Ö½Ú»¹ÊÇµÍ×Ö½Ú¡£µ±´«ÊäÍê8Î»ºó£¬´¥·¢Æ÷×Ô¶¯·´×ª¡£
+ * æ¸…é™¤DMAçš„è§¦å‘å™¨ã€‚è§¦å‘å™¨ç”¨äºæ§åˆ¶å¯¹16ä½å¯„å­˜å™¨çš„è®¿é—®ï¼Œæˆ‘ä»¬å¯ä»¥é€šè¿‡ä¸¤ä¸ªè¿ç»­çš„8ä½æ“ä½œè®¿é—®è¯¥å¯„å­˜å™¨ã€‚
+ * è§¦å‘å™¨ç”¨äºé€‰æ‹©å†™å…¥çš„é«˜å­—èŠ‚è¿˜æ˜¯ä½å­—èŠ‚ã€‚å½“ä¼ è¾“å®Œ8ä½åï¼Œè§¦å‘å™¨è‡ªåŠ¨åè½¬ã€‚
  */
 static __inline__ void clear_dma_ff(unsigned int dmanr)
 {
@@ -199,10 +199,10 @@ static __inline__ void clear_dma_ff(unsigned int dmanr)
 
 /* set mode (above) for a specific DMA channel */
 /**
- * ÉèÖÃDMA¿ØÖÆÆ÷µÄÄ£Ê½¡£±ØĞëÔÚDMAËøµÄ±£»¤ÏÂ½øĞĞ¡£
- * 		DMA_MODE_READ:		¶ÁÈëÍ¨µÀ¡£
- *		DMA_MODE_WRITE:		Ğ´ÈëÍ¨µÀ¡£
- *		DMA_MODE_CASCADE:	ÊÍ·Å¶Ô×ÜÏßµÄ¿ØÖÆ¡£È¥µôÍ¨µÀµÄ¼¶ÁªÊôĞÔ£¬½«ÆäÓÃÓÚISA×ÜÏß¡£
+ * è®¾ç½®DMAæ§åˆ¶å™¨çš„æ¨¡å¼ã€‚å¿…é¡»åœ¨DMAé”çš„ä¿æŠ¤ä¸‹è¿›è¡Œã€‚
+ * 		DMA_MODE_READ:		è¯»å…¥é€šé“ã€‚
+ *		DMA_MODE_WRITE:		å†™å…¥é€šé“ã€‚
+ *		DMA_MODE_CASCADE:	é‡Šæ”¾å¯¹æ€»çº¿çš„æ§åˆ¶ã€‚å»æ‰é€šé“çš„çº§è”å±æ€§ï¼Œå°†å…¶ç”¨äºISAæ€»çº¿ã€‚
  */
 static __inline__ void set_dma_mode(unsigned int dmanr, char mode)
 {
@@ -249,8 +249,8 @@ static __inline__ void set_dma_page(unsigned int dmanr, char pagenr)
  * Assumes dma flipflop is clear.
  */
 /**
- * ÎªDMA»º³åÇø·ÖÅäµØÖ·¡£±ØĞëÔÚDMAËøµÄ±£»¤ÏÂ½øĞĞ¡£
- * ½«µØÖ·µÄµÍ24Î»Ğ´Èëµ½¼Ä´æÆ÷ÖĞ¡£
+ * ä¸ºDMAç¼“å†²åŒºåˆ†é…åœ°å€ã€‚å¿…é¡»åœ¨DMAé”çš„ä¿æŠ¤ä¸‹è¿›è¡Œã€‚
+ * å°†åœ°å€çš„ä½24ä½å†™å…¥åˆ°å¯„å­˜å™¨ä¸­ã€‚
  */
 static __inline__ void set_dma_addr(unsigned int dmanr, unsigned int a)
 {
@@ -274,8 +274,8 @@ static __inline__ void set_dma_addr(unsigned int dmanr, unsigned int a)
  * NOTE 2: "count" represents _bytes_ and must be even for channels 5-7.
  */
 /**
- * ÉèÖÃ´«ÊäµÄ×Ö½ÚÊı¡£±ØĞëÔÚDMAËøµÄ±£»¤ÏÂ½øĞĞ¡£
- * count±ØĞëÊÇÅ¼Êı¡£
+ * è®¾ç½®ä¼ è¾“çš„å­—èŠ‚æ•°ã€‚å¿…é¡»åœ¨DMAé”çš„ä¿æŠ¤ä¸‹è¿›è¡Œã€‚
+ * countå¿…é¡»æ˜¯å¶æ•°ã€‚
  */
 static __inline__ void set_dma_count(unsigned int dmanr, unsigned int count)
 {
@@ -299,8 +299,8 @@ static __inline__ void set_dma_count(unsigned int dmanr, unsigned int count)
  * Assumes DMA flip-flop is clear.
  */
 /**
- * Çı¶¯³ÌĞòÓĞÊ±ĞèÒªÖªµÀDMAÊÇ·ñÒÑ¾­´«Êä½áÊø£¬µ÷ÓÃ¸Ãº¯Êı·µ»Ø»¹Î´´«ÊäµÄ×Ö½ÚÊı¡£
- * Èç¹û´«Êä³É¹¦£¬¸Ãº¯Êı·µ»Ø0.µ±´«Êä»¹Ã»ÓĞÍê³ÉÊ±£¬·µ»ØÖµ²¢²»È·¶¨£¬µ«²»»áÊÇ0.
+ * é©±åŠ¨ç¨‹åºæœ‰æ—¶éœ€è¦çŸ¥é“DMAæ˜¯å¦å·²ç»ä¼ è¾“ç»“æŸï¼Œè°ƒç”¨è¯¥å‡½æ•°è¿”å›è¿˜æœªä¼ è¾“çš„å­—èŠ‚æ•°ã€‚
+ * å¦‚æœä¼ è¾“æˆåŠŸï¼Œè¯¥å‡½æ•°è¿”å›0.å½“ä¼ è¾“è¿˜æ²¡æœ‰å®Œæˆæ—¶ï¼Œè¿”å›å€¼å¹¶ä¸ç¡®å®šï¼Œä½†ä¸ä¼šæ˜¯0.
  */
 static __inline__ int get_dma_residue(unsigned int dmanr)
 {

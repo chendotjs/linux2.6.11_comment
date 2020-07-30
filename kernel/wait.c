@@ -12,7 +12,7 @@
 #include <linux/hash.h>
 
 /**
- * add_wait_queueº¯Êı°ÑÒ»¸ö·Ç»¥³â½ø³Ì²åÈëµÈ´ı¶ÓÁĞÁ´±íµÄµÚÒ»¸öÎ»ÖÃ
+ * add_wait_queueå‡½æ•°æŠŠä¸€ä¸ªéäº’æ–¥è¿›ç¨‹æ’å…¥ç­‰å¾…é˜Ÿåˆ—é“¾è¡¨çš„ç¬¬ä¸€ä¸ªä½ç½®
  */
 void fastcall add_wait_queue(wait_queue_head_t *q, wait_queue_t *wait)
 {
@@ -26,7 +26,7 @@ void fastcall add_wait_queue(wait_queue_head_t *q, wait_queue_t *wait)
 EXPORT_SYMBOL(add_wait_queue);
 
 /**
- * add_wait_queue_exclusiveº¯Êı°ÑÒ»¸ö»¥³â½ø³Ì²åÈëµÈ´ı¶ÓÁĞÁ´±íµÄ×îºóÒ»¸öÎ»ÖÃ
+ * add_wait_queue_exclusiveå‡½æ•°æŠŠä¸€ä¸ªäº’æ–¥è¿›ç¨‹æ’å…¥ç­‰å¾…é˜Ÿåˆ—é“¾è¡¨çš„æœ€åä¸€ä¸ªä½ç½®
  */
 void fastcall add_wait_queue_exclusive(wait_queue_head_t *q, wait_queue_t *wait)
 {
@@ -40,7 +40,7 @@ void fastcall add_wait_queue_exclusive(wait_queue_head_t *q, wait_queue_t *wait)
 EXPORT_SYMBOL(add_wait_queue_exclusive);
 
 /**
- * ´ÓµÈ´ı¶ÓÁĞÁ´±íÖĞÉ¾³ıÒ»¸ö½ø³Ì
+ * ä»ç­‰å¾…é˜Ÿåˆ—é“¾è¡¨ä¸­åˆ é™¤ä¸€ä¸ªè¿›ç¨‹
  */
 void fastcall remove_wait_queue(wait_queue_head_t *q, wait_queue_t *wait)
 {
@@ -130,7 +130,7 @@ void fastcall finish_wait(wait_queue_head_t *q, wait_queue_t *wait)
 EXPORT_SYMBOL(finish_wait);
 
 /**
- * »½ĞÑË¯Ãß½ø³Ì²¢½«Ëü´ÓµÈ´ı¶ÓÁĞÉÏÕª³ı¡£
+ * å”¤é†’ç¡çœ è¿›ç¨‹å¹¶å°†å®ƒä»ç­‰å¾…é˜Ÿåˆ—ä¸Šæ‘˜é™¤ã€‚
  */
 int autoremove_wake_function(wait_queue_t *wait, unsigned mode, int sync, void *key)
 {

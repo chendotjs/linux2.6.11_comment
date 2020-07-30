@@ -117,11 +117,11 @@ enum
 struct softirq_action
 {
 	/**
-	 * ÈíÖĞ¶Ï´¦Àíº¯Êı
+	 * è½¯ä¸­æ–­å¤„ç†å‡½æ•°
 	 */
 	void	(*action)(struct softirq_action *);
 	/**
-	 * »Ø´«¸øÈíÖĞ¶Ï´¦Àíº¯ÊıµÄÊı¾İ¡£
+	 * å›ä¼ ç»™è½¯ä¸­æ–­å¤„ç†å‡½æ•°çš„æ•°æ®ã€‚
 	 */
 	void	*data;
 };
@@ -155,29 +155,29 @@ extern void FASTCALL(raise_softirq(unsigned int nr));
  */
 
 /**
- * taskletraÃèÊö·û
+ * taskletraæè¿°ç¬¦
  */
 struct tasklet_struct
 {
 	/**
-	 * Ö¸ÏòÏÂÒ»¸öÃèÊö·û
+	 * æŒ‡å‘ä¸‹ä¸€ä¸ªæè¿°ç¬¦
 	 */
 	struct tasklet_struct *next;
 	/**
-	 * taskletµÄ×´Ì¬¡£
+	 * taskletçš„çŠ¶æ€ã€‚
 	 * 
 	 */
 	unsigned long state;
 	/**
-	 * Ëø¼ÆÊıÆ÷¡£
+	 * é”è®¡æ•°å™¨ã€‚
 	 */
 	atomic_t count;
 	/**
-	 * tasklet¹¦ÄÜº¯Êı
+	 * taskletåŠŸèƒ½å‡½æ•°
 	 */
 	void (*func)(unsigned long);
 	/**
-	 * ´«¸ø¹¦ÄÜº¯ÊıµÄ²ÎÊı¡£
+	 * ä¼ ç»™åŠŸèƒ½å‡½æ•°çš„å‚æ•°ã€‚
 	 */
 	unsigned long data;
 };
@@ -190,18 +190,18 @@ struct tasklet_struct name = { NULL, 0, ATOMIC_INIT(1), func, data }
 
 
 /**
- * tasklet×´Ì¬
+ * taskletçŠ¶æ€
  */
 enum
 {
 	/**
-	 * ¸Ã±êÖ¾±»ÉèÖÃÊ±£¬±íÊ¾taskletÊÇ¹ÒÆğµÄ£¨Ôø±»µ÷¶ÈÖ´ĞĞ£©¡£
-	 * Ò²ÒâÎ¶×ÅËü±»²åÈëµ½tasklet_vec»òÕßtasklet_hi_vecÖĞ
+	 * è¯¥æ ‡å¿—è¢«è®¾ç½®æ—¶ï¼Œè¡¨ç¤ºtaskletæ˜¯æŒ‚èµ·çš„ï¼ˆæ›¾è¢«è°ƒåº¦æ‰§è¡Œï¼‰ã€‚
+	 * ä¹Ÿæ„å‘³ç€å®ƒè¢«æ’å…¥åˆ°tasklet_vecæˆ–è€…tasklet_hi_vecä¸­
 	 */
 	TASKLET_STATE_SCHED,	/* Tasklet is scheduled for execution */
 	/**
-	 * ¸Ã±êÖ¾±»ÉèÖÃÊ±£¬±íÊ¾taskletÕıÔÚ±»Ö´ĞĞ¡£ÔÚUPÉÏ²»Ê¹ÓÃËü¡£
-	 * Ëü±»ÓÃÀ´È·±£tasklet²»»áÔÚ¶à¸öCPUÉÏÍ¬Ê±Ö´ĞĞ¡£
+	 * è¯¥æ ‡å¿—è¢«è®¾ç½®æ—¶ï¼Œè¡¨ç¤ºtaskletæ­£åœ¨è¢«æ‰§è¡Œã€‚åœ¨UPä¸Šä¸ä½¿ç”¨å®ƒã€‚
+	 * å®ƒè¢«ç”¨æ¥ç¡®ä¿taskletä¸ä¼šåœ¨å¤šä¸ªCPUä¸ŠåŒæ—¶æ‰§è¡Œã€‚
 	 */
 	TASKLET_STATE_RUN	/* Tasklet is running (SMP only) */
 };
@@ -231,17 +231,17 @@ static inline void tasklet_unlock_wait(struct tasklet_struct *t)
 extern void FASTCALL(__tasklet_schedule(struct tasklet_struct *t));
 
 /**
- * µ÷¶Ètasklet£¬½«Æä¹Òµ½ÈíÖĞ¶ÏÖĞ¡£
+ * è°ƒåº¦taskletï¼Œå°†å…¶æŒ‚åˆ°è½¯ä¸­æ–­ä¸­ã€‚
  */
 static inline void tasklet_schedule(struct tasklet_struct *t)
 {
 	/**
-	 * ¼ì²éÈÎÎñµÄTASKLET_STATE_SCHED±êÖ¾£¬Èç¹ûÒÑ¾­ÉèÖÃ£¬¾ÍÍË³ö¡£
-	 * ÉèÖÃÁËTASKLET_STATE_SCHED£¬±íÊ¾ËüÒÑ¾­±»µ÷¶Èµ½ÈíÖĞ¶ÏÉÏÁË£¬ÏÖÔÚ´¦ÓÚ¹ÒÆğ×´Ì¬
-	 * ²»ÄÜ(Ò²²»ÓÃ)ÔÙµ÷¶ÈÁË¡£
+	 * æ£€æŸ¥ä»»åŠ¡çš„TASKLET_STATE_SCHEDæ ‡å¿—ï¼Œå¦‚æœå·²ç»è®¾ç½®ï¼Œå°±é€€å‡ºã€‚
+	 * è®¾ç½®äº†TASKLET_STATE_SCHEDï¼Œè¡¨ç¤ºå®ƒå·²ç»è¢«è°ƒåº¦åˆ°è½¯ä¸­æ–­ä¸Šäº†ï¼Œç°åœ¨å¤„äºæŒ‚èµ·çŠ¶æ€
+	 * ä¸èƒ½(ä¹Ÿä¸ç”¨)å†è°ƒåº¦äº†ã€‚
 	 *
-	 * ¼ÈÈ»TASKLET_STATE_SCHED±êÖ¾ÒÑ¾­±£Ö¤Ò»¸ötasklet²»»áÔÚ¶à¸öCPUÉÏÍ¬Ê±±»²åÈëµ½Á´±íÖĞ£¬ÎªÊ²Ã´»¹ĞèÒªTASKLET_STATE_RUN±êÖ¾ÄØ£¿
-	 * ÕâÊÇÒòÎªÔÚµ÷ÓÃ»Øµ÷º¯ÊıÇ°£¬TASKLET_STATE_SCHED¿ÉÄÜ±»Çå³ı£¬Èç¹ûÖ»ÓĞTASKLET_STATE_SCHEDÕâ¸ö±êÖ¾µÄ»°£¬¿ÉÄÜ»¹ÊÇ»áÔì³É¹ı³ÌÖØÈë¡£
+	 * æ—¢ç„¶TASKLET_STATE_SCHEDæ ‡å¿—å·²ç»ä¿è¯ä¸€ä¸ªtaskletä¸ä¼šåœ¨å¤šä¸ªCPUä¸ŠåŒæ—¶è¢«æ’å…¥åˆ°é“¾è¡¨ä¸­ï¼Œä¸ºä»€ä¹ˆè¿˜éœ€è¦TASKLET_STATE_RUNæ ‡å¿—å‘¢ï¼Ÿ
+	 * è¿™æ˜¯å› ä¸ºåœ¨è°ƒç”¨å›è°ƒå‡½æ•°å‰ï¼ŒTASKLET_STATE_SCHEDå¯èƒ½è¢«æ¸…é™¤ï¼Œå¦‚æœåªæœ‰TASKLET_STATE_SCHEDè¿™ä¸ªæ ‡å¿—çš„è¯ï¼Œå¯èƒ½è¿˜æ˜¯ä¼šé€ æˆè¿‡ç¨‹é‡å…¥ã€‚
 	 */
 	if (!test_and_set_bit(TASKLET_STATE_SCHED, &t->state))
 		__tasklet_schedule(t);
@@ -257,7 +257,7 @@ static inline void tasklet_hi_schedule(struct tasklet_struct *t)
 
 
 /**
- * ½ûÖ¹tasklet£¬²¢²»µÈ´ı±»½ûÖ¹µÄtaskletÔËĞĞ½áÊø
+ * ç¦æ­¢taskletï¼Œå¹¶ä¸ç­‰å¾…è¢«ç¦æ­¢çš„taskletè¿è¡Œç»“æŸ
  */
 static inline void tasklet_disable_nosync(struct tasklet_struct *t)
 {
@@ -266,7 +266,7 @@ static inline void tasklet_disable_nosync(struct tasklet_struct *t)
 }
 
 /**
- * ½ûÖ¹tasklet£¬²¢ÇÒµÈ´ı±»½ûÖ¹µÄtaskletÔËĞĞ½áÊø
+ * ç¦æ­¢taskletï¼Œå¹¶ä¸”ç­‰å¾…è¢«ç¦æ­¢çš„taskletè¿è¡Œç»“æŸ
  */
 static inline void tasklet_disable(struct tasklet_struct *t)
 {
@@ -276,7 +276,7 @@ static inline void tasklet_disable(struct tasklet_struct *t)
 }
 
 /**
- * ¼¤»îtasklet
+ * æ¿€æ´»tasklet
  */
 static inline void tasklet_enable(struct tasklet_struct *t)
 {

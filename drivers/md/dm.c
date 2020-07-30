@@ -26,19 +26,19 @@ static unsigned int _major = 0;
 /*
  * One of these is allocated per bio.
  */
-/* MDÉè±¸·Ö¸îºóµÄBIO */
+/* MDè®¾å¤‡åˆ†å‰²åçš„BIO */
 struct dm_io {
-	struct mapped_device *md;/* ËùÊôMDÉè±¸ */
-	int error;/* ´íÎóÂë */
-	struct bio *bio;/* Ô­Ê¼BIO */
-	atomic_t io_count;/* ·Ö¸îºóµÄBIO¼ÆÊıÆ÷ */
+	struct mapped_device *md;/* æ‰€å±MDè®¾å¤‡ */
+	int error;/* é”™è¯¯ç  */
+	struct bio *bio;/* åŸå§‹BIO */
+	atomic_t io_count;/* åˆ†å‰²åçš„BIOè®¡æ•°å™¨ */
 };
 
 /*
  * One of these is allocated per target within a bio.  Hopefully
  * this will be simplified out one day.
  */
-/* DMÉè±¸·Ö½âºóµÄBIO */
+/* DMè®¾å¤‡åˆ†è§£åçš„BIO */
 struct target_io {
 	struct dm_io *io;
 	struct dm_target *ti;
@@ -52,61 +52,61 @@ struct target_io {
 #define DMF_SUSPENDED 1
 #define DMF_FS_LOCKED 2
 
-/* Ó³ÉäÉè±¸ÃèÊö·û */
+/* æ˜ å°„è®¾å¤‡æè¿°ç¬¦ */
 struct mapped_device {
-	/* ±£»¤Ó³ÉäÉè±¸µÄËø */
+	/* ä¿æŠ¤æ˜ å°„è®¾å¤‡çš„é” */
 	struct rw_semaphore lock;
 	rwlock_t map_lock;
-	/* ÒıÓÃ¼ÆÊı */
+	/* å¼•ç”¨è®¡æ•° */
 	atomic_t holders;
 
-	/* Éè±¸±êÖ¾ */
+	/* è®¾å¤‡æ ‡å¿— */
 	unsigned long flags;
 
-	/* Éè±¸ÇëÇó¶ÓÁĞÃèÊö·û */
+	/* è®¾å¤‡è¯·æ±‚é˜Ÿåˆ—æè¿°ç¬¦ */
 	request_queue_t *queue;
-	/* Í¨ÓÃ´ÅÅÌÃèÊö·ûÖ¸Õë */
+	/* é€šç”¨ç£ç›˜æè¿°ç¬¦æŒ‡é’ˆ */
 	struct gendisk *disk;
 
-	/* Ö¸Ïòhash_cellÃèÊö·ûµÄÖ¸Õë£¬ÓÃÓÚÓëÓÃ»§¿Õ¼ä½Ó¿Ú */
+	/* æŒ‡å‘hash_cellæè¿°ç¬¦çš„æŒ‡é’ˆï¼Œç”¨äºä¸ç”¨æˆ·ç©ºé—´æ¥å£ */
 	void *interface_ptr;
 
 	/*
 	 * A list of ios that arrived while we were suspended.
 	 */
-	/* ÔÚ¹ÒÆğÊ±µ½´ïµÄIOÇëÇóÊı */
+	/* åœ¨æŒ‚èµ·æ—¶åˆ°è¾¾çš„IOè¯·æ±‚æ•° */
 	atomic_t pending;
-	/* µÈ´ı¶ÓÁĞ */
+	/* ç­‰å¾…é˜Ÿåˆ— */
 	wait_queue_head_t wait;
-	/* ÑÓ³Ù´¦ÀíµÄBIOÁ´±í */
+	/* å»¶è¿Ÿå¤„ç†çš„BIOé“¾è¡¨ */
  	struct bio_list deferred;
 
 	/*
 	 * The current mapping.
 	 */
-	/* µ±Ç°Ê¹ÓÃµÄÓ³Éä±íÃèÊö·ûÖ¸Õë */
+	/* å½“å‰ä½¿ç”¨çš„æ˜ å°„è¡¨æè¿°ç¬¦æŒ‡é’ˆ */
 	struct dm_table *map;
 
 	/*
 	 * io objects are allocated from here.
 	 */
-	/* ÓÃÓÚdm_ioµÄ»º³å·ÖÅäÆ÷ */
+	/* ç”¨äºdm_ioçš„ç¼“å†²åˆ†é…å™¨ */
 	mempool_t *io_pool;
-	/* ÓÃÓÚdm_target_ioµÄ»º³å·ÖÅäÆ÷ */
+	/* ç”¨äºdm_target_ioçš„ç¼“å†²åˆ†é…å™¨ */
 	mempool_t *tio_pool;
 
 	/*
 	 * Event handling.
 	 */
-	/* Ó³ÉäÉè±¸ÊÂ¼ş´¥·¢µÄ±àºÅ£¬Ò»´Î¿ÉÒÔ´¥·¢¶à¸öÊÂ¼ş */
+	/* æ˜ å°„è®¾å¤‡äº‹ä»¶è§¦å‘çš„ç¼–å·ï¼Œä¸€æ¬¡å¯ä»¥è§¦å‘å¤šä¸ªäº‹ä»¶ */
 	atomic_t event_nr;
-	/* µÈ´ıÓ³ÉäÉè±¸ÊÂ¼şµÄ½ø³ÌÎ»ÓÚÕâ¸ö¶ÓÁĞÖĞ */
+	/* ç­‰å¾…æ˜ å°„è®¾å¤‡äº‹ä»¶çš„è¿›ç¨‹ä½äºè¿™ä¸ªé˜Ÿåˆ—ä¸­ */
 	wait_queue_head_t eventq;
 
 	/*
 	 * freeze/thaw support require holding onto a super block
 	 */
-	/* Èç¹ûÓ³ÉäÉè±¸ÉÏÓĞÎÄ¼şÏµÍ³£¬Õâ¸öÎÄ¼şÏµÍ³±»Ëø¶¨£¬Ç¿ÖÆ½øÈëÒ»ÖÂ×´Ì¬¡£ */
+	/* å¦‚æœæ˜ å°„è®¾å¤‡ä¸Šæœ‰æ–‡ä»¶ç³»ç»Ÿï¼Œè¿™ä¸ªæ–‡ä»¶ç³»ç»Ÿè¢«é”å®šï¼Œå¼ºåˆ¶è¿›å…¥ä¸€è‡´çŠ¶æ€ã€‚ */
 	struct super_block *frozen_sb;
 };
 
@@ -160,11 +160,11 @@ static void local_exit(void)
 }
 
 int (*_inits[])(void) __initdata = {
-	local_init,/* ·ÖÅä¸÷ÖÖ½á¹¹µÄ¸ßËÙ»º´æ£¬²¢×¢²áÉè±¸ºÅ */
-	dm_target_init,/* ×¢²áÖÂ´íÓ³ÉäÄ¿±êÀàĞÍ */
-	dm_linear_init,/* ×¢²áÏßĞÔÓ³ÉäÄ¿±êÀàĞÍ */
-	dm_stripe_init,/* ×¢²áÌõ´øÓ³ÉäÄ¿±êÀàĞÍ */
-	dm_interface_init,/* ³õÊ¼»¯Á½¸ö¹şÏ£±í£¬²¢×¢²áÒ»¸ömiscÉè±¸ÓÃÓÚÉè±¸¿ØÖÆ */
+	local_init,/* åˆ†é…å„ç§ç»“æ„çš„é«˜é€Ÿç¼“å­˜ï¼Œå¹¶æ³¨å†Œè®¾å¤‡å· */
+	dm_target_init,/* æ³¨å†Œè‡´é”™æ˜ å°„ç›®æ ‡ç±»å‹ */
+	dm_linear_init,/* æ³¨å†Œçº¿æ€§æ˜ å°„ç›®æ ‡ç±»å‹ */
+	dm_stripe_init,/* æ³¨å†Œæ¡å¸¦æ˜ å°„ç›®æ ‡ç±»å‹ */
+	dm_interface_init,/* åˆå§‹åŒ–ä¸¤ä¸ªå“ˆå¸Œè¡¨ï¼Œå¹¶æ³¨å†Œä¸€ä¸ªmiscè®¾å¤‡ç”¨äºè®¾å¤‡æ§åˆ¶ */
 };
 
 void (*_exits[])(void) = {
@@ -175,14 +175,14 @@ void (*_exits[])(void) = {
 	dm_interface_exit,
 };
 
-/* DM³õÊ¼»¯ */
+/* DMåˆå§‹åŒ– */
 static int __init dm_init(void)
 {
 	const int count = ARRAY_SIZE(_inits);
 
 	int r, i;
 
-	for (i = 0; i < count; i++) {/* ÒÀ´Îµ÷ÓÃ¸÷¸ö³õÊ¼»¯º¯Êı */
+	for (i = 0; i < count; i++) {/* ä¾æ¬¡è°ƒç”¨å„ä¸ªåˆå§‹åŒ–å‡½æ•° */
 		r = _inits[i]();
 		if (r)
 			goto bad;
@@ -253,12 +253,12 @@ static int queue_io(struct mapped_device *md, struct bio *bio)
 {
 	down_write(&md->lock);
 
-	if (!test_bit(DMF_BLOCK_IO, &md->flags)) {/* ²»½øĞĞÑÓ³Ù´¦Àí£¬ÔòÍË³ö */
+	if (!test_bit(DMF_BLOCK_IO, &md->flags)) {/* ä¸è¿›è¡Œå»¶è¿Ÿå¤„ç†ï¼Œåˆ™é€€å‡º */
 		up_write(&md->lock);
-		return 1;/* ÕâÀï·µ»Ø1£¬ÉÏ²ã»á¼ÌĞø»ñÈ¡ËøºóÅĞ¶ÏDMF_BLOCK_IO±êÖ¾ */
+		return 1;/* è¿™é‡Œè¿”å›1ï¼Œä¸Šå±‚ä¼šç»§ç»­è·å–é”ååˆ¤æ–­DMF_BLOCK_IOæ ‡å¿— */
 	}
 
-	bio_list_add(&md->deferred, bio);/* ½«ÇëÇóÌí¼Óµ½ÑÓ³ÙÁ´±íÖĞ */
+	bio_list_add(&md->deferred, bio);/* å°†è¯·æ±‚æ·»åŠ åˆ°å»¶è¿Ÿé“¾è¡¨ä¸­ */
 
 	up_write(&md->lock);
 	return 0;		/* deferred successfully */
@@ -297,10 +297,10 @@ struct dm_table *dm_get_table(struct mapped_device *md)
  */
 static inline void dec_pending(struct dm_io *io, int error)
 {
-	if (error)/* ±£´æ´íÎóÂë */
+	if (error)/* ä¿å­˜é”™è¯¯ç  */
 		io->error = error;
 
-	/* µİ¼õ·Ö¸î¼ÆÊı£¬Èç¹ûµİ¼õÎª0£¬Ôòµ÷ÓÃÔ­Ê¼BIOµÄ½áÊø»Øµ÷ */
+	/* é€’å‡åˆ†å‰²è®¡æ•°ï¼Œå¦‚æœé€’å‡ä¸º0ï¼Œåˆ™è°ƒç”¨åŸå§‹BIOçš„ç»“æŸå›è°ƒ */
 	if (atomic_dec_and_test(&io->io_count)) {
 		if (atomic_dec_and_test(&io->md->pending))
 			/* nudge anyone waiting on suspend queue */
@@ -311,7 +311,7 @@ static inline void dec_pending(struct dm_io *io, int error)
 	}
 }
 
-/* µ±DMÉè±¸·Ö¸îºóµÄBIO±»½áÊøºó£¬»Øµ÷´Ëº¯Êı */
+/* å½“DMè®¾å¤‡åˆ†å‰²åçš„BIOè¢«ç»“æŸåï¼Œå›è°ƒæ­¤å‡½æ•° */
 static int clone_endio(struct bio *bio, unsigned int done, int error)
 {
 	int r = 0;
@@ -319,16 +319,16 @@ static int clone_endio(struct bio *bio, unsigned int done, int error)
 	struct dm_io *io = tio->io;
 	dm_endio_fn endio = tio->ti->type->end_io;
 
-	if (bio->bi_size)/* ÔËĞĞµ½ÕâÀï£¬bi_sizeÓ¦µ±Îª0£¬Èç¹û²»Îª0±íÊ¾Ä³¸öµØ·½³öÏÖÁË´íÎó */
+	if (bio->bi_size)/* è¿è¡Œåˆ°è¿™é‡Œï¼Œbi_sizeåº”å½“ä¸º0ï¼Œå¦‚æœä¸ä¸º0è¡¨ç¤ºæŸä¸ªåœ°æ–¹å‡ºç°äº†é”™è¯¯ */
 		return 1;
 
-	/* Èç¹ûBIO²»ÊÇ×îĞÂµÄ£¬¼´Ê¹Ã»ÓĞ³ö´íÂë£¬Ò²±íÊ¾ÓĞ´íÎó */
+	/* å¦‚æœBIOä¸æ˜¯æœ€æ–°çš„ï¼Œå³ä½¿æ²¡æœ‰å‡ºé”™ç ï¼Œä¹Ÿè¡¨ç¤ºæœ‰é”™è¯¯ */
 	if (!bio_flagged(bio, BIO_UPTODATE) && !error)
 		error = -EIO;
 
-	if (endio) {/* Ä¿±êÓ³ÉäÀàĞÍÓĞ½áÊø»Øµ÷ */
+	if (endio) {/* ç›®æ ‡æ˜ å°„ç±»å‹æœ‰ç»“æŸå›è°ƒ */
 		r = endio(tio->ti, bio, error, &tio->info);
-		if (r < 0)/* ³öÏÖÁË´íÎó */
+		if (r < 0)/* å‡ºç°äº†é”™è¯¯ */
 			error = r;
 
 		else if (r > 0)
@@ -337,7 +337,7 @@ static int clone_endio(struct bio *bio, unsigned int done, int error)
 	}
 
 	free_tio(io->md, tio);
-	/* µİ¼õ·Ö¸î¼ÆÊı */
+	/* é€’å‡åˆ†å‰²è®¡æ•° */
 	dec_pending(io, error);
 	bio_put(bio);
 	return r;
@@ -346,16 +346,16 @@ static int clone_endio(struct bio *bio, unsigned int done, int error)
 static sector_t max_io_len(struct mapped_device *md,
 			   sector_t sector, struct dm_target *ti)
 {
-	/* ¼ÆËãÉÈÇøÔÚÄ¿±êÉè±¸ÉÏµÄÏà¶ÔÎ»ÖÃ¼°³¤¶È */
+	/* è®¡ç®—æ‰‡åŒºåœ¨ç›®æ ‡è®¾å¤‡ä¸Šçš„ç›¸å¯¹ä½ç½®åŠé•¿åº¦ */
 	sector_t offset = sector - ti->begin;
-	sector_t len = ti->len - offset;/* ¼ÙÉèÄÜ¶ÁĞ´µÄ×î´ó³¤¶ÈÊÇÓ³ÉäÄ¿±êµÄÊ£Óà³¤¶È */
+	sector_t len = ti->len - offset;/* å‡è®¾èƒ½è¯»å†™çš„æœ€å¤§é•¿åº¦æ˜¯æ˜ å°„ç›®æ ‡çš„å‰©ä½™é•¿åº¦ */
 
 	/*
 	 * Does the target need to split even further ?
 	 */
-	if (ti->split_io) {/* Ä¿±êÉè±¸ĞèÒªÏ¸·ÖIO³¤¶È? */
+	if (ti->split_io) {/* ç›®æ ‡è®¾å¤‡éœ€è¦ç»†åˆ†IOé•¿åº¦? */
 		sector_t boundary;
-		/* ½«½áÊø±ß½ç¶ÔÆë£¬²¢¼õÈ¥ÆğÊ¼ÉÈÇøºÅ£¬×÷Îª±¾´ÎIOµÄ×î´ó³¤¶È */
+		/* å°†ç»“æŸè¾¹ç•Œå¯¹é½ï¼Œå¹¶å‡å»èµ·å§‹æ‰‡åŒºå·ï¼Œä½œä¸ºæœ¬æ¬¡IOçš„æœ€å¤§é•¿åº¦ */
 		boundary = ((offset + ti->split_io) & ~(ti->split_io - 1))
 			   - offset;
 		if (len > boundary)
@@ -365,7 +365,7 @@ static sector_t max_io_len(struct mapped_device *md,
 	return len;
 }
 
-/* ½«¸´ÖÆºóµÄBIOÓ³Éäµ½Ä¿±êÉè±¸ */
+/* å°†å¤åˆ¶åçš„BIOæ˜ å°„åˆ°ç›®æ ‡è®¾å¤‡ */
 static void __map_bio(struct dm_target *ti, struct bio *clone,
 		      struct target_io *tio)
 {
@@ -376,7 +376,7 @@ static void __map_bio(struct dm_target *ti, struct bio *clone,
 	 */
 	BUG_ON(!clone->bi_size);
 
-	/* Ä¿±êÉè±¸µÄÍê³É»Øµ÷£¬Ëü»áµİ¼õBIO¼ÆÊı£¬Ö±µ½Îª0ºó²Å»á½«DMÉè±¸µÄÔ­Ê¼BIOÇëÇó½áÊøµô */
+	/* ç›®æ ‡è®¾å¤‡çš„å®Œæˆå›è°ƒï¼Œå®ƒä¼šé€’å‡BIOè®¡æ•°ï¼Œç›´åˆ°ä¸º0åæ‰ä¼šå°†DMè®¾å¤‡çš„åŸå§‹BIOè¯·æ±‚ç»“æŸæ‰ */
 	clone->bi_end_io = clone_endio;
 	clone->bi_private = tio;
 
@@ -385,32 +385,32 @@ static void __map_bio(struct dm_target *ti, struct bio *clone,
 	 * anything, the target has assumed ownership of
 	 * this io.
 	 */
-	/* µİÔö·Ö¸î¼ÆÊı */
+	/* é€’å¢åˆ†å‰²è®¡æ•° */
 	atomic_inc(&tio->io->io_count);
-	/* µ÷ÓÃÄ¿±êÉè±¸µÄÓ³Éä»Øµ÷º¯Êı */
+	/* è°ƒç”¨ç›®æ ‡è®¾å¤‡çš„æ˜ å°„å›è°ƒå‡½æ•° */
 	r = ti->type->map(ti, clone, &tio->info);
-	if (r > 0)/* ³É¹¦Ó³Éä£¬²¢ÖØ¶¨Ïòµ½µÍ²ãÉè±¸£¬µ÷ÓÃ¿éIO²ãÌá½»BIO */
+	if (r > 0)/* æˆåŠŸæ˜ å°„ï¼Œå¹¶é‡å®šå‘åˆ°ä½å±‚è®¾å¤‡ï¼Œè°ƒç”¨å—IOå±‚æäº¤BIO */
 		/* the bio has been remapped so dispatch it */
 		generic_make_request(clone);
 
-	else if (r < 0) {/* ³öÏÖ´íÎó£¬µİ¼õ·Ö¸î¼ÆÊıÆ÷ */
+	else if (r < 0) {/* å‡ºç°é”™è¯¯ï¼Œé€’å‡åˆ†å‰²è®¡æ•°å™¨ */
 		/* error the io and bail out */
 		struct dm_io *io = tio->io;
 		free_tio(tio->io->md, tio);
 		dec_pending(io, -EIO);
 		bio_put(clone);
-	}/* ·µ»Ø0±íÊ¾¸´ÖÆµÄBIOÒÑ¾­±»Ó³ÉäÄ¿±êÀàĞÍÌá½»£¬²»Ğë×öÈÎºÎ´¦Àí */
+	}/* è¿”å›0è¡¨ç¤ºå¤åˆ¶çš„BIOå·²ç»è¢«æ˜ å°„ç›®æ ‡ç±»å‹æäº¤ï¼Œä¸é¡»åšä»»ä½•å¤„ç† */
 }
 
-/* ½«DMÉè±¸µÄBIO·Ö¸î³ÉĞ¡BIOÊ±£¬Ã¿¸öBIOµÄÖ´ĞĞÉÏÏÂÎÄ */
+/* å°†DMè®¾å¤‡çš„BIOåˆ†å‰²æˆå°BIOæ—¶ï¼Œæ¯ä¸ªBIOçš„æ‰§è¡Œä¸Šä¸‹æ–‡ */
 struct clone_info {
-	struct mapped_device *md;/* ËùÊôMDÉè±¸ */
-	struct dm_table *map;/* Éè±¸µÄÓ³Éä±í */
-	struct bio *bio;/* Ô­Ê¼BIO */
+	struct mapped_device *md;/* æ‰€å±MDè®¾å¤‡ */
+	struct dm_table *map;/* è®¾å¤‡çš„æ˜ å°„è¡¨ */
+	struct bio *bio;/* åŸå§‹BIO */
 	struct dm_io *io;
-	sector_t sector;/* µ±Ç°IOµÄÆğÊ¼ÉÈÇø */
-	sector_t sector_count;/* Ê£ÓàÉÈÇøÊı */
-	unsigned short idx;/* µ±Ç°IOÔÚÔ­bioµÄ¶ÎË÷Òı£¬¶¯Ì¬±ä»¯ */
+	sector_t sector;/* å½“å‰IOçš„èµ·å§‹æ‰‡åŒº */
+	sector_t sector_count;/* å‰©ä½™æ‰‡åŒºæ•° */
+	unsigned short idx;/* å½“å‰IOåœ¨åŸbioçš„æ®µç´¢å¼•ï¼ŒåŠ¨æ€å˜åŒ– */
 };
 
 /*
@@ -456,13 +456,13 @@ static struct bio *clone_bio(struct bio *bio, sector_t sector,
 	return clone;
 }
 
-/* ·Ö¸î´¦ÀíDMÉè±¸µÄBIOÇëÇó */
+/* åˆ†å‰²å¤„ç†DMè®¾å¤‡çš„BIOè¯·æ±‚ */
 static void __clone_and_map(struct clone_info *ci)
 {
 	struct bio *clone, *bio = ci->bio;
-	/* ²éÕÒÉÈÇø¶ÔÓ¦µÄÓ³ÉäÄ¿±ê */
+	/* æŸ¥æ‰¾æ‰‡åŒºå¯¹åº”çš„æ˜ å°„ç›®æ ‡ */
 	struct dm_target *ti = dm_table_find_target(ci->map, ci->sector);
-	/* ¼ÆËã±¾ÂÖ´¦ÀíµÄ×î´óÉÈÇøÊı */
+	/* è®¡ç®—æœ¬è½®å¤„ç†çš„æœ€å¤§æ‰‡åŒºæ•° */
 	sector_t len = 0, max = max_io_len(ci->md, ci->sector, ti);
 	struct target_io *tio;
 
@@ -474,20 +474,20 @@ static void __clone_and_map(struct clone_info *ci)
 	tio->ti = ti;
 	memset(&tio->info, 0, sizeof(tio->info));
 
-	if (ci->sector_count <= max) {/* Õû¸öBIO¶¼¿ÉÒÔ±»Ó³Éäµ½Õâ¸öÉè±¸ */
+	if (ci->sector_count <= max) {/* æ•´ä¸ªBIOéƒ½å¯ä»¥è¢«æ˜ å°„åˆ°è¿™ä¸ªè®¾å¤‡ */
 		/*
 		 * Optimise for the simple case where we can do all of
 		 * the remaining io with a single clone.
 		 */
-		/* ¸´ÖÆBIO */
+		/* å¤åˆ¶BIO */
 		clone = clone_bio(bio, ci->sector, ci->idx,
 				  bio->bi_vcnt - ci->idx, ci->sector_count);
-		/* ½«BIOÓ³Éäµ½Ä¿±êÉè±¸ */
+		/* å°†BIOæ˜ å°„åˆ°ç›®æ ‡è®¾å¤‡ */
 		__map_bio(ti, clone, tio);
-		/* ½«Ê£ÓàÉÈÇøÊıÇå0 */
+		/* å°†å‰©ä½™æ‰‡åŒºæ•°æ¸…0 */
 		ci->sector_count = 0;
 
-	} else if (to_sector(bio->bi_io_vec[ci->idx].bv_len) <= max) {/* BIOµÄµ±Ç°¶Î¿ÉÒÔ±»Ó³Éäµ½Õâ¸öÓ³ÉäÄ¿±êÖ´ĞĞ */
+	} else if (to_sector(bio->bi_io_vec[ci->idx].bv_len) <= max) {/* BIOçš„å½“å‰æ®µå¯ä»¥è¢«æ˜ å°„åˆ°è¿™ä¸ªæ˜ å°„ç›®æ ‡æ‰§è¡Œ */
 		/*
 		 * There are some bvecs that don't span targets.
 		 * Do as many of these as possible.
@@ -496,29 +496,29 @@ static void __clone_and_map(struct clone_info *ci)
 		sector_t remaining = max;
 		sector_t bv_len;
 
-		/* ±éÀúBIOµÄËùÓĞ¶Î£¬½«¾¡¿ÉÄÜ¶àµÄ¶ÎÄÉÈëµ½±¾´ÎIO */
+		/* éå†BIOçš„æ‰€æœ‰æ®µï¼Œå°†å°½å¯èƒ½å¤šçš„æ®µçº³å…¥åˆ°æœ¬æ¬¡IO */
 		for (i = ci->idx; remaining && (i < bio->bi_vcnt); i++) {
 			bv_len = to_sector(bio->bi_io_vec[i].bv_len);
 
-			if (bv_len > remaining)/* ¸Ã¶ÎÌ«³¤£¬³¬¹ıÄ¿±êÉè±¸µÄ·¶Î§ */
+			if (bv_len > remaining)/* è¯¥æ®µå¤ªé•¿ï¼Œè¶…è¿‡ç›®æ ‡è®¾å¤‡çš„èŒƒå›´ */
 				break;
 
-			/* µ÷Õû¿É½ÓÄÉµÄÉÈÇøÊıºÍ±¾´Î´¦ÀíµÄ³¤¶È */
+			/* è°ƒæ•´å¯æ¥çº³çš„æ‰‡åŒºæ•°å’Œæœ¬æ¬¡å¤„ç†çš„é•¿åº¦ */
 			remaining -= bv_len;
 			len += bv_len;
 		}
 
-		/* ¸´ÖÆBIO */
+		/* å¤åˆ¶BIO */
 		clone = clone_bio(bio, ci->sector, ci->idx, i - ci->idx, len);
-		/* ½«BIOÓ³Éäµ½Ä¿±êÉè±¸ */
+		/* å°†BIOæ˜ å°„åˆ°ç›®æ ‡è®¾å¤‡ */
 		__map_bio(ti, clone, tio);
 
-		/* µ÷ÕûÊ£ÓàµÄÉÈÇøÊı */
+		/* è°ƒæ•´å‰©ä½™çš„æ‰‡åŒºæ•° */
 		ci->sector += len;
 		ci->sector_count -= len;
 		ci->idx = i;
 
-	} else {/* ĞèÒª¶ÔBIOµÄµ±Ç°¶Î½øĞĞ·Ö¸î */
+	} else {/* éœ€è¦å¯¹BIOçš„å½“å‰æ®µè¿›è¡Œåˆ†å‰² */
 		/*
 		 * Create two copy bios to deal with io that has
 		 * been split across a target.
@@ -553,9 +553,9 @@ static void __clone_and_map(struct clone_info *ci)
  */
 static void __split_bio(struct mapped_device *md, struct bio *bio)
 {
-	struct clone_info ci;/* ±»·Ö¸îµÄBIOµÄÖ´ĞĞÉÏÏÂÎÄ */
+	struct clone_info ci;/* è¢«åˆ†å‰²çš„BIOçš„æ‰§è¡Œä¸Šä¸‹æ–‡ */
 
-	/* ³õÊ¼»¯clone_info */
+	/* åˆå§‹åŒ–clone_info */
 	ci.map = dm_get_table(md);
 	if (!ci.map) {
 		bio_io_error(bio, bio->bi_size);
@@ -574,11 +574,11 @@ static void __split_bio(struct mapped_device *md, struct bio *bio)
 	ci.idx = bio->bi_idx;
 
 	atomic_inc(&md->pending);
-	while (ci.sector_count)/* ¶ÔBIO½øĞĞ·Ö¸î£¬Ö±µ½Ê£ÓàÉÈÇøÊıÎª0 */
-		__clone_and_map(&ci);/* ·Ö¸îBIO */
+	while (ci.sector_count)/* å¯¹BIOè¿›è¡Œåˆ†å‰²ï¼Œç›´åˆ°å‰©ä½™æ‰‡åŒºæ•°ä¸º0 */
+		__clone_and_map(&ci);/* åˆ†å‰²BIO */
 
 	/* drop the extra reference count */
-	dec_pending(ci.io, 0);/* io_count³õÖµÎª1£¬ÕâÀï½«Æä¼õ»ØÈ¥ */
+	dec_pending(ci.io, 0);/* io_countåˆå€¼ä¸º1ï¼Œè¿™é‡Œå°†å…¶å‡å›å» */
 	dm_table_put(ci.map);
 }
 /*-----------------------------------------------------------------
@@ -589,28 +589,28 @@ static void __split_bio(struct mapped_device *md, struct bio *bio)
  * The request function that just remaps the bio built up by
  * dm_merge_bvec.
  */
-/* DMÉè±¸´¦ÀíBIOµÄÈë¿Úº¯Êı */
+/* DMè®¾å¤‡å¤„ç†BIOçš„å…¥å£å‡½æ•° */
 static int dm_request(request_queue_t *q, struct bio *bio)
 {
 	int r;
 	struct mapped_device *md = q->queuedata;
 
-	down_read(&md->lock);/* »ñÈ¡Éè±¸µÄ¶ÁËø */
+	down_read(&md->lock);/* è·å–è®¾å¤‡çš„è¯»é” */
 
 	/*
 	 * If we're suspended we have to queue
 	 * this io for later.
 	 */
-	while (test_bit(DMF_BLOCK_IO, &md->flags)) {/* ĞèÒªÑÓ³Ù´¦ÀíIO */
+	while (test_bit(DMF_BLOCK_IO, &md->flags)) {/* éœ€è¦å»¶è¿Ÿå¤„ç†IO */
 		up_read(&md->lock);
 
-		if (bio_rw(bio) == READA) {/* Èç¹ûÊÇÔ¤¶Á£¬Ôò²»ĞèÒª¹ÒÈëÑÓ³Ù¶ÓÁĞ£¬Ö±½ÓÏòÉÏ²ã·µ»Ø´íÎó */
+		if (bio_rw(bio) == READA) {/* å¦‚æœæ˜¯é¢„è¯»ï¼Œåˆ™ä¸éœ€è¦æŒ‚å…¥å»¶è¿Ÿé˜Ÿåˆ—ï¼Œç›´æ¥å‘ä¸Šå±‚è¿”å›é”™è¯¯ */
 			bio_io_error(bio, bio->bi_size);
 			return 0;
 		}
 
-		r = queue_io(md, bio);/* ½«ÇëÇó¹ÒÈëµ½ÑÓ³Ù¶ÓÁĞÖĞ£¬ÓÉ¹¤×÷¶ÓÁĞ´¦Àí */
-		if (r < 0) {/* ¹ÒÈëÊ§°Ü£¬ÏòÉÏ²ã·µ»Ø´íÎó */
+		r = queue_io(md, bio);/* å°†è¯·æ±‚æŒ‚å…¥åˆ°å»¶è¿Ÿé˜Ÿåˆ—ä¸­ï¼Œç”±å·¥ä½œé˜Ÿåˆ—å¤„ç† */
+		if (r < 0) {/* æŒ‚å…¥å¤±è´¥ï¼Œå‘ä¸Šå±‚è¿”å›é”™è¯¯ */
 			bio_io_error(bio, bio->bi_size);
 			return 0;
 
@@ -621,10 +621,10 @@ static int dm_request(request_queue_t *q, struct bio *bio)
 		 * We're in a while loop, because someone could suspend
 		 * before we get to the following read lock.
 		 */
-		down_read(&md->lock);/* Èç¹ûÔÚÊÍ·ÅËøµÄÊ±ºò£¬ÆäËûÊÂ¼şµ¼ÖÂ¹ÒÈë¶ÓÁĞÊ§°Ü£¬¾Í»ñÈ¡ËøºóÖØÊÔ */
+		down_read(&md->lock);/* å¦‚æœåœ¨é‡Šæ”¾é”çš„æ—¶å€™ï¼Œå…¶ä»–äº‹ä»¶å¯¼è‡´æŒ‚å…¥é˜Ÿåˆ—å¤±è´¥ï¼Œå°±è·å–é”åé‡è¯• */
 	}
 
-	__split_bio(md, bio);/* ·Ö¸îÓë´¦ÀíBIO */
+	__split_bio(md, bio);/* åˆ†å‰²ä¸å¤„ç†BIO */
 	up_read(&md->lock);
 	return 0;
 }
@@ -758,11 +758,11 @@ static struct block_device_operations dm_blk_dops;
 /*
  * Allocate and initialise a blank device with a given minor.
  */
-/* ·ÖÅä²¢³õÊ¼»¯Ó³ÉäÉè±¸µÄÃèÊö·û£¬´ÎÉè±¸ºÅÎª-1±íÊ¾ÓÉÏµÍ³×Ô¶¯Ñ¡Ôñ´ÎÉè±¸ºÅ */
+/* åˆ†é…å¹¶åˆå§‹åŒ–æ˜ å°„è®¾å¤‡çš„æè¿°ç¬¦ï¼Œæ¬¡è®¾å¤‡å·ä¸º-1è¡¨ç¤ºç”±ç³»ç»Ÿè‡ªåŠ¨é€‰æ‹©æ¬¡è®¾å¤‡å· */
 static struct mapped_device *alloc_dev(unsigned int minor, int persistent)
 {
 	int r;
-	struct mapped_device *md = kmalloc(sizeof(*md), GFP_KERNEL);/* ·ÖÅäÃèÊö·û */
+	struct mapped_device *md = kmalloc(sizeof(*md), GFP_KERNEL);/* åˆ†é…æè¿°ç¬¦ */
 
 	if (!md) {
 		DMWARN("unable to allocate device, out of memory.");
@@ -784,7 +784,7 @@ static struct mapped_device *alloc_dev(unsigned int minor, int persistent)
 	if (!md->queue)
 		goto bad1;
 
-	/* ·ÖÅä²¢³õÊ¼»¯´ÅÅÌ¶ÓÁĞ */
+	/* åˆ†é…å¹¶åˆå§‹åŒ–ç£ç›˜é˜Ÿåˆ— */
 	md->queue->queuedata = md;
 	md->queue->backing_dev_info.congested_fn = dm_any_congested;
 	md->queue->backing_dev_info.congested_data = md;
@@ -792,7 +792,7 @@ static struct mapped_device *alloc_dev(unsigned int minor, int persistent)
 	md->queue->unplug_fn = dm_unplug_all;
 	md->queue->issue_flush_fn = dm_flush_all;
 
-	/* ´´½¨ÄÚ´æ·ÖÅä»º³å³Ø */
+	/* åˆ›å»ºå†…å­˜åˆ†é…ç¼“å†²æ±  */
 	md->io_pool = mempool_create(MIN_IOS, mempool_alloc_slab,
 				     mempool_free_slab, _io_cache);
  	if (!md->io_pool)
@@ -803,7 +803,7 @@ static struct mapped_device *alloc_dev(unsigned int minor, int persistent)
 	if (!md->tio_pool)
 		goto bad3;
 
-	/* ·ÖÅäÍ¨ÓÃ´ÅÅÌ½á¹¹£¬´«Èë1±íÊ¾²»Ö§³Ö·ÖÇø */
+	/* åˆ†é…é€šç”¨ç£ç›˜ç»“æ„ï¼Œä¼ å…¥1è¡¨ç¤ºä¸æ”¯æŒåˆ†åŒº */
 	md->disk = alloc_disk(1);
 	if (!md->disk)
 		goto bad4;
@@ -814,7 +814,7 @@ static struct mapped_device *alloc_dev(unsigned int minor, int persistent)
 	md->disk->queue = md->queue;
 	md->disk->private_data = md;
 	sprintf(md->disk->disk_name, "dm-%d", minor);
-	/* ½«´ÅÅÌÌí¼Óµ½ÏµÍ³ */
+	/* å°†ç£ç›˜æ·»åŠ åˆ°ç³»ç»Ÿ */
 	add_disk(md->disk);
 
 	atomic_set(&md->pending, 0);
@@ -876,21 +876,21 @@ static int __bind(struct mapped_device *md, struct dm_table *t)
 	request_queue_t *q = md->queue;
 	sector_t size;
 
-	/* »ñµÃÔ­À´µÄÓ³Éä±íµÄ³¤¶È */
+	/* è·å¾—åŸæ¥çš„æ˜ å°„è¡¨çš„é•¿åº¦ */
 	size = dm_table_get_size(t);
-	/* ÉèÖÃÓ³ÉäÉè±¸µÄĞÂ³¤¶È£¬¸üĞÂÍ¨ÓÃ´ÅÅÌÃèÊö·ûµÄÈİÁ¿£¬¸üĞÂbdevÎÄ¼şÏµÍ³ÖĞinodeµÄ³¤¶È */
+	/* è®¾ç½®æ˜ å°„è®¾å¤‡çš„æ–°é•¿åº¦ï¼Œæ›´æ–°é€šç”¨ç£ç›˜æè¿°ç¬¦çš„å®¹é‡ï¼Œæ›´æ–°bdevæ–‡ä»¶ç³»ç»Ÿä¸­inodeçš„é•¿åº¦ */
 	__set_size(md->disk, size);
 	if (size == 0)
 		return 0;
 
-	write_lock(&md->map_lock);/* ÉèÖÃÓ³Éä±í */
+	write_lock(&md->map_lock);/* è®¾ç½®æ˜ å°„è¡¨ */
 	md->map = t;
 	write_unlock(&md->map_lock);
 
 	dm_table_get(t);
-	/* ÉèÖÃÓ³Éä±íµÄÊÂ¼ş»Øµ÷º¯Êı */
+	/* è®¾ç½®æ˜ å°„è¡¨çš„äº‹ä»¶å›è°ƒå‡½æ•° */
 	dm_table_event_callback(md->map, event_callback, md);
-	/* ÎªÓ³ÉäÉè±¸µÄÇëÇó¶ÓÁĞÉèÖÃÏŞÖÆ */
+	/* ä¸ºæ˜ å°„è®¾å¤‡çš„è¯·æ±‚é˜Ÿåˆ—è®¾ç½®é™åˆ¶ */
 	dm_table_set_restrictions(t, q);
 	return 0;
 }
@@ -1007,13 +1007,13 @@ int dm_swap_table(struct mapped_device *md, struct dm_table *table)
 	down_write(&md->lock);
 
 	/* device must be suspended */
-	if (!test_bit(DMF_SUSPENDED, &md->flags)) {/* Éè±¸»¹Ã»ÓĞ±»¹ÒÆğ£¬²»ÄÜĞŞ¸ÄËüµÄÓ³Éä±í */
+	if (!test_bit(DMF_SUSPENDED, &md->flags)) {/* è®¾å¤‡è¿˜æ²¡æœ‰è¢«æŒ‚èµ·ï¼Œä¸èƒ½ä¿®æ”¹å®ƒçš„æ˜ å°„è¡¨ */
 		up_write(&md->lock);
 		return -EPERM;
 	}
 
 	__unbind(md);
-	r = __bind(md, table);/* ½øĞĞÊµ¼ÊµÄ½»»»²Ù×÷ */
+	r = __bind(md, table);/* è¿›è¡Œå®é™…çš„äº¤æ¢æ“ä½œ */
 	if (r)
 		return r;
 

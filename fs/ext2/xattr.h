@@ -25,55 +25,55 @@
 #define EXT2_XATTR_INDEX_SECURITY	        6
 
 /**
- * ËùÓĞÀ©Õ¹ÊôĞÔ±£´æÔÚµ¥¶ÀµÄµØ·½¡£
- * ¸Ã½á¹¹´ú±íÎÄ¼şµÄÀ©Õ¹ÊôĞÔ¿éÃèÊö·û¡£
+ * æ‰€æœ‰æ‰©å±•å±æ€§ä¿å­˜åœ¨å•ç‹¬çš„åœ°æ–¹ã€‚
+ * è¯¥ç»“æ„ä»£è¡¨æ–‡ä»¶çš„æ‰©å±•å±æ€§å—æè¿°ç¬¦ã€‚
  */
 struct ext2_xattr_header {
 	/**
-	 * Ä§ÊõÖµ£¬¶Ôext2À´Ëµ£¬ÊÇEXT2_XATTR_MAGIC
+	 * é­”æœ¯å€¼ï¼Œå¯¹ext2æ¥è¯´ï¼Œæ˜¯EXT2_XATTR_MAGIC
 	 */
 	__le32	h_magic;	/* magic number for identification */
 	/**
-	 * ÒıÓÃ¼ÆÊı¡£µ±ÓĞÄ³Ò»¸öÎÄ¼şÒıÓÃÁËÆäÖĞµÄÊôĞÔÊ±£¬¼Ó1.
+	 * å¼•ç”¨è®¡æ•°ã€‚å½“æœ‰æŸä¸€ä¸ªæ–‡ä»¶å¼•ç”¨äº†å…¶ä¸­çš„å±æ€§æ—¶ï¼ŒåŠ 1.
 	 */
 	__le32	h_refcount;	/* reference count */
 	/**
-	 * Õ¼ÓÃ¶àÉÙ¸öÊôĞÔ¿é¡£
+	 * å ç”¨å¤šå°‘ä¸ªå±æ€§å—ã€‚
 	 */
 	__le32	h_blocks;	/* number of disk blocks used */
 	/**
-	 * ËùÓĞÊôĞÔµÄHashÖµ£¬¼Ó¿ìË÷ÒıËÙ¶È¡£
+	 * æ‰€æœ‰å±æ€§çš„Hashå€¼ï¼ŒåŠ å¿«ç´¢å¼•é€Ÿåº¦ã€‚
 	 */
 	__le32	h_hash;		/* hash value of all attributes */
 	__u32	h_reserved[4];	/* zero right now */
 };
 
 /**
- * ext2Ë÷Òı½ÚµãÔöÇ¿ÊôĞÔ¡£´æ·ÅÔÚµ¥¶ÀµÄ´ÅÅÌ¿éÊ×²¿ÖĞ¡£
+ * ext2ç´¢å¼•èŠ‚ç‚¹å¢å¼ºå±æ€§ã€‚å­˜æ”¾åœ¨å•ç‹¬çš„ç£ç›˜å—é¦–éƒ¨ä¸­ã€‚
  */
 struct ext2_xattr_entry {
 	/**
-	 * ÊôĞÔÃû³Æ³¤¶È¡£
+	 * å±æ€§åç§°é•¿åº¦ã€‚
 	 */
 	__u8	e_name_len;	/* length of name */
 	/**
-	 * ÊôĞÔË÷Òı£¬¹©ÎÄ¼şÒıÓÃ¡£
+	 * å±æ€§ç´¢å¼•ï¼Œä¾›æ–‡ä»¶å¼•ç”¨ã€‚
 	 */
 	__u8	e_name_index;	/* attribute name index */
 	/**
-	 * ÔÚÊôĞÔ¿éÖĞµÄÎ»ÖÃ¡£
+	 * åœ¨å±æ€§å—ä¸­çš„ä½ç½®ã€‚
 	 */
 	__le16	e_value_offs;	/* offset in disk block of value */
 	/**
-	 * Î»ÓÚÄÄÒ»¸öÊôĞÔ¿é¡£
+	 * ä½äºå“ªä¸€ä¸ªå±æ€§å—ã€‚
 	 */
 	__le32	e_value_block;	/* disk block attribute is stored on (n/i) */
 	/**
-	 * ÊôĞÔÖµµÄ³¤¶È¡£
+	 * å±æ€§å€¼çš„é•¿åº¦ã€‚
 	 */
 	__le32	e_value_size;	/* size of attribute value */
 	/**
-	 * ÊôĞÔÃû¼°ÊôĞÔÖµµÄ¹şÏ£Öµ¡£
+	 * å±æ€§ååŠå±æ€§å€¼çš„å“ˆå¸Œå€¼ã€‚
 	 */
 	__le32	e_hash;		/* hash value of name and value */
 	char	e_name[0];	/* attribute name */

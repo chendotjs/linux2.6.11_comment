@@ -767,7 +767,7 @@ int vcc_getsockopt(struct socket *sock, int level, int optname,
 #if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
 struct net_bridge;
 /**
- * ¹©Íâ²¿ÏµÍ³µ÷ÓÃµÄ£¬ËÑË÷ÍøÇÅ×ª·¢Êı¾İ¿âÖĞµÄMACÌõÄ¿º¯Êı¡£
+ * ä¾›å¤–éƒ¨ç³»ç»Ÿè°ƒç”¨çš„ï¼Œæœç´¢ç½‘æ¡¥è½¬å‘æ•°æ®åº“ä¸­çš„MACæ¡ç›®å‡½æ•°ã€‚
  */
 struct net_bridge_fdb_entry *(*br_fdb_get_hook)(struct net_bridge *br,
 						unsigned char *addr) = NULL;

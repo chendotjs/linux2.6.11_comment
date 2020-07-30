@@ -46,21 +46,21 @@
 #ifdef __KERNEL__
 
 /**
- * NFS·şÎñÆ÷¶ËÊä³ö±íÏî¡£
+ * NFSæœåŠ¡å™¨ç«¯è¾“å‡ºè¡¨é¡¹ã€‚
  */
 struct svc_export {
 	struct cache_head	h;
 	/**
-	 * svc_client½á¹¹ 
+	 * svc_clientç»“æ„ 
 	 */
 	struct auth_domain *	ex_client;
 	/**
-	 * ÊôĞÔ£¬ÈçÖ»¶Á»ò¶ÁĞ´ 
+	 * å±æ€§ï¼Œå¦‚åªè¯»æˆ–è¯»å†™ 
 	 */
 	int			ex_flags;
 	struct vfsmount *	ex_mnt;
 	/**
-	 * Êä³öËùÔÚµÄÄ¿Â¼µÄdentry 
+	 * è¾“å‡ºæ‰€åœ¨çš„ç›®å½•çš„dentry 
 	 */
 	struct dentry *		ex_dentry;
 	uid_t			ex_anon_uid;

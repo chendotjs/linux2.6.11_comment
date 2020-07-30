@@ -24,18 +24,18 @@
  * The ioctl interface needs to be able to look up devices by
  * name or uuid.
  *---------------------------------------------------------------*/
-/* ÓÃÓÚmapped_deviceµÄÃû³Æ¡¢UUIDÓ³Éä£¬ÓëÓ³ÉäÉè±¸ÊÇÒ»Ò»¶ÔÓ¦µÄ */
+/* ç”¨äºmapped_deviceçš„åç§°ã€UUIDæ˜ å°„ï¼Œä¸æ˜ å°„è®¾å¤‡æ˜¯ä¸€ä¸€å¯¹åº”çš„ */
 struct hash_cell {
-	/* Á´½Óµ½Ãû³Æ¡¢UUID¹şÏ£±íµÄÍ°ÖĞ */
+	/* é“¾æ¥åˆ°åç§°ã€UUIDå“ˆå¸Œè¡¨çš„æ¡¶ä¸­ */
 	struct list_head name_list;
 	struct list_head uuid_list;
 
-	/* ´´½¨Éè±¸Ê±Ö¸¶¨µÄÃû³ÆºÍUUID */
+	/* åˆ›å»ºè®¾å¤‡æ—¶æŒ‡å®šçš„åç§°å’ŒUUID */
 	char *name;
 	char *uuid;
-	/* ¹ØÁªµÄÓ³ÉäÉè±¸Ö¸Õë */
+	/* å…³è”çš„æ˜ å°„è®¾å¤‡æŒ‡é’ˆ */
 	struct mapped_device *md;
-	/* Ó³Éä±íÖ¸Õë£¬´ú±íÁË·Ç»î¶¯µÄÓ³Éä±í */
+	/* æ˜ å°„è¡¨æŒ‡é’ˆï¼Œä»£è¡¨äº†éæ´»åŠ¨çš„æ˜ å°„è¡¨ */
 	struct dm_table *new_map;
 };
 
@@ -558,25 +558,25 @@ static int __dev_status(struct mapped_device *md, struct dm_ioctl *param)
 	return 0;
 }
 
-/* ´´½¨DMÉè±¸ */
+/* åˆ›å»ºDMè®¾å¤‡ */
 static int dev_create(struct dm_ioctl *param, size_t param_size)
 {
 	int r;
 	struct mapped_device *md;
 
-	r = check_name(param->name);/* ¼ì²âÉè±¸Ãû³ÆÊÇ·ñÖØ¸´ */
+	r = check_name(param->name);/* æ£€æµ‹è®¾å¤‡åç§°æ˜¯å¦é‡å¤ */
 	if (r)
 		return r;
 
-	if (param->flags & DM_PERSISTENT_DEV_FLAG)/* Èç¹ûÓÃ»§Ì¬Ö¸¶¨ÁËÉè±¸±àºÅ£¬Ôò°´±àºÅ½øĞĞÉè±¸´´½¨ */
+	if (param->flags & DM_PERSISTENT_DEV_FLAG)/* å¦‚æœç”¨æˆ·æ€æŒ‡å®šäº†è®¾å¤‡ç¼–å·ï¼Œåˆ™æŒ‰ç¼–å·è¿›è¡Œè®¾å¤‡åˆ›å»º */
 		r = dm_create_with_minor(MINOR(huge_decode_dev(param->dev)), &md);
 	else
-		r = dm_create(&md);/* ·ñÔòÓÉÏµÍ³Ñ¡ÔñÉè±¸±àºÅ */
+		r = dm_create(&md);/* å¦åˆ™ç”±ç³»ç»Ÿé€‰æ‹©è®¾å¤‡ç¼–å· */
 
 	if (r)
 		return r;
 
-	/* ÎªÓ³ÉäÉè±¸´´½¨hash_cellÃèÊö·û£¬²¢½«Ëü¼ÓÈëÃû³Æ¡¢uuid¹şÏ£±í */
+	/* ä¸ºæ˜ å°„è®¾å¤‡åˆ›å»ºhash_cellæè¿°ç¬¦ï¼Œå¹¶å°†å®ƒåŠ å…¥åç§°ã€uuidå“ˆå¸Œè¡¨ */
 	r = dm_hash_insert(param->name, *param->uuid ? param->uuid : NULL, md);
 	if (r) {
 		dm_put(md);
@@ -585,7 +585,7 @@ static int dev_create(struct dm_ioctl *param, size_t param_size)
 
 	param->flags &= ~DM_INACTIVE_PRESENT_FLAG;
 
-	/* ÏòÓÃ»§Ì¬²ÎÊıÖĞÌî³ä×´Ì¬ĞÅÏ¢ */
+	/* å‘ç”¨æˆ·æ€å‚æ•°ä¸­å¡«å……çŠ¶æ€ä¿¡æ¯ */
 	r = __dev_status(md, param);
 	dm_put(md);
 
@@ -706,7 +706,7 @@ static int do_suspend(struct dm_ioctl *param)
 	return r;
 }
 
-/* »Ö¸´Ó³ÉäÉè±¸ */
+/* æ¢å¤æ˜ å°„è®¾å¤‡ */
 static int do_resume(struct dm_ioctl *param)
 {
 	int r = 0;
@@ -716,7 +716,7 @@ static int do_resume(struct dm_ioctl *param)
 
 	down_write(&_hash_lock);
 
-	/* Í¨¹ıÃû³Æ»òÕßUUID²éÕÒÓ³ÉäÉè±¸ */
+	/* é€šè¿‡åç§°æˆ–è€…UUIDæŸ¥æ‰¾æ˜ å°„è®¾å¤‡ */
 	hc = __find_device_hash_cell(param);
 	if (!hc) {
 		DMWARN("device doesn't appear to be in the dev hash table.");
@@ -724,32 +724,32 @@ static int do_resume(struct dm_ioctl *param)
 		return -ENXIO;
 	}
 
-	/* »ñµÃ¶ÔÓ¦µÄÓ³ÉäÉè±¸ºÍÓ³Éä±í */
+	/* è·å¾—å¯¹åº”çš„æ˜ å°„è®¾å¤‡å’Œæ˜ å°„è¡¨ */
 	md = hc->md;
 	dm_get(md);
 
 	new_map = hc->new_map;
-	/* Ö÷¶ÓÓ³Éä±í£¬ÒòÎªÒª½«²»»î¶¯µÄÓ³Éä×ªÒÆµ½»î¶¯Ó³Éä±íÖĞ */
+	/* ä¸»é˜Ÿæ˜ å°„è¡¨ï¼Œå› ä¸ºè¦å°†ä¸æ´»åŠ¨çš„æ˜ å°„è½¬ç§»åˆ°æ´»åŠ¨æ˜ å°„è¡¨ä¸­ */
 	hc->new_map = NULL;
 	param->flags &= ~DM_INACTIVE_PRESENT_FLAG;
 
 	up_write(&_hash_lock);
 
 	/* Do we need to load a new map ? */
-	if (new_map) {/* ´æÔÚÓ³Éä±í */
+	if (new_map) {/* å­˜åœ¨æ˜ å°„è¡¨ */
 		/* Suspend if it isn't already suspended */
-		if (!dm_suspended(md))/* Èç¹ûÏÖÓĞµÄÓ³Éä±íÃ»ÓĞ±»¹ÒÆğ£¬Ôò¹ÒÆğËü */
+		if (!dm_suspended(md))/* å¦‚æœç°æœ‰çš„æ˜ å°„è¡¨æ²¡æœ‰è¢«æŒ‚èµ·ï¼Œåˆ™æŒ‚èµ·å®ƒ */
 			dm_suspend(md);
 
-		/* ½«²»»î¶¯Ó³Éä±íÌæ»»µôÏÖÓĞµÄÓ³Éä±í£¬²¢·µ»ØÔ­Ó³Éä±í */
+		/* å°†ä¸æ´»åŠ¨æ˜ å°„è¡¨æ›¿æ¢æ‰ç°æœ‰çš„æ˜ å°„è¡¨ï¼Œå¹¶è¿”å›åŸæ˜ å°„è¡¨ */
 		r = dm_swap_table(md, new_map);
-		if (r) {/* Èç¹ûÔ­Ó³Éä±í´æÔÚ£¬ÔòÊÍ·ÅËü */
+		if (r) {/* å¦‚æœåŸæ˜ å°„è¡¨å­˜åœ¨ï¼Œåˆ™é‡Šæ”¾å®ƒ */
 			dm_put(md);
 			dm_table_put(new_map);
 			return r;
 		}
 
-		/* ¸ù¾İÓ³Éä±íµÄ·ÃÎÊÄ£Ê½£¬Éè±¸´ÅÅÌµÄ¶ÁĞ´±êÖ¾ */
+		/* æ ¹æ®æ˜ å°„è¡¨çš„è®¿é—®æ¨¡å¼ï¼Œè®¾å¤‡ç£ç›˜çš„è¯»å†™æ ‡å¿— */
 		if (dm_table_get_mode(new_map) & FMODE_WRITE)
 			set_disk_ro(dm_disk(md), 0);
 		else
@@ -758,10 +758,10 @@ static int do_resume(struct dm_ioctl *param)
 		dm_table_put(new_map);
 	}
 
-	if (dm_suspended(md))/* Èç¹ûÄ¿Ç°µÄÓ³ÉäÉè±¸ÊÇ¹ÒÆğ×´Ì¬£¬Ôò»Ö¸´Ëü */
+	if (dm_suspended(md))/* å¦‚æœç›®å‰çš„æ˜ å°„è®¾å¤‡æ˜¯æŒ‚èµ·çŠ¶æ€ï¼Œåˆ™æ¢å¤å®ƒ */
 		r = dm_resume(md);
 
-	if (!r)/* ÏòÓÃ»§Ì¬·µ»Øµ±Ç°µÄÓ³ÉäÉè±¸×´Ì¬ */
+	if (!r)/* å‘ç”¨æˆ·æ€è¿”å›å½“å‰çš„æ˜ å°„è®¾å¤‡çŠ¶æ€ */
 		r = __dev_status(md, param);
 
 	dm_put(md);
@@ -938,23 +938,23 @@ static int populate_table(struct dm_table *table,
 	void *end = (void *) param + param_size;
 	char *target_params;
 
-	/* ´«ÈëµÄÄ¿±êÊıÎª0£¬´íÎó */
+	/* ä¼ å…¥çš„ç›®æ ‡æ•°ä¸º0ï¼Œé”™è¯¯ */
 	if (!param->target_count) {
 		DMWARN("populate_table: no targets specified");
 		return -EINVAL;
 	}
 
-	/* Ñ­»·´¦Àí´«ÈëµÄÃ¿¸ö¹æÔò */
+	/* å¾ªç¯å¤„ç†ä¼ å…¥çš„æ¯ä¸ªè§„åˆ™ */
 	for (i = 0; i < param->target_count; i++) {
 
-		/* ½âÎöÓ³ÉäÄ¿±ê¹æÔò */
+		/* è§£ææ˜ å°„ç›®æ ‡è§„åˆ™ */
 		r = next_target(spec, next, end, &spec, &target_params);
 		if (r) {
 			DMWARN("unable to find target");
 			return r;
 		}
 
-		/* ½«¹æÔòÌí¼Óµ½¹æÔò±í */
+		/* å°†è§„åˆ™æ·»åŠ åˆ°è§„åˆ™è¡¨ */
 		r = dm_table_add_target(table, spec->target_type,
 					(sector_t) spec->sector_start,
 					(sector_t) spec->length,
@@ -967,31 +967,31 @@ static int populate_table(struct dm_table *table,
 		next = spec->next;
 	}
 
-	/* ¹¹½¨btree£¬ÒÔ±ã¶ÔÓ³Éä±í½øĞĞË÷Òı */
+	/* æ„å»ºbtreeï¼Œä»¥ä¾¿å¯¹æ˜ å°„è¡¨è¿›è¡Œç´¢å¼• */
 	return dm_table_complete(table);
 }
 
-/* ¼ÓÔØMDÉè±¸µÄÓ³Éä±í */
+/* åŠ è½½MDè®¾å¤‡çš„æ˜ å°„è¡¨ */
 static int table_load(struct dm_ioctl *param, size_t param_size)
 {
 	int r;
 	struct hash_cell *hc;
 	struct dm_table *t;
 
-	/* ·ÖÅäÉè±¸Ó³Éä±íÃèÊö·û£¬²¢½«Ó³Éä±íÓëÓ³ÉäÉè±¸¹ØÁª */
+	/* åˆ†é…è®¾å¤‡æ˜ å°„è¡¨æè¿°ç¬¦ï¼Œå¹¶å°†æ˜ å°„è¡¨ä¸æ˜ å°„è®¾å¤‡å…³è” */
 	r = dm_table_create(&t, get_mode(param), param->target_count);
 	if (r)
 		return r;
 
-	/* ½âÎöÓ³Éä¹æÔò£¬Ìî³äµ½Ó³Éä±íÃèÊö·ûÖĞ¡£ */
+	/* è§£ææ˜ å°„è§„åˆ™ï¼Œå¡«å……åˆ°æ˜ å°„è¡¨æè¿°ç¬¦ä¸­ã€‚ */
 	r = populate_table(t, param, param_size);
-	if (r) {/* Èç¹ûÊ§°ÜÔòÊÍ·ÅÓ³Éä±íÃèÊö·û */
+	if (r) {/* å¦‚æœå¤±è´¥åˆ™é‡Šæ”¾æ˜ å°„è¡¨æè¿°ç¬¦ */
 		dm_table_put(t);
 		return r;
 	}
 
 	down_write(&_hash_lock);
-	/* ¸ù¾İÃû³ÆºÍUUID²éÕÒÉè±¸£¬Èç¹û²»´æÔÚ£¬ÍË³ö */
+	/* æ ¹æ®åç§°å’ŒUUIDæŸ¥æ‰¾è®¾å¤‡ï¼Œå¦‚æœä¸å­˜åœ¨ï¼Œé€€å‡º */
 	hc = __find_device_hash_cell(param);
 	if (!hc) {
 		DMWARN("device doesn't appear to be in the dev hash table.");
@@ -999,13 +999,13 @@ static int table_load(struct dm_ioctl *param, size_t param_size)
 		return -ENXIO;
 	}
 
-	if (hc->new_map)/* Èç¹ûÓ³Éä±íÒÑ¾­´æÔÚ£¬ÔòÊÍ·ÅÔ­Ó³Éä±í */
+	if (hc->new_map)/* å¦‚æœæ˜ å°„è¡¨å·²ç»å­˜åœ¨ï¼Œåˆ™é‡Šæ”¾åŸæ˜ å°„è¡¨ */
 		dm_table_put(hc->new_map);
-	/* ½«Ó³Éä±íÓëhash_cell¹ØÁª */
+	/* å°†æ˜ å°„è¡¨ä¸hash_cellå…³è” */
 	hc->new_map = t;
 	param->flags |= DM_INACTIVE_PRESENT_FLAG;
 
-	/* »ñµÃÉè±¸µÄ×´Ì¬²¢ÏòÓÃ»§Ì¬·µ»Ø */
+	/* è·å¾—è®¾å¤‡çš„çŠ¶æ€å¹¶å‘ç”¨æˆ·æ€è¿”å› */
 	r = __dev_status(hc->md, param);
 	up_write(&_hash_lock);
 	return r;

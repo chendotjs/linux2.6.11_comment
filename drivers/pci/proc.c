@@ -591,7 +591,7 @@ static struct file_operations proc_bus_pci_dev_operations = {
 };
 
 /**
- * ÔÚprocÎÄ¼şÏµÍ³ÖĞ½¨Á¢/bus/pciÄ¿Â¼£¬²¢½«proc_fsÄ¬ÈÏÌá¹©µÄfile_operations¸ÄÎªproc_bus_pci_dev_operations¡£
+ * åœ¨procæ–‡ä»¶ç³»ç»Ÿä¸­å»ºç«‹/bus/pciç›®å½•ï¼Œå¹¶å°†proc_fsé»˜è®¤æä¾›çš„file_operationsæ”¹ä¸ºproc_bus_pci_dev_operationsã€‚
  */
 static int __init pci_proc_init(void)
 {

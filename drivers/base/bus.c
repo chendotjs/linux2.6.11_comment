@@ -110,7 +110,7 @@ static struct sysfs_ops bus_sysfs_ops = {
 };
 
 /**
- * ´´½¨ÊôÓÚ×ÜÏßµÄÊôĞÔ¡£
+ * åˆ›å»ºå±äºæ€»çº¿çš„å±æ€§ã€‚
  */
 int bus_create_file(struct bus_type * bus, struct bus_attribute * attr)
 {
@@ -124,7 +124,7 @@ int bus_create_file(struct bus_type * bus, struct bus_attribute * attr)
 }
 
 /**
- * É¾³ı×ÜÏßÊôĞÔ¡£
+ * åˆ é™¤æ€»çº¿å±æ€§ã€‚
  */
 void bus_remove_file(struct bus_type * bus, struct bus_attribute * attr)
 {
@@ -208,9 +208,9 @@ static int __bus_for_each_drv(struct bus_type *bus, struct device_driver *start,
  */
 
 /**
- * Ñ­»·É¨Ãè×¢²áµ½×ÜÏßµÄdevicesÁ´±íÖĞµÄËùÓĞÔªËØ¡£
- * Èç¹ûfn·µ»ØÒ»¸ö·Ç0Öµ£¬½«Í£Ö¹µü´ú¡£
- * ×¢ÒâËü»ñµÃÁË×ÜÏß×ÓÏµÍ³µÄ¶ÁĞ´ĞÅºÅÁ¿¡£
+ * å¾ªç¯æ‰«ææ³¨å†Œåˆ°æ€»çº¿çš„devicesé“¾è¡¨ä¸­çš„æ‰€æœ‰å…ƒç´ ã€‚
+ * å¦‚æœfnè¿”å›ä¸€ä¸ªé0å€¼ï¼Œå°†åœæ­¢è¿­ä»£ã€‚
+ * æ³¨æ„å®ƒè·å¾—äº†æ€»çº¿å­ç³»ç»Ÿçš„è¯»å†™ä¿¡å·é‡ã€‚
  */
 int bus_for_each_dev(struct bus_type * bus, struct device * start,
 		     void * data, int (*fn)(struct device *, void *))
@@ -244,7 +244,7 @@ int bus_for_each_dev(struct bus_type * bus, struct device * start,
  */
  
 /**
- * Ñ­»·É¨ÃèdriversÁ´±íÖĞµÄËùÓĞÔªËØ¡£
+ * å¾ªç¯æ‰«ædriversé“¾è¡¨ä¸­çš„æ‰€æœ‰å…ƒç´ ã€‚
  */
 int bus_for_each_drv(struct bus_type * bus, struct device_driver * start,
 		     void * data, int (*fn)(struct device_driver *, void *))
@@ -700,7 +700,7 @@ static void bus_remove_attrs(struct bus_type * bus)
  *	the devices and drivers that belong to the bus.
  */
 /**
- * ×¢²á×ÜÏß¡£ĞÂ×¢²áµÄ×ÜÏß±»É¾³ıµ½sysfs/busÖĞ¡£
+ * æ³¨å†Œæ€»çº¿ã€‚æ–°æ³¨å†Œçš„æ€»çº¿è¢«åˆ é™¤åˆ°sysfs/busä¸­ã€‚
  */
 int bus_register(struct bus_type * bus)
 {
@@ -749,7 +749,7 @@ out:
  *	Finally, we call put_bus() to release the refcount
  */
 /**
- * ´ÓÏµÍ³ÖĞÉ¾³ıÒ»¸ö×ÜÏß¡£
+ * ä»ç³»ç»Ÿä¸­åˆ é™¤ä¸€ä¸ªæ€»çº¿ã€‚
  */
 void bus_unregister(struct bus_type * bus)
 {

@@ -16,19 +16,19 @@ struct kobject;
 struct module;
 
 /**
- * kobject���Ե����ԡ�
+ * kobject属性的属性。
  */
 struct attribute {
 	/**
-	 * �������ơ�
+	 * 属性名称。
 	 */
 	char			* name;
 	/**
-	 * ��������ģ�顣��ģ��ʵ��������ԡ�
+	 * 属性所属模块。该模块实现这个属性。
 	 */
 	struct module 		* owner;
 	/**
-	 * ���Ա���λ��S_IRUGO��ʾֻ�����ԡ�S_IWUSR����Ϊroot�ṩдȨ�ޡ�
+	 * 属性保护位。S_IRUGO表示只读属性。S_IWUSR仅仅为root提供写权限。
 	 */
 	mode_t			mode;
 };
@@ -63,20 +63,20 @@ struct attribute_group {
 struct vm_area_struct;
 
 /**
- * ���������ԡ�������ΪĬ�����Ա�������
+ * 二进制属性。不能作为默认属性被创建。
  */
 struct bin_attribute {
 	/**
-	 * ���Ե����֡������ߡ����������Ե�Ȩ�ޡ�
+	 * 属性的名字、所有者、二进制属性的权限。
 	 */
 	struct attribute	attr;
 	/**
-	 * ���������Ե���󳤶ȡ����û����󳤶ȣ���sizeΪ0.
+	 * 二进制属性的最大长度。如果没有最大长度，则size为0.
 	 */
 	size_t			size;
 	void			*private;
 	/**
-	 * �൱��sysfs_ops�е�show��store��������һ�μ��ع����п��ܱ����ö�Ρ�ÿ���ܹ����������������һҳ��
+	 * 相当于sysfs_ops中的show和store方法。在一次加载过程中可能被调用多次。每次能够操作的最大数量是一页。
 	 */
 	ssize_t (*read)(struct kobject *, char *, loff_t, size_t);
 	ssize_t (*write)(struct kobject *, char *, loff_t, size_t);
@@ -85,16 +85,16 @@ struct bin_attribute {
 };
 
 /**
- * ʵ��kobject���Եķ�����
+ * 实现kobject属性的方法。
  */
 struct sysfs_ops {
 	/**
-	 * ���û��ռ��ȡһ������ʱ�����ô˷�����ע�⻺��������ΪPAGE_SIZE���ֽڡ�
-	 * ���Ҫ���ش�������Ϣ������Ҫ������ֳɶ�����ԡ�
+	 * 当用户空间读取一个属性时，调用此方法。注意缓冲区长度为PAGE_SIZE个字节。
+	 * 如果要返回大量的信息，则需要把它拆分成多个属性。
 	 */
 	ssize_t	(*show)(struct kobject *, struct attribute *,char *);
 	/**
-	 * ���û��ռ�Ҫдһ������ʱ�����ô˷�������Ҫע�⴦������ĺϷ��ԡ�
+	 * 当用户空间要写一个属性时，调用此方法。需要注意处理输入的合法性。
 	 */
 	ssize_t	(*store)(struct kobject *,struct attribute *,const char *, size_t);
 };

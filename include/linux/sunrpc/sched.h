@@ -39,27 +39,27 @@ struct rpc_wait {
  * This is the RPC task struct
  */
 /**
- * ÎªÁËÍ¬Ê±Ö§³ÖÍ¬²½ºÍÒì²½Ô¶³Ì¹ı³Ìµ÷ÓÃ£¬LinuxÒıÈëÁËrpc_taskÕâ¸ö½á¹¹¡£
- * ËüÓĞµãÀàËÆÓÚ½ø³Ì¹ÜÀíµÄtask½á¹¹£¬ÏµÍ³²ÉÓÃÒ»¸öÓĞÏŞ×´Ì¬×Ô¶¯»ú¶ÔËü½øĞĞµ÷¶È¡£
+ * ä¸ºäº†åŒæ—¶æ”¯æŒåŒæ­¥å’Œå¼‚æ­¥è¿œç¨‹è¿‡ç¨‹è°ƒç”¨ï¼ŒLinuxå¼•å…¥äº†rpc_taskè¿™ä¸ªç»“æ„ã€‚
+ * å®ƒæœ‰ç‚¹ç±»ä¼¼äºè¿›ç¨‹ç®¡ç†çš„taskç»“æ„ï¼Œç³»ç»Ÿé‡‡ç”¨ä¸€ä¸ªæœ‰é™çŠ¶æ€è‡ªåŠ¨æœºå¯¹å®ƒè¿›è¡Œè°ƒåº¦ã€‚
  */
 struct rpc_task {
 #ifdef RPC_DEBUG
 	unsigned long		tk_magic;	/* 0xf00baa */
 #endif
 	/** 
-	 * µÈ´ı¶ÓÁĞÁĞ±í 
+	 * ç­‰å¾…é˜Ÿåˆ—åˆ—è¡¨ 
 	 */
 	struct list_head	tk_task;	/* global list of tasks */
 	/**
-	 * RPC¿Í»§½á¹¹Ö¸Õë
+	 * RPCå®¢æˆ·ç»“æ„æŒ‡é’ˆ
 	 */
 	struct rpc_clnt *	tk_client;	/* RPC client */
 	/**
-	 * RPCÇëÇó½á¹¹Ö¸Õë 
+	 * RPCè¯·æ±‚ç»“æ„æŒ‡é’ˆ 
 	 */
 	struct rpc_rqst *	tk_rqstp;	/* RPC request */
 	/**
-	 * ×îºóÒ»´Î²Ù×÷½á¹û 
+	 * æœ€åä¸€æ¬¡æ“ä½œç»“æœ 
 	 */
 	int			tk_status;	/* result of last operation */
 
@@ -68,7 +68,7 @@ struct rpc_task {
 	 */
 	struct rpc_message	tk_msg;		/* RPC call info */
 	/**
-	 * XDR»º´æ 
+	 * XDRç¼“å­˜ 
 	 */
 	__u32 *			tk_buffer;	/* XDR buffer */
 	size_t			tk_bufsize;
@@ -86,15 +86,15 @@ struct rpc_task {
 	 */
 	void			(*tk_timeout_fn)(struct rpc_task *);
 	/**
-	 * ÈÎÎñ±»»½ĞÑÊ±µ÷ÓÃµÄ»Øµ÷º¯Êı
+	 * ä»»åŠ¡è¢«å”¤é†’æ—¶è°ƒç”¨çš„å›è°ƒå‡½æ•°
 	 */
 	void			(*tk_callback)(struct rpc_task *);
 	/**
-	 * ¶ÔÒì²½ÈÎÎñÀ´Ëµ£¬ÏÂÒ»¸ö¹ı³ÌÖ¸Õë
+	 * å¯¹å¼‚æ­¥ä»»åŠ¡æ¥è¯´ï¼Œä¸‹ä¸€ä¸ªè¿‡ç¨‹æŒ‡é’ˆ
 	 */
 	void			(*tk_action)(struct rpc_task *);
 	/**
-	 * ½áÊøÒì²½¹ı³Ì²¢±¨¸æ½á¹û¸øµ÷ÓÃ¹ı³Ì
+	 * ç»“æŸå¼‚æ­¥è¿‡ç¨‹å¹¶æŠ¥å‘Šç»“æœç»™è°ƒç”¨è¿‡ç¨‹
 	 */
 	void			(*tk_exit)(struct rpc_task *);
 	void			(*tk_release)(struct rpc_task *);
@@ -106,15 +106,15 @@ struct rpc_task {
 	 * you have a pathological interest in kernel oopses.
 	 */
 	/**
-	 * ÄÚ²¿¶¨Ê±Æ÷ 
+	 * å†…éƒ¨å®šæ—¶å™¨ 
 	 */
 	struct timer_list	tk_timer;	/* kernel timer */
 	/**
-	 * rpc_sleep()³¬Ê±Ê±¼ä 
+	 * rpc_sleep()è¶…æ—¶æ—¶é—´ 
 	 */
 	unsigned long		tk_timeout;	/* timeout for rpc_sleep() */
 	/**
-	 * ¸÷ÖÖÊôĞÔ
+	 * å„ç§å±æ€§
 	 */
 	unsigned short		tk_flags;	/* misc flags */
 	unsigned char		tk_active   : 1;/* Task has been activated */

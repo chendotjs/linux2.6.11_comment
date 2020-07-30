@@ -52,93 +52,93 @@
  * used for page->zone, so putting flag bits there doesn't work.
  */
 /**
- * ҳ��״̬��־
+ * 页框状态标志
  */
 
 /**
- * ҳ�����������磺�ڴ���IO�������漰��ҳ��
+ * 页被锁定，例如：在磁盘IO操作中涉及的页。
  */
 #define PG_locked	 	 0	/* Page is locked. Don't touch. */
 /**
- * ������ҳʱ����IO����
+ * 当传输页时发生IO错误
  */
 #define PG_error		 1
 /**
- * �ոշ��ʹ���ҳ��
- * �ٶ��ڷǻ��������һ��ҳ��PG_referenced��־��Ϊ0�����һ�η��ʰ������־��Ϊ1��������һҳ��Ȼ���ڷǻ�����С�
- * �ڶ��η���ʱ������һ��־��λ����˽�ҳ�Ƶ��������
- * ���������һ�η���֮���ڸ���ʱ�����ڵڶ��η���û�з�������ôҳ������㷨�Ϳ������øñ�־��
+ * 刚刚访问过的页。
+ * 假定在非活动链隔开的一个页其PG_referenced标志置为0，则第一次访问把这个标志置为1，但是这一页仍然留在非活动链表中。
+ * 第二次访问时发现这一标志置位，因此将页移到活动链表。
+ * 但是如果第一次访问之后在给定时间间隔内第二次访问没有发生，那么页框回收算法就可能重置该标志。
  */
 #define PG_referenced		 2
 /**
- * ����ɶ���������λ�����Ƿ�������IO����
+ * 在完成读操作后置位，除非发生磁盘IO错误。
  */
 #define PG_uptodate		 3
 /**
- * ҳ�Ѿ����޸ġ�
+ * 页已经被修改。
  */
 #define PG_dirty	 	 4
 /**
- * ҳ�ڻ��ǻҳ�����С�һ���ǽ����û�̬��ַ�ռ��ҳ���������ҳ��
+ * 页在活动或非活动页链表中。一般是进程用户态地址空间或页调整缓存的页。
  */
 #define PG_lru			 5
 /**
- * ҳ�ڻҳ�����С�
+ * 页在活动页链表中。
  */
 #define PG_active		 6
 /**
- * ������slab�е�ҳ��
+ * 包含在slab中的页框。
  */
 #define PG_slab			 7	/* slab debug (Suparna wants this) */
 
 /**
- * ҳ������ZONE_HIGHMEM��������
+ * 页框属于ZONE_HIGHMEM管理区。
  */
 #define PG_highmem		 8
 /**
- * ��һЩ�ļ�ϵͳ��ext2��ext3ʹ�õı�־��
+ * 由一些文件系统如ext2和ext3使用的标志。
  */
 #define PG_checked		 9	/* kill me in 2.5.<early>. */
 /**
- * ��x86��û��ʹ�á�
+ * 在x86上没有使用。
  */
 #define PG_arch_1		10
 /**
- * ҳ�������ں˴������û��ʹ�á�
+ * 页框保留给内核代码或者没有使用。
  */
 #define PG_reserved		11
 
 /**
- * ҳ��������private�ֶδ���������������
+ * 页描述符的private字段存放了有意义的数据
  */
 #define PG_private		12	/* Has something at ->private */
 /**
- * ����ʹ��writepage������ҳд�������ϡ�
+ * 正在使用writepage方法将页写到磁盘上。
  */
 #define PG_writeback		13	/* Page is under writeback */
 /**
- * ϵͳ���𡢻���ʱʹ�á�
+ * 系统挂起、唤醒时使用。
  */
 #define PG_nosave		14	/* Used for system suspend/resume */
 /**
- * ͨ����չ��ҳ���ƴ���ҳ��
+ * 通过扩展分页机制处理页框。
  */
 #define PG_compound		15	/* Part of a compound page */
 
 /**
- * ҳ���ڶԻ�����
+ * 页属于对换高速
  */
 #define PG_swapcache		16	/* Swap page: swp_entry_t in private */
 /**
- * ҳ���е��������ݶ�Ӧ�ڴ����Ϸ���Ŀ顣
+ * 页框中的所有数据对应于磁盘上分配的块。
  */
 #define PG_mappedtodisk		17	/* Has blocks allocated on-disk */
 /**
- * Ϊ�����ڴ��ҳ�Ѿ�����д����̵ı�ǡ�
+ * 为回收内存对页已经做了写入磁盘的标记。
  */
 #define PG_reclaim		18	/* To be reclaimed asap */
 /**
- * ϵͳ���𡢻ָ�ʱʹ�á�
+ * 系统挂起、恢复时使用。
  */
 #define PG_nosave_free		19	/* Free, should not be written */
 

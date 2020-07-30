@@ -180,8 +180,8 @@ MODULE_PARM_DESC(debug, "Debug level (0=none,...,16=all)");
 	PCI_VENDOR_ID_INTEL, device_id, PCI_ANY_ID, PCI_ANY_ID, \
 	PCI_CLASS_NETWORK_ETHERNET << 8, 0xFFFF00, ich }
 /**
- * ³§ÉÌID¹Ì¶¨ÎªPCI_VENDOR_ID_INTEL£¬ÕâÊÇintel·ÖÅäµÄ³§ÉÌID¡£
- * µÚÈýºÍµÚËÄ¸öÓò(subvendorºÍsubdevice)±»³õÊ¼»¯ÎªPCI_ANY_ID£¬ÕâÊÇÒòÎªÇ°Á½¸öÓò(vendorºÍdevice)ÒÑ¾­×ã¹»±êÊ¶Ò»¸öÉè±¸
+ * åŽ‚å•†IDå›ºå®šä¸ºPCI_VENDOR_ID_INTELï¼Œè¿™æ˜¯intelåˆ†é…çš„åŽ‚å•†IDã€‚
+ * ç¬¬ä¸‰å’Œç¬¬å››ä¸ªåŸŸ(subvendorå’Œsubdevice)è¢«åˆå§‹åŒ–ä¸ºPCI_ANY_IDï¼Œè¿™æ˜¯å› ä¸ºå‰ä¸¤ä¸ªåŸŸ(vendorå’Œdevice)å·²ç»è¶³å¤Ÿæ ‡è¯†ä¸€ä¸ªè®¾å¤‡
  */
 static struct pci_device_id e100_id_table[] = {
 	INTEL_8255X_ETHERNET_DEVICE(0x1029, 0),
@@ -2361,7 +2361,7 @@ static struct pci_driver e100_driver = {
 };
 
 /**
- * Ä£¿é³õÊ¼»¯º¯Êý¡£
+ * æ¨¡å—åˆå§‹åŒ–å‡½æ•°ã€‚
  */
 static int __init e100_init_module(void)
 {
@@ -2370,7 +2370,7 @@ static int __init e100_init_module(void)
 		printk(KERN_INFO PFX "%s\n", DRV_COPYRIGHT);
 	}
 	/**
-	 * µ÷ÓÃpci_module_init×¢²áÉè±¸Çý¶¯£¬Í¬Ê±Ò²»á×¢²áÇý¶¯ËùÄÜ´¦ÀíµÄÍø¿¨
+	 * è°ƒç”¨pci_module_initæ³¨å†Œè®¾å¤‡é©±åŠ¨ï¼ŒåŒæ—¶ä¹Ÿä¼šæ³¨å†Œé©±åŠ¨æ‰€èƒ½å¤„ç†çš„ç½‘å¡
 	 */
 	return pci_module_init(&e100_driver);
 }

@@ -38,12 +38,12 @@ enum scsi_eh_timer_return {
 
 
 /**
- * SCSIÖ÷»úÄ£°å£¬ÏàÍ¬ĞÍºÅµÄÖ÷»úÊÊÅäÆ÷µÄ¹«¹²ÄÚÈİ£¬Èç¶ÓÁĞÉî¶È¡¢SCSIÃüÁî´¦Àí»Øµ÷¡¢´íÎó»Ö¸´»Øµ÷º¯Êı¡£
+ * SCSIä¸»æœºæ¨¡æ¿ï¼Œç›¸åŒå‹å·çš„ä¸»æœºé€‚é…å™¨çš„å…¬å…±å†…å®¹ï¼Œå¦‚é˜Ÿåˆ—æ·±åº¦ã€SCSIå‘½ä»¤å¤„ç†å›è°ƒã€é”™è¯¯æ¢å¤å›è°ƒå‡½æ•°ã€‚
  */
 struct scsi_host_template {
-	/* ËùÊôÄ£¿é */
+	/* æ‰€å±æ¨¡å— */
 	struct module *module;
-	/* HBAÇı¶¯µÄÃû×Ö */
+	/* HBAé©±åŠ¨çš„åå­— */
 	const char *name;
 
 	/*
@@ -52,7 +52,7 @@ struct scsi_host_template {
 	 *
 	 * Status:  OBSOLETE
 	 */
-	/* ±»ÀÏÊ½Çı¶¯ÓÃÀ´¼ì²âÖ÷»úÊÊÅäÆ÷ */
+	/* è¢«è€å¼é©±åŠ¨ç”¨æ¥æ£€æµ‹ä¸»æœºé€‚é…å™¨ */
 	int (* detect)(struct scsi_host_template *);
 
 	/*
@@ -60,7 +60,7 @@ struct scsi_host_template {
 	 *
 	 * Status: OBSOLETE
 	 */
-	/* ±»ÀÏÊ½Çı¶¯ÓÃÀ´ÊÍ·ÅÖ÷»úÊÊÅäÆ÷ */
+	/* è¢«è€å¼é©±åŠ¨ç”¨æ¥é‡Šæ”¾ä¸»æœºé€‚é…å™¨ */
 	int (* release)(struct Scsi_Host *);
 
 	/*
@@ -70,7 +70,7 @@ struct scsi_host_template {
 	 *
 	 * Status: OPTIONAL
 	 */
-	/* ·µ»ØÊÊµ±µÄĞÅÏ¢ */
+	/* è¿”å›é€‚å½“çš„ä¿¡æ¯ */
 	const char *(* info)(struct Scsi_Host *);
 
 	/*
@@ -78,7 +78,7 @@ struct scsi_host_template {
 	 *
 	 * Status: OPTIONAL
 	 */
-	/* ioctl½Ó¿Ú */
+	/* ioctlæ¥å£ */
 	int (* ioctl)(struct scsi_device *dev, int cmd, void __user *arg);
 
 
@@ -89,7 +89,7 @@ struct scsi_host_template {
 	 *
 	 * Status: OPTIONAL
 	 */
-	/* ¼æÈİµÄioctl£¬ÔÚ64Î»ÉÏ´¦Àí32Î»ioctlµ÷ÓÃ */
+	/* å…¼å®¹çš„ioctlï¼Œåœ¨64ä½ä¸Šå¤„ç†32ä½ioctlè°ƒç”¨ */
 	int (* compat_ioctl)(struct scsi_device *dev, int cmd, void __user *arg);
 #endif
 
@@ -126,7 +126,7 @@ struct scsi_host_template {
 	 * STATUS: REQUIRED
 	 */
 	/**
-	 * ½«SCSIÃüÁîÅÅÈëLLDD¶ÓÁĞ£¬SCSIÖĞ¼ä²ãµ÷ÓÃ¸Ã»Øµ÷º¯ÊıÏòHBA·¢ËÍSCSIÃüÁî
+	 * å°†SCSIå‘½ä»¤æ’å…¥LLDDé˜Ÿåˆ—ï¼ŒSCSIä¸­é—´å±‚è°ƒç”¨è¯¥å›è°ƒå‡½æ•°å‘HBAå‘é€SCSIå‘½ä»¤
 	 */
 	int (* queuecommand)(struct scsi_cmnd *,
 			     void (*done)(struct scsi_cmnd *));
@@ -150,13 +150,13 @@ struct scsi_host_template {
 	 * Status: REQUIRED	(at least one of them)
 	 */
 	int (* eh_strategy_handler)(struct Scsi_Host *);
-	/* ´íÎó»Ö¸´´¦Àí£¬·ÅÆúÌØ¶¨µÄÃüÁî */
+	/* é”™è¯¯æ¢å¤å¤„ç†ï¼Œæ”¾å¼ƒç‰¹å®šçš„å‘½ä»¤ */
 	int (* eh_abort_handler)(struct scsi_cmnd *);
-	/* Ä¿±ê½Úµã¸´Î» */
+	/* ç›®æ ‡èŠ‚ç‚¹å¤ä½ */
 	int (* eh_device_reset_handler)(struct scsi_cmnd *);
-	/* SCSI×ÜÏß¸´Î» */
+	/* SCSIæ€»çº¿å¤ä½ */
 	int (* eh_bus_reset_handler)(struct scsi_cmnd *);
-	/* Ö÷»úÊÊÅäÆ÷¸´Î» */
+	/* ä¸»æœºé€‚é…å™¨å¤ä½ */
 	int (* eh_host_reset_handler)(struct scsi_cmnd *);
 
 	/*
@@ -171,7 +171,7 @@ struct scsi_host_template {
 	 *
 	 * Status: OPTIONAL
 	 */
-	/* µ±ÖĞ¼ä²ã·¢ÏÖSCSIÃüÁî³¬Ê±£¬½«µ÷ÓÃµÍ²ãÇı¶¯µÄÕâ¸ö»Øµ÷º¯Êı¡£ */
+	/* å½“ä¸­é—´å±‚å‘ç°SCSIå‘½ä»¤è¶…æ—¶ï¼Œå°†è°ƒç”¨ä½å±‚é©±åŠ¨çš„è¿™ä¸ªå›è°ƒå‡½æ•°ã€‚ */
 	enum scsi_eh_timer_return (* eh_timed_out)(struct scsi_cmnd *);
 
 	/*
@@ -200,7 +200,7 @@ struct scsi_host_template {
 	 *
 	 * Status: OPTIONAL
 	 */
-	/* É¨Ãèµ½Ò»¸öĞÂµÄSCSIÉè±¸ºóµ÷ÓÃ£¬¿ÉÒÔÔÚÕâ¸öº¯ÊıÖĞ·ÖÅäÃ´ÓĞdevice½á¹¹ */
+	/* æ‰«æåˆ°ä¸€ä¸ªæ–°çš„SCSIè®¾å¤‡åè°ƒç”¨ï¼Œå¯ä»¥åœ¨è¿™ä¸ªå‡½æ•°ä¸­åˆ†é…ä¹ˆæœ‰deviceç»“æ„ */
 	int (* slave_alloc)(struct scsi_device *);
 
 	/*
@@ -232,7 +232,7 @@ struct scsi_host_template {
 	 *
 	 * Status: OPTIONAL
 	 */
-	/* ½ÓÊÕµ½SCSIÉè±¸µÄINQUIRYÃüÁîºóµ÷ÓÃ£¬¿É½øĞĞÌØ¶¨µÄÉèÖÃ */
+	/* æ¥æ”¶åˆ°SCSIè®¾å¤‡çš„INQUIRYå‘½ä»¤åè°ƒç”¨ï¼Œå¯è¿›è¡Œç‰¹å®šçš„è®¾ç½® */
 	int (* slave_configure)(struct scsi_device *);
 
 	/*
@@ -244,7 +244,7 @@ struct scsi_host_template {
 	 *
 	 * Status: OPTIONAL
 	 */
-	/* ÔÚÏú»ÙSCSIÉè±¸Ö®Ç°µ÷ÓÃ£¬ÊÍ·Å¹ØÁªµÄÊı¾İ½á¹¹ */
+	/* åœ¨é”€æ¯SCSIè®¾å¤‡ä¹‹å‰è°ƒç”¨ï¼Œé‡Šæ”¾å…³è”çš„æ•°æ®ç»“æ„ */
 	void (* slave_destroy)(struct scsi_device *);
 
 	/*
@@ -257,7 +257,7 @@ struct scsi_host_template {
 	 * driver should set and return the closest legal queue depth.
 	 *
 	 */
-	/* ÓÃÓÚ¸Ä±äÖ÷»úÊÊÅäÆ÷¶ÓÁĞÉî¶ÈµÄ»Øµ÷º¯Êı */
+	/* ç”¨äºæ”¹å˜ä¸»æœºé€‚é…å™¨é˜Ÿåˆ—æ·±åº¦çš„å›è°ƒå‡½æ•° */
 	int (* change_queue_depth)(struct scsi_device *, int);
 
 	/*
@@ -269,7 +269,7 @@ struct scsi_host_template {
 	 * it should set the closest type it does support without
 	 * returning an error.  Returns the actual tag type set.
 	 */
-	/* ¸Ä±äÖ÷»úÊÊÅäÆ÷tagÀàĞÍµÄ»Øµ÷º¯Êı */
+	/* æ”¹å˜ä¸»æœºé€‚é…å™¨tagç±»å‹çš„å›è°ƒå‡½æ•° */
 	int (* change_queue_type)(struct scsi_device *, int);
 
 	/*
@@ -279,7 +279,7 @@ struct scsi_host_template {
 	 * size, device, list (heads, sectors, cylinders)
 	 *
 	 * Status: OPTIONAL */
-	/* ·µ»Ø´ÅÅÌµÄBIOS²ÎÊı£¬ÈçÖùÃæÊı£¬´ÅÅÌÊıºÍÉÈÇøÊı */
+	/* è¿”å›ç£ç›˜çš„BIOSå‚æ•°ï¼Œå¦‚æŸ±é¢æ•°ï¼Œç£ç›˜æ•°å’Œæ‰‡åŒºæ•° */
 	int (* bios_param)(struct scsi_device *, struct block_device *,
 			sector_t, int []);
 
@@ -290,20 +290,20 @@ struct scsi_host_template {
 	 *
 	 * Status: OBSOLETE
 	 */
-	/* Í¨¹ıprocÊä³öÍ³¼ÆĞÅÏ¢µ½ÓÃ»§¿Õ¼ä£¬Èç¿ÉÒÔÏòÇı¶¯ÖĞĞ´ÈëĞÅÏ¢ */
+	/* é€šè¿‡procè¾“å‡ºç»Ÿè®¡ä¿¡æ¯åˆ°ç”¨æˆ·ç©ºé—´ï¼Œå¦‚å¯ä»¥å‘é©±åŠ¨ä¸­å†™å…¥ä¿¡æ¯ */
 	int (*proc_info)(struct Scsi_Host *, char *, char **, off_t, int, int);
 
 	/*
 	 * Name of proc directory
 	 */
-	/* procÄ¿Â¼Ãû */
+	/* procç›®å½•å */
 	char *proc_name;
 
 	/*
 	 * Used to store the procfs directory if a driver implements the
 	 * proc_info method.
 	 */
-	/* Èç¹ûÊµÏÖÁËproc_info·½·¨£¬±¾×Ö¶Î±£´æprocfsÄ¿Â¼ */
+	/* å¦‚æœå®ç°äº†proc_infoæ–¹æ³•ï¼Œæœ¬å­—æ®µä¿å­˜procfsç›®å½• */
 	struct proc_dir_entry *proc_dir;
 
 	/*
@@ -311,7 +311,7 @@ struct scsi_host_template {
 	 * or an interrupt driven scheme,  It is set to the maximum number
 	 * of simultaneous commands a given host adapter will accept.
 	 */
-	/* Ö÷»úÊÊÅäÆ÷¿ÉÒÔÍ¬Ê±½ÓÊÜµÄÃüÁîÊı£¬±ØĞë´óÓÚ0 */
+	/* ä¸»æœºé€‚é…å™¨å¯ä»¥åŒæ—¶æ¥å—çš„å‘½ä»¤æ•°ï¼Œå¿…é¡»å¤§äº0 */
 	int can_queue;
 
 	/*
@@ -321,27 +321,27 @@ struct scsi_host_template {
 	 * your setup is in single initiator mode, and the host lacks an
 	 * ID.
 	 */
-	/* Ô¤ÁôµÄID? */
+	/* é¢„ç•™çš„ID? */
 	int this_id;
 
 	/*
 	 * This determines the degree to which the host adapter is capable
 	 * of scatter-gather.
 	 */
-	/* Ö÷»úÊÊÅäÆ÷Ö§³Ö·ÖÉ¢/¾Û¼¯µÄÄÜÁ¦ */
+	/* ä¸»æœºé€‚é…å™¨æ”¯æŒåˆ†æ•£/èšé›†çš„èƒ½åŠ› */
 	unsigned short sg_tablesize;
 
 	/*
 	 * If the host adapter has limitations beside segment count
 	 */
-	/* Ö÷»úÊÊÅäÆ÷µ¥¸öSCSIÃüÁîÄÜ·ÃÎÊµÄÉÈÇø×î´óÊıÄ¿ */
+	/* ä¸»æœºé€‚é…å™¨å•ä¸ªSCSIå‘½ä»¤èƒ½è®¿é—®çš„æ‰‡åŒºæœ€å¤§æ•°ç›® */
 	unsigned short max_sectors;
 
 	/*
 	 * dma scatter gather segment boundary limit. a segment crossing this
 	 * boundary will be split in two.
 	 */
-	/* DMA·ÖÉ¢/¾Û¼¯¶Î±ß½çÏŞÖÆ£¬³¬¹ıÕâ¸ö±ß½çµÄ¶Î½«±»·Ö¸î */
+	/* DMAåˆ†æ•£/èšé›†æ®µè¾¹ç•Œé™åˆ¶ï¼Œè¶…è¿‡è¿™ä¸ªè¾¹ç•Œçš„æ®µå°†è¢«åˆ†å‰² */
 	unsigned long dma_boundary;
 
 	/*
@@ -361,20 +361,20 @@ struct scsi_host_template {
 	 * You should make sure that the host adapter will do the right thing
 	 * before you try setting this above 1.
 	 */
-	/* ÔÊĞíÅÅÈëÁ¬½Óµ½Õâ¸öÖ÷»úÊÊÅäÆ÷µÄSCSIÉè±¸µÄ×î´óÃüÁîÊıÄ¿£¬¼´¶ÓÁĞÉî¶È¡£ */
+	/* å…è®¸æ’å…¥è¿æ¥åˆ°è¿™ä¸ªä¸»æœºé€‚é…å™¨çš„SCSIè®¾å¤‡çš„æœ€å¤§å‘½ä»¤æ•°ç›®ï¼Œå³é˜Ÿåˆ—æ·±åº¦ã€‚ */
 	short cmd_per_lun;
 
 	/*
 	 * present contains counter indicating how many boards of this
 	 * type were found when we did the scan.
 	 */
-	/* ¼ÆÊıÆ÷£¬±íÊ¾ÔÚÉ¨Ãè¹ı³ÌÖĞ·¢ÏÖÁË¶àÉÙ¸öÕâÖÖÀàĞÍµÄÊÊÅäÆ÷ */
+	/* è®¡æ•°å™¨ï¼Œè¡¨ç¤ºåœ¨æ‰«æè¿‡ç¨‹ä¸­å‘ç°äº†å¤šå°‘ä¸ªè¿™ç§ç±»å‹çš„é€‚é…å™¨ */
 	unsigned char present;
 
 	/*
 	 * true if this host adapter uses unchecked DMA onto an ISA bus.
 	 */
-	/* Èç¹ûÎª1£¬±íÊ¾Ö»ÄÜÊ¹ÓÃRAMµÄµÍ16M×÷ÎªDMAµØÖ·¿Õ¼ä */
+	/* å¦‚æœä¸º1ï¼Œè¡¨ç¤ºåªèƒ½ä½¿ç”¨RAMçš„ä½16Mä½œä¸ºDMAåœ°å€ç©ºé—´ */
 	unsigned unchecked_isa_dma:1;
 
 	/*
@@ -385,25 +385,25 @@ struct scsi_host_template {
 	 * number of segments (i.e. use clustering).  I guess it is
 	 * inefficient.
 	 */
-	/* Èç¹ûÎª1£¬±íÊ¾ÔÚSCSI²ßÂÔÀı³ÌÖĞ¹¹½¨SCSIÃüÁîµÄ·ÖÉ¢/¾Û¼¯Á´±íÊ±£¬¿ÉÒÔºÏ²¢ÄÚ´æÁ¬ĞøµÄIOÇëÇó */
+	/* å¦‚æœä¸º1ï¼Œè¡¨ç¤ºåœ¨SCSIç­–ç•¥ä¾‹ç¨‹ä¸­æ„å»ºSCSIå‘½ä»¤çš„åˆ†æ•£/èšé›†é“¾è¡¨æ—¶ï¼Œå¯ä»¥åˆå¹¶å†…å­˜è¿ç»­çš„IOè¯·æ±‚ */
 	unsigned use_clustering:1;
 
 	/*
 	 * True for emulated SCSI host adapters (e.g. ATAPI)
 	 */
-	/* Èç¹ûÎª1£¬±íÊ¾ÊÇ·ÂÕæµÄÖ÷»úÊÊÅäÆ÷ÈçATAPI */
+	/* å¦‚æœä¸º1ï¼Œè¡¨ç¤ºæ˜¯ä»¿çœŸçš„ä¸»æœºé€‚é…å™¨å¦‚ATAPI */
 	unsigned emulated:1;
 
 	/*
 	 * True if the low-level driver performs its own reset-settle delays.
 	 */
-	/* Èç¹ûÎª1£¬ÔÚÖ÷»úÊÊÅäÆ÷¸´Î»ºÍ×ÜÏß¸´Î»ºó£¬µÍ²ãÇı¶¯×ÔĞĞÖ´ĞĞreset_settleÑÓ³Ù */
+	/* å¦‚æœä¸º1ï¼Œåœ¨ä¸»æœºé€‚é…å™¨å¤ä½å’Œæ€»çº¿å¤ä½åï¼Œä½å±‚é©±åŠ¨è‡ªè¡Œæ‰§è¡Œreset_settleå»¶è¿Ÿ */
 	unsigned skip_settle_delay:1;
 
 	/*
 	 * Countdown for host blocking with no commands outstanding
 	 */
-	/* µ±Ö÷»úÊÊÅäÆ÷Ã»ÓĞ´ı´¦ÀíÃüÁîÊ±£¬ÔòÔİÊ±×èÈûËü£¬µÈ´ıÀÛ»ı×ã¹»¶àµÄÃüÁîÔÙËµ¡£µ±´ËÖµÎª0Ê±£¬»Ö¸´Õı³£²Ù×÷£¬½«ÃüÁîÅÉ·¢µ½µÍ²ãÇı¶¯ */
+	/* å½“ä¸»æœºé€‚é…å™¨æ²¡æœ‰å¾…å¤„ç†å‘½ä»¤æ—¶ï¼Œåˆ™æš‚æ—¶é˜»å¡å®ƒï¼Œç­‰å¾…ç´¯ç§¯è¶³å¤Ÿå¤šçš„å‘½ä»¤å†è¯´ã€‚å½“æ­¤å€¼ä¸º0æ—¶ï¼Œæ¢å¤æ­£å¸¸æ“ä½œï¼Œå°†å‘½ä»¤æ´¾å‘åˆ°ä½å±‚é©±åŠ¨ */
 	unsigned int max_host_blocked;
 
 	/*
@@ -418,13 +418,13 @@ struct scsi_host_template {
 	/*
 	 * Pointer to the sysfs class properties for this host, NULL terminated.
 	 */
-	/* Ö÷»úÊÊÅäÆ÷µÄ¹«¹²ÊôĞÔ¼°Æä²Ù×÷·½·¨ */
+	/* ä¸»æœºé€‚é…å™¨çš„å…¬å…±å±æ€§åŠå…¶æ“ä½œæ–¹æ³• */
 	struct class_device_attribute **shost_attrs;
 
 	/*
 	 * Pointer to the SCSI device properties for this host, NULL terminated.
 	 */
-	/* Á¬½Óµ½Õâ¸öÄ£°åµÄÖ÷»úÊÊÅäÆ÷ÉÏµÄSCSIÉè±¸µÄ¹«¹²ÊôĞÔ¼°²Ù×÷·½·¨ */
+	/* è¿æ¥åˆ°è¿™ä¸ªæ¨¡æ¿çš„ä¸»æœºé€‚é…å™¨ä¸Šçš„SCSIè®¾å¤‡çš„å…¬å…±å±æ€§åŠæ“ä½œæ–¹æ³• */
 	struct device_attribute **sdev_attrs;
 
 	/*
@@ -434,7 +434,7 @@ struct scsi_host_template {
 	 * For these access to it is synchronized implicitly by
 	 * module_init/module_exit.
 	 */
-	/* ÀÏÊ½Çı¶¯ÓÃÓÚ¼ÇÂ¼Ö÷»úÊÊÅäÆ÷Á´±íµÄ±íÍ·£¬ÒÑ¾­¹ıÊ± */
+	/* è€å¼é©±åŠ¨ç”¨äºè®°å½•ä¸»æœºé€‚é…å™¨é“¾è¡¨çš„è¡¨å¤´ï¼Œå·²ç»è¿‡æ—¶ */
 	struct list_head legacy_hosts;
 };
 
@@ -448,7 +448,7 @@ enum {
 	SHOST_RECOVERY,
 };
 
-/* SCSIÖ÷»úÊÊÅäÆ÷ÃèÊö·û */
+/* SCSIä¸»æœºé€‚é…å™¨æè¿°ç¬¦ */
 struct Scsi_Host {
 	/*
 	 * __devices is protected by the host_lock, but you should
@@ -458,55 +458,55 @@ struct Scsi_Host {
 	 * their __ prefixed variants with the lock held. NEVER
 	 * access this list directly from a driver.
 	 */
-	/* Ö¸ÏòÕâ¸öÖ÷»úÊÊÅäÆ÷µÄSCSIÉè±¸Á´±í */
+	/* æŒ‡å‘è¿™ä¸ªä¸»æœºé€‚é…å™¨çš„SCSIè®¾å¤‡é“¾è¡¨ */
 	struct list_head	__devices;
 
-	/* ·ÖÅäSCSIÃüÁîµÄ´æ´¢³Ø */
+	/* åˆ†é…SCSIå‘½ä»¤çš„å­˜å‚¨æ±  */
 	struct scsi_host_cmd_pool *cmd_pool;
-	/* ÓÃÓÚ±£»¤free_listÁ´±íµÄËø */
+	/* ç”¨äºä¿æŠ¤free_listé“¾è¡¨çš„é” */
 	spinlock_t		free_list_lock;
-	/* Ô¤ÏÈ×¼±¸µÄSCSIÃüÁî½á¹¹µÄÁ´±í£¬Èç¹û´Ó»º³å³ØÖĞ·ÖÅä½á¹¹Ê§°Ü£¬Ôò´ÓÕâÀï·ÖÅä¡£ */
+	/* é¢„å…ˆå‡†å¤‡çš„SCSIå‘½ä»¤ç»“æ„çš„é“¾è¡¨ï¼Œå¦‚æœä»ç¼“å†²æ± ä¸­åˆ†é…ç»“æ„å¤±è´¥ï¼Œåˆ™ä»è¿™é‡Œåˆ†é…ã€‚ */
 	struct list_head	free_list; /* backup store of cmd structs */
-	/* ¼¢¶öÉè±¸Á´±í */
+	/* é¥¥é¥¿è®¾å¤‡é“¾è¡¨ */
 	struct list_head	starved_list;
 
-	/* ±£»¤±¾½á¹¹µÄËø */
+	/* ä¿æŠ¤æœ¬ç»“æ„çš„é” */
 	spinlock_t		default_lock;
-	/* Ö¸Ïòdefault_lock */
+	/* æŒ‡å‘default_lock */
 	spinlock_t		*host_lock;
 
-	/* Í¬²½É¨Ãè¹ı³ÌµÄ»¥³âÁ¿ */
+	/* åŒæ­¥æ‰«æè¿‡ç¨‹çš„äº’æ–¥é‡ */
 	struct semaphore	scan_mutex;/* serialize scanning activity */
 
-	/* ´íÎó»Ö¸´µÄSCSIÃüÁîÁ´±í */
+	/* é”™è¯¯æ¢å¤çš„SCSIå‘½ä»¤é“¾è¡¨ */
 	struct list_head	eh_cmd_q;
-	/* ´íÎó»Ö¸´Ïß³Ì */
+	/* é”™è¯¯æ¢å¤çº¿ç¨‹ */
 	struct task_struct    * ehandler;  /* Error recovery thread. */
 	struct semaphore      * eh_wait;   /* The error recovery thread waits
 					      on this. */
 	struct completion     * eh_notify; /* wait for eh to begin or end */
-	/* µÈ´ıÌØ¶¨µÄ²Ù×÷Íê³É */
+	/* ç­‰å¾…ç‰¹å®šçš„æ“ä½œå®Œæˆ */
 	struct semaphore      * eh_action; /* Wait for specific actions on the
                                           host. */
 	unsigned int            eh_active:1; /* Indicates the eh thread is awake and active if
                                           this is true. */
 	unsigned int            eh_kill:1; /* set when killing the eh thread */
-	/* SCSIÉè±¸´íÎó»Ö¸´µÈ´ı¶ÓÁĞ */
+	/* SCSIè®¾å¤‡é”™è¯¯æ¢å¤ç­‰å¾…é˜Ÿåˆ— */
 	wait_queue_head_t       host_wait;
-	/* ´´½¨´ËÉè±¸µÄÄ£°åÖ¸Õë */
+	/* åˆ›å»ºæ­¤è®¾å¤‡çš„æ¨¡æ¿æŒ‡é’ˆ */
 	struct scsi_host_template *hostt;
-	/* Ö¸ÏòSCSI´«Êä²ãÄ£°åµÄÖ¸Õë */
+	/* æŒ‡å‘SCSIä¼ è¾“å±‚æ¨¡æ¿çš„æŒ‡é’ˆ */
 	struct scsi_transport_template *transportt;
-	/* ÒÑ¾­ÅÉ·¢¸øÖ÷»úÊÊÅäÆ÷µÍ²ãÇı¶¯µÄÃüÁîÊı  */
+	/* å·²ç»æ´¾å‘ç»™ä¸»æœºé€‚é…å™¨ä½å±‚é©±åŠ¨çš„å‘½ä»¤æ•°  */
 	volatile unsigned short host_busy;   /* commands actually active on low-level */
-	/* Ê§°ÜµÄÃüÁîÊı */
+	/* å¤±è´¥çš„å‘½ä»¤æ•° */
 	volatile unsigned short host_failed; /* commands that failed. */
 
-	/* Ö÷»ú±àºÅ£¬ÓÃÓÚ±êÊ¶Õâ¸öÖ÷»úÊÊÅäÆ÷ */
+	/* ä¸»æœºç¼–å·ï¼Œç”¨äºæ ‡è¯†è¿™ä¸ªä¸»æœºé€‚é…å™¨ */
 	unsigned short host_no;  /* Used for IOCTL_GET_IDLUN, /proc/scsi et al. */
-	/* Èç¹ûÎª1£¬±íÊ¾last_resetÖµÓĞĞ§ */
+	/* å¦‚æœä¸º1ï¼Œè¡¨ç¤ºlast_resetå€¼æœ‰æ•ˆ */
 	int resetting; /* if set, it means that last_reset is a valid value */
-	/* ÉÏ´Î¸´Î»µÄÊ±¼ä£¬ÒÔjiffiesÎªµ¥Î»£¬ÔÚÌá½»ÃüÁîµ½Ö÷»úÊÊÅäÇ°£¬±ØĞëÈ·±£ÉÏ´Î¸´Î»Ê±¼ä³¬¹ı2Ãë */
+	/* ä¸Šæ¬¡å¤ä½çš„æ—¶é—´ï¼Œä»¥jiffiesä¸ºå•ä½ï¼Œåœ¨æäº¤å‘½ä»¤åˆ°ä¸»æœºé€‚é…å‰ï¼Œå¿…é¡»ç¡®ä¿ä¸Šæ¬¡å¤ä½æ—¶é—´è¶…è¿‡2ç§’ */
 	unsigned long last_reset;
 
 	/*
@@ -515,11 +515,11 @@ struct Scsi_Host {
 	 * The first two should be set to 1 more than the actual max id
 	 * or lun (i.e. 8 for normal systems).
 	 */
-	/* Á¬½Óµ½±¾Ö÷»úÊÊÅäÆ÷µÄÄ¿±ê½Úµã×î´ó±àºÅ */
+	/* è¿æ¥åˆ°æœ¬ä¸»æœºé€‚é…å™¨çš„ç›®æ ‡èŠ‚ç‚¹æœ€å¤§ç¼–å· */
 	unsigned int max_id;
-	/* Á¬½Óµ½±¾Ö÷»úÊÊÅäÆ÷µÄÂß¼­µ¥Ôª×î´ó±àºÅ */
+	/* è¿æ¥åˆ°æœ¬ä¸»æœºé€‚é…å™¨çš„é€»è¾‘å•å…ƒæœ€å¤§ç¼–å· */
 	unsigned int max_lun;
-	/* ×î´óÍ¨µÀ±àºÅ */
+	/* æœ€å¤§é€šé“ç¼–å· */
 	unsigned int max_channel;
 
 	/*
@@ -529,7 +529,7 @@ struct Scsi_Host {
 	 * in the system at one time, this does not need to be set.  It is
 	 * initialized to 0 in scsi_register.
 	 */
-	/* ÓÃÓÚÖ÷»úÊÊÅäÆ÷µÄÎ¨Ò»±êÊ¶ºÅ */
+	/* ç”¨äºä¸»æœºé€‚é…å™¨çš„å”¯ä¸€æ ‡è¯†å· */
 	unsigned int unique_id;
 
 	/*
@@ -541,34 +541,34 @@ struct Scsi_Host {
 	 * (i.e. could there be a 20 byte or a 24-byte command a few years
 	 * down the road?).  
 	 */
-	/* Ö÷»ú¿ÉÒÔ½ÓÊÜµÄ×î´óSCSIÃüÁî³¤¶È */
+	/* ä¸»æœºå¯ä»¥æ¥å—çš„æœ€å¤§SCSIå‘½ä»¤é•¿åº¦ */
 	unsigned char max_cmd_len;
 
-	/* Ö÷»úµÄSCSI ID */
+	/* ä¸»æœºçš„SCSI ID */
 	int this_id;
-	/* ¿ÉÒÔÍ¬Ê±½ÓÊÜµÄSCSIÃüÁîÊı£¬±ØĞë´óÓÚ0 */
+	/* å¯ä»¥åŒæ—¶æ¥å—çš„SCSIå‘½ä»¤æ•°ï¼Œå¿…é¡»å¤§äº0 */
 	int can_queue;
-	/* ÔÊĞíÅÅÈëÖ÷»úÊÊÅäÆ÷µÄSCSIÉè±¸µÄ×î´óÃüÁîÊıÄ¿£¬¼´¶ÓÁĞÉî¶È */
+	/* å…è®¸æ’å…¥ä¸»æœºé€‚é…å™¨çš„SCSIè®¾å¤‡çš„æœ€å¤§å‘½ä»¤æ•°ç›®ï¼Œå³é˜Ÿåˆ—æ·±åº¦ */
 	short cmd_per_lun;
-	/* Ö§³ÖµÄS/GÄÜÁ¦ */
+	/* æ”¯æŒçš„S/Gèƒ½åŠ› */
 	short unsigned int sg_tablesize;
-	/* µ¥¸öÃüÁîËùÄÜ·ÃÎÊµÄ×î´óÉÈÇøÊı */
+	/* å•ä¸ªå‘½ä»¤æ‰€èƒ½è®¿é—®çš„æœ€å¤§æ‰‡åŒºæ•° */
 	short unsigned int max_sectors;
-	/* DMA S/G±ß½çÏŞÖÆ */
+	/* DMA S/Gè¾¹ç•Œé™åˆ¶ */
 	unsigned long dma_boundary;
 
-	/* Îª1±íÊ¾Ö»ÄÜÊ¹ÓÃ16MµÄDMA¿Õ¼ä */
+	/* ä¸º1è¡¨ç¤ºåªèƒ½ä½¿ç”¨16Mçš„DMAç©ºé—´ */
 	unsigned unchecked_isa_dma:1;
-	/* Îª1±íÊ¾¿ÉÒÔºÏ²¢Á¬½ÓµÄIOÇëÇó */
+	/* ä¸º1è¡¨ç¤ºå¯ä»¥åˆå¹¶è¿æ¥çš„IOè¯·æ±‚ */
 	unsigned use_clustering:1;
-	/* Î´ÓÃ */
+	/* æœªç”¨ */
 	unsigned use_blk_tcq:1;
 
 	/*
 	 * Host has requested that no further requests come through for the
 	 * time being.
 	 */
-	/* Îª1±íÊ¾µÍ²ãÇı¶¯ÒªÇó×èÈû¸ÃÖ÷»úÊÊÅäÆ÷£¬¼´SCSIÖĞ¼ä²ã²»Òª¼ÌĞø·Ö·¢ÃüÁîµ½¶ÓÁĞÖĞ */
+	/* ä¸º1è¡¨ç¤ºä½å±‚é©±åŠ¨è¦æ±‚é˜»å¡è¯¥ä¸»æœºé€‚é…å™¨ï¼Œå³SCSIä¸­é—´å±‚ä¸è¦ç»§ç»­åˆ†å‘å‘½ä»¤åˆ°é˜Ÿåˆ—ä¸­ */
 	unsigned host_self_blocked:1;
     
 	/*
@@ -576,38 +576,38 @@ struct Scsi_Host {
 	 * set for the minority of drivers whose authors actually read
 	 * the spec ;)
 	 */
-	/* Èç¹ûÎª1£¬±íÊ¾°´ÄæĞòÉ¨ÃèSCSI×ÜÏß */
+	/* å¦‚æœä¸º1ï¼Œè¡¨ç¤ºæŒ‰é€†åºæ‰«æSCSIæ€»çº¿ */
 	unsigned reverse_ordering:1;
 
 	/*
 	 * Host has rejected a command because it was busy.
 	 */
-	/* ×èÈû¼ÆÊıÆ÷ */
+	/* é˜»å¡è®¡æ•°å™¨ */
 	unsigned int host_blocked;
 
 	/*
 	 * Value host_blocked counts down from
 	 */
-	/* ×î´ó×èÈûÃüÁîÊıÁ¿ */
+	/* æœ€å¤§é˜»å¡å‘½ä»¤æ•°é‡ */
 	unsigned int max_host_blocked;
 
 	/* legacy crap */
-	/* Ö÷»úÊÊÅäÆ÷µÄMMIO»ùµØÖ· */
+	/* ä¸»æœºé€‚é…å™¨çš„MMIOåŸºåœ°å€ */
 	unsigned long base;
-	/* Ö÷»úÊÊÅäÆ÷µÄIO¶Ë¿Ú±àºÅ */
+	/* ä¸»æœºé€‚é…å™¨çš„IOç«¯å£ç¼–å· */
 	unsigned long io_port;
-	/* IO¿Õ¼ä×Ö½ÚÊı */
+	/* IOç©ºé—´å­—èŠ‚æ•° */
 	unsigned char n_io_port;
-	/* DMAÍ¨µÀ£¬ÓÃÓÚÀÏÊ½Çı¶¯ */
+	/* DMAé€šé“ï¼Œç”¨äºè€å¼é©±åŠ¨ */
 	unsigned char dma_channel;
-	/* ¸ÃÉè±¸µÄIRQºÅ */
+	/* è¯¥è®¾å¤‡çš„IRQå· */
 	unsigned int  irq;
 	
-	/* Ö÷»úÊÊÅäÆ÷µÄ×´Ì¬ */
+	/* ä¸»æœºé€‚é…å™¨çš„çŠ¶æ€ */
 	unsigned long shost_state;
 
 	/* ldm bits */
-	/* ÄÚÇ¶Í¨ÓÃÉè±¸ */
+	/* å†…åµŒé€šç”¨è®¾å¤‡ */
 	struct device		shost_gendev;
 	struct class_device	shost_classdev;
 
@@ -618,14 +618,14 @@ struct Scsi_Host {
 	 * For these access to it is synchronized implicitly by
 	 * module_init/module_exit.
 	 */
-	/* ÀÏÊ½Çı¶¯Ê¹ÓÃËüÁ´½ÓÈëÄ£°åµÄlegacy_hostsÁ´±í */
+	/* è€å¼é©±åŠ¨ä½¿ç”¨å®ƒé“¾æ¥å…¥æ¨¡æ¿çš„legacy_hostsé“¾è¡¨ */
 	struct list_head sht_legacy_list;
 
 	/*
 	 * Points to the transport data (if any) which is allocated
 	 * separately
 	 */
-	/* ·ÖÅäµÄ´«Êä²ãÊı¾İ½á¹¹ */
+	/* åˆ†é…çš„ä¼ è¾“å±‚æ•°æ®ç»“æ„ */
 	void *shost_data;
 
 	/*
@@ -633,7 +633,7 @@ struct Scsi_Host {
 	 * and also because some compilers (m68k) don't automatically force
 	 * alignment to a long boundary.
 	 */
-	/* Ö÷»úÊÊÅäÆ÷µÄ×¨ÓĞÊı¾İ */
+	/* ä¸»æœºé€‚é…å™¨çš„ä¸“æœ‰æ•°æ® */
 	unsigned long hostdata[0]  /* Used for storage of host specific stuff */
 		__attribute__ ((aligned (sizeof(unsigned long))));
 };

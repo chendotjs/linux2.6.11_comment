@@ -21,7 +21,7 @@
 #include <asm/io.h>
 
 
-/* È«¾Ö¶Ë¿Ú×ÊÔ´ */
+/* å…¨å±€ç«¯å£èµ„æº */
 struct resource ioport_resource = {
 	.name	= "PCI IO",
 	.start	= 0x0000,
@@ -31,7 +31,7 @@ struct resource ioport_resource = {
 
 EXPORT_SYMBOL(ioport_resource);
 
-/* È«¾ÖÄÚ´æ×ÊÔ´ */
+/* å…¨å±€å†…å­˜èµ„æº */
 struct resource iomem_resource = {
 	.name	= "PCI mem",
 	.start	= 0UL,
@@ -199,7 +199,7 @@ static int __release_resource(struct resource *old)
 }
 
 /**
- * °ÑÒ»¸ö¸ø¶¨·¶Î§·ÖÅä¸øÒ»¸öIOÉè±¸
+ * æŠŠä¸€ä¸ªç»™å®šèŒƒå›´åˆ†é…ç»™ä¸€ä¸ªIOè®¾å¤‡
  */
 int request_resource(struct resource *root, struct resource *new)
 {
@@ -226,7 +226,7 @@ struct resource *____request_resource(struct resource *root, struct resource *ne
 EXPORT_SYMBOL(____request_resource);
 
 /**
- * ÊÍ·ÅÒÔÇ°·ÖÅä¸øIOÉè±¸µÄ¸ø¶¨·¶Î§¡£
+ * é‡Šæ”¾ä»¥å‰åˆ†é…ç»™IOè®¾å¤‡çš„ç»™å®šèŒƒå›´ã€‚
  */
 int release_resource(struct resource *old)
 {
@@ -290,9 +290,9 @@ static int find_resource(struct resource *root, struct resource *new,
  * Allocate empty slot in the resource tree given range and alignment.
  */
 /**
- * ÔÚ×ÊÔ´Ê÷ÖĞÑ°ÕÒÒ»¸ö¸ø¶¨´óĞ¡ºÍÅÅÁĞ·½Ê½µÄ¿ÉÓÃ·¶Î§¡£
- * Èô´æÔÚ£¬¾Í½«Õâ¸ö·¶Î§·ÖÅä¸øÒ»¸öIOÉè±¸¡£
- * Ö÷ÒªÊÇPCIÉè±¸Çı¶¯³ÌĞòÊ¹ÓÃ¡£ÕâÖÖÉè±¸¿ÉÒÔÅäÖÃ³ÉÊ¹ÓÃÈÎÒâµÄ¶Ë¿ÚºÅºÍÖ÷°åÉÏµÄÄÚ´æµØÖ·¶ÔÆä½øĞĞÅäÖÃ¡£
+ * åœ¨èµ„æºæ ‘ä¸­å¯»æ‰¾ä¸€ä¸ªç»™å®šå¤§å°å’Œæ’åˆ—æ–¹å¼çš„å¯ç”¨èŒƒå›´ã€‚
+ * è‹¥å­˜åœ¨ï¼Œå°±å°†è¿™ä¸ªèŒƒå›´åˆ†é…ç»™ä¸€ä¸ªIOè®¾å¤‡ã€‚
+ * ä¸»è¦æ˜¯PCIè®¾å¤‡é©±åŠ¨ç¨‹åºä½¿ç”¨ã€‚è¿™ç§è®¾å¤‡å¯ä»¥é…ç½®æˆä½¿ç”¨ä»»æ„çš„ç«¯å£å·å’Œä¸»æ¿ä¸Šçš„å†…å­˜åœ°å€å¯¹å…¶è¿›è¡Œé…ç½®ã€‚
  */
 int allocate_resource(struct resource *root, struct resource *new,
 		      unsigned long size,

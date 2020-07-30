@@ -35,19 +35,19 @@
 
 /* This is used to register protocols. */
 /**
- * λ��Ipv4֮�ϵ�L4Э��
+ * 位于Ipv4之上的L4协议
  */
 struct net_protocol {
 	/**
-	 * �ɴ�Э��ע��ĺ���������Ϊ����Ĵ���������
+	 * 由此协议注册的函数，来作为入包的处理函数。
 	 */
 	int			(*handler)(struct sk_buff *skb);
 	/**
-	 * ��ICMPЭ�鴦���������õĺ���������֪ͨL4Э���йؽ��յ�ICMP UNRESCHABLE��Ϣ�����顣
+	 * 由ICMP协议处理函数所用的函数，用于通知L4协议有关接收到ICMP UNRESCHABLE消息的事情。
 	 */
 	void			(*err_handler)(struct sk_buff *skb, u32 info);
 	/**
-	 * ���ֶ�������Э��ջ�е�ĳЩ�ؼ��㶼�ᱻ��ѯ������ʹЭ������Ipsec���Լ�顣
+	 * 此字段在网络协议栈中的某些关键点都会被查询。用于使协议免于Ipsec策略检查。
 	 */
 	int			no_policy;
 };

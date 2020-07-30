@@ -571,7 +571,7 @@ int nfs_neg_need_reval(struct inode *dir, struct dentry *dentry,
  * cached dentry and do a new lookup.
  */
 /**
- * ²éÕÒµ½Ò»¸ödentryºó£¬½«¶ÔÕâ¸ödentryµÄÓĞĞ§ĞÔ½øĞĞ¼ì²é¡£Èç¹ûÈÔÈ»ÓĞĞ§£¬¾Í±£³Ö²»¶¯£»Èç¹ûÒÑ¾­Ê§Ğ§ÁË£¬¾ÍÖØĞÂË¢ĞÂÕâ¸ödentry£¬Ê¹Ëü·´Ó³×îĞÂµÄÇé¿ö¡£
+ * æŸ¥æ‰¾åˆ°ä¸€ä¸ªdentryåï¼Œå°†å¯¹è¿™ä¸ªdentryçš„æœ‰æ•ˆæ€§è¿›è¡Œæ£€æŸ¥ã€‚å¦‚æœä»ç„¶æœ‰æ•ˆï¼Œå°±ä¿æŒä¸åŠ¨ï¼›å¦‚æœå·²ç»å¤±æ•ˆäº†ï¼Œå°±é‡æ–°åˆ·æ–°è¿™ä¸ªdentryï¼Œä½¿å®ƒåæ˜ æœ€æ–°çš„æƒ…å†µã€‚
  */
 static int nfs_lookup_revalidate(struct dentry * dentry, struct nameidata *nd)
 {
@@ -593,19 +593,19 @@ static int nfs_lookup_revalidate(struct dentry * dentry, struct nameidata *nd)
 		isopen = 1;
 
 	/**
-	 * Ê×ÏÈ¼ì²éÕâ¸ödentryµÄinodeÖ¸ÕëÊÇ²»ÊÇ´æÔÚ¡£
+	 * é¦–å…ˆæ£€æŸ¥è¿™ä¸ªdentryçš„inodeæŒ‡é’ˆæ˜¯ä¸æ˜¯å­˜åœ¨ã€‚
 	 */
 	if (!inode) {
 		/**
-		 * Èç¹û²»´æÔÚ£¬¾ÍÈÏÎªÕâ¸ödentryÊÇÁÙÊ±²úÉúµÄdentry£¬È»ºó¼ì²éËüµÄÓĞĞ§ÆÚ
+		 * å¦‚æœä¸å­˜åœ¨ï¼Œå°±è®¤ä¸ºè¿™ä¸ªdentryæ˜¯ä¸´æ—¶äº§ç”Ÿçš„dentryï¼Œç„¶åæ£€æŸ¥å®ƒçš„æœ‰æ•ˆæœŸ
 		 */
 		if (nfs_neg_need_reval(dir, dentry, nd))
-			goto out_bad; /* Ã»ÓĞ¹ıÓĞĞ§ÆÚ£¬¾ÍÈÏÎªËüÓĞĞ§·µ»Ø */
-		goto out_valid;/* ·ñÔòÈÏÎªÕâ¸ödentryÎŞĞ§²¢·µ»Ø¡£ */
+			goto out_bad; /* æ²¡æœ‰è¿‡æœ‰æ•ˆæœŸï¼Œå°±è®¤ä¸ºå®ƒæœ‰æ•ˆè¿”å› */
+		goto out_valid;/* å¦åˆ™è®¤ä¸ºè¿™ä¸ªdentryæ— æ•ˆå¹¶è¿”å›ã€‚ */
 	}
 
 	/**
-	 * Õâ¸öinodeÒÑ¾­¹ıÊ§Ğ§ÆÚ
+	 * è¿™ä¸ªinodeå·²ç»è¿‡å¤±æ•ˆæœŸ
 	 */
 	if (is_bad_inode(inode)) {
 		dfprintk(VFS, "nfs_lookup_validate: %s/%s has dud inode\n",
@@ -628,18 +628,18 @@ static int nfs_lookup_revalidate(struct dentry * dentry, struct nameidata *nd)
 
 	verifier = nfs_save_change_attribute(dir);
 	/**
-	 * µ÷ÓÃnfs_proc_lookupµÃµ½Õâ¸öÄ¿Â¼Ëù¶ÔÓ¦NFSÎÄ¼ş¾ä±úºÍÎÄ¼şÊôĞÔ
+	 * è°ƒç”¨nfs_proc_lookupå¾—åˆ°è¿™ä¸ªç›®å½•æ‰€å¯¹åº”NFSæ–‡ä»¶å¥æŸ„å’Œæ–‡ä»¶å±æ€§
 	 */
 	error = NFS_PROTO(dir)->lookup(dir, &dentry->d_name, &fhandle, &fattr);
 	if (error)
 		goto out_bad;
 	/**
-	 * Èç¹ûºÍÏÖÓĞµÄÎÄ¼ş¾ä±ú²»Ïà·û£¬ÔòÈÏÎªÕâ¸ödentryÊ§Ğ§²¢·µ»Ø
+	 * å¦‚æœå’Œç°æœ‰çš„æ–‡ä»¶å¥æŸ„ä¸ç›¸ç¬¦ï¼Œåˆ™è®¤ä¸ºè¿™ä¸ªdentryå¤±æ•ˆå¹¶è¿”å›
 	 */
 	if (nfs_compare_fh(NFS_FH(inode), &fhandle))
 		goto out_bad;
 	/**
-	 * ¶ÔdentryËùÔÚµÄinode½øĞĞË¢ĞÂ¡£
+	 * å¯¹dentryæ‰€åœ¨çš„inodeè¿›è¡Œåˆ·æ–°ã€‚
 	 */
 	if ((error = nfs_refresh_inode(inode, &fattr)) != 0)
 		goto out_bad;
@@ -724,7 +724,7 @@ int nfs_is_exclusive_create(struct inode *dir, struct nameidata *nd)
 }
 
 /**
- * ÔÚ¶Ôdentry½øĞĞ²éÕÒÊ§°ÜµÄÊ±ºòÊµ¼Ê½øĞĞ²éÕÒdentry²Ù×÷£¬ËüÔÚNFSÎÄ¼şÏµÍ³ÖĞËù¶ÔÓ¦µÄº¯ÊıÊÇnfs_lookup(Ö»ÓĞÄ¿Â¼ÀàĞÍµÄÎÄ¼şÓĞÕâÖÖ²Ù×÷)
+ * åœ¨å¯¹dentryè¿›è¡ŒæŸ¥æ‰¾å¤±è´¥çš„æ—¶å€™å®é™…è¿›è¡ŒæŸ¥æ‰¾dentryæ“ä½œï¼Œå®ƒåœ¨NFSæ–‡ä»¶ç³»ç»Ÿä¸­æ‰€å¯¹åº”çš„å‡½æ•°æ˜¯nfs_lookup(åªæœ‰ç›®å½•ç±»å‹çš„æ–‡ä»¶æœ‰è¿™ç§æ“ä½œ)
  */
 static struct dentry *nfs_lookup(struct inode *dir, struct dentry * dentry, struct nameidata *nd)
 {
@@ -743,7 +743,7 @@ static struct dentry *nfs_lookup(struct inode *dir, struct dentry * dentry, stru
 
 	res = ERR_PTR(-ENOMEM);
 	/**
-	 * ½«dentryµÄ²Ù×÷º¯ÊıÊı×éÉèÎªNFSµÄdentry²Ù×÷º¯ÊıÊı×é£»
+	 * å°†dentryçš„æ“ä½œå‡½æ•°æ•°ç»„è®¾ä¸ºNFSçš„dentryæ“ä½œå‡½æ•°æ•°ç»„ï¼›
 	 */
 	dentry->d_op = NFS_PROTO(dir)->dentry_ops;
 
@@ -756,8 +756,8 @@ static struct dentry *nfs_lookup(struct inode *dir, struct dentry * dentry, stru
 		goto no_entry;
 
 	/**
-	 * µ÷ÓÃnfs_proc_lookupÔÚÄ¿Â¼ÖĞÑ°ÕÒ·ûºÏÃû³ÆµÄÎÄ¼ş¡£
-	 * Èç¹ûÕÒµ½£¬µÃµ½Õâ¸öÎÄ¼şµÄNFSÎÄ¼ş¾ä±úºÍÎÄ¼şÊôĞÔ¡£
+	 * è°ƒç”¨nfs_proc_lookupåœ¨ç›®å½•ä¸­å¯»æ‰¾ç¬¦åˆåç§°çš„æ–‡ä»¶ã€‚
+	 * å¦‚æœæ‰¾åˆ°ï¼Œå¾—åˆ°è¿™ä¸ªæ–‡ä»¶çš„NFSæ–‡ä»¶å¥æŸ„å’Œæ–‡ä»¶å±æ€§ã€‚
 	 */
 	error = NFS_PROTO(dir)->lookup(dir, &dentry->d_name, &fhandle, &fattr);
 	if (error == -ENOENT)
@@ -768,9 +768,9 @@ static struct dentry *nfs_lookup(struct inode *dir, struct dentry * dentry, stru
 	}
 	res = ERR_PTR(-EACCES);
 	/**
-	 * µ÷ÓÃnfs_fhget£¬Ñ°ÕÒÕâ¸öÎÄ¼ş¾ä±úËù¶ÔÓ¦µÄinode½á¹¹£¨Èç¹ûÃ»ÓĞ£¬¾Í´´½¨Ò»¸öinode½á¹¹£©¡£
-	 * Èç¹ûÕÒµ½£¬½«dentryµÄinodeÖ¸ÕëÖ¸ÏòÕÒµ½µÄinode½á¹¹¡£
-	 * ÔÚnfs_fhgetÖĞÈç¹ûÕÒµ½inode£¬ĞèÒª¸ù¾İÎÄ¼şÊôĞÔËù·´Ó³µÄÎÄ¼şÀàĞÍÈ·¶¨²»Í¬µÄ²Ù×÷º¯Êı×é
+	 * è°ƒç”¨nfs_fhgetï¼Œå¯»æ‰¾è¿™ä¸ªæ–‡ä»¶å¥æŸ„æ‰€å¯¹åº”çš„inodeç»“æ„ï¼ˆå¦‚æœæ²¡æœ‰ï¼Œå°±åˆ›å»ºä¸€ä¸ªinodeç»“æ„ï¼‰ã€‚
+	 * å¦‚æœæ‰¾åˆ°ï¼Œå°†dentryçš„inodeæŒ‡é’ˆæŒ‡å‘æ‰¾åˆ°çš„inodeç»“æ„ã€‚
+	 * åœ¨nfs_fhgetä¸­å¦‚æœæ‰¾åˆ°inodeï¼Œéœ€è¦æ ¹æ®æ–‡ä»¶å±æ€§æ‰€åæ˜ çš„æ–‡ä»¶ç±»å‹ç¡®å®šä¸åŒçš„æ“ä½œå‡½æ•°ç»„
 	 */
 	inode = nfs_fhget(dentry->d_sb, &fhandle, &fattr);
 	if (!inode)
@@ -1015,7 +1015,7 @@ out_err:
  * reply path made it appear to have failed.
  */
 /**
- * ¸ºÔğÔÚÒ»¸öÄ¿Â¼ÉÏ´´½¨Ò»¸öĞÂµÄÎÄ¼ş
+ * è´Ÿè´£åœ¨ä¸€ä¸ªç›®å½•ä¸Šåˆ›å»ºä¸€ä¸ªæ–°çš„æ–‡ä»¶
  */
 static int nfs_create(struct inode *dir, struct dentry *dentry, int mode,
 		struct nameidata *nd)
@@ -1037,13 +1037,13 @@ static int nfs_create(struct inode *dir, struct dentry *dentry, int mode,
 	lock_kernel();
 	nfs_begin_data_update(dir);
 	/**
-	 * µ÷ÓÃnfs_proc_createÔÚÔ¶³Ì»úÆ÷ÉÏ´´½¨Ò»¸öÎÄ¼ş£¬²¢µÃµ½Õâ¸öÎÄ¼şµÄÎÄ¼ş¾ä±úºÍÎÄ¼şÊôĞÔ£»
+	 * è°ƒç”¨nfs_proc_createåœ¨è¿œç¨‹æœºå™¨ä¸Šåˆ›å»ºä¸€ä¸ªæ–‡ä»¶ï¼Œå¹¶å¾—åˆ°è¿™ä¸ªæ–‡ä»¶çš„æ–‡ä»¶å¥æŸ„å’Œæ–‡ä»¶å±æ€§ï¼›
 	 */
 	inode = NFS_PROTO(dir)->create(dir, dentry, &attr, open_flags);
 	nfs_end_data_update(dir);
 	if (!IS_ERR(inode)) {
 		/**
-		 * µ÷ÓÃnfs_fhgetÕÒµ½Õâ¸öÎÄ¼ş¾ä±úËù¶ÔÓ¦µÄinode½á¹¹£¬²¢¼ÓÈëµ½dentryÖĞÈ¥¡£
+		 * è°ƒç”¨nfs_fhgetæ‰¾åˆ°è¿™ä¸ªæ–‡ä»¶å¥æŸ„æ‰€å¯¹åº”çš„inodeç»“æ„ï¼Œå¹¶åŠ å…¥åˆ°dentryä¸­å»ã€‚
 		 */
 		d_instantiate(dentry, inode);
 		nfs_renew_times(dentry);

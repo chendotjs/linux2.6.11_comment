@@ -119,7 +119,7 @@ DEFINE_RWLOCK(udp_hash_lock);
 
 /* Shared by v4/v6 udp. */
 int udp_port_rover;
-/* ΪUDP�󶨺��ʵĶ˿� */
+/* 为UDP绑定合适的端口 */
 static int udp_v4_get_port(struct sock *sk, unsigned short snum)
 {
 	struct hlist_node *node;
@@ -130,12 +130,12 @@ static int udp_v4_get_port(struct sock *sk, unsigned short snum)
 	if (snum == 0) {
 		int best_size_so_far, best, result, i;
 
-		if (udp_port_rover > sysctl_local_port_range[1] ||/* �û������޸��˿��ö˿ڷ�Χ�����޸�udp_port_rover */
+		if (udp_port_rover > sysctl_local_port_range[1] ||/* 用户可能修改了可用端口范围，则修改udp_port_rover */
 		    udp_port_rover < sysctl_local_port_range[0])
 			udp_port_rover = sysctl_local_port_range[0];
 		best_size_so_far = 32767;
 		best = result = udp_port_rover;
-		/* ��������Ͱ�У�����������С��Ͱ */
+		/* 查找所有桶中，链表数量最小的桶 */
 		for (i = 0; i < UDP_HTABLE_SIZE; i++, result++) {
 			struct hlist_head *list;
 			int size;
@@ -157,7 +157,7 @@ static int udp_v4_get_port(struct sock *sk, unsigned short snum)
 		next:;
 		}
 		result = best;
-		/* �ڸ�Ͱ�в���һ����С��δ�ö˿ں� */
+		/* 在该桶中查找一个最小的未用端口号 */
 		for(i = 0; i < (1 << 16) / UDP_HTABLE_SIZE; i++, result += UDP_HTABLE_SIZE) {
 			if (result > sysctl_local_port_range[1])
 				result = sysctl_local_port_range[0]
@@ -170,9 +170,9 @@ static int udp_v4_get_port(struct sock *sk, unsigned short snum)
 			goto fail;
 gotit:
 		udp_port_rover = snum = result;
-	} else {/* �û�ָ���˶˿ں� */
+	} else {/* 用户指定了端口号 */
 		sk_for_each(sk2, node,
-			    &udp_hash[snum & (UDP_HTABLE_SIZE - 1)]) {/* ����ָ���˿����ڵ�Ͱ */
+			    &udp_hash[snum & (UDP_HTABLE_SIZE - 1)]) {/* 遍历指定端口所在的桶 */
 			struct inet_sock *inet2 = inet_sk(sk2);
 
 			if (inet2->num == snum &&
@@ -184,14 +184,14 @@ gotit:
 			    (!inet2->rcv_saddr ||
 			     !inet->rcv_saddr ||
 			     inet2->rcv_saddr == inet->rcv_saddr) &&
-			    (!sk2->sk_reuse || !sk->sk_reuse))/* �����ͻ���˳� */
+			    (!sk2->sk_reuse || !sk->sk_reuse))/* 如果冲突则退出 */
 				goto fail;
 		}
 	}
-	/* ָ���˿ں� */
+	/* 指定端口号 */
 	inet->num = snum;
-	if (sk_unhashed(sk)) {/* ����׽ӿ�û�����ӵ���ϣ���� */
-		/* ���ӵ���ϣ�� */
+	if (sk_unhashed(sk)) {/* 如果套接口没有添加到哈希表中 */
+		/* 添加到哈希表 */
 		struct hlist_head *h = &udp_hash[snum & (UDP_HTABLE_SIZE - 1)];
 
 		sk_add_node(sk, h);
@@ -319,7 +319,7 @@ found:
  * header points to the first 8 bytes of the udp header.  We need
  * to find the appropriate port.
  */
-/* UDP��Ĳ�������������յ�ICMP����ʱ���� */
+/* UDP层的差错处理，当接收到ICMP报文时调用 */
 void udp_err(struct sk_buff *skb, u32 info)
 {
 	struct inet_sock *inet;
@@ -331,9 +331,9 @@ void udp_err(struct sk_buff *skb, u32 info)
 	int harderr;
 	int err;
 
-	/* ͨ��ԭʼIP���ݱ���ȡUDP���ĵ�ǰ8���ֽڣ��������ײ��еĶ˿ںź�IP�ײ��еĵ�ַ���ӹ�ϣ���еõ����͸�UDP���ݱ��Ĵ�����ƿ� */
+	/* 通过原始IP数据报获取UDP报文的前8个字节，并根据首部中的端口号和IP首部中的地址，从哈希表中得到发送该UDP数据报的传输控制块 */
 	sk = udp_v4_lookup(iph->daddr, uh->dest, iph->saddr, uh->source, skb->dev->ifindex);
-	if (sk == NULL) {/* û���ҵ�������ƿ飬�������Ѿ��رգ��˳� */
+	if (sk == NULL) {/* 没有找到传输控制块，可能是已经关闭，退出 */
 		ICMP_INC_STATS_BH(ICMP_MIB_INERRORS);
     	  	return;	/* No socket for error */
 	}
@@ -344,18 +344,18 @@ void udp_err(struct sk_buff *skb, u32 info)
 
 	switch (type) {
 	default:
-	case ICMP_TIME_EXCEEDED:/* ��ʱ��˵���Է��޷����� */
+	case ICMP_TIME_EXCEEDED:/* 超时，说明对方无法到达 */
 		err = EHOSTUNREACH;
 		break;
-	case ICMP_SOURCE_QUENCH:/* Դ�˱��رգ������κδ��� */
+	case ICMP_SOURCE_QUENCH:/* 源端被关闭，不作任何处理 */
 		goto out;
-	case ICMP_PARAMETERPROB:/* ����������ȷ���ô�����ƿ����һ�γ�����ΪЭ����󣬲�ȷ��Ϊ�������� */
+	case ICMP_PARAMETERPROB:/* 参数错误，则确定该传输控制块最后一次出错码为协议错误，并确定为致命错误 */
 		err = EPROTO;
 		harderr = 1;
 		break;
-	case ICMP_DEST_UNREACH:/* Ŀ�Ĳ��ɴ� */
+	case ICMP_DEST_UNREACH:/* 目的不可达 */
 		if (code == ICMP_FRAG_NEEDED) { /* Path MTU discovery */
-			if (inet->pmtudisc != IP_PMTUDISC_DONT) {/* ��Ҫ��Ƭ����û�н�ֹ��Ƭ����˵���Ǳ��ĳ���̫�� */
+			if (inet->pmtudisc != IP_PMTUDISC_DONT) {/* 需要分片但是没有禁止分片，则说明是报文长度太大 */
 				err = EMSGSIZE;
 				harderr = 1;
 				break;
@@ -363,7 +363,7 @@ void udp_err(struct sk_buff *skb, u32 info)
 			goto out;
 		}
 		err = EHOSTUNREACH;
-		if (code <= NR_ICMP_UNREACH) {/* ��������ô����� */
+		if (code <= NR_ICMP_UNREACH) {/* 分情况设置错误码 */
 			harderr = icmp_err_convert[code].fatal;
 			err = icmp_err_convert[code].errno;
 		}
@@ -374,16 +374,16 @@ void udp_err(struct sk_buff *skb, u32 info)
 	 *      RFC1122: OK.  Passes ICMP errors back to application, as per 
 	 *	4.1.3.3.
 	 */
-	if (!inet->recverr) {/* ������������չ�Ŀɿ�������Ϣ */
-		if (!harderr || sk->sk_state != TCP_ESTABLISHED)/* ���������������˳� */
+	if (!inet->recverr) {/* 不允许接收扩展的可靠错误信息 */
+		if (!harderr || sk->sk_state != TCP_ESTABLISHED)/* 不是致命错误则退出 */
 			goto out;
-	} else {/* �������մ�����Ϣ�������� */
-		/* ������뵽������ƿ�ĳ��������� */
+	} else {/* 允许接收错误信息到报文中 */
+		/* 将其插入到传输控制块的出错队列中 */
 		ip_icmp_error(sk, skb, err, uh->dest, info, (u8*)(uh+1));
 	}
-	/* �����������������û�̬��Ҫ���մ�����Ϣ�������ô����־ */
+	/* 如果是致命错误或者用户态需要接收错误信息，则设置错误标志 */
 	sk->sk_err = err;
-	/* ֪ͨ�ȴ��ô�����ƿ�Ľ��̣������份�� */
+	/* 通知等待该传输控制块的进程，并将其唤醒 */
 	sk->sk_error_report(sk);
 out:
 	sock_put(sk);
@@ -407,7 +407,7 @@ static void udp_flush_pending_frames(struct sock *sk)
  * Push out all pending data as one UDP datagram. Socket is locked.
  */
 /**
- * ˢ�»�������ݣ�����ʵ�ʵ����ݷ��͡�
+ * 刷新缓存的数据，进行实际的数据发送。
  */
 static int udp_push_pending_frames(struct sock *sk, struct udp_sock *up)
 {
@@ -418,20 +418,20 @@ static int udp_push_pending_frames(struct sock *sk, struct udp_sock *up)
 	int err = 0;
 
 	/* Grab the skbuff where UDP header space exists. */
-	if ((skb = skb_peek(&sk->sk_write_queue)) == NULL)/* ������Ͷ�����û�б��ģ���ֱ���˳� */
+	if ((skb = skb_peek(&sk->sk_write_queue)) == NULL)/* 如果发送队列中没有报文，则直接退出 */
 		goto out;
 
 	/*
 	 * Create a UDP header
 	 */
-	uh = skb->h.uh;/* ���ñ���ͷ�� */
+	uh = skb->h.uh;/* 设置报文头部 */
 	uh->source = fl->fl_ip_sport;
 	uh->dest = fl->fl_ip_dport;
 	uh->len = htons(up->len);
 	uh->check = 0;
 
 	/**
-	 * sockѡ���ʾ����ҪL4У��͡��Ͳ�����У��͵�����ֱ�ӷ��͡�
+	 * sock选项表示不需要L4校验和。就不考虑校验和的问题直接发送。
 	 */
 	if (sk->sk_no_check == UDP_CSUM_NOXMIT) {
 		skb->ip_summed = CHECKSUM_NONE;
@@ -439,7 +439,7 @@ static int udp_push_pending_frames(struct sock *sk, struct udp_sock *up)
 	}
 
 	/**
-	 * û�з�Ƭ��
+	 * 没有分片。
 	 */
 	if (skb_queue_len(&sk->sk_write_queue) == 1) {
 		/*
@@ -447,11 +447,11 @@ static int udp_push_pending_frames(struct sock *sk, struct udp_sock *up)
 		 */
 		if (skb->ip_summed == CHECKSUM_HW) {
 			/**
-			 * csumָ��У���λ�ã�������У��͵�ֵ��
+			 * csum指向校验和位置，而不是校验和的值。
 			 */
 			skb->csum = offsetof(struct udphdr, check);
 			/**
-			 * ����α��ͷ��У��͡�
+			 * 计算伪报头的校验和。
 			 */
 			uh->check = ~csum_tcpudp_magic(fl->fl4_src, fl->fl4_dst,
 					up->len, IPPROTO_UDP, 0);
@@ -490,7 +490,7 @@ static int udp_push_pending_frames(struct sock *sk, struct udp_sock *up)
 	}
 send:
 	/**
-	 * ����֡��
+	 * 发送帧。
 	 */
 	err = ip_push_pending_frames(sk);
 out:
@@ -506,7 +506,7 @@ static unsigned short udp_check(struct udphdr *uh, int len, unsigned long saddr,
 }
 
 /**
- * ����UDP����
+ * 发送UDP包。
  */
 int udp_sendmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *msg,
 		size_t len)
@@ -523,111 +523,111 @@ int udp_sendmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *msg,
 	u8  tos;
 	int err;
 	/**
-	 * �ֲ���־corkreq�ĳ�ʼ��ȡ���ڶ�����أ����˱�־�ᴫ��ip_append_data������ָ���Ƿ�Ӧ��ʹ�û��������ơ�����һЩ�����ǣ�
-	 *		MSG_MORE��				�˱�־������ÿ�δ�������ʱ�����趨�������
-	 *		corkflag��UDP_CORE����	�����־ֻ����׽����趨һ�Σ�Ȼ��һֱ�����н���ֱ����ʽ�ı��ر�Ϊֹ��
+	 * 局部标志corkreq的初始化取决于多个因素，而此标志会传给ip_append_data，用于指出是否应该使用缓冲区机制。其中一些因素是：
+	 *		MSG_MORE：				此标志可以在每次传输请求时单独设定或清除。
+	 *		corkflag（UDP_CORE）：	这个标志只会对套接字设定一次，然后一直保持有交，直到显式的被关闭为止。
 	 */
 	int corkreq = up->corkflag || msg->msg_flags&MSG_MORE;
 
-	if (len > 0xFFFF)/* IP���ݱ�����UDP���ݱ�����Ϊ64K */
+	if (len > 0xFFFF)/* IP数据报限制UDP数据报长度为64K */
 		return -EMSGSIZE;
 
 	/* 
 	 *	Check the flags.
 	 */
-	/* UDP��֧�ִ������ݵķ��� */
+	/* UDP不支持带外数据的发送 */
 	if (msg->msg_flags&MSG_OOB)	/* Mirror BSD error message compatibility */
 		return -EOPNOTSUPP;
 
 	ipc.opt = NULL;
 
-	if (up->pending) {/* UDP����������� */
+	if (up->pending) {/* UDP正在输出数据 */
 		/*
 		 * There are pending frames.
 	 	 * The socket lock must be held while it's corked.
 		 */
-		lock_sock(sk)/* ��ȡ�׽ӿڵ��� */
+		lock_sock(sk)/* 获取套接口的锁 */
 		if (likely(up->pending)) {
-			if (unlikely(up->pending != AF_INET)) {/* ��־��Ч?? */
+			if (unlikely(up->pending != AF_INET)) {/* 标志无效?? */
 				release_sock(sk);
 				return -EINVAL;
 			}
- 			goto do_append_data;/* ȷʵ��������ݣ���ת��do_append_dataֱ�Ӵ���UDP���� */
+ 			goto do_append_data;/* 确实在输出数据，跳转到do_append_data直接处理UDP数据 */
 		}
 		release_sock(sk);
 	}
-	ulen += sizeof(struct udphdr);/* ����UDP�����ܳ��� */
+	ulen += sizeof(struct udphdr);/* 计算UDP报文总长度 */
 
 	/*
 	 *	Get and verify the address. 
 	 */
-	if (msg->msg_name) {/* ����msg�д���Ŀ�ĵ�ַ���������Ӧ�ó���ͨ��sendto���ñ����� */
+	if (msg->msg_name) {/* 处理msg中带有目的地址的情况，即应用程序通过sendto调用本函数 */
 		struct sockaddr_in * usin = (struct sockaddr_in*)msg->msg_name;
-		if (msg->msg_namelen < sizeof(*usin))/* ���Ŀ�ĵ�ַ���� */
+		if (msg->msg_namelen < sizeof(*usin))/* 检查目的地址长度 */
 			return -EINVAL;
-		if (usin->sin_family != AF_INET) {/* ���Э���� */
+		if (usin->sin_family != AF_INET) {/* 检查协议族 */
 			if (usin->sin_family != AF_UNSPEC)
 				return -EAFNOSUPPORT;
 		}
 
-		daddr = usin->sin_addr.s_addr;/* ����Ŀ�ĵ�ַ�Ͷ˿� */
+		daddr = usin->sin_addr.s_addr;/* 缓存目的地址和端口 */
 		dport = usin->sin_port;
 		if (dport == 0)
 			return -EINVAL;
 	} else {
-		if (sk->sk_state != TCP_ESTABLISHED)/* û��ָ��Ŀ�ĵ�ַ��������ǰû�е��ù�connect */
+		if (sk->sk_state != TCP_ESTABLISHED)/* 没有指定目的地址，并且以前没有调用过connect */
 			return -EDESTADDRREQ;
-		daddr = inet->daddr;/* ����Ŀ�ĵ�ַ�Ͷ˿� */
+		daddr = inet->daddr;/* 缓存目的地址和端口 */
 		dport = inet->dport;
 		/* Open fast path for connected socket.
 		   Route will not be used, if at least one option is set.
 		 */
-		connected = 1;/* ��������·��ʱ�� */
+		connected = 1;/* 后续处理路由时用 */
   	}
-	ipc.addr = inet->saddr;/* Դ��ַ */
+	ipc.addr = inet->saddr;/* 源地址 */
 
-	ipc.oif = sk->sk_bound_dev_if;/* Դ�豸 */
-	if (msg->msg_controllen) {/* �п�����Ϣ��Ҫ���� */
-		err = ip_cmsg_send(msg, &ipc);/* ����������Ϣ����IPѡ�Դ��ַ��Դ�豸���� */
-		if (err)/* ������Ϣ���� */
+	ipc.oif = sk->sk_bound_dev_if;/* 源设备 */
+	if (msg->msg_controllen) {/* 有控制信息需要处理 */
+		err = ip_cmsg_send(msg, &ipc);/* 处理控制信息，如IP选项，源地址和源设备索引 */
+		if (err)/* 控制信息有误 */
 			return err;
-		if (ipc.opt)/* ��ѡ����Ϣ��������free��־����ʾѡ������ip_cmsg_send�з���� */
+		if (ipc.opt)/* 有选项信息，则设置free标志，表示选项是在ip_cmsg_send中分配的 */
 			free = 1;
 		connected = 0;
 	}
-	if (!ipc.opt)/* û��ָ��ѡ���ʹ���׽ӿڽṹ�е�ѡ�������IP_OPTIONS�׽ӿ�ѡ�����õ� */
+	if (!ipc.opt)/* 没有指定选项，则使用套接口结构中的选项，它是用IP_OPTIONS套接口选项设置的 */
 		ipc.opt = inet->opt;
 
 	saddr = ipc.addr;
 	ipc.addr = faddr = daddr;
 
-	if (ipc.opt && ipc.opt->srr) {/* ָ����ѡ·��Ϣ */
+	if (ipc.opt && ipc.opt->srr) {/* 指定了选路信息 */
 		if (!daddr)/*  */
 			return -EINVAL;
-		/* Ŀ�ĵ�ַӦ���ǵ�һ��Դ·�� */
+		/* 目的地址应当是第一个源路由 */
 		faddr = ipc.opt->faddr;
 		connected = 0;
 	}
 	tos = RT_TOS(inet->tos);
-	if (sk->sk_localroute || (msg->msg_flags & MSG_DONTROUTE) || /* ���������SO_DONTROUTE���߷���ʱ������MSG_DONTROUTE */
-	    (ipc.opt && ipc.opt->is_strictroute)) {/* �����������ϸ�Դվѡ· */
-		tos |= RTO_ONLINK;/* �˱�־��ʾ��һվ�ض�λ�ڱ������� */
+	if (sk->sk_localroute || (msg->msg_flags & MSG_DONTROUTE) || /* 如果设置了SO_DONTROUTE或者发送时设置了MSG_DONTROUTE */
+	    (ipc.opt && ipc.opt->is_strictroute)) {/* 或者设置了严格源站选路 */
+		tos |= RTO_ONLINK;/* 此标志表示下一站必定位于本地子网 */
 		connected = 0;
 	}
 
-	if (MULTICAST(daddr)) {/* �鲥��ַ */
-		if (!ipc.oif)/* û��ָ���鲥��������豸����ʹ��IP_MULTICAST_IFѡ�����õ�Ĭ���鲥�豸 */
+	if (MULTICAST(daddr)) {/* 组播地址 */
+		if (!ipc.oif)/* 没有指定组播输出网络设备，则使用IP_MULTICAST_IF选项设置的默认组播设备 */
 			ipc.oif = inet->mc_index;
-		if (!saddr)/* û��ָ���鲥Դ��ַ����ʹ��IP_MULTICAST_IFѡ�����õ�Ĭ���鲥��ַ */
+		if (!saddr)/* 没有指定组播源地址，则使用IP_MULTICAST_IF选项设置的默认组播地址 */
 			saddr = inet->mc_addr;
-		connected = 0;/* �������鲥���ģ������Ҫ��·�ɱ��в���·�� */
+		connected = 0;/* 由于是组播报文，因此需要在路由表中查找路由 */
 	}
 
-	if (connected)/* ��ȡ·�ɻ����� */
+	if (connected)/* 获取路由缓存项 */
 		rt = (struct rtable*)sk_dst_check(sk, 0);
 
 	/**
-	 * ����δ�������ӵ�UDP�׽ӿڣ�����ָ���˿�����Ϣ���������鲥����
+	 * 对于未建立连接的UDP套接口，或者指定了控制信息，或者是组播报文
 	 */
 	if (rt == NULL) {
 		struct flowi fl = { .oif = ipc.oif,
@@ -638,30 +638,30 @@ int udp_sendmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *msg,
 				    .proto = IPPROTO_UDP,
 				    .uli_u = { .ports =
 					       { .sport = inet->sport,
-						 .dport = dport } } };/* ·�ɲ�ѯѡ�� */
-		/* ��·�ɱ��в�ѯ·�� */
+						 .dport = dport } } };/* 路由查询选项 */
+		/* 在路由表中查询路由 */
 		err = ip_route_output_flow(&rt, &fl, sk, !(msg->msg_flags&MSG_DONTWAIT));
 		if (err)
 			goto out;
 
 		err = -EACCES;
 		if ((rt->rt_flags & RTCF_BROADCAST) &&
-		    !sock_flag(sk, SOCK_BROADCAST))/* �㲥��ַ�����ǲ��������й㲥���˳� */
+		    !sock_flag(sk, SOCK_BROADCAST))/* 广播地址，但是不允许进行广播，退出 */
 			goto out;
-		if (connected)/* ����Ѿ�������connect���򻺴汾�β�ѯ����·�� */
+		if (connected)/* 如果已经调用了connect，则缓存本次查询到的路由 */
 			sk_dst_set(sk, dst_clone(&rt->u.dst));
 	}
 
-	if (msg->msg_flags&MSG_CONFIRM)/* �û���ȷ��·�� */
+	if (msg->msg_flags&MSG_CONFIRM)/* 用户层确认路径 */
 		goto do_confirm;
 back_from_confirm:
 
-	saddr = rt->rt_src;/* ��·���л�ȡԴ��ַ��Ŀ�ĵ�ַ */
+	saddr = rt->rt_src;/* 从路由中获取源地址和目的地址 */
 	if (!ipc.addr)
 		daddr = ipc.addr = rt->rt_dst;
 
 	lock_sock(sk);
-	if (unlikely(up->pending)) {/* �������ϴεķ��͹����У��ⲻӦ�ã���Ϊǰ���Ѿ��жϹ��� */
+	if (unlikely(up->pending)) {/* 还处于上次的发送过程中，这不应该，因为前面已经判断过了 */
 		/* The socket is already corked while preparing it. */
 		/* ... which is an evident application bug. --ANK */
 		release_sock(sk);
@@ -673,30 +673,30 @@ back_from_confirm:
 	/*
 	 *	Now cork the socket to pend data.
 	 */
-	/* ����Ŀ�ĵ�ַ��Ŀ�Ķ˿ڡ�Դ��ַ��Դ�˿� */
+	/* 缓存目的地址、目的端口、源地址和源端口 */
 	inet->cork.fl.fl4_dst = daddr;
 	inet->cork.fl.fl_ip_dport = dport;
 	inet->cork.fl.fl4_src = saddr;
 	inet->cork.fl.fl_ip_sport = inet->sport;
-	up->pending = AF_INET;/* �˱�־��ʾ���ڷ������� */
+	up->pending = AF_INET;/* 此标志表示正在发送数据 */
 
-do_append_data:/* �������ݷ��� */
-	up->len += ulen;/* �ۼƷ��ͱ��ĳ��� */
+do_append_data:/* 处理数据发送 */
+	up->len += ulen;/* 累计发送报文长度 */
 	/**
-	 * �����ݻ���������
+	 * 将数据缓存起来。
 	 */
 	err = ip_append_data(sk, ip_generic_getfrag, msg->msg_iov, ulen, 
 			sizeof(struct udphdr), &ipc, rt, 
 			corkreq ? msg->msg_flags|MSG_MORE : msg->msg_flags);
-	if (err)/* ���ӱ��Ĵ����򽫻����е����ݷ��ͳ�ȥ */
+	if (err)/* 添加报文错误，则将缓存中的数据发送出去 */
 		udp_flush_pending_frames(sk);
-	else if (!corkreq)/* û�к������ݻ���IPѡ��������ݣ������udp_push_pending_frames�������� */
+	else if (!corkreq)/* 没有后续数据或者IP选项不缓存数据，则调用udp_push_pending_frames发送数据 */
 		err = udp_push_pending_frames(sk, up);
 	release_sock(sk);
 
 out:
-	ip_rt_put(rt);/* ������ɣ��ݼ���·�ɵ����� */
-	if (free)/* ����б�Ҫ�����ͷ�ѡ�� */
+	ip_rt_put(rt);/* 发送完成，递减对路由的引用 */
+	if (free)/* 如果有必要，则释放选项 */
 		kfree(ipc.opt);
 	if (!err) {
 		UDP_INC_STATS_USER(UDP_MIB_OUTDATAGRAMS);
@@ -704,9 +704,9 @@ out:
 	}
 	return err;
 
-do_confirm:/* ��������ʱ������MSG_CONFIRM��־ */
-	dst_confirm(&rt->u.dst);/* Ӧ�ò�֪�����ؿɴ���ֱ�Ӷ�·�ɻ��������ȷ�� */
-	if (!(msg->msg_flags&MSG_PROBE) || len)/* MSG_PROBE��־��ʾ������������·����������ֱ�������ݡ����û��ָ�������־���������� */
+do_confirm:/* 发送数据时设置了MSG_CONFIRM标志 */
+	dst_confirm(&rt->u.dst);/* 应用层知道网关可达，因此直接对路由缓存项进行确认 */
+	if (!(msg->msg_flags&MSG_PROBE) || len)/* MSG_PROBE标志表示仅仅用来发现路径，并不正直发送数据。如果没有指定这个标志，则发送数据 */
 		goto back_from_confirm;
 	err = 0;
 	goto out;
@@ -805,7 +805,7 @@ static __inline__ int __udp_checksum_complete(struct sk_buff *skb)
 	return (unsigned short)csum_fold(skb_checksum(skb, 0, skb->len, skb->csum));
 }
 
-/* ����α�ײ��ۼӺͣ����У��͵ļ�� */
+/* 根据伪首部累加和，完成校验和的检测 */
 static __inline__ int udp_checksum_complete(struct sk_buff *skb)
 {
 	return skb->ip_summed != CHECKSUM_UNNECESSARY &&
@@ -816,7 +816,7 @@ static __inline__ int udp_checksum_complete(struct sk_buff *skb)
  * 	This should be easy, if there is something there we
  * 	return it, otherwise we block.
  */
-/* recvmsgϵͳ���õ�UDP�����ʵ�� */
+/* recvmsg系统调用的UDP传输层实现 */
 static int udp_recvmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *msg,
 		       size_t len, int noblock, int flags, int *addr_len)
 {
@@ -828,25 +828,25 @@ static int udp_recvmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *msg,
 	/*
 	 *	Check any passed addresses
 	 */
-	if (addr_len)/* ���÷��ͷ���ַ���� */
+	if (addr_len)/* 设置发送方地址长度 */
 		*addr_len=sizeof(*sin);
 
-	if (flags & MSG_ERRQUEUE)/* �û������ȡ������Ϣ */
+	if (flags & MSG_ERRQUEUE)/* 用户是想读取错误信息 */
 		return ip_recv_error(sk, msg, len);
 
 try_again:
-	/* �ӽ��ն����л�ȡUDP���ݱ� */
+	/* 从接收队列中获取UDP数据报 */
 	skb = skb_recv_datagram(sk, flags, noblock, &err);
-	if (!skb)/* û�����ݣ����ش��� */
+	if (!skb)/* 没有数据，返回错误 */
 		goto out;
   
-  	copied = skb->len - sizeof(struct udphdr);/* �ɸ��Ƶ����ݳ��� */
-	if (copied > len) {/* ���ĳ����û����������ȣ�����MSG_TRUNC��־ */
+  	copied = skb->len - sizeof(struct udphdr);/* 可复制的数据长度 */
+	if (copied > len) {/* 报文超过用户缓冲区长度，设置MSG_TRUNC标志 */
 		copied = len;
 		msg->msg_flags |= MSG_TRUNC;
 	}
 
-	/* ���ݱ�־���ò�ͬ�������û�̬�������и������� */
+	/* 根据标志调用不同函数向用户态缓冲区中复制数据 */
 	if (skb->ip_summed==CHECKSUM_UNNECESSARY) {
 		err = skb_copy_datagram_iovec(skb, sizeof(struct udphdr), msg->msg_iov,
 					      copied);
@@ -862,40 +862,40 @@ try_again:
 			goto csum_copy_err;
 	}
 
-	if (err)/* ����ʧ�����ͷ�SKB�����ش����� */
+	if (err)/* 复制失败则释放SKB并返回错误码 */
 		goto out_free;
 
-	/* �������һ�����ݰ����յ�ʱ���������û���Ҫ����ʱ�����������ʱ�䵽�û�̬ */
+	/* 更新最后一个数据包接收的时间戳，如果用户需要接收时间戳，还复制时间到用户态 */
 	sock_recv_timestamp(msg, sk, skb);
 
 	/* Copy the address. */
-	if (sin)/* ���Ƶ�ַ��������Ϣ */
+	if (sin)/* 复制地址到控制信息 */
 	{
 		sin->sin_family = AF_INET;
 		sin->sin_port = skb->h.uh->source;
 		sin->sin_addr.s_addr = skb->nh.iph->saddr;
 		memset(sin->sin_zero, 0, sizeof(sin->sin_zero));
   	}
-	if (inet->cmsg_flags)/* ���ݿ�����Ϣ��־λ(ͨ���׽ӿ�ѡ������)������Ӧ�Ŀ�����Ϣ���Ƶ��û��ռ� */
+	if (inet->cmsg_flags)/* 根据控制信息标志位(通过套接口选项设置)，将相应的控制信息复制到用户空间 */
 		ip_cmsg_recv(msg, skb);
 
 	err = copied;
-	if (flags & MSG_TRUNC)/* ������ݱ��ضϣ��򷵻�ԭʼ�����ݳ��� */
+	if (flags & MSG_TRUNC)/* 如果数据被截断，则返回原始的数据长度 */
 		err = skb->len - sizeof(struct udphdr);
   
 out_free:
-  	skb_free_datagram(sk, skb);/* ���������ϻ��������������ͷ�SKB������ */
+  	skb_free_datagram(sk, skb);/* 如果复制完毕或者遇到错误，则释放SKB并返回 */
 out:
   	return err;
 
-csum_copy_err:/* У���ʧ�ܵ��˴��� */
+csum_copy_err:/* 校验和失败到此处理 */
 	UDP_INC_STATS_BH(UDP_MIB_INERRORS);
 
 	/* Clear queue. */
-	if (flags&MSG_PEEK) {/* ���鿴���� */
+	if (flags&MSG_PEEK) {/* 仅查看数据 */
 		int clear = 0;
 		spin_lock_irq(&sk->sk_receive_queue.lock);
-		if (skb == skb_peek(&sk->sk_receive_queue)) {/* ȡ��һ�����ģ�����ɾ���������е�����ƺ�������ɾ������ */
+		if (skb == skb_peek(&sk->sk_receive_queue)) {/* 取第一个报文，将其删除，这里有点错误，似乎可能误删除数据 */
 			__skb_unlink(skb, &sk->sk_receive_queue);
 			clear = 1;
 		}
@@ -906,25 +906,25 @@ csum_copy_err:/* У���ʧ�ܵ��˴��� */
 
 	skb_free_datagram(sk, skb);
 
-	if (noblock)/* �����������ʽ���򷵻�EAGAIN�����������ȡ��һ������ */
+	if (noblock)/* 如果非阻塞方式，则返回EAGAIN，否则继续获取下一个报文 */
 		return -EAGAIN;	
 	goto try_again;
 }
 
 
-/* UDP��disconnect����ʵ�� */
+/* UDP层disconnect调用实现 */
 int udp_disconnect(struct sock *sk, int flags)
 {
 	struct inet_sock *inet = inet_sk(sk);
 	/*
 	 *	1003.1g - break association.
 	 */
-	/* ��λ������ƿ��״̬��Ŀ�ĵ�ַ��Ŀ�Ķ˿��Լ�����ӿ� */
+	/* 复位传输控制块的状态、目的地址、目的端口以及输出接口 */
 	sk->sk_state = TCP_CLOSE;
 	inet->daddr = 0;
 	inet->dport = 0;
 	sk->sk_bound_dev_if = 0;
-	/* ����Ѿ��󶨶˿ڼ���ַ���򽫴�����ƿ��udp_hashɢ�б���ɾ�� */
+	/* 如果已经绑定端口及地址，则将传输控制块从udp_hash散列表中删除 */
 	if (!(sk->sk_userlocks & SOCK_BINDADDR_LOCK))
 		inet_reset_saddr(sk);
 
@@ -932,12 +932,12 @@ int udp_disconnect(struct sock *sk, int flags)
 		sk->sk_prot->unhash(sk);
 		inet->sport = 0;
 	}
-	/* ��λ������ƿ��Ŀ��·�ɻ��� */
+	/* 复位传输控制块的目的路由缓存 */
 	sk_dst_reset(sk);
 	return 0;
 }
 
-/* �ر�UDP�׽ӿ� */
+/* 关闭UDP套接口 */
 static void udp_close(struct sock *sk, long timeout)
 {
 	sk_common_release(sk);
@@ -1037,7 +1037,7 @@ static int udp_encap_rcv(struct sock * sk, struct sk_buff *skb)
  * Note that in the success and error cases, the skb is assumed to
  * have either been requeued or freed.
  */
-/* ���������ӵ�UDP������ƿ�Ľ��ն����� */
+/* 将报文添加到UDP传输控制块的接收队列中 */
 static int udp_queue_rcv_skb(struct sock * sk, struct sk_buff *skb)
 {
 	struct udp_sock *up = udp_sk(sk);
@@ -1045,12 +1045,12 @@ static int udp_queue_rcv_skb(struct sock * sk, struct sk_buff *skb)
 	/*
 	 *	Charge it to the socket, dropping if the queue is full.
 	 */
-	if (!xfrm4_policy_check(sk, XFRM_POLICY_IN, skb)) {/* ��ȫ�Լ�� */
+	if (!xfrm4_policy_check(sk, XFRM_POLICY_IN, skb)) {/* 安全性检查 */
 		kfree_skb(skb);
 		return -1;
 	}
 
-	if (up->encap_type) {/* IPSECЭ���װ�ı��ģ������� */
+	if (up->encap_type) {/* IPSEC协议封装的报文，不讨论 */
 		/*
 		 * This is an encapsulation socket, so let's see if this is
 		 * an encapsulated packet.
@@ -1077,17 +1077,17 @@ static int udp_queue_rcv_skb(struct sock * sk, struct sk_buff *skb)
 		/* FALLTHROUGH -- it's a UDP Packet */
 	}
 
-	/* ��װ�˹������ұ�����Ҫ���� */
+	/* 安装了过滤器且报文需要检验 */
 	if (sk->sk_filter && skb->ip_summed != CHECKSUM_UNNECESSARY) {
-		if (__udp_checksum_complete(skb)) {/* У��ʧ���������� */
+		if (__udp_checksum_complete(skb)) {/* 校验失败则丢弃报文 */
 			UDP_INC_STATS_BH(UDP_MIB_INERRORS);
 			kfree_skb(skb);
 			return -1;
 		}
-		skb->ip_summed = CHECKSUM_UNNECESSARY;/* ���óɹ�У��ı�־ */
+		skb->ip_summed = CHECKSUM_UNNECESSARY;/* 设置成功校验的标志 */
 	}
 
-	/* �����յ������ݱ����ӵ�������ƿ�Ľ��ն����� */
+	/* 将接收到的数据报添加到传输控制块的接收队列中 */
 	if (sock_queue_rcv_skb(sk,skb)<0) {
 		UDP_INC_STATS_BH(UDP_MIB_INERRORS);
 		kfree_skb(skb);
@@ -1103,43 +1103,43 @@ static int udp_queue_rcv_skb(struct sock * sk, struct sk_buff *skb)
  *	Note: called only from the BH handler context,
  *	so we don't need to lock the hashes.
  */
-/* ���ಥ�����鲥���ķַ���ÿһ�������� */
+/* 将多播或者组播报文分发给每一个侦听者 */
 static int udp_v4_mcast_deliver(struct sk_buff *skb, struct udphdr *uh,
 				 u32 saddr, u32 daddr)
 {
 	struct sock *sk;
 	int dif;
 
-	read_lock(&udp_hash_lock);/* ��ȡ��ϣ������ */
-	/* ����Ŀ�Ķ˿��ҵ�Ͱ����� */
+	read_lock(&udp_hash_lock);/* 获取哈希表的锁 */
+	/* 根据目的端口找到桶的入口 */
 	sk = sk_head(&udp_hash[ntohs(uh->dest) & (UDP_HTABLE_SIZE - 1)]);
 	dif = skb->dev->ifindex;
-	/* �������ݱ��Ķ˿ڡ���ַ��Դ�˿ڡ�Դ��ַ�������豸���������ҽ��ո����ݱ��ĵ�һ��������ƿ� */
+	/* 根据数据报的端口、地址、源端口、源地址及输入设备索引，查找接收该数据报的第一个传输控制块 */
 	sk = udp_v4_mcast_next(sk, uh->dest, daddr, uh->source, saddr, dif);
-	if (sk) {/* �ҵ����������Ŀ��ƿ� */
+	if (sk) {/* 找到报文所属的控制块 */
 		struct sock *sknext = NULL;
 
 		do {
 			struct sk_buff *skb1 = skb;
 
-			/* ������һ�����ƿ� */
+			/* 查找下一个控制块 */
 			sknext = udp_v4_mcast_next(sk_next(sk), uh->dest, daddr,
 						   uh->source, saddr, dif);
-			if(sknext)/* �����һ��������ƿ���ڣ���clone���� */
+			if(sknext)/* 如果下一个传输控制块存在，则clone报文 */
 				skb1 = skb_clone(skb, GFP_ATOMIC);
 
-			if(skb1) {/* ������ĸ��Ƴɹ�������û����һ�����ƿ���ʹ�÷�clone�ı��� */
-				int ret = udp_queue_rcv_skb(sk, skb1);/* ���������ӵ����ƿ�Ľ��ն����� */
-				if (ret > 0)/* ����ʧ�ܣ����ͷű��� */
+			if(skb1) {/* 如果报文复制成功，或者没有下一个控制块则使用非clone的报文 */
+				int ret = udp_queue_rcv_skb(sk, skb1);/* 将报文添加到控制块的接收队列中 */
+				if (ret > 0)/* 复制失败，则释放报文 */
 					/* we should probably re-process instead
 					 * of dropping packets here. */
 					kfree_skb(skb1);
 			}
 			sk = sknext;
 		} while(sknext);
-	} else/* û��ƥ��Ŀ��ƿ飬�ͷű��ĺ��˳� */
+	} else/* 没有匹配的控制块，释放报文后退出 */
 		kfree_skb(skb);
-	read_unlock(&udp_hash_lock);/* �ͷŹ�ϣ������ */
+	read_unlock(&udp_hash_lock);/* 释放哈希表的锁 */
 	return 0;
 }
 
@@ -1171,7 +1171,7 @@ static int udp_checksum_init(struct sk_buff *skb, struct udphdr *uh,
 /*
  *	All we need to do is get the socket, and then do a checksum. 
  */
-/* UDP��ı��Ľ�����ں��� */
+/* UDP层的报文接收入口函数 */
 int udp_rcv(struct sk_buff *skb)
 {
   	struct sock *sk;
@@ -1185,33 +1185,33 @@ int udp_rcv(struct sk_buff *skb)
 	/*
 	 *	Validate the packet and the UDP length.
 	 */
-	if (!pskb_may_pull(skb, sizeof(struct udphdr)))/* ����UDP���ݱ������Ƿ�����˱�ͷ */
+	if (!pskb_may_pull(skb, sizeof(struct udphdr)))/* 检验UDP数据报长度是否包含了报头 */
 		goto no_header;
 
 	uh = skb->h.uh;
 
 	ulen = ntohs(uh->len);
 
-	/* �����ͷ��ʶ�ĳ��ȳ���ʵ�ʵı��ĳ��ȣ����ʾ���Ŀ��ܳ������˳��������ͷ��ʶ�ĳ���С����С�ı�ͷ���ȣ�Ҳ���쳣�� */
+	/* 如果报头标识的长度超过实际的报文长度，则表示报文可能出错，退出。如果报头标识的长度小于最小的报头长度，也是异常的 */
 	if (ulen > len || ulen < sizeof(*uh))
 		goto short_packet;
 
 	if (pskb_trim(skb, ulen))
 		goto short_packet;
 
-	/* ��ʼ��У��ͣ����ʧ�����˳� */
+	/* 初始化校验和，如果失败则退出 */
 	if (udp_checksum_init(skb, uh, ulen, saddr, daddr) < 0)
 		goto csum_error;
 
-	if(rt->rt_flags & (RTCF_BROADCAST|RTCF_MULTICAST))/* ���յ����ǹ㲥�����鲥���� */
-		/* udp_v4_mcast_deliver������clone���յ��ı��ģ��������ݱ����ӵ�����������ƿ� */
+	if(rt->rt_flags & (RTCF_BROADCAST|RTCF_MULTICAST))/* 接收到的是广播或者组播报文 */
+		/* udp_v4_mcast_deliver将会多次clone接收到的报文，并将数据报添加到各个传输控制块 */
 		return udp_v4_mcast_deliver(skb, uh, saddr, daddr);
 
-	/* ����Դ��ַ��Դ�˿ڡ�Ŀ�ĵ�ַ��Ŀ�Ķ˿ڣ���udpɢ�б��в�������������ƿ� */
+	/* 根据源地址、源端口、目的地址、目的端口，在udp散列表中查找所属传输控制块 */
 	sk = udp_v4_lookup(saddr, uh->source, daddr, uh->dest, skb->dev->ifindex);
 
-	if (sk != NULL) {/* �ҵ�����������ƿ� */
-		/* ��UDP���ݱ����ӵ�����������ƿ�Ľ��ն����У������ز������ */
+	if (sk != NULL) {/* 找到所属传输控制块 */
+		/* 将UDP数据报添加到所属传输控制块的接收队列中，并返回操作结果 */
 		int ret = udp_queue_rcv_skb(sk, skb);
 		sock_put(sk);
 
@@ -1223,27 +1223,27 @@ int udp_rcv(struct sk_buff *skb)
 		return 0;
 	}
 
-	/* ���е����˵���Ҳ�������������ƿ� */
-	if (!xfrm4_policy_check(NULL, XFRM_POLICY_IN, skb))/* ���IPSEC�������Ƿ�Ϸ� */
+	/* 运行到这里，说明找不到所属传输控制块 */
+	if (!xfrm4_policy_check(NULL, XFRM_POLICY_IN, skb))/* 检查IPSEC包策略是否合法 */
 		goto drop;
 
 	/* No socket. Drop packet silently, if checksum is wrong */
-	if (udp_checksum_complete(skb))/* ������ݱ���У����Ƿ���ȷ */
+	if (udp_checksum_complete(skb))/* 检测数据报的校验和是否正确 */
 		goto csum_error;
 
 	UDP_INC_STATS_BH(UDP_MIB_NOPORTS);
-	/* ��ȷ�ı��ĵ����Ҳ��������׽ӿڣ���Է�����ICMP���ģ���ʾ���Ĳ��ɴ� */
+	/* 正确的报文但是找不到传输套接口，向对方发送ICMP报文，表示报文不可达 */
 	icmp_send(skb, ICMP_DEST_UNREACH, ICMP_PORT_UNREACH, 0);
 
 	/*
 	 * Hmm.  We got an UDP packet to a port to which we
 	 * don't wanna listen.  Ignore it.
 	 */
-	kfree_skb(skb);/* �ͷű��ĺ��˳� */
+	kfree_skb(skb);/* 释放报文后退出 */
 	return(0);
 
 short_packet:
-	/* ����̫����Ч����ӡһЩ������Ϣ���˳� */
+	/* 报文太短无效，打印一些调试信息后退出 */
 	NETDEBUG(if (net_ratelimit())
 		printk(KERN_DEBUG "UDP: short packet: From %u.%u.%u.%u:%u %d/%d to %u.%u.%u.%u:%u\n",
 			NIPQUAD(saddr),
@@ -1286,7 +1286,7 @@ static int udp_destroy_sock(struct sock *sk)
 /*
  *	Socket option code for UDP
  */
-/* UDP�׽ӿڵ�ioctlʵ�� */
+/* UDP套接口的ioctl实现 */
 static int udp_setsockopt(struct sock *sk, int level, int optname, 
 			  char __user *optval, int optlen)
 {
@@ -1386,27 +1386,27 @@ static int udp_getsockopt(struct sock *sk, int level, int optname,
  *	but then block when reading it. Add special case code
  *	to work around these arguably broken applications.
  */
-/* UDP���selectϵͳ����ʵ�� */
+/* UDP层的select系统调用实现 */
 unsigned int udp_poll(struct file *file, struct socket *sock, poll_table *wait)
 {
-	/* �õ���ǰ��־ */
+	/* 得到当前标志 */
 	unsigned int mask = datagram_poll(file, sock, wait);
 	struct sock *sk = sock->sk;
 	
 	/* Check for false positives due to checksum errors */
 	if ( (mask & POLLRDNORM) &&
-	     !(file->f_flags & O_NONBLOCK) &&/* ����ģʽ */
-	     !(sk->sk_shutdown & RCV_SHUTDOWN)){/* �������� */
+	     !(file->f_flags & O_NONBLOCK) &&/* 阻塞模式 */
+	     !(sk->sk_shutdown & RCV_SHUTDOWN)){/* 可正常读 */
 		struct sk_buff_head *rcvq = &sk->sk_receive_queue;
 		struct sk_buff *skb;
 
 		spin_lock_irq(&rcvq->lock);
-		while ((skb = skb_peek(rcvq)) != NULL) {/* ���������еı��� */
-			if (udp_checksum_complete(skb)) {/* У��ͼ��δͨ���������� */
+		while ((skb = skb_peek(rcvq)) != NULL) {/* 检测读缓冲中的报文 */
+			if (udp_checksum_complete(skb)) {/* 校验和检测未通过则丢弃报文 */
 				UDP_INC_STATS_BH(UDP_MIB_INERRORS);
 				__skb_unlink(skb, rcvq);
 				kfree_skb(skb);
-			} else {/* ���ͨ����˵��������һ�����Ŀɶ����˳� */
+			} else {/* 检测通过，说明至少有一个报文可读，退出 */
 				skb->ip_summed = CHECKSUM_UNNECESSARY;
 				break;
 			}
@@ -1414,7 +1414,7 @@ unsigned int udp_poll(struct file *file, struct socket *sock, poll_table *wait)
 		spin_unlock_irq(&rcvq->lock);
 
 		/* nothing to see, move along */
-		if (skb == NULL)/* ������ն�����û�б��ģ�������У��Ͳ���ȷ����ȥ��POLLIN��POLLRDNORM��־ */
+		if (skb == NULL)/* 如果接收队列中没有报文，或者其校验和不正确，则去除POLLIN和POLLRDNORM标志 */
 			mask &= ~(POLLIN | POLLRDNORM);
 	}
 

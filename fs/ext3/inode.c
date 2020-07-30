@@ -213,8 +213,8 @@ void ext3_delete_inode (struct inode * inode)
 	 * (Well, we could do this if we need to, but heck - it works)
 	 */
 	/**
-	 * ÒÑ¾­Ã»ÓĞÈÎºÎÈËÒıÓÃ´Ëinode
-	 * ´ÓorphanÖĞ³¹µ×É¾³ı´Ë½Úµã£¬»ØÊÕinodeÕ¼ÓÃµÄ¿Õ¼ä¡£
+	 * å·²ç»æ²¡æœ‰ä»»ä½•äººå¼•ç”¨æ­¤inode
+	 * ä»orphanä¸­å½»åº•åˆ é™¤æ­¤èŠ‚ç‚¹ï¼Œå›æ”¶inodeå ç”¨çš„ç©ºé—´ã€‚
 	 */
 	ext3_orphan_del(handle, inode);
 	EXT3_I(inode)->i_dtime	= get_seconds();
@@ -1279,7 +1279,7 @@ static int ext3_ordered_writepage(struct page *page,
 	if (ext3_journal_current_handle())
 		goto out_fail;
 
-	/* ¿ªÆôÈÕÖ¾£¬»ñµÃÒ»¸öÔ­×Ó²Ù×÷ÃèÊö·û */
+	/* å¼€å¯æ—¥å¿—ï¼Œè·å¾—ä¸€ä¸ªåŸå­æ“ä½œæè¿°ç¬¦ */
 	handle = ext3_journal_start(inode, ext3_writepage_trans_blocks(inode));
 
 	if (IS_ERR(handle)) {
@@ -1311,7 +1311,7 @@ static int ext3_ordered_writepage(struct page *page,
 	 */
 	if (ret == 0) {
 		/**
-		 * ¶ÔÒ³ÃæÖĞµÄÃ¿Ò»¸ö»º³åÇø£¬µ÷ÓÃjournal_dirty_data_fnº¯Êı¡£
+		 * å¯¹é¡µé¢ä¸­çš„æ¯ä¸€ä¸ªç¼“å†²åŒºï¼Œè°ƒç”¨journal_dirty_data_fnå‡½æ•°ã€‚
 		 */
 		err = walk_page_buffers(handle, page_bufs, 0, PAGE_CACHE_SIZE,
 					NULL, journal_dirty_data_fn);
@@ -1320,7 +1320,7 @@ static int ext3_ordered_writepage(struct page *page,
 	}
 	walk_page_buffers(handle, page_bufs, 0,
 			PAGE_CACHE_SIZE, NULL, bput_one);
-	/* ¹Ø±ÕÔ­×Ó²Ù×÷·û */
+	/* å…³é—­åŸå­æ“ä½œç¬¦ */
 	err = ext3_journal_stop(handle);
 	if (!ret)
 		ret = err;

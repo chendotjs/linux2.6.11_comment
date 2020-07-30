@@ -90,14 +90,14 @@
 
 /* ARP protocol opcodes. */
 /**
- * ÔÚÊÔÍ¼½«Ò»¸öL3µØÖ·½âÎöÎªL2µØÖ·Ê±£¬Õâ¸öÏûÏ¢ÓÃÓÚ·¢³öÒ»¸ösolicitation¡£
- * ¶ÔÓÚÒ»¸öĞÂÁÚ¾ÓÏîÀ´Ëµ£¬Ö÷»ú»á½«¸ÃÏûÏ¢·¢µ½ÓëÉè±¸Ó²¼şÓĞ¹ØµÄ¹ã²¥µØÖ·¡£
- * Èç¹ûÒªÈ·ÈÏÒ»¸ö´æÔÚµÄneighbourÏî£¬Ö÷»ú»á½«¸ÃÏûÏ¢Ö±½Ó·¢ËÍµ½¸ÃÁÚ¾ÓµÄL2µØÖ·¡£
+ * åœ¨è¯•å›¾å°†ä¸€ä¸ªL3åœ°å€è§£æä¸ºL2åœ°å€æ—¶ï¼Œè¿™ä¸ªæ¶ˆæ¯ç”¨äºå‘å‡ºä¸€ä¸ªsolicitationã€‚
+ * å¯¹äºä¸€ä¸ªæ–°é‚»å±…é¡¹æ¥è¯´ï¼Œä¸»æœºä¼šå°†è¯¥æ¶ˆæ¯å‘åˆ°ä¸è®¾å¤‡ç¡¬ä»¶æœ‰å…³çš„å¹¿æ’­åœ°å€ã€‚
+ * å¦‚æœè¦ç¡®è®¤ä¸€ä¸ªå­˜åœ¨çš„neighbouré¡¹ï¼Œä¸»æœºä¼šå°†è¯¥æ¶ˆæ¯ç›´æ¥å‘é€åˆ°è¯¥é‚»å±…çš„L2åœ°å€ã€‚
  */
 #define	ARPOP_REQUEST	1		/* ARP request			*/
 /**
- * Õâ¸öÏûÏ¢ÊÇARPOP_REQUESTµÄÓ¦´ğ¡£ËüÍ¨³£Ö±½Ó·¢ËÍµ½·¢³öÇëÇóµÄÖ÷»ú¡£
- * µ«ÓĞÊ±£¬ËüÒ²±»·¢ËÍµ½¹ã²¥µØÖ·¡£ÔÚÒ»Ì¨Ö÷»ú¸Ä±äÆäÅäÖÃºó£¬¸ÃÖ÷»ú¾Í»áÕâÃ´×ö£¬À´¸üĞÂÆäÁÚ¾ÓµÄ»º´æ¡£
+ * è¿™ä¸ªæ¶ˆæ¯æ˜¯ARPOP_REQUESTçš„åº”ç­”ã€‚å®ƒé€šå¸¸ç›´æ¥å‘é€åˆ°å‘å‡ºè¯·æ±‚çš„ä¸»æœºã€‚
+ * ä½†æœ‰æ—¶ï¼Œå®ƒä¹Ÿè¢«å‘é€åˆ°å¹¿æ’­åœ°å€ã€‚åœ¨ä¸€å°ä¸»æœºæ”¹å˜å…¶é…ç½®åï¼Œè¯¥ä¸»æœºå°±ä¼šè¿™ä¹ˆåšï¼Œæ¥æ›´æ–°å…¶é‚»å±…çš„ç¼“å­˜ã€‚
  */
 #define	ARPOP_REPLY	2		/* ARP reply			*/
 #define	ARPOP_RREQUEST	3		/* RARP request			*/
@@ -136,30 +136,30 @@ struct arpreq_old {
  *	This structure defines an ethernet arp header.
  */
 /**
- * ARP°ü
+ * ARPåŒ…
  */
 struct arphdr
 {
 	/**
-	 * Ó²¼şÀàĞÍ£ºÓ²¼şÀàĞÍ±êÊ¶·û£¨ÀıÈç£¬ethernet£©¡£
-	 * ²Î¼ûinclude/linux/if_arp.hÎÄ¼şÖĞµÄARPHDR_XXXÖµ¡£
+	 * ç¡¬ä»¶ç±»å‹ï¼šç¡¬ä»¶ç±»å‹æ ‡è¯†ç¬¦ï¼ˆä¾‹å¦‚ï¼Œethernetï¼‰ã€‚
+	 * å‚è§include/linux/if_arp.hæ–‡ä»¶ä¸­çš„ARPHDR_XXXå€¼ã€‚
 	 */
 	unsigned short	ar_hrd;		/* format of hardware address	*/
 	/**
-	 * Ğ­ÒéÀàĞÍ£ºL3Ğ­Òé±êÊ¶·û£¨ÀıÈç£¬IPV4£©¡£
-	 * ²Î¼ûinclude/linux/if_ether.hÎÄ¼şÖĞµÄETH_P_XXXÖµ¡£
+	 * åè®®ç±»å‹ï¼šL3åè®®æ ‡è¯†ç¬¦ï¼ˆä¾‹å¦‚ï¼ŒIPV4ï¼‰ã€‚
+	 * å‚è§include/linux/if_ether.hæ–‡ä»¶ä¸­çš„ETH_P_XXXå€¼ã€‚
 	 */
 	unsigned short	ar_pro;		/* format of protocol address	*/
 	/**
-	 * Ó²¼şµØÖ·³¤¶È£ºL2µØÖ·µÄ³¤¶È£¨×Ö½ÚÊı£©£¨ÀıÈç£¬ethernetÎª6£©¡£
+	 * ç¡¬ä»¶åœ°å€é•¿åº¦ï¼šL2åœ°å€çš„é•¿åº¦ï¼ˆå­—èŠ‚æ•°ï¼‰ï¼ˆä¾‹å¦‚ï¼Œethernetä¸º6ï¼‰ã€‚
 	 */
 	unsigned char	ar_hln;		/* length of hardware address	*/
 	/**
-	 * Ğ­ÒéµØÖ·³¤¶È£ºL3µØÖ·³¤¶È£¨×Ö½ÚÊı£©£¨ÀıÈç£¬IPV4Îª4£©¡£
+	 * åè®®åœ°å€é•¿åº¦ï¼šL3åœ°å€é•¿åº¦ï¼ˆå­—èŠ‚æ•°ï¼‰ï¼ˆä¾‹å¦‚ï¼ŒIPV4ä¸º4ï¼‰ã€‚
 	 */
 	unsigned char	ar_pln;		/* length of protocol address	*/
 	/**
-	 * ²Ù×÷Âë
+	 * æ“ä½œç 
 	 */
 	unsigned short	ar_op;		/* ARP opcode (command)		*/
 
@@ -168,19 +168,19 @@ struct arphdr
 	  *	 Ethernet looks like this : This bit is variable sized however...
 	  */
 	/**
-     * ·¢ËÍ·½Ó²¼şµØÖ·
+     * å‘é€æ–¹ç¡¬ä»¶åœ°å€
      */
 	unsigned char		ar_sha[ETH_ALEN];	/* sender hardware address	*/
 	/**
-	 * ·¢ËÍ·½Ğ­ÒéµØÖ·
+	 * å‘é€æ–¹åè®®åœ°å€
 	 */
 	unsigned char		ar_sip[4];		/* sender IP address		*/
 	/**
-	 * Ä¿µÄµØÓ²¼şµØÖ·
+	 * ç›®çš„åœ°ç¡¬ä»¶åœ°å€
 	 */
 	unsigned char		ar_tha[ETH_ALEN];	/* target hardware address	*/
 	/**
-	 * Ä¿µÄµØĞ­ÒéµØÖ·
+	 * ç›®çš„åœ°åè®®åœ°å€
 	 */
 	unsigned char		ar_tip[4];		/* target IP address		*/
 #endif

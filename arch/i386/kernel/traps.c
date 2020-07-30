@@ -59,8 +59,8 @@
 asmlinkage int system_call(void);
 
 /**
- * È±Ê¡µÄ¾Ö²¿ÃèÊö·û±í¡£
- * ¹²º¬ÎåÏî£¬µ«ÊÇÄÚºË½öÊ¹ÓÃÁËÆäÖÐÁ½Ïî£ºÓÃÓÚiBCSÖ´ÐÐÎÄ¼þµÄµ÷ÓÃÃÅºÍAolaris/x86¿ÉÖ´ÐÐÎÄ¼þµÄµ÷ÓÃÃÅ¡£
+ * ç¼ºçœçš„å±€éƒ¨æè¿°ç¬¦è¡¨ã€‚
+ * å…±å«äº”é¡¹ï¼Œä½†æ˜¯å†…æ ¸ä»…ä½¿ç”¨äº†å…¶ä¸­ä¸¤é¡¹ï¼šç”¨äºŽiBCSæ‰§è¡Œæ–‡ä»¶çš„è°ƒç”¨é—¨å’ŒAolaris/x86å¯æ‰§è¡Œæ–‡ä»¶çš„è°ƒç”¨é—¨ã€‚
  */
 struct desc_struct default_ldt[] = { { 0, 0 }, { 0, 0 }, { 0, 0 },
 		{ 0, 0 }, { 0, 0 } };
@@ -298,8 +298,8 @@ bug:
 }
 
 /**
- * ÄÚºËÒì³£ºó£¬ÎªÁË±ÜÃâÆÆ»µÓ²ÅÌÉÏµÄÊý¾Ý£¬ÄÚºË²»»áÔÙÔËÐÐ£¬¶ø»áµ÷ÓÃdieº¯Êý
- * ËüÔÚ¿ØÖÆÌ¨ÉÏ´òÓ¡³öËùÓÐCPU¼Ä´æÆ÷µÄÄÚÈÝ¡£²¢µ÷ÓÃdo_exitÀ´ÖÕÖ¹µ±Ç°½ø³Ì
+ * å†…æ ¸å¼‚å¸¸åŽï¼Œä¸ºäº†é¿å…ç ´åç¡¬ç›˜ä¸Šçš„æ•°æ®ï¼Œå†…æ ¸ä¸ä¼šå†è¿è¡Œï¼Œè€Œä¼šè°ƒç”¨dieå‡½æ•°
+ * å®ƒåœ¨æŽ§åˆ¶å°ä¸Šæ‰“å°å‡ºæ‰€æœ‰CPUå¯„å­˜å™¨çš„å†…å®¹ã€‚å¹¶è°ƒç”¨do_exitæ¥ç»ˆæ­¢å½“å‰è¿›ç¨‹
  */
 void die(const char * str, struct pt_regs * regs, long err)
 {
@@ -462,10 +462,10 @@ DO_ERROR(12, SIGBUS,  "stack segment", stack_segment)
 DO_ERROR_INFO(17, SIGBUS, "alignment check", alignment_check, BUS_ADRALN, 0)
 
 /**
- * Ò»°ãµÄ,IOÎ»Í¼¶¼ÔÚ"ÀÁ"Ä£Ê½ÖÐ´¦Àí.ÔÚ¿ª³õÊ±,½ø³ÌTSSµÄio_bitmap×Ö¶ÎÒªÃ´ÊÇ0x8000,ÒªÃ´ÊÇ0x9000.
- * µ±Êµ¼Ê·ÃÎÊÒ»¸öÎ»Í¼Ê±,¾Í»á²úÉúÒ»¸öÒì³£(0x8000,0x9000¶¼²»ÊÇÓÐÐ§µØÖ·).
- * do_general_protection¼ì²éio_bitmapµÄÖµ,Èç¹ûÊÇ0x8000,¾ÍÏò½ø³Ì·¢ËÍSIGSEGVÐÅºÅ.Èç¹ûÊÇ0x9000
- * ¾Í°Ñ½ø³ÌÎ»Í¼¸´ÖÆµ½±¾µØCPUµÄTSSÖÐ.²¢Ç¿ÖÆÔÙÖ´ÐÐÒ»´ÎÓÐÈ±ÏÝµÄ»ã±àÓïÑÔÖ¸Áî.
+ * ä¸€èˆ¬çš„,IOä½å›¾éƒ½åœ¨"æ‡’"æ¨¡å¼ä¸­å¤„ç†.åœ¨å¼€åˆæ—¶,è¿›ç¨‹TSSçš„io_bitmapå­—æ®µè¦ä¹ˆæ˜¯0x8000,è¦ä¹ˆæ˜¯0x9000.
+ * å½“å®žé™…è®¿é—®ä¸€ä¸ªä½å›¾æ—¶,å°±ä¼šäº§ç”Ÿä¸€ä¸ªå¼‚å¸¸(0x8000,0x9000éƒ½ä¸æ˜¯æœ‰æ•ˆåœ°å€).
+ * do_general_protectionæ£€æŸ¥io_bitmapçš„å€¼,å¦‚æžœæ˜¯0x8000,å°±å‘è¿›ç¨‹å‘é€SIGSEGVä¿¡å·.å¦‚æžœæ˜¯0x9000
+ * å°±æŠŠè¿›ç¨‹ä½å›¾å¤åˆ¶åˆ°æœ¬åœ°CPUçš„TSSä¸­.å¹¶å¼ºåˆ¶å†æ‰§è¡Œä¸€æ¬¡æœ‰ç¼ºé™·çš„æ±‡ç¼–è¯­è¨€æŒ‡ä»¤.
  */
 fastcall void do_general_protection(struct pt_regs * regs, long error_code)
 {
@@ -632,7 +632,7 @@ static int dummy_nmi_callback(struct pt_regs * regs, int cpu)
 static nmi_callback_t nmi_callback = dummy_nmi_callback;
 
 /**
- * ²»¿ÉÆÁ±ÎÖÐ¶Ï´¦Àíº¯Êý
+ * ä¸å¯å±è”½ä¸­æ–­å¤„ç†å‡½æ•°
  */
 fastcall void do_nmi(struct pt_regs * regs, long error_code)
 {
@@ -641,7 +641,7 @@ fastcall void do_nmi(struct pt_regs * regs, long error_code)
 	nmi_enter();
 
 	/**
-	 * »ñµÃCPUµÄÂß¼­ºÅ¡£NMI¹¦ÄÜÖ»ÔÚSMPÉÏ´ò¿ª¡£
+	 * èŽ·å¾—CPUçš„é€»è¾‘å·ã€‚NMIåŠŸèƒ½åªåœ¨SMPä¸Šæ‰“å¼€ã€‚
 	 */
 	cpu = smp_processor_id();
 	++nmi_count(cpu);
@@ -926,7 +926,7 @@ fastcall void do_spurious_interrupt_bug(struct pt_regs * regs,
  * local interrupts are disabled at the call-site in entry.S).
  */
 /**
- * Device not availableÒì³£´¦Àí³ÌÐò¡£
+ * Device not availableå¼‚å¸¸å¤„ç†ç¨‹åºã€‚
  */
 asmlinkage void math_state_restore(struct pt_regs regs)
 {
@@ -934,23 +934,23 @@ asmlinkage void math_state_restore(struct pt_regs regs)
 	struct task_struct *tsk = thread->task;
 
 	/**
-	 * Ê×ÏÈÇå³ýcr0µÄTS±êÖ¾¡£ÕâÑù£¬ÒÔºóÖ´ÐÐFPUµÈÖ¸ÁîÊ±²Å²»»á¼ÌÐø´¥·¢Òì³£¡£
+	 * é¦–å…ˆæ¸…é™¤cr0çš„TSæ ‡å¿—ã€‚è¿™æ ·ï¼Œä»¥åŽæ‰§è¡ŒFPUç­‰æŒ‡ä»¤æ—¶æ‰ä¸ä¼šç»§ç»­è§¦å‘å¼‚å¸¸ã€‚
 	 */
 	clts();		/* Allow maths ops (or we recurse) */
 	/**
-	 * tsk_used_mathÅÐ¶Ïtask_struct.flagµÄPF_USED_MATH.
-	 * Èç¹ûÕâ¸ö±êÖ¾±»Çå0,±íÊ¾thread.i387ÖÐµÄÄÚÈÝÎÞÐ§¡£
-	 * ¾Íµ÷ÓÃinit_fpu³õÊ¼»¯thread.i387µÄÄÚÈÝ¡£
-	 * µ±È»£¬Ëü»¹»áÉèÖÃPF_USED_MATH±êÖ¾¡£
+	 * tsk_used_mathåˆ¤æ–­task_struct.flagçš„PF_USED_MATH.
+	 * å¦‚æžœè¿™ä¸ªæ ‡å¿—è¢«æ¸…0,è¡¨ç¤ºthread.i387ä¸­çš„å†…å®¹æ— æ•ˆã€‚
+	 * å°±è°ƒç”¨init_fpuåˆå§‹åŒ–thread.i387çš„å†…å®¹ã€‚
+	 * å½“ç„¶ï¼Œå®ƒè¿˜ä¼šè®¾ç½®PF_USED_MATHæ ‡å¿—ã€‚
 	 */
 	if (!tsk_used_math(tsk))
 		init_fpu(tsk);
 	/**
-	 * restore_fpu¸ù¾Ýthread.i387ÖÐµÄÄÚÈÝ×°ÔØFPU¼Ä´æÆ÷¡£
+	 * restore_fpuæ ¹æ®thread.i387ä¸­çš„å†…å®¹è£…è½½FPUå¯„å­˜å™¨ã€‚
 	 */
 	restore_fpu(tsk);
 	/**
-	 * ×îºó£¬ÉèÖÃTS_USEDFPU±êÖ¾¡£ÕâÑù£¬ÔÚÏÂ´ÎÇÐ»»Ê±£¬²Å»á½«¼Ä´æÆ÷ÄÚÈÝ±£´æµ½thread.i387
+	 * æœ€åŽï¼Œè®¾ç½®TS_USEDFPUæ ‡å¿—ã€‚è¿™æ ·ï¼Œåœ¨ä¸‹æ¬¡åˆ‡æ¢æ—¶ï¼Œæ‰ä¼šå°†å¯„å­˜å™¨å†…å®¹ä¿å­˜åˆ°thread.i387
 	 */
 	thread->status |= TS_USEDFPU;	/* So we fnsave on switch_to() */
 }

@@ -14,27 +14,27 @@
  * Real Time signals may be queued.
  */
 /**
- * ÊµÊ±ĞÅºÅ¶ÓÁĞ¡£
+ * å®æ—¶ä¿¡å·é˜Ÿåˆ—ã€‚
  */
 struct sigqueue {
 	/**
-	 * Á´±í
+	 * é“¾è¡¨
 	 */
 	struct list_head list;
 	/**
-	 * Óë¹ÒÆğĞÅºÅÏàÓ¦µÄĞÅºÅ´¦Àí³ÌĞòÃèÊöÖĞsiglock×Ö¶ÎµÄÖ¸Õë¡£
+	 * ä¸æŒ‚èµ·ä¿¡å·ç›¸åº”çš„ä¿¡å·å¤„ç†ç¨‹åºæè¿°ä¸­siglockå­—æ®µçš„æŒ‡é’ˆã€‚
 	 */
 	spinlock_t *lock;
 	/**
-	 * ±êÖ¾£¿£¿£¿
+	 * æ ‡å¿—ï¼Ÿï¼Ÿï¼Ÿ
 	 */
 	int flags;
 	/**
-	 * ÃèÊö²úÉúĞÅºÅµÄÊÂ¼ş¡£
+	 * æè¿°äº§ç”Ÿä¿¡å·çš„äº‹ä»¶ã€‚
 	 */
 	siginfo_t info;
 	/**
-	 * ´æ·Å½ø³ÌÓµÓĞÕßµÄÃ¿ÓÃ»§Êı¾İ½á¹¹µÄÖ¸Õë¡£
+	 * å­˜æ”¾è¿›ç¨‹æ‹¥æœ‰è€…çš„æ¯ç”¨æˆ·æ•°æ®ç»“æ„çš„æŒ‡é’ˆã€‚
 	 */
 	struct user_struct *user;
 };
@@ -43,15 +43,15 @@ struct sigqueue {
 #define SIGQUEUE_PREALLOC	1
 
 /**
- * ¹ÒÆğĞÅºÅ¶ÓÁĞ¡£
+ * æŒ‚èµ·ä¿¡å·é˜Ÿåˆ—ã€‚
  */
 struct sigpending {
 	/**
-	 * °üº¬sigqueue½á¹¹µÄË«ÏòÁ´±í¡£
+	 * åŒ…å«sigqueueç»“æ„çš„åŒå‘é“¾è¡¨ã€‚
 	 */
 	struct list_head list;
 	/**
-	 * ¹ÒÆğĞÅºÅµÄÎ»ÑÚÂë¡£
+	 * æŒ‚èµ·ä¿¡å·çš„ä½æ©ç ã€‚
 	 */
 	sigset_t signal;
 };
@@ -66,7 +66,7 @@ struct sigpending {
 /* We don't use <linux/bitops.h> for these because there is no need to
    be atomic.  */
 /**
- * °ÑnsigĞÅºÅÔÚset±äÁ¿ÖĞ¶ÔÓ¦µÄÎ»ÖÃÎª1
+ * æŠŠnsigä¿¡å·åœ¨setå˜é‡ä¸­å¯¹åº”çš„ä½ç½®ä¸º1
  */
 static inline void sigaddset(sigset_t *set, int _sig)
 {
@@ -78,7 +78,7 @@ static inline void sigaddset(sigset_t *set, int _sig)
 }
 
 /**
- * °ÑnsigĞÅºÅÔÚset±äÁ¿ÖĞ¶ÔÓ¦µÄÎ»ÖÃÎª1
+ * æŠŠnsigä¿¡å·åœ¨setå˜é‡ä¸­å¯¹åº”çš„ä½ç½®ä¸º1
  */
 static inline void sigdelset(sigset_t *set, int _sig)
 {
@@ -90,7 +90,7 @@ static inline void sigdelset(sigset_t *set, int _sig)
 }
 
 /**
- * ·µ»ØnsigĞÅºÅÔÚset±äÁ¿ÖĞ¶ÔÓ¦Î»µÄÖµ
+ * è¿”å›nsigä¿¡å·åœ¨setå˜é‡ä¸­å¯¹åº”ä½çš„å€¼
  */
 static inline int sigismember(sigset_t *set, int _sig)
 {
@@ -109,7 +109,7 @@ static inline int sigfindinword(unsigned long word)
 #endif /* __HAVE_ARCH_SIG_BITOPS */
 
 /**
- * ²úÉúnsigĞÅºÅµÄÎ»Ë÷Òı
+ * äº§ç”Ÿnsigä¿¡å·çš„ä½ç´¢å¼•
  */
 #define sigmask(sig)	(1UL << ((sig) - 1))
 
@@ -142,19 +142,19 @@ static inline void name(sigset_t *r, const sigset_t *a, const sigset_t *b) \
 
 #define _sig_or(x,y)	((x) | (y))
 /**
- * ÔÚslºÍsl±äÁ¿Ö®¼äÖ´ĞĞÂß¼­»ò¡£Æä½á¹û±£´æÔÚdÖĞ¡£
+ * åœ¨slå’Œslå˜é‡ä¹‹é—´æ‰§è¡Œé€»è¾‘æˆ–ã€‚å…¶ç»“æœä¿å­˜åœ¨dä¸­ã€‚
  */
 _SIG_SET_BINOP(sigorsets, _sig_or)
 
 #define _sig_and(x,y)	((x) & (y))
 /**
- * ÔÚslºÍsl±äÁ¿Ö®¼äÖ´ĞĞÂß¼­Óë¡£Æä½á¹û±£´æÔÚdÖĞ¡£
+ * åœ¨slå’Œslå˜é‡ä¹‹é—´æ‰§è¡Œé€»è¾‘ä¸ã€‚å…¶ç»“æœä¿å­˜åœ¨dä¸­ã€‚
  */
 _SIG_SET_BINOP(sigandsets, _sig_and)
 
 #define _sig_nand(x,y)	((x) & ~(y))
 /**
- * ÔÚslºÍsl±äÁ¿Ö®¼äÖ´ĞĞÂß¼­Óë·Ç¡£Æä½á¹û±£´æÔÚdÖĞ¡£
+ * åœ¨slå’Œslå˜é‡ä¹‹é—´æ‰§è¡Œé€»è¾‘ä¸éã€‚å…¶ç»“æœä¿å­˜åœ¨dä¸­ã€‚
  */
 _SIG_SET_BINOP(signandsets, _sig_nand)
 
@@ -186,7 +186,7 @@ _SIG_SET_OP(signotset, _sig_not)
 #undef _sig_not
 
 /**
- * °Ñset±äÁ¿ÖĞµÄÎ»ÖÃÎª0
+ * æŠŠsetå˜é‡ä¸­çš„ä½ç½®ä¸º0
  */
 static inline void sigemptyset(sigset_t *set)
 {
@@ -200,7 +200,7 @@ static inline void sigemptyset(sigset_t *set)
 	}
 }
 /**
- * °Ñset±äÁ¿ÖĞµÄÎ»ÖÃÎª1
+ * æŠŠsetå˜é‡ä¸­çš„ä½ç½®ä¸º1
  */
 static inline void sigfillset(sigset_t *set)
 {
@@ -217,16 +217,16 @@ static inline void sigfillset(sigset_t *set)
 /* Some extensions for manipulating the low 32 signals in particular.  */
 
 /**
- * °ÑmaskÖĞµÄÎ»ÔÚset±äÁ¿ÖĞ¶ÔÓ¦µÄËùÓĞÎ»ÖÃÎª1
- * ½öÕë¶Ô1-32Ö®¼äµÄĞÅºÅ
+ * æŠŠmaskä¸­çš„ä½åœ¨setå˜é‡ä¸­å¯¹åº”çš„æ‰€æœ‰ä½ç½®ä¸º1
+ * ä»…é’ˆå¯¹1-32ä¹‹é—´çš„ä¿¡å·
  */
 static inline void sigaddsetmask(sigset_t *set, unsigned long mask)
 {
 	set->sig[0] |= mask;
 }
 /**
- * °ÑmaskÖĞµÄÎ»ÔÚset±äÁ¿ÖĞ¶ÔÓ¦µÄËùÓĞÎ»ÖÃÎª0
- * ½öÕë¶Ô1-32Ö®¼äµÄĞÅºÅ
+ * æŠŠmaskä¸­çš„ä½åœ¨setå˜é‡ä¸­å¯¹åº”çš„æ‰€æœ‰ä½ç½®ä¸º0
+ * ä»…é’ˆå¯¹1-32ä¹‹é—´çš„ä¿¡å·
  */
 static inline void sigdelsetmask(sigset_t *set, unsigned long mask)
 {
@@ -234,7 +234,7 @@ static inline void sigdelsetmask(sigset_t *set, unsigned long mask)
 }
 
 /**
- * Èç¹ûmaskÔÚsetÖĞÈÎºÎÒ»Î»±»ÉèÖÃ£¬¾Í·µ»Ø1£¬·ñÔò·µ»Ø0¡£½öÊÊÓÃÓÚ±àºÅÎª1-32µÄĞÅºÅ¡£
+ * å¦‚æœmaskåœ¨setä¸­ä»»ä½•ä¸€ä½è¢«è®¾ç½®ï¼Œå°±è¿”å›1ï¼Œå¦åˆ™è¿”å›0ã€‚ä»…é€‚ç”¨äºç¼–å·ä¸º1-32çš„ä¿¡å·ã€‚
  */
 static inline int sigtestsetmask(sigset_t *set, unsigned long mask)
 {
@@ -242,7 +242,7 @@ static inline int sigtestsetmask(sigset_t *set, unsigned long mask)
 }
 
 /**
- * ÓÃmaskÖĞµÄÎ»³õÊ¼»¯1-32Ö®¼äµÄĞÅºÅ¡£²¢½«¸ßÎ»Çå0¡£
+ * ç”¨maskä¸­çš„ä½åˆå§‹åŒ–1-32ä¹‹é—´çš„ä¿¡å·ã€‚å¹¶å°†é«˜ä½æ¸…0ã€‚
  */
 static inline void siginitset(sigset_t *set, unsigned long mask)
 {
@@ -258,7 +258,7 @@ static inline void siginitset(sigset_t *set, unsigned long mask)
 
 
 /**
- * ÓÃmaskÖĞµÄÎ»³õÊ¼»¯1-32Ö®¼äµÄĞÅºÅ¡£²¢°Ñ¸ßÎ»ÖÃ1¡£
+ * ç”¨maskä¸­çš„ä½åˆå§‹åŒ–1-32ä¹‹é—´çš„ä¿¡å·ã€‚å¹¶æŠŠé«˜ä½ç½®1ã€‚
  */
 static inline void siginitsetinv(sigset_t *set, unsigned long mask)
 {

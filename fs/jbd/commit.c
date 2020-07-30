@@ -100,7 +100,7 @@ static int inverted_lock(journal_t *journal, struct buffer_head *bh)
  * function is called by the journal thread to begin a complete commit.
  */
 /**
- * Ìá½»ÈÕÖ¾µÄÖ÷º¯Êı¡£
+ * æäº¤æ—¥å¿—çš„ä¸»å‡½æ•°ã€‚
  */
 void journal_commit_transaction(journal_t *journal)
 {
@@ -145,10 +145,10 @@ void journal_commit_transaction(journal_t *journal)
 	J_ASSERT(commit_transaction->t_state == T_RUNNING);
 
 	/**
-	 * µÚÒ»¸ö½×¶Î
-	 * ½«ÊÂÎñ´ÓÔËĞĞ×´Ì¬×ª»»ÎªËø¶¨×´Ì¬¡£
-	 * ÕâÒâÎ¶×ÅÊÂÎñ²»ÔÙ½ÓÊÜĞÂµÄÔ­×Ó²Ù×÷¡£
-	 * ÒòÎªÈÕÖ¾Ïß³Ì¿ÉÄÜÊÇµ½ÆÚÁË£¬ĞèÒªÇ¿ÖÆ½áÊøµ±Ç°ÊÂÎñ¡£
+	 * ç¬¬ä¸€ä¸ªé˜¶æ®µ
+	 * å°†äº‹åŠ¡ä»è¿è¡ŒçŠ¶æ€è½¬æ¢ä¸ºé”å®šçŠ¶æ€ã€‚
+	 * è¿™æ„å‘³ç€äº‹åŠ¡ä¸å†æ¥å—æ–°çš„åŸå­æ“ä½œã€‚
+	 * å› ä¸ºæ—¥å¿—çº¿ç¨‹å¯èƒ½æ˜¯åˆ°æœŸäº†ï¼Œéœ€è¦å¼ºåˆ¶ç»“æŸå½“å‰äº‹åŠ¡ã€‚
 	 */
 	jbd_debug(1, "JBD: starting commit of transaction %d\n",
 			commit_transaction->t_tid);
@@ -158,14 +158,14 @@ void journal_commit_transaction(journal_t *journal)
 
 	spin_lock(&commit_transaction->t_handle_lock);
 	/**
-	 * µÈ´ıÒÑ¾­´æÔÚµÄÔ­×Ó²Ù×÷Íê³É¡£
+	 * ç­‰å¾…å·²ç»å­˜åœ¨çš„åŸå­æ“ä½œå®Œæˆã€‚
 	 */
 	while (commit_transaction->t_updates) {
 		DEFINE_WAIT(wait);
 
 		prepare_to_wait(&journal->j_wait_updates, &wait,
 					TASK_UNINTERRUPTIBLE);
-		if (commit_transaction->t_updates) { /* »¹ÓĞÔ­×Ó²Ù×÷ÔÚÆäÉÏÔËĞĞ */
+		if (commit_transaction->t_updates) { /* è¿˜æœ‰åŸå­æ“ä½œåœ¨å…¶ä¸Šè¿è¡Œ */
 			spin_unlock(&commit_transaction->t_handle_lock);
 			spin_unlock(&journal->j_state_lock);
 			schedule();
@@ -196,8 +196,8 @@ void journal_commit_transaction(journal_t *journal)
 	 * buffer are perfectly permissable.
 	 */
 	/**
-	 * ÔÚ³õÊ¼»¯ÊÂÎñÊ±£¬ÓĞÒ»Ğ©Ô¤ÁôµÄ»º´æÇø¡£
-	 * ÕâĞ©»º³åÇø¿ÉÄÜÃ»ÓĞ±»Ê¹ÓÃ£¬ÔÚ´Ë½«ÆäÊÍ·Å
+	 * åœ¨åˆå§‹åŒ–äº‹åŠ¡æ—¶ï¼Œæœ‰ä¸€äº›é¢„ç•™çš„ç¼“å­˜åŒºã€‚
+	 * è¿™äº›ç¼“å†²åŒºå¯èƒ½æ²¡æœ‰è¢«ä½¿ç”¨ï¼Œåœ¨æ­¤å°†å…¶é‡Šæ”¾
 	 */
 	while (commit_transaction->t_reserved_list) {
 		jh = commit_transaction->t_reserved_list;
@@ -207,8 +207,8 @@ void journal_commit_transaction(journal_t *journal)
 		 * leave undo-committed data.
 		 */
 		/**
-		 * journal_get_undo_access¿ÉÄÜÊÇ¸´ÖÆÒ»·İÎ»Í¼»º³åÇø
-		 * ÕâÀï½«ÆäÊÍ·Å
+		 * journal_get_undo_accesså¯èƒ½æ˜¯å¤åˆ¶ä¸€ä»½ä½å›¾ç¼“å†²åŒº
+		 * è¿™é‡Œå°†å…¶é‡Šæ”¾
 		 */
 		if (jh->b_committed_data) {
 			struct buffer_head *bh = jh2bh(jh);
@@ -220,7 +220,7 @@ void journal_commit_transaction(journal_t *journal)
 			}
 			jbd_unlock_bh_state(bh);
 		}
-		/* ´ÓÁ´±íÖĞÕª³ı£¬²¢½øĞĞÒ»Ğ©ÊÍ·Å²Ù×÷ */
+		/* ä»é“¾è¡¨ä¸­æ‘˜é™¤ï¼Œå¹¶è¿›è¡Œä¸€äº›é‡Šæ”¾æ“ä½œ */
 		journal_refile_buffer(journal, jh);
 	}
 
@@ -231,7 +231,7 @@ void journal_commit_transaction(journal_t *journal)
 	 */
 	spin_lock(&journal->j_list_lock);
 	/**
-	 * ÕûÀíchckpointÁ´±í£¬ÎªÌá½»ÈÕÖ¾×ö×¼±¸¡£
+	 * æ•´ç†chckpointé“¾è¡¨ï¼Œä¸ºæäº¤æ—¥å¿—åšå‡†å¤‡ã€‚
 	 */
 	__journal_clean_checkpoint_list(journal);
 	spin_unlock(&journal->j_list_lock);
@@ -244,28 +244,28 @@ void journal_commit_transaction(journal_t *journal)
 	journal_switch_revoke_table(journal);
 
 	/**
-	 * ½«´ıÌá½»µÄÊÂÎñ±ê¼ÇÎªT_FLUSH×´Ì¬¡£
+	 * å°†å¾…æäº¤çš„äº‹åŠ¡æ ‡è®°ä¸ºT_FLUSHçŠ¶æ€ã€‚
 	 */
 	commit_transaction->t_state = T_FLUSH;
 	/**
-	 * ½«ÊÂÎñ±ê¼ÇÎªµ±Ç°Ìá½»µÄÊÂÎñ¡£
+	 * å°†äº‹åŠ¡æ ‡è®°ä¸ºå½“å‰æäº¤çš„äº‹åŠ¡ã€‚
 	 */
 	journal->j_committing_transaction = commit_transaction;
 	/**
-	 * ±ê¼Çµ±Ç°Ã»ÓĞÕıÔÚÔËĞĞµÄÊÂÎñ¡£
-	 * Òò´Ë£¬ĞÂµÄÔ­×Ó²Ù×÷ĞèÒªÆô¶¯ĞÂµÄÊÂÎñ¡£
+	 * æ ‡è®°å½“å‰æ²¡æœ‰æ­£åœ¨è¿è¡Œçš„äº‹åŠ¡ã€‚
+	 * å› æ­¤ï¼Œæ–°çš„åŸå­æ“ä½œéœ€è¦å¯åŠ¨æ–°çš„äº‹åŠ¡ã€‚
 	 */
 	journal->j_running_transaction = NULL;
 	commit_transaction->t_log_start = journal->j_head;
 	/**
-	 * ÒÑ¾­¿ÉÒÔ¿ªÊ¼ĞÂÊÂÎñÁË
-	 * »½ĞÑµÈ´ıµÄÊÂÎñ
+	 * å·²ç»å¯ä»¥å¼€å§‹æ–°äº‹åŠ¡äº†
+	 * å”¤é†’ç­‰å¾…çš„äº‹åŠ¡
 	 */
 	wake_up(&journal->j_wait_transaction_locked);
 	spin_unlock(&journal->j_state_lock);
 
 	/**
-	 * µÚ¶ş½×¶Î£¬½«»º´æÇøĞ´Èëµ½´ÅÅÌ¡£
+	 * ç¬¬äºŒé˜¶æ®µï¼Œå°†ç¼“å­˜åŒºå†™å…¥åˆ°ç£ç›˜ã€‚
 	 */
 	jbd_debug (3, "JBD: commit phase 2\n");
 
@@ -290,26 +290,26 @@ write_out_data:
 	spin_lock(&journal->j_list_lock);
 
 	/**
-	 * Ê×ÏÈ½«Êı¾İ»º³åÇøĞ´Èëµ½´ÅÅÌ¡£
+	 * é¦–å…ˆå°†æ•°æ®ç¼“å†²åŒºå†™å…¥åˆ°ç£ç›˜ã€‚
 	 */
-	while (commit_transaction->t_sync_datalist) {/* ±éÀúÊı¾İ»º³åÇøÁ´±í */
+	while (commit_transaction->t_sync_datalist) {/* éå†æ•°æ®ç¼“å†²åŒºé“¾è¡¨ */
 		struct buffer_head *bh;
 
-		/* Õª³ıÍ·½Úµã */
+		/* æ‘˜é™¤å¤´èŠ‚ç‚¹ */
 		jh = commit_transaction->t_sync_datalist;
 		commit_transaction->t_sync_datalist = jh->b_tnext;
 		bh = jh2bh(jh);
 		/**
-		 * ÕâÀïÊÔÍ¼Ìá½»Ê±
-		 * ºóÌ¨Ò²ÔÚÌá½»£¬³åÍ»
+		 * è¿™é‡Œè¯•å›¾æäº¤æ—¶
+		 * åå°ä¹Ÿåœ¨æäº¤ï¼Œå†²çª
 		 */
 		if (buffer_locked(bh)) {
 			BUFFER_TRACE(bh, "locked");
 			if (!inverted_lock(journal, bh))
 				goto write_out_data;
 			/**
-			 * ´Ósync_dataÁ´±íÈ¡³öÀ´£¬·Åµ½lockÁ´±íÖĞ
-			 * µÈ´ıºóÃæÌá½»
+			 * ä»sync_dataé“¾è¡¨å–å‡ºæ¥ï¼Œæ”¾åˆ°locké“¾è¡¨ä¸­
+			 * ç­‰å¾…åé¢æäº¤
 			 */
 			__journal_unfile_buffer(jh);
 			__journal_file_buffer(jh, commit_transaction,
@@ -320,20 +320,20 @@ write_out_data:
 				goto write_out_data;
 			}
 		} else {
-			if (buffer_dirty(bh)) {/* »º³åÇøÕæµÄÎªÔà£¬Ğ´Èë */
+			if (buffer_dirty(bh)) {/* ç¼“å†²åŒºçœŸçš„ä¸ºè„ï¼Œå†™å…¥ */
 				BUFFER_TRACE(bh, "start journal writeout");
 				get_bh(bh);
 				wbuf[bufs++] = bh;
 				/**
-				 * Ôà»º³åÇø½Ï¶à£¬ÏÈÌá½»µ½´ÅÅÌ¡£
+				 * è„ç¼“å†²åŒºè¾ƒå¤šï¼Œå…ˆæäº¤åˆ°ç£ç›˜ã€‚
 				 */
 				if (bufs == ARRAY_SIZE(wbuf)) {
 					jbd_debug(2, "submit %d writes\n",
 							bufs);
 					spin_unlock(&journal->j_list_lock);
 					/**
-					 * ½«»º³åÇøÖ±½ÓÌá½»µ½´ÅÅÌÖĞ£¬×¢Òâ²»ÊÇÈÕÖ¾ÖĞ¡£
-					 * ÕâÀï½ö½öÊÇ·¢³öIOÇëÇó
+					 * å°†ç¼“å†²åŒºç›´æ¥æäº¤åˆ°ç£ç›˜ä¸­ï¼Œæ³¨æ„ä¸æ˜¯æ—¥å¿—ä¸­ã€‚
+					 * è¿™é‡Œä»…ä»…æ˜¯å‘å‡ºIOè¯·æ±‚
 					 */
 					ll_rw_block(WRITE, bufs, wbuf);
 					/* against get_bh */
@@ -341,25 +341,25 @@ write_out_data:
 					bufs = 0;
 					goto write_out_data;
 				}
-			} else {/* Ã»ÓĞÔà£¬²»ÓÃĞ´Èë */
+			} else {/* æ²¡æœ‰è„ï¼Œä¸ç”¨å†™å…¥ */
 				BUFFER_TRACE(bh, "writeout complete: unfile");
 				if (!inverted_lock(journal, bh))
 					/**
-					 * ÕâÀï²»Ó¦µ±Ìø»ØÈ¥
-					 * »áÔì³ÉÄÚ´æĞ¹Â©
-					 * ÒòÎª´ËÊ±½ÚµãÒÑ¾­´ÓÁ´±íÖĞÕª³ıÁË
+					 * è¿™é‡Œä¸åº”å½“è·³å›å»
+					 * ä¼šé€ æˆå†…å­˜æ³„æ¼
+					 * å› ä¸ºæ­¤æ—¶èŠ‚ç‚¹å·²ç»ä»é“¾è¡¨ä¸­æ‘˜é™¤äº†
 					 */
 					goto write_out_data;
 				/**
-				 * ×ö×ÊÔ´ÇåÀí¹¤×÷
+				 * åšèµ„æºæ¸…ç†å·¥ä½œ
 				 */
 				__journal_unfile_buffer(jh);
 				jbd_unlock_bh_state(bh);
 				journal_remove_journal_head(bh);
 				put_bh(bh);
 				/**
-				 * ±ÜÃâ³¤ÆÚÕ¼ÓÃCPU
-				 * µ÷¶Èµã
+				 * é¿å…é•¿æœŸå ç”¨CPU
+				 * è°ƒåº¦ç‚¹
 				 */
 				if (lock_need_resched(&journal->j_list_lock)) {
 					spin_unlock(&journal->j_list_lock);
@@ -370,7 +370,7 @@ write_out_data:
 	}
 
 	/**
-	 * ½«Ê£ÓàµÄ»º³åÇøĞ´Èëµ½´ÅÅÌÖĞ¡£
+	 * å°†å‰©ä½™çš„ç¼“å†²åŒºå†™å…¥åˆ°ç£ç›˜ä¸­ã€‚
 	 */
 	if (bufs) {
 		spin_unlock(&journal->j_list_lock);
@@ -383,35 +383,35 @@ write_out_data:
 	 * Wait for all previously submitted IO to complete.
 	 */
 	/**
-	 * ÓĞÒ»Ğ©Êı¾İ¿é£¬ÒÑ¾­±»ÏµÍ³Ìá½»ÁË£¬²¢´¦ÓÚËø¶¨×´Ì¬
-	 * ÕâÀïµÈ´ıÆäÍê³É
+	 * æœ‰ä¸€äº›æ•°æ®å—ï¼Œå·²ç»è¢«ç³»ç»Ÿæäº¤äº†ï¼Œå¹¶å¤„äºé”å®šçŠ¶æ€
+	 * è¿™é‡Œç­‰å¾…å…¶å®Œæˆ
 	 */
-	while (commit_transaction->t_locked_list) {/* Î´ÔÚÈÕÖ¾ÏµÍ³ÖĞÌá½»µÄÇëÇó */
+	while (commit_transaction->t_locked_list) {/* æœªåœ¨æ—¥å¿—ç³»ç»Ÿä¸­æäº¤çš„è¯·æ±‚ */
 		struct buffer_head *bh;
 
 		jh = commit_transaction->t_locked_list->b_tprev;
 		bh = jh2bh(jh);
 		get_bh(bh);
-		if (buffer_locked(bh)) {/* ±»ÆäËûÈËËø×¡ */
+		if (buffer_locked(bh)) {/* è¢«å…¶ä»–äººé”ä½ */
 			spin_unlock(&journal->j_list_lock);
-			/* µÈ´ı½âËø */
+			/* ç­‰å¾…è§£é” */
 			wait_on_buffer(bh);
 			if (unlikely(!buffer_uptodate(bh)))
 				err = -EIO;
 			spin_lock(&journal->j_list_lock);
 		}
-		/* ÁÙÊ±¿ªÒ»ÏÂËø£¬±ÜÃâ³¤Ê±¼ä¹ØÇÀÕ¼ */
+		/* ä¸´æ—¶å¼€ä¸€ä¸‹é”ï¼Œé¿å…é•¿æ—¶é—´å…³æŠ¢å  */
 		if (!inverted_lock(journal, bh)) {
 			put_bh(bh);
 			spin_lock(&journal->j_list_lock);
 			continue;
 		}
-		/* ÔÚ¿ªËøÆÚ¼ä£¬Ã»ÓĞË­½«Ëü´ÓLockedÁ´±íÖĞÕª³ı */
+		/* åœ¨å¼€é”æœŸé—´ï¼Œæ²¡æœ‰è°å°†å®ƒä»Lockedé“¾è¡¨ä¸­æ‘˜é™¤ */
 		if (buffer_jbd(bh) && jh->b_jlist == BJ_Locked) {
-			/* ´ÓÁ´±íÖĞÕª³ı */
+			/* ä»é“¾è¡¨ä¸­æ‘˜é™¤ */
 			__journal_unfile_buffer(jh);
 			jbd_unlock_bh_state(bh);
-			/* ÊÍ·ÅÃèÊö·û */
+			/* é‡Šæ”¾æè¿°ç¬¦ */
 			journal_remove_journal_head(bh);
 			/*against  journal_remove_journal_head */
 			put_bh(bh);
@@ -427,13 +427,13 @@ write_out_data:
 		__journal_abort_hard(journal);
 
 	/**
-	 * ¹¹½¨³·Ïú±í
-	 * »á½«³·Ïú¼ÇÂ¼Ğ´µ½LogCtlÁ´±íÖĞ
+	 * æ„å»ºæ’¤é”€è¡¨
+	 * ä¼šå°†æ’¤é”€è®°å½•å†™åˆ°LogCtlé“¾è¡¨ä¸­
 	 */
 	journal_write_revoke_records(journal, commit_transaction);
 
 	/**
-	 * ÔªÊı¾İÈÔÈ»ÔÚÄÚ´æÖĞ£¬¿ªÊ¼´¦ÀíÔªÊı¾İ¡£
+	 * å…ƒæ•°æ®ä»ç„¶åœ¨å†…å­˜ä¸­ï¼Œå¼€å§‹å¤„ç†å…ƒæ•°æ®ã€‚
 	 */
 	jbd_debug(3, "JBD: commit phase 2\n");
 
@@ -453,13 +453,13 @@ write_out_data:
 	 * metadata.  Loop over the transaction's entire buffer list:
 	 */
 	/**
-	 * ±ê¼ÇÕıÔÚĞ´ÈëÔªÊı¾İµ½ÈÕÖ¾ÖĞ¡£
+	 * æ ‡è®°æ­£åœ¨å†™å…¥å…ƒæ•°æ®åˆ°æ—¥å¿—ä¸­ã€‚
 	 */
 	commit_transaction->t_state = T_COMMIT;
 
 	descriptor = NULL;
 	bufs = 0;
-	/* ±éÀúÔªÊı¾İÁ´±í */
+	/* éå†å…ƒæ•°æ®é“¾è¡¨ */
 	while (commit_transaction->t_buffers) {
 
 		/* Find the next buffer to be journaled... */
@@ -470,7 +470,7 @@ write_out_data:
 		   release it for background writing. */
 
 		/**
-		 * ÌØÊâÇé¿ö£¬ÖĞÖ¹ÈÕÖ¾»Ö¸´£¬ºöÂÔÊÂÎñ¡£
+		 * ç‰¹æ®Šæƒ…å†µï¼Œä¸­æ­¢æ—¥å¿—æ¢å¤ï¼Œå¿½ç•¥äº‹åŠ¡ã€‚
 		 */
 		if (is_journal_aborted(journal)) {
 			JBUFFER_TRACE(jh, "journal is aborting: refile");
@@ -488,7 +488,7 @@ write_out_data:
 		   record the metadata buffer. */
 
 		/**
-		 * Ä¿Ç°»¹Ã»ÓĞÈÕÖ¾ÃèÊö·û¿é¡£
+		 * ç›®å‰è¿˜æ²¡æœ‰æ—¥å¿—æè¿°ç¬¦å—ã€‚
 		 */
 		if (!descriptor) {
 			struct buffer_head *bh;
@@ -497,14 +497,14 @@ write_out_data:
 
 			jbd_debug(4, "JBD: get descriptor\n");
 
-			/* ·ÖÅäÒ»¸ö */
+			/* åˆ†é…ä¸€ä¸ª */
 			descriptor = journal_get_descriptor_buffer(journal);
-			if (!descriptor) {/* ÄÚ´æ²»×ã£¬Ö»ºÃÖĞÖ¹ */
+			if (!descriptor) {/* å†…å­˜ä¸è¶³ï¼Œåªå¥½ä¸­æ­¢ */
 				__journal_abort_hard(journal);
 				continue;
 			}
 
-			/* bhÊÇÃèÊö·ûÔÚÈÕÖ¾ÖĞµÄ»º³åÇø */
+			/* bhæ˜¯æè¿°ç¬¦åœ¨æ—¥å¿—ä¸­çš„ç¼“å†²åŒº */
 			bh = jh2bh(descriptor);
 			jbd_debug(4, "JBD: got buffer %llu (%p)\n",
 				(unsigned long long)bh->b_blocknr, bh->b_data);
@@ -519,9 +519,9 @@ write_out_data:
 			set_buffer_jwrite(bh);
 			set_buffer_dirty(bh);
 			/**
-			 * ×¢Òâ
-			 * ÕâÀï½«ÃèÊö·û¿é¼Óµ½wbufÖĞ
-			 * ÕâÑùÃèÊö·û¿éÎ»ÓÚÔªÊı¾İ¿éÖ®Ç°
+			 * æ³¨æ„
+			 * è¿™é‡Œå°†æè¿°ç¬¦å—åŠ åˆ°wbufä¸­
+			 * è¿™æ ·æè¿°ç¬¦å—ä½äºå…ƒæ•°æ®å—ä¹‹å‰
 			 */
 			wbuf[bufs++] = bh;
 
@@ -529,8 +529,8 @@ write_out_data:
                            completion later */
 			BUFFER_TRACE(bh, "ph3: file as descriptor");
 			/**
-			 * Ç°Ãæ½«³·Ïú¿éĞ´µ½LogCtlÁ´±í
-			 * ÕâÀï½«ÔªÊı¾İ¿ØÖÆ¿éĞ´Èë
+			 * å‰é¢å°†æ’¤é”€å—å†™åˆ°LogCtlé“¾è¡¨
+			 * è¿™é‡Œå°†å…ƒæ•°æ®æ§åˆ¶å—å†™å…¥
 			 */
 			journal_file_buffer(descriptor, commit_transaction,
 					BJ_LogCtl);
@@ -539,7 +539,7 @@ write_out_data:
 		/* Where is the buffer to be written? */
 
 		/**
-		 * ¼ÆËãÔªÊı¾İ¿éÓ¦µ±·Åµ½ÄÄÒ»¸öÈÕÖ¾¿éÖĞ¡£
+		 * è®¡ç®—å…ƒæ•°æ®å—åº”å½“æ”¾åˆ°å“ªä¸€ä¸ªæ—¥å¿—å—ä¸­ã€‚
 		 */
 		err = journal_next_log_block(journal, &blocknr);
 		/* If the block mapping failed, just abandon the buffer
@@ -555,7 +555,7 @@ write_out_data:
 		 * the free space in the log, but this counter is changed
 		 * by journal_next_log_block() also.
 		 */
-		/* µİ¼õ¿ÉÓÃÈÕÖ¾¿éÊıÁ¿£¬±ÜÃâ¿Õ¼ä²»×ã */
+		/* é€’å‡å¯ç”¨æ—¥å¿—å—æ•°é‡ï¼Œé¿å…ç©ºé—´ä¸è¶³ */
 		commit_transaction->t_outstanding_credits--;
 
 		/* Bump b_count to prevent truncate from stumbling over
@@ -576,8 +576,8 @@ write_out_data:
 		 */
 		JBUFFER_TRACE(jh, "ph3: write metadata");
 		/**
-		 * ×¼±¸ÔªÊı¾İµ½ÈÕÖ¾»º³åÇøÖĞ¡£
-		 * ×ªÒåÇ°µÄ·ÅÔÚShadowÖĞ£¬ÒªĞ´ÈëµÄ·ÅÔÚIOÁ´±íÖĞ
+		 * å‡†å¤‡å…ƒæ•°æ®åˆ°æ—¥å¿—ç¼“å†²åŒºä¸­ã€‚
+		 * è½¬ä¹‰å‰çš„æ”¾åœ¨Shadowä¸­ï¼Œè¦å†™å…¥çš„æ”¾åœ¨IOé“¾è¡¨ä¸­
 		 */
 		flags = journal_write_metadata_buffer(commit_transaction,
 						      jh, &new_jh, blocknr);
@@ -594,7 +594,7 @@ write_out_data:
 			tag_flag |= JFS_FLAG_SAME_UUID;
 
 		/**
-		 * ¹¹½¨ÃèÊö·û¿é
+		 * æ„å»ºæè¿°ç¬¦å—
 		 */
 		tag = (journal_block_tag_t *) tagp;
 		tag->t_blocknr = cpu_to_be32(jh2bh(jh)->b_blocknr);
@@ -613,11 +613,11 @@ write_out_data:
 		   let the IO rip! */
 
 		/**
-		 * »º³åÇøÊıÁ¿¹ı¶à£¬ÏÈÌá½»Ò»´Î¡£
+		 * ç¼“å†²åŒºæ•°é‡è¿‡å¤šï¼Œå…ˆæäº¤ä¸€æ¬¡ã€‚
 		 */
-		if (bufs == ARRAY_SIZE(wbuf) || /* ÃèÊö·û¿éÖĞ°üº¬µÄ¿é¹ı¶à£¬Ìá½» */
-		    commit_transaction->t_buffers == NULL || /* ËùÓĞÔªÊı¾İ¿é¶¼ÒÑ¾­´¦ÀíÍê */
-		    space_left < sizeof(journal_block_tag_t) + 16) { /* Ê£ÓàÃèÊö·û¿Õ¼äÒÑ¾­²»×ã´¦ÀíÒ»¸öÍêÕûµÄÃèÊö·û */
+		if (bufs == ARRAY_SIZE(wbuf) || /* æè¿°ç¬¦å—ä¸­åŒ…å«çš„å—è¿‡å¤šï¼Œæäº¤ */
+		    commit_transaction->t_buffers == NULL || /* æ‰€æœ‰å…ƒæ•°æ®å—éƒ½å·²ç»å¤„ç†å®Œ */
+		    space_left < sizeof(journal_block_tag_t) + 16) { /* å‰©ä½™æè¿°ç¬¦ç©ºé—´å·²ç»ä¸è¶³å¤„ç†ä¸€ä¸ªå®Œæ•´çš„æè¿°ç¬¦ */
 
 			jbd_debug(4, "JBD: Submit %d IOs\n", bufs);
 
@@ -629,7 +629,7 @@ write_out_data:
 
 start_journal_io:
 			/**
-			 * ÔÚÈÕÖ¾ÖĞÌá½»ÃèÊö·û¿éºÍÔªÊı¾İ¿é
+			 * åœ¨æ—¥å¿—ä¸­æäº¤æè¿°ç¬¦å—å’Œå…ƒæ•°æ®å—
 			 */
 			for (i = 0; i < bufs; i++) {
 				struct buffer_head *bh = wbuf[i];
@@ -644,7 +644,7 @@ start_journal_io:
 			/* Force a new descriptor to be generated next
                            time round the loop. */
                      /**
-                      * ¿ªÊ¼ĞÂÒ»ÂÖµÄ¹¤×÷£¬ĞÂ½¨ÃèÊö·û
+                      * å¼€å§‹æ–°ä¸€è½®çš„å·¥ä½œï¼Œæ–°å»ºæè¿°ç¬¦
                       */
 			descriptor = NULL;
 			bufs = 0;
@@ -670,25 +670,25 @@ start_journal_io:
 	 */
 wait_for_iobuf:
 	/**
-	 * ÄÇĞ©ĞèÒªµÈ´ıÆäÍê³ÉÍê³ÉµÄIO¡£
-	 * ÀıÈçÔªÊı¾İ¼°Æä¿ØÖÆÍ·
+	 * é‚£äº›éœ€è¦ç­‰å¾…å…¶å®Œæˆå®Œæˆçš„IOã€‚
+	 * ä¾‹å¦‚å…ƒæ•°æ®åŠå…¶æ§åˆ¶å¤´
 	 */
 	while (commit_transaction->t_iobuf_list != NULL) {
 		struct buffer_head *bh;
 
-		/* È¡Î²½Úµã£¬ÎÒ²ÂÏëÕâÑù¿ÉÒÔÉÙÏûºÄÒ»µãCPU */
+		/* å–å°¾èŠ‚ç‚¹ï¼Œæˆ‘çŒœæƒ³è¿™æ ·å¯ä»¥å°‘æ¶ˆè€—ä¸€ç‚¹CPU */
 		jh = commit_transaction->t_iobuf_list->b_tprev;
 		bh = jh2bh(jh);
-		if (buffer_locked(bh)) {/* »¹Ã»ÓĞÍê³É */
-			wait_on_buffer(bh);/* µÈ´ı½âËø£¬Íê³ÉIO */
+		if (buffer_locked(bh)) {/* è¿˜æ²¡æœ‰å®Œæˆ */
+			wait_on_buffer(bh);/* ç­‰å¾…è§£é”ï¼Œå®ŒæˆIO */
 			goto wait_for_iobuf;
 		}
 		if (cond_resched())
 			goto wait_for_iobuf;
 
 		/**
-		 * ÔËĞĞµ½ÕâÀï£¬ËµÃ÷Ğ´Èë²Ù×÷Íê³É
-		 * Ğ´ÈëÊ§°ÜÁË£¬ÑÏÖØµÄIO´íÎó
+		 * è¿è¡Œåˆ°è¿™é‡Œï¼Œè¯´æ˜å†™å…¥æ“ä½œå®Œæˆ
+		 * å†™å…¥å¤±è´¥äº†ï¼Œä¸¥é‡çš„IOé”™è¯¯
 		 */
 		if (unlikely(!buffer_uptodate(bh)))
 			err = -EIO;
@@ -696,7 +696,7 @@ wait_for_iobuf:
 		clear_buffer_jwrite(bh);
 
 		JBUFFER_TRACE(jh, "ph4: unfile after journal write");
-		/* ´ÓIOÁ´±íÖĞÕª³ı */
+		/* ä»IOé“¾è¡¨ä¸­æ‘˜é™¤ */
 		journal_unfile_buffer(journal, jh);
 
 		/*
@@ -704,7 +704,7 @@ wait_for_iobuf:
 		 * which were created by journal_write_metadata_buffer().
 		 */
 		BUFFER_TRACE(bh, "dumping temporary bh");
-		/* ÊÍ·ÅÄÚ´æ */
+		/* é‡Šæ”¾å†…å­˜ */
 		journal_put_journal_head(jh);
 		__brelse(bh);
 		J_ASSERT_BH(bh, atomic_read(&bh->b_count) == 0);
@@ -713,7 +713,7 @@ wait_for_iobuf:
 		/* We also have to unlock and free the corresponding
                    shadowed buffer */
               /**
-               * ShadowÁ´±íÖĞ£¬ÊÇ¶ÔÓ¦µÄÔ­Ê¼»º³åÇø
+               * Shadowé“¾è¡¨ä¸­ï¼Œæ˜¯å¯¹åº”çš„åŸå§‹ç¼“å†²åŒº
                */
 		jh = commit_transaction->t_shadow_list->b_tprev;
 		bh = jh2bh(jh);
@@ -726,16 +726,16 @@ wait_for_iobuf:
                    required. */
 		JBUFFER_TRACE(jh, "file as BJ_Forget");
 		/**
-		 * ½«Æä·Åµ½ForgetÁ´±íÖĞ
-		 * ÓÃÓÚcheckpoint´¦Àí
+		 * å°†å…¶æ”¾åˆ°Forgeté“¾è¡¨ä¸­
+		 * ç”¨äºcheckpointå¤„ç†
 		 */
 		journal_file_buffer(jh, commit_transaction, BJ_Forget);
 		/* Wake up any transactions which were waiting for this
 		   IO to complete */
 		 /**
-		  * ÏÖÔÚ£¬ÎÒÃÇÒÑ¾­ÓÃÍêÁË¿é»º³åÇø
-		  * ¿ÉÒÔ»½ĞÑµÈ´ıĞ´Õâ¸ö»º³åÇøµÄÏß³ÌÁË
-		  * ÄÇ¸öÏß³ÌÕıÔÚµ÷ÓÃdo_get_write_accessÒÔ»ñµÃĞ´È¨ÏŞ
+		  * ç°åœ¨ï¼Œæˆ‘ä»¬å·²ç»ç”¨å®Œäº†å—ç¼“å†²åŒº
+		  * å¯ä»¥å”¤é†’ç­‰å¾…å†™è¿™ä¸ªç¼“å†²åŒºçš„çº¿ç¨‹äº†
+		  * é‚£ä¸ªçº¿ç¨‹æ­£åœ¨è°ƒç”¨do_get_write_accessä»¥è·å¾—å†™æƒé™
 		  */
 		wake_up_bit(&bh->b_state, BH_Unshadow);
 		JBUFFER_TRACE(jh, "brelse shadowed buffer");
@@ -749,8 +749,8 @@ wait_for_iobuf:
 	/* Here we wait for the revoke record and descriptor record buffers */
  wait_for_ctlbuf:
  	/**
-	 * µÈ´ı¿ØÖÆ¿éĞ´ÈëÍê±Ï¡£
-	 * ÒÔ¼°³·Ïú¿é
+	 * ç­‰å¾…æ§åˆ¶å—å†™å…¥å®Œæ¯•ã€‚
+	 * ä»¥åŠæ’¤é”€å—
 	 */
 	while (commit_transaction->t_log_list != NULL) {
 		struct buffer_head *bh;
@@ -769,7 +769,7 @@ wait_for_iobuf:
 
 		BUFFER_TRACE(bh, "ph5: control buffer writeout done: unfile");
 		clear_buffer_jwrite(bh);
-		/* ´ÓÁ´±íÖĞÕª³ı */
+		/* ä»é“¾è¡¨ä¸­æ‘˜é™¤ */
 		journal_unfile_buffer(journal, jh);
 		journal_put_journal_head(jh);
 		__brelse(bh);		/* One for getblk */
@@ -777,8 +777,8 @@ wait_for_iobuf:
 	}
 
 	/**
-	 * ÔËĞĞµ½´Ë£¬ËùÓĞÊı¾İ¿éÒÑ¾­±£´æµ½´ÅÅÌÖĞ¡£
-	 * ²¢ÇÒÔªÊı¾İÒÑ¾­±£´æµ½ÈÕÖ¾ÖĞ¡£
+	 * è¿è¡Œåˆ°æ­¤ï¼Œæ‰€æœ‰æ•°æ®å—å·²ç»ä¿å­˜åˆ°ç£ç›˜ä¸­ã€‚
+	 * å¹¶ä¸”å…ƒæ•°æ®å·²ç»ä¿å­˜åˆ°æ—¥å¿—ä¸­ã€‚
 	 */
 	jbd_debug(3, "JBD: commit phase 6\n");
 
@@ -791,8 +791,8 @@ wait_for_iobuf:
 	 * entirely. */
 
 	/**
-	 * »ñµÃÒ»¸öÈÕÖ¾ÃèÊö·û¡£
-	 * ¸ÃÃèÊö·û±ê¼ÇÊÂÎñÒÑ¾­Ìá½»¡£
+	 * è·å¾—ä¸€ä¸ªæ—¥å¿—æè¿°ç¬¦ã€‚
+	 * è¯¥æè¿°ç¬¦æ ‡è®°äº‹åŠ¡å·²ç»æäº¤ã€‚
 	 */
 	descriptor = journal_get_descriptor_buffer(journal);
 	if (!descriptor) {
@@ -802,7 +802,7 @@ wait_for_iobuf:
 
 	/* AKPM: buglet - add `i' to tmp! */
 	/**
-	 * ±ê¼ÇÃèÊö·û£¬±íÊ¾ËüÊÇÒ»¸öÌá½»ÃèÊö·û¡£
+	 * æ ‡è®°æè¿°ç¬¦ï¼Œè¡¨ç¤ºå®ƒæ˜¯ä¸€ä¸ªæäº¤æè¿°ç¬¦ã€‚
 	 */
 	for (i = 0; i < jh2bh(descriptor)->b_size; i += 512) {
 		journal_header_t *tmp =
@@ -820,14 +820,14 @@ wait_for_iobuf:
 
 		set_buffer_dirty(bh);
 		if (journal->j_flags & JFS_BARRIER) {
-			/* ±ØĞë±ê¼Ç±¾´ÎIOµÄÆÁÕÏÊôĞÔ
-			 * ·ÀÖ¹ÓëÇ°ÃæµÄ²Ù×÷ÂÒĞò
+			/* å¿…é¡»æ ‡è®°æœ¬æ¬¡IOçš„å±éšœå±æ€§
+			 * é˜²æ­¢ä¸å‰é¢çš„æ“ä½œä¹±åº
 			 */
 			set_buffer_ordered(bh);
 			barrier_done = 1;
 		}
 		/**
-		 * ½«Ìá½»ÃèÊö·ûĞ´Èëµ½ÈÕÖ¾ÖĞ¡£
+		 * å°†æäº¤æè¿°ç¬¦å†™å…¥åˆ°æ—¥å¿—ä¸­ã€‚
 		 */
 		ret = sync_dirty_buffer(bh);
 		/* is it possible for another commit to fail at roughly
@@ -836,9 +836,9 @@ wait_for_iobuf:
 		 * to remember if we sent a barrier request
 		 */
 		/**
-		 * EOPNOTSUPP±íÊ¾Éè±¸²»Ö§³ÖÆÁÕÏ²Ù×÷
-		 * ÕâÊ±£¬ÎÒÃÇÒ²Ã»ÓĞ°ì·¨
-		 * ÁíÍâÒ»ÖÖ¿ÉÄÜĞÔ£¬ÊÇËü±¾Éí¾Í²»ÂÒĞò
+		 * EOPNOTSUPPè¡¨ç¤ºè®¾å¤‡ä¸æ”¯æŒå±éšœæ“ä½œ
+		 * è¿™æ—¶ï¼Œæˆ‘ä»¬ä¹Ÿæ²¡æœ‰åŠæ³•
+		 * å¦å¤–ä¸€ç§å¯èƒ½æ€§ï¼Œæ˜¯å®ƒæœ¬èº«å°±ä¸ä¹±åº
 		 */
 		if (ret == -EOPNOTSUPP && barrier_done) {
 			char b[BDEVNAME_SIZE];
@@ -849,15 +849,15 @@ wait_for_iobuf:
 				bdevname(journal->j_dev, b));
 			spin_lock(&journal->j_state_lock);
 			/**
-			 * Éè±¸²»Ö§³Ö£¬È¥³ı´Ë±êÖ¾
-			 * ×ÔÇó¶à¸£°É£¬ÎÒÃÇÔİÇÒÈÏÎªÉè±¸²»»áÂÒĞò
-			 * Êµ¼ÊÉÏ£¬Ä¿Ç°ºÜÉÙÓĞÉè±¸»áÂÒĞò
+			 * è®¾å¤‡ä¸æ”¯æŒï¼Œå»é™¤æ­¤æ ‡å¿—
+			 * è‡ªæ±‚å¤šç¦å§ï¼Œæˆ‘ä»¬æš‚ä¸”è®¤ä¸ºè®¾å¤‡ä¸ä¼šä¹±åº
+			 * å®é™…ä¸Šï¼Œç›®å‰å¾ˆå°‘æœ‰è®¾å¤‡ä¼šä¹±åº
 			 */
 			journal->j_flags &= ~JFS_BARRIER;
 			spin_unlock(&journal->j_state_lock);
 
 			/* And try again, without the barrier */
-			/* Çå³ı±ê¼ÇºóÔÙ´ÎÌá½» */
+			/* æ¸…é™¤æ ‡è®°åå†æ¬¡æäº¤ */
 			clear_buffer_ordered(bh);
 			set_buffer_uptodate(bh);
 			set_buffer_dirty(bh);
@@ -866,7 +866,7 @@ wait_for_iobuf:
 		if (unlikely(ret == -EIO))
 			err = -EIO;
 		put_bh(bh);		/* One for getblk() */
-		/* ¿ÉÒÔÊÍ·Åjournal_head×ÊÔ´ÁË */
+		/* å¯ä»¥é‡Šæ”¾journal_headèµ„æºäº† */
 		journal_put_journal_head(descriptor);
 	}
 
@@ -876,7 +876,7 @@ wait_for_iobuf:
            before. */
 
 	/**
-	 * Ìá½»¿éÒÑ¾­Ğ´ÈëÍê±Ï£¬ÏÖÔÚ¿ÉÒÔ½øĞĞcheckpoint´¦ÀíÁË¡£
+	 * æäº¤å—å·²ç»å†™å…¥å®Œæ¯•ï¼Œç°åœ¨å¯ä»¥è¿›è¡Œcheckpointå¤„ç†äº†ã€‚
 	 */
 skip_commit: /* The journal should be unlocked by now. */
 
@@ -894,8 +894,8 @@ skip_commit: /* The journal should be unlocked by now. */
 
 restart_loop:
 	/**
-	 * µ±Ç°ÊÂÎñÓëÇ°ÃæµÄÊÂÎñ´æÔÚÒ»¶¨µÄ¹ØÁª¹ØÏµ¡£
-	 * µ±Ç°ÊÂÎñµÄÔªÊı¾İ£¬ÓëÇ°ÃæÊÂÎñµÄÔªÊı¾İÇøÏà¹Ø¡£
+	 * å½“å‰äº‹åŠ¡ä¸å‰é¢çš„äº‹åŠ¡å­˜åœ¨ä¸€å®šçš„å…³è”å…³ç³»ã€‚
+	 * å½“å‰äº‹åŠ¡çš„å…ƒæ•°æ®ï¼Œä¸å‰é¢äº‹åŠ¡çš„å…ƒæ•°æ®åŒºç›¸å…³ã€‚
 	 */
 	while (commit_transaction->t_forget) {
 		transaction_t *cp_transaction;
@@ -918,7 +918,7 @@ restart_loop:
 		 * Otherwise, we can just throw away the frozen data now.
 		 */
 		/**
-		 * ÊÍ·ÅÆä³ÖÓĞµÄ±¸·İÊı¾İ¡£
+		 * é‡Šæ”¾å…¶æŒæœ‰çš„å¤‡ä»½æ•°æ®ã€‚
 		 */
 		if (jh->b_committed_data) {
 			kfree(jh->b_committed_data);
@@ -934,9 +934,9 @@ restart_loop:
 
 		spin_lock(&journal->j_list_lock);
 		/**
-		 * ÉÏÒ»¸öÊÂÎñÔÚÓÃ´Ë»º³åÇø
-		 * Ê×ÏÈ½«ËüÕª³ıÏÂÀ´
-		 * ÉÔºó·Åµ½µ±Ç°ÊÂÎñµÄcheckpointÁ´±íÖĞ
+		 * ä¸Šä¸€ä¸ªäº‹åŠ¡åœ¨ç”¨æ­¤ç¼“å†²åŒº
+		 * é¦–å…ˆå°†å®ƒæ‘˜é™¤ä¸‹æ¥
+		 * ç¨åæ”¾åˆ°å½“å‰äº‹åŠ¡çš„checkpointé“¾è¡¨ä¸­
 		 */
 		cp_transaction = jh->b_cp_transaction;
 		if (cp_transaction) {
@@ -965,15 +965,15 @@ restart_loop:
 
 		if (buffer_jbddirty(bh)) {
 			JBUFFER_TRACE(jh, "add to new checkpointing trans");
-			/* ¼ÓÈëµ½ÊÂÎñµÄcheckpointÁ´±í */
+			/* åŠ å…¥åˆ°äº‹åŠ¡çš„checkpointé“¾è¡¨ */
 			__journal_insert_checkpoint(jh, commit_transaction);
 			JBUFFER_TRACE(jh, "refile for checkpoint writeback");
 			__journal_refile_buffer(jh);
 			jbd_unlock_bh_state(bh);
-		} else {/* ²»Ôà£¬Ò²¾Í²»ÓÃ¼ÓÈëµ½checkpointÁ´±íÁË */
+		} else {/* ä¸è„ï¼Œä¹Ÿå°±ä¸ç”¨åŠ å…¥åˆ°checkpointé“¾è¡¨äº† */
 			J_ASSERT_BH(bh, !buffer_dirty(bh));
 			J_ASSERT_JH(jh, jh->b_next_transaction == NULL);
-			/* ´ÓÏÖÓĞÁ´±íÖĞÕª³ı£¬²¢ÊÍ·Å */
+			/* ä»ç°æœ‰é“¾è¡¨ä¸­æ‘˜é™¤ï¼Œå¹¶é‡Šæ”¾ */
 			__journal_unfile_buffer(jh);
 			jbd_unlock_bh_state(bh);
 			journal_remove_journal_head(bh);  /* needs a brelse */
@@ -999,19 +999,19 @@ restart_loop:
 	spin_lock(&journal->j_state_lock);
 	spin_lock(&journal->j_list_lock);
 	/**
-	 * ±ê¼Çµ±Ç°ÊÂÎñ´¦ÀíÍê³É¡£
+	 * æ ‡è®°å½“å‰äº‹åŠ¡å¤„ç†å®Œæˆã€‚
 	 */
 	commit_transaction->t_state = T_FINISHED;
 	J_ASSERT(commit_transaction == journal->j_committing_transaction);
 	/**
-	 * ¼ÇÂ¼Ìá½»µã¡£
+	 * è®°å½•æäº¤ç‚¹ã€‚
 	 */
 	journal->j_commit_sequence = commit_transaction->t_tid;
 	journal->j_committing_transaction = NULL;
 	spin_unlock(&journal->j_state_lock);
 
 	/**
-	 * ½«ÊÂÎñÁ´½Óµ½ÈÕÖ¾µÄcheckpointÁ´±íÖĞ
+	 * å°†äº‹åŠ¡é“¾æ¥åˆ°æ—¥å¿—çš„checkpointé“¾è¡¨ä¸­
 	 */
 	if (commit_transaction->t_checkpoint_list == NULL) {
 		__journal_drop_transaction(journal, commit_transaction);
@@ -1032,11 +1032,11 @@ restart_loop:
 		}
 	}
 	/**
-	 * ×¢Òâ
-	 * ÕâÀï²¢²»´¦Àícheckpoint
-	 * µ±ÈÕÖ¾Ã»ÓĞ¿Õ¼ä£¬»òÕßumountÊ±
-	 * ²Å»áÕæÕıÈ¥µÈ´ıcheckpointÒÔ»ØÊÕÈÕÖ¾¿Õ¼ä
-	 * Ò²¾ÍÊÇËµ£¬ÄÚ´æÖĞÓĞ²»ÉÙbuffer_head¶ÔÏó
+	 * æ³¨æ„
+	 * è¿™é‡Œå¹¶ä¸å¤„ç†checkpoint
+	 * å½“æ—¥å¿—æ²¡æœ‰ç©ºé—´ï¼Œæˆ–è€…umountæ—¶
+	 * æ‰ä¼šçœŸæ­£å»ç­‰å¾…checkpointä»¥å›æ”¶æ—¥å¿—ç©ºé—´
+	 * ä¹Ÿå°±æ˜¯è¯´ï¼Œå†…å­˜ä¸­æœ‰ä¸å°‘buffer_headå¯¹è±¡
 	 */
 	spin_unlock(&journal->j_list_lock);
 

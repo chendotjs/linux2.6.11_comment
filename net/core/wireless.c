@@ -370,7 +370,7 @@ static inline iw_handler get_handler(struct net_device *dev,
  * Get statistics out of the driver
  */
 /**
- * »ñÈ¡ÎŞÏßÉè±¸µÄÍ³¼ÆĞÅÏ¢¡£
+ * è·å–æ— çº¿è®¾å¤‡çš„ç»Ÿè®¡ä¿¡æ¯ã€‚
  */
 static inline struct iw_statistics *get_wireless_stats(struct net_device *dev)
 {

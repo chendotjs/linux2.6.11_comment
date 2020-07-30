@@ -42,8 +42,8 @@ EXPORT_SYMBOL(irq_stat);
 #endif
 
 /**
- * ËùÓĞµÄÈíÖĞ¶Ï£¬Ä¿Ç°Ê¹ÓÃÁËÇ°Áù¸ö¡£Êı×éµÄÏÂ±ê¾ÍÊÇÈíÖĞ¶ÏµÄÓÅÏÈ¼¶¡£
- * ÏÂ±êÔ½µÍ£¬ÓÅÏÈ¼¶Ô½¸ß¡£
+ * æ‰€æœ‰çš„è½¯ä¸­æ–­ï¼Œç›®å‰ä½¿ç”¨äº†å‰å…­ä¸ªã€‚æ•°ç»„çš„ä¸‹æ ‡å°±æ˜¯è½¯ä¸­æ–­çš„ä¼˜å…ˆçº§ã€‚
+ * ä¸‹æ ‡è¶Šä½ï¼Œä¼˜å…ˆçº§è¶Šé«˜ã€‚
  */
 static struct softirq_action softirq_vec[32] __cacheline_aligned_in_smp;
 
@@ -76,51 +76,51 @@ static inline void wakeup_softirqd(void)
 #define MAX_SOFTIRQ_RESTART 10
 
 /**
- * __do_softirqµÄ°ïÖúº¯Êı£¬´¦Àí¹ÒÆğµÄÈíÖĞ¶Ï
+ * __do_softirqçš„å¸®åŠ©å‡½æ•°ï¼Œå¤„ç†æŒ‚èµ·çš„è½¯ä¸­æ–­
  */
 asmlinkage void __do_softirq(void)
 {
 	struct softirq_action *h;
 	__u32 pending;
 	/**
-	 * ×î¶à´¦ÀíMAX_SOFTIRQ_RESTART´Î£¨¶ø²»ÊÇMAX_SOFTIRQ_RESTART¸ö£©ÈíÖĞ¶Ï£¬³¬¹ıµÄÈíÖĞ¶ÏÁôµ½ÄÚºËÏß³Ì´¦Àí¡£
-	 * µ±È»£¬ÄÚºËÏß³ÌµÄÓÅÏÈ¼¶²»Ò»¶¨¸ß£¬ÖÁÉÙ¿ÉÄÜ±ÈÎÒÃÇµÄÒ»Ğ©ÊµÊ±Ïß³ÌµÍ¡£
+	 * æœ€å¤šå¤„ç†MAX_SOFTIRQ_RESTARTæ¬¡ï¼ˆè€Œä¸æ˜¯MAX_SOFTIRQ_RESTARTä¸ªï¼‰è½¯ä¸­æ–­ï¼Œè¶…è¿‡çš„è½¯ä¸­æ–­ç•™åˆ°å†…æ ¸çº¿ç¨‹å¤„ç†ã€‚
+	 * å½“ç„¶ï¼Œå†…æ ¸çº¿ç¨‹çš„ä¼˜å…ˆçº§ä¸ä¸€å®šé«˜ï¼Œè‡³å°‘å¯èƒ½æ¯”æˆ‘ä»¬çš„ä¸€äº›å®æ—¶çº¿ç¨‹ä½ã€‚
 	 */
 	int max_restart = MAX_SOFTIRQ_RESTART;
 	int cpu;
 
 	/**
-	 * ¸´ÖÆÈíÖĞ¶ÏÑÚÂëµ½¾Ö²¿±äÁ¿ÖĞ£¬ÕâÊÇÓĞ±ØÒªµÄ¡£
-	 * ÒòÎªlocal_softirq_pendingÖĞµÄÖµÔÚ¿ªÖĞ¶Ïºó½«²»ÔÙ¿É¿¿¡£ÎÒÃÇ±ØĞëÏÈ½«Ëü±£´æÆğÀ´¡£
+	 * å¤åˆ¶è½¯ä¸­æ–­æ©ç åˆ°å±€éƒ¨å˜é‡ä¸­ï¼Œè¿™æ˜¯æœ‰å¿…è¦çš„ã€‚
+	 * å› ä¸ºlocal_softirq_pendingä¸­çš„å€¼åœ¨å¼€ä¸­æ–­åå°†ä¸å†å¯é ã€‚æˆ‘ä»¬å¿…é¡»å…ˆå°†å®ƒä¿å­˜èµ·æ¥ã€‚
 	 */
 	pending = local_softirq_pending();
 
 	/**
-	 * ÔÚdo_softirqÖĞÒÑ¾­µ÷ÓÃÁËlocal_irq_save(flags);
-	 * ÓÖÔÚÕâÀïµ÷ÓÃlocal_bh_disable();£¬¿´ÆğÀ´ÓĞÎ¥³£Ê¶
-	 * ²»¹ı£¬ÕâÊÇ·Ç³£ÓĞÓÃµÄ£ºÕâÊÇÒòÎª£¬ÎÒÃÇµ÷ÓÃÈíÖĞ¶Ï´¦Àí¹³×ÓÊ±£¬ÕâĞ©¹³×ÓÒ»°ãÔËĞĞÔÚ¿ªÖĞ¶Ï×´Ì¬ÏÂ¡£
-	 * ËùÒÔÖ´ĞĞ±¾¹ı³ÌÊ±£¬¿ÉÄÜ»á²úÉúĞÂÖĞ¶Ï¡£
-	 * µ±do_irqµ÷ÓÃirq_exitºêÊ±£¬¿ÉÄÜÓĞÁíÍâÒ»¸ö__do_softirqÊµÀıÕıÔÚÖ´ĞĞ¡£
-	 * ÓÉÓÚÈíÖĞ¶ÏÔÚÄ³¸öCPUÉÏ±ØĞë´®ĞĞÖ´ĞĞ£¬Òò´Ë£¬µÚÒ»¸öÊµÀıµ÷ÓÃlocal_bh_disable£¬µÚ¶ş¸öÊµÀı¾Í»áÔÚÒ»½øÈëdo_softirqÊ±¾ÍÍË³ö¡£
-	 * ÁíÍâ£¬ĞèÒª×¢ÒâµÄÊÇ£ºlocal_irq_saveÊÇ¹Ø±¾µØCPUµÄÖĞ¶Ï£¬¶ølocal_bh_disableÊÇÔö¼ÓÇÀÕ¼¼ÆÊıÖĞµÄÈíÖĞ¶Ï¼ÆÊı¡£
-	 * local_bh_disable²ÅÊÇ±ÜÃâÈíÖĞ¶ÏÔÚÍ¬Ò»¸öCPUÉÏÖØÈëµÄ¹Ø¼ü¡£
+	 * åœ¨do_softirqä¸­å·²ç»è°ƒç”¨äº†local_irq_save(flags);
+	 * åˆåœ¨è¿™é‡Œè°ƒç”¨local_bh_disable();ï¼Œçœ‹èµ·æ¥æœ‰è¿å¸¸è¯†
+	 * ä¸è¿‡ï¼Œè¿™æ˜¯éå¸¸æœ‰ç”¨çš„ï¼šè¿™æ˜¯å› ä¸ºï¼Œæˆ‘ä»¬è°ƒç”¨è½¯ä¸­æ–­å¤„ç†é’©å­æ—¶ï¼Œè¿™äº›é’©å­ä¸€èˆ¬è¿è¡Œåœ¨å¼€ä¸­æ–­çŠ¶æ€ä¸‹ã€‚
+	 * æ‰€ä»¥æ‰§è¡Œæœ¬è¿‡ç¨‹æ—¶ï¼Œå¯èƒ½ä¼šäº§ç”Ÿæ–°ä¸­æ–­ã€‚
+	 * å½“do_irqè°ƒç”¨irq_exitå®æ—¶ï¼Œå¯èƒ½æœ‰å¦å¤–ä¸€ä¸ª__do_softirqå®ä¾‹æ­£åœ¨æ‰§è¡Œã€‚
+	 * ç”±äºè½¯ä¸­æ–­åœ¨æŸä¸ªCPUä¸Šå¿…é¡»ä¸²è¡Œæ‰§è¡Œï¼Œå› æ­¤ï¼Œç¬¬ä¸€ä¸ªå®ä¾‹è°ƒç”¨local_bh_disableï¼Œç¬¬äºŒä¸ªå®ä¾‹å°±ä¼šåœ¨ä¸€è¿›å…¥do_softirqæ—¶å°±é€€å‡ºã€‚
+	 * å¦å¤–ï¼Œéœ€è¦æ³¨æ„çš„æ˜¯ï¼šlocal_irq_saveæ˜¯å…³æœ¬åœ°CPUçš„ä¸­æ–­ï¼Œè€Œlocal_bh_disableæ˜¯å¢åŠ æŠ¢å è®¡æ•°ä¸­çš„è½¯ä¸­æ–­è®¡æ•°ã€‚
+	 * local_bh_disableæ‰æ˜¯é¿å…è½¯ä¸­æ–­åœ¨åŒä¸€ä¸ªCPUä¸Šé‡å…¥çš„å…³é”®ã€‚
 	 */
 	local_bh_disable();
 	cpu = smp_processor_id();
 restart:
 	/* Reset the pending bitmask before enabling irqs */
 	/**
-	 * Çå³ıÈíÖĞ¶Ï±êÖ¾¡£±ØĞëÒªÔÚlocal_irq_enableÇ°Çå³ı¡£
+	 * æ¸…é™¤è½¯ä¸­æ–­æ ‡å¿—ã€‚å¿…é¡»è¦åœ¨local_irq_enableå‰æ¸…é™¤ã€‚
 	 */
 	local_softirq_pending() = 0;
 
 	/**
-	 * Ç¿¿ªÖĞ¶Ï£¬ÕâÊÇÎªÊı²»¶àµÄÇ¿¿ªÖĞ¶ÏµÄµØ·½¡£
+	 * å¼ºå¼€ä¸­æ–­ï¼Œè¿™æ˜¯ä¸ºæ•°ä¸å¤šçš„å¼ºå¼€ä¸­æ–­çš„åœ°æ–¹ã€‚
 	 */
 	local_irq_enable();
 
 	/**
-	 * Õâ¶Î´úÂëÊÇ¸ù¾İpending±êÖ¾£¬µ÷ÓÃÈíÖĞ¶Ï´¦Àíº¯Êı¡£¼òµ¥Ã÷ÁË£¬²»ÓÃ¶à½²¡£
+	 * è¿™æ®µä»£ç æ˜¯æ ¹æ®pendingæ ‡å¿—ï¼Œè°ƒç”¨è½¯ä¸­æ–­å¤„ç†å‡½æ•°ã€‚ç®€å•æ˜äº†ï¼Œä¸ç”¨å¤šè®²ã€‚
 	 */
 	h = softirq_vec;
 
@@ -134,36 +134,36 @@ restart:
 	} while (pending);
 
 	/**
-	 * Ç¿¹ØÖĞ¶Ï
+	 * å¼ºå…³ä¸­æ–­
 	 */
 	local_irq_disable();
 
 	/**
-	 * ¼ì²éÔÚÈíÖĞ¶ÏÖ´ĞĞÆÚ¼ä£¬ÊÇ·ñÓĞĞÂµÄÈíÖĞ¶Ï¹ÒÆğÁË¡£
+	 * æ£€æŸ¥åœ¨è½¯ä¸­æ–­æ‰§è¡ŒæœŸé—´ï¼Œæ˜¯å¦æœ‰æ–°çš„è½¯ä¸­æ–­æŒ‚èµ·äº†ã€‚
 	 */
 	pending = local_softirq_pending();
 	/**
-	 * ¼ì²é´ÎÊıÊÇÓĞÏŞµÄ£¬ÕâÊÇÎªÁË±ÜÃâÓÃ»§Ì¬Ïß³Ì³¤Ê±¼äµÃ²»µ½Ö´ĞĞ¡£
+	 * æ£€æŸ¥æ¬¡æ•°æ˜¯æœ‰é™çš„ï¼Œè¿™æ˜¯ä¸ºäº†é¿å…ç”¨æˆ·æ€çº¿ç¨‹é•¿æ—¶é—´å¾—ä¸åˆ°æ‰§è¡Œã€‚
 	 */
 	if (pending && --max_restart)
 		goto restart;
 
 	/**
-	 * ÔËĞĞµ½ÕâÀï£¬ËµÃ÷ÒªÃ´ÊÇÃ»ÓĞ¹ÒÆğµÄÈíÖĞ¶ÏÁË£¬ÒªÃ´ÊÇ¼ì²é´ÎÊı³¬¹ı10´ÎÁË¡£
+	 * è¿è¡Œåˆ°è¿™é‡Œï¼Œè¯´æ˜è¦ä¹ˆæ˜¯æ²¡æœ‰æŒ‚èµ·çš„è½¯ä¸­æ–­äº†ï¼Œè¦ä¹ˆæ˜¯æ£€æŸ¥æ¬¡æ•°è¶…è¿‡10æ¬¡äº†ã€‚
 	 */
 
 	/**
-	 * »¹ÓĞ¹ÒÆğµÄÈíÖĞ¶Ï£¬ËµÃ÷ÎÒÃÇÒÑ¾­¼ì²éºÜ¶à´ÎÁË£¬¶¼»¹ÓĞÈíÖĞ¶Ï£¬
-	 * ÄÇÃ´¶Ô²»Æğ£¬ÄÚºË°Õ¹¤ÁË£¬ÈÃksoftirqdÄÚºËÏß³ÌÀ´½ÓÊÖ°É¡£
-	 * ÓÃ»§Ì¬Ïß³Ì»¹µÈ´ı×ÅÔËĞĞÄØ¡£
-	 * xie.baoyou×¢£ºµ«ÊÇÈÃÈË²»½âµÄÊÇ£º»Øµ½ÓÃ»§Ì¬ÓÖÄÜ×öÊ²Ã´ÄØ£¿¼ÈÈ»ÖĞ¶ÏÕâÃ´Æµ·±£¬²»ÊÇÂíÉÏÓÖ»ØÀ´Ã´£¿£¿£¿£¿
+	 * è¿˜æœ‰æŒ‚èµ·çš„è½¯ä¸­æ–­ï¼Œè¯´æ˜æˆ‘ä»¬å·²ç»æ£€æŸ¥å¾ˆå¤šæ¬¡äº†ï¼Œéƒ½è¿˜æœ‰è½¯ä¸­æ–­ï¼Œ
+	 * é‚£ä¹ˆå¯¹ä¸èµ·ï¼Œå†…æ ¸ç½¢å·¥äº†ï¼Œè®©ksoftirqdå†…æ ¸çº¿ç¨‹æ¥æ¥æ‰‹å§ã€‚
+	 * ç”¨æˆ·æ€çº¿ç¨‹è¿˜ç­‰å¾…ç€è¿è¡Œå‘¢ã€‚
+	 * xie.baoyouæ³¨ï¼šä½†æ˜¯è®©äººä¸è§£çš„æ˜¯ï¼šå›åˆ°ç”¨æˆ·æ€åˆèƒ½åšä»€ä¹ˆå‘¢ï¼Ÿæ—¢ç„¶ä¸­æ–­è¿™ä¹ˆé¢‘ç¹ï¼Œä¸æ˜¯é©¬ä¸Šåˆå›æ¥ä¹ˆï¼Ÿï¼Ÿï¼Ÿï¼Ÿ
 	 */
 	if (pending)
 		wakeup_softirqd();
 
 	/**
-	 * ¼ÈÈ»Ò»´ÎÖ´ĞĞÍêÁË£¬ÈÃ°ÑÈíÖĞ¶Ï¼ÆÊı¼õ1°É£¬ÒªÊÇÂíÉÏÓÖÀ´ÖĞ¶Ï£¬ÓÖ²úÉúÈíÖĞ¶Ï£¬¿ÉÒÔ·ÅĞÄ½øÈë±¾º¯ÊıÁË¡£
-	 * ²»ÓÃµ£ĞÄÖØÈëÁË¡£
+	 * æ—¢ç„¶ä¸€æ¬¡æ‰§è¡Œå®Œäº†ï¼Œè®©æŠŠè½¯ä¸­æ–­è®¡æ•°å‡1å§ï¼Œè¦æ˜¯é©¬ä¸Šåˆæ¥ä¸­æ–­ï¼Œåˆäº§ç”Ÿè½¯ä¸­æ–­ï¼Œå¯ä»¥æ”¾å¿ƒè¿›å…¥æœ¬å‡½æ•°äº†ã€‚
+	 * ä¸ç”¨æ‹…å¿ƒé‡å…¥äº†ã€‚
 	 */
 	__local_bh_enable();
 }
@@ -193,7 +193,7 @@ EXPORT_SYMBOL(do_softirq);
 #endif
 
 /**
- * ¼¤»î±¾µØCPUµÄÈíÖĞ¶Ï
+ * æ¿€æ´»æœ¬åœ°CPUçš„è½¯ä¸­æ–­
  */
 void local_bh_enable(void)
 {
@@ -203,26 +203,26 @@ void local_bh_enable(void)
 	 * softirq processing:
  	 */
  	/**
- 	 * ½«preempt_countÖĞ£¬softirq¶ÔÓ¦µÄ¼ÆÊıÆ÷¼õÒ»¡£
- 	 * ×¢Òâ£¬ÕâÀï²»ÊÇsub_preempt_count(SOFTIRQ_OFFSET);
- 	 * ËùÒÔ£¬Ëü»¹»á½«ÇÀÕ¼¼ÆÊı¼Ó1£¬ÒÔ½ûÖ¹ÇÀÕ¼¡£
- 	 * »»¾ä»°Ëµ£¬Ëü½«softirq¶ÔÓ¦Î»¼õÒ»£¬Í¬Ê±½«ÇÀÕ¼¼ÆÊı¼ÓÒ»¡£
- 	 * ³ı·ÇÇÀÕ¼¼ÆÊı´ïµ½ÁËSOFTIRQ_OFFSET - 1,»áÂğ£¿¿ÉÄÜÓÀÔ¶µÈ²»µ½ÄÇ¸öÊ±ºò¡£
+ 	 * å°†preempt_countä¸­ï¼Œsoftirqå¯¹åº”çš„è®¡æ•°å™¨å‡ä¸€ã€‚
+ 	 * æ³¨æ„ï¼Œè¿™é‡Œä¸æ˜¯sub_preempt_count(SOFTIRQ_OFFSET);
+ 	 * æ‰€ä»¥ï¼Œå®ƒè¿˜ä¼šå°†æŠ¢å è®¡æ•°åŠ 1ï¼Œä»¥ç¦æ­¢æŠ¢å ã€‚
+ 	 * æ¢å¥è¯è¯´ï¼Œå®ƒå°†softirqå¯¹åº”ä½å‡ä¸€ï¼ŒåŒæ—¶å°†æŠ¢å è®¡æ•°åŠ ä¸€ã€‚
+ 	 * é™¤éæŠ¢å è®¡æ•°è¾¾åˆ°äº†SOFTIRQ_OFFSET - 1,ä¼šå—ï¼Ÿå¯èƒ½æ°¸è¿œç­‰ä¸åˆ°é‚£ä¸ªæ—¶å€™ã€‚
  	 */
  	sub_preempt_count(SOFTIRQ_OFFSET - 1);
 
 	/**
-	 * ¼ÈÃ»ÓĞÔÚÖĞ¶ÏÉÏÏÂÎÄ£¬ÓÖÓĞÈíÖĞ¶Ï±»¹ÒÆğ£¬¾ÍÖ´ĞĞÈíÖĞ¶Ï
+	 * æ—¢æ²¡æœ‰åœ¨ä¸­æ–­ä¸Šä¸‹æ–‡ï¼Œåˆæœ‰è½¯ä¸­æ–­è¢«æŒ‚èµ·ï¼Œå°±æ‰§è¡Œè½¯ä¸­æ–­
 	 */
 	if (unlikely(!in_interrupt() && local_softirq_pending()))
 		do_softirq();
 
 	/**
-	 * ½«ÇÀÕ¼¼ÆÊı¼õÒ»£¬»¹Ô­sub_preempt_count(SOFTIRQ_OFFSET - 1);Ò»¾ä¶ÔÇÀÕ¼¼ÆÊıµÄÓ°Ïì¡£
+	 * å°†æŠ¢å è®¡æ•°å‡ä¸€ï¼Œè¿˜åŸsub_preempt_count(SOFTIRQ_OFFSET - 1);ä¸€å¥å¯¹æŠ¢å è®¡æ•°çš„å½±å“ã€‚
 	 */
 	dec_preempt_count();
 	/**
-	 * Èç¹ûÓĞ±ØÒª£¬¾Íµ÷ÓÃÒ»´Î¡£
+	 * å¦‚æœæœ‰å¿…è¦ï¼Œå°±è°ƒç”¨ä¸€æ¬¡ã€‚
 	 */
 	preempt_check_resched();
 }
@@ -252,7 +252,7 @@ void irq_exit(void)
 inline fastcall void raise_softirq_irqoff(unsigned int nr)
 {
 	/**
-	 * ±ê¼Çnr¶ÔÓ¦µÄÈíÖĞ¶ÏÎª¹ÒÆğ×´Ì¬¡£
+	 * æ ‡è®°nrå¯¹åº”çš„è½¯ä¸­æ–­ä¸ºæŒ‚èµ·çŠ¶æ€ã€‚
 	 */
 	__raise_softirq_irqoff(nr);
 
@@ -266,8 +266,8 @@ inline fastcall void raise_softirq_irqoff(unsigned int nr)
 	 * schedule the softirq soon.
 	 */
 	/**
-	 * in_interruptÊÇÅĞ¶ÏÊÇ·ñÔÚÖĞ¶ÏÉÏÏÂÎÄÖĞ¡£
-	 * ³ÌĞòÔÚÖĞ¶ÏÉÏÏÂÎÄÖĞ£¬±íÊ¾£ºÒªÃ´µ±Ç°½ûÓÃÁËÈíÖĞ¶Ï£¬ÒªÃ´´¦ÔÚÓ²ÖĞ¶ÏÇ¶Ì×ÖĞ£¬´ËÊ±¶¼²»ÓÃ»½ĞÑksoftirqdÄÚºËÏß³Ì¡£
+	 * in_interruptæ˜¯åˆ¤æ–­æ˜¯å¦åœ¨ä¸­æ–­ä¸Šä¸‹æ–‡ä¸­ã€‚
+	 * ç¨‹åºåœ¨ä¸­æ–­ä¸Šä¸‹æ–‡ä¸­ï¼Œè¡¨ç¤ºï¼šè¦ä¹ˆå½“å‰ç¦ç”¨äº†è½¯ä¸­æ–­ï¼Œè¦ä¹ˆå¤„åœ¨ç¡¬ä¸­æ–­åµŒå¥—ä¸­ï¼Œæ­¤æ—¶éƒ½ä¸ç”¨å”¤é†’ksoftirqdå†…æ ¸çº¿ç¨‹ã€‚
 	 */
 	if (!in_interrupt())
 		wakeup_softirqd();
@@ -276,31 +276,31 @@ inline fastcall void raise_softirq_irqoff(unsigned int nr)
 EXPORT_SYMBOL(raise_softirq_irqoff);
 
 /**
- * ¼¤»îÈíÖĞ¶Ï
- * nr-Òª¼¤»îµÄÈíÖĞ¶ÏÏÂ±ê
+ * æ¿€æ´»è½¯ä¸­æ–­
+ * nr-è¦æ¿€æ´»çš„è½¯ä¸­æ–­ä¸‹æ ‡
  */
 void fastcall raise_softirq(unsigned int nr)
 {
 	unsigned long flags;
 
 	/**
-	 * ½ûÓÃ±¾µØCPUÖĞ¶Ï¡£
+	 * ç¦ç”¨æœ¬åœ°CPUä¸­æ–­ã€‚
 	 */
 	local_irq_save(flags);
 	/**
-	 * raise_softirq_irqoffÊÇ±¾º¯ÊıµÄÖ´ĞĞÌå£¬²»¹ıËüÊÇÔÚ¹ØÖĞ¶ÏÏÂÔËĞĞ¡£
+	 * raise_softirq_irqoffæ˜¯æœ¬å‡½æ•°çš„æ‰§è¡Œä½“ï¼Œä¸è¿‡å®ƒæ˜¯åœ¨å…³ä¸­æ–­ä¸‹è¿è¡Œã€‚
 	 */
 	raise_softirq_irqoff(nr);
 	/**
-	 * ´ò¿ª±¾µØÖĞ¶Ï
+	 * æ‰“å¼€æœ¬åœ°ä¸­æ–­
 	 */
 	local_irq_restore(flags);
 }
 /**
- * ³õÊ¼»¯ÈíÖĞ¶Ï
- * nr-ÈíÖĞ¶ÏÏÂ±ê
- * action-ÈíÖĞ¶Ï´¦Àíº¯Êı
- * data-ÈíÖĞ¶Ï´¦Àíº¯ÊıµÄ²ÎÊı¡£Ö´ĞĞ´¦Àíº¯ÊıÊ±£¬½«Ëü»Ø´«¸øÈíÖĞ¶Ï¡£
+ * åˆå§‹åŒ–è½¯ä¸­æ–­
+ * nr-è½¯ä¸­æ–­ä¸‹æ ‡
+ * action-è½¯ä¸­æ–­å¤„ç†å‡½æ•°
+ * data-è½¯ä¸­æ–­å¤„ç†å‡½æ•°çš„å‚æ•°ã€‚æ‰§è¡Œå¤„ç†å‡½æ•°æ—¶ï¼Œå°†å®ƒå›ä¼ ç»™è½¯ä¸­æ–­ã€‚
 */
 
 void open_softirq(int nr, void (*action)(struct softirq_action*), void *data)
@@ -327,22 +327,22 @@ void fastcall __tasklet_schedule(struct tasklet_struct *t)
 	unsigned long flags;
 
 	/**
-	 * Ê×ÏÈ½ûÖ¹±¾µØÖĞ¶Ï¡£
+	 * é¦–å…ˆç¦æ­¢æœ¬åœ°ä¸­æ–­ã€‚
 	 */
 	local_irq_save(flags);
 	/**
-	 * ½«tasklet¹Òµ½tasklet_vec[n]Á´±íµÄÍ·¡£
+	 * å°†taskletæŒ‚åˆ°tasklet_vec[n]é“¾è¡¨çš„å¤´ã€‚
 	 */
 	t->next = __get_cpu_var(tasklet_vec).list;
 	__get_cpu_var(tasklet_vec).list = t;
 	/**
-	 * raise_softirq_irqoff¼¤»îTASKLET_SOFTIRQÈíÖĞ¶Ï¡£
-	 * ËüÓëraise_softÏàËÆ£¬µ«ÊÇËü¼ÙÉèÒÑ¾­¹Ø±¾µØÖĞ¶ÏÁË¡£
+	 * raise_softirq_irqoffæ¿€æ´»TASKLET_SOFTIRQè½¯ä¸­æ–­ã€‚
+	 * å®ƒä¸raise_softç›¸ä¼¼ï¼Œä½†æ˜¯å®ƒå‡è®¾å·²ç»å…³æœ¬åœ°ä¸­æ–­äº†ã€‚
 	 */
 	raise_softirq_irqoff(TASKLET_SOFTIRQ);
 
 	/**
-	 * »Ö¸´IF±êÖ¾¡£
+	 * æ¢å¤IFæ ‡å¿—ã€‚
 	 */
 	local_irq_restore(flags);
 }
@@ -363,25 +363,25 @@ void fastcall __tasklet_hi_schedule(struct tasklet_struct *t)
 EXPORT_SYMBOL(__tasklet_hi_schedule);
 
 /**
- * Ö´ĞĞtasklet¡£ËüµÄÉÏÏÂÎÄÊÇÈíÖĞ¶Ï¡£
+ * æ‰§è¡Œtaskletã€‚å®ƒçš„ä¸Šä¸‹æ–‡æ˜¯è½¯ä¸­æ–­ã€‚
  */
 static void tasklet_action(struct softirq_action *a)
 {
 	struct tasklet_struct *list;
 
 	/**
-	 * ½ûÓÃ±¾µØÖĞ¶Ï¡£
+	 * ç¦ç”¨æœ¬åœ°ä¸­æ–­ã€‚
 	 */
 	local_irq_disable();
 	/**
-	 * ½«taskletÁ´±íÈ¡µ½¾Ö²¿±äÁ¿ÖĞ£¬²¢Çå³ıtaskletÁ´±í¡£
+	 * å°†taskleté“¾è¡¨å–åˆ°å±€éƒ¨å˜é‡ä¸­ï¼Œå¹¶æ¸…é™¤taskleté“¾è¡¨ã€‚
 	 */
 	list = __get_cpu_var(tasklet_vec).list;
 	__get_cpu_var(tasklet_vec).list = NULL;
 	local_irq_enable();
 
 	/**
-	 * ¶ÔlistÖĞµÄÃ¿¸ötasklet£¬½øĞĞ´¦Àí¡£
+	 * å¯¹listä¸­çš„æ¯ä¸ªtaskletï¼Œè¿›è¡Œå¤„ç†ã€‚
 	 */
 	while (list) {
 		struct tasklet_struct *t = list;
@@ -389,17 +389,17 @@ static void tasklet_action(struct softirq_action *a)
 		list = list->next;
 
 		/**
-		 * tasklet_trylock¼ì²é²¢ÉèÖÃtaskletµÄTASKLET_STATE_RUN±êÖ¾¡£
-		 * È·±£tasklet²»»áÔÚ¶à¸öCPUÉÏÖ´ĞĞ¡£
+		 * tasklet_trylockæ£€æŸ¥å¹¶è®¾ç½®taskletçš„TASKLET_STATE_RUNæ ‡å¿—ã€‚
+		 * ç¡®ä¿taskletä¸ä¼šåœ¨å¤šä¸ªCPUä¸Šæ‰§è¡Œã€‚
 		 */
 		if (tasklet_trylock(t)) {
 			if (!atomic_read(&t->count)) {
 				/**
-				 * ¼ì²é²¢ÉèÖÃTASKLET_STATE_SCHED±êÖ¾¡£
-				 * Ó¦¸ÃËµ£¬¹Ò½Óµ½ÈíÖĞ¶ÏµÄtasklet£¬¶¼ÊÇÓĞTASKLET_STATE_SCHED±êÖ¾µÄ¡£
-				 * ÄÑµÀÓĞÈË»áÖ±½Ó½«tasklet²åÈëÁ´±í£¬¶ø²»ÊÇÍ¨¹ıtasklet_schedule²åÈëµÄ£¿£¿£¿£¿£¿£¿
-				 * µ±È»£¬test_and_clear_bit³ıÁË¼ì²éTASKLET_STATE_SCHED±êÖ¾Íâ£¬Ò²»áÇå³ıÕâ¸ö±êÖ¾¡£
-				 * ËùÒÔËµ£¬ÎªÁË±£Ö¤tasklet²»»áÖØÈë£¬ĞèÒªTASKLET_STATE_SCHEDºÍTASKLET_STATE_RUNÁ½¸ö±êÖ¾¡£
+				 * æ£€æŸ¥å¹¶è®¾ç½®TASKLET_STATE_SCHEDæ ‡å¿—ã€‚
+				 * åº”è¯¥è¯´ï¼ŒæŒ‚æ¥åˆ°è½¯ä¸­æ–­çš„taskletï¼Œéƒ½æ˜¯æœ‰TASKLET_STATE_SCHEDæ ‡å¿—çš„ã€‚
+				 * éš¾é“æœ‰äººä¼šç›´æ¥å°†taskletæ’å…¥é“¾è¡¨ï¼Œè€Œä¸æ˜¯é€šè¿‡tasklet_scheduleæ’å…¥çš„ï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿ
+				 * å½“ç„¶ï¼Œtest_and_clear_bité™¤äº†æ£€æŸ¥TASKLET_STATE_SCHEDæ ‡å¿—å¤–ï¼Œä¹Ÿä¼šæ¸…é™¤è¿™ä¸ªæ ‡å¿—ã€‚
+				 * æ‰€ä»¥è¯´ï¼Œä¸ºäº†ä¿è¯taskletä¸ä¼šé‡å…¥ï¼Œéœ€è¦TASKLET_STATE_SCHEDå’ŒTASKLET_STATE_RUNä¸¤ä¸ªæ ‡å¿—ã€‚
 				 */
 				if (!test_and_clear_bit(TASKLET_STATE_SCHED, &t->state))
 					BUG();
@@ -409,15 +409,15 @@ static void tasklet_action(struct softirq_action *a)
 				continue;
 			}
 			/**
-			 * ÔËĞĞµ½´Ë£¬ËµÃ÷t->count>0£¬tasklet±»½ûÖ¹ÁË¡£
-			 * tasklet_unlock»áÇå³ıTASKLET_STATE_RUN±êÖ¾¡£
+			 * è¿è¡Œåˆ°æ­¤ï¼Œè¯´æ˜t->count>0ï¼Œtaskletè¢«ç¦æ­¢äº†ã€‚
+			 * tasklet_unlockä¼šæ¸…é™¤TASKLET_STATE_RUNæ ‡å¿—ã€‚
 			 */
 			tasklet_unlock(t);
 		}
 
 		/**
-		 * ÔËĞĞµ½ÕâÀï£¬ËµÃ÷tasklet_trylockÊ§°Ü(taskletÒÑ¾­ÔÚÆäËûCPUÉÏÔËĞĞ)£¬»òÕßcount>0(±íÊ¾±»½ûÖ¹ÁË)
-		 * ÄÇÃ´¾Í½«taskletÖØĞÂ·Å»ØÁ´±í£¬²¢¼¤»îÏàÓ¦µÄÈíÖĞ¶Ï¡£
+		 * è¿è¡Œåˆ°è¿™é‡Œï¼Œè¯´æ˜tasklet_trylockå¤±è´¥(taskletå·²ç»åœ¨å…¶ä»–CPUä¸Šè¿è¡Œ)ï¼Œæˆ–è€…count>0(è¡¨ç¤ºè¢«ç¦æ­¢äº†)
+		 * é‚£ä¹ˆå°±å°†taskleté‡æ–°æ”¾å›é“¾è¡¨ï¼Œå¹¶æ¿€æ´»ç›¸åº”çš„è½¯ä¸­æ–­ã€‚
 		 */
 		local_irq_disable();
 		t->next = __get_cpu_var(tasklet_vec).list;
@@ -461,7 +461,7 @@ static void tasklet_hi_action(struct softirq_action *a)
 }
 
 /**
- * ³õÊ¼»¯tasklet.
+ * åˆå§‹åŒ–tasklet.
  */
 void tasklet_init(struct tasklet_struct *t,
 		  void (*func)(unsigned long), unsigned long data)
@@ -506,13 +506,13 @@ static int ksoftirqd(void * __bind_cpu)
 
 	while (!kthread_should_stop()) {
 		/**
-		 * Ã»ÓĞ¹ÒÆğµÄÖĞ¶Ï£¬µ÷¶È³öÈ¥¡£
+		 * æ²¡æœ‰æŒ‚èµ·çš„ä¸­æ–­ï¼Œè°ƒåº¦å‡ºå»ã€‚
 		 */
 		if (!local_softirq_pending())
 			schedule();
 
 		/**
-		 * ÔÚÉÏ´ÎÑ­»·½áÎ²´¦£¬¿ÉÄÜÉèÖÃ×´Ì¬ÎªTASK_INTERRUPTIBLE£¬ÏÖÔÚ°ÑËü¸Ä¹ıÀ´¡£
+		 * åœ¨ä¸Šæ¬¡å¾ªç¯ç»“å°¾å¤„ï¼Œå¯èƒ½è®¾ç½®çŠ¶æ€ä¸ºTASK_INTERRUPTIBLEï¼Œç°åœ¨æŠŠå®ƒæ”¹è¿‡æ¥ã€‚
 		 */
 		__set_current_state(TASK_RUNNING);
 
@@ -521,28 +521,28 @@ static int ksoftirqd(void * __bind_cpu)
 			   If already offline, we'll be on wrong CPU:
 			   don't process */
 			/**
-			 * ÏÖÔÚÊÇÔö¼ÓÇÀÕ¼¼ÆÊı£¬¶ø²»ÊÇÈíÖĞ¶Ï¼ÆÊı¡£
-			 * Ôö¼ÓÈíÖĞ¶Ï¼ÆÊı£¬·ÀÖ¹ÈíÖĞ¶ÏÖØÈëÊÇÔÚdo_softirqÖĞ¡£
+			 * ç°åœ¨æ˜¯å¢åŠ æŠ¢å è®¡æ•°ï¼Œè€Œä¸æ˜¯è½¯ä¸­æ–­è®¡æ•°ã€‚
+			 * å¢åŠ è½¯ä¸­æ–­è®¡æ•°ï¼Œé˜²æ­¢è½¯ä¸­æ–­é‡å…¥æ˜¯åœ¨do_softirqä¸­ã€‚
 			 */
 			preempt_disable();
 			if (cpu_is_offline((long)__bind_cpu))
 				goto wait_to_die;
 			/**
-			 * »ØÏëÒ»ÏÂ£¬do_softirq»áÉèÖÃÈíÖĞ¶Ï¼ÆÊı±êÖ¾£¬¶øininterrupt»á¸ù¾İÕâ¸ö±êÖ¾·µ»ØÊÇ·ñ´¦ÓÚÖĞ¶ÏÉÏÏÂÎÄ¡£
-			 * ÆäÊµ£¬ÏÖÔÚÎÒÃÇÊÇÔÚÏß³ÌÉÏÏÂÎÄÖ´ĞĞdo_softirq¡£
-			 * ËùÒÔËµ£¬ininterruptÓĞµãÃû²»·ûÊµ¡£
+			 * å›æƒ³ä¸€ä¸‹ï¼Œdo_softirqä¼šè®¾ç½®è½¯ä¸­æ–­è®¡æ•°æ ‡å¿—ï¼Œè€Œininterruptä¼šæ ¹æ®è¿™ä¸ªæ ‡å¿—è¿”å›æ˜¯å¦å¤„äºä¸­æ–­ä¸Šä¸‹æ–‡ã€‚
+			 * å…¶å®ï¼Œç°åœ¨æˆ‘ä»¬æ˜¯åœ¨çº¿ç¨‹ä¸Šä¸‹æ–‡æ‰§è¡Œdo_softirqã€‚
+			 * æ‰€ä»¥è¯´ï¼Œininterruptæœ‰ç‚¹åä¸ç¬¦å®ã€‚
 			 */
 			do_softirq();
 			preempt_enable();
 			/**
-			 * Ôö¼ÓÒ»¸öµ÷¶Èµã£¬½ö´Ë¶øÒÑ¡£
+			 * å¢åŠ ä¸€ä¸ªè°ƒåº¦ç‚¹ï¼Œä»…æ­¤è€Œå·²ã€‚
 			 */
 			cond_resched();
 		}
 
 		/**
-		 * Ã»ÓĞ¹ÒÆğµÄÈíÖĞ¶Ï£¬¾Í½«×´Ì¬ÉèÖÃÎªTASK_INTERRUPTIBLE
-		 * ÏÂ´ÎÑ­»·Ê±£¬¾Í»áµ÷¶È³öÈ¥¡£
+		 * æ²¡æœ‰æŒ‚èµ·çš„è½¯ä¸­æ–­ï¼Œå°±å°†çŠ¶æ€è®¾ç½®ä¸ºTASK_INTERRUPTIBLE
+		 * ä¸‹æ¬¡å¾ªç¯æ—¶ï¼Œå°±ä¼šè°ƒåº¦å‡ºå»ã€‚
 		 */
 		set_current_state(TASK_INTERRUPTIBLE);
 	}

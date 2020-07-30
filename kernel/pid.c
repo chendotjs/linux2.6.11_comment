@@ -28,16 +28,16 @@
 #include <linux/hash.h>
 
 /**
- * °ÑPID×ª»¯Îª±íË÷Òý
- * pidhash_shiftÊÇ±íË÷ÒýµÄ³¤¶È¡£ÒÔÎ»Îªµ¥Î»¡£
+ * æŠŠPIDè½¬åŒ–ä¸ºè¡¨ç´¢å¼•
+ * pidhash_shiftæ˜¯è¡¨ç´¢å¼•çš„é•¿åº¦ã€‚ä»¥ä½ä¸ºå•ä½ã€‚
  */
 #define pid_hashfn(nr) hash_long((unsigned long)nr, pidhash_shift)
 /**
- * ÓÐËÄÖÖÀàÐÍPIDÉ¢ÁÐ±í¡£·Ö±ðÊÇ:
- *     ½ø³ÌPIDÉ¢ÁÐ±í
- *     Ïß³Ì×éÄÚµÄÏß³ÌÉ¢ÁÐ±í¡£
- *     ½ø³Ì×éÄÚµÄ½ø³ÌÉ¢ÁÐ±í¡£
- *     »á»°ÄÚµÄ½ø³ÌÉ¢ÁÐ±í¡£
+ * æœ‰å››ç§ç±»åž‹PIDæ•£åˆ—è¡¨ã€‚åˆ†åˆ«æ˜¯:
+ *     è¿›ç¨‹PIDæ•£åˆ—è¡¨
+ *     çº¿ç¨‹ç»„å†…çš„çº¿ç¨‹æ•£åˆ—è¡¨ã€‚
+ *     è¿›ç¨‹ç»„å†…çš„è¿›ç¨‹æ•£åˆ—è¡¨ã€‚
+ *     ä¼šè¯å†…çš„è¿›ç¨‹æ•£åˆ—è¡¨ã€‚
  */
 static struct hlist_head *pid_hash[PIDTYPE_MAX];
 static int pidhash_shift;
@@ -156,8 +156,8 @@ struct pid * fastcall find_pid(enum pid_type type, int nr)
 }
 
 /**
- * °ÑtaskÖ¸ÏòµÄpidµÈÓÚnrµÄ½ø³ÌÃèÊö·û²åÈëtypeÀàÐÍµÄÉ¢ÁÐ±íÖÐ.
- * Èç¹ûÒ»¸öPIDµÈÓÚnrµÄ½ø³ÌÃèÊö·ûÒÑ¾­ÔÚÉ¢ÁÐ±íÖÐ,Õâ¸öº¯Êý¾ÍÖ»°Ñtask²åÈëÒÑÓÐµÄPID½ø³ÌÁ´±íÖÐ
+ * æŠŠtaskæŒ‡å‘çš„pidç­‰äºŽnrçš„è¿›ç¨‹æè¿°ç¬¦æ’å…¥typeç±»åž‹çš„æ•£åˆ—è¡¨ä¸­.
+ * å¦‚æžœä¸€ä¸ªPIDç­‰äºŽnrçš„è¿›ç¨‹æè¿°ç¬¦å·²ç»åœ¨æ•£åˆ—è¡¨ä¸­,è¿™ä¸ªå‡½æ•°å°±åªæŠŠtaskæ’å…¥å·²æœ‰çš„PIDè¿›ç¨‹é“¾è¡¨ä¸­
  */
 int fastcall attach_pid(task_t *task, enum pid_type type, int nr)
 {
@@ -205,9 +205,9 @@ static fastcall int __detach_pid(task_t *task, enum pid_type type)
 }
 
 /**
- * ´ÓtypeÀàÐÍµÄpid½ø³ÌÁ´±íÖÐÉ¾³ýtaskËùÖ¸ÏòµÄ½ø³ÌÃèÊö·û¡£Èç¹ûÉ¾³ýºóPID½ø³ÌÁ´±íÃ»ÓÐ±äÎª¿Õ£¬¾ÍÖÕÖ¹¡£
- * ·ñÔò£¬¸Ãº¯Êý»¹Òª´ÓtypeÀàÐÍµÄÉ¢ÁÐ±íÖÐÉ¾³ý½ø³ÌÃèÊö¡£
- * ×îºó£¬Èç¹ûPIDµÄÖµÃ»ÓÐ³öÏÖÔÚÈÎºÎÆäËûÉ¢ÁÐ±íÖÐ£¬ÎªÁËÕâ¸öÖµÄÜ¹»±»·´¸´Ê¹ÓÃ£¬¸Ãº¯Êý»¹±ØÐëÇå³ýPIDÎ»ÖÃÖÐµÄÏàÓ¦Î»
+ * ä»Žtypeç±»åž‹çš„pidè¿›ç¨‹é“¾è¡¨ä¸­åˆ é™¤taskæ‰€æŒ‡å‘çš„è¿›ç¨‹æè¿°ç¬¦ã€‚å¦‚æžœåˆ é™¤åŽPIDè¿›ç¨‹é“¾è¡¨æ²¡æœ‰å˜ä¸ºç©ºï¼Œå°±ç»ˆæ­¢ã€‚
+ * å¦åˆ™ï¼Œè¯¥å‡½æ•°è¿˜è¦ä»Žtypeç±»åž‹çš„æ•£åˆ—è¡¨ä¸­åˆ é™¤è¿›ç¨‹æè¿°ã€‚
+ * æœ€åŽï¼Œå¦‚æžœPIDçš„å€¼æ²¡æœ‰å‡ºçŽ°åœ¨ä»»ä½•å…¶ä»–æ•£åˆ—è¡¨ä¸­ï¼Œä¸ºäº†è¿™ä¸ªå€¼èƒ½å¤Ÿè¢«åå¤ä½¿ç”¨ï¼Œè¯¥å‡½æ•°è¿˜å¿…é¡»æ¸…é™¤PIDä½ç½®ä¸­çš„ç›¸åº”ä½
  */
 void fastcall detach_pid(task_t *task, enum pid_type type)
 {
@@ -225,8 +225,8 @@ void fastcall detach_pid(task_t *task, enum pid_type type)
 }
 
 /**
- * ÔÚtypeÀàÐÍµÄÉ¢ÁÐ±íÖÐ²éÕÒpidµÈÓÚnrµÄ½ø³Ì¡£
- * ¸Ãº¯Êý·µ»ØËùÆ¥ÅäµÄ½ø³ÌÃèÊö·û¡£Èç¹ûÃ»ÓÐÆ¥ÅäµÄ½ø³Ì£¬Ôò·µ»ØNULL
+ * åœ¨typeç±»åž‹çš„æ•£åˆ—è¡¨ä¸­æŸ¥æ‰¾pidç­‰äºŽnrçš„è¿›ç¨‹ã€‚
+ * è¯¥å‡½æ•°è¿”å›žæ‰€åŒ¹é…çš„è¿›ç¨‹æè¿°ç¬¦ã€‚å¦‚æžœæ²¡æœ‰åŒ¹é…çš„è¿›ç¨‹ï¼Œåˆ™è¿”å›žNULL
  */
 task_t *find_task_by_pid_type(int type, int nr)
 {

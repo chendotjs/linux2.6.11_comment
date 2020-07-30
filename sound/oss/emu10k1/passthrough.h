@@ -1,13 +1,13 @@
 /*
  **********************************************************************
  *     passthrough.h -- Emu10k1 digital passthrough header file
- *     Copyright (C) 2001  Juha Yrjölä <jyrjola@cc.hut.fi>
+ *     Copyright (C) 2001  Juha Yrjl <jyrjola@cc.hut.fi>
  *
  **********************************************************************
  *
  *     Date                 Author          Summary of changes
  *     ----                 ------          ------------------
- *     May 15, 2001	    Juha Yrjölä     base code release
+ *     May 15, 2001	    Juha Yrjl     base code release
  *
  **********************************************************************
  *

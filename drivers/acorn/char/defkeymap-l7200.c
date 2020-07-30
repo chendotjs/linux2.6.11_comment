@@ -227,7 +227,7 @@ u_short alt_map[NR_KEYS]=
   K(KMt,27 ),K(KCn, 0 ),K(KCn, 1 ),K(KCn, 2  ),K(KCn, 3 ),K(KCn, 4 ),K(KCn, 5  ),K(KCn, 6 ),
   K(KCn, 7 ),K(KCn, 8 ),K(KCn, 9 ),K(KCn,10  ),K(KCn,11 ),KIGNORE   ,KSCRLLK    ,KINTR     ,
   K(KMt,'`'),K(KMt,'1'),K(KMt,'2'),K(KMt,'3' ),K(KMt,'4'),K(KMt,'5'),K(KMt,'6' ),K(KMt,'7'),
-  K(KMt,'8'),K(KMt,'9'),K(KMt,'0'),K(KMt,'-' ),K(KMt,'='),K(KMt,'£'),K(KMt,127 ),K(KTf,21 ),
+  K(KMt,'8'),K(KMt,'9'),K(KMt,'0'),K(KMt,'-' ),K(KMt,'='),K(KMt,''),K(KMt,127 ),K(KTf,21 ),
   K(KTf,20 ),K(KTf,24 ),KNUMLK    ,KPAD_DV    ,KPAD_ML   ,KPAD_HS   ,K(KMt, 9  ),K(KMt,'q'),
   K(KMt,'w'),K(KMt,'e'),K(KMt,'r'),K(KMt,'t' ),K(KMt,'y'),K(KMt,'u'),K(KMt,'i' ),K(KMt,'o'),
   K(KMt,'p'),K(KMt,'['),K(KMt,']'),K(KMt,'\\'),K(KTf,22 ),K(KTf,23 ),K(KTf,25  ),KPADA_7   ,

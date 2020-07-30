@@ -24,7 +24,7 @@
 #define NFS_MAX_CONTEXT_LEN	256
 
 /**
- * ÔÚnfsµÄmount°²×°¹ı³ÌÊ±£¬×÷Îªnfs_read_superº¯ÊıµÄÊäÈë²ÎÊı
+ * åœ¨nfsçš„mountå®‰è£…è¿‡ç¨‹æ—¶ï¼Œä½œä¸ºnfs_read_superå‡½æ•°çš„è¾“å…¥å‚æ•°
  */
 struct nfs_mount_data {
 	int		version;		/* 1 */

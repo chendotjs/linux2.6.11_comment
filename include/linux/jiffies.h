@@ -44,7 +44,7 @@
 
 /* LATCH is used in the interval timer and ftape setup. */
 /**
- * LATCH²úÉúCLOCK_TICK_RATEºÍHXµÄ±ÈÖµ¡£Õâ¸öÖµÓÃÀ´¶ÔPIT½øĞĞ±à³Ì¡£
+ * LATCHäº§ç”ŸCLOCK_TICK_RATEå’ŒHXçš„æ¯”å€¼ã€‚è¿™ä¸ªå€¼ç”¨æ¥å¯¹PITè¿›è¡Œç¼–ç¨‹ã€‚
  */
 #define LATCH  ((CLOCK_TICK_RATE + HZ/2) / HZ)	/* For divider */
 
@@ -110,7 +110,7 @@ static inline u64 get_jiffies_64(void)
  * wouldn't care). Gcc is currently neither.
  */
 /**
- * jiffies±È½Ï£¬¿ÉÒÔ´¦Àí32Î»¼ÆÊıÒç³ö¡£
+ * jiffiesæ¯”è¾ƒï¼Œå¯ä»¥å¤„ç†32ä½è®¡æ•°æº¢å‡ºã€‚
  */
 #define time_after(a,b)		\
 	(typecheck(unsigned long, a) && \

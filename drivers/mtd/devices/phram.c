@@ -1,8 +1,8 @@
 /**
  * $Id: phram.c,v 1.11 2005/01/05 18:05:13 dwmw2 Exp $
  *
- * Copyright (c) ????		Jochen Schäuble <psionic@psionic.de>
- * Copyright (c) 2003-2004	Jörn Engel <joern@wh.fh-wedel.de>
+ * Copyright (c) ????		Jochen Schuble <psionic@psionic.de>
+ * Copyright (c) 2003-2004	Jrn Engel <joern@wh.fh-wedel.de>
  *
  * Usage:
  *
@@ -281,5 +281,5 @@ module_init(init_phram);
 module_exit(cleanup_phram);
 
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Jörn Engel <joern@wh.fh-wedel.de>");
+MODULE_AUTHOR("Jrn Engel <joern@wh.fh-wedel.de>");
 MODULE_DESCRIPTION("MTD driver for physical RAM");

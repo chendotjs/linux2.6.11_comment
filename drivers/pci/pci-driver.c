@@ -385,8 +385,8 @@ pci_populate_driver_dir(struct pci_driver *drv)
  * no device was claimed during registration.
  */
 /**
- * ×¢²áÒ»¸öPCIÉè±¸Çı¶¯¡£
- * Èç¹û³É¹¦·µ»Ø0£¬·ñÔò·µ»ØÒ»¸ö¸ºÖµ±íÊ¾´íÎó¡£
+ * æ³¨å†Œä¸€ä¸ªPCIè®¾å¤‡é©±åŠ¨ã€‚
+ * å¦‚æœæˆåŠŸè¿”å›0ï¼Œå¦åˆ™è¿”å›ä¸€ä¸ªè´Ÿå€¼è¡¨ç¤ºé”™è¯¯ã€‚
  */
 int pci_register_driver(struct pci_driver *drv)
 {
@@ -421,7 +421,7 @@ int pci_register_driver(struct pci_driver *drv)
  */
 
 /**
- * Ğ¶ÔØPCIÉè±¸Çı¶¯¡£
+ * å¸è½½PCIè®¾å¤‡é©±åŠ¨ã€‚
  */
 void
 pci_unregister_driver(struct pci_driver *drv)
@@ -465,8 +465,8 @@ pci_dev_driver(const struct pci_dev *dev)
  * pci_device_id structure or %NULL if there is no match.
  */
 /**
- * È·¶¨Ò»¸öÉè±¸ÊÇ·ñ¿ÉÒÔÓÉÄ³¸öÇı¶¯´¦Àí¡£
- * Èç¹ûÆ¥Åä³É¹¦£¬Ôò·µ»Ø1.
+ * ç¡®å®šä¸€ä¸ªè®¾å¤‡æ˜¯å¦å¯ä»¥ç”±æŸä¸ªé©±åŠ¨å¤„ç†ã€‚
+ * å¦‚æœåŒ¹é…æˆåŠŸï¼Œåˆ™è¿”å›1.
  */
 static int pci_bus_match(struct device * dev, struct device_driver * drv) 
 {
@@ -526,7 +526,7 @@ int pci_hotplug (struct device *dev, char **envp, int num_envp,
 #endif
 
 /**
- * PCI×ÓÏµÍ³×°ÔØµ½ÄÚºËÖĞÊ±£¬Í¨¹ıbus_register½«¸Ã±äÁ¿ÏòÇı¶¯³ÌĞòºË×¢²á¡£
+ * PCIå­ç³»ç»Ÿè£…è½½åˆ°å†…æ ¸ä¸­æ—¶ï¼Œé€šè¿‡bus_registerå°†è¯¥å˜é‡å‘é©±åŠ¨ç¨‹åºæ ¸æ³¨å†Œã€‚
  */
 struct bus_type pci_bus_type = {
 	.name		= "pci",
@@ -538,8 +538,8 @@ struct bus_type pci_bus_type = {
 };
 
 /**
- * PCI×ÓÏµÍ³µÚ¶ş¸öÖ´ĞĞµÄ³õÊ¼»¯º¯Êı¡£½«ÔÚ/sys/bus/Ä¿Â¼ÏÂ½¨Á¢Ò»¸öpciÄ¿Â¼¡£
- * ĞÂ×¢²áµÄPCIÉè±¸µ÷ÓÃdevice_registerº¯Êı×¢²áÒ»¸öĞÂµÄPCIÉè±¸Ê±£¬½«ÔÚ/sys/bus/pci/driversÄ¿Â¼ÏÂ´´½¨Éè±¸µÄÄ¿Â¼¡£
+ * PCIå­ç³»ç»Ÿç¬¬äºŒä¸ªæ‰§è¡Œçš„åˆå§‹åŒ–å‡½æ•°ã€‚å°†åœ¨/sys/bus/ç›®å½•ä¸‹å»ºç«‹ä¸€ä¸ªpciç›®å½•ã€‚
+ * æ–°æ³¨å†Œçš„PCIè®¾å¤‡è°ƒç”¨device_registerå‡½æ•°æ³¨å†Œä¸€ä¸ªæ–°çš„PCIè®¾å¤‡æ—¶ï¼Œå°†åœ¨/sys/bus/pci/driversç›®å½•ä¸‹åˆ›å»ºè®¾å¤‡çš„ç›®å½•ã€‚
  */
 static int __init pci_driver_init(void)
 {

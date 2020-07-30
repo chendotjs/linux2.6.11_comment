@@ -39,7 +39,7 @@ extern void FASTCALL(rwsemtrace(struct rw_semaphore *sem, const char *str));
  * lock for reading
  */
 /**
- * Îª¶Á»ñµÃ¶ÁĞ´ĞÅºÅÁ¿¡£
+ * ä¸ºè¯»è·å¾—è¯»å†™ä¿¡å·é‡ã€‚
  */
 static inline void down_read(struct rw_semaphore *sem)
 {
@@ -53,7 +53,7 @@ static inline void down_read(struct rw_semaphore *sem)
  * trylock for reading -- returns 1 if successful, 0 if contention
  */
 /**
- * ²»×èÈûµÄ»ñµÃ¶ÁĞÅºÅÁ¿¡£
+ * ä¸é˜»å¡çš„è·å¾—è¯»ä¿¡å·é‡ã€‚
  */
 static inline int down_read_trylock(struct rw_semaphore *sem)
 {
@@ -68,7 +68,7 @@ static inline int down_read_trylock(struct rw_semaphore *sem)
  * lock for writing
  */
 /**
- * ÎªĞ´»ñµÃ¶ÁĞ´ĞÅºÅÁ¿¡£
+ * ä¸ºå†™è·å¾—è¯»å†™ä¿¡å·é‡ã€‚
  */
 static inline void down_write(struct rw_semaphore *sem)
 {
@@ -82,7 +82,7 @@ static inline void down_write(struct rw_semaphore *sem)
  * trylock for writing -- returns 1 if successful, 0 if contention
  */
 /**
- * ÎªĞ´»ñµÃ¶ÁĞ´ĞÅºÅÁ¿£¬µ«ÊÇ²»ÒıÆğ×èÈû¡£
+ * ä¸ºå†™è·å¾—è¯»å†™ä¿¡å·é‡ï¼Œä½†æ˜¯ä¸å¼•èµ·é˜»å¡ã€‚
  */
 static inline int down_write_trylock(struct rw_semaphore *sem)
 {
@@ -117,7 +117,7 @@ static inline void up_write(struct rw_semaphore *sem)
  * downgrade write lock to read lock
  */
 /**
- * °ÑĞ´Ëø×ª»»³É¶ÁËø¡£
+ * æŠŠå†™é”è½¬æ¢æˆè¯»é”ã€‚
  */
 static inline void downgrade_write(struct rw_semaphore *sem)
 {

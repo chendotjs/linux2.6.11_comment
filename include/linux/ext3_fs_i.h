@@ -95,7 +95,7 @@ struct ext3_inode_info {
 #endif
 
 	/**
-	 * Í¨¹ý´Ë×Ö¶Î½«inode¼ÓÈëµ½orphanÁ´±í¡£
+	 * é€šè¿‡æ­¤å­—æ®µå°†inodeåŠ å…¥åˆ°orphané“¾è¡¨ã€‚
 	 */
 	struct list_head i_orphan;	/* unlinked but open inodes */
 

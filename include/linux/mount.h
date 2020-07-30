@@ -17,78 +17,78 @@
 #include <asm/atomic.h>
 
 /**
- * ÔÚÒÑ¾­°²×°ÎÄ¼şÏµÍ³ÖĞ½ûÖ¹setuidºÍsetgid±êÖ¾¡£
+ * åœ¨å·²ç»å®‰è£…æ–‡ä»¶ç³»ç»Ÿä¸­ç¦æ­¢setuidå’Œsetgidæ ‡å¿—ã€‚
  */
 #define MNT_NOSUID	1
 /**
- * ÔÚÒÑ¾­°²×°ÎÄ¼şÏµÍ³ÖĞ½ûÖ¹·ÃÎÊÉè±¸ÎÄ¼ş
+ * åœ¨å·²ç»å®‰è£…æ–‡ä»¶ç³»ç»Ÿä¸­ç¦æ­¢è®¿é—®è®¾å¤‡æ–‡ä»¶
  */
 #define MNT_NODEV	2
 /**
- * ÔÚÒÑ¾­°²×°ÎÄ¼şÏµÍ³ÖĞ²»ÔÊĞí³ÌĞòÖ´ĞĞ¡£
+ * åœ¨å·²ç»å®‰è£…æ–‡ä»¶ç³»ç»Ÿä¸­ä¸å…è®¸ç¨‹åºæ‰§è¡Œã€‚
  */
 #define MNT_NOEXEC	4
 
 /**
- * ÎÄ¼şÏµÍ³°²×°µã
+ * æ–‡ä»¶ç³»ç»Ÿå®‰è£…ç‚¹
  */
 struct vfsmount
 {
 	/**
-	 * ÓÃÓÚÉ¢ÁĞ±íÁ´±íµÄÖ¸Õë¡£
+	 * ç”¨äºæ•£åˆ—è¡¨é“¾è¡¨çš„æŒ‡é’ˆã€‚
 	 */
 	struct list_head mnt_hash;
 	/**
-	 * Ö¸Ïò¸¸ÎÄ¼şÏµÍ³£¬Õâ¸öÎÄ¼şÏµÍ³°²×°ÔÚÆäÉÏ¡£
+	 * æŒ‡å‘çˆ¶æ–‡ä»¶ç³»ç»Ÿï¼Œè¿™ä¸ªæ–‡ä»¶ç³»ç»Ÿå®‰è£…åœ¨å…¶ä¸Šã€‚
 	 */
 	struct vfsmount *mnt_parent;	/* fs we are mounted on */
 	/**
-	 * °²×°µãÄ¿Â¼½Úµã¡£
+	 * å®‰è£…ç‚¹ç›®å½•èŠ‚ç‚¹ã€‚
 	 */
 	struct dentry *mnt_mountpoint;	/* dentry of mountpoint */
 	/**
-	 * Ö¸ÏòÕâ¸öÎÄ¼şÏµÍ³¸ùÄ¿Â¼µÄdentry¡£
+	 * æŒ‡å‘è¿™ä¸ªæ–‡ä»¶ç³»ç»Ÿæ ¹ç›®å½•çš„dentryã€‚
 	 */
 	struct dentry *mnt_root;	/* root of the mounted tree */
 	/**
-	 * ¸ÃÎÄ¼şÏµÍ³µÄ³¬¼¶¿é¶ÔÏó¡£
+	 * è¯¥æ–‡ä»¶ç³»ç»Ÿçš„è¶…çº§å—å¯¹è±¡ã€‚
 	 */
 	struct super_block *mnt_sb;	/* pointer to superblock */
 	/**
-	 * °üº¬ËùÓĞÎÄ¼şÏµÍ³ÃèÊö·ûÁ´±íµÄÍ·
+	 * åŒ…å«æ‰€æœ‰æ–‡ä»¶ç³»ç»Ÿæè¿°ç¬¦é“¾è¡¨çš„å¤´
 	 */
 	struct list_head mnt_mounts;	/* list of children, anchored here */
 	/**
-	 * ÒÑ°²×°ÎÄ¼şÏµÍ³Á´±íÍ·¡£Í¨¹ı´Ë×Ö¶Î½«Æä¼ÓÈë¸¸ÎÄ¼şÏµÍ³µÄmnt_mountsÁ´±íÖĞ¡£
+	 * å·²å®‰è£…æ–‡ä»¶ç³»ç»Ÿé“¾è¡¨å¤´ã€‚é€šè¿‡æ­¤å­—æ®µå°†å…¶åŠ å…¥çˆ¶æ–‡ä»¶ç³»ç»Ÿçš„mnt_mountsé“¾è¡¨ä¸­ã€‚
 	 */
 	struct list_head mnt_child;	/* and going through their mnt_child */
 	/**
-	 * ÒıÓÃ¼ÆÊıÆ÷£¬½ûÖ¹ÎÄ¼şÏµÍ³±»Ğ¶ÔØ¡£
+	 * å¼•ç”¨è®¡æ•°å™¨ï¼Œç¦æ­¢æ–‡ä»¶ç³»ç»Ÿè¢«å¸è½½ã€‚
 	 */
 	atomic_t mnt_count;
 	/**
-	 * mount±êÖ¾
+	 * mountæ ‡å¿—
 	 */
 	int mnt_flags;
 	/**
-	 * Èç¹ûÎÄ¼şÏµÍ³±ê¼ÇÎª¹ıÆÚ£¬¾ÍÉèÖÃÕâ¸ö±êÖ¾¡£
+	 * å¦‚æœæ–‡ä»¶ç³»ç»Ÿæ ‡è®°ä¸ºè¿‡æœŸï¼Œå°±è®¾ç½®è¿™ä¸ªæ ‡å¿—ã€‚
 	 */
 	int mnt_expiry_mark;		/* true if marked for expiry */
 	/**
-	 * Éè±¸ÎÄ¼şÃû¡£
+	 * è®¾å¤‡æ–‡ä»¶åã€‚
 	 */
 	char *mnt_devname;		/* Name of device e.g. /dev/dsk/hda1 */
 	/**
-	 * ÒÑ°²×°ÎÄ¼şÏµÍ³ÃèÊö·ûµÄnamespaceÁ´±íÖ¸Õë?
-	 * Í¨¹ı´Ë×Ö¶Î½«Æä¼ÓÈëµ½namespaceµÄlistÁ´±íÖĞ¡£
+	 * å·²å®‰è£…æ–‡ä»¶ç³»ç»Ÿæè¿°ç¬¦çš„namespaceé“¾è¡¨æŒ‡é’ˆ?
+	 * é€šè¿‡æ­¤å­—æ®µå°†å…¶åŠ å…¥åˆ°namespaceçš„listé“¾è¡¨ä¸­ã€‚
 	 */
 	struct list_head mnt_list;
 	/**
-	 * ÎÄ¼şÏµÍ³µ½ÆÚÁ´±íÖ¸Õë¡£
+	 * æ–‡ä»¶ç³»ç»Ÿåˆ°æœŸé“¾è¡¨æŒ‡é’ˆã€‚
 	 */
 	struct list_head mnt_fslink;	/* link in fs-specific expiry list */
 	/**
-	 * ½ø³ÌÃüÃû¿Õ¼äÖ¸Õë
+	 * è¿›ç¨‹å‘½åç©ºé—´æŒ‡é’ˆ
 	 */
 	struct namespace *mnt_namespace; /* containing namespace */
 };
@@ -131,7 +131,7 @@ extern int do_add_mount(struct vfsmount *newmnt, struct nameidata *nd,
 extern void mark_mounts_for_expiry(struct list_head *mounts);
 
 /**
- * ±£»¤ÒÑ¾­°²×°ÎÄ¼şÏµÍ³µÄÁ´±í¡£
+ * ä¿æŠ¤å·²ç»å®‰è£…æ–‡ä»¶ç³»ç»Ÿçš„é“¾è¡¨ã€‚
  */
 extern spinlock_t vfsmount_lock;
 

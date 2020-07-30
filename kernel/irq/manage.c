@@ -77,7 +77,7 @@ EXPORT_SYMBOL(disable_irq_nosync);
  *	This function may be called - with care - from IRQ context.
  */
 /**
- * ½ûÓÃIRQÏß¡£Ëü»¹µÈ´ıÆäËûCPUÉÏÎªIRQÔËĞĞµÄËùÓĞÖĞ¶Ï´¦Àí³ÌĞò¶¼Íê³É²Å·µ»Ø¡£
+ * ç¦ç”¨IRQçº¿ã€‚å®ƒè¿˜ç­‰å¾…å…¶ä»–CPUä¸Šä¸ºIRQè¿è¡Œçš„æ‰€æœ‰ä¸­æ–­å¤„ç†ç¨‹åºéƒ½å®Œæˆæ‰è¿”å›ã€‚
  */
 void disable_irq(unsigned int irq)
 {
@@ -101,8 +101,8 @@ EXPORT_SYMBOL(disable_irq);
  *	This function may be called from IRQ context.
  */
 /**
- * ÔÊĞíÏàÓ¦µÄIRQÏß£¬×¢ÒâÔÚ´ËĞèÒª¼ì²éÊÇ·ñÓĞÖĞ¶Ï¶ªÊ§¡£
- * Èç¹ûÓĞ£¬¾ÍÒªÍì»Ø¶ªÊ§µÄÖĞ¶Ï¡£
+ * å…è®¸ç›¸åº”çš„IRQçº¿ï¼Œæ³¨æ„åœ¨æ­¤éœ€è¦æ£€æŸ¥æ˜¯å¦æœ‰ä¸­æ–­ä¸¢å¤±ã€‚
+ * å¦‚æœæœ‰ï¼Œå°±è¦æŒ½å›ä¸¢å¤±çš„ä¸­æ–­ã€‚
  */
 void enable_irq(unsigned int irq)
 {
@@ -116,22 +116,22 @@ void enable_irq(unsigned int irq)
 		break;
 	case 1: {
 		/**
-		 * µ±Ç°Éî¶ÈÎª1£¬ÔÙ´Îµ÷ÓÃenable_irq¾ÍÕæÕıÆôÓÃIRQÏß¡£
+		 * å½“å‰æ·±åº¦ä¸º1ï¼Œå†æ¬¡è°ƒç”¨enable_irqå°±çœŸæ­£å¯ç”¨IRQçº¿ã€‚
 		 */
 		unsigned int status = desc->status & ~IRQ_DISABLED;
 
 		desc->status = status;
 		/**
-		 * Ö»ÓĞIRQ_PENDING±êÖ¾£¬±íÊ¾ÓĞÒ»´Î¶ªÊ§µÄÖĞ¶Ï¡£
+		 * åªæœ‰IRQ_PENDINGæ ‡å¿—ï¼Œè¡¨ç¤ºæœ‰ä¸€æ¬¡ä¸¢å¤±çš„ä¸­æ–­ã€‚
 		 */
 		if ((status & (IRQ_PENDING | IRQ_REPLAY)) == IRQ_PENDING) {
 			/**
-			 * ÏëÒ»Ïë£¬Èç¹ûÃ»ÓĞÕâ¸ö±êÖ¾£¬ÄÇÃ´¶à´Îµ÷ÓÃenable_irq±êÖ¾£¬¾Í»á¶à´ÎÍì»Ø¶ªÊ§µÄÖĞ¶Ï¡£
-			 * Õâ¸ö±êÖ¾»áÔÚÖĞ¶Ï¿ªÊ¼´¦ÀíÊ±Çå³ı
+			 * æƒ³ä¸€æƒ³ï¼Œå¦‚æœæ²¡æœ‰è¿™ä¸ªæ ‡å¿—ï¼Œé‚£ä¹ˆå¤šæ¬¡è°ƒç”¨enable_irqæ ‡å¿—ï¼Œå°±ä¼šå¤šæ¬¡æŒ½å›ä¸¢å¤±çš„ä¸­æ–­ã€‚
+			 * è¿™ä¸ªæ ‡å¿—ä¼šåœ¨ä¸­æ–­å¼€å§‹å¤„ç†æ—¶æ¸…é™¤
 			 */
 			desc->status = status | IRQ_REPLAY;
 			/**
-			 * ÈÃÓ²¼şÔÙ´Î²úÉúÒ»´ÎÖĞ¶Ï¡£
+			 * è®©ç¡¬ä»¶å†æ¬¡äº§ç”Ÿä¸€æ¬¡ä¸­æ–­ã€‚
 			 */
 			hw_resend_irq(desc->handler,irq);
 		}
@@ -171,9 +171,9 @@ int can_request_irq(unsigned int irq, unsigned long irqflags)
  * allocate special interrupts that are part of the architecture.
  */
 /**
- * ½«irqaction²åÈëµ½Á´±íÖĞ
- * irq-IRQºÅ
- * new-Òª²åÈëµÄÃèÊö·û
+ * å°†irqactionæ’å…¥åˆ°é“¾è¡¨ä¸­
+ * irq-IRQå·
+ * new-è¦æ’å…¥çš„æè¿°ç¬¦
  */
 int setup_irq(unsigned int irq, struct irqaction * new)
 {
@@ -206,22 +206,22 @@ int setup_irq(unsigned int irq, struct irqaction * new)
 	 */
 	spin_lock_irqsave(&desc->lock,flags);
 	/**
-	 * ¼ì²éÊÇ·ñÒÑ¾­ÓĞÉè±¸ÔÚÊ¹ÓÃÕâ¸öIRQÁË¡£
+	 * æ£€æŸ¥æ˜¯å¦å·²ç»æœ‰è®¾å¤‡åœ¨ä½¿ç”¨è¿™ä¸ªIRQäº†ã€‚
 	 */
 	p = &desc->action;
 	/**
-	 * ÓĞÉè±¸ÔÚÊ¹ÓÃÁË¡£
+	 * æœ‰è®¾å¤‡åœ¨ä½¿ç”¨äº†ã€‚
 	 */
 	if ((old = *p) != NULL) {
 		/* Can't share interrupts unless both agree to */
 		/**
-		 * Èç¹ûÓĞÉè±¸ÔÚÊ¹ÓÃÕâ¸öIRQÏß£¬¾ÍÔÙ´Î¼ì²éËüÊÇ·ñÔÊĞí¹²ÏíIRQ¡£
-		 * ÔÚÕâÀï£¬½ö½ö¼ì²éµÚÒ»¸ö¹Ò½Óµ½IRQÉÏµÄÉè±¸ÊÇ·ñÔÊĞí¹²Ïí¾ÍĞĞÁË¡£
-		 * ÆäÊµ£¬µÚÒ»¸öÉè±¸ÔÊĞí¹²Ïí¾Í´ú±íÕâ¸öIRQÉÏµÄËùÓĞÉè±¸ÔÊĞí¹²Ïí¡£
+		 * å¦‚æœæœ‰è®¾å¤‡åœ¨ä½¿ç”¨è¿™ä¸ªIRQçº¿ï¼Œå°±å†æ¬¡æ£€æŸ¥å®ƒæ˜¯å¦å…è®¸å…±äº«IRQã€‚
+		 * åœ¨è¿™é‡Œï¼Œä»…ä»…æ£€æŸ¥ç¬¬ä¸€ä¸ªæŒ‚æ¥åˆ°IRQä¸Šçš„è®¾å¤‡æ˜¯å¦å…è®¸å…±äº«å°±è¡Œäº†ã€‚
+		 * å…¶å®ï¼Œç¬¬ä¸€ä¸ªè®¾å¤‡å…è®¸å…±äº«å°±ä»£è¡¨è¿™ä¸ªIRQä¸Šçš„æ‰€æœ‰è®¾å¤‡å…è®¸å…±äº«ã€‚
 		 */
 		if (!(old->flags & new->flags & SA_SHIRQ)) {
 			/**
-			 * IRQÏß²»ÔÊĞí¹²Ïí£¬ÄÇ¾Í´ò¿ªÖĞ¶Ï£¬²¢·µ»Ø´íÎóÂë¡£
+			 * IRQçº¿ä¸å…è®¸å…±äº«ï¼Œé‚£å°±æ‰“å¼€ä¸­æ–­ï¼Œå¹¶è¿”å›é”™è¯¯ç ã€‚
 			 */
 			spin_unlock_irqrestore(&desc->lock,flags);
 			return -EBUSY;
@@ -229,36 +229,36 @@ int setup_irq(unsigned int irq, struct irqaction * new)
 
 		/* add new interrupt at end of irq queue */
 		/**
-		 * ÔÚÕâÀï£¬ÎÒÃÇÒÑ¾­ÖªµÀÉè±¸ÉÏ¹Ò½ÓÁËÉè±¸£¬ÄÇ¾ÍÑ­»·£¬ÕÒµ½×îºóÒ»¸ö¹Ò½ÓµÄÉè±¸
-		 * ÎÒÃÇÒª²åÈëµÄÉè±¸Ó¦¸Ã¹Ò½Óµ½Õâ¸öÉè±¸µÄºóÃæ¡£
+		 * åœ¨è¿™é‡Œï¼Œæˆ‘ä»¬å·²ç»çŸ¥é“è®¾å¤‡ä¸ŠæŒ‚æ¥äº†è®¾å¤‡ï¼Œé‚£å°±å¾ªç¯ï¼Œæ‰¾åˆ°æœ€åä¸€ä¸ªæŒ‚æ¥çš„è®¾å¤‡
+		 * æˆ‘ä»¬è¦æ’å…¥çš„è®¾å¤‡åº”è¯¥æŒ‚æ¥åˆ°è¿™ä¸ªè®¾å¤‡çš„åé¢ã€‚
 		 */
 		do {
 			p = &old->next;
 			old = *p;
 		} while (old);
 		/**
-		 * IRQÉÏÓĞÉè±¸£¬²¢ÇÒÔËĞĞµ½ÕâÀïÁË£¬±íÊ¾IRQÔÊĞí¹²Ïí¡£
+		 * IRQä¸Šæœ‰è®¾å¤‡ï¼Œå¹¶ä¸”è¿è¡Œåˆ°è¿™é‡Œäº†ï¼Œè¡¨ç¤ºIRQå…è®¸å…±äº«ã€‚
 		 */
 		shared = 1;
 	}
 
 	/**
-	 * °Ñaction¼Óµ½Á´±íµÄÄ©Î²¡£
+	 * æŠŠactionåŠ åˆ°é“¾è¡¨çš„æœ«å°¾ã€‚
 	 */
 	*p = new;
 
 	/**
-	 * ÅĞ¶ÏÊÇ·ñÊÇÓëÆäËûÉè±¸¹²ÏíIRQ
+	 * åˆ¤æ–­æ˜¯å¦æ˜¯ä¸å…¶ä»–è®¾å¤‡å…±äº«IRQ
 	 */
 	if (!shared) {
 		/**
-		 * ²»ÊÇ¹²ÏíIRQ£¬¾ÍËµÃ÷±¾Éè±¸ÊÇIRQÉÏµÄµÚÒ»¸öÉè±¸
+		 * ä¸æ˜¯å…±äº«IRQï¼Œå°±è¯´æ˜æœ¬è®¾å¤‡æ˜¯IRQä¸Šçš„ç¬¬ä¸€ä¸ªè®¾å¤‡
 		 */
 		desc->depth = 0;
 		desc->status &= ~(IRQ_DISABLED | IRQ_AUTODETECT |
 				  IRQ_WAITING | IRQ_INPROGRESS);
 		/**
-		 * startupºÍenableÊÇÎªÁËÈ·±£IRQĞÅºÅ±»¼¤»î¡£
+		 * startupå’Œenableæ˜¯ä¸ºäº†ç¡®ä¿IRQä¿¡å·è¢«æ¿€æ´»ã€‚
 		 */
 		if (desc->handler->startup)
 			desc->handler->startup(irq);
@@ -268,7 +268,7 @@ int setup_irq(unsigned int irq, struct irqaction * new)
 	spin_unlock_irqrestore(&desc->lock,flags);
 
 	/**
-	 * ½¨Á¢procÎÄ¼ş
+	 * å»ºç«‹procæ–‡ä»¶
 	 */
 	new->irq = irq;
 	register_irq_proc(irq);
@@ -369,7 +369,7 @@ EXPORT_SYMBOL(free_irq);
  *
  */
 /**
- * Éè±¸Çı¶¯³ÌĞòÀûÓÃIRQÇ°£¬µ÷ÓÃrequest_irq¡£
+ * è®¾å¤‡é©±åŠ¨ç¨‹åºåˆ©ç”¨IRQå‰ï¼Œè°ƒç”¨request_irqã€‚
  */
 int request_irq(unsigned int irq,
 		irqreturn_t (*handler)(int, void *, struct pt_regs *),
@@ -392,7 +392,7 @@ int request_irq(unsigned int irq,
 		return -EINVAL;
 
 	/**
-	 * ÏÈ½¨Á¢Ò»¸öĞÂµÄirqactionÃèÊö·û£¬²¢ÓÃ²ÎÊıÖµ³õÊ¼»¯Ëü¡£
+	 * å…ˆå»ºç«‹ä¸€ä¸ªæ–°çš„irqactionæè¿°ç¬¦ï¼Œå¹¶ç”¨å‚æ•°å€¼åˆå§‹åŒ–å®ƒã€‚
 	 */
 	action = kmalloc(sizeof(struct irqaction), GFP_ATOMIC);
 	if (!action)
@@ -406,12 +406,12 @@ int request_irq(unsigned int irq,
 	action->dev_id = dev_id;
 
 	/**
-	 * setup_irqº¯Êı°ÑactionÃèÊö·û²åÈëµ½ºÏÊÊµÄIRQÁ´±í¡£
+	 * setup_irqå‡½æ•°æŠŠactionæè¿°ç¬¦æ’å…¥åˆ°åˆé€‚çš„IRQé“¾è¡¨ã€‚
 	 */
 	retval = setup_irq(irq, action);
 	/**
-	 * Èç¹ûsetup_irq·µ»ØÒ»¸ö´íÎóÂë£¬
-	 * ËµÃ÷IRQÏßÒÑ¾­±»ÁíÒ»¸öÉè±¸Ê¹ÓÃ£¬²¢ÇÒÉè±¸²»ÔÊĞíÖĞ¶Ï¹²Ïí¡£
+	 * å¦‚æœsetup_irqè¿”å›ä¸€ä¸ªé”™è¯¯ç ï¼Œ
+	 * è¯´æ˜IRQçº¿å·²ç»è¢«å¦ä¸€ä¸ªè®¾å¤‡ä½¿ç”¨ï¼Œå¹¶ä¸”è®¾å¤‡ä¸å…è®¸ä¸­æ–­å…±äº«ã€‚
 	 */
 	if (retval)
 		kfree(action);

@@ -1590,7 +1590,7 @@ static int NCR5380_select (struct Scsi_Host *instance, Scsi_Cmnd *cmd, int tag)
      * IO while SEL is true. But again, there are some disks out the in the
      * world that do that nevertheless. (Somebody claimed that this announces
      * reselection capability of the target.) So we better skip that test and
-     * only wait for BSY... (Famous german words: Der Klügere gibt nach :-)
+     * only wait for BSY... (Famous german words: Der Klgere gibt nach :-)
      */
 
     while (time_before(jiffies, timeout) && !(NCR5380_read(STATUS_REG) & 

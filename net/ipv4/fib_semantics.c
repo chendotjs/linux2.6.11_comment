@@ -48,17 +48,17 @@
 #define FSprintk(a...)
 
 /**
- * Õâ¸örwlockËø±£»¤ËùÓÐµÄfib_infoÊý¾Ý½á¹¹¡£
+ * è¿™ä¸ªrwlocké”ä¿æŠ¤æ‰€æœ‰çš„fib_infoæ•°æ®ç»“æž„ã€‚
  */
 static DEFINE_RWLOCK(fib_info_lock);
 static struct hlist_head *fib_info_hash;
 static struct hlist_head *fib_info_laddrhash;
 /**
- * HASH±íÈÝÁ¿¡£
+ * HASHè¡¨å®¹é‡ã€‚
  */
 static unsigned int fib_hash_size;
 /**
- * ËùÓÐfib_info½á¹¹µÄ×ÜÊý¡£
+ * æ‰€æœ‰fib_infoç»“æž„çš„æ€»æ•°ã€‚
  */
 static unsigned int fib_info_cnt;
 
@@ -69,21 +69,21 @@ static struct hlist_head fib_info_devhash[DEVINDEX_HASHSIZE];
 #ifdef CONFIG_IP_ROUTE_MULTIPATH
 
 /**
- * µ±ÐÞ¸Äfib_info½á¹¹ÖÐÓÉ¶àÂ·¾¶ÌØÐÔÊ¹ÓÃµÄ×Ö¶ÎÊ±£¬Ê¹ÓÃÕâ¸öspinËø¡£
+ * å½“ä¿®æ”¹fib_infoç»“æž„ä¸­ç”±å¤šè·¯å¾„ç‰¹æ€§ä½¿ç”¨çš„å­—æ®µæ—¶ï¼Œä½¿ç”¨è¿™ä¸ªspiné”ã€‚
  */
 static DEFINE_SPINLOCK(fib_multipath_lock);
 
 /**
- * ÓÃÓÚ±éÀúÒ»¸öfib_infoÊµÀýÖÐËùÓÐµÄfib_nh½á¹¹¡£
- * for_nexthopsÑ­»·ÄÚµÄ´úÂë²»ÄÜ¸Ä±äËù±éÀúµÄÈÎºÎfib_nhÊµÀýµÄÄÚÈÝ¡£
+ * ç”¨äºŽéåŽ†ä¸€ä¸ªfib_infoå®žä¾‹ä¸­æ‰€æœ‰çš„fib_nhç»“æž„ã€‚
+ * for_nexthopså¾ªçŽ¯å†…çš„ä»£ç ä¸èƒ½æ”¹å˜æ‰€éåŽ†çš„ä»»ä½•fib_nhå®žä¾‹çš„å†…å®¹ã€‚
  */
 #define for_nexthops(fi) { int nhsel; const struct fib_nh * nh; \
 for (nhsel=0, nh = (fi)->fib_nh; nhsel < (fi)->fib_nhs; nh++, nhsel++)
 
 /**
- * ÓÃÓÚ±éÀúÒ»¸öfib_infoÊµÀýÖÐËùÓÐµÄfib_nh½á¹¹¡£
- * change_nexthopsºê¿ªÊ¼Ò»¸öÕë¶ÔÕâÐ©fib_nh½á¹¹µÄÑ­»·£¬Ã¿Ò»¸öfib_nh½á¹¹ÓÃ¾Ö²¿±äÁ¿nh±íÊ¾¡£
- * ¾ÍÏó´ÓÕâ¸öºêµÄ×ÖÃæËù¸ø³öµÄ£¬¸Ãºê¿ÉÒÔÓÃÓÚ¸Ä±äÕâÐ©½á¹¹¡£
+ * ç”¨äºŽéåŽ†ä¸€ä¸ªfib_infoå®žä¾‹ä¸­æ‰€æœ‰çš„fib_nhç»“æž„ã€‚
+ * change_nexthopså®å¼€å§‹ä¸€ä¸ªé’ˆå¯¹è¿™äº›fib_nhç»“æž„çš„å¾ªçŽ¯ï¼Œæ¯ä¸€ä¸ªfib_nhç»“æž„ç”¨å±€éƒ¨å˜é‡nhè¡¨ç¤ºã€‚
+ * å°±è±¡ä»Žè¿™ä¸ªå®çš„å­—é¢æ‰€ç»™å‡ºçš„ï¼Œè¯¥å®å¯ä»¥ç”¨äºŽæ”¹å˜è¿™äº›ç»“æž„ã€‚
  */
 #define change_nexthops(fi) { int nhsel; struct fib_nh * nh; \
 for (nhsel=0, nh = (struct fib_nh*)((fi)->fib_nh); nhsel < (fi)->fib_nhs; nh++, nhsel++)
@@ -101,7 +101,7 @@ for (nhsel=0; nhsel < 1; nhsel++)
 #endif /* CONFIG_IP_ROUTE_MULTIPATH */
 
 /**
- * endfor_nexthopsºêÀ´½áÊøchange_nexthopsºÍfor_nexthops¿ªÊ¼µÄÑ­»·
+ * endfor_nexthopså®æ¥ç»“æŸchange_nexthopså’Œfor_nexthopså¼€å§‹çš„å¾ªçŽ¯
  */
 #define endfor_nexthops(fi) }
 
@@ -295,7 +295,7 @@ int ip_fib_check_default(u32 gw, struct net_device *dev)
 }
 
 /**
- * µ±Ìí¼Ó»òÉ¾³ýÒ»ÌõÂ·ÓÉÊ±£¬ÀûÓÃ³ÌÐòrtmsg_fibÏòNetlink×éRTMGRP_IPV4_ROUTE·¢ËÍÒ»¸öÍ¨Öª¡£
+ * å½“æ·»åŠ æˆ–åˆ é™¤ä¸€æ¡è·¯ç”±æ—¶ï¼Œåˆ©ç”¨ç¨‹åºrtmsg_fibå‘Netlinkç»„RTMGRP_IPV4_ROUTEå‘é€ä¸€ä¸ªé€šçŸ¥ã€‚
  */
 void rtmsg_fib(int event, u32 key, struct fib_alias *fa,
 	       int z, int tb_id,
@@ -858,7 +858,7 @@ failure:
 }
 
 /**
- * ÔÚÓë¸ø¶¨µÄfib_nodeÏà¹ØµÄÂ·ÓÉ£¨fib_alias½á¹¹£©ÖÐ£¬²éÕÒÓëËÑË÷keyËùÓÐ×Ö¶Î¶¼Æ¥ÅäµÄÂ·ÓÉÏî¡£
+ * åœ¨ä¸Žç»™å®šçš„fib_nodeç›¸å…³çš„è·¯ç”±ï¼ˆfib_aliasç»“æž„ï¼‰ä¸­ï¼ŒæŸ¥æ‰¾ä¸Žæœç´¢keyæ‰€æœ‰å­—æ®µéƒ½åŒ¹é…çš„è·¯ç”±é¡¹ã€‚
  */
 int fib_semantic_match(struct list_head *head, const struct flowi *flp,
 		       struct fib_result *res, int prefixlen)
@@ -867,42 +867,42 @@ int fib_semantic_match(struct list_head *head, const struct flowi *flp,
 	int nh_sel = 0;
 
 	/**
-	 * ÔÚÓë¸ø¶¨µÄfib_nodeÏà¹ØµÄÂ·ÓÉ£¨fib_alias½á¹¹£©ÖÐ£¬²éÕÒÓëËÑË÷keyËùÓÐ×Ö¶Î¶¼Æ¥ÅäµÄÂ·ÓÉÏî¡£
+	 * åœ¨ä¸Žç»™å®šçš„fib_nodeç›¸å…³çš„è·¯ç”±ï¼ˆfib_aliasç»“æž„ï¼‰ä¸­ï¼ŒæŸ¥æ‰¾ä¸Žæœç´¢keyæ‰€æœ‰å­—æ®µéƒ½åŒ¹é…çš„è·¯ç”±é¡¹ã€‚
 	 */
 	list_for_each_entry(fa, head, fa_list) {
 		int err;
 
 		/**
-		 * Â·ÓÉÏîÅäÖÃÁËTOS£¬Ôò±È½ÏÊÇ·ñÓëÖ¸¶¨TOSÆ¥Åä¡£
+		 * è·¯ç”±é¡¹é…ç½®äº†TOSï¼Œåˆ™æ¯”è¾ƒæ˜¯å¦ä¸ŽæŒ‡å®šTOSåŒ¹é…ã€‚
 		 */
 		if (fa->fa_tos &&
 		    fa->fa_tos != flp->fl4_tos)
 			continue;
 
 		/**
-		 * scope±ÈËÑË÷key¸üÕ­¡£
-		 * ÀýÈç£¬Èç¹ûÂ·ÓÉ×ÓÏµÍ³²éÕÒscopeÎªRT_SCOPE_UNIVERSEµÄÂ·ÓÉ£¬Ôò²»ÄÜÊ¹ÓÃscopeÎªRT_SCOPE_LINKµÄÂ·ÓÉÏî¡£
+		 * scopeæ¯”æœç´¢keyæ›´çª„ã€‚
+		 * ä¾‹å¦‚ï¼Œå¦‚æžœè·¯ç”±å­ç³»ç»ŸæŸ¥æ‰¾scopeä¸ºRT_SCOPE_UNIVERSEçš„è·¯ç”±ï¼Œåˆ™ä¸èƒ½ä½¿ç”¨scopeä¸ºRT_SCOPE_LINKçš„è·¯ç”±é¡¹ã€‚
 		 */
 		if (fa->fa_scope < flp->fl4_scope)
 			continue;
 
 		/**
-		 * ÉèÖÃFA_S_ACCESSED£¬ÕâÑù£¬µ±É¾³ý±¾Â·ÓÉÊ±£¬»áË¢ÐÂÂ·ÓÉ»º´æ¡£
+		 * è®¾ç½®FA_S_ACCESSEDï¼Œè¿™æ ·ï¼Œå½“åˆ é™¤æœ¬è·¯ç”±æ—¶ï¼Œä¼šåˆ·æ–°è·¯ç”±ç¼“å­˜ã€‚
 		 */
 		fa->fa_state |= FA_S_ACCESSED;
 
 		/**
-		 * ´ÓÏà¹ØµÄfib_nodeÖÐÌáÈ¡³öÂ·ÓÉÐÅÏ¢¡£
+		 * ä»Žç›¸å…³çš„fib_nodeä¸­æå–å‡ºè·¯ç”±ä¿¡æ¯ã€‚
 		 */
 		err = fib_props[fa->fa_type].error;
 		/**
-		 * Èç¹ûerrÊÇ¸ºÖµ£¬±íÊ¾¹ÜÀíÊ§°Ü¡£·µ»ØÒ»¸ö´íÎóÂëÒÔÊ¹ÄÚºË²ÉÈ¡ÏàÓ¦µÄÐÐ¶¯¡£
+		 * å¦‚æžœerræ˜¯è´Ÿå€¼ï¼Œè¡¨ç¤ºç®¡ç†å¤±è´¥ã€‚è¿”å›žä¸€ä¸ªé”™è¯¯ç ä»¥ä½¿å†…æ ¸é‡‡å–ç›¸åº”çš„è¡ŒåŠ¨ã€‚
 		 */
 		if (err == 0) {
 			struct fib_info *fi = fa->fa_info;
 
 			/**
-			 * ¸ÃÂ·ÓÉÒÑ¾­±»É¾³ý£¬Ñ¡ÔñÏÂÒ»¸ö¡£
+			 * è¯¥è·¯ç”±å·²ç»è¢«åˆ é™¤ï¼Œé€‰æ‹©ä¸‹ä¸€ä¸ªã€‚
 			 */
 			if (fi->fib_flags & RTNH_F_DEAD)
 				continue;
@@ -914,11 +914,11 @@ int fib_semantic_match(struct list_head *head, const struct flowi *flp,
 			case RTN_ANYCAST:
 			case RTN_MULTICAST:
 				/**
-				 * ¸ù¾ÝÏÂÒ»Ìø£¬À´ÅÐ¶ÏÊÇ·ñ°üº¬Ö¸¶¨µÄ³öÉè±¸¡£
+				 * æ ¹æ®ä¸‹ä¸€è·³ï¼Œæ¥åˆ¤æ–­æ˜¯å¦åŒ…å«æŒ‡å®šçš„å‡ºè®¾å¤‡ã€‚
 				 */
 				for_nexthops(fi) {
 					/**
-					 * ÏÂÒ»ÌøÎÞÐ§£¬ËÑË÷ÁíÍâµÄÏÂÒ»Ìø¡£Èç¹ûËùÓÐÏÂÒ»Ìø²»¿ÉÓÃ£¬ÔòËÑË÷ÏÂÒ»¸öÂ·ÓÉÏî¡£
+					 * ä¸‹ä¸€è·³æ— æ•ˆï¼Œæœç´¢å¦å¤–çš„ä¸‹ä¸€è·³ã€‚å¦‚æžœæ‰€æœ‰ä¸‹ä¸€è·³ä¸å¯ç”¨ï¼Œåˆ™æœç´¢ä¸‹ä¸€ä¸ªè·¯ç”±é¡¹ã€‚
 					 */
 					if (nh->nh_flags&RTNH_F_DEAD)
 						continue;
@@ -1037,7 +1037,7 @@ rtattr_failure:
 #ifndef CONFIG_IP_NOSIOCRT
 
 /**
- * Â·ÓÉ×ÓÏµÍ³ÖÐ£¬½«ioctlÃüÁîµÄÊäÈëÐÅÏ¢×ª»»ÎªNetlink¸ñÊ½¡£
+ * è·¯ç”±å­ç³»ç»Ÿä¸­ï¼Œå°†ioctlå‘½ä»¤çš„è¾“å…¥ä¿¡æ¯è½¬æ¢ä¸ºNetlinkæ ¼å¼ã€‚
  */
 int
 fib_convert_rtentry(int cmd, struct nlmsghdr *nl, struct rtmsg *rtm,
@@ -1189,14 +1189,14 @@ fib_convert_rtentry(int cmd, struct nlmsghdr *nl, struct rtmsg *rtm,
  */
 
 /**
- * µ±Ò»¸öÉè±¸±»¹Ø±Õ»òÒ»¸ö±¾µØµØÖ·±»É¾³ýÊ±¸üÐÂÂ·ÓÉ±í¡£
- *		local:		ÒÑ¾­±»É¾³ýµÄIPµØÖ·¡£
- *		dev:		ÒÑ¾­±»¹Ø±ÕµÄÉè±¸¡£
- *		force:		¾ö¶¨ºÎÊ±Ö´ÐÐÏàÓ¦µÄ»î¶¯¡£
- *				0£ºÒ»¸öIPµØÖ·ÒÑ¾­±»É¾³ý¡£
- *				1£ºÒ»¸öÉè±¸ÒÑ¾­±»¹Ø±Õ¡£
- *				2£ºÒ»¸öÉè±¸ÒÑ¾­±»×¢Ïú
- * ·µ»Ø±ê¼ÇÎªdeadµÄfib_infoÊýÁ¿¡£
+ * å½“ä¸€ä¸ªè®¾å¤‡è¢«å…³é—­æˆ–ä¸€ä¸ªæœ¬åœ°åœ°å€è¢«åˆ é™¤æ—¶æ›´æ–°è·¯ç”±è¡¨ã€‚
+ *		local:		å·²ç»è¢«åˆ é™¤çš„IPåœ°å€ã€‚
+ *		dev:		å·²ç»è¢«å…³é—­çš„è®¾å¤‡ã€‚
+ *		force:		å†³å®šä½•æ—¶æ‰§è¡Œç›¸åº”çš„æ´»åŠ¨ã€‚
+ *				0ï¼šä¸€ä¸ªIPåœ°å€å·²ç»è¢«åˆ é™¤ã€‚
+ *				1ï¼šä¸€ä¸ªè®¾å¤‡å·²ç»è¢«å…³é—­ã€‚
+ *				2ï¼šä¸€ä¸ªè®¾å¤‡å·²ç»è¢«æ³¨é”€
+ * è¿”å›žæ ‡è®°ä¸ºdeadçš„fib_infoæ•°é‡ã€‚
  */
 int fib_sync_down(u32 local, struct net_device *dev, int force)
 {
@@ -1275,8 +1275,8 @@ int fib_sync_down(u32 local, struct net_device *dev, int force)
  */
 
 /**
- * Ö»ÓÐÔÚÄÚºËÖ§³Ö¶àÂ·¾¶Ê±²ÅÊ¹ÓÃ¸Ãº¯Êý¡£
- * ËüµÄÖ÷ÒªÄ¿µÄÊÇÔÚÂ·ÓÉµÄÒ»Ð©ÏÂÒ»ÌøÎªaliveÊ±¸üÐÂfib_info½á¹¹ÄÚÂ·ÓÉµÄÒ»Ð©²ÎÊý¡£·µ»ØÖµÎªRTNH_F_DEAD±êÖ¾±»Çå³ýµÄfib_info½á¹¹ÊýÁ¿¡£
+ * åªæœ‰åœ¨å†…æ ¸æ”¯æŒå¤šè·¯å¾„æ—¶æ‰ä½¿ç”¨è¯¥å‡½æ•°ã€‚
+ * å®ƒçš„ä¸»è¦ç›®çš„æ˜¯åœ¨è·¯ç”±çš„ä¸€äº›ä¸‹ä¸€è·³ä¸ºaliveæ—¶æ›´æ–°fib_infoç»“æž„å†…è·¯ç”±çš„ä¸€äº›å‚æ•°ã€‚è¿”å›žå€¼ä¸ºRTNH_F_DEADæ ‡å¿—è¢«æ¸…é™¤çš„fib_infoç»“æž„æ•°é‡ã€‚
  */
 int fib_sync_up(struct net_device *dev)
 {
@@ -1335,7 +1335,7 @@ int fib_sync_up(struct net_device *dev)
    fair weighted route distribution.
  */
 /**
- * ´Ó¶àÂ·¾¶Â·ÓÉÖÐÑ¡ÔñÏÂÒ»Ìø¡£
+ * ä»Žå¤šè·¯å¾„è·¯ç”±ä¸­é€‰æ‹©ä¸‹ä¸€è·³ã€‚
  */
 void fib_select_multipath(const struct flowi *flp, struct fib_result *res)
 {
@@ -1343,10 +1343,10 @@ void fib_select_multipath(const struct flowi *flp, struct fib_result *res)
 	int w;
 
 	spin_lock_bh(&fib_multipath_lock);
-	if (fi->fib_power <= 0) {/* ÐèÒªÖØÐÂ³õÊ¼»¯È¨Öµ¡£ */
+	if (fi->fib_power <= 0) {/* éœ€è¦é‡æ–°åˆå§‹åŒ–æƒå€¼ã€‚ */
 		int power = 0;
 		/**
-		 * change_nexthopsÑ­»·ÉèÖÃÏÂÒ»ÌøµÄnh_power×Ö¶Î£¬Í¬Ê±½«ËùÓÐÏÂÒ»ÌøµÄÈ¨ÖµÀÛ¼Óµ½º¯ÊýµÄ¾Ö²¿±äÁ¿powerÉÏ¡£
+		 * change_nexthopså¾ªçŽ¯è®¾ç½®ä¸‹ä¸€è·³çš„nh_powerå­—æ®µï¼ŒåŒæ—¶å°†æ‰€æœ‰ä¸‹ä¸€è·³çš„æƒå€¼ç´¯åŠ åˆ°å‡½æ•°çš„å±€éƒ¨å˜é‡powerä¸Šã€‚
 		 */
 		change_nexthops(fi) {
 			if (!(nh->nh_flags&RTNH_F_DEAD)) {
@@ -1355,14 +1355,14 @@ void fib_select_multipath(const struct flowi *flp, struct fib_result *res)
 			}
 		} endfor_nexthops(fi);
 		/**
-		 * fib_info->fib_power±»³õÊ¼»¯ÎªËùÓÐÏÂÒ»ÌøÈ¨ÖµµÄ×ÜºÍ¡£
+		 * fib_info->fib_powerè¢«åˆå§‹åŒ–ä¸ºæ‰€æœ‰ä¸‹ä¸€è·³æƒå€¼çš„æ€»å’Œã€‚
 		 */
 		fi->fib_power = power;
 		if (power <= 0) {
 			spin_unlock_bh(&fib_multipath_lock);
 			/* Race condition: route has just become dead. */
 			/**
-			 * ËùÓÐÏÂÒ»Ìø¾ù²»¿ÉÓÃ¡£
+			 * æ‰€æœ‰ä¸‹ä¸€è·³å‡ä¸å¯ç”¨ã€‚
 			 */
 			res->nh_sel = 0;
 			return;
@@ -1374,12 +1374,12 @@ void fib_select_multipath(const struct flowi *flp, struct fib_result *res)
 	   it is pretty bad approximation.
 	 */
 	/**
-	 * ¸ù¾Ýµ±Ç°jiffiesÉú³ÉÒ»¸öÎ±Ëæ»úÊý¡£
+	 * æ ¹æ®å½“å‰jiffiesç”Ÿæˆä¸€ä¸ªä¼ªéšæœºæ•°ã€‚
 	 */
 	w = jiffies % fi->fib_power;
 
 	/**
-	 * ±éÀúËùÓÐµÄÏÂÒ»Ìø£¬Ö±µ½·¢ÏÖÄ³¸öÏÂÒ»ÌøµÄtokensÊý£¨fib_nh->nh_power£©´óÓÚ»òµÈÓÚw¡£×¢ÒâÃ¿´ÎÑ­»·Ê±µÝ¼õw£¬ÒÔÊ¹Ã¿Ò»´ÎÑ­»·¶¼¸üÓÐ¿ÉÄÜÕÒµ½Æ¥ÅäÌõ¼þµÄÏÂÒ»Ìø¡£
+	 * éåŽ†æ‰€æœ‰çš„ä¸‹ä¸€è·³ï¼Œç›´åˆ°å‘çŽ°æŸä¸ªä¸‹ä¸€è·³çš„tokensæ•°ï¼ˆfib_nh->nh_powerï¼‰å¤§äºŽæˆ–ç­‰äºŽwã€‚æ³¨æ„æ¯æ¬¡å¾ªçŽ¯æ—¶é€’å‡wï¼Œä»¥ä½¿æ¯ä¸€æ¬¡å¾ªçŽ¯éƒ½æ›´æœ‰å¯èƒ½æ‰¾åˆ°åŒ¹é…æ¡ä»¶çš„ä¸‹ä¸€è·³ã€‚
 	 */
 	change_nexthops(fi) {
 		if (!(nh->nh_flags&RTNH_F_DEAD) && nh->nh_power) {

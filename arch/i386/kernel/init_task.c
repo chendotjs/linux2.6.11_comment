@@ -15,7 +15,7 @@ static struct files_struct init_files = INIT_FILES;
 static struct signal_struct init_signals = INIT_SIGNALS(init_signals);
 static struct sighand_struct init_sighand = INIT_SIGHAND(init_sighand);
 /**
- * ³õÊ¼»¯½×¶Î½ø³Ì0ËùÊ¹ÓÃµÄÄÚ´æÃèÊö·û¡£
+ * åˆå§‹åŒ–é˜¶æ®µè¿›ç¨‹0æ‰€ä½¿ç”¨çš„å†…å­˜æè¿°ç¬¦ã€‚
  */
 struct mm_struct init_mm = INIT_MM(init_mm);
 
@@ -38,7 +38,7 @@ union thread_union init_thread_union
  * All other task structs will be allocated on slabs in fork.c
  */
 /**
- * ½ø³Ì0µÄÃèÊö·û
+ * è¿›ç¨‹0çš„æè¿°ç¬¦
  */
 struct task_struct init_task = INIT_TASK(init_task);
 

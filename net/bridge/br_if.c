@@ -107,14 +107,14 @@ static void del_nbp(struct net_bridge_port *p)
 	spin_unlock_bh(&br->lock);
 
 	/**
-	 * ¶ÔÃ¿¸öÍøÇÅ¶Ë¿Ú£¬Ê¹ÓÃbr_fdb_delete_by_portÉ¾³ıËùÓĞÏà¹ØµÄ×ª·¢Êı¾İ¿âÌõÄ¿¡£
+	 * å¯¹æ¯ä¸ªç½‘æ¡¥ç«¯å£ï¼Œä½¿ç”¨br_fdb_delete_by_portåˆ é™¤æ‰€æœ‰ç›¸å…³çš„è½¬å‘æ•°æ®åº“æ¡ç›®ã€‚
 	 */
 	br_fdb_delete_by_port(br, p);
 
 	list_del_rcu(&p->list);
 
 	/**
-	 * Í£Ö¹ËùÓĞ¶Ë¿ÚÊ±ÖÓ£¬µİ¼õ¼ÆÊıÆ÷¡£
+	 * åœæ­¢æ‰€æœ‰ç«¯å£æ—¶é’Ÿï¼Œé€’å‡è®¡æ•°å™¨ã€‚
 	 */
 	del_timer_sync(&p->message_age_timer);
 	del_timer_sync(&p->forward_delay_timer);
@@ -125,14 +125,14 @@ static void del_nbp(struct net_bridge_port *p)
 
 /* called with RTNL */
 /**
- * É¾³ıÍøÇÅÉè±¸¡£ÉÏ²ãº¯Êı¸ºÔğÉêÇënetlinkËø¡£
+ * åˆ é™¤ç½‘æ¡¥è®¾å¤‡ã€‚ä¸Šå±‚å‡½æ•°è´Ÿè´£ç”³è¯·netlinké”ã€‚
  */
 static void del_br(struct net_bridge *br)
 {
 	struct net_bridge_port *p, *n;
 
 	/**
-	 * É¾³ıËùÓĞÍøÇÅ¶Ë¿Ú¡£¶ÔÃ¿ÍøÇÅ¶Ë¿Ú£¬Ò²É¾³ıÔÚ/sysÖĞÏà¹ØµÄÁ¬½Ó¡£
+	 * åˆ é™¤æ‰€æœ‰ç½‘æ¡¥ç«¯å£ã€‚å¯¹æ¯ç½‘æ¡¥ç«¯å£ï¼Œä¹Ÿåˆ é™¤åœ¨/sysä¸­ç›¸å…³çš„è¿æ¥ã€‚
 	 */
 	list_for_each_entry_safe(p, n, &br->port_list, list) {
 		br_sysfs_removeif(p);
@@ -140,25 +140,25 @@ static void del_br(struct net_bridge *br)
 	}
 
 	/**
-	 * Í£Ö¹À¬»øÊÕ¼¯Ê±ÖÓbr->gc_timer¡£
+	 * åœæ­¢åƒåœ¾æ”¶é›†æ—¶é’Ÿbr->gc_timerã€‚
 	 */
 	del_timer_sync(&br->gc_timer);
 
 	/**
-	 * Í¨¹ıbr_sysfs_delbrº¯Êı£¬É¾³ıÔÚ/sys/class/netÄ¿Â¼ÏÂµÄÍøÇÅÉè±¸Ä¿Â¼¡£
+	 * é€šè¿‡br_sysfs_delbrå‡½æ•°ï¼Œåˆ é™¤åœ¨/sys/class/netç›®å½•ä¸‹çš„ç½‘æ¡¥è®¾å¤‡ç›®å½•ã€‚
 	 */
 	br_sysfs_delbr(br->dev);
 	/**
-	 * È¡ÏûÉè±¸×¢²á¡£
+	 * å–æ¶ˆè®¾å¤‡æ³¨å†Œã€‚
 	 */
  	unregister_netdevice(br->dev);
 }
 
 /**
- * ½¨ºÍ×¢²áÒ»¸öÍøÇÅÉè±¸×ñÑ­µÚ8ÕÂÃèÊöµÄÄ£Ê½¡£
- * Î¨Ò»µÄ²»Í¬Ö®´¦ÔÚÓÚ£¬ÓÉÓÚÍøÇÅÊÇÒ»¸öĞéÄâÉè±¸£¬ËüĞèÒªÔÚÌØ¶¨µÄµØ·½¶îÍâµÄ³õÊ¼»¯Ëü¡£
- * ÕâÊÇÓÉnew_bridge_dev´¦ÀíµÄ.
- * ÍøÇÅÉè±¸¿ÉÒÔ±»Ö¸¶¨ÈÎºÎµÄÃû³Æ¡£Í¨³£Çé¿öÏÂ£¬ÊÓSTPÊÇ·ñ±»´ò¿ª£¬ÆäÃû³ÆÎªbrN»òÕßstpN¡£
+ * å»ºå’Œæ³¨å†Œä¸€ä¸ªç½‘æ¡¥è®¾å¤‡éµå¾ªç¬¬8ç« æè¿°çš„æ¨¡å¼ã€‚
+ * å”¯ä¸€çš„ä¸åŒä¹‹å¤„åœ¨äºï¼Œç”±äºç½‘æ¡¥æ˜¯ä¸€ä¸ªè™šæ‹Ÿè®¾å¤‡ï¼Œå®ƒéœ€è¦åœ¨ç‰¹å®šçš„åœ°æ–¹é¢å¤–çš„åˆå§‹åŒ–å®ƒã€‚
+ * è¿™æ˜¯ç”±new_bridge_devå¤„ç†çš„.
+ * ç½‘æ¡¥è®¾å¤‡å¯ä»¥è¢«æŒ‡å®šä»»ä½•çš„åç§°ã€‚é€šå¸¸æƒ…å†µä¸‹ï¼Œè§†STPæ˜¯å¦è¢«æ‰“å¼€ï¼Œå…¶åç§°ä¸ºbrNæˆ–è€…stpNã€‚
  */
 static struct net_device *new_bridge_dev(const char *name)
 {
@@ -166,8 +166,8 @@ static struct net_device *new_bridge_dev(const char *name)
 	struct net_device *dev;
 
 	/**
-	 * ·ÖÅänet_bridgeÊ±£¬Í¬Ê±·ÖÅäÒ»¸önet_bridgeË½ÓĞÊı¾İ½á¹¹¡£
-	 * ²¢ÇÒÊ¹ÓÃbr_dev_setup³õÊ¼»¯net_deviceÊı¾İ½á¹¹¡£
+	 * åˆ†é…net_bridgeæ—¶ï¼ŒåŒæ—¶åˆ†é…ä¸€ä¸ªnet_bridgeç§æœ‰æ•°æ®ç»“æ„ã€‚
+	 * å¹¶ä¸”ä½¿ç”¨br_dev_setupåˆå§‹åŒ–net_deviceæ•°æ®ç»“æ„ã€‚
 	 */
 	dev = alloc_netdev(sizeof(struct net_bridge), name,
 			   br_dev_setup);
@@ -179,14 +179,14 @@ static struct net_device *new_bridge_dev(const char *name)
 	br->dev = dev;
 
 	/**
-	 * ³õÊ¼»¯Ë½ÓĞÊı¾İ½á¹¹¡£
+	 * åˆå§‹åŒ–ç§æœ‰æ•°æ®ç»“æ„ã€‚
 	 */
 	spin_lock_init(&br->lock);
 	INIT_LIST_HEAD(&br->port_list);
 	spin_lock_init(&br->hash_lock);
 
 	/**
-	 * ³õÊ¼»¯ÍøÇÅÓÅÏÈ¼¶ÎªÄ¬ÈÏÖµ32768¡£
+	 * åˆå§‹åŒ–ç½‘æ¡¥ä¼˜å…ˆçº§ä¸ºé»˜è®¤å€¼32768ã€‚
 	 */
 	br->bridge_id.prio[0] = 0x80;
 	br->bridge_id.prio[1] = 0x00;
@@ -194,7 +194,7 @@ static struct net_device *new_bridge_dev(const char *name)
 
 	br->stp_enabled = 0;
 	/**
-	 * ³õÊ¼»¯Ö¸ÅÉÍøÇÅID¡¢ÉèÖÃ¸ùÂ·¾¶Îª0,¸ù¶Ë¿ÚÎª0£¨¼´Ã»ÓĞ¸ù¶Ë¿Ú£©¡£ÕâÊÇÒòÎªÍøÇÅ×î³õ¼¤»îÊ±£¬ËüÈÏÎª×Ô¼ºÊÇ¸ùÇÅ¡£
+	 * åˆå§‹åŒ–æŒ‡æ´¾ç½‘æ¡¥IDã€è®¾ç½®æ ¹è·¯å¾„ä¸º0,æ ¹ç«¯å£ä¸º0ï¼ˆå³æ²¡æœ‰æ ¹ç«¯å£ï¼‰ã€‚è¿™æ˜¯å› ä¸ºç½‘æ¡¥æœ€åˆæ¿€æ´»æ—¶ï¼Œå®ƒè®¤ä¸ºè‡ªå·±æ˜¯æ ¹æ¡¥ã€‚
 	 */
 	br->designated_root = br->bridge_id;
 	br->root_path_cost = 0;
@@ -205,13 +205,13 @@ static struct net_device *new_bridge_dev(const char *name)
 	br->topology_change = 0;
 	br->topology_change_detected = 0;
 	/**
-	 * ³õÊ¼»¯ÀÏ»¯Ê±¼äÎªÄ¬ÈÏµÄ5·ÖÖÓ¡£
+	 * åˆå§‹åŒ–è€åŒ–æ—¶é—´ä¸ºé»˜è®¤çš„5åˆ†é’Ÿã€‚
 	 */
 	br->ageing_time = 300 * HZ;
 	INIT_LIST_HEAD(&br->age_list);
 
 	/**
-	 * Ê¹ÓÃº¯Êıbr_stp_timer_init³õÊ¼»¯Ã¿ÍøÇÅÊ±ÖÓ¡£
+	 * ä½¿ç”¨å‡½æ•°br_stp_timer_initåˆå§‹åŒ–æ¯ç½‘æ¡¥æ—¶é’Ÿã€‚
 	 */
 	br_stp_timer_init(br);
 
@@ -220,8 +220,8 @@ static struct net_device *new_bridge_dev(const char *name)
 
 /* find an available port number */
 /**
- * ÔÚ1-BR_MAX_PORTS·¶Î§ÄÚÃ»ÓĞÊ¹ÓÃµÄµÚÒ»¸öÖµ±»Ñ¡Ôñ×÷Îª¶Ë¿ÚºÅ¡£
- * ÓÉfind_portnoº¯ÊıÍê³É¶Ë¿ÚºÅµÄÑ¡Ôñ¡£µ±¶Ë¿Ú±»´´½¨Ê±£¬½øĞĞ¶Ë¿ÚºÅµÄÑ¡Ôñ¡£
+ * åœ¨1-BR_MAX_PORTSèŒƒå›´å†…æ²¡æœ‰ä½¿ç”¨çš„ç¬¬ä¸€ä¸ªå€¼è¢«é€‰æ‹©ä½œä¸ºç«¯å£å·ã€‚
+ * ç”±find_portnoå‡½æ•°å®Œæˆç«¯å£å·çš„é€‰æ‹©ã€‚å½“ç«¯å£è¢«åˆ›å»ºæ—¶ï¼Œè¿›è¡Œç«¯å£å·çš„é€‰æ‹©ã€‚
  */
 static int find_portno(struct net_bridge *br)
 {
@@ -254,7 +254,7 @@ static struct net_bridge_port *new_nbp(struct net_bridge *br,
 	struct net_bridge_port *p;
 
 	/**
-	 * ·ÖÅäÒ»¸ö¶Ë¿ÚºÅ¸øÍøÇÅ¶Ë¿Ú¡£
+	 * åˆ†é…ä¸€ä¸ªç«¯å£å·ç»™ç½‘æ¡¥ç«¯å£ã€‚
 	 */
 	index = find_portno(br);
 	if (index < 0)
@@ -266,21 +266,21 @@ static struct net_bridge_port *new_nbp(struct net_bridge *br,
 
 	memset(p, 0, sizeof(*p));
 	/**
-	 * ¹ØÁªÍøÇÅ¶Ë¿ÚÓë°ó¶¨Éè±¸¡¢ÍøÇÅÉè±¸¡£
+	 * å…³è”ç½‘æ¡¥ç«¯å£ä¸ç»‘å®šè®¾å¤‡ã€ç½‘æ¡¥è®¾å¤‡ã€‚
 	 */
 	p->br = br;
 	dev_hold(dev);
 	p->dev = dev;
 	p->path_cost = cost;
 	/**
-	 * ·ÖÅäÒ»¸öÄ¬ÈÏµÄÓÅÏÈ¼¶¸ø¶Ë¿Ú¡£
+	 * åˆ†é…ä¸€ä¸ªé»˜è®¤çš„ä¼˜å…ˆçº§ç»™ç«¯å£ã€‚
 	 */
  	p->priority = 0x8000 >> BR_PORT_BITS;
 	dev->br_port = p;
 	p->port_no = index;
 	br_init_port(p);
 	/**
-	 * Ö¸¶¨³õÊ¼µÄBR_STATE_DISABLED×´Ì¬¡£
+	 * æŒ‡å®šåˆå§‹çš„BR_STATE_DISABLEDçŠ¶æ€ã€‚
 	 */
 	p->state = BR_STATE_DISABLED;
 	kobject_init(&p->kobj);
@@ -289,7 +289,7 @@ static struct net_bridge_port *new_nbp(struct net_bridge *br,
 }
 
 /**
- * ´´½¨ÍøÇÅÉè±¸¡£
+ * åˆ›å»ºç½‘æ¡¥è®¾å¤‡ã€‚
  */
 int br_add_bridge(const char *name)
 {
@@ -334,7 +334,7 @@ int br_add_bridge(const char *name)
 }
 
 /**
- * É¾³ıÒ»¸öÍøÇÅÉè±¸¡£
+ * åˆ é™¤ä¸€ä¸ªç½‘æ¡¥è®¾å¤‡ã€‚
  */
 int br_del_bridge(const char *name)
 {
@@ -344,26 +344,26 @@ int br_del_bridge(const char *name)
 	rtnl_lock();
 	dev = __dev_get_by_name(name);
 	/**
-	 * Éè±¸²»´æÔÚ¡£
+	 * è®¾å¤‡ä¸å­˜åœ¨ã€‚
 	 */
 	if (dev == NULL) 
 		ret =  -ENXIO; 	/* Could not find device */
 	/**
-	 * ²»ÊÇÍøÇÅÉè±¸¡£
+	 * ä¸æ˜¯ç½‘æ¡¥è®¾å¤‡ã€‚
 	 */
 	else if (!(dev->priv_flags & IFF_EBRIDGE)) {
 		/* Attempt to delete non bridge device! */
 		ret = -EPERM;
 	}
 	/**
-	 * ÍøÇÅÃ»ÓĞ±»Í£Ö¹¡£²»ÄÜÉ¾³ı¡£
+	 * ç½‘æ¡¥æ²¡æœ‰è¢«åœæ­¢ã€‚ä¸èƒ½åˆ é™¤ã€‚
 	 */
 	else if (dev->flags & IFF_UP) {
 		/* Not shutdown yet. */
 		ret = -EBUSY;
 	} 
 
-	else /* del_br½øĞĞÕæÕıµÄÉ¾³ı²Ù×÷¡£ */
+	else /* del_brè¿›è¡ŒçœŸæ­£çš„åˆ é™¤æ“ä½œã€‚ */
 		del_br(netdev_priv(dev));
 
 	rtnl_unlock();
@@ -391,8 +391,8 @@ int br_min_mtu(const struct net_bridge *br)
 
 /* called with RTNL */
 /**
- * ÏòÍøÇÅÉè±¸Ìí¼ÓÒ»¸öÍøÂçÉè±¸¡£
- * Õâ¸öº¯Êı²¢²»¹ØĞÄÊÇ·ñÔÚÍøÇÅÉè±¸ÉÏ´ò¿ªÁËSTP¡£
+ * å‘ç½‘æ¡¥è®¾å¤‡æ·»åŠ ä¸€ä¸ªç½‘ç»œè®¾å¤‡ã€‚
+ * è¿™ä¸ªå‡½æ•°å¹¶ä¸å…³å¿ƒæ˜¯å¦åœ¨ç½‘æ¡¥è®¾å¤‡ä¸Šæ‰“å¼€äº†STPã€‚
  */
 int br_add_if(struct net_bridge *br, struct net_device *dev)
 {
@@ -400,60 +400,60 @@ int br_add_if(struct net_bridge *br, struct net_device *dev)
 	int err = 0;
 
 	/**
-	 * Óë¶Ë¿ÚÏà¹ØµÄÉè±¸²»ÊÇÒÔÌ«ÍøÉè±¸£¨»òÕßÊÇ»Ø»·Éè±¸£©¡£
+	 * ä¸ç«¯å£ç›¸å…³çš„è®¾å¤‡ä¸æ˜¯ä»¥å¤ªç½‘è®¾å¤‡ï¼ˆæˆ–è€…æ˜¯å›ç¯è®¾å¤‡ï¼‰ã€‚
 	 */
 	if (dev->flags & IFF_LOOPBACK || dev->type != ARPHRD_ETHER)
 		return -EINVAL;
 
 	/**
-	 * Óë¶Ë¿Ú¹ØÁªµÄÉè±¸ÊÇÍøÇÅ¡£
-	 * ±ØĞëÎªÍøÇÅ¶Ë¿Ú·ÖÅäÒ»¸öÊµ¼ÊµÄÉè±¸£¨»òÕß²»ÊÇÍøÇÅµÄĞéÄâÉè±¸£©¡£
+	 * ä¸ç«¯å£å…³è”çš„è®¾å¤‡æ˜¯ç½‘æ¡¥ã€‚
+	 * å¿…é¡»ä¸ºç½‘æ¡¥ç«¯å£åˆ†é…ä¸€ä¸ªå®é™…çš„è®¾å¤‡ï¼ˆæˆ–è€…ä¸æ˜¯ç½‘æ¡¥çš„è™šæ‹Ÿè®¾å¤‡ï¼‰ã€‚
 	 */
 	if (dev->hard_start_xmit == br_dev_xmit)
 		return -ELOOP;
 
 	/**
-	 * Éè±¸ÒÑ¾­Ö¸¶¨ÁËÍøÇÅ¶Ë¿Ú£¨¼´dev_br_port²»Îª¿Õ£©¡£
+	 * è®¾å¤‡å·²ç»æŒ‡å®šäº†ç½‘æ¡¥ç«¯å£ï¼ˆå³dev_br_portä¸ä¸ºç©ºï¼‰ã€‚
 	 */
 	if (dev->br_port != NULL)
 		return -EBUSY;
 
 	/**
-	 * net_nbp½øĞĞÕæÕıµÄ²Ù×÷¡£
-	 * »ùÓÚ°ó¶¨Éè±¸µÄËÙ¶È£¬¸ø¶Ë¿Ú·ÖÅäÒ»¸öÄ¬ÈÏµÄÈ¨ÖØÖµ¡£
-	 * Õâ¸öÖµÓÉbr_initial_port_costÑ¡Ôñ£¨Çë¿´¿´ËüÊÇÈçºÎ±»new_npbµ÷ÓÃµÄ£©¡£
-	 * ËüÍ¨¹ıethtool½Ó¿Ú¶ÁÈ¡Éè±¸ËÙ¶È£¬²¢½«Ëü×ª»»³ÉÒ»¸öÈ¨ÖØÖµ¡£
-	 * µ±°ó¶¨Éè±¸²»Ö§³Öethtool½Ó¿ÚÊ±£¬²»ÄÜÓÉÉè±¸²úÉúÒ»¸öÄ¬ÈÏµÄÈ¨ÖØÖµ¡£
-	 * Òò´Ë£¬¼ÙÉèÉè±¸ÊÇÒ»¸ö10MÒÔÌ«ÍøÉè±¸£¬ÎªÆäÑ¡ÔñÒ»¸öÄ¬ÈÏÖµ¡£
-	 * ¹ØÓÚÉè±¸ËÙ¶ÈÓëÄ¬ÈÏ¶Ë¿ÚÈ¨ÖØÖµµÄ¹ØÏµ£¬ÔÚIEEE802.1DĞ­Òé¹æ·¶ÖĞ¶¨Òå¡£
+	 * net_nbpè¿›è¡ŒçœŸæ­£çš„æ“ä½œã€‚
+	 * åŸºäºç»‘å®šè®¾å¤‡çš„é€Ÿåº¦ï¼Œç»™ç«¯å£åˆ†é…ä¸€ä¸ªé»˜è®¤çš„æƒé‡å€¼ã€‚
+	 * è¿™ä¸ªå€¼ç”±br_initial_port_costé€‰æ‹©ï¼ˆè¯·çœ‹çœ‹å®ƒæ˜¯å¦‚ä½•è¢«new_npbè°ƒç”¨çš„ï¼‰ã€‚
+	 * å®ƒé€šè¿‡ethtoolæ¥å£è¯»å–è®¾å¤‡é€Ÿåº¦ï¼Œå¹¶å°†å®ƒè½¬æ¢æˆä¸€ä¸ªæƒé‡å€¼ã€‚
+	 * å½“ç»‘å®šè®¾å¤‡ä¸æ”¯æŒethtoolæ¥å£æ—¶ï¼Œä¸èƒ½ç”±è®¾å¤‡äº§ç”Ÿä¸€ä¸ªé»˜è®¤çš„æƒé‡å€¼ã€‚
+	 * å› æ­¤ï¼Œå‡è®¾è®¾å¤‡æ˜¯ä¸€ä¸ª10Mä»¥å¤ªç½‘è®¾å¤‡ï¼Œä¸ºå…¶é€‰æ‹©ä¸€ä¸ªé»˜è®¤å€¼ã€‚
+	 * å…³äºè®¾å¤‡é€Ÿåº¦ä¸é»˜è®¤ç«¯å£æƒé‡å€¼çš„å…³ç³»ï¼Œåœ¨IEEE802.1Dåè®®è§„èŒƒä¸­å®šä¹‰ã€‚
 	 */
 	if (IS_ERR(p = new_nbp(br, dev, br_initial_port_cost(dev))))
 		return PTR_ERR(p);
 
 	/**
-	 * ÓëĞÂÍøÇÅ¶Ë¿Ú¹ØÁªµÄÉè±¸µÄMACµØÖ·±»br_fdb_insertº¯ÊıÌí¼Óµ½×ª·¢Êı¾İ¿â¡£
+	 * ä¸æ–°ç½‘æ¡¥ç«¯å£å…³è”çš„è®¾å¤‡çš„MACåœ°å€è¢«br_fdb_insertå‡½æ•°æ·»åŠ åˆ°è½¬å‘æ•°æ®åº“ã€‚
 	 */
  	if ((err = br_fdb_insert(br, p, dev->dev_addr, 1)))
 		destroy_nbp(p);
  	/**
- 	 * br_sysfs_addifÌí¼Ó±ØÒªµÄÁ¬½Óµ½/sys¡£
+ 	 * br_sysfs_addifæ·»åŠ å¿…è¦çš„è¿æ¥åˆ°/sysã€‚
  	 */
 	else if ((err = br_sysfs_addif(p)))
 		del_nbp(p);
 	else {
 		/**
-		 * ÓëÍøÇÅ¶Ë¿Ú¹ØÁªµÄNIC±»dev_set_promiscuityº¯ÊıÉèÖÃ³É»ìÔÓÄ£Ê½¡£
+		 * ä¸ç½‘æ¡¥ç«¯å£å…³è”çš„NICè¢«dev_set_promiscuityå‡½æ•°è®¾ç½®æˆæ··æ‚æ¨¡å¼ã€‚
 		 */
 		dev_set_promiscuity(dev, 1);
 
 		/**
-		 * ĞÂÍøÇÅ¶Ë¿Ú±»Ìí¼Óµ½ÍøÇÅ¶Ë¿ÚÁĞ±í.
+		 * æ–°ç½‘æ¡¥ç«¯å£è¢«æ·»åŠ åˆ°ç½‘æ¡¥ç«¯å£åˆ—è¡¨.
 		 */
 		list_add_rcu(&p->list, &br->port_list);
 
 		spin_lock_bh(&br->lock);
 		/**
-		 * ¸üĞÂÍøÇÅIDºÍMTU
+		 * æ›´æ–°ç½‘æ¡¥IDå’ŒMTU
 		 */
 		br_stp_recalculate_bridge_id(br);
 		if ((br->dev->flags & IFF_UP) 
@@ -469,7 +469,7 @@ int br_add_if(struct net_bridge *br, struct net_device *dev)
 
 /* called with RTNL */
 /**
- * ´ÓÍøÇÅÉè±¸ÖĞÉ¾³ıÒ»¸öÍøÂçÉè±¸¡£
+ * ä»ç½‘æ¡¥è®¾å¤‡ä¸­åˆ é™¤ä¸€ä¸ªç½‘ç»œè®¾å¤‡ã€‚
  */
 int br_del_if(struct net_bridge *br, struct net_device *dev)
 {

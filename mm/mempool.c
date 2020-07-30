@@ -52,10 +52,10 @@ static void free_pool(mempool_t *pool)
  * from IRQ contexts.
  */
 /**
- * ´´½¨Ò»¸öÐÂÄÚ´æ³Ø
- * min_nr-ÄÚ´æÔªËØµÄ¸öÊý¡£
- * alloc_fn,free_fn-·ÖÅäºÍÊÍ·ÅÄÚ´æµÄ·½·¨µØÖ·¡£
- * pool_data-Ë½ÓÐÊý¾Ý¡£
+ * åˆ›å»ºä¸€ä¸ªæ–°å†…å­˜æ± 
+ * min_nr-å†…å­˜å…ƒç´ çš„ä¸ªæ•°ã€‚
+ * alloc_fn,free_fn-åˆ†é…å’Œé‡Šæ”¾å†…å­˜çš„æ–¹æ³•åœ°å€ã€‚
+ * pool_data-ç§æœ‰æ•°æ®ã€‚
  */
 mempool_t * mempool_create(int min_nr, mempool_alloc_t *alloc_fn,
 				mempool_free_t *free_fn, void *pool_data)
@@ -112,7 +112,7 @@ EXPORT_SYMBOL(mempool_create);
  * might be called (eg. from IRQ contexts) while this function executes.
  */
 /**
- * ÖØÐÂÉèÖÃÄÚ´æ³ØµÄ´óÐ¡¡£
+ * é‡æ–°è®¾ç½®å†…å­˜æ± çš„å¤§å°ã€‚
  */
 int mempool_resize(mempool_t *pool, int new_min_nr, int gfp_mask)
 {
@@ -178,7 +178,7 @@ EXPORT_SYMBOL(mempool_resize);
  * freed) prior to calling mempool_destroy().
  */
 /**
- * Ïú»ÙÄÚ´æ³Ø¡£
+ * é”€æ¯å†…å­˜æ± ã€‚
  */
 void mempool_destroy(mempool_t *pool)
 {
@@ -200,7 +200,7 @@ EXPORT_SYMBOL(mempool_destroy);
  * fail if called from an IRQ context.)
  */
 /**
- * ´ÓÄÚ´æ³ØÖÐ·ÖÅäÒ»¸öÔªËØ
+ * ä»Žå†…å­˜æ± ä¸­åˆ†é…ä¸€ä¸ªå…ƒç´ 
  */
 void * mempool_alloc(mempool_t *pool, int gfp_mask)
 {
@@ -212,11 +212,11 @@ void * mempool_alloc(mempool_t *pool, int gfp_mask)
 	might_sleep_if(gfp_mask & __GFP_WAIT);
 repeat_alloc:
 	/**
-	 * Ê×ÏÈÊÔÍ¼Í¨¹ýµ÷ÓÃallocº¯Êý´Ó»ù±¾ÄÚ´æ·ÖÅäÆ÷·ÖÅäÒ»¸öÄÚ´æÔªËØ¡£
+	 * é¦–å…ˆè¯•å›¾é€šè¿‡è°ƒç”¨allocå‡½æ•°ä»ŽåŸºæœ¬å†…å­˜åˆ†é…å™¨åˆ†é…ä¸€ä¸ªå†…å­˜å…ƒç´ ã€‚
 	 */
 	element = pool->alloc(gfp_nowait|__GFP_NOWARN, pool->pool_data);
 	/**
-	 * Èç¹û´Ó»ù±¾ÄÚ´æ·ÖÅäÆ÷ÖÐ·ÖÅä³É¹¦£¬¾Í·µ»Ø»ñµÃµÄÄÚ´æÔªËØ¶ø²»Éæ¼°µ½ÄÚ´æ³Ø¡£
+	 * å¦‚æžœä»ŽåŸºæœ¬å†…å­˜åˆ†é…å™¨ä¸­åˆ†é…æˆåŠŸï¼Œå°±è¿”å›žèŽ·å¾—çš„å†…å­˜å…ƒç´ è€Œä¸æ¶‰åŠåˆ°å†…å­˜æ± ã€‚
 	 */
 	if (likely(element != NULL))
 		return element;
@@ -227,11 +227,11 @@ repeat_alloc:
 	 */
 	mb();
 	/**
-	 * ´Ó»ù±¾ÄÚ´æ³ØÖÐ·ÖÅäÔªËØÊ§°Ü£¬´ÓÄÚ´æ³ØÖÐ·ÖÅä¡£
+	 * ä»ŽåŸºæœ¬å†…å­˜æ± ä¸­åˆ†é…å…ƒç´ å¤±è´¥ï¼Œä»Žå†…å­˜æ± ä¸­åˆ†é…ã€‚
 	 */
 
 	/**
-	 * Èç¹ûÄÚ´æ³ØÖÐµÄ¶ÔÏóÌ«ÉÙ£¬²¢ÇÒÔÊÐí×èÈû£¬¾ÍÊÔÍ¼´Ó»ù±¾ÄÚ´æ·ÖÅäÆ÷·ÖÅä¡£
+	 * å¦‚æžœå†…å­˜æ± ä¸­çš„å¯¹è±¡å¤ªå°‘ï¼Œå¹¶ä¸”å…è®¸é˜»å¡žï¼Œå°±è¯•å›¾ä»ŽåŸºæœ¬å†…å­˜åˆ†é…å™¨åˆ†é…ã€‚
 	 */
 	if ((gfp_mask & __GFP_FS) && (gfp_mask != gfp_nowait) &&
 				(pool->curr_nr <= pool->min_nr/2)) {
@@ -246,8 +246,8 @@ repeat_alloc:
 	wakeup_bdflush(0);
 
 	/**
-	 * ÔËÐÐµ½´Ë£¬¾ÍÕæµÄÐèÒª´ÓÄÚ´æ³ØÖÐÈ¡µÃÔªËØÁË¡£
-	 * ÒªÃ´ÊÇ´Ó»ù±¾ÄÚ´æ³ØÖÐ·ÖÅäÊ§°Ü£¬ÒªÃ´ÊÇÄÚ´æ³ØÖÐµÄÔªËØ»¹±È½Ï¶à¡£
+	 * è¿è¡Œåˆ°æ­¤ï¼Œå°±çœŸçš„éœ€è¦ä»Žå†…å­˜æ± ä¸­å–å¾—å…ƒç´ äº†ã€‚
+	 * è¦ä¹ˆæ˜¯ä»ŽåŸºæœ¬å†…å­˜æ± ä¸­åˆ†é…å¤±è´¥ï¼Œè¦ä¹ˆæ˜¯å†…å­˜æ± ä¸­çš„å…ƒç´ è¿˜æ¯”è¾ƒå¤šã€‚
 	 */
 	spin_lock_irqsave(&pool->lock, flags);
 	if (likely(pool->curr_nr)) {
@@ -259,20 +259,20 @@ repeat_alloc:
 
 	/* We must not sleep in the GFP_ATOMIC case */
 	/**
-	 * ÄÚ´æ³ØÖÐµÄ¶ÔÏóÒ²ÓÃÍêÁË¡£ÓÖ²»ÔÊÐíµÈ´ý£¬ÄÇ¾Í·µ»ØNULL°É¡£
+	 * å†…å­˜æ± ä¸­çš„å¯¹è±¡ä¹Ÿç”¨å®Œäº†ã€‚åˆä¸å…è®¸ç­‰å¾…ï¼Œé‚£å°±è¿”å›žNULLå§ã€‚
 	 */
 	if (!(gfp_mask & __GFP_WAIT))
 		return NULL;
 
 	/**
-	 * ÄÚ´æ³ØÖÐµÄÔªËØÓÃÍêÁË£¬µ«ÊÇÔÊÐíµÈ´ý£¬ÓÉÓÚÇ°ÃæÒÑ¾­»½ÐÑÁËÊØ»¤½ø³Ì¡£
-	 * ÏÖÔÚÐèÒªµÄÊÇÈÃÊØ»¤Ïß³ÌÔËÐÐÆðÀ´£¬µ÷¶ÈÒ»´Î¡£
+	 * å†…å­˜æ± ä¸­çš„å…ƒç´ ç”¨å®Œäº†ï¼Œä½†æ˜¯å…è®¸ç­‰å¾…ï¼Œç”±äºŽå‰é¢å·²ç»å”¤é†’äº†å®ˆæŠ¤è¿›ç¨‹ã€‚
+	 * çŽ°åœ¨éœ€è¦çš„æ˜¯è®©å®ˆæŠ¤çº¿ç¨‹è¿è¡Œèµ·æ¥ï¼Œè°ƒåº¦ä¸€æ¬¡ã€‚
 	 */
 	prepare_to_wait(&pool->wait, &wait, TASK_UNINTERRUPTIBLE);
 	mb();
 	/**
-	 * ÔÚÕæÕýµ÷¶È³öÈ¥Ç°£¬ÔÙ´ÎÅÐ¶ÏÒ»ÏÂcurr_nr£¬ÊÇ·ñÓÐÆäËû½ø³ÌÔÚ¿ªÖÐ¶ÏºóÊÍ·ÅÁËÔªËØ¡£
-	 * ×¢ÒâÇ°Ãæµ÷ÓÃÁËmb()
+	 * åœ¨çœŸæ­£è°ƒåº¦å‡ºåŽ»å‰ï¼Œå†æ¬¡åˆ¤æ–­ä¸€ä¸‹curr_nrï¼Œæ˜¯å¦æœ‰å…¶ä»–è¿›ç¨‹åœ¨å¼€ä¸­æ–­åŽé‡Šæ”¾äº†å…ƒç´ ã€‚
+	 * æ³¨æ„å‰é¢è°ƒç”¨äº†mb()
 	 */
 	if (!pool->curr_nr)
 		io_schedule();
@@ -291,7 +291,7 @@ EXPORT_SYMBOL(mempool_alloc);
  * this function only sleeps if the free_fn() function sleeps.
  */
 /**
- * ÊÍ·ÅÒ»¸öÔªËØµ½ÄÚ´æ³Ø¡£
+ * é‡Šæ”¾ä¸€ä¸ªå…ƒç´ åˆ°å†…å­˜æ± ã€‚
  */
 void mempool_free(void *element, mempool_t *pool)
 {
@@ -299,7 +299,7 @@ void mempool_free(void *element, mempool_t *pool)
 
 	mb();
 	/**
-	 * Èç¹ûÄÚ´æ³ØÎ´Âú£¬¾Í½«ÔªËØ¼ÓÈëµ½ÄÚ´æ³Ø¡£
+	 * å¦‚æžœå†…å­˜æ± æœªæ»¡ï¼Œå°±å°†å…ƒç´ åŠ å…¥åˆ°å†…å­˜æ± ã€‚
 	 */
 	if (pool->curr_nr < pool->min_nr) {
 		spin_lock_irqsave(&pool->lock, flags);
@@ -312,7 +312,7 @@ void mempool_free(void *element, mempool_t *pool)
 		spin_unlock_irqrestore(&pool->lock, flags);
 	}
 	/**
-	 * ·ñÔòÊÍ·Åµ½»ù±¾ÄÚ´æ·ÖÅäÆ÷ÖÐ¡£
+	 * å¦åˆ™é‡Šæ”¾åˆ°åŸºæœ¬å†…å­˜åˆ†é…å™¨ä¸­ã€‚
 	 */
 	pool->free(element, pool->pool_data);
 }

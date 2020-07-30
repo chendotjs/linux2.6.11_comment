@@ -74,7 +74,7 @@ int pit_latch_buggy;              /* extern */
 #include "do_timer.h"
 
 /**
- * ��ϵͳ��������������ϵͳ���ĵ���ʵ��Ŀ
+ * 自系统启动以来产生的系统节拍的真实数目
  */
 u64 jiffies_64 = INITIAL_JIFFIES;
 
@@ -90,9 +90,9 @@ DEFINE_SPINLOCK(i8253_lock);
 EXPORT_SYMBOL(i8253_lock);
 
 /**
- * cur_timer�����ĳ����ʱ������ĵ�ַ���ö�ʱ����ϵͳ�����õĶ�ʱ����Դ�С���õġ�
- * ���ں˳�ʼ���ڼ䣬select_timer��������cur_timerָ���ʵ���ʱ������ĵ�ַ��
- * 80x86�У�����ѡ����Щ��ʱ����Ϊϵͳ��ʱ����timer_hpet,timer_pmtmr,timer_tsc,timer_pit,timer_none
+ * cur_timer存放了某个定时器对象的地址，该定时器是系统可利用的定时器资源中“最好的”
+ * 在内核初始化期间，select_timer函数设置cur_timer指向适当定时器对象的地址。
+ * 80x86中，依次选择这些定时器作为系统定时器：timer_hpet,timer_pmtmr,timer_tsc,timer_pit,timer_none
  */
 struct timer_opts *cur_timer = &timer_none;
 
@@ -101,7 +101,7 @@ struct timer_opts *cur_timer = &timer_none;
  * and better than microsecond precision on fast x86 machines with TSC.
  */
 /**
- * ����1970/01/01��ĿǰΪֹ�߹���������ǰһ�����߹���΢����.
+ * 计算1970/01/01到目前为止走过的秒数及前一秒内走过的微秒数.
  */
 void do_gettimeofday(struct timeval *tv)
 {
@@ -113,12 +113,12 @@ void do_gettimeofday(struct timeval *tv)
 		unsigned long lost;
 
 		/**
-		 * Ϊ����ȡ˳����.
+		 * 为读获取顺序锁.
 		 */
 		seq = read_seqbegin(&xtime_lock);
 
 		/**
-		 * ����get_offset������������ϴ�ʱ���ж��������߹���΢������
+		 * 调用get_offset方法来获得自上次时钟中断以来所走过的微秒数。
 		 */
 		usec = cur_timer->get_offset();
 		lost = jiffies - wall_jiffies;
@@ -135,15 +135,15 @@ void do_gettimeofday(struct timeval *tv)
 			if (lost)
 				usec += lost * max_ntp_tick;
 		}
-		else if (unlikely(lost))/* ���ϴ�ʱ���ж���������ʧ��ʱ���жϣ���Ϊusec������Ӧ����ʱ */
+		else if (unlikely(lost))/* 自上次时钟中断以来，丢失了时钟中断，就为usec加上相应的延时 */
 			usec += lost * (USEC_PER_SEC / HZ);
 
 		sec = xtime.tv_sec;
 		usec += (xtime.tv_nsec / 1000);
-	} while (read_seqretry(&xtime_lock, seq));/* ��˳�����ĵ����÷� */
+	} while (read_seqretry(&xtime_lock, seq));/* 读顺序锁的典型用法 */
 
 	/**
-	 * ���΢���ֶ��Ƿ������
+	 * 检查微秒字段是否溢出。
 	 */
 	while (usec >= 1000000) {
 		usec -= 1000000;
@@ -151,7 +151,7 @@ void do_gettimeofday(struct timeval *tv)
 	}
 
 	/**
-	 * ����xtime�����ݵ�ϵͳ���ò���tvָ�����û��ռ仺�����С�
+	 * 复制xtime的内容到系统调用参数tv指定的用户空间缓冲区中。
 	 */
 	tv->tv_sec = sec;
 	tv->tv_usec = usec;
@@ -242,7 +242,7 @@ EXPORT_SYMBOL(profile_pc);
  * as well as call the "do_timer()" routine every clocktick
  */
 /**
- * ʱ���жϵ�������������
+ * 时钟中断的主处理函数。
  */
 static inline void do_timer_interrupt(int irq, void *dev_id,
 					struct pt_regs *regs)
@@ -271,8 +271,8 @@ static inline void do_timer_interrupt(int irq, void *dev_id,
 	 * called as close as possible to 500 ms before the new second starts.
 	 */
 	/**
-	 * ���ʹ���ⲿʱ����ͬ��ϵͳʱ�ӣ���ÿ��11���ӵ���set_rtc_mmss����������ʵʱʱ�ӡ�
-	 * ��������������������е�ϵͳͬ�����ǵ�ʱ�ӡ����μ�adjtimexϵͳ���ã�
+	 * 如果使用外部时钟来同步系统时钟，则每隔11分钟调用set_rtc_mmss函数来调整实时时钟。
+	 * 这个特性用来帮助网络中的系统同步它们的时钟。（参见adjtimex系统调用）
 	 */
 	if ((time_status & STA_UNSYNC) == 0 &&
 	    xtime.tv_sec > last_rtc_update + 660 &&
@@ -313,7 +313,7 @@ static inline void do_timer_interrupt(int irq, void *dev_id,
  * we later on can estimate the time of day more exactly.
  */
 /**
- * PIT����HPET���жϷ������̡�
+ * PIT或者HPET的中断服务例程。
  */
 irqreturn_t timer_interrupt(int irq, void *dev_id, struct pt_regs *regs)
 {
@@ -325,32 +325,32 @@ irqreturn_t timer_interrupt(int irq, void *dev_id, struct pt_regs *regs)
 	 * locally disabled. -arca
 	 */
 	/**
-	 * ʹ��˳������������ʱ��ص��ں˱�����
-	 * ����˳��������������������Ҫ���������ݶ���һЩ�����ݣ�û��ָ�����ݡ��������������ǰ�ȫ�ġ�
+	 * 使用顺序锁来保护定时相关的内核变量。
+	 * 由于顺序锁并不会阻塞，而且要保护的数据都是一些简单数据，没有指针数据。所以用在这里是安全的。
 	 */
 	write_seqlock(&xtime_lock);
 
 	/**
-	 * �����HPET��pmtmr��tsc������ô���ȼ���Ƿ����ϴδ����������ж�ʧ���жϡ�
-	 * Ӧ��˵����ʧ�жϵ������Ȼ���ڣ����Ǽ���������
-	 * ����ж�ʧ���жϣ��͸���һ��jiffies_64��
-	 * Ȼ�󣬼�¼��HPET��pmtmr��tsc�ĵ�ǰֵ��
-	 * ���ֻ��timer_pit����ô��mark_offsetʲô����������
+	 * 如果有HPET、pmtmr、tsc对象，那么首先检查是否自上次处理以来，有丢失的中断。
+	 * 应该说，丢失中断的情况虽然存在，但是极难遇到。
+	 * 如果有丢失的中断，就更新一下jiffies_64。
+	 * 然后，记录下HPET、pmtmr、tsc的当前值。
+	 * 如果只有timer_pit，那么，mark_offset什么都不会做。
 	 */
 	cur_timer->mark_offset();
 
  	/**
- 	 * ����do_timer_interrupt��ִ��ʱ���жϵ����巽����
+ 	 * 调用do_timer_interrupt，执行时钟中断的主体方法。
  	 */
 	do_timer_interrupt(irq, NULL, regs);
 
 	/**
-	 * �ͷ�˳������
+	 * 释放顺序锁。
 	 */
 	write_sequnlock(&xtime_lock);
 	/**
-	 * ����IRQ_HANDLED����ʾ�ж��Ѿ���������
-	 * ���Ǳ���ģ�����linux���ܻ���Ϊ����������������壬�Ӷ�������Ӧ���ж��ߡ�
+	 * 返回IRQ_HANDLED，表示中断已经被处理。
+	 * 这是必须的，否则linux可能会认为遇到了有问题的主板，从而屏蔽相应的中断线。
 	 */
 	return IRQ_HANDLED;
 }
@@ -451,14 +451,14 @@ void __init hpet_time_init(void)
 #endif
 
 /**
- * ϵͳ��ʼ��ʱ������������ʱ��ϵ�ṹ����ע���HPET�Ĳ�ͬ������
+ * 系统初始化时，用来建立计时体系结构。请注意对HPET的不同处理。
  */
 void __init time_init(void)
 {
 #ifdef CONFIG_HPET_TIMER
 	/**
-	 * ����HPET�Ĵ��������ڴ�ӳ��ģ���time_init����mem_init֮ǰ���еġ�
-	 * ���ԣ���HPET�ĳ�ʼ���������mem_init֮��
+	 * 由于HPET寄存器是由内存映射的，而time_init是在mem_init之前运行的。
+	 * 所以，对HPET的初始化必须放在mem_init之后。
 	 */
 	if (is_hpet_capable()) {
 		/*
@@ -466,36 +466,36 @@ void __init time_init(void)
 		 * us do a late initialization after mem_init().
 		 */
 		/**
-		 * �Ӻ�ִ��hpet_time_init����������mem_init��hpet_time_init�Ϳ��Ե������ڴ�ӳ���HPET�Ĵ�����
+		 * 延后执行hpet_time_init，这样，在mem_init后，hpet_time_init就可以调用由内存映射的HPET寄存器。
 		 */
 		late_time_init = hpet_time_init;
 		return;
 	}
 #endif
 	/**
-	 * ��ʼ��xtime����������get_cmos_time��ʵʱʱ���϶�ȡ��UTC��ҹ����������������
+	 * 初始化xtime变量。利用get_cmos_time从实时时钟上读取自UTC午夜以来经过的秒数。
 	 */
 	xtime.tv_sec = get_cmos_time();
 	/**
-	 * ����xtime��tv_nsec�ֶΡ�ע������ֶε�ֵ��jiffies�ĳ�ʼֵ�Ĺ�ϵ���������߲���ͬ����
+	 * 设置xtime的tv_nsec字段。注意这个字段的值与jiffies的初始值的关系。这样二者才能同步。
 	 */
 	xtime.tv_nsec = (INITIAL_JIFFIES % HZ) * (NSEC_PER_SEC / HZ);
 	/**
-	 * ��ʼ��wall_to_monotonic��
+	 * 初始化wall_to_monotonic。
 	 */
 	set_normalized_timespec(&wall_to_monotonic,
 		-xtime.tv_sec, -xtime.tv_nsec);
 
 	/**
-	 * �ӿ�����Դ��ѡ��һ������õġ���ʱ����Դ������cur_timerָ������
+	 * 从可用资源中选择一个“最好的”定时器资源，并将cur_timer指向它。
 	 */
 	cur_timer = select_timer();
 	printk(KERN_INFO "Using %s for high-res timesource\n",cur_timer->name);
 
 	/**
-	 * ��ӵ���setup_irq(0, &irq0);��������irq0��Ӧ���ж��š�
-	 * irq0������ϵͳʱ���ж�Դ��PIT����HPET����
-	 * �����ڿ�ʼ��timer_interrupt������ÿ�����ĵ���ʱ�����á�
+	 * 间接调用setup_irq(0, &irq0);来创建与irq0相应的中断门。
+	 * irq0连接着系统时钟中断源（PIT或者HPET）。
+	 * 从现在开始，timer_interrupt将会在每个节拍到来时被调用。
 	 */
 	time_init_hook();
 }

@@ -165,16 +165,16 @@ static struct neigh_ops arp_direct_ops = {
 
 struct neigh_ops arp_broken_ops = {
 	/**
-	 * AF_INET±íÊ¾ARPºÍIPV4Ò»Æğ¹¤×÷¡£
+	 * AF_INETè¡¨ç¤ºARPå’ŒIPV4ä¸€èµ·å·¥ä½œã€‚
 	 */
 	.family =		AF_INET,
 	/**
-	 * µ÷ÓÃarp_solicitÀ´Éú³ÉÒ»¸ösolicitationÇëÇó£¬¿ÉÄÜÊÇÊ×´Î½âÎöÒ»¸ö Ö·£¬Ò²¿ÉÄÜÊÇÒªÖ¤Êµ»º´æÖĞµÄµØÖ·¡£
-	 * ÔÚºóÒ»ÖÖÇé¿öÖĞ£¬»áÓÉÒ»¸ö¶¨Ê±Æ÷µÄ³¬Ê±´¥·¢Õâ¸öº¯Êı¡£
+	 * è°ƒç”¨arp_solicitæ¥ç”Ÿæˆä¸€ä¸ªsolicitationè¯·æ±‚ï¼Œå¯èƒ½æ˜¯é¦–æ¬¡è§£æä¸€ä¸ª å€ï¼Œä¹Ÿå¯èƒ½æ˜¯è¦è¯å®ç¼“å­˜ä¸­çš„åœ°å€ã€‚
+	 * åœ¨åä¸€ç§æƒ…å†µä¸­ï¼Œä¼šç”±ä¸€ä¸ªå®šæ—¶å™¨çš„è¶…æ—¶è§¦å‘è¿™ä¸ªå‡½æ•°ã€‚
 	 */
 	.solicit =		arp_solicit,
 	/**
-	 * µ±Ò»¸öARPÊÂÎñÖĞ·¢Éú´íÎóÊ±£¬arp_error_reportº¯Êı¾ÍÍ¨ÖªÉÏÃæµÄÍøÂç²ã¡£
+	 * å½“ä¸€ä¸ªARPäº‹åŠ¡ä¸­å‘ç”Ÿé”™è¯¯æ—¶ï¼Œarp_error_reportå‡½æ•°å°±é€šçŸ¥ä¸Šé¢çš„ç½‘ç»œå±‚ã€‚
 	 */
 	.error_report =		arp_error_report,
 	.output =		neigh_compat_output,
@@ -184,7 +184,7 @@ struct neigh_ops arp_broken_ops = {
 };
 
 /**
- * IPV4ÁÚ¾ÓĞ­Òé±í¡£
+ * IPV4é‚»å±…åè®®è¡¨ã€‚
  */
 struct neigh_table arp_tbl = {
 	.family =	AF_INET,
@@ -197,11 +197,11 @@ struct neigh_table arp_tbl = {
 	.parms = {
 		.tbl =			&arp_tbl,
 		/**
-		 * ARPÖ»ÓĞÔÚ×îºóÒ»¸ö¿Éµ½´ïĞÔÖ¤¾İÊÇÔÚ×î½ü30ÃëÄÚÊÕµ½Ê±£¬²ÅÈÏÎªÒ»¸öÁÚ¾ÓÏîÊÇNUD_REACHABLEÌ¬¡£
+		 * ARPåªæœ‰åœ¨æœ€åä¸€ä¸ªå¯åˆ°è¾¾æ€§è¯æ®æ˜¯åœ¨æœ€è¿‘30ç§’å†…æ”¶åˆ°æ—¶ï¼Œæ‰è®¤ä¸ºä¸€ä¸ªé‚»å±…é¡¹æ˜¯NUD_REACHABLEæ€ã€‚
 		 */
 		.base_reachable_time =	30 * HZ,
 		/**
-		 * Èç¹ûÃ»ÓĞÊÕµ½Ò»¸ösolicitationÇëÇóµÄÓ¦´ğ£¬¾ÍÔÚ1Ãëºó·¢ËÍÒ»¸öĞÂµÄÇëÇó¡£
+		 * å¦‚æœæ²¡æœ‰æ”¶åˆ°ä¸€ä¸ªsolicitationè¯·æ±‚çš„åº”ç­”ï¼Œå°±åœ¨1ç§’åå‘é€ä¸€ä¸ªæ–°çš„è¯·æ±‚ã€‚
 		 */
 		.retrans_time =	1 * HZ,
 		.gc_staletime =	60 * HZ,
@@ -222,7 +222,7 @@ struct neigh_table arp_tbl = {
 };
 
 /**
- * ´ÓL3¶à²¥µØÖ·µ¼³öL2¶à²¥µØÖ·¡£
+ * ä»L3å¤šæ’­åœ°å€å¯¼å‡ºL2å¤šæ’­åœ°å€ã€‚
  */
 int arp_mc_map(u32 addr, u8 *haddr, struct net_device *dev, int dir)
 {
@@ -254,7 +254,7 @@ static u32 arp_hash(const void *pkey, const struct net_device *dev)
 }
 
 /**
- * arp_tbl½á¹¹¶¨ÒåµÄ£¬ARPµÄ³õÊ¼»¯º¯Êı¡£ÓÃÀ´ÉèÖÃneighbour½á¹¹¡£
+ * arp_tblç»“æ„å®šä¹‰çš„ï¼ŒARPçš„åˆå§‹åŒ–å‡½æ•°ã€‚ç”¨æ¥è®¾ç½®neighbourç»“æ„ã€‚
  */
 static int arp_constructor(struct neighbour *neigh)
 {
@@ -267,12 +267,12 @@ static int arp_constructor(struct neighbour *neigh)
 
 	rcu_read_lock();
 	/**
-	 * Ê×ÒªÈÎÎñÊÇ´ÓÓëÁÚ¾ÓÏà¹ØµÄÍøÂçÉè±¸ÖĞÈ¡³öÒ»¸öin_dev½á¹¹¡£
-	 * Õâ¸ö½á¹¹ÖĞ±£´æ×Å¸ÃÍøÂçÉè±¸µÄIP²ãÅäÖÃĞÅÏ¢£¬ÆäÖĞÒ²°üÀ¨ARPµÄÅäÖÃĞÅÏ¢¡£
+	 * é¦–è¦ä»»åŠ¡æ˜¯ä»ä¸é‚»å±…ç›¸å…³çš„ç½‘ç»œè®¾å¤‡ä¸­å–å‡ºä¸€ä¸ªin_devç»“æ„ã€‚
+	 * è¿™ä¸ªç»“æ„ä¸­ä¿å­˜ç€è¯¥ç½‘ç»œè®¾å¤‡çš„IPå±‚é…ç½®ä¿¡æ¯ï¼Œå…¶ä¸­ä¹ŸåŒ…æ‹¬ARPçš„é…ç½®ä¿¡æ¯ã€‚
 	 */
 	in_dev = rcu_dereference(__in_dev_get(dev));
 	/**
-	 * Èç¹ûÃ»ÓĞARPÅäÖÃĞÅÏ¢£¬¸ÃÉè±¸Ò²¾ÍÃ»ÓĞIPÅäÖÃĞÅÏ¢£¬Òò´ËÔÚÆäÉÏÊ¹ÓÃARPÒ²¾ÍÃ»ÓĞÒâÒå¡£
+	 * å¦‚æœæ²¡æœ‰ARPé…ç½®ä¿¡æ¯ï¼Œè¯¥è®¾å¤‡ä¹Ÿå°±æ²¡æœ‰IPé…ç½®ä¿¡æ¯ï¼Œå› æ­¤åœ¨å…¶ä¸Šä½¿ç”¨ARPä¹Ÿå°±æ²¡æœ‰æ„ä¹‰ã€‚
 	 */
 	if (in_dev == NULL) {
 		rcu_read_unlock();
@@ -281,30 +281,30 @@ static int arp_constructor(struct neighbour *neigh)
 
 	parms = in_dev->arp_parms;
 	/**
-	 * ÒªÉèÖÃĞÂµÄarpÅäÖÃĞÅÏ¢ÁË£¬½«Ô­arpÅäÖÃÒıÓÃ¼ÆÊı¼õ1.
+	 * è¦è®¾ç½®æ–°çš„arpé…ç½®ä¿¡æ¯äº†ï¼Œå°†åŸarpé…ç½®å¼•ç”¨è®¡æ•°å‡1.
 	 */
 	__neigh_parms_put(neigh->parms);
 	/**
-	 * ´ÓÉè±¸ÖĞÈ¡³öÅäÖÃĞÅÏ¢£¬²¢ÉèÖÃ¸øÁÚ¾ÓÏî¡£
+	 * ä»è®¾å¤‡ä¸­å–å‡ºé…ç½®ä¿¡æ¯ï¼Œå¹¶è®¾ç½®ç»™é‚»å±…é¡¹ã€‚
 	 */
 	neigh->parms = neigh_parms_clone(parms);
 	rcu_read_unlock();
 
 	/**
-	 * µ±Ã»ÓĞÉèÖÃdev->hard_headerÊ±£¬±íÊ¾Éè±¸Çı¶¯³ÌĞòÃ»ÓĞÌá¹©Ìî³äL2Ö¡Í·µÄº¯Êı¡£
-	 * Ò²¾ÍÊÇËµÉè±¸²»ĞèÒªL2Ö¡Í·¡£
+	 * å½“æ²¡æœ‰è®¾ç½®dev->hard_headeræ—¶ï¼Œè¡¨ç¤ºè®¾å¤‡é©±åŠ¨ç¨‹åºæ²¡æœ‰æä¾›å¡«å……L2å¸§å¤´çš„å‡½æ•°ã€‚
+	 * ä¹Ÿå°±æ˜¯è¯´è®¾å¤‡ä¸éœ€è¦L2å¸§å¤´ã€‚
 	 */
-	if (dev->hard_header == NULL) {/* µãµ½µãÉè±¸ */
+	if (dev->hard_header == NULL) {/* ç‚¹åˆ°ç‚¹è®¾å¤‡ */
 		/**
-		 * ²»ĞèÒªARP
+		 * ä¸éœ€è¦ARP
 		 */
 		neigh->nud_state = NUD_NOARP;
 		/**
-		 * µãµ½µãÉè±¸£¬Ê¹ÓÃarp_direct_ops
+		 * ç‚¹åˆ°ç‚¹è®¾å¤‡ï¼Œä½¿ç”¨arp_direct_ops
 		 */
 		neigh->ops = &arp_direct_ops;
 		neigh->output = neigh->ops->queue_xmit;
-		/* ²»ĞèÒªha£¬Òò´Ë²»³õÊ¼»¯Ëü¡£ */
+		/* ä¸éœ€è¦haï¼Œå› æ­¤ä¸åˆå§‹åŒ–å®ƒã€‚ */
 	} else {
 		/* Good devices (checked by reading texts, but only Ethernet is
 		   tested)
@@ -337,9 +337,9 @@ static int arp_constructor(struct neighbour *neigh)
 		default:
 			break;
 		/**
-		 * Éè±¸²»Ö§³ÖĞÂµÄÁÚ¾Ó»ù´¡½á¹¹¡£
-		 * ÏÖÔÚ£¬Ö»ÓĞÒµÓàÎŞÏßµçÉè±¸ºÍÒ»Ğ©WAN½Ó¿Ú¿¨ÈÔÈ»Ê¹ÓÃ¾ÉÇı¶¯³ÌĞò¡£
-		 * ¶ÔÓÚÕâĞ©Éè±¸£¬neigh->ops»á³õÊ¼»¯Îªarp_broken_ops£¬ºóÕßÄÚ²¿°üº¬ÁË»ùÓÚÕâĞ©¾É³ÌĞòµÄĞéº¯Êı¡£
+		 * è®¾å¤‡ä¸æ”¯æŒæ–°çš„é‚»å±…åŸºç¡€ç»“æ„ã€‚
+		 * ç°åœ¨ï¼Œåªæœ‰ä¸šä½™æ— çº¿ç”µè®¾å¤‡å’Œä¸€äº›WANæ¥å£å¡ä»ç„¶ä½¿ç”¨æ—§é©±åŠ¨ç¨‹åºã€‚
+		 * å¯¹äºè¿™äº›è®¾å¤‡ï¼Œneigh->opsä¼šåˆå§‹åŒ–ä¸ºarp_broken_opsï¼Œåè€…å†…éƒ¨åŒ…å«äº†åŸºäºè¿™äº›æ—§ç¨‹åºçš„è™šå‡½æ•°ã€‚
 		 */
 		case ARPHRD_ROSE:	
 #if defined(CONFIG_AX25) || defined(CONFIG_AX25_MODULE)
@@ -353,42 +353,42 @@ static int arp_constructor(struct neighbour *neigh)
 #endif
 		;}
 #endif
-		if (neigh->type == RTN_MULTICAST) {/* L3µØÖ·ÊÇÒ»¸ö¶à²¥µØÖ· */
+		if (neigh->type == RTN_MULTICAST) {/* L3åœ°å€æ˜¯ä¸€ä¸ªå¤šæ’­åœ°å€ */
 			/**
-			 * ¶à²¥µØÖ·µÄL2µØÖ·ÊÇÍ¨¹ı¼ÆËãµÃµ½£¬²»ĞèÒªARP¡£
+			 * å¤šæ’­åœ°å€çš„L2åœ°å€æ˜¯é€šè¿‡è®¡ç®—å¾—åˆ°ï¼Œä¸éœ€è¦ARPã€‚
 			 */
 			neigh->nud_state = NUD_NOARP;
 			/**
-			 * Ö±½Ó¼ÆËãL2¶à²¥µØÖ·¡£
+			 * ç›´æ¥è®¡ç®—L2å¤šæ’­åœ°å€ã€‚
 			 */
 			arp_mc_map(addr, neigh->ha, dev, 1);
-		} else if (dev->flags&(IFF_NOARP|IFF_LOOPBACK)) {/* Éè±¸²»ĞèÒªARP£¬»òÕßÊÇ»·»ØµØÖ· */
+		} else if (dev->flags&(IFF_NOARP|IFF_LOOPBACK)) {/* è®¾å¤‡ä¸éœ€è¦ARPï¼Œæˆ–è€…æ˜¯ç¯å›åœ°å€ */
 			neigh->nud_state = NUD_NOARP;
 			/**
-			 * »Ø»·Éè±¸£¨lo£©ºÍÉèÖÃIFF_NOARP±êÊ¶µÄÉè±¸²»ĞèÒªÊ¹ÓÃARP½âÎöµØÖ·¡£
-			 * µ«ÊÇ£¬ÁÚ¾Ó×ÓÏµÍ³ÈÔĞèÒªÒ»¸öµØÖ·À´·Åµ½L2Ö¡Í·ÖĞ£¬ÕâĞ©º¯Êı¾ÍÖ¸¶¨Ò»¸öÓë¸ÃÉè±¸Ïà¹ØµÄµØÖ·¡£
+			 * å›ç¯è®¾å¤‡ï¼ˆloï¼‰å’Œè®¾ç½®IFF_NOARPæ ‡è¯†çš„è®¾å¤‡ä¸éœ€è¦ä½¿ç”¨ARPè§£æåœ°å€ã€‚
+			 * ä½†æ˜¯ï¼Œé‚»å±…å­ç³»ç»Ÿä»éœ€è¦ä¸€ä¸ªåœ°å€æ¥æ”¾åˆ°L2å¸§å¤´ä¸­ï¼Œè¿™äº›å‡½æ•°å°±æŒ‡å®šä¸€ä¸ªä¸è¯¥è®¾å¤‡ç›¸å…³çš„åœ°å€ã€‚
 			 */
 			memcpy(neigh->ha, dev->dev_addr, dev->addr_len);
-		} else if (neigh->type == RTN_BROADCAST || dev->flags&IFF_POINTOPOINT) {/* ¹ã²¥µØÖ·»òÕßµãµ½µãÉè±¸ */
+		} else if (neigh->type == RTN_BROADCAST || dev->flags&IFF_POINTOPOINT) {/* å¹¿æ’­åœ°å€æˆ–è€…ç‚¹åˆ°ç‚¹è®¾å¤‡ */
 			/**
-			 * ²»ĞèÒªARP¡£
+			 * ä¸éœ€è¦ARPã€‚
 			 */
 			neigh->nud_state = NUD_NOARP;
 			/**
-			 * ´ÓÉè±¸µÄ¹ã²¥µØÖ·ÖĞÖ±½Ó¸´ÖÆL2µØÖ·¡£
+			 * ä»è®¾å¤‡çš„å¹¿æ’­åœ°å€ä¸­ç›´æ¥å¤åˆ¶L2åœ°å€ã€‚
 			 */
 			memcpy(neigh->ha, dev->broadcast, dev->addr_len);
-		}/* ÆäËûÇé¿ö²»ĞèÒªÉèÖÃnud_state£¬ÒòÎªÁÚ¾Ó»ù´¡Ğ­ÒéÒÑ¾­ÉèÖÃÁËÄ¬ÈÏÖµ¡£ */
+		}/* å…¶ä»–æƒ…å†µä¸éœ€è¦è®¾ç½®nud_stateï¼Œå› ä¸ºé‚»å±…åŸºç¡€åè®®å·²ç»è®¾ç½®äº†é»˜è®¤å€¼ã€‚ */
 
 		/**
-		 * ¸ù¾İÉè±¸ÊÇ·ñÖ§³ÖL2Ö¡Í·»º´æ£¬ÉèÖÃ²»Í¬µÄops.
+		 * æ ¹æ®è®¾å¤‡æ˜¯å¦æ”¯æŒL2å¸§å¤´ç¼“å­˜ï¼Œè®¾ç½®ä¸åŒçš„ops.
 		 */
 		if (dev->hard_header_cache)
 			neigh->ops = &arp_hh_ops;
 		else
 			neigh->ops = &arp_generic_ops;
 		/**
-		 * ¸ù¾İÖ¸¶¨¸ønud_stateµÄÖµÀ´³õÊ¼»¯output¡£
+		 * æ ¹æ®æŒ‡å®šç»™nud_stateçš„å€¼æ¥åˆå§‹åŒ–outputã€‚
 		 */
 		if (neigh->nud_state&NUD_VALID)
 			neigh->output = neigh->ops->connected_output;
@@ -399,22 +399,22 @@ static int arp_constructor(struct neighbour *neigh)
 }
 
 /**
- * ARPÁÚ¾Ó²ãÏòÉÏ²ã·¢ËÍ´íÎóÊÂ¼ş¡£
+ * ARPé‚»å±…å±‚å‘ä¸Šå±‚å‘é€é”™è¯¯äº‹ä»¶ã€‚
  */
 static void arp_error_report(struct neighbour *neigh, struct sk_buff *skb)
 {
 	/**
-	 * ´ÓÂ·ÓÉ±í»º´æÖĞÉ¾³ıÓë²»¿Éµ½´ïµÄÁÚ¾ÓÏà¹ØµÄ»º´æÏî¡£
-	 * ÓÃÒ»¸öICMP UNREACHABLEÏûÏ¢Í¨Öª·¢ËÍ·½ÁÚ¾Ó²»¿Éµ½´ï¡£
+	 * ä»è·¯ç”±è¡¨ç¼“å­˜ä¸­åˆ é™¤ä¸ä¸å¯åˆ°è¾¾çš„é‚»å±…ç›¸å…³çš„ç¼“å­˜é¡¹ã€‚
+	 * ç”¨ä¸€ä¸ªICMP UNREACHABLEæ¶ˆæ¯é€šçŸ¥å‘é€æ–¹é‚»å±…ä¸å¯åˆ°è¾¾ã€‚
 	 */
 	dst_link_failure(skb);
 	kfree_skb(skb);
 }
 
 /**
- * Éú³ÉsolicitationÇëÇó¡£
- *		neigh£º		L3µØÖ·ĞèÒª±»½âÎöµÄÁÚ¾Ó¡£
- *		skb:		±£´æÊı¾İ°üµÄ»º³åÇø£¬¸Ã°üµÄ´«ÊäÓÉsolicitationÇëÇóµÄ²úÉú´¥·¢¡£
+ * ç”Ÿæˆsolicitationè¯·æ±‚ã€‚
+ *		neighï¼š		L3åœ°å€éœ€è¦è¢«è§£æçš„é‚»å±…ã€‚
+ *		skb:		ä¿å­˜æ•°æ®åŒ…çš„ç¼“å†²åŒºï¼Œè¯¥åŒ…çš„ä¼ è¾“ç”±solicitationè¯·æ±‚çš„äº§ç”Ÿè§¦å‘ã€‚
  */
 static void arp_solicit(struct neighbour *neigh, struct sk_buff *skb)
 {
@@ -429,27 +429,27 @@ static void arp_solicit(struct neighbour *neigh, struct sk_buff *skb)
 		return;
 
 	/**
-	 * ÅĞ¶ÏARP_ANNOUNCEÑ¡Ïî¼¶±ğ
+	 * åˆ¤æ–­ARP_ANNOUNCEé€‰é¡¹çº§åˆ«
 	 */
 	switch (IN_DEV_ARP_ANNOUNCE(in_dev)) {
 	default:
 	case 0:		/* By default announce any local IP */
 		/**
-		 * Ä¬ÈÏÇé¿öÏÂ£¬Èç¹ûÔ´µØÖ·ÊÇ±¾µØÅäÖÃµÄIPµØÖ·£¬ÔòÊ¹ÓÃÔ´µØÖ·¡£
-		 * ·ñÔòÔÚÍâÃæÊ¹ÓÃinet_select_addrÑ¡Ôñ×î¼ÑµÄÔ´µØÖ·¡£
+		 * é»˜è®¤æƒ…å†µä¸‹ï¼Œå¦‚æœæºåœ°å€æ˜¯æœ¬åœ°é…ç½®çš„IPåœ°å€ï¼Œåˆ™ä½¿ç”¨æºåœ°å€ã€‚
+		 * å¦åˆ™åœ¨å¤–é¢ä½¿ç”¨inet_select_addré€‰æ‹©æœ€ä½³çš„æºåœ°å€ã€‚
 		 */
 		if (skb && inet_addr_type(skb->nh.iph->saddr) == RTN_LOCAL)
 			saddr = skb->nh.iph->saddr;
 		break;
 	case 1:		/* Restrict announcements of saddr in same subnet */
 		/**
-		 * ÓÅÏÈÊ¹ÓÃÓëÔ´µØÖ·´¦ÓÚÍ¬Ò»×ÓÍøµÄµØÖ·¡£
+		 * ä¼˜å…ˆä½¿ç”¨ä¸æºåœ°å€å¤„äºåŒä¸€å­ç½‘çš„åœ°å€ã€‚
 		 */
 		if (!skb)
 			break;
 		saddr = skb->nh.iph->saddr;
 		/**
-		 * Ô´µØÖ·Îª±¾µØIPµØÖ·£¬²¢ÇÒÔ´ºÍÄ¿µÄIPÔÚÏàÍ¬×ÓÍøÄÚ¡£
+		 * æºåœ°å€ä¸ºæœ¬åœ°IPåœ°å€ï¼Œå¹¶ä¸”æºå’Œç›®çš„IPåœ¨ç›¸åŒå­ç½‘å†…ã€‚
 		 */
 		if (inet_addr_type(saddr) == RTN_LOCAL) {
 			/* saddr should be known to target */
@@ -457,7 +457,7 @@ static void arp_solicit(struct neighbour *neigh, struct sk_buff *skb)
 				break;
 		}
 		/**
-		 * ²»ÔÚÍ¬Ò»×ÓÍø£¬Çå¿Õsaddr¡£Íâ²ãÑ¡ÔñºÏÊÊµÄIP¡£
+		 * ä¸åœ¨åŒä¸€å­ç½‘ï¼Œæ¸…ç©ºsaddrã€‚å¤–å±‚é€‰æ‹©åˆé€‚çš„IPã€‚
 		 */
 		saddr = 0;
 		break;
@@ -468,13 +468,13 @@ static void arp_solicit(struct neighbour *neigh, struct sk_buff *skb)
 	if (in_dev)
 		in_dev_put(in_dev);
 	/**
-	 * Èç¹û»¹Ã»ÓĞÑ¡ÔñÔ´µØÖ·£¬ÔòÑ¡ÔñÓëÔ´µØÖ·ÔÚÍ¬Ò»¸ö×ÓÍøÄÚµÄµØÖ·¡£
+	 * å¦‚æœè¿˜æ²¡æœ‰é€‰æ‹©æºåœ°å€ï¼Œåˆ™é€‰æ‹©ä¸æºåœ°å€åœ¨åŒä¸€ä¸ªå­ç½‘å†…çš„åœ°å€ã€‚
 	 */
 	if (!saddr)
 		saddr = inet_select_addr(dev, target, RT_SCOPE_LINK);
 
 	/**
-	 * ¶ÔÓÚÄÚºËÉú³ÉµÄÇëÇó£¬Ê¹ÓÃarp_send´«ÊäsolicitationÇëÇó
+	 * å¯¹äºå†…æ ¸ç”Ÿæˆçš„è¯·æ±‚ï¼Œä½¿ç”¨arp_sendä¼ è¾“solicitationè¯·æ±‚
 	 */
 	if ((probes -= neigh->parms->ucast_probes) < 0) {
 		if (!(neigh->nud_state&NUD_VALID))
@@ -484,7 +484,7 @@ static void arp_solicit(struct neighbour *neigh, struct sk_buff *skb)
 	} else if ((probes -= neigh->parms->app_probes) < 0) {
 #ifdef CONFIG_ARPD
 		/**
-		 * ¶ÔÓÚÓÃ»§¿Õ¼ä²úÉúµÄÇëÇó£¬arp_solicitµ÷ÓÃneigh_app_nsÀ´Í¨ÖªÏàÓ¦µÄÓÃ»§¿Õ¼ä³ÌĞò£ºĞèÒªÉú³ÉÒ»¸ösolicitationÇëÇó¡£
+		 * å¯¹äºç”¨æˆ·ç©ºé—´äº§ç”Ÿçš„è¯·æ±‚ï¼Œarp_solicitè°ƒç”¨neigh_app_nsæ¥é€šçŸ¥ç›¸åº”çš„ç”¨æˆ·ç©ºé—´ç¨‹åºï¼šéœ€è¦ç”Ÿæˆä¸€ä¸ªsolicitationè¯·æ±‚ã€‚
 		 */
 		neigh_app_ns(neigh);
 #endif
@@ -643,7 +643,7 @@ int arp_bind_neighbour(struct dst_entry *dst)
  * Check if we can use proxy ARP for this path
  */
 /**
- * ÅĞ¶ÏÊÇ·ñĞèÒª¶ÔÄ³¸öARPÇëÇó½øĞĞ´úÀí¡£
+ * åˆ¤æ–­æ˜¯å¦éœ€è¦å¯¹æŸä¸ªARPè¯·æ±‚è¿›è¡Œä»£ç†ã€‚
  */
 static inline int arp_fwd_proxy(struct in_device *in_dev, struct rtable *rt)
 {
@@ -651,18 +651,18 @@ static inline int arp_fwd_proxy(struct in_device *in_dev, struct rtable *rt)
 	int imi, omi = -1;
 
 	/**
-	 * ÈëÉè±¸Ã»ÓĞÅäÖÃ´úÀí¡£
+	 * å…¥è®¾å¤‡æ²¡æœ‰é…ç½®ä»£ç†ã€‚
 	 */
 	if (!IN_DEV_PROXY_ARP(in_dev))
 		return 0;
 
 	/**
-	 * Medium IDÌØĞÔÒÑ¾­±»¹Ø±Õ£¬ĞèÒª´úÀí¡£
+	 * Medium IDç‰¹æ€§å·²ç»è¢«å…³é—­ï¼Œéœ€è¦ä»£ç†ã€‚
 	 */
 	if ((imi = IN_DEV_MEDIUM_ID(in_dev)) == 0)
 		return 1;
 	/**
-	 * ARP´úÀíÒÑ¾­¹Ø±Õ¡£
+	 * ARPä»£ç†å·²ç»å…³é—­ã€‚
 	 */
 	if (imi == -1)
 		return 0;
@@ -670,14 +670,14 @@ static inline int arp_fwd_proxy(struct in_device *in_dev, struct rtable *rt)
 	/* place to check for proxy_arp for routes */
 
 	/**
-	 * ºÏ·¨µÄmedium ID£¬±È½Ï³öÉè±¸µÄmedium IDÓëÈëÉè±¸µÄmedium ID¡£
+	 * åˆæ³•çš„medium IDï¼Œæ¯”è¾ƒå‡ºè®¾å¤‡çš„medium IDä¸å…¥è®¾å¤‡çš„medium IDã€‚
 	 */
 	if ((out_dev = in_dev_get(rt->u.dst.dev)) != NULL) {
 		omi = IN_DEV_MEDIUM_ID(out_dev);
 		in_dev_put(out_dev);
 	}
 	/**
-	 * Èç¹ûmedium ID²»ÏàµÈ£¬²¢ÇÒ³öÉè±¸Ã»ÓĞ½ûÖ¹´úÀí£¬ÔòĞèÒª´úÀí¡£
+	 * å¦‚æœmedium IDä¸ç›¸ç­‰ï¼Œå¹¶ä¸”å‡ºè®¾å¤‡æ²¡æœ‰ç¦æ­¢ä»£ç†ï¼Œåˆ™éœ€è¦ä»£ç†ã€‚
 	 */
 	return (omi != imi && omi != -1);
 }
@@ -806,10 +806,10 @@ void arp_xmit(struct sk_buff *skb)
  *	Create and send an arp packet.
  */
 /**
- * ´«ÊäARP°ü¡£
- * ÁÚ¾Ó×ÓÏµÍ³µ÷ÓÃneigh_ops->solicitÀ´·¢³ösolicitationÇëÇó¡£
- * ÔÚARPÖĞ£¬solicitº¯Êı£¨arp_solicit£©Ö»ÊÇ¶Ôarp_sendµÄ¼òµ¥·â×°¡£
- * Arp_send¸ºÔğÌî³äARP°üÍ·ºÍ°üÄÚÈİ£¬²¢µ÷ÓÃdev_queue_xmitº¯Êı´«ËÍÕâ¸öARPÇëÇó¡£
+ * ä¼ è¾“ARPåŒ…ã€‚
+ * é‚»å±…å­ç³»ç»Ÿè°ƒç”¨neigh_ops->solicitæ¥å‘å‡ºsolicitationè¯·æ±‚ã€‚
+ * åœ¨ARPä¸­ï¼Œsolicitå‡½æ•°ï¼ˆarp_solicitï¼‰åªæ˜¯å¯¹arp_sendçš„ç®€å•å°è£…ã€‚
+ * Arp_sendè´Ÿè´£å¡«å……ARPåŒ…å¤´å’ŒåŒ…å†…å®¹ï¼Œå¹¶è°ƒç”¨dev_queue_xmitå‡½æ•°ä¼ é€è¿™ä¸ªARPè¯·æ±‚ã€‚
  */
 void arp_send(int type, int ptype, u32 dest_ip, 
 	      struct net_device *dev, u32 src_ip, 
@@ -826,7 +826,7 @@ void arp_send(int type, int ptype, u32 dest_ip,
 		return;
 
 	/**
-	 * ³õÊ¼»¯ARP°ü
+	 * åˆå§‹åŒ–ARPåŒ…
 	 */
 	skb = arp_create(type, ptype, dest_ip, dev, src_ip,
 			 dest_hw, src_hw, target_hw);
@@ -835,8 +835,8 @@ void arp_send(int type, int ptype, u32 dest_ip,
 	}
 
 	/**
-	 * ÔÚnetfilterÖĞÉèÖÃ¹³×Ó£¬È»ºóµ÷ÓÃdev_queue_xmitº¯Êı¡£
-	 * ·Ö³Éarp_createºÍarp_xmit£¬ÊÇÎªÁË·½±ãÇı¶¯³ÌĞòµÄ±àĞ´£¬¿ÉÒÔ·½±ãµÄÍê³ÉÓÃ»§¶¨ÖÆµÄÈÎÎñ¡£
+	 * åœ¨netfilterä¸­è®¾ç½®é’©å­ï¼Œç„¶åè°ƒç”¨dev_queue_xmitå‡½æ•°ã€‚
+	 * åˆ†æˆarp_createå’Œarp_xmitï¼Œæ˜¯ä¸ºäº†æ–¹ä¾¿é©±åŠ¨ç¨‹åºçš„ç¼–å†™ï¼Œå¯ä»¥æ–¹ä¾¿çš„å®Œæˆç”¨æˆ·å®šåˆ¶çš„ä»»åŠ¡ã€‚
 	 */
 	arp_xmit(skb);
 }
@@ -851,7 +851,7 @@ static void parp_redo(struct sk_buff *skb)
  *	Process an arp request.
  */
 /**
- * ARP°üµÄ´¦Àíº¯Êı¡£
+ * ARPåŒ…çš„å¤„ç†å‡½æ•°ã€‚
  */
 static int arp_process(struct sk_buff *skb)
 {
@@ -876,10 +876,10 @@ static int arp_process(struct sk_buff *skb)
 	arp = skb->nh.arph;
 
 	/**
-	 * ¶ÔËùÓĞARP°üÀàĞÍ½øĞĞºÏÀíĞÔ¼ì²é£¬È»ºó¸ù¾İ°üÀàĞÍÖ´ĞĞÏàÓ¦µÄ²Ù×÷¡£
-	 * Ä³Ğ©Éè±¸ÀàĞÍ£¬Ö»ÓĞ±àÒëÄÚºËÊ±Ã÷È·Ö¸¶¨Ö§³ÖËüÃÇ£¬ÄÚºË²Å»áÖ§³Ö¡£
-	 * ËüÃÇ²»ÊôÓÚÄ¬ÈÏÉè±¸£¬ÒòÎª²»»á¾­³£Ê¹ÓÃ¡£
-	 * Òò´ËÄÚºË¿ª·¢Õß¾ö¶¨½«¶ÔËüÃÇµÄÖ§³ÖÉèÎª¿ÉÑ¡Ïî£¬ÒÔ¼õÉÙÄÚºËµÄ´óĞ¡¡£
+	 * å¯¹æ‰€æœ‰ARPåŒ…ç±»å‹è¿›è¡Œåˆç†æ€§æ£€æŸ¥ï¼Œç„¶åæ ¹æ®åŒ…ç±»å‹æ‰§è¡Œç›¸åº”çš„æ“ä½œã€‚
+	 * æŸäº›è®¾å¤‡ç±»å‹ï¼Œåªæœ‰ç¼–è¯‘å†…æ ¸æ—¶æ˜ç¡®æŒ‡å®šæ”¯æŒå®ƒä»¬ï¼Œå†…æ ¸æ‰ä¼šæ”¯æŒã€‚
+	 * å®ƒä»¬ä¸å±äºé»˜è®¤è®¾å¤‡ï¼Œå› ä¸ºä¸ä¼šç»å¸¸ä½¿ç”¨ã€‚
+	 * å› æ­¤å†…æ ¸å¼€å‘è€…å†³å®šå°†å¯¹å®ƒä»¬çš„æ”¯æŒè®¾ä¸ºå¯é€‰é¡¹ï¼Œä»¥å‡å°‘å†…æ ¸çš„å¤§å°ã€‚
 	 */
 	switch (dev_type) {
 	default:	
@@ -942,26 +942,26 @@ static int arp_process(struct sk_buff *skb)
  *	Extract fields
  */
  	/**
- 	 * arp_ptrÖ¸ÏòÓ²¼şÍ·µÄÄ©Î²¡£
+ 	 * arp_ptræŒ‡å‘ç¡¬ä»¶å¤´çš„æœ«å°¾ã€‚
  	 */
 	arp_ptr= (unsigned char *)(arp+1);
 	/**
-	 * ·¢ËÍ·½ethernetµØÖ·
+	 * å‘é€æ–¹ethernetåœ°å€
 	 */
 	sha	= arp_ptr;
 	arp_ptr += dev->addr_len;
 	/**
-	 * ·¢ËÍ·½IPµØÖ·
+	 * å‘é€æ–¹IPåœ°å€
 	 */
 	memcpy(&sip, arp_ptr, 4);
 	arp_ptr += 4;
 	/**
-	 * Ä¿µÄethernetµØÖ·
+	 * ç›®çš„ethernetåœ°å€
 	 */
 	tha	= arp_ptr;
 	arp_ptr += dev->addr_len;
 	/**
-	 * Ä¿µÄIPµØÖ·
+	 * ç›®çš„IPåœ°å€
 	 */
 	memcpy(&tip, arp_ptr, 4);
 /* 
@@ -969,7 +969,7 @@ static int arp_process(struct sk_buff *skb)
  *	addresses.  If this is one such, delete it.
  */
  	/**
- 	 * ¶Ô¶à²¥IPµØÖ·ºÍ»Ø»·IPµØÖ·µÄÇëÇó»á±»¶ªÆú£¬ÒòÎªËüÃÇÊÇ²»ºÏ¹æ¶¨µÄ¡£
+ 	 * å¯¹å¤šæ’­IPåœ°å€å’Œå›ç¯IPåœ°å€çš„è¯·æ±‚ä¼šè¢«ä¸¢å¼ƒï¼Œå› ä¸ºå®ƒä»¬æ˜¯ä¸åˆè§„å®šçš„ã€‚
  	 */
 	if (LOOPBACK(tip) || MULTICAST(tip))
 		goto out;
@@ -998,7 +998,7 @@ static int arp_process(struct sk_buff *skb)
  */
 
 	/* Special case: IPv4 duplicate address detection packet (RFC2131) */
-	if (sip == 0) {/* IPÖØ¸´µØÖ·¼ì²â£¬·¢ËÍÓ¦´ğ */
+	if (sip == 0) {/* IPé‡å¤åœ°å€æ£€æµ‹ï¼Œå‘é€åº”ç­” */
 		if (arp->ar_op == htons(ARPOP_REQUEST) &&
 		    inet_addr_type(tip) == RTN_LOCAL &&
 		    !arp_ignore(in_dev,dev,sip,tip))
@@ -1007,31 +1007,31 @@ static int arp_process(struct sk_buff *skb)
 	}
 
 	if (arp->ar_op == htons(ARPOP_REQUEST) &&
-	    ip_route_input(skb, tip, sip, 0, dev) == 0) {/* ÔÚÂ·ÓÉ±íÖĞ£¬ÓĞÒ»Ìõµ½¸ÃµØÖ·µÄÓĞĞ§Â·ÓÉ */
+	    ip_route_input(skb, tip, sip, 0, dev) == 0) {/* åœ¨è·¯ç”±è¡¨ä¸­ï¼Œæœ‰ä¸€æ¡åˆ°è¯¥åœ°å€çš„æœ‰æ•ˆè·¯ç”± */
 
 		rt = (struct rtable*)skb->dst;
 		addr_type = rt->rt_type;
 
-		if (addr_type == RTN_LOCAL) {/*  	ÇëÇóµÄµØÖ·ÊôÓÚ±¾µØÏµÍ³ */
+		if (addr_type == RTN_LOCAL) {/*  	è¯·æ±‚çš„åœ°å€å±äºæœ¬åœ°ç³»ç»Ÿ */
 			/**
-			 * Ê×ÏÈ½øĞĞ±»¶¯Ñ§Ï°¡£
-			 * neigh_event_ns»á¼ì²éÊÇ·ñÓĞÒ»¸öÁÚ¾ÓÏîºÍÇëÇóÕßÏà¹ØÁª£»È»ºó¾Í»á¸üĞÂÕâ¸ö´æÔÚµÄÁÚ¾ÓÏî¡£
-			 * µ±²»´æÔÚÊ±£¬¾Í»á´´½¨Ò»¸öĞÂµÄÁÚ¾ÓÏî¡£
-			 * ²»¹ÜÊÇ¸üĞÂ´æÔÚµÄÁÚ¾ÓÏî£¬»¹ÊÇ´´½¨ĞÂµÄºòÏî£¬¸Ãº¯Êı¶¼Òª½«ÁÚ¾Ó×´Ì¬ÉèÎªNUD_STALEÌ¬(²»ÊÇNUD_REACHABLEÌ¬)¡£
+			 * é¦–å…ˆè¿›è¡Œè¢«åŠ¨å­¦ä¹ ã€‚
+			 * neigh_event_nsä¼šæ£€æŸ¥æ˜¯å¦æœ‰ä¸€ä¸ªé‚»å±…é¡¹å’Œè¯·æ±‚è€…ç›¸å…³è”ï¼›ç„¶åå°±ä¼šæ›´æ–°è¿™ä¸ªå­˜åœ¨çš„é‚»å±…é¡¹ã€‚
+			 * å½“ä¸å­˜åœ¨æ—¶ï¼Œå°±ä¼šåˆ›å»ºä¸€ä¸ªæ–°çš„é‚»å±…é¡¹ã€‚
+			 * ä¸ç®¡æ˜¯æ›´æ–°å­˜åœ¨çš„é‚»å±…é¡¹ï¼Œè¿˜æ˜¯åˆ›å»ºæ–°çš„å€™é¡¹ï¼Œè¯¥å‡½æ•°éƒ½è¦å°†é‚»å±…çŠ¶æ€è®¾ä¸ºNUD_STALEæ€(ä¸æ˜¯NUD_REACHABLEæ€)ã€‚
 			 */
 			n = neigh_event_ns(&arp_tbl, sha, &sip, dev);
 			if (n) {
 				int dont_send = 0;
 
 				/**
-				 * ¸ù¾İprocÉèÖÃ£¬ÅĞ¶ÏÊÇ·ñÄÜ¹»ÏòÔ´µØÖ··¢ËÍARP¡£
+				 * æ ¹æ®procè®¾ç½®ï¼Œåˆ¤æ–­æ˜¯å¦èƒ½å¤Ÿå‘æºåœ°å€å‘é€ARPã€‚
 				 */
 				if (!dont_send)
 					dont_send |= arp_ignore(in_dev,dev,sip,tip);
 				if (!dont_send && IN_DEV_ARPFILTER(in_dev))
 					dont_send |= arp_filter(sip,tip,dev); 
 				/**
-				 * Ã»ÓĞÃ÷È·µÄÅäÖÃÎª²»ÔÊĞí·¢ËÍARP°ü£¬ÔòÏòÔ´µØÖ·»ØËÍARP±¨ÎÄ¡£
+				 * æ²¡æœ‰æ˜ç¡®çš„é…ç½®ä¸ºä¸å…è®¸å‘é€ARPåŒ…ï¼Œåˆ™å‘æºåœ°å€å›é€ARPæŠ¥æ–‡ã€‚
 				 */
 				if (!dont_send)
 					arp_send(ARPOP_REPLY,ETH_P_ARP,sip,dev,tip,sha,dev->dev_addr,sha);
@@ -1039,33 +1039,33 @@ static int arp_process(struct sk_buff *skb)
 				neigh_release(n);
 			}
 			goto out;
-		} else if (IN_DEV_FORWARD(in_dev)) {/* ÇëÇóµÄµØÖ·²»ÊôÓÚ±¾µØÏµÍ³£¬Òò´ËÅĞ¶ÏÈëÉè±¸ÊÇ·ñÔÊĞí×ª·¢£¬ÒÔ´¦ÀíARP´úÀí¡£ */
-			if ((rt->rt_flags&RTCF_DNAT) || /* ÔÚ½ÓÊÕ°üµÄÉè±¸ÉÏÆô¶¯ÁË×ª·¢¹¦ÄÜ¡£ */
-			    (addr_type == RTN_UNICAST  && rt->u.dst.dev != dev && /* Ä¿±êIPµØÖ·ÊÇµ¥²¥µØÖ·¡£ÊÕµ½Õâ¸öÇëÇóµÄÉè±¸²»ÊÇµ½´ïÄ¿µÄIPµØÖ·ÒªÊ¹ÓÃµÄÉè±¸£¨·ñÔò£¬Ä¿µÄÖ÷»ú×Ô¼º»áÓ¦´ğ£© */
-			     (arp_fwd_proxy(in_dev, rt) || pneigh_lookup(&arp_tbl, &tip, dev, 0)))) {/* ´úÀí·şÎñÆ÷Éè±¸ÉÏÆô¶¯ÁË×ª·¢¹¦ÄÜ£¬²¢ÇÒÈëÉè±¸ºÍ³öÉè±¸²»ÊÇÍ¬Ò»¸ömedium ID¡£´úÀí¹ıµÄµØÖ·Êı¾İ¿âÓĞÄ¿µÄµØÖ·£¬²¢ÇÒÍ¨¹ıpneigh_lookup½øĞĞ²éÑ¯¡£ */
+		} else if (IN_DEV_FORWARD(in_dev)) {/* è¯·æ±‚çš„åœ°å€ä¸å±äºæœ¬åœ°ç³»ç»Ÿï¼Œå› æ­¤åˆ¤æ–­å…¥è®¾å¤‡æ˜¯å¦å…è®¸è½¬å‘ï¼Œä»¥å¤„ç†ARPä»£ç†ã€‚ */
+			if ((rt->rt_flags&RTCF_DNAT) || /* åœ¨æ¥æ”¶åŒ…çš„è®¾å¤‡ä¸Šå¯åŠ¨äº†è½¬å‘åŠŸèƒ½ã€‚ */
+			    (addr_type == RTN_UNICAST  && rt->u.dst.dev != dev && /* ç›®æ ‡IPåœ°å€æ˜¯å•æ’­åœ°å€ã€‚æ”¶åˆ°è¿™ä¸ªè¯·æ±‚çš„è®¾å¤‡ä¸æ˜¯åˆ°è¾¾ç›®çš„IPåœ°å€è¦ä½¿ç”¨çš„è®¾å¤‡ï¼ˆå¦åˆ™ï¼Œç›®çš„ä¸»æœºè‡ªå·±ä¼šåº”ç­”ï¼‰ */
+			     (arp_fwd_proxy(in_dev, rt) || pneigh_lookup(&arp_tbl, &tip, dev, 0)))) {/* ä»£ç†æœåŠ¡å™¨è®¾å¤‡ä¸Šå¯åŠ¨äº†è½¬å‘åŠŸèƒ½ï¼Œå¹¶ä¸”å…¥è®¾å¤‡å’Œå‡ºè®¾å¤‡ä¸æ˜¯åŒä¸€ä¸ªmedium IDã€‚ä»£ç†è¿‡çš„åœ°å€æ•°æ®åº“æœ‰ç›®çš„åœ°å€ï¼Œå¹¶ä¸”é€šè¿‡pneigh_lookupè¿›è¡ŒæŸ¥è¯¢ã€‚ */
 				/**
-				 * ÏÈ½øĞĞ±»¶¯Ñ§Ï°¡£´´½¨»ò¸üĞÂ·¢ËÍIP¶ÔÓ¦µÄneighbour½á¹¹¡£
+				 * å…ˆè¿›è¡Œè¢«åŠ¨å­¦ä¹ ã€‚åˆ›å»ºæˆ–æ›´æ–°å‘é€IPå¯¹åº”çš„neighbourç»“æ„ã€‚
 				 */
 				n = neigh_event_ns(&arp_tbl, sha, &sip, dev);
 				/**
-				 * ÊÍ·Å±»¶¯Ñ§Ï°¶ÔnµÄÒıÓÃ¡£
+				 * é‡Šæ”¾è¢«åŠ¨å­¦ä¹ å¯¹nçš„å¼•ç”¨ã€‚
 				 */
 				if (n)
 					neigh_release(n);
 
 				/**
-				 * ´úÀíÇëÇó¿ÉÄÜ±»ÑÓ³Ù£¬ÕâÊÇÎªÁË·ÀÖ¹ÍøÂçÁ÷Á¿Í»È»Ôö¼Ó¡£
+				 * ä»£ç†è¯·æ±‚å¯èƒ½è¢«å»¶è¿Ÿï¼Œè¿™æ˜¯ä¸ºäº†é˜²æ­¢ç½‘ç»œæµé‡çªç„¶å¢åŠ ã€‚
 				 */
-				if (skb->stamp.tv_sec == LOCALLY_ENQUEUED || /* °üÀ´×Ô´úÀí¶ÓÁĞ¡£ */
-				    skb->pkt_type == PACKET_HOST || /* °ü²»ÊÇÀ´×ÔÁíÒ»¸öÖ÷»ú¡£ */
-				    in_dev->arp_parms->proxy_delay == 0) { /* Ã»ÓĞÅäÖÃÑÓ³Ù´¦Àí¡£ */
+				if (skb->stamp.tv_sec == LOCALLY_ENQUEUED || /* åŒ…æ¥è‡ªä»£ç†é˜Ÿåˆ—ã€‚ */
+				    skb->pkt_type == PACKET_HOST || /* åŒ…ä¸æ˜¯æ¥è‡ªå¦ä¸€ä¸ªä¸»æœºã€‚ */
+				    in_dev->arp_parms->proxy_delay == 0) { /* æ²¡æœ‰é…ç½®å»¶è¿Ÿå¤„ç†ã€‚ */
 				    /**
-				     * Á¢¼´´¦Àí¸Ã°ü¡£
+				     * ç«‹å³å¤„ç†è¯¥åŒ…ã€‚
 				     */
 					arp_send(ARPOP_REPLY,ETH_P_ARP,sip,dev,tip,sha,dev->dev_addr,sha);
-				} else {/* ·ñÔòÑÓ³Ù´¦Àí¡£ */
+				} else {/* å¦åˆ™å»¶è¿Ÿå¤„ç†ã€‚ */
 					/**
-					 * ½«°ü·Åµ½´úÀí¶ÓÁĞ¡£
+					 * å°†åŒ…æ”¾åˆ°ä»£ç†é˜Ÿåˆ—ã€‚
 					 */
 					pneigh_enqueue(&arp_tbl, in_dev->arp_parms, skb);
 					in_dev_put(in_dev);
@@ -1074,7 +1074,7 @@ static int arp_process(struct sk_buff *skb)
 				goto out;
 			}
 		}
-	}/* ARPOP_REQUESTºÍARPOP_REPLYÀàĞÍµÄ°ü¶¼ÓÉarp_process½øĞĞ´¦ÀíµÄ¡£ÆäËûÈÎºÎÀàĞÍµÄ°ü¶¼±»¶ªÆú¡£ */
+	}/* ARPOP_REQUESTå’ŒARPOP_REPLYç±»å‹çš„åŒ…éƒ½ç”±arp_processè¿›è¡Œå¤„ç†çš„ã€‚å…¶ä»–ä»»ä½•ç±»å‹çš„åŒ…éƒ½è¢«ä¸¢å¼ƒã€‚ */
 
 	/* Update our ARP tables */
 
@@ -1086,11 +1086,11 @@ static int arp_process(struct sk_buff *skb)
 	   devices (strip is candidate)
 	 */
 	/**
-	 * ÄÚºËÖ§³ÖÎŞ¶ËARP¡£Èç¹û´ËÊ±»¹²»´æÔÚÁÚ¾ÓÏî£¬¾ÍÇ¿ÖÆ´´½¨Ò»¸ö¡£
+	 * å†…æ ¸æ”¯æŒæ— ç«¯ARPã€‚å¦‚æœæ­¤æ—¶è¿˜ä¸å­˜åœ¨é‚»å±…é¡¹ï¼Œå°±å¼ºåˆ¶åˆ›å»ºä¸€ä¸ªã€‚
 	 */
 	if (n == NULL &&
 	    arp->ar_op == htons(ARPOP_REPLY) &&
-	    inet_addr_type(sip) == RTN_UNICAST)/* Ô´µØÖ·Óë±¾»ú´¦ÓÚÍ¬Ò»¸ö×ÓÍøÄÚ */
+	    inet_addr_type(sip) == RTN_UNICAST)/* æºåœ°å€ä¸æœ¬æœºå¤„äºåŒä¸€ä¸ªå­ç½‘å†… */
 		n = __neigh_lookup(&arp_tbl, &sip, dev, -1);
 #endif
 
@@ -1104,18 +1104,18 @@ static int arp_process(struct sk_buff *skb)
 		   arp trashing and chooses the fastest router.
 		 */
 		/**
-		 * ¼ÆËãËø¶¨ÆÚ£¬ÔÚÁ¬ĞøÊÕµ½¶à¸öARPOP_REPLYÊ±£¬È·±£Ö»¶ÔµÚÒ»¸ö°ü½øĞĞ´¦Àí¡£
+		 * è®¡ç®—é”å®šæœŸï¼Œåœ¨è¿ç»­æ”¶åˆ°å¤šä¸ªARPOP_REPLYæ—¶ï¼Œç¡®ä¿åªå¯¹ç¬¬ä¸€ä¸ªåŒ…è¿›è¡Œå¤„ç†ã€‚
 		 */
 		override = time_after(jiffies, n->updated + n->parms->locktime);
 
 		/* Broadcast replies and request packets
 		   do not assert neighbour reachability.
 		 */
-		if (arp->ar_op != htons(ARPOP_REPLY) ||/* ÎŞ¶ËARP£¬½«×´Ì¬ÉèÖÃ³ÉNUD_STALE */
-		    skb->pkt_type != PACKET_HOST)    /* µ¥²¥Ó¦´ğ£¨PACKET_HOST£©»áÉèÖÃÁÚ¾ÓÎªNUD_REACHABLEÌ¬£¬¶ø¹ã²¥Ó¦´ğÔòÊÇÉèÎªNUD_STALEÌ¬¡£ */
+		if (arp->ar_op != htons(ARPOP_REPLY) ||/* æ— ç«¯ARPï¼Œå°†çŠ¶æ€è®¾ç½®æˆNUD_STALE */
+		    skb->pkt_type != PACKET_HOST)    /* å•æ’­åº”ç­”ï¼ˆPACKET_HOSTï¼‰ä¼šè®¾ç½®é‚»å±…ä¸ºNUD_REACHABLEæ€ï¼Œè€Œå¹¿æ’­åº”ç­”åˆ™æ˜¯è®¾ä¸ºNUD_STALEæ€ã€‚ */
 			state = NUD_STALE;
 		/**
-		 * ¸üĞÂARP»º´æ£¨Èç¹û¶ÔÓ¦µÄ»º´æÏîÃ»ÓĞ±»Ëø¶¨£©¡£
+		 * æ›´æ–°ARPç¼“å­˜ï¼ˆå¦‚æœå¯¹åº”çš„ç¼“å­˜é¡¹æ²¡æœ‰è¢«é”å®šï¼‰ã€‚
 		 */
 		neigh_update(n, sha, state, override ? NEIGH_UPDATE_F_OVERRIDE : 0);
 		neigh_release(n);
@@ -1133,7 +1133,7 @@ out:
  *	Receive an arp request from the device layer.
  */
 /**
- * ´¦ÀíARP°ü¡£¿ÉÒÔ±»netfilter¿ØÖÆ¡£
+ * å¤„ç†ARPåŒ…ã€‚å¯ä»¥è¢«netfilteræ§åˆ¶ã€‚
  */
 int arp_rcv(struct sk_buff *skb, struct net_device *dev, struct packet_type *pt)
 {
@@ -1141,7 +1141,7 @@ int arp_rcv(struct sk_buff *skb, struct net_device *dev, struct packet_type *pt)
 
 	/* ARP header, plus 2 device addresses, plus 2 IP addresses.  */
 	/**
-	 * µ÷ÓÃÍ¨ÓÃº¯Êıpskb_may_pullÀ´±£Ö¤ÔÚÖ÷»º³åÇøÖĞÓĞ×ã¹»µÄ¿Õ¼ä£¬ÕâĞ©ÓÃÓÚ´æ·ÅARP°üÍ·ºÍ¸ºÔØ¡£
+	 * è°ƒç”¨é€šç”¨å‡½æ•°pskb_may_pullæ¥ä¿è¯åœ¨ä¸»ç¼“å†²åŒºä¸­æœ‰è¶³å¤Ÿçš„ç©ºé—´ï¼Œè¿™äº›ç”¨äºå­˜æ”¾ARPåŒ…å¤´å’Œè´Ÿè½½ã€‚
 	 */
 	if (!pskb_may_pull(skb, (sizeof(struct arphdr) +
 				 (2 * dev->addr_len) +
@@ -1149,25 +1149,25 @@ int arp_rcv(struct sk_buff *skb, struct net_device *dev, struct packet_type *pt)
 		goto freeskb;
 
 	/**
-	 * ÒÔÏÂ½øĞĞ°üÍêÕûĞÔ¼ì²é¡£
+	 * ä»¥ä¸‹è¿›è¡ŒåŒ…å®Œæ•´æ€§æ£€æŸ¥ã€‚
 	 */
 	arp = skb->nh.arph;
-	if (arp->ar_hln != dev->addr_len || /* ½ÓÊÕµ½µÄÊÇÒ»¸öËé°ü¡£ */
-	    dev->flags & IFF_NOARP ||   /* ÊÕµ½°üµÄÉè±¸ÊÇÃ»ÓĞÊ¹ÓÃARPĞ­ÒéµÄÉè±¸£¨Ò²¾ÍÊÇËµ£¬ÓĞIFF_NOARP±êÊ¶£©¡£ */
-	    skb->pkt_type == PACKET_OTHERHOST || /*  	°üµÄÄ¿µÄµØÖ·²»ÊÇÊÕµ½¸Ã°üµÄ½Ó¿Ú£¨Ä¿µÄµØÖ·²»ÊÇ½Ó¿ÚµÄµØÖ·»òÕß¹ã²¥µØÖ·£©¡£ */
-	    skb->pkt_type == PACKET_LOOPBACK || /* »Ø»·½Ó¿Ú½ÓÊÕµ½µÄ°ü */
+	if (arp->ar_hln != dev->addr_len || /* æ¥æ”¶åˆ°çš„æ˜¯ä¸€ä¸ªç¢åŒ…ã€‚ */
+	    dev->flags & IFF_NOARP ||   /* æ”¶åˆ°åŒ…çš„è®¾å¤‡æ˜¯æ²¡æœ‰ä½¿ç”¨ARPåè®®çš„è®¾å¤‡ï¼ˆä¹Ÿå°±æ˜¯è¯´ï¼Œæœ‰IFF_NOARPæ ‡è¯†ï¼‰ã€‚ */
+	    skb->pkt_type == PACKET_OTHERHOST || /*  	åŒ…çš„ç›®çš„åœ°å€ä¸æ˜¯æ”¶åˆ°è¯¥åŒ…çš„æ¥å£ï¼ˆç›®çš„åœ°å€ä¸æ˜¯æ¥å£çš„åœ°å€æˆ–è€…å¹¿æ’­åœ°å€ï¼‰ã€‚ */
+	    skb->pkt_type == PACKET_LOOPBACK || /* å›ç¯æ¥å£æ¥æ”¶åˆ°çš„åŒ… */
 	    arp->ar_pln != 4)
 		goto freeskb;
 
 	/**
-	 * µ±»º³åÇø±»¹²ÏíÊ±£¨ÆäËû³ÌĞò¿ÉÒÔ¶ÔÆäÊ¹ÓÃ£©£¬arp_rcv½«ÓÃskb_share_checkº¯Êı¿ËÂ¡Ò»¸ö»º³åÇø¡£
-	 * ¿ËÂ¡ÊÇºÜÓĞ±ØÒªµÄ£¬ÒòÎªµ±´¦ÀíARP°üÊ±£¬Òª±£Ö¤Ã»ÓĞÈË»á¸Ä±äskbµÄÄÚÈİ£¬ÌØ±ğÊÇskbµÄÍ·Ö¸Õë¡£
+	 * å½“ç¼“å†²åŒºè¢«å…±äº«æ—¶ï¼ˆå…¶ä»–ç¨‹åºå¯ä»¥å¯¹å…¶ä½¿ç”¨ï¼‰ï¼Œarp_rcvå°†ç”¨skb_share_checkå‡½æ•°å…‹éš†ä¸€ä¸ªç¼“å†²åŒºã€‚
+	 * å…‹éš†æ˜¯å¾ˆæœ‰å¿…è¦çš„ï¼Œå› ä¸ºå½“å¤„ç†ARPåŒ…æ—¶ï¼Œè¦ä¿è¯æ²¡æœ‰äººä¼šæ”¹å˜skbçš„å†…å®¹ï¼Œç‰¹åˆ«æ˜¯skbçš„å¤´æŒ‡é’ˆã€‚
 	 */
 	if ((skb = skb_share_check(skb, GFP_ATOMIC)) == NULL)
 		goto out_of_mem;
 
 	/**
-	 * Ò»µ©ÈëARP°üÒÑ¾­×¼±¸½øĞĞ´¦Àí£¬¼ÙÉènetfilterÃ»ÓĞÀ¹½ØËü£¬arp_processº¯Êı¾Í»á¸ºÔğ´¦Àí¡£
+	 * ä¸€æ—¦å…¥ARPåŒ…å·²ç»å‡†å¤‡è¿›è¡Œå¤„ç†ï¼Œå‡è®¾netfilteræ²¡æœ‰æ‹¦æˆªå®ƒï¼Œarp_processå‡½æ•°å°±ä¼šè´Ÿè´£å¤„ç†ã€‚
 	 */
 	return NF_HOOK(NF_ARP, NF_ARP_IN, skb, dev, NULL, arp_process);
 
@@ -1416,18 +1416,18 @@ out:
 }
 
 /**
- * ARP´¦ÀíÉè±¸ÊÂ¼şÍ¨Öª¡£
+ * ARPå¤„ç†è®¾å¤‡äº‹ä»¶é€šçŸ¥ã€‚
  */
 static int arp_netdev_event(struct notifier_block *this, unsigned long event, void *ptr)
 {
 	struct net_device *dev = ptr;
 
 	switch (event) {
-	case NETDEV_CHANGEADDR:/* ½ö½ö¶ÔÍøÂçÉè±¸L2µØÖ·¸Ä±äÊÂ¼ş¸ĞĞËÈ¤¡£Ëü¸üĞÂÁÚ¾Ó±í¡£ */
+	case NETDEV_CHANGEADDR:/* ä»…ä»…å¯¹ç½‘ç»œè®¾å¤‡L2åœ°å€æ”¹å˜äº‹ä»¶æ„Ÿå…´è¶£ã€‚å®ƒæ›´æ–°é‚»å±…è¡¨ã€‚ */
 		neigh_changeaddr(&arp_tbl, dev);
 		/**
-		 * ÎªÁËÇ¿ÖÆÈÃIP²ãÊ¹ÓÃĞÂµÄL2µØÖ·£¬rt_cache_flushº¯Êı»áË¢ĞÂIPV4µÄÂ·ÓÉ±í¡£
-		 * ¸Ãº¯Êı²»ÊÇÓĞÑ¡ÔñµØÉ¾³ıÓë²úÉúÍ¨ÖªµÄÉè±¸¹ØÁªµÄ»º´æÏî£¬¶øÊÇÍêÈ«Çå³ıÕû¸ö»º´æ¡£
+		 * ä¸ºäº†å¼ºåˆ¶è®©IPå±‚ä½¿ç”¨æ–°çš„L2åœ°å€ï¼Œrt_cache_flushå‡½æ•°ä¼šåˆ·æ–°IPV4çš„è·¯ç”±è¡¨ã€‚
+		 * è¯¥å‡½æ•°ä¸æ˜¯æœ‰é€‰æ‹©åœ°åˆ é™¤ä¸äº§ç”Ÿé€šçŸ¥çš„è®¾å¤‡å…³è”çš„ç¼“å­˜é¡¹ï¼Œè€Œæ˜¯å®Œå…¨æ¸…é™¤æ•´ä¸ªç¼“å­˜ã€‚
 		 */
 		rt_cache_flush(0);
 		break;
@@ -1464,34 +1464,34 @@ static struct packet_type arp_packet_type = {
 static int arp_proc_init(void);
 
 /**
- * ARP³õÊ¼»¯¡£
+ * ARPåˆå§‹åŒ–ã€‚
  */
 void __init arp_init(void)
 {
 	/**
-	 * ÓÃneigh_table_initº¯Êı³õÊ¼»¯neigh_table½á¹¹¡£
+	 * ç”¨neigh_table_initå‡½æ•°åˆå§‹åŒ–neigh_tableç»“æ„ã€‚
 	 */
 	neigh_table_init(&arp_tbl);
 
 	/**
-	 * IPV4ÎªARPĞ­Òé×¢²áarp_rcvº¯Êı¡£
+	 * IPV4ä¸ºARPåè®®æ³¨å†Œarp_rcvå‡½æ•°ã€‚
 	 */
 	dev_add_pack(&arp_packet_type);
 	/**
-	 * ÔÚĞèÒªµÄÊ±ºò£¨Í¨³£ÓÉ¹ÜÀíÔ±ÉèÖÃ£©£¬ÔÚ/procÎÄ¼şÏµÍ³ÖĞ×¢²áÒ»×é±äÁ¿¡£
-	 * ½¨Á¢/proc/net/arpÎÄ¼ş£¬¶ÁÈ¡¸ÃÎÄ¼ş¾Í¿ÉÒÔ¿´µ½ARP»º´æµÄÄÚÈİ¡£
+	 * åœ¨éœ€è¦çš„æ—¶å€™ï¼ˆé€šå¸¸ç”±ç®¡ç†å‘˜è®¾ç½®ï¼‰ï¼Œåœ¨/procæ–‡ä»¶ç³»ç»Ÿä¸­æ³¨å†Œä¸€ç»„å˜é‡ã€‚
+	 * å»ºç«‹/proc/net/arpæ–‡ä»¶ï¼Œè¯»å–è¯¥æ–‡ä»¶å°±å¯ä»¥çœ‹åˆ°ARPç¼“å­˜çš„å†…å®¹ã€‚
 	 */
 	arp_proc_init();
 #ifdef CONFIG_SYSCTL
 	/**
-	 * Èç¹ûÄÚºËÖ§³Ösysctl£¬¾ÍÄÜÒÀ¿¿º¯Êıneigh_sysctl_register´´½¨Ò»¸öÄ¿Â¼/proc/sys/net/ipv4/neigh£¬ÓÃÓÚÊä³öneigh_parms½á¹¹µÄÄ¬ÈÏµ÷½Ú²ÎÊı¡£
-	 * ×¢Òâ£¬neigh_sysctl_registerº¯ÊıµÄµÚÒ»¸öÊäÈë²ÎÊıÎªNULL£¬±íÊ¾µ÷ÓÃº¯ÊıÏë×¢²áÎªÄ¬ÈÏÄ¿Â¼¡£
+	 * å¦‚æœå†…æ ¸æ”¯æŒsysctlï¼Œå°±èƒ½ä¾é å‡½æ•°neigh_sysctl_registeråˆ›å»ºä¸€ä¸ªç›®å½•/proc/sys/net/ipv4/neighï¼Œç”¨äºè¾“å‡ºneigh_parmsç»“æ„çš„é»˜è®¤è°ƒèŠ‚å‚æ•°ã€‚
+	 * æ³¨æ„ï¼Œneigh_sysctl_registerå‡½æ•°çš„ç¬¬ä¸€ä¸ªè¾“å…¥å‚æ•°ä¸ºNULLï¼Œè¡¨ç¤ºè°ƒç”¨å‡½æ•°æƒ³æ³¨å†Œä¸ºé»˜è®¤ç›®å½•ã€‚
 	 */
 	neigh_sysctl_register(NULL, &arp_tbl.parms, NET_IPV4,
 			      NET_IPV4_NEIGH, "ipv4", NULL);
 #endif
 	/**
-	 * ÏòÄÚºË×¢²áÒ»¸ö»Øµ÷º¯Êı£¬ÓÃÓÚ½ÓÊÕÉè±¸×´Ì¬ºÍÅäÖÃ±ä»¯µÄÍ¨Öª¡£
+	 * å‘å†…æ ¸æ³¨å†Œä¸€ä¸ªå›è°ƒå‡½æ•°ï¼Œç”¨äºæ¥æ”¶è®¾å¤‡çŠ¶æ€å’Œé…ç½®å˜åŒ–çš„é€šçŸ¥ã€‚
 	 */
 	register_netdevice_notifier(&arp_netdev_notifier);
 }

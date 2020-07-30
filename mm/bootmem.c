@@ -370,8 +370,8 @@ unsigned long __init free_all_bootmem (void)
 }
 
 /**
- * ·ÖÅäÒ³ÖÐ¼äÄ¿Â¼
- * ÆäÖÐÇ°448ÏîÊÇÓÃRAMÇ°896MBµÄÎïÀíµØÖ·Ìî³ä£¬ËäÈ»ÓÐ512Ïî£¬µ«ÊÇºó64ÏîÁô¸ø·ÇÁ¬Ðø·ÖÅäÄÚ´æ
+ * åˆ†é…é¡µä¸­é—´ç›®å½•
+ * å…¶ä¸­å‰448é¡¹æ˜¯ç”¨RAMå‰896MBçš„ç‰©ç†åœ°å€å¡«å……ï¼Œè™½ç„¶æœ‰512é¡¹ï¼Œä½†æ˜¯åŽ64é¡¹ç•™ç»™éžè¿žç»­åˆ†é…å†…å­˜
  */
 void * __init __alloc_bootmem (unsigned long size, unsigned long align, unsigned long goal)
 {

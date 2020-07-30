@@ -20,51 +20,51 @@
  * Open file table structure
  */
 /**
- * ���̵�ǰ�򿪵��ļ���
+ * 进程当前打开的文件。
  */
 struct files_struct {
 		/**
-		 * �����ñ��Ľ�����Ŀ��
+		 * 共享该表的进程数目。
 		 */
         atomic_t count;
 		/**
-		 * �����ñ��Ķ�д��������
+		 * 保护该表的读写自旋锁。
 		 */
         spinlock_t file_lock;     /* Protects all the below members.  Nests inside tsk->alloc_lock */
 		/**
-		 * �ļ�����ĵ�ǰ����š�
+		 * 文件对象的当前最大编号。
 		 */
         int max_fds;
 		/**
-		 * �ļ��������ĵ�ǰ����š�
+		 * 文件描述符的当前最大编号。
 		 */
         int max_fdset;
 		/**
-		 * �ϴη��������ļ���������1.
+		 * 上次分配的最大文件描述符加1.
 		 */
         int next_fd;
 		/**
-		 * �������ļ���������ָ�롣
+		 * 本进程文件对象数组指针。
 		 */
         struct file ** fd;      /* current fd array */
 		/**
-		 * execʱ��Ҫ�رյ��ļ�������ָ�롣
+		 * exec时需要关闭的文件描述符指针。
 		 */
         fd_set *close_on_exec;
 		/**
-		 * ���ļ���������ָ�롣
+		 * 打开文件描述符的指针。
 		 */
         fd_set *open_fds;
 		/**
-		 * ִ��execʱ��Ҫ�رյ��ļ��������ĳ�ʼ���ϡ�
+		 * 执行exec时需要关闭的文件描述符的初始集合。
 		 */
         fd_set close_on_exec_init;
 		/**
-		 * �ļ��������ĳ�ʼ���ϡ�
+		 * 文件描述符的初始集合。
 		 */
         fd_set open_fds_init;
 		/**
-		 * �ļ�����ָ��ĳ�ʼ�����顣
+		 * 文件对象指针的初始化数组。
 		 */
         struct file * fd_array[NR_OPEN_DEFAULT];
 };

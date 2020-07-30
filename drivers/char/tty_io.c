@@ -111,7 +111,7 @@
 #define CHECK_TTY_COUNT 1
 
 /**
- * Ä¬ÈÏµÄtty¶Ë¿ÚÊôĞÔ¡£
+ * é»˜è®¤çš„ttyç«¯å£å±æ€§ã€‚
  */
 struct termios tty_std_termios = {	/* for the benefit of tty drivers  */
 	.c_iflag = ICRNL | IXON,
@@ -2673,10 +2673,10 @@ static struct class_simple *tty_class;
  * bit is not set, this function should not be called.
  */
 /**
- * ×¢²áttyÉè±¸¡£
- *		driver:		ËùÊôÇı¶¯¡£
- *		index:		Éè±¸µÄ´ÎÉè±¸ºÅ¡£
- *		device:		Òª×¢²áµÄÉè±¸¡£
+ * æ³¨å†Œttyè®¾å¤‡ã€‚
+ *		driver:		æ‰€å±é©±åŠ¨ã€‚
+ *		index:		è®¾å¤‡çš„æ¬¡è®¾å¤‡å·ã€‚
+ *		device:		è¦æ³¨å†Œçš„è®¾å¤‡ã€‚
  */
 void tty_register_device(struct tty_driver *driver, unsigned index,
 			 struct device *device)
@@ -2718,8 +2718,8 @@ EXPORT_SYMBOL(tty_register_device);
 EXPORT_SYMBOL(tty_unregister_device);
 
 /**
- * ·ÖÅäÒ»¸öttyÉè±¸Çı¶¯³ÌĞò½á¹¹¡£
- *		lines:		¸ÃÇı¶¯³ÌĞòÖ§³ÖµÄÉè±¸ÊıÁ¿¡£
+ * åˆ†é…ä¸€ä¸ªttyè®¾å¤‡é©±åŠ¨ç¨‹åºç»“æ„ã€‚
+ *		lines:		è¯¥é©±åŠ¨ç¨‹åºæ”¯æŒçš„è®¾å¤‡æ•°é‡ã€‚
  */
 struct tty_driver *alloc_tty_driver(int lines)
 {
@@ -2776,7 +2776,7 @@ EXPORT_SYMBOL(tty_set_operations);
  * Called by a tty driver to register itself.
  */
 /**
- * ÏòttyºËĞÄ×¢²áÒ»¸öttyÉè±¸Çı¶¯³ÌĞò¡£
+ * å‘ttyæ ¸å¿ƒæ³¨å†Œä¸€ä¸ªttyè®¾å¤‡é©±åŠ¨ç¨‹åºã€‚
  */
 int tty_register_driver(struct tty_driver *driver)
 {

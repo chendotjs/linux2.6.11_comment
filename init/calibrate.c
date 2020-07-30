@@ -25,9 +25,9 @@ __setup("lpj=", lpj_setup);
 #define LPS_PREC 8
 
 /**
- * Õâ¸öº¯Êý¾ö¶¨Ò»¸ö½ÚÅÄÄÚÓÐ¶àÉÙ´ÎLOOP£¬Õâ¸öÖµ±»±£´æÔÚloops_per_jiffyÖÐ¡£
- * ÕâÑùudelayºÍndelay¾Í¿ÉÒÔ½«Î¢ÃëºÍÄÉÃë×ª»»³ÉloopsÁË¡£
- * µ±È»£¬Èç¹ûÓÐHPET»òTSCÓ²¼þµçÂ·£¬¾Í²»»áÓÃÕâ¸öÖµÁË¡£
+ * è¿™ä¸ªå‡½æ•°å†³å®šä¸€ä¸ªèŠ‚æ‹å†…æœ‰å¤šå°‘æ¬¡LOOPï¼Œè¿™ä¸ªå€¼è¢«ä¿å­˜åœ¨loops_per_jiffyä¸­ã€‚
+ * è¿™æ ·udelayå’Œndelayå°±å¯ä»¥å°†å¾®ç§’å’Œçº³ç§’è½¬æ¢æˆloopsäº†ã€‚
+ * å½“ç„¶ï¼Œå¦‚æžœæœ‰HPETæˆ–TSCç¡¬ä»¶ç”µè·¯ï¼Œå°±ä¸ä¼šç”¨è¿™ä¸ªå€¼äº†ã€‚
  */
 void __devinit calibrate_delay(void)
 {

@@ -2585,7 +2585,7 @@ VENDOR(10fa,"Truevision")
 	DEVICE(10fa,000c,"TARGA 1000")
 ENDVENDOR()
 
-VENDOR(10fb,"Thesys Gesellschaft für Mikroelektronik mbH")
+VENDOR(10fb,"Thesys Gesellschaft fr Mikroelektronik mbH")
 	DEVICE(10fb,186f,"TH 6255")
 ENDVENDOR()
 
@@ -8424,7 +8424,7 @@ ENDVENDOR()
 VENDOR(6356,"UltraStor")
 ENDVENDOR()
 
-VENDOR(6374,"c't Magazin für Computertechnik")
+VENDOR(6374,"c't Magazin fr Computertechnik")
 	DEVICE(6374,6773,"GPPCI")
 ENDVENDOR()
 

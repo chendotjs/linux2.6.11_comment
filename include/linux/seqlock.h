@@ -31,16 +31,16 @@
 #include <linux/preempt.h>
 
 /**
- * Ë³ÐòËøÃèÊö·û¡£
+ * é¡ºåºé”æè¿°ç¬¦ã€‚
  */
 typedef struct {
 	/**
-	 * Ë³Ðò¼ÆÊýÆ÷¡£Ã¿¸ö¶ÁÕßÐèÒªÔÚ¶ÁÊý¾ÝÇ°ºóÁ½´Î¶ÁË³Ðò¼ÆÊýÆ÷¡£Ö»ÓÐÔÚÕâ¸öÖµÃ»ÓÐ±ä»¯Ê±
-	 * ²ÅËµÃ÷¶ÁÈ¡µ½µÄÊý¾ÝÊÇÓÐÐ§µÄ¡£
+	 * é¡ºåºè®¡æ•°å™¨ã€‚æ¯ä¸ªè¯»è€…éœ€è¦åœ¨è¯»æ•°æ®å‰åŽä¸¤æ¬¡è¯»é¡ºåºè®¡æ•°å™¨ã€‚åªæœ‰åœ¨è¿™ä¸ªå€¼æ²¡æœ‰å˜åŒ–æ—¶
+	 * æ‰è¯´æ˜Žè¯»å–åˆ°çš„æ•°æ®æ˜¯æœ‰æ•ˆçš„ã€‚
 	 */
 	unsigned sequence;
 	/**
-	 * ±£»¤½á¹¹µÄ×ÔÐýËø¡£
+	 * ä¿æŠ¤ç»“æž„çš„è‡ªæ—‹é”ã€‚
 	 */
 	spinlock_t lock;
 } seqlock_t;
@@ -50,11 +50,11 @@ typedef struct {
  * OK now.  Be cautious.
  */
 /**
- * Ë³ÐòËøµÄ³õÊ¼Öµ£¬±íÊ¾Î´ÉÏËø×´Ì¬¡£
+ * é¡ºåºé”çš„åˆå§‹å€¼ï¼Œè¡¨ç¤ºæœªä¸Šé”çŠ¶æ€ã€‚
  */
 #define SEQLOCK_UNLOCKED { 0, SPIN_LOCK_UNLOCKED }
 /**
- * ½«Ë³ÐòËø³õÊ¼»¯³ÉÎ´ÉÏËø×´Ì¬¡£
+ * å°†é¡ºåºé”åˆå§‹åŒ–æˆæœªä¸Šé”çŠ¶æ€ã€‚
  */
 #define seqlock_init(x)	do { *(x) = (seqlock_t) SEQLOCK_UNLOCKED; } while (0)
 
@@ -64,16 +64,16 @@ typedef struct {
  * Don't need preempt_disable() because that is in the spin_lock already.
  */
 /**
- * ÎªÐ´»ñµÃË³ÐòËø¡£
+ * ä¸ºå†™èŽ·å¾—é¡ºåºé”ã€‚
  */
 static inline void write_seqlock(seqlock_t *sl)
 {
 	/**
-	 * »ñµÃ×ÔÐýËøºó½«Ë³ÐòÖµ¼ÓÒ»¡£
-	 * ×¢Òâ£¬ÔÚunlockÊ±Ò²»á¼ÓÒ»¡£
-	 * ÕâÑù£¬Ö»Òª¶ÁÕßºÍÐ´Õß½»´íÖ´ÐÐ£¬¾Í»áÔì³É¶ÁÕßÖØ¸´¶ÁÕß£¬Ö±µ½Ð´ÕßÍË³ö¡£
-	 * ÇëÔÙ×¢Òâspin_lockºÍspin_unlockµÄÓÃ·¨¡£²¢ÇÒspin_lock»á½ûÓÃÇÀÕ¼¡£
-	 * ²»½ûÓÃÇÀÕ¼µ±È»»áÓÐÎÊÌâ¡£
+	 * èŽ·å¾—è‡ªæ—‹é”åŽå°†é¡ºåºå€¼åŠ ä¸€ã€‚
+	 * æ³¨æ„ï¼Œåœ¨unlockæ—¶ä¹Ÿä¼šåŠ ä¸€ã€‚
+	 * è¿™æ ·ï¼Œåªè¦è¯»è€…å’Œå†™è€…äº¤é”™æ‰§è¡Œï¼Œå°±ä¼šé€ æˆè¯»è€…é‡å¤è¯»è€…ï¼Œç›´åˆ°å†™è€…é€€å‡ºã€‚
+	 * è¯·å†æ³¨æ„spin_lockå’Œspin_unlockçš„ç”¨æ³•ã€‚å¹¶ä¸”spin_lockä¼šç¦ç”¨æŠ¢å ã€‚
+	 * ä¸ç¦ç”¨æŠ¢å å½“ç„¶ä¼šæœ‰é—®é¢˜ã€‚
 	 */
 	spin_lock(&sl->lock);
 	++sl->sequence;
@@ -81,14 +81,14 @@ static inline void write_seqlock(seqlock_t *sl)
 }	
 
 /**
- * ÊÍ·ÅÐ´Ë³ÐòËø
+ * é‡Šæ”¾å†™é¡ºåºé”
  */
 static inline void write_sequnlock(seqlock_t *sl) 
 {
 	smp_wmb();
 	/**
-	 * ÔÙ½«Ë³ÐòÖµ¼ÓÒ»£¬ÕâÑù£¬Èç¹ûÒ»¸ö¿ØÖÆÂ·¾¶ÔÚ¶ÁÄÚºËÊý¾ÝÊ±£¬Ð´ËøÖØÐÂÐ´ÈëÖµÁË¡£
-	 * Ëü¾Í»áÅÐ¶Ïµ½ÖµÒÑ¾­·¢ÁË±ä»¯£¬»áÔÙ¶ÁÒ»´ÎÐÂÖµ¡£
+	 * å†å°†é¡ºåºå€¼åŠ ä¸€ï¼Œè¿™æ ·ï¼Œå¦‚æžœä¸€ä¸ªæŽ§åˆ¶è·¯å¾„åœ¨è¯»å†…æ ¸æ•°æ®æ—¶ï¼Œå†™é”é‡æ–°å†™å…¥å€¼äº†ã€‚
+	 * å®ƒå°±ä¼šåˆ¤æ–­åˆ°å€¼å·²ç»å‘äº†å˜åŒ–ï¼Œä¼šå†è¯»ä¸€æ¬¡æ–°å€¼ã€‚
 	 */
 	sl->sequence++;
 	spin_unlock(&sl->lock);
@@ -107,8 +107,8 @@ static inline int write_tryseqlock(seqlock_t *sl)
 
 /* Start of read calculation -- fetch last complete writer token */
 /**
- * ºÍread_seqretryÅä¶ÔÊ¹ÓÃ¡£
- * Ëü·µ»Øµ±Ç°Ë³ÐòºÅ¡£
+ * å’Œread_seqretryé…å¯¹ä½¿ç”¨ã€‚
+ * å®ƒè¿”å›žå½“å‰é¡ºåºå·ã€‚
  */
 static inline unsigned read_seqbegin(const seqlock_t *sl)
 {
@@ -126,17 +126,17 @@ static inline unsigned read_seqbegin(const seqlock_t *sl)
  * Using xor saves one conditional branch.
  */
 /**
- * ÅÐ¶ÏÊÇ·ñÓÐÐ´Õß¸Ä±äÁËË³ÐòËø
+ * åˆ¤æ–­æ˜¯å¦æœ‰å†™è€…æ”¹å˜äº†é¡ºåºé”
  */
 static inline int read_seqretry(const seqlock_t *sl, unsigned iv)
 {
 	smp_rmb();
 	/**
-	 * ivÎªÆæÊý£¬ËµÃ÷ÔÚ¶ÁÕßµ÷ÓÃread_seqbeginºó£¬ÓÐÐ´Õß¸üÐÂÁËÊý¾Ý½á¹¹¡£
-	 * Ð´Õßµ÷ÓÃwrite_seqlockºó£¬ivÒ»¶¨ÊÇÆæÊý¡£Ö±µ½write_sequnlock²Å»á±ä³ÉÅ¼Êý¡£
-	 * sl->sequence ^ ivÊÇÅÐ¶Ïread_seqbeginµÄÖµÊÇ·ñ·¢ÉúÁË±ä»¯¡£
-	 * ÒªÅÐ¶ÏÕâÁ½ÖÖÇé¿ö£¬ÊÇÒòÎª£ºread_seqbeginºÍwrite_seqlockµÄµ÷ÓÃË³Ðò²»Ò»¶¨¡£
-	 * ¿ÉÄÜÊÇwrite_seqlockÏÈµ÷ÓÃ£¬Ò²¿ÉÄÜÊÇread_seqbeginÏÈµ÷ÓÃ¡£
+	 * ivä¸ºå¥‡æ•°ï¼Œè¯´æ˜Žåœ¨è¯»è€…è°ƒç”¨read_seqbeginåŽï¼Œæœ‰å†™è€…æ›´æ–°äº†æ•°æ®ç»“æž„ã€‚
+	 * å†™è€…è°ƒç”¨write_seqlockåŽï¼Œivä¸€å®šæ˜¯å¥‡æ•°ã€‚ç›´åˆ°write_sequnlockæ‰ä¼šå˜æˆå¶æ•°ã€‚
+	 * sl->sequence ^ ivæ˜¯åˆ¤æ–­read_seqbeginçš„å€¼æ˜¯å¦å‘ç”Ÿäº†å˜åŒ–ã€‚
+	 * è¦åˆ¤æ–­è¿™ä¸¤ç§æƒ…å†µï¼Œæ˜¯å› ä¸ºï¼šread_seqbeginå’Œwrite_seqlockçš„è°ƒç”¨é¡ºåºä¸ä¸€å®šã€‚
+	 * å¯èƒ½æ˜¯write_seqlockå…ˆè°ƒç”¨ï¼Œä¹Ÿå¯èƒ½æ˜¯read_seqbeginå…ˆè°ƒç”¨ã€‚
 	 */
 	return (iv & 1) | (sl->sequence ^ iv);
 }

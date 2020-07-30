@@ -22,9 +22,9 @@
  * not some alias that contains the same information.
  */
 /**
- * 32Î»Ô­×Ó½á¹¹.
- * Ê¹ÓÃÒ»¸ö½á¹¹,²¢½«counterÉùÃ÷³ÉvolatileÊÇÓĞÔ­ÒòµÄ
- * ÕâÑù¿ÉÒÔ·ÀÖ¹±àÒëÆ÷ÓÅ»¯,Ç¿ÖÆ´ÓÄÚ´æÖĞ¶ÁÈ¡counterµÄÖµ
+ * 32ä½åŸå­ç»“æ„.
+ * ä½¿ç”¨ä¸€ä¸ªç»“æ„,å¹¶å°†counterå£°æ˜æˆvolatileæ˜¯æœ‰åŸå› çš„
+ * è¿™æ ·å¯ä»¥é˜²æ­¢ç¼–è¯‘å™¨ä¼˜åŒ–,å¼ºåˆ¶ä»å†…å­˜ä¸­è¯»å–counterçš„å€¼
  */
 typedef struct { volatile int counter; } atomic_t;
 
@@ -37,7 +37,7 @@ typedef struct { volatile int counter; } atomic_t;
  * Atomically reads the value of @v.
  */
 /**
- * ·µ»Ø*v
+ * è¿”å›*v
  */
 #define atomic_read(v)		((v)->counter)
 
@@ -49,7 +49,7 @@ typedef struct { volatile int counter; } atomic_t;
  * Atomically sets the value of @v to @i.
  */ 
 /**
- * °Ñ*vÖÃ³Éi
+ * æŠŠ*vç½®æˆi
  */
 #define atomic_set(v,i)		(((v)->counter) = (i))
 
@@ -61,7 +61,7 @@ typedef struct { volatile int counter; } atomic_t;
  * Atomically adds @i to @v.
  */
 /**
- * Ô­×Ó¼Ó
+ * åŸå­åŠ 
  */
 static __inline__ void atomic_add(int i, atomic_t *v)
 {
@@ -79,7 +79,7 @@ static __inline__ void atomic_add(int i, atomic_t *v)
  * Atomically subtracts @i from @v.
  */
 /**
- * ´Ó*vÖĞ¼õÈ¥i
+ * ä»*vä¸­å‡å»i
  */
 static __inline__ void atomic_sub(int i, atomic_t *v)
 {
@@ -99,7 +99,7 @@ static __inline__ void atomic_sub(int i, atomic_t *v)
  * other cases.
  */
 /**
- * ´Ó*vÖĞ¼õÈ¥i,Èç¹û½á¹ûÎª0Ôò·µ»Ø1,·ñÔò·µ»Ø0
+ * ä»*vä¸­å‡å»i,å¦‚æœç»“æœä¸º0åˆ™è¿”å›1,å¦åˆ™è¿”å›0
  */
 static __inline__ int atomic_sub_and_test(int i, atomic_t *v)
 {
@@ -119,7 +119,7 @@ static __inline__ int atomic_sub_and_test(int i, atomic_t *v)
  * Atomically increments @v by 1.
  */
 /**
- * °Ñ1¼Óµ½*v
+ * æŠŠ1åŠ åˆ°*v
  */
 static __inline__ void atomic_inc(atomic_t *v)
 {
@@ -136,7 +136,7 @@ static __inline__ void atomic_inc(atomic_t *v)
  * Atomically decrements @v by 1.
  */
 /**
- * ´Ó*v¼õÒ»
+ * ä»*vå‡ä¸€
  */
 static __inline__ void atomic_dec(atomic_t *v)
 {
@@ -155,7 +155,7 @@ static __inline__ void atomic_dec(atomic_t *v)
  * cases.
  */
 /**
- * ´Ó*v¼õÒ»,Èç¹û½á¹ûÎª0,Ôò·µ»Ø1,·ñÔò·µ»Ø0
+ * ä»*vå‡ä¸€,å¦‚æœç»“æœä¸º0,åˆ™è¿”å›1,å¦åˆ™è¿”å›0
  */
 static __inline__ int atomic_dec_and_test(atomic_t *v)
 {
@@ -177,7 +177,7 @@ static __inline__ int atomic_dec_and_test(atomic_t *v)
  * other cases.
  */ 
 /**
- * °Ñ1¼Óµ½*v,Èç¹û½á¹ûÎª0Ôò·µ»Ø1,·ñÔò·µ»Ø0
+ * æŠŠ1åŠ åˆ°*v,å¦‚æœç»“æœä¸º0åˆ™è¿”å›1,å¦åˆ™è¿”å›0
  */
 static __inline__ int atomic_inc_and_test(atomic_t *v)
 {
@@ -200,7 +200,7 @@ static __inline__ int atomic_inc_and_test(atomic_t *v)
  * result is greater than or equal to zero.
  */ 
 /**
- * Ô­×Ó¼Ó£¬Èç¹û½á¹ûÎª¸º£¬¾Í·µ»Ø1£¬·ñÔò·µ»Ø0
+ * åŸå­åŠ ï¼Œå¦‚æœç»“æœä¸ºè´Ÿï¼Œå°±è¿”å›1ï¼Œå¦åˆ™è¿”å›0
  */
 static __inline__ int atomic_add_negative(int i, atomic_t *v)
 {
@@ -221,7 +221,7 @@ static __inline__ int atomic_add_negative(int i, atomic_t *v)
  * Atomically adds @i to @v and returns @i + @v
  */
 /**
- * Ô­×Ó¼Ó£¬²¢·µ»Ø½á¹û
+ * åŸå­åŠ ï¼Œå¹¶è¿”å›ç»“æœ
  */
 static __inline__ int atomic_add_return(int i, atomic_t *v)
 {
@@ -249,31 +249,31 @@ no_xadd: /* Legacy 386 processor */
 }
 
 /**
- * ´Ó*v¼õi,·µ»Ø*vµÄĞÂÖµ
+ * ä»*vå‡i,è¿”å›*vçš„æ–°å€¼
  */
 static __inline__ int atomic_sub_return(int i, atomic_t *v)
 {
 	return atomic_add_return(-i,v);
 }
 /**
- * °Ñ1¼Óµ½*v£¬·µ»Ø*vµÄĞÂÖµ
+ * æŠŠ1åŠ åˆ°*vï¼Œè¿”å›*vçš„æ–°å€¼
  */
 #define atomic_inc_return(v)  (atomic_add_return(1,v))
 /**
- * ´Ó*v¼õ1,·µ»Ø*vµÄĞÂÖµ
+ * ä»*vå‡1,è¿”å›*vçš„æ–°å€¼
  */
 #define atomic_dec_return(v)  (atomic_sub_return(1,v))
 
 /* These are x86-specific, used by some header files */
 /**
- * ÇåmaskÖ¸¶¨µÄ*addrµÄËùÓĞÎ»
+ * æ¸…maskæŒ‡å®šçš„*addrçš„æ‰€æœ‰ä½
  */
 #define atomic_clear_mask(mask, addr) \
 __asm__ __volatile__(LOCK "andl %0,%1" \
 : : "r" (~(mask)),"m" (*addr) : "memory")
 
 /**
- * ÉèÖÃmaskÖ¸¶¨µÄ*addrµÄËùÓĞÎ»
+ * è®¾ç½®maskæŒ‡å®šçš„*addrçš„æ‰€æœ‰ä½
  */
 #define atomic_set_mask(mask, addr) \
 __asm__ __volatile__(LOCK "orl %0,%1" \

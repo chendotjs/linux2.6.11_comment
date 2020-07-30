@@ -14,16 +14,16 @@
  * nesting etc..
  */
 /**
- * ·ÖÅä¸øÉè±¸Çı¶¯³ÌĞòµÄ¶Ë¿Ú×ÊÔ´
+ * åˆ†é…ç»™è®¾å¤‡é©±åŠ¨ç¨‹åºçš„ç«¯å£èµ„æº
  */
 struct resource {
-	/* ×ÊÔ´ÓµÓĞÕßµÄÃèÊö */
+	/* èµ„æºæ‹¥æœ‰è€…çš„æè¿° */
 	const char *name;
-	/* ×ÊÔ´·¶Î§µÄ¿ªÊ¼ºÍ½áÊø */
+	/* èµ„æºèŒƒå›´çš„å¼€å§‹å’Œç»“æŸ */
 	unsigned long start, end;
-	/* ±êÖ¾ */
+	/* æ ‡å¿— */
 	unsigned long flags;
-	/* ×ÊÔ´Ê÷ÖĞ¸¸Ç×¡¢ĞÖµÜ¡¢µÚÒ»¸öº¢×ÓµÄÖ¸Õë */
+	/* èµ„æºæ ‘ä¸­çˆ¶äº²ã€å…„å¼Ÿã€ç¬¬ä¸€ä¸ªå­©å­çš„æŒ‡é’ˆ */
 	struct resource *parent, *sibling, *child;
 };
 
@@ -39,7 +39,7 @@ struct resource_list {
 #define IORESOURCE_BITS		0x000000ff	/* Bus-specific bits */
 
 /**
- * Ïà¹ØµÄIOÇøÓò´æÔÚ¡£
+ * ç›¸å…³çš„IOåŒºåŸŸå­˜åœ¨ã€‚
  */
 #define IORESOURCE_IO		0x00000100	/* Resource type */
 #define IORESOURCE_MEM		0x00000200
@@ -47,11 +47,11 @@ struct resource_list {
 #define IORESOURCE_DMA		0x00000800
 
 /**
- * ÄÚ´æÇøÓòÊÇ¿ÉÔ¤È¡µÄ¡£
+ * å†…å­˜åŒºåŸŸæ˜¯å¯é¢„å–çš„ã€‚
  */
 #define IORESOURCE_PREFETCH	0x00001000	/* No side effects */
 /**
- * ÄÚ´æÇøÓòÊÇĞ´±£»¤µÄ¡£
+ * å†…å­˜åŒºåŸŸæ˜¯å†™ä¿æŠ¤çš„ã€‚
  */
 #define IORESOURCE_READONLY	0x00002000
 #define IORESOURCE_CACHEABLE	0x00004000
@@ -125,10 +125,10 @@ int adjust_resource(struct resource *res, unsigned long start,
 
 /* Convenience shorthand with allocation */
 /**
- * ÔÊĞíÇı¶¯³ÌĞò³ÌĞòÉêÃ÷×Ô¼ºĞèÒª²Ù×÷µÄ¶Ë¿Ú¡£Éè±¸µÄËùÓĞIOµØÖ·Ê÷¿ÉÒÔ´Ó/proc/ioports»ñµÃ
- * 		first:		ÆğÊ¼¶Ë¿ÚºÅ
- *		n:			¶Ë¿Ú¸öÊı¡£
- *		name:		Çı¶¯Ãû³Æ¡£
+ * å…è®¸é©±åŠ¨ç¨‹åºç¨‹åºç”³æ˜è‡ªå·±éœ€è¦æ“ä½œçš„ç«¯å£ã€‚è®¾å¤‡çš„æ‰€æœ‰IOåœ°å€æ ‘å¯ä»¥ä»/proc/ioportsè·å¾—
+ * 		first:		èµ·å§‹ç«¯å£å·
+ *		n:			ç«¯å£ä¸ªæ•°ã€‚
+ *		name:		é©±åŠ¨åç§°ã€‚
  */
 #define request_region(start,n,name)	__request_region(&ioport_resource, (start), (n), (name))
 #define request_mem_region(start,n,name) __request_region(&iomem_resource, (start), (n), (name))
@@ -138,7 +138,7 @@ extern struct resource * __request_region(struct resource *, unsigned long start
 
 /* Compatibility cruft */
 /**
- * ÊÍ·Å·ÖÅäµÄIO¶Ë¿Ú·¶Î§¡£
+ * é‡Šæ”¾åˆ†é…çš„IOç«¯å£èŒƒå›´ã€‚
  */
 #define release_region(start,n)	__release_region(&ioport_resource, (start), (n))
 #define check_mem_region(start,n)	__check_region(&iomem_resource, (start), (n))

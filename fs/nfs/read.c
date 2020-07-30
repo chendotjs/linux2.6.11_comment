@@ -77,7 +77,7 @@ int nfs_return_empty_page(struct page *page)
  * Read a page synchronously.
  */
 /**
- * Í¬²½¶ÁÈ¡NFSÎÄ¼şµÄÒ»Ò³Êı¾İ¡£
+ * åŒæ­¥è¯»å–NFSæ–‡ä»¶çš„ä¸€é¡µæ•°æ®ã€‚
  */
 static int nfs_readpage_sync(struct nfs_open_context *ctx, struct inode *inode,
 		struct page *page)
@@ -489,7 +489,7 @@ void nfs_readpage_result(struct rpc_task *task)
  *	previous async read operation failed.
  */
 /**
- * nfs¿Í»§¶ËµÄreadpage»Øµ÷¡£
+ * nfså®¢æˆ·ç«¯çš„readpageå›è°ƒã€‚
  */
 int nfs_readpage(struct file *file, struct page *page)
 {

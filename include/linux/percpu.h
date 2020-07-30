@@ -13,11 +13,11 @@
 
 /* Must be an lvalue. */
 /**
- * ÏÈ½ûÓÃÄÚºËÇÀÕ¼£¬È»ºóÔÚÃ¿CPUÊı×énameÖĞ£¬Îª±¾µØCPUÑ¡ÔñÔªËØ¡£
+ * å…ˆç¦ç”¨å†…æ ¸æŠ¢å ï¼Œç„¶ååœ¨æ¯CPUæ•°ç»„nameä¸­ï¼Œä¸ºæœ¬åœ°CPUé€‰æ‹©å…ƒç´ ã€‚
  */
 #define get_cpu_var(var) (*({ preempt_disable(); &__get_cpu_var(var); }))
 /**
- * ÆôÓÃÄÚºËÇÀÕ¼£¨name²ÎÊıÎŞÓÃ£©
+ * å¯ç”¨å†…æ ¸æŠ¢å ï¼ˆnameå‚æ•°æ— ç”¨ï¼‰
  */
 #define put_cpu_var(var) preempt_enable()
 
@@ -34,7 +34,7 @@ struct percpu_data {
  * probably be combined with get_cpu()/put_cpu().
  */ 
 /**
- * ·µ»ØÃ¿CPUÊı×éÖĞ£¬Óë²ÎÊıcpu¶ÔÓ¦µÄcpuÔªËØµØÖ·£¬²ÎÊıpointer¸ø³öÊı×éµÄµØÖ·¡£
+ * è¿”å›æ¯CPUæ•°ç»„ä¸­ï¼Œä¸å‚æ•°cpuå¯¹åº”çš„cpuå…ƒç´ åœ°å€ï¼Œå‚æ•°pointerç»™å‡ºæ•°ç»„çš„åœ°å€ã€‚
  */
 #define per_cpu_ptr(ptr, cpu)                   \
 ({                                              \
@@ -58,7 +58,7 @@ static inline void *__alloc_percpu(size_t size, size_t align)
 }
 
 /**
- * ÊÍ·Å±»¶¯Ì¬·ÖÅäµÄÃ¿CPUÊı×é¡£
+ * é‡Šæ”¾è¢«åŠ¨æ€åˆ†é…çš„æ¯CPUæ•°ç»„ã€‚
  */
 static inline void free_percpu(const void *ptr)
 {	
@@ -69,7 +69,7 @@ static inline void free_percpu(const void *ptr)
 
 /* Simple wrapper for the common case: zeros memory. */
 /**
- * ¶¯Ì¬·ÖÅätypeÀàĞÍÊı¾İ½á¹¹µÄÃ¿CPUÊı×é¡£²¢·µ»ØËüµÄµØÖ·¡£
+ * åŠ¨æ€åˆ†é…typeç±»å‹æ•°æ®ç»“æ„çš„æ¯CPUæ•°ç»„ã€‚å¹¶è¿”å›å®ƒçš„åœ°å€ã€‚
  */
 #define alloc_percpu(type) \
 	((type *)(__alloc_percpu(sizeof(type), __alignof__(type))))

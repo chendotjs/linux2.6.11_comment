@@ -51,52 +51,52 @@ typedef enum {
 } pageout_t;
 
 /**
- * »ØÊÕ²Ù×÷
+ * å›æ”¶æ“ä½œ
  */
 struct scan_control {
 	/* Ask refill_inactive_zone, or shrink_cache to scan this many pages */
 	/**
-	 * »î¶¯Á´±íÖĞ´ıÉ¨ÃèµÄÄ¿±êÒ³Êı¡£
+	 * æ´»åŠ¨é“¾è¡¨ä¸­å¾…æ‰«æçš„ç›®æ ‡é¡µæ•°ã€‚
 	 */
 	unsigned long nr_to_scan;
 
 	/* Incremented by the number of inactive pages that were scanned */
 	/**
-	 * µ±Ç°ÒÑ¾­É¨Ãè¹ıµÄ·Ç»î¶¯Ò³Êı¡£
+	 * å½“å‰å·²ç»æ‰«æè¿‡çš„éæ´»åŠ¨é¡µæ•°ã€‚
 	 */
 	unsigned long nr_scanned;
 
 	/* Incremented by the number of pages reclaimed */
 	/**
-	 * »ØÊÕµÄÒ³Êı¡£
+	 * å›æ”¶çš„é¡µæ•°ã€‚
 	 */
 	unsigned long nr_reclaimed;
 
 	/**
-	 * ÓÃ»§Ì¬µØÖ·¿Õ¼äÒıÓÃµÄÒ³Êı¡£
+	 * ç”¨æˆ·æ€åœ°å€ç©ºé—´å¼•ç”¨çš„é¡µæ•°ã€‚
 	 */
 	unsigned long nr_mapped;	/* From page_state */
 
 	/* How many pages shrink_cache() should reclaim */
 	/**
-	 * ´ı»ØÊÕµÄÄ¿±êÒ³Êı¡£
+	 * å¾…å›æ”¶çš„ç›®æ ‡é¡µæ•°ã€‚
 	 */
 	int nr_to_reclaim;
 
 	/* Ask shrink_caches, or shrink_zone to scan at this priority */
 	/**
-	 * É¨ÃèÓÅÏÈ¼¶¡£·¶Î§´Ó12µ½0£¬µÍÓÅÏÈ¼¶±íÊ¾É¨Ãè¸ü¶àµÄÒ³¡£
+	 * æ‰«æä¼˜å…ˆçº§ã€‚èŒƒå›´ä»12åˆ°0ï¼Œä½ä¼˜å…ˆçº§è¡¨ç¤ºæ‰«ææ›´å¤šçš„é¡µã€‚
 	 */
 	unsigned int priority;
 
 	/* This context's GFP mask */
 	/**
-	 * µ÷ÓÃ½ø³Ì´«ÈëµÄGFPÑÚÂë¡£
+	 * è°ƒç”¨è¿›ç¨‹ä¼ å…¥çš„GFPæ©ç ã€‚
 	 */
 	unsigned int gfp_mask;
 
 	/**
-	 * Èç¹ûÖÃÎ»£¬ÔòÔÊĞí½«ÔàÒ³Ğ´»Øµ½´ÅÅÌ¡£
+	 * å¦‚æœç½®ä½ï¼Œåˆ™å…è®¸å°†è„é¡µå†™å›åˆ°ç£ç›˜ã€‚
 	 */
 	int may_writepage;
 };
@@ -149,7 +149,7 @@ int vm_swappiness = 60;
 static long total_memory;
 
 /**
- * ËùÓĞ´ÅÅÌ¸ßËÙ»º´æÑ¹Ëõº¯ÊıµÄË«ÏòÁ´±í¡£
+ * æ‰€æœ‰ç£ç›˜é«˜é€Ÿç¼“å­˜å‹ç¼©å‡½æ•°çš„åŒå‘é“¾è¡¨ã€‚
  */
 static LIST_HEAD(shrinker_list);
 static DECLARE_RWSEM(shrinker_rwsem);
@@ -158,10 +158,10 @@ static DECLARE_RWSEM(shrinker_rwsem);
  * Add a shrinker callback to be called from the vm
  */
 /**
- * ÏòPFRA×¢²áshrinkerº¯Êı¡£
- * Ê×ÏÈ·ÖÅäÒ»¸öshrinkerÀàĞÍµÄÃèÊö·û£¬ÔÚ¸ÃÃèÊö·ûÖĞ´æ·Åshrinkerº¯ÊıµÄµØÖ·£¬È»ºó°ÑÃèÊö·û²åÈëÒ»¸öÈ«¾ÖÁ´±í¡£
- * ¸Ãº¯Êı»¹³õÊ¼»¯shrinkerµÄseeks×Ö¶Î£¬Õâ¸ö×Ö¶Î±íÊ¾:ÔÚ¸ßËÙ»º´æÖĞµÄÔªËØÒ»µ©±»É¾³ı£¬ÄÇÃ´ÖØ½¨Ò»¸öËùĞèÒªµÄ´ú¼Û¡£
- * ³ıÁËÄ¿Â¼Ïî¸ßËÙ»º´æºÍË÷Òı½Úµã¸ßËÙ»º´æÍâ£¬»¹ÓĞ´ÅÅÌÏŞ¶î²ã¡¢ÎÄ¼şÏµÍ³ÔªĞÅÏ¢¿é¸ßËÙ»º´æºÍXFSÈÕÖ¾ÎÄ¼şÏµÍ³¡£
+ * å‘PFRAæ³¨å†Œshrinkerå‡½æ•°ã€‚
+ * é¦–å…ˆåˆ†é…ä¸€ä¸ªshrinkerç±»å‹çš„æè¿°ç¬¦ï¼Œåœ¨è¯¥æè¿°ç¬¦ä¸­å­˜æ”¾shrinkerå‡½æ•°çš„åœ°å€ï¼Œç„¶åæŠŠæè¿°ç¬¦æ’å…¥ä¸€ä¸ªå…¨å±€é“¾è¡¨ã€‚
+ * è¯¥å‡½æ•°è¿˜åˆå§‹åŒ–shrinkerçš„seekså­—æ®µï¼Œè¿™ä¸ªå­—æ®µè¡¨ç¤º:åœ¨é«˜é€Ÿç¼“å­˜ä¸­çš„å…ƒç´ ä¸€æ—¦è¢«åˆ é™¤ï¼Œé‚£ä¹ˆé‡å»ºä¸€ä¸ªæ‰€éœ€è¦çš„ä»£ä»·ã€‚
+ * é™¤äº†ç›®å½•é¡¹é«˜é€Ÿç¼“å­˜å’Œç´¢å¼•èŠ‚ç‚¹é«˜é€Ÿç¼“å­˜å¤–ï¼Œè¿˜æœ‰ç£ç›˜é™é¢å±‚ã€æ–‡ä»¶ç³»ç»Ÿå…ƒä¿¡æ¯å—é«˜é€Ÿç¼“å­˜å’ŒXFSæ—¥å¿—æ–‡ä»¶ç³»ç»Ÿã€‚
  */
 struct shrinker *set_shrinker(int seeks, shrinker_t theshrinker)
 {
@@ -211,7 +211,7 @@ EXPORT_SYMBOL(remove_shrinker);
  * slab reclaim versus page reclaim.
  */
 /**
- * ´Ó¿ÉÑ¹Ëõ´ÅÅÌ¸ßËÙ»º´æ»ØÊÕÒ³µÄPFRAº¯Êı¡£ËüÓÉtry_to_free_pagesºÍbalance_pgdatµ÷ÓÃ¡£
+ * ä»å¯å‹ç¼©ç£ç›˜é«˜é€Ÿç¼“å­˜å›æ”¶é¡µçš„PFRAå‡½æ•°ã€‚å®ƒç”±try_to_free_pageså’Œbalance_pgdatè°ƒç”¨ã€‚
  */
 static int shrink_slab(unsigned long scanned, unsigned int gfp_mask,
 			unsigned long lru_pages)
@@ -225,7 +225,7 @@ static int shrink_slab(unsigned long scanned, unsigned int gfp_mask,
 		return 0;
 
 	/**
-	 * ±éÀúËùÓĞµÄ´ÅÅÌÑ¹Ëõ´¦Àíº¯Êı¡£
+	 * éå†æ‰€æœ‰çš„ç£ç›˜å‹ç¼©å¤„ç†å‡½æ•°ã€‚
 	 */
 	list_for_each_entry(shrinker, &shrinker_list, list) {
 		unsigned long long delta;
@@ -233,7 +233,7 @@ static int shrink_slab(unsigned long scanned, unsigned int gfp_mask,
 
 		delta = (4 * scanned) / shrinker->seeks;
 		/**
-		 * ´«Èë0£¬µÃµ½´ÅÅÌ¸ßËÙ»º´æÖĞ×ÜµÄ¿É»ØÊÕÊı¡£
+		 * ä¼ å…¥0ï¼Œå¾—åˆ°ç£ç›˜é«˜é€Ÿç¼“å­˜ä¸­æ€»çš„å¯å›æ”¶æ•°ã€‚
 		 */
 		delta *= (*shrinker->shrinker)(0, gfp_mask);
 		do_div(delta, lru_pages + 1);
@@ -249,7 +249,7 @@ static int shrink_slab(unsigned long scanned, unsigned int gfp_mask,
 			int shrink_ret;
 
 			/**
-			 * ³¢ÊÔ»ØÊÕÒ»×éÒ³£¬ÖÁÉÙ128Ò³¡£
+			 * å°è¯•å›æ”¶ä¸€ç»„é¡µï¼Œè‡³å°‘128é¡µã€‚
 			 */
 			shrink_ret = (*shrinker->shrinker)(this_scan, gfp_mask);
 			if (shrink_ret == -1)
@@ -334,7 +334,7 @@ static void handle_write_error(struct address_space *mapping,
  * pageout is called by shrink_list() for each dirty page. Calls ->writepage().
  */
 /**
- * µ±Ò»¸öÔàÒ³ĞèÒªĞ´»Ø´ÅÅÌÊ±£¬±¾º¯Êı»á±»shrink_listµ÷ÓÃ¡£
+ * å½“ä¸€ä¸ªè„é¡µéœ€è¦å†™å›ç£ç›˜æ—¶ï¼Œæœ¬å‡½æ•°ä¼šè¢«shrink_listè°ƒç”¨ã€‚
  */
 static pageout_t pageout(struct page *page, struct address_space *mapping)
 {
@@ -356,26 +356,26 @@ static pageout_t pageout(struct page *page, struct address_space *mapping)
 	 * See swapfile.c:page_queue_congested().
 	 */
 	/**
-	 * ¼ì²éÒ³´æ·ÅÔÚÒ³¸ßËÙ»º´æ»¹ÊÇ½»»»¸ßËÙ»º´æÖĞ¡£²¢¼ì²éÒ³ÊÇ·ñÓÉÒ³¸ßËÙ»º´æÓëPFRAÓµÓĞ¡£Èç¹û¼ì²éÊ§°Ü£¬¾Í·µ»ØPAGE_KEEP¡£
+	 * æ£€æŸ¥é¡µå­˜æ”¾åœ¨é¡µé«˜é€Ÿç¼“å­˜è¿˜æ˜¯äº¤æ¢é«˜é€Ÿç¼“å­˜ä¸­ã€‚å¹¶æ£€æŸ¥é¡µæ˜¯å¦ç”±é¡µé«˜é€Ÿç¼“å­˜ä¸PFRAæ‹¥æœ‰ã€‚å¦‚æœæ£€æŸ¥å¤±è´¥ï¼Œå°±è¿”å›PAGE_KEEPã€‚
 	 */
 	if (!is_page_cache_freeable(page))
 		return PAGE_KEEP;
 	if (!mapping)
 		return PAGE_KEEP;
 	/**
-	 * ¼ì²éaddress_sapce¶ÔÏóµÄwritepageÊÇ·ñ¶¨Òå¡£
+	 * æ£€æŸ¥address_sapceå¯¹è±¡çš„writepageæ˜¯å¦å®šä¹‰ã€‚
 	 */
 	if (mapping->a_ops->writepage == NULL)
 		return PAGE_ACTIVATE;
 	/**
-	 * ¼ì²éµ±Ç°½ø³ÌÊÇ·ñ¿ÉÒÔÏò¿éÉè±¸ÇëÇó¶ÓÁĞ·¢³öĞ´ÇëÇó¡£
-	 * kswapdºÍpdflushÄÚºËÏß³Ì×Ü¿ÉÒÔ·¢³öĞ´ÇëÇó¡£¶øÆÕÍ¨½ø³ÌÖ»ÓĞÔÚÇëÇó¶ÓÁĞ²»ÓµÈûµÄÇé¿öÏÂ²ÅÄÜ·¢³öĞ´ÇëÇó¡£
+	 * æ£€æŸ¥å½“å‰è¿›ç¨‹æ˜¯å¦å¯ä»¥å‘å—è®¾å¤‡è¯·æ±‚é˜Ÿåˆ—å‘å‡ºå†™è¯·æ±‚ã€‚
+	 * kswapdå’Œpdflushå†…æ ¸çº¿ç¨‹æ€»å¯ä»¥å‘å‡ºå†™è¯·æ±‚ã€‚è€Œæ™®é€šè¿›ç¨‹åªæœ‰åœ¨è¯·æ±‚é˜Ÿåˆ—ä¸æ‹¥å¡çš„æƒ…å†µä¸‹æ‰èƒ½å‘å‡ºå†™è¯·æ±‚ã€‚
 	 */
 	if (!may_write_to_queue(mapping->backing_dev_info))
 		return PAGE_KEEP;
 
 	/**
-	 * ¼ì²éÒ³ÊÇ·ñÈÔÈ»ÊÇÔàÒ³¡£
+	 * æ£€æŸ¥é¡µæ˜¯å¦ä»ç„¶æ˜¯è„é¡µã€‚
 	 */
 	if (clear_page_dirty_for_io(page)) {
 		int res;
@@ -388,7 +388,7 @@ static pageout_t pageout(struct page *page, struct address_space *mapping)
 
 		SetPageReclaim(page);
 		/**
-		 * ÈÔÈ»ÊÇÔàÒ³£¬µ÷ÓÃwritepage½«Ò³Ğ´»Ø¡£
+		 * ä»ç„¶æ˜¯è„é¡µï¼Œè°ƒç”¨writepageå°†é¡µå†™å›ã€‚
 		 */
 		res = mapping->a_ops->writepage(page, &wbc);
 		if (res < 0)
@@ -412,7 +412,7 @@ static pageout_t pageout(struct page *page, struct address_space *mapping)
  * shrink_list adds the number of reclaimed pages to sc->nr_reclaimed
  */
 /**
- * ÕâÊÇÒ³¿ò»ØÊÕËã·¨µÄºËĞÄº¯Êı¡£Ëü´Ópage_listÖĞ³¢ÊÔ»ØÊÕÒ³¡£
+ * è¿™æ˜¯é¡µæ¡†å›æ”¶ç®—æ³•çš„æ ¸å¿ƒå‡½æ•°ã€‚å®ƒä»page_listä¸­å°è¯•å›æ”¶é¡µã€‚
  */
 static int shrink_list(struct list_head *page_list, struct scan_control *sc)
 {
@@ -422,16 +422,16 @@ static int shrink_list(struct list_head *page_list, struct scan_control *sc)
 	int reclaimed = 0;
 
 	/**
-	 * Ôö¼ÓÒ»¸öµ÷¶Èµã¡£
+	 * å¢åŠ ä¸€ä¸ªè°ƒåº¦ç‚¹ã€‚
 	 */
 	cond_resched();
 
 	pagevec_init(&freed_pvec, 1);
 	/**
-	 * Ñ­»·´¦Àípage_listÁ´±íÖĞµÄÃ¿Ò»Ò³¡£¶ÔÆäÖĞÃ¿¸öÔªËØ£¬´ÓÁ´±íÖĞÉ¾³ıÒ³ÃèÊö·û£¬²¢³¢ÊÔ»ØÊÕ¸ÃÒ³¿ò¡£¶ÔÃ¿¸öÒ³£¬ÓĞÈıÖÖ´¦Àí½á¹û:
-	 *		1:µ÷ÓÃfree_cold_pageº¯Êı£¬½«Ò³ÊÍ·Åµ½»ï°éÏµÍ³¡£
-	 *		2:Ò³Ã»ÓĞ±»»ØÊÕ£¬²¢±»²å»Øpage_listÁ´±í£¬µ«ÊÇ½«PG_active±êÖ¾±£³ÖÇå0.
-	 *		3:Ò³Ã»ÓĞ±»»ØÊÕ£¬²¢±»²å»Øpage_listÁ´±í£¬µ«ÊÇ½«PG_active±êÖ¾±£³ÖÖÃÎ».
+	 * å¾ªç¯å¤„ç†page_listé“¾è¡¨ä¸­çš„æ¯ä¸€é¡µã€‚å¯¹å…¶ä¸­æ¯ä¸ªå…ƒç´ ï¼Œä»é“¾è¡¨ä¸­åˆ é™¤é¡µæè¿°ç¬¦ï¼Œå¹¶å°è¯•å›æ”¶è¯¥é¡µæ¡†ã€‚å¯¹æ¯ä¸ªé¡µï¼Œæœ‰ä¸‰ç§å¤„ç†ç»“æœ:
+	 *		1:è°ƒç”¨free_cold_pageå‡½æ•°ï¼Œå°†é¡µé‡Šæ”¾åˆ°ä¼™ä¼´ç³»ç»Ÿã€‚
+	 *		2:é¡µæ²¡æœ‰è¢«å›æ”¶ï¼Œå¹¶è¢«æ’å›page_listé“¾è¡¨ï¼Œä½†æ˜¯å°†PG_activeæ ‡å¿—ä¿æŒæ¸…0.
+	 *		3:é¡µæ²¡æœ‰è¢«å›æ”¶ï¼Œå¹¶è¢«æ’å›page_listé“¾è¡¨ï¼Œä½†æ˜¯å°†PG_activeæ ‡å¿—ä¿æŒç½®ä½.
 	 */
 	while (!list_empty(page_list)) {
 		struct address_space *mapping;
@@ -445,7 +445,7 @@ static int shrink_list(struct list_head *page_list, struct scan_control *sc)
 		list_del(&page->lru);
 
 		/**
-		 * ²»»ØÊÕËø¶¨Ò³¡£
+		 * ä¸å›æ”¶é”å®šé¡µã€‚
 		 */
 		if (TestSetPageLocked(page))
 			goto keep;
@@ -458,13 +458,13 @@ static int shrink_list(struct list_head *page_list, struct scan_control *sc)
 			sc->nr_scanned++;
 
 		/**
-		 * Ò²²»»ØÊÕ»ØĞ´Ò³¡£
+		 * ä¹Ÿä¸å›æ”¶å›å†™é¡µã€‚
 		 */
 		if (PageWriteback(page))
 			goto keep_locked;
 
 		/**
-		 * ¼ì²é¸ÃÒ³×î½üÊÇ·ñ±»ÒıÓÃ¹ı¡£
+		 * æ£€æŸ¥è¯¥é¡µæœ€è¿‘æ˜¯å¦è¢«å¼•ç”¨è¿‡ã€‚
 		 */
 		referenced = page_referenced(page, 1, sc->priority <= 0);
 		/* In active use or really unfreeable?  Activate it. */
@@ -477,7 +477,7 @@ static int shrink_list(struct list_head *page_list, struct scan_control *sc)
 		 * Try to allocate it some swap space here.
 		 */
 		/**
-		 * Èç¹ûÒª»ØÊÕÄäÃûÒ³£¬¾ÍĞèÒªÎªËüÔÚ½»»»Çø±£ÁôÒ»Ò³ĞÂÒ³²Û£¬Èç¹ûÎŞ·¨±£ÁôÒ³²Û£¬Ò²²»»ØÊÕ¡£
+		 * å¦‚æœè¦å›æ”¶åŒ¿åé¡µï¼Œå°±éœ€è¦ä¸ºå®ƒåœ¨äº¤æ¢åŒºä¿ç•™ä¸€é¡µæ–°é¡µæ§½ï¼Œå¦‚æœæ— æ³•ä¿ç•™é¡µæ§½ï¼Œä¹Ÿä¸å›æ”¶ã€‚
 		 */
 		if (PageAnon(page) && !PageSwapCache(page)) {
 			if (!add_to_swap(page))
@@ -486,8 +486,8 @@ static int shrink_list(struct list_head *page_list, struct scan_control *sc)
 #endif /* CONFIG_SWAP */
 
 		/**
-		 * Èç¹ûÒ³ÔÚÄ³¸ö½ø³ÌµÄÓÃ»§Ì¬µØÖ·¿Õ¼ä(Ò³ÃèÊö·ûµÄ_mapcount×Ö¶Î´óÓÚµÈÓÚ0)¡£
-		 * Ôòµ÷ÓÃtry_to_unmapÑ°ÕÒÒıÓÃ¸ÃÒ³µÄËùÓĞÒ³±íÏî£¬Ö»ÓĞµ±Õâ¸öº¯Êı·µ»ØSWAP_SUCCESSÊ±£¬»ØÊÕ²Å¼ÌĞø¡£
+		 * å¦‚æœé¡µåœ¨æŸä¸ªè¿›ç¨‹çš„ç”¨æˆ·æ€åœ°å€ç©ºé—´(é¡µæè¿°ç¬¦çš„_mapcountå­—æ®µå¤§äºç­‰äº0)ã€‚
+		 * åˆ™è°ƒç”¨try_to_unmapå¯»æ‰¾å¼•ç”¨è¯¥é¡µçš„æ‰€æœ‰é¡µè¡¨é¡¹ï¼Œåªæœ‰å½“è¿™ä¸ªå‡½æ•°è¿”å›SWAP_SUCCESSæ—¶ï¼Œå›æ”¶æ‰ç»§ç»­ã€‚
 		 */
 		mapping = page_mapping(page);
 		may_enter_fs = (sc->gfp_mask & __GFP_FS) ||
@@ -498,7 +498,7 @@ static int shrink_list(struct list_head *page_list, struct scan_control *sc)
 		 * processes. Try to unmap it here.
 		 */
 		if (page_mapped(page) && mapping) {
-			switch (try_to_unmap(page)) {/* ½«Ò³¼ÓÈë½»»»¸ßËÙ»º´æºó£¬try_to_unmapÈ·¶¨ÒıÓÃÄäÃûÒ³µÄÃ¿¸öÓÃ»§Ì¬Ò³±íÏîµØÖ·£¬È»ºó½«»»³öÒ³±êÊ¶·ûĞ´ÈëÆäÖĞ¡£ */
+			switch (try_to_unmap(page)) {/* å°†é¡µåŠ å…¥äº¤æ¢é«˜é€Ÿç¼“å­˜åï¼Œtry_to_unmapç¡®å®šå¼•ç”¨åŒ¿åé¡µçš„æ¯ä¸ªç”¨æˆ·æ€é¡µè¡¨é¡¹åœ°å€ï¼Œç„¶åå°†æ¢å‡ºé¡µæ ‡è¯†ç¬¦å†™å…¥å…¶ä¸­ã€‚ */
 			case SWAP_FAIL:
 				goto activate_locked;
 			case SWAP_AGAIN:
@@ -509,8 +509,8 @@ static int shrink_list(struct list_head *page_list, struct scan_control *sc)
 		}
 
 		/**
-		 * Èç¹ûÊÇÔàÒ³£¬ÔòĞ´»Ø´ÅÅÌÇ°²»ÄÜ»ØÊÕ¡£
-		 * Îª´Ë£¬±¾º¯Êıµ÷ÓÃpageoutº¯Êı£¬Ö»ÓĞµ±´Ëº¯Êı²»±Ø½øĞĞĞ´²Ù×÷»òĞ´²Ù×÷²»¾Ã½«½áÊøÊ±£¬»ØÊÕ²Å¼ÌĞø¡£
+		 * å¦‚æœæ˜¯è„é¡µï¼Œåˆ™å†™å›ç£ç›˜å‰ä¸èƒ½å›æ”¶ã€‚
+		 * ä¸ºæ­¤ï¼Œæœ¬å‡½æ•°è°ƒç”¨pageoutå‡½æ•°ï¼Œåªæœ‰å½“æ­¤å‡½æ•°ä¸å¿…è¿›è¡Œå†™æ“ä½œæˆ–å†™æ“ä½œä¸ä¹…å°†ç»“æŸæ—¶ï¼Œå›æ”¶æ‰ç»§ç»­ã€‚
 		 */
 		if (PageDirty(page)) {
 			if (referenced)
@@ -565,7 +565,7 @@ static int shrink_list(struct list_head *page_list, struct scan_control *sc)
 		 * Otherwise, leave the page on the LRU so it is swappable.
 		 */
 		/**
-		 * Èç¹ûÒ³°üº¬VFS»º³åÇø£¬Ôòµ÷ÓÃtry_to_release_pageÊÍ·Å¹ØÁªµÄ»º³åÇøÊ×²¿¡£
+		 * å¦‚æœé¡µåŒ…å«VFSç¼“å†²åŒºï¼Œåˆ™è°ƒç”¨try_to_release_pageé‡Šæ”¾å…³è”çš„ç¼“å†²åŒºé¦–éƒ¨ã€‚
 		 */
 		if (PagePrivate(page)) {
 			if (!try_to_release_page(page, sc->gfp_mask))
@@ -585,9 +585,9 @@ static int shrink_list(struct list_head *page_list, struct scan_control *sc)
 		 * not in use by anybody. 	(pagecache + us == 2)
 		 */
 		/**
-		 * ÖÁ´Ë£¬Ò»ÇĞ¶¼±È½ÏË³Àû£¬¼ì²éÒ³µÄÒıÓÃ¼ÆÊı¡£Èç¹ûµÈÓÚ2£¬ÄÇÃ´ÕâÁ½¸öÓµÓĞÕß¾ÍÊÇ:Ò³¸ßËÙ»º´æ(¶ÔÄäÃûÒ³À´Ëµ£¬¾ÍÊÇ½»»»¸ßËÙ»º´æ)
-		 * ÒÔ¼°PFRA×ÔÉí¡£ÕâÖÖÇé¿öÏÂ£¬Èç¹ûÒ³²»ÎªÔà£¬ÄÇÃ´Ò³¾Í¿ÉÒÔ»ØÊÕ¡£
-		 * ·ñÔò£¬Ö»ÒªÒıÓÃ¼ÆÊı²»Îª2£¬»òÕßÒ³ÈÔÈ»ÎªÔà£¬ÄÇÃ´¾Í²»»ØÊÕÒ³¡£
+		 * è‡³æ­¤ï¼Œä¸€åˆ‡éƒ½æ¯”è¾ƒé¡ºåˆ©ï¼Œæ£€æŸ¥é¡µçš„å¼•ç”¨è®¡æ•°ã€‚å¦‚æœç­‰äº2ï¼Œé‚£ä¹ˆè¿™ä¸¤ä¸ªæ‹¥æœ‰è€…å°±æ˜¯:é¡µé«˜é€Ÿç¼“å­˜(å¯¹åŒ¿åé¡µæ¥è¯´ï¼Œå°±æ˜¯äº¤æ¢é«˜é€Ÿç¼“å­˜)
+		 * ä»¥åŠPFRAè‡ªèº«ã€‚è¿™ç§æƒ…å†µä¸‹ï¼Œå¦‚æœé¡µä¸ä¸ºè„ï¼Œé‚£ä¹ˆé¡µå°±å¯ä»¥å›æ”¶ã€‚
+		 * å¦åˆ™ï¼Œåªè¦å¼•ç”¨è®¡æ•°ä¸ä¸º2ï¼Œæˆ–è€…é¡µä»ç„¶ä¸ºè„ï¼Œé‚£ä¹ˆå°±ä¸å›æ”¶é¡µã€‚
 		 */
 		if (page_count(page) != 2 || PageDirty(page)) {
 			spin_unlock_irq(&mapping->tree_lock);
@@ -596,7 +596,7 @@ static int shrink_list(struct list_head *page_list, struct scan_control *sc)
 
 #ifdef CONFIG_SWAP
 		/**
-		 * ÔÚIOÊı¾İ´«ÊäÊ±£¬Ã»ÓĞ½ø³ÌÊÔÍ¼·ÃÎÊ¸ÃÒ³£¬¾Íµ÷ÓÃ__delete_from_swap_cache´Ó½»»»¸ßËÙ»º´æÖĞÉ¾³ıÒ³¿ò¡£
+		 * åœ¨IOæ•°æ®ä¼ è¾“æ—¶ï¼Œæ²¡æœ‰è¿›ç¨‹è¯•å›¾è®¿é—®è¯¥é¡µï¼Œå°±è°ƒç”¨__delete_from_swap_cacheä»äº¤æ¢é«˜é€Ÿç¼“å­˜ä¸­åˆ é™¤é¡µæ¡†ã€‚
 		 */
 		if (PageSwapCache(page)) {
 			swp_entry_t swap = { .val = page->private };
@@ -609,7 +609,7 @@ static int shrink_list(struct list_head *page_list, struct scan_control *sc)
 #endif /* CONFIG_SWAP */
 
 		/**
-		 * ÖÁ´Ë£¬¿ÉÒÔ»ØÊÕ¸ÃÄÚ´æÒ³¡£Ê×ÏÈ¸ù¾İÒ³ÃèÊö·ûµÄPG_swapcache±êÖ¾µÄÖµ£¬´ÓÒ³¸ßËÙ»º´æ»ò½»»»¸ßËÙ»º´æÉ¾³ıÒ³¡£
+		 * è‡³æ­¤ï¼Œå¯ä»¥å›æ”¶è¯¥å†…å­˜é¡µã€‚é¦–å…ˆæ ¹æ®é¡µæè¿°ç¬¦çš„PG_swapcacheæ ‡å¿—çš„å€¼ï¼Œä»é¡µé«˜é€Ÿç¼“å­˜æˆ–äº¤æ¢é«˜é€Ÿç¼“å­˜åˆ é™¤é¡µã€‚
 		 */
 		__remove_from_page_cache(page);
 		spin_unlock_irq(&mapping->tree_lock);
@@ -619,14 +619,14 @@ free_it:
 		unlock_page(page);
 		reclaimed++;
 		/**
-		 * ×îÖÕ»áµ÷ÓÃfree_cold_page½«Ò³¹é»¹µ½»ï°éÏµÍ³¡£
+		 * æœ€ç»ˆä¼šè°ƒç”¨free_cold_pageå°†é¡µå½’è¿˜åˆ°ä¼™ä¼´ç³»ç»Ÿã€‚
 		 */
 		if (!pagevec_add(&freed_pvec, page))
 			__pagevec_release_nonlru(&freed_pvec);
 		continue;
 
 		/**
-		 * ÓÉÓÚÄ³ÖÖÔ­Òò£¬¸ÃÒ³²»ÄÜ±»ÊÍ·Å(±ÈÈç±»Ëø¶¨)£¬ÄÇÃ´°ÑÒ³ÃèÊö·û·Åµ½¾Ö²¿Á´±íÖĞ¡£×îÖÕ»áÔÙ·Å»Øpage_list·µ»Ø¸øÉÏ²ãº¯Êı¡£
+		 * ç”±äºæŸç§åŸå› ï¼Œè¯¥é¡µä¸èƒ½è¢«é‡Šæ”¾(æ¯”å¦‚è¢«é”å®š)ï¼Œé‚£ä¹ˆæŠŠé¡µæè¿°ç¬¦æ”¾åˆ°å±€éƒ¨é“¾è¡¨ä¸­ã€‚æœ€ç»ˆä¼šå†æ”¾å›page_listè¿”å›ç»™ä¸Šå±‚å‡½æ•°ã€‚
 		 */
 activate_locked:
 		SetPageActive(page);
@@ -639,14 +639,14 @@ keep:
 	}
 
 	/**
-	 * ÏÖÔÚÒÑ¾­´¦ÀíÍêpage_list¡£½«Ã»ÓĞÊÍ·ÅÒ³·Å»Øpage_list¡£
+	 * ç°åœ¨å·²ç»å¤„ç†å®Œpage_listã€‚å°†æ²¡æœ‰é‡Šæ”¾é¡µæ”¾å›page_listã€‚
 	 */
 	list_splice(&ret_pages, page_list);
 	if (pagevec_count(&freed_pvec))
 		__pagevec_release_nonlru(&freed_pvec);
 	mod_page_state(pgactivate, pgactivate);
 	/**
-	 * µİÔönr_reclaimed×Ö¶Î¡£
+	 * é€’å¢nr_reclaimedå­—æ®µã€‚
 	 */
 	sc->nr_reclaimed += reclaimed;
 	return reclaimed;
@@ -663,7 +663,7 @@ keep:
  * in the kernel (apart from the copy_*_user functions).
  */
 /**
- * Õâ¸ö¸¨Öúº¯ÊıµÄÖ÷ÒªÄ¿µÄÊÇ´Ó¹ÜÀíÇø·Ç»î¶¯Á´±íÈ¡³öÒ»×éÒ³£¬°ÑËüÃÇ·ÅÈëÒ»¸öÁÙÊ±Á´±í£¬È»ºóµ÷ÓÃshrink_listº¯Êı¶ÔÕâ¸öÁ´±íÖĞµÄÃ¿Ò»¸öÒ³½øĞĞÓĞĞ§µÄÒ³¿ò»ØÊÕ²Ù×÷¡£
+ * è¿™ä¸ªè¾…åŠ©å‡½æ•°çš„ä¸»è¦ç›®çš„æ˜¯ä»ç®¡ç†åŒºéæ´»åŠ¨é“¾è¡¨å–å‡ºä¸€ç»„é¡µï¼ŒæŠŠå®ƒä»¬æ”¾å…¥ä¸€ä¸ªä¸´æ—¶é“¾è¡¨ï¼Œç„¶åè°ƒç”¨shrink_listå‡½æ•°å¯¹è¿™ä¸ªé“¾è¡¨ä¸­çš„æ¯ä¸€ä¸ªé¡µè¿›è¡Œæœ‰æ•ˆçš„é¡µæ¡†å›æ”¶æ“ä½œã€‚
  */
 static void shrink_cache(struct zone *zone, struct scan_control *sc)
 {
@@ -674,11 +674,11 @@ static void shrink_cache(struct zone *zone, struct scan_control *sc)
 	pagevec_init(&pvec, 1);
 
 	/**
-	 * °ÑÈÔÈ»ÔÚpagevecÊı¾İ½á¹¹ÖĞµÄÒ³ÒÆÈë»î¶¯Óë·Ç»î¶¯Á´±í¡£
+	 * æŠŠä»ç„¶åœ¨pagevecæ•°æ®ç»“æ„ä¸­çš„é¡µç§»å…¥æ´»åŠ¨ä¸éæ´»åŠ¨é“¾è¡¨ã€‚
 	 */
 	lru_add_drain();
 	/**
-	 * »ñµÃ¹ÜÀíÇøµÄlru_lock×ÔĞıËø¡£
+	 * è·å¾—ç®¡ç†åŒºçš„lru_lockè‡ªæ—‹é”ã€‚
 	 */
 	spin_lock_irq(&zone->lru_lock);
 	while (max_scan > 0) {
@@ -688,7 +688,7 @@ static void shrink_cache(struct zone *zone, struct scan_control *sc)
 		int nr_freed;
 
 		/**
-		 * ´¦Àí·Ç»î¶¯Á´±íÖĞµÄÒ³£¬×î¶à32Ò³¡£
+		 * å¤„ç†éæ´»åŠ¨é“¾è¡¨ä¸­çš„é¡µï¼Œæœ€å¤š32é¡µã€‚
 		 */
 		while (nr_scan++ < SWAP_CLUSTER_MAX &&
 				!list_empty(&zone->inactive_list)) {
@@ -701,7 +701,7 @@ static void shrink_cache(struct zone *zone, struct scan_control *sc)
 				BUG();
 			list_del(&page->lru);
 			/**
-			 * µİÔöÒ³µÄÒıÓÃ¼ÆÊı¡£Èç¹ûÒ³ÕıÔÚ×¼±¸·Åµ½»ï°éÏµÍ³(¼ÆÊıÎª0)£¬ÔòÂÔ¹ı´ËÒ³¡£
+			 * é€’å¢é¡µçš„å¼•ç”¨è®¡æ•°ã€‚å¦‚æœé¡µæ­£åœ¨å‡†å¤‡æ”¾åˆ°ä¼™ä¼´ç³»ç»Ÿ(è®¡æ•°ä¸º0)ï¼Œåˆ™ç•¥è¿‡æ­¤é¡µã€‚
 			 */
 			if (get_page_testone(page)) {
 				/*
@@ -713,21 +713,21 @@ static void shrink_cache(struct zone *zone, struct scan_control *sc)
 				continue;
 			}
 			/**
-			 * ·ñÔò½«Ò³·Åµ½¾Ö²¿Á´±í¡£
+			 * å¦åˆ™å°†é¡µæ”¾åˆ°å±€éƒ¨é“¾è¡¨ã€‚
 			 */
 			list_add(&page->lru, &page_list);
 			nr_taken++;
 		}
 		/**
-		 * µ÷Õûnr_inactive¼ÆÊı£¬¼õÈ¥´Ó·Ç»î¶¯Á´±íÖĞÉ¾³ıµÄÒ³Êı¡£
+		 * è°ƒæ•´nr_inactiveè®¡æ•°ï¼Œå‡å»ä»éæ´»åŠ¨é“¾è¡¨ä¸­åˆ é™¤çš„é¡µæ•°ã€‚
 		 */
 		zone->nr_inactive -= nr_taken;
 		/**
-		 * µİÔöpages_scanned¼ÆÊı£¬ÔöÁ¿ÎªÔÚ·Ç»î¶¯Á´±íÖĞÓĞĞ§¼ì²éµÄÒ³Êı¡£
+		 * é€’å¢pages_scannedè®¡æ•°ï¼Œå¢é‡ä¸ºåœ¨éæ´»åŠ¨é“¾è¡¨ä¸­æœ‰æ•ˆæ£€æŸ¥çš„é¡µæ•°ã€‚
 		 */
 		zone->pages_scanned += nr_scan;
 		/**
-		 * ÊÍ·Ålru_lock×ÔĞıËø¡£
+		 * é‡Šæ”¾lru_lockè‡ªæ—‹é”ã€‚
 		 */
 		spin_unlock_irq(&zone->lru_lock);
 
@@ -740,26 +740,26 @@ static void shrink_cache(struct zone *zone, struct scan_control *sc)
 		else
 			mod_page_state_zone(zone, pgscan_direct, nr_scan);
 		/**
-		 * µ÷ÓÃshrink_list£¬»ØÊÕÁ´±íÖĞµÄÒ³¡£
+		 * è°ƒç”¨shrink_listï¼Œå›æ”¶é“¾è¡¨ä¸­çš„é¡µã€‚
 		 */
 		nr_freed = shrink_list(&page_list, sc);
 		if (current_is_kswapd())
 			mod_page_state(kswapd_steal, nr_freed);
 		mod_page_state_zone(zone, pgsteal, nr_freed);
 		/**
-		 * µ÷Õûnr_to_reclaim¼ÆÊı£¬¼õÈ¥±¾´Î»ØÊÕµÄÒ³¡£
+		 * è°ƒæ•´nr_to_reclaimè®¡æ•°ï¼Œå‡å»æœ¬æ¬¡å›æ”¶çš„é¡µã€‚
 		 */
 		sc->nr_to_reclaim -= nr_freed;
 
 		/**
-		 * ÔÙ´Î»ñµÃlru_lock×ÔĞıËø¡£
+		 * å†æ¬¡è·å¾—lru_lockè‡ªæ—‹é”ã€‚
 		 */
 		spin_lock_irq(&zone->lru_lock);
 		/*
 		 * Put back any unfreeable pages.
 		 */
 		/**
-		 * ½«page_listÁ´±íÖĞÃ»ÓĞ±»»ØÊÕµÄÒ³·Å»Ø·Ç»î¶¯Á´±í»òÕß»î¶¯Á´±í¡£
+		 * å°†page_listé“¾è¡¨ä¸­æ²¡æœ‰è¢«å›æ”¶çš„é¡µæ”¾å›éæ´»åŠ¨é“¾è¡¨æˆ–è€…æ´»åŠ¨é“¾è¡¨ã€‚
 		 */
 		while (!list_empty(&page_list)) {
 			page = lru_to_page(&page_list);
@@ -767,7 +767,7 @@ static void shrink_cache(struct zone *zone, struct scan_control *sc)
 				BUG();
 			list_del(&page->lru);
 			/**
-			 * Èç¹ûÔÚshrink_listº¯ÊıÖĞ½«Ò³ÃæPG_active±êÖ¾ÖÃÎ»£¬ÄÇÃ´½«Ò³·Åµ½»î¶¯Á´±í¡£·ñÔò·Åµ½·Ç»î¶¯Á´±í¡£
+			 * å¦‚æœåœ¨shrink_listå‡½æ•°ä¸­å°†é¡µé¢PG_activeæ ‡å¿—ç½®ä½ï¼Œé‚£ä¹ˆå°†é¡µæ”¾åˆ°æ´»åŠ¨é“¾è¡¨ã€‚å¦åˆ™æ”¾åˆ°éæ´»åŠ¨é“¾è¡¨ã€‚
 			 */
 			if (PageActive(page))
 				add_page_to_active_list(zone, page);
@@ -803,11 +803,11 @@ done:
  * But we had to alter page->flags anyway.
  */
 /**
- * ±¾º¯ÊıÓÉshrink_zoneµ÷ÓÃ¡£Ëü´Ó»î¶¯Á´±í½«Ò³ÒÆµ½·Ç»î¶¯Á´±í¡£Èç¹ûº¯ÊıµÄÂÓ¶áĞÔ¹ıÇ¿£¬¾Í»áÓĞ¹ı¶àµÄÒ³´Ó»î¶¯Á´±í±»ÒÆ¶¯µ½·Ç»î¶¯Á´±í¡£
- * ÕâÑù£¬PFRA¾Í»á»ØÊÕ´óÁ¿µÄÒ³¿ò£¬ÏµÍ³ĞÔÄÜ»áÊÜµ½Ó°Ïì¡£·´¹ıÀ´£¬Èç¹ûº¯ÊıÌ«ÀÁ¶è£¬¾ÍÃ»ÓĞ×ã¹»µÄÎ´ÓÃÒ³À´²¹³ä·Ç»î¶¯Á´±í£¬PFRA¾Í²»ÄÜ»ØÊÕÄÚ´æ¡£
- * Òò´Ë£¬¿ªÊ¼Ê±£¬¶ÔÃ¿´Îµ÷ÓÃ£¬É¨Ãè·Ç»î¶¯Á´±íÖĞÉÙÁ¿µÄÒ³£¬µ±PFRAºÜÄÑ»ØÊÕÄÚ´æÊ±£¬º¯ÊıÔÚÃ¿´Îµ÷ÓÃÊ±¾ÍÔö¼ÓÉ¨Ãè»î¶¯µÄ´ÎÊı£¬Ò²¾ÍÊÇ½µµÍscan_controlÊı¾İ½á¹¹ÖĞpriority×Ö¶ÎµÄÖµ¡£
- *		zone:		Ö¸ÏòÒ»¸öÄÚ´æ¹ÜÀíÇøÃèÊö·û¡£
- *		sc:			Ö¸ÏòÒ»¸öscan_control½á¹¹¡£¸Ã½á¹¹´æ·Å×Å»ØÊÕ²Ù×÷Ö´ĞĞÊ±µÄÓĞ¹ØĞÅÏ¢¡£
+ * æœ¬å‡½æ•°ç”±shrink_zoneè°ƒç”¨ã€‚å®ƒä»æ´»åŠ¨é“¾è¡¨å°†é¡µç§»åˆ°éæ´»åŠ¨é“¾è¡¨ã€‚å¦‚æœå‡½æ•°çš„æ å¤ºæ€§è¿‡å¼ºï¼Œå°±ä¼šæœ‰è¿‡å¤šçš„é¡µä»æ´»åŠ¨é“¾è¡¨è¢«ç§»åŠ¨åˆ°éæ´»åŠ¨é“¾è¡¨ã€‚
+ * è¿™æ ·ï¼ŒPFRAå°±ä¼šå›æ”¶å¤§é‡çš„é¡µæ¡†ï¼Œç³»ç»Ÿæ€§èƒ½ä¼šå—åˆ°å½±å“ã€‚åè¿‡æ¥ï¼Œå¦‚æœå‡½æ•°å¤ªæ‡’æƒ°ï¼Œå°±æ²¡æœ‰è¶³å¤Ÿçš„æœªç”¨é¡µæ¥è¡¥å……éæ´»åŠ¨é“¾è¡¨ï¼ŒPFRAå°±ä¸èƒ½å›æ”¶å†…å­˜ã€‚
+ * å› æ­¤ï¼Œå¼€å§‹æ—¶ï¼Œå¯¹æ¯æ¬¡è°ƒç”¨ï¼Œæ‰«æéæ´»åŠ¨é“¾è¡¨ä¸­å°‘é‡çš„é¡µï¼Œå½“PFRAå¾ˆéš¾å›æ”¶å†…å­˜æ—¶ï¼Œå‡½æ•°åœ¨æ¯æ¬¡è°ƒç”¨æ—¶å°±å¢åŠ æ‰«ææ´»åŠ¨çš„æ¬¡æ•°ï¼Œä¹Ÿå°±æ˜¯é™ä½scan_controlæ•°æ®ç»“æ„ä¸­priorityå­—æ®µçš„å€¼ã€‚
+ *		zone:		æŒ‡å‘ä¸€ä¸ªå†…å­˜ç®¡ç†åŒºæè¿°ç¬¦ã€‚
+ *		sc:			æŒ‡å‘ä¸€ä¸ªscan_controlç»“æ„ã€‚è¯¥ç»“æ„å­˜æ”¾ç€å›æ”¶æ“ä½œæ‰§è¡Œæ—¶çš„æœ‰å…³ä¿¡æ¯ã€‚
  */
 static void
 refill_inactive_zone(struct zone *zone, struct scan_control *sc)
@@ -827,16 +827,16 @@ refill_inactive_zone(struct zone *zone, struct scan_control *sc)
 	long swap_tendency;
 
 	/**
-	 * °ÑÈÔÁôÔÚpagevecÊı¾İ½á¹¹ÖĞµÄËùÓĞÒ³ÒÆÈë»î¶¯Óë·Ç»î¶¯Á´±í¡£
+	 * æŠŠä»ç•™åœ¨pagevecæ•°æ®ç»“æ„ä¸­çš„æ‰€æœ‰é¡µç§»å…¥æ´»åŠ¨ä¸éæ´»åŠ¨é“¾è¡¨ã€‚
 	 */
 	lru_add_drain();
 	pgmoved = 0;
 	/**
-	 * »ñµÃlru_lock×ÔĞıËø¡£
+	 * è·å¾—lru_lockè‡ªæ—‹é”ã€‚
 	 */
 	spin_lock_irq(&zone->lru_lock);
 	/**
-	 * ¶Ô»î¶¯Á´±íÖĞµÄÒ³½øĞĞÊ×´ÎÁ´±í£¬´ÓÁ´±íµÄµ×²¿¿ªÊ¼ÏòÉÏ£¬Ò»Ö±Ö´ĞĞÏÂÈ¥£¬Ö±µ½Á´±íÎª¿Õ»òÕß´ïµ½É¨ÃèµÄÒ³Êı¡£
+	 * å¯¹æ´»åŠ¨é“¾è¡¨ä¸­çš„é¡µè¿›è¡Œé¦–æ¬¡é“¾è¡¨ï¼Œä»é“¾è¡¨çš„åº•éƒ¨å¼€å§‹å‘ä¸Šï¼Œä¸€ç›´æ‰§è¡Œä¸‹å»ï¼Œç›´åˆ°é“¾è¡¨ä¸ºç©ºæˆ–è€…è¾¾åˆ°æ‰«æçš„é¡µæ•°ã€‚
 	 */
 	while (pgscanned < nr_pages && !list_empty(&zone->active_list)) {
 		page = lru_to_page(&zone->active_list);
@@ -845,7 +845,7 @@ refill_inactive_zone(struct zone *zone, struct scan_control *sc)
 			BUG();
 		list_del(&page->lru);
 		/**
-		 * µİÔöÒ³ÒıÓÃ¼ÆÊı£¬Èç¹ûÒ³¿òÒıÓÃ¼ÆÊıÆ÷ÊÇ0£¬¾Í½«Ëü·Å»Ø»î¶¯Á´±í¡£
+		 * é€’å¢é¡µå¼•ç”¨è®¡æ•°ï¼Œå¦‚æœé¡µæ¡†å¼•ç”¨è®¡æ•°å™¨æ˜¯0ï¼Œå°±å°†å®ƒæ”¾å›æ´»åŠ¨é“¾è¡¨ã€‚
 		 */
 		if (get_page_testone(page)) {
 			/*
@@ -855,15 +855,15 @@ refill_inactive_zone(struct zone *zone, struct scan_control *sc)
 			 * LRU
 			 */
 			/**
-			 * ÒıÓÃ¼ÆÊıÎª0µÄÒ³¿òÒ»¶¨ÊôÓÚ¹ÜÀíÇøµÄ»ï°éÏµÍ³¡£ÊÍ·ÅÒ³¿òÊ±£¬»áµİ¼õÊ¹ÓÃ¼ÆÊıÆ÷£¬È»ºó½«Ò³¿ò´ÓLRUÁ´±íÉ¾³ı²¢²åÈë»ï°éÏµÍ³Á´±í£¬²¢½«Ò³¿ò´ÓLRUÁ´±íÉ¾³ı²¢²åÈë»ï°éÏµÍ³¡£
-			 * ÔÚµİ¼õÒıÓÃ¼ÆÊıºó£¬»¹Ã»ÓĞ´ÓLRUÖĞÉ¾³ıÇ°£¬¿ÉÄÜ»á½øÈë´ËÁ÷³Ì¡£
+			 * å¼•ç”¨è®¡æ•°ä¸º0çš„é¡µæ¡†ä¸€å®šå±äºç®¡ç†åŒºçš„ä¼™ä¼´ç³»ç»Ÿã€‚é‡Šæ”¾é¡µæ¡†æ—¶ï¼Œä¼šé€’å‡ä½¿ç”¨è®¡æ•°å™¨ï¼Œç„¶åå°†é¡µæ¡†ä»LRUé“¾è¡¨åˆ é™¤å¹¶æ’å…¥ä¼™ä¼´ç³»ç»Ÿé“¾è¡¨ï¼Œå¹¶å°†é¡µæ¡†ä»LRUé“¾è¡¨åˆ é™¤å¹¶æ’å…¥ä¼™ä¼´ç³»ç»Ÿã€‚
+			 * åœ¨é€’å‡å¼•ç”¨è®¡æ•°åï¼Œè¿˜æ²¡æœ‰ä»LRUä¸­åˆ é™¤å‰ï¼Œå¯èƒ½ä¼šè¿›å…¥æ­¤æµç¨‹ã€‚
 			 */
 			__put_page(page);
 			SetPageLRU(page);
 			list_add(&page->lru, &zone->active_list);
 		} else {
 			/**
-			 * ½«É¨Ãèµ½µÄÒ³¼ÓÈëµ½ÁÙÊ±Á´±íÖĞ¡£
+			 * å°†æ‰«æåˆ°çš„é¡µåŠ å…¥åˆ°ä¸´æ—¶é“¾è¡¨ä¸­ã€‚
 			 */
 			list_add(&page->lru, &l_hold);
 			pgmoved++;
@@ -871,12 +871,12 @@ refill_inactive_zone(struct zone *zone, struct scan_control *sc)
 		pgscanned++;
 	}
 	/**
-	 * ¶ÔÉ¨ÃèµÄÒ³½øĞĞ¼ÆÊı¡£
+	 * å¯¹æ‰«æçš„é¡µè¿›è¡Œè®¡æ•°ã€‚
 	 */
 	zone->pages_scanned += pgscanned;
 	zone->nr_active -= pgmoved;
 	/**
-	 * ÊÍ·Å×ÔĞıËø¡£
+	 * é‡Šæ”¾è‡ªæ—‹é”ã€‚
 	 */
 	spin_unlock_irq(&zone->lru_lock);
 
@@ -885,7 +885,7 @@ refill_inactive_zone(struct zone *zone, struct scan_control *sc)
 	 * pages.  0 -> no problems.  100 -> great trouble.
 	 */
 	/**
-	 * ¼ÆËã½»»»ÇãÏòÖµ=Ó³Éä±ÈÀı/2 + ¸ººÉÖµ + ½»»»Öµ¡£
+	 * è®¡ç®—äº¤æ¢å€¾å‘å€¼=æ˜ å°„æ¯”ä¾‹/2 + è´Ÿè·å€¼ + äº¤æ¢å€¼ã€‚
 	 */
 	distress = 100 >> zone->prev_priority;
 
@@ -915,21 +915,21 @@ refill_inactive_zone(struct zone *zone, struct scan_control *sc)
 		reclaim_mapped = 1;
 
 	/**
-	 * ¶Ô¾Ö²¿Á´±íl_holdÖĞµÄÒ³ÔËĞĞµÚ¶ş´ÎÑ­»·¡£½«ÆäÖĞµÄÒ³·Öµ½Á½¸ö×ÓÁ´±íl_activeºÍl_inactiveÖĞ¡£
+	 * å¯¹å±€éƒ¨é“¾è¡¨l_holdä¸­çš„é¡µè¿è¡Œç¬¬äºŒæ¬¡å¾ªç¯ã€‚å°†å…¶ä¸­çš„é¡µåˆ†åˆ°ä¸¤ä¸ªå­é“¾è¡¨l_activeå’Œl_inactiveä¸­ã€‚
 	 */
 	while (!list_empty(&l_hold)) {
 		cond_resched();
 		page = lru_to_page(&l_hold);
 		list_del(&page->lru);
 		/**
-		 * Èç¹ûÒ³ÃæÊÇ½ø³ÌÓÃ»§Ì¬µØÖ·¿Õ¼äµÄÒ³¡£
+		 * å¦‚æœé¡µé¢æ˜¯è¿›ç¨‹ç”¨æˆ·æ€åœ°å€ç©ºé—´çš„é¡µã€‚
 		 */
 		if (page_mapped(page)) {
 			/**
-			 * Èç¹ûreclaim_mappedÎª0£¬±íÊ¾½»»»ÇãÏòÖµĞ¡ÓÚ100
-			 * »òÕßÊÇÄäÃûÒ³µ«ÊÇÓÖÃ»ÓĞ¼¤»îµÄ½»»»Çø
-			 * »òÕßpage_referenced·µ»ØÕıÖµ£¬±íÃ÷¸ÃÒ³µÄÄ³¸öÒ³±íÏî×î½ü±»·ÃÎÊ¹ı¡£
-			 * ÒÔÉÏÇé¿ö£¬¶¼½«Ò³·ÅÈë»î¶¯Á´±í
+			 * å¦‚æœreclaim_mappedä¸º0ï¼Œè¡¨ç¤ºäº¤æ¢å€¾å‘å€¼å°äº100
+			 * æˆ–è€…æ˜¯åŒ¿åé¡µä½†æ˜¯åˆæ²¡æœ‰æ¿€æ´»çš„äº¤æ¢åŒº
+			 * æˆ–è€…page_referencedè¿”å›æ­£å€¼ï¼Œè¡¨æ˜è¯¥é¡µçš„æŸä¸ªé¡µè¡¨é¡¹æœ€è¿‘è¢«è®¿é—®è¿‡ã€‚
+			 * ä»¥ä¸Šæƒ…å†µï¼Œéƒ½å°†é¡µæ”¾å…¥æ´»åŠ¨é“¾è¡¨
 			 */
 			if (!reclaim_mapped ||
 			    (total_swap_pages == 0 && PageAnon(page)) ||
@@ -939,7 +939,7 @@ refill_inactive_zone(struct zone *zone, struct scan_control *sc)
 			}
 		}
 		/**
-		 * ²»Âú×ãÒÔÉÏÌõ¼ş£¬½«Ò³·ÅÈë·Ç»î¶¯Á´±í¡£
+		 * ä¸æ»¡è¶³ä»¥ä¸Šæ¡ä»¶ï¼Œå°†é¡µæ”¾å…¥éæ´»åŠ¨é“¾è¡¨ã€‚
 		 */
 		list_add(&page->lru, &l_inactive);
 	}
@@ -947,11 +947,11 @@ refill_inactive_zone(struct zone *zone, struct scan_control *sc)
 	pagevec_init(&pvec, 1);
 	pgmoved = 0;
 	/**
-	 * ÔÙ´Î»ñµÃlru_lock×ÔĞıËø¡£
+	 * å†æ¬¡è·å¾—lru_lockè‡ªæ—‹é”ã€‚
 	 */
 	spin_lock_irq(&zone->lru_lock);
 	/**
-	 * ¶Ô·Ç»î¶¯Á´±í½øĞĞµÚÈı´ÎÑ­»·¡£°ÑÒ³ÒÆÈë¹ÜÀíÇøµÄ·Ç»î¶¯Á´±í¡£²¢¸üĞÂ·Ç»î¶¯Ò³¼ÆÊıÖµ¡£
+	 * å¯¹éæ´»åŠ¨é“¾è¡¨è¿›è¡Œç¬¬ä¸‰æ¬¡å¾ªç¯ã€‚æŠŠé¡µç§»å…¥ç®¡ç†åŒºçš„éæ´»åŠ¨é“¾è¡¨ã€‚å¹¶æ›´æ–°éæ´»åŠ¨é¡µè®¡æ•°å€¼ã€‚
 	 */
 	while (!list_empty(&l_inactive)) {
 		page = lru_to_page(&l_inactive);
@@ -982,7 +982,7 @@ refill_inactive_zone(struct zone *zone, struct scan_control *sc)
 	}
 
 	/**
-	 * ¶Ô¾Ö²¿»î¶¯Á´±í½øĞĞÑ­»·£¬°ÑÒ³ÒÆÈë¹ÜÀíÇøµÄ»î¶¯Á´±í£¬¸üĞÂ»î¶¯Ò³¼ÆÊı¡£
+	 * å¯¹å±€éƒ¨æ´»åŠ¨é“¾è¡¨è¿›è¡Œå¾ªç¯ï¼ŒæŠŠé¡µç§»å…¥ç®¡ç†åŒºçš„æ´»åŠ¨é“¾è¡¨ï¼Œæ›´æ–°æ´»åŠ¨é¡µè®¡æ•°ã€‚
 	 */
 	pgmoved = 0;
 	while (!list_empty(&l_active)) {
@@ -1003,7 +1003,7 @@ refill_inactive_zone(struct zone *zone, struct scan_control *sc)
 	}
 	zone->nr_active += pgmoved;
 	/**
-	 * ÊÍ·Å×ÔĞıËø²¢·µ»Ø¡£
+	 * é‡Šæ”¾è‡ªæ—‹é”å¹¶è¿”å›ã€‚
 	 */
 	spin_unlock_irq(&zone->lru_lock);
 	pagevec_release(&pvec);
@@ -1016,10 +1016,10 @@ refill_inactive_zone(struct zone *zone, struct scan_control *sc)
  * This is a basic per-zone page freer.  Used by both kswapd and direct reclaim.
  */
 /**
- * ¶ÔÒ³¸ßËÙ»º´æºÍÓÃ»§Ì¬µØÖ·¿Õ¼ä½øĞĞÒ³»ØÊÕ¡£±¾º¯ÊıµÄÄ¿±êÊÇ´Ó¹ÜÀíÇø·Ç»î¶¯Á´±í»ØÊÕ32Ò³¡£
- * ËüÃ¿´ÎÔÚ¸ü´óµÄÒ»¶Î¹ÜÀíÇø·Ç»î¶¯Á´±íÖĞÖØ¸´µ÷ÓÃ¸¨Öúº¯Êıshrink_cache¡£¶øÇÒ±¾º¯ÊıÖØ¸´µ÷ÓÃrefill_inactive_zoneº¯ÊıÀ´²¹³ä¹ÜÀíÇø·Ç»î¶¯Á´±í¡£
- *		zone:		Òª½øĞĞ»ØÊÕµÄ¹ÜÀíÇø¡£
- *		sc:			¿ØÖÆ»ØÊÕµÄ²ÎÊı¡£
+ * å¯¹é¡µé«˜é€Ÿç¼“å­˜å’Œç”¨æˆ·æ€åœ°å€ç©ºé—´è¿›è¡Œé¡µå›æ”¶ã€‚æœ¬å‡½æ•°çš„ç›®æ ‡æ˜¯ä»ç®¡ç†åŒºéæ´»åŠ¨é“¾è¡¨å›æ”¶32é¡µã€‚
+ * å®ƒæ¯æ¬¡åœ¨æ›´å¤§çš„ä¸€æ®µç®¡ç†åŒºéæ´»åŠ¨é“¾è¡¨ä¸­é‡å¤è°ƒç”¨è¾…åŠ©å‡½æ•°shrink_cacheã€‚è€Œä¸”æœ¬å‡½æ•°é‡å¤è°ƒç”¨refill_inactive_zoneå‡½æ•°æ¥è¡¥å……ç®¡ç†åŒºéæ´»åŠ¨é“¾è¡¨ã€‚
+ *		zone:		è¦è¿›è¡Œå›æ”¶çš„ç®¡ç†åŒºã€‚
+ *		sc:			æ§åˆ¶å›æ”¶çš„å‚æ•°ã€‚
  */
 static void
 shrink_zone(struct zone *zone, struct scan_control *sc)
@@ -1032,11 +1032,11 @@ shrink_zone(struct zone *zone, struct scan_control *sc)
 	 * slowly sift through the active list.
 	 */
 	/**
-	 * Ôö¼ÓÉ¨ÃèÒ³Êı¡£Èç¹ûÓÅÏÈ¼¶Îª0£¬ÄÇÃ´¾Í½«ËùÓĞ»î¶¯Ò³¼ÓÈëµ½É¨ÃèÒ³ÖĞ¡£
+	 * å¢åŠ æ‰«æé¡µæ•°ã€‚å¦‚æœä¼˜å…ˆçº§ä¸º0ï¼Œé‚£ä¹ˆå°±å°†æ‰€æœ‰æ´»åŠ¨é¡µåŠ å…¥åˆ°æ‰«æé¡µä¸­ã€‚
 	 */
 	zone->nr_scan_active += (zone->nr_active >> sc->priority) + 1;
 	/**
-	 * Èç¹û¿ÉÉ¨Ãè»î¶¯Ò³´óÓÚ32£¬¾Í½«Ëü¸³¸ø¾Ö²¿±äÁ¿nr_active¡£
+	 * å¦‚æœå¯æ‰«ææ´»åŠ¨é¡µå¤§äº32ï¼Œå°±å°†å®ƒèµ‹ç»™å±€éƒ¨å˜é‡nr_activeã€‚
 	 */
 	nr_active = zone->nr_scan_active;
 	if (nr_active >= SWAP_CLUSTER_MAX)
@@ -1045,11 +1045,11 @@ shrink_zone(struct zone *zone, struct scan_control *sc)
 		nr_active = 0;
 
 	/**
-	 * Ôö¼ÓÉ¨ÃèÒ³Êı¡£Èç¹ûÓÅÏÈ¼¶Îª0£¬ÄÇÃ´¾Í½«ËùÓĞ·Ç»î¶¯Ò³¼ÓÈëµ½É¨ÃèÒ³ÖĞ¡£
+	 * å¢åŠ æ‰«æé¡µæ•°ã€‚å¦‚æœä¼˜å…ˆçº§ä¸º0ï¼Œé‚£ä¹ˆå°±å°†æ‰€æœ‰éæ´»åŠ¨é¡µåŠ å…¥åˆ°æ‰«æé¡µä¸­ã€‚
 	 */
 	zone->nr_scan_inactive += (zone->nr_inactive >> sc->priority) + 1;
 	/**
-	 * Èç¹û¿ÉÉ¨Ãè·Ç»î¶¯Ò³´óÓÚ32£¬¾Í½«Ëü¸³¸ø¾Ö²¿±äÁ¿nr_inactive¡£
+	 * å¦‚æœå¯æ‰«æéæ´»åŠ¨é¡µå¤§äº32ï¼Œå°±å°†å®ƒèµ‹ç»™å±€éƒ¨å˜é‡nr_inactiveã€‚
 	 */
 	nr_inactive = zone->nr_scan_inactive;
 	if (nr_inactive >= SWAP_CLUSTER_MAX)
@@ -1058,16 +1058,16 @@ shrink_zone(struct zone *zone, struct scan_control *sc)
 		nr_inactive = 0;
 
 	/**
-	 * ÉèÖÃ¿ØÖÆ²ÎÊıµÄ»ØÊÕÒ³ÊıÁ¿Îª32¡£
+	 * è®¾ç½®æ§åˆ¶å‚æ•°çš„å›æ”¶é¡µæ•°é‡ä¸º32ã€‚
 	 */
 	sc->nr_to_reclaim = SWAP_CLUSTER_MAX;
 
 	/**
-	 * Èç¹ûnr_activeºÍnr_inactive¶¼Îª0£¬Ôò²»×öÈÎºÎÊÂÇé£¬µ±ÓÃ»§Ì¬½ø³ÌÃ»ÓĞ·ÖÅäÈÎºÎÒ³Ê±²Å³öÏÖÕâÖÖÇé¿ö¡£
+	 * å¦‚æœnr_activeå’Œnr_inactiveéƒ½ä¸º0ï¼Œåˆ™ä¸åšä»»ä½•äº‹æƒ…ï¼Œå½“ç”¨æˆ·æ€è¿›ç¨‹æ²¡æœ‰åˆ†é…ä»»ä½•é¡µæ—¶æ‰å‡ºç°è¿™ç§æƒ…å†µã€‚
 	 */
 	while (nr_active || nr_inactive) {
 		/**
-		 * Èç¹ûnr_activeÎªÕı£¬Ôò²¹³ä·Ç»î¶¯Á´±í¡£×î¶à²¹³ä32Ò³¡£
+		 * å¦‚æœnr_activeä¸ºæ­£ï¼Œåˆ™è¡¥å……éæ´»åŠ¨é“¾è¡¨ã€‚æœ€å¤šè¡¥å……32é¡µã€‚
 		 */
 		if (nr_active) {
 			sc->nr_to_scan = min(nr_active,
@@ -1077,7 +1077,7 @@ shrink_zone(struct zone *zone, struct scan_control *sc)
 		}
 
 		/**
-		 * ½øĞĞÒ³»ØÊÕ
+		 * è¿›è¡Œé¡µå›æ”¶
 		 */
 		if (nr_inactive) {
 			sc->nr_to_scan = min(nr_inactive,
@@ -1085,7 +1085,7 @@ shrink_zone(struct zone *zone, struct scan_control *sc)
 			nr_inactive -= sc->nr_to_scan;
 			shrink_cache(zone, sc);
 			/**
-			 * Èç¹û³É¹¦»ØÊÕ³¬¹ı32Ò³£¬ÔòÍË³ö¡£
+			 * å¦‚æœæˆåŠŸå›æ”¶è¶…è¿‡32é¡µï¼Œåˆ™é€€å‡ºã€‚
 			 */
 			if (sc->nr_to_reclaim <= 0)
 				break;
@@ -1110,7 +1110,7 @@ shrink_zone(struct zone *zone, struct scan_control *sc)
  * scan then give up on it.
  */
 /** 
- * ÓÉtry_to_free_pagesµ÷ÓÃ¡£¶ÔzonesÁ´±íÖĞµÄÃ¿¸ö¹ÜÀíÇøµ÷ÓÃshrink_zoneº¯Êı¡£
+ * ç”±try_to_free_pagesè°ƒç”¨ã€‚å¯¹zonesé“¾è¡¨ä¸­çš„æ¯ä¸ªç®¡ç†åŒºè°ƒç”¨shrink_zoneå‡½æ•°ã€‚
  */
 static void
 shrink_caches(struct zone **zones, struct scan_control *sc)
@@ -1118,7 +1118,7 @@ shrink_caches(struct zone **zones, struct scan_control *sc)
 	int i;
 
 	/**
-	 * ±éÀúÃ¿¸ö¹ÜÀíÇø£¬¶ÔÆäµ÷ÓÃshrink_zone»ØÊÕÆäÄÚ´æ¡£
+	 * éå†æ¯ä¸ªç®¡ç†åŒºï¼Œå¯¹å…¶è°ƒç”¨shrink_zoneå›æ”¶å…¶å†…å­˜ã€‚
 	 */
 	for (i = 0; zones[i] != NULL; i++) {
 		struct zone *zone = zones[i];
@@ -1127,23 +1127,23 @@ shrink_caches(struct zone **zones, struct scan_control *sc)
 			continue;
 
 		/**
-		 * ¸üĞÂ¹ÜÀíÇøµÄtemp_priority£¬ÕâÊÇÉ¨Ãè²Ù×÷µÄµ±Ç°ÓÅÏÈ¼¶¡£
+		 * æ›´æ–°ç®¡ç†åŒºçš„temp_priorityï¼Œè¿™æ˜¯æ‰«ææ“ä½œçš„å½“å‰ä¼˜å…ˆçº§ã€‚
 		 */
 		zone->temp_priority = sc->priority;
 		/**
-		 * Èç¹ûPFRAµÄÉÏÒ»´Îµ÷ÓÃÓÅÏÈ¼¶¸ßÓÚµ±Ç°ÓÅÏÈ¼¶£¬ËµÃ÷¹ÜÀí½øĞĞÒ³¿ò»ØÊÕ±äµÃ¸üÄÑÁË£¬Ôò°Ñµ±Ç°ÓÅÏÈ¼¶ÉèÖÃ¸øprev_priority
+		 * å¦‚æœPFRAçš„ä¸Šä¸€æ¬¡è°ƒç”¨ä¼˜å…ˆçº§é«˜äºå½“å‰ä¼˜å…ˆçº§ï¼Œè¯´æ˜ç®¡ç†è¿›è¡Œé¡µæ¡†å›æ”¶å˜å¾—æ›´éš¾äº†ï¼Œåˆ™æŠŠå½“å‰ä¼˜å…ˆçº§è®¾ç½®ç»™prev_priority
 		 */
 		if (zone->prev_priority > sc->priority)
 			zone->prev_priority = sc->priority;
 
 		/**
-		 * Èç¹ûµ±Ç°¹ÜÀíµÄall_unreclaimableÖÃÎ»£¬ËµÃ÷µ±Ç°¹ÜÀíÇøÒÑ¾­É¨ÃèÍêËùÓĞÒ³Ãæ£¬²¢ÇÒµ±Ç°ÓÅÏÈ²»ÊÇ12£¬¾ÍÂÔ¹ıµ±Ç°¹ÜÀíÇø¡£
+		 * å¦‚æœå½“å‰ç®¡ç†çš„all_unreclaimableç½®ä½ï¼Œè¯´æ˜å½“å‰ç®¡ç†åŒºå·²ç»æ‰«æå®Œæ‰€æœ‰é¡µé¢ï¼Œå¹¶ä¸”å½“å‰ä¼˜å…ˆä¸æ˜¯12ï¼Œå°±ç•¥è¿‡å½“å‰ç®¡ç†åŒºã€‚
 		 */
 		if (zone->all_unreclaimable && sc->priority != DEF_PRIORITY)
 			continue;	/* Let kswapd poll it */
 
 		/**
-		 * ÔÚµ±Ç°¹ÜÀíÇøÖĞ½øĞĞ»ØÊÕ¡£
+		 * åœ¨å½“å‰ç®¡ç†åŒºä¸­è¿›è¡Œå›æ”¶ã€‚
 		 */
 		shrink_zone(zone, sc);
 	}
@@ -1163,12 +1163,12 @@ shrink_caches(struct zone **zones, struct scan_control *sc)
  * allocation attempt will fail.
  */
 /**
- * ÄÚ´æ½ôÈ±»ØÊÕ£¬µ±´Ó»ï°éÏµÍ³·ÖÅäÒ»¸ö»ò¶à¸öÒ³¿òÊ±£¬µ÷ÓÃ±¾º¯Êı¡£
- * ±¾º¯ÊıµÄÄ¿±êÊÇÍ¨¹ıÖØ¸´µ÷ÓÃshrink_cachesºÍshrink_slabº¯ÊıÊÍ·ÅÖÁÉÙ32¸öÒ³¿ò¡£Ã¿´Îµ÷ÓÃºóÓÅÏÈ¼¶»á±ÈÇ°Ò»´ÎÌá¸ß¡£
- * Èç¹ûËùÓĞ13´ÎÉ¨Ãè¶¼Ã»ÄÜÊÍ·Å32¸öÒ³¿ò£¬Ëü¾ÍÉ¾³ıÒ»¸ö½ø³Ì£¬ÊÍ·ÅËüµÄËùÓĞÒ³¿ò¡£
- *		zones:		Òª»ØÊÕµÄÒ³ËùÔÚµÄÄÚ´æ¹ÜÀíÇøÁ´±í¡£
- *		gfp_mask:	ÓÃÓÚÊ§°ÜµÄÄÚ´æ·ÖÅäµÄÒ»×é·ÖÅä±êÖ¾¡£
- *		order:		Ã»ÓĞÊ¹ÓÃ¡£
+ * å†…å­˜ç´§ç¼ºå›æ”¶ï¼Œå½“ä»ä¼™ä¼´ç³»ç»Ÿåˆ†é…ä¸€ä¸ªæˆ–å¤šä¸ªé¡µæ¡†æ—¶ï¼Œè°ƒç”¨æœ¬å‡½æ•°ã€‚
+ * æœ¬å‡½æ•°çš„ç›®æ ‡æ˜¯é€šè¿‡é‡å¤è°ƒç”¨shrink_cacheså’Œshrink_slabå‡½æ•°é‡Šæ”¾è‡³å°‘32ä¸ªé¡µæ¡†ã€‚æ¯æ¬¡è°ƒç”¨åä¼˜å…ˆçº§ä¼šæ¯”å‰ä¸€æ¬¡æé«˜ã€‚
+ * å¦‚æœæ‰€æœ‰13æ¬¡æ‰«æéƒ½æ²¡èƒ½é‡Šæ”¾32ä¸ªé¡µæ¡†ï¼Œå®ƒå°±åˆ é™¤ä¸€ä¸ªè¿›ç¨‹ï¼Œé‡Šæ”¾å®ƒçš„æ‰€æœ‰é¡µæ¡†ã€‚
+ *		zones:		è¦å›æ”¶çš„é¡µæ‰€åœ¨çš„å†…å­˜ç®¡ç†åŒºé“¾è¡¨ã€‚
+ *		gfp_mask:	ç”¨äºå¤±è´¥çš„å†…å­˜åˆ†é…çš„ä¸€ç»„åˆ†é…æ ‡å¿—ã€‚
+ *		order:		æ²¡æœ‰ä½¿ç”¨ã€‚
  */
 int try_to_free_pages(struct zone **zones,
 		unsigned int gfp_mask, unsigned int order)
@@ -1182,7 +1182,7 @@ int try_to_free_pages(struct zone **zones,
 	int i;
 
 	/**
-	 * ³õÊ¼»¯scan_control½á¹¹£¬½«gfp_mask´æÈë¡£
+	 * åˆå§‹åŒ–scan_controlç»“æ„ï¼Œå°†gfp_maskå­˜å…¥ã€‚
 	 */ 
 	sc.gfp_mask = gfp_mask;
 	sc.may_writepage = 0;
@@ -1190,7 +1190,7 @@ int try_to_free_pages(struct zone **zones,
 	inc_page_state(allocstall);
 
 	/**
-	 * ¶ÔÃ¿¸ö¹ÜÀíÇø£¬½«Æätemp_priorityÉèÎª³õÊ¼ÓÅÏÈ¼¶£¬²¢¼ÆËãËùÓĞ¹ÜÀíÇøLRUÁ´±íÖĞµÄ×ÜÒ³Êı¡£
+	 * å¯¹æ¯ä¸ªç®¡ç†åŒºï¼Œå°†å…¶temp_priorityè®¾ä¸ºåˆå§‹ä¼˜å…ˆçº§ï¼Œå¹¶è®¡ç®—æ‰€æœ‰ç®¡ç†åŒºLRUé“¾è¡¨ä¸­çš„æ€»é¡µæ•°ã€‚
 	 */
 	for (i = 0; zones[i] != NULL; i++) {
 		struct zone *zone = zones[i];
@@ -1200,33 +1200,33 @@ int try_to_free_pages(struct zone **zones,
 	}
 
 	/**
-	 * ´ÓÓÅÏÈ¼¶12µ½0£¬Ö´ĞĞ×î¶à13´ÎµÄÑ­»·¡£½øĞĞ»ØÊÕ²Ù×÷¡£
+	 * ä»ä¼˜å…ˆçº§12åˆ°0ï¼Œæ‰§è¡Œæœ€å¤š13æ¬¡çš„å¾ªç¯ã€‚è¿›è¡Œå›æ”¶æ“ä½œã€‚
 	 */
 	for (priority = DEF_PRIORITY; priority >= 0; priority--) {
 		/**
-		 * ¸üĞÂscµÄÒ»Ğ©×Ö¶Î£¬°ÑÓÃ»§Ì¬½ø³ÌµÄ×ÜÒ³Êı´æÈënr_mapped×Ö¶Î£¬°Ñ±¾´Îµü´úµÄµ±Ç°ÓÅÏÈ¼¶´æÈëpriority×Ö¶Î¡£
+		 * æ›´æ–°scçš„ä¸€äº›å­—æ®µï¼ŒæŠŠç”¨æˆ·æ€è¿›ç¨‹çš„æ€»é¡µæ•°å­˜å…¥nr_mappedå­—æ®µï¼ŒæŠŠæœ¬æ¬¡è¿­ä»£çš„å½“å‰ä¼˜å…ˆçº§å­˜å…¥priorityå­—æ®µã€‚
 		 */
 		sc.nr_mapped = read_page_state(nr_mapped);
 		sc.nr_scanned = 0;
 		sc.nr_reclaimed = 0;
 		sc.priority = priority;
 		/**
-		 * shrink_cachesÉ¨Ãè¹ÜÀíÇøµÄ·Ç»î¶¯Ò³£¬
+		 * shrink_cachesæ‰«æç®¡ç†åŒºçš„éæ´»åŠ¨é¡µï¼Œ
 		 */
 		shrink_caches(zones, &sc);
 		/**
-		 * shrink_slab´Ó¿ÉÑ¹ËõÄÚºË¸ßËÙ»º´æÖĞ»ØÊÕÒ³¡£
+		 * shrink_slabä»å¯å‹ç¼©å†…æ ¸é«˜é€Ÿç¼“å­˜ä¸­å›æ”¶é¡µã€‚
 		 */
 		shrink_slab(sc.nr_scanned, gfp_mask, lru_pages);
 		/**
-		 * Èç¹ûreclaim_state·Ç¿Õ£¬Ôò½«slab·ÖÅäÆ÷¸ßËÙ»º´æÖĞ»ØÊÕµÄÒ³Êı¼Óµ½nr_reclaimedÖĞ¡£
+		 * å¦‚æœreclaim_stateéç©ºï¼Œåˆ™å°†slabåˆ†é…å™¨é«˜é€Ÿç¼“å­˜ä¸­å›æ”¶çš„é¡µæ•°åŠ åˆ°nr_reclaimedä¸­ã€‚
 		 */
 		if (reclaim_state) {
 			sc.nr_reclaimed += reclaim_state->reclaimed_slab;
 			reclaim_state->reclaimed_slab = 0;
 		}
 		/**
-		 * Èç¹û»ØÊÕµÄÒ³ÒÑ¾­´ïµ½32¸öÒ³(´ïµ½Ä¿±ê)£¬ÔòÌø³öÑ­»·¡£
+		 * å¦‚æœå›æ”¶çš„é¡µå·²ç»è¾¾åˆ°32ä¸ªé¡µ(è¾¾åˆ°ç›®æ ‡)ï¼Œåˆ™è·³å‡ºå¾ªç¯ã€‚
 		 */
 		if (sc.nr_reclaimed >= SWAP_CLUSTER_MAX) {
 			ret = 1;
@@ -1243,7 +1243,7 @@ int try_to_free_pages(struct zone **zones,
 		 * writeout.  So in laptop mode, write out the whole world.
 		 */
 		/**
-		 * Èç¹ûÃ»ÓĞ»ØÊÕ32¸öÒ³£¬µ«ÊÇÒÑ¾­É¨Ãè49Ò³£¬Ôòº¯Êıµ÷ÓÃwakeup_bdflush¼¤»îpdflushÄÚºËÏß³Ì¡£½«Ò³¸ßËÙ»º´æÖĞµÄÒ»Ğ©ÔàÒ³Ğ´Èë´ÅÅÌ¡£
+		 * å¦‚æœæ²¡æœ‰å›æ”¶32ä¸ªé¡µï¼Œä½†æ˜¯å·²ç»æ‰«æ49é¡µï¼Œåˆ™å‡½æ•°è°ƒç”¨wakeup_bdflushæ¿€æ´»pdflushå†…æ ¸çº¿ç¨‹ã€‚å°†é¡µé«˜é€Ÿç¼“å­˜ä¸­çš„ä¸€äº›è„é¡µå†™å…¥ç£ç›˜ã€‚
 		 */
 		if (total_scanned > SWAP_CLUSTER_MAX + SWAP_CLUSTER_MAX/2) {
 			wakeup_bdflush(laptop_mode ? 0 : total_scanned);
@@ -1252,15 +1252,15 @@ int try_to_free_pages(struct zone **zones,
 
 		/* Take a nap, wait for some writeback to complete */
 		/**
-		 * Èç¹ûÒÑ¾­Íê³É4´ÎÉ¨Ãèµ«ÊÇÃ»ÓĞ´ïµ½Ä¿±ê£¬Ôòµ÷ÓÃblk_congestion_wait¹ÒÆğ½ø³Ì¡£
-		 * Ò»Ö±µ½Ã»ÓĞÓµÈûµÄWRITEÇëÇó¶ÓÁĞ»ò100ms³¬Ê±µ½´ï¡£
+		 * å¦‚æœå·²ç»å®Œæˆ4æ¬¡æ‰«æä½†æ˜¯æ²¡æœ‰è¾¾åˆ°ç›®æ ‡ï¼Œåˆ™è°ƒç”¨blk_congestion_waitæŒ‚èµ·è¿›ç¨‹ã€‚
+		 * ä¸€ç›´åˆ°æ²¡æœ‰æ‹¥å¡çš„WRITEè¯·æ±‚é˜Ÿåˆ—æˆ–100msè¶…æ—¶åˆ°è¾¾ã€‚
 		 */
 		if (sc.nr_scanned && priority < DEF_PRIORITY - 2)
 			blk_congestion_wait(WRITE, HZ/10);
 	}
 out:
 	/**
-	 * »¹Ô­¹ÜÀíÇøÃèÊö·ûµÄprev_priority£¬´ËÖµ´æ·ÅÔÚtemp_priorityÖĞ¡£
+	 * è¿˜åŸç®¡ç†åŒºæè¿°ç¬¦çš„prev_priorityï¼Œæ­¤å€¼å­˜æ”¾åœ¨temp_priorityä¸­ã€‚
 	 */
 	for (i = 0; zones[i] != 0; i++)
 		zones[i]->prev_priority = zones[i]->temp_priority;
@@ -1293,7 +1293,7 @@ out:
  * across the zones.
  */
 /**
- * ±»kswapdµ÷ÓÃ£¬ÒÔ¶¨ÆÚ»ØÊÕÄÚ´æ½ÚµãµÄÄÚ´æ¡£
+ * è¢«kswapdè°ƒç”¨ï¼Œä»¥å®šæœŸå›æ”¶å†…å­˜èŠ‚ç‚¹çš„å†…å­˜ã€‚
  */
 static int balance_pgdat(pg_data_t *pgdat, int nr_pages, int order)
 {
@@ -1309,7 +1309,7 @@ loop_again:
 	total_scanned = 0;
 	total_reclaimed = 0;
 	/**
-	 * ½¨Á¢scÃèÊö·û¡£
+	 * å»ºç«‹scæè¿°ç¬¦ã€‚
 	 */
 	sc.gfp_mask = GFP_KERNEL;
 	sc.may_writepage = 0;
@@ -1318,7 +1318,7 @@ loop_again:
 	inc_page_state(pageoutrun);
 
 	/**
-	 * ½«ÄÚ´æ½ÚµãµÄÃ¿¸ö¹ÜÀíÇøÃèÊö·ûµÄtemp_priorityÉèÖÃ³É12.
+	 * å°†å†…å­˜èŠ‚ç‚¹çš„æ¯ä¸ªç®¡ç†åŒºæè¿°ç¬¦çš„temp_priorityè®¾ç½®æˆ12.
 	 */
 	for (i = 0; i < pgdat->nr_zones; i++) {
 		struct zone *zone = pgdat->node_zones + i;
@@ -1327,7 +1327,7 @@ loop_again:
 	}
 
 	/**
-	 * Ö´ĞĞÒ»¸öÑ­»·£¬½øĞĞ13´Îµü´ú£¬Ã¿´Îµü´úÊ±µÄÓÅÏÈ¼¶ÓĞËù±ä»¯¡£
+	 * æ‰§è¡Œä¸€ä¸ªå¾ªç¯ï¼Œè¿›è¡Œ13æ¬¡è¿­ä»£ï¼Œæ¯æ¬¡è¿­ä»£æ—¶çš„ä¼˜å…ˆçº§æœ‰æ‰€å˜åŒ–ã€‚
 	 */
 	for (priority = DEF_PRIORITY; priority >= 0; priority--) {
 		int end_zone = 0;	/* Inclusive.  0 = ZONE_DMA */
@@ -1341,7 +1341,7 @@ loop_again:
 			 * zone which needs scanning
 			 */
 			/**
-			 * É¨ÃèÃ¿¸ö¹ÜÀíÇø£¬Ñ°ÕÒ¿ÕÏĞÒ³¿òÊı²»×ãµÄ×î¸ß¹ÜÀíÇø¡£
+			 * æ‰«ææ¯ä¸ªç®¡ç†åŒºï¼Œå¯»æ‰¾ç©ºé—²é¡µæ¡†æ•°ä¸è¶³çš„æœ€é«˜ç®¡ç†åŒºã€‚
 			 */
 			for (i = pgdat->nr_zones - 1; i >= 0; i--) {
 				struct zone *zone = pgdat->node_zones + i;
@@ -1354,7 +1354,7 @@ loop_again:
 					continue;
 
 				/**
-				 * Ä³¸ö¹ÜÀíÇøµÄ¿ÉÓÃÄÚ´æµÍÓÚË®Ïß£¬¿ªÊ¼É¨Ãè¹ı³Ì¡£
+				 * æŸä¸ªç®¡ç†åŒºçš„å¯ç”¨å†…å­˜ä½äºæ°´çº¿ï¼Œå¼€å§‹æ‰«æè¿‡ç¨‹ã€‚
 				 */
 				if (!zone_watermark_ok(zone, order,
 						zone->pages_high, 0, 0, 0)) {
@@ -1364,7 +1364,7 @@ loop_again:
 			}
 
 			/**
-			 * ËùÓĞ¹ÜÀíÇøµÄ¿ÉÓÃÄÚ´æ¶¼¸ßÓÚË®Ïß£¬ÍË³ö¡£
+			 * æ‰€æœ‰ç®¡ç†åŒºçš„å¯ç”¨å†…å­˜éƒ½é«˜äºæ°´çº¿ï¼Œé€€å‡ºã€‚
 			 */
 			goto out;
 		} else {
@@ -1372,7 +1372,7 @@ loop_again:
 		}
 scan:
 		/**
-		 * ÔÙ´ÎÉ¨Ãè¹ÜÀíÇø£¬¼ÆËãËùÓĞ»î¶¯Á´±íºÍ·Ç»î¶¯Á´±íÉÏµÄËùÓĞÒ³¡£
+		 * å†æ¬¡æ‰«æç®¡ç†åŒºï¼Œè®¡ç®—æ‰€æœ‰æ´»åŠ¨é“¾è¡¨å’Œéæ´»åŠ¨é“¾è¡¨ä¸Šçš„æ‰€æœ‰é¡µã€‚
 		 */
 		for (i = 0; i <= end_zone; i++) {
 			struct zone *zone = pgdat->node_zones + i;
@@ -1390,7 +1390,7 @@ scan:
 		 * cause too much scanning of the lower zones.
 		 */
 		/**
-		 * ÔÙ´ÎÉ¨Ãè¹ÜÀíÇø£¬½øĞĞÄÚ´æ»ØÊÕ¡£
+		 * å†æ¬¡æ‰«æç®¡ç†åŒºï¼Œè¿›è¡Œå†…å­˜å›æ”¶ã€‚
 		 */
 		for (i = 0; i <= end_zone; i++) {
 			struct zone *zone = pgdat->node_zones + i;
@@ -1399,7 +1399,7 @@ scan:
 				continue;
 
 			/**
-			 * ÒÑ¾­É¨ÃèÍêËùÓĞÒ³Ãæ£¬²¢ÇÒ²»ÊÇÄ¬ÈÏÓÅÏÈ¼¶£¬Ã»ÓĞ±ØÒªÔÙ¶Ô¸Ã¹ÜÀíÇø½øĞĞÉ¨Ãè¡£
+			 * å·²ç»æ‰«æå®Œæ‰€æœ‰é¡µé¢ï¼Œå¹¶ä¸”ä¸æ˜¯é»˜è®¤ä¼˜å…ˆçº§ï¼Œæ²¡æœ‰å¿…è¦å†å¯¹è¯¥ç®¡ç†åŒºè¿›è¡Œæ‰«æã€‚
 			 */
 			if (zone->all_unreclaimable && priority != DEF_PRIORITY)
 				continue;
@@ -1413,7 +1413,7 @@ scan:
 			if (zone->prev_priority > priority)
 				zone->prev_priority = priority;
 			/**
-			 * µ÷ÓÃshrink_zoneºÍshrink_slab»ØÊÕÄÚ´æ¡£
+			 * è°ƒç”¨shrink_zoneå’Œshrink_slabå›æ”¶å†…å­˜ã€‚
 			 */
 			sc.nr_scanned = 0;
 			sc.nr_reclaimed = 0;
@@ -1456,14 +1456,14 @@ scan:
 		 * on zone->*_priority.
 		 */
 		/**
-		 * Èç¹ûÖÁÉÙÓĞ32Ò³±»»ØÊÕ£¬¾ÍÌø³öÑ­»·¡£
+		 * å¦‚æœè‡³å°‘æœ‰32é¡µè¢«å›æ”¶ï¼Œå°±è·³å‡ºå¾ªç¯ã€‚
 		 */
 		if (total_reclaimed >= SWAP_CLUSTER_MAX)
 			break;
 	}
 out:
 	/**
-	 * ¸üĞÂ¹ÜÀíÇøµÄprev_priority×Ö¶Î¡£
+	 * æ›´æ–°ç®¡ç†åŒºçš„prev_priorityå­—æ®µã€‚
 	 */
 	for (i = 0; i < pgdat->nr_zones; i++) {
 		struct zone *zone = pgdat->node_zones + i;
@@ -1471,7 +1471,7 @@ out:
 		zone->prev_priority = zone->temp_priority;
 	}
 	/**
-	 * Ôö¼ÓÒ»¸öµ÷¶Èµã¡£
+	 * å¢åŠ ä¸€ä¸ªè°ƒåº¦ç‚¹ã€‚
 	 */
 	if (!all_zones_ok) {
 		cond_resched();
@@ -1495,7 +1495,7 @@ out:
  * (most normal use), this basically shouldn't matter.
  */
 /**
- * Ã¿¸öNUMA½Úµã¶¼ÓĞÒ»¸ökswapdÄÚºËÏß³Ì¡£ÒÔÖÜÆÚĞÔµÄ´ÓLRUÁ´±íÖĞ»ØÊÕÒ³¡£
+ * æ¯ä¸ªNUMAèŠ‚ç‚¹éƒ½æœ‰ä¸€ä¸ªkswapdå†…æ ¸çº¿ç¨‹ã€‚ä»¥å‘¨æœŸæ€§çš„ä»LRUé“¾è¡¨ä¸­å›æ”¶é¡µã€‚
  */
 static int kswapd(void *p)
 {
@@ -1510,7 +1510,7 @@ static int kswapd(void *p)
 
 	daemonize("kswapd%d", pgdat->node_id);
 	/**
-	 * ½«½ø³Ì°ó¶¨µ½·ÃÎÊÄÚ´æ½ÚµãµÄCPU¡£
+	 * å°†è¿›ç¨‹ç»‘å®šåˆ°è®¿é—®å†…å­˜èŠ‚ç‚¹çš„CPUã€‚
 	 */
 	cpumask = node_to_cpumask(pgdat->node_id);
 	if (!cpus_empty(cpumask))
@@ -1530,7 +1530,7 @@ static int kswapd(void *p)
 	 * trying to free the first piece of memory in the first place).
 	 */
 	/**
-	 * ÓÉÓÚ»ØÊÕÏß³ÌÒ²»á·ÖÅäÄÚ´æ£¬ÉèÖÃÕâÁ½¸ö±êÖ¾ºó£¬¾ÍÔÊĞíÊ¹ÓÃÈ«²¿¿ÉÓÃ¿ÕÏĞÄÚ´æ¡£»ØÊÕÏß³Ì¾Í²»»áÔÚµ÷ÓÃalloc_pagesÊ±·ÖÅä²»µ½ÄÚ´æÁË¡£
+	 * ç”±äºå›æ”¶çº¿ç¨‹ä¹Ÿä¼šåˆ†é…å†…å­˜ï¼Œè®¾ç½®è¿™ä¸¤ä¸ªæ ‡å¿—åï¼Œå°±å…è®¸ä½¿ç”¨å…¨éƒ¨å¯ç”¨ç©ºé—²å†…å­˜ã€‚å›æ”¶çº¿ç¨‹å°±ä¸ä¼šåœ¨è°ƒç”¨alloc_pagesæ—¶åˆ†é…ä¸åˆ°å†…å­˜äº†ã€‚
 	 */
 	tsk->flags |= PF_MEMALLOC|PF_KSWAPD;
 
@@ -1541,7 +1541,7 @@ static int kswapd(void *p)
 			refrigerator(PF_FREEZE);
 
 		/**
-		 * Ïß³Ì×ÜÊÇÔÚkswapd_waitµÈ´ı¶ÓÁĞÉÏµÈ´ı±»»½ĞÑ¡£
+		 * çº¿ç¨‹æ€»æ˜¯åœ¨kswapd_waitç­‰å¾…é˜Ÿåˆ—ä¸Šç­‰å¾…è¢«å”¤é†’ã€‚
 		 */
 		prepare_to_wait(&pgdat->kswapd_wait, &wait, TASK_INTERRUPTIBLE);
 		new_order = pgdat->kswapd_max_order;
@@ -1558,12 +1558,12 @@ static int kswapd(void *p)
 		}
 
 		/**
-		 * Ê×ÏÈ½«×Ô¼º´Ókswapd_wait¶ÓÁĞÖĞÉ¾³ı¡£
+		 * é¦–å…ˆå°†è‡ªå·±ä»kswapd_waité˜Ÿåˆ—ä¸­åˆ é™¤ã€‚
 		 */
 		finish_wait(&pgdat->kswapd_wait, &wait);
 
 		/**
-		 * balance_pgdat½øĞĞÄÚ´æ½ÚµãµÄ»ØÊÕ¹¤×÷¡£
+		 * balance_pgdatè¿›è¡Œå†…å­˜èŠ‚ç‚¹çš„å›æ”¶å·¥ä½œã€‚
 		 */
 		balance_pgdat(pgdat, 0, order);
 	}

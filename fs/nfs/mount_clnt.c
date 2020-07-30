@@ -58,7 +58,7 @@ nfsroot_mount(struct sockaddr_in *addr, char *path, struct nfs_fh *fh,
 
 	sprintf(hostname, "%u.%u.%u.%u", NIPQUAD(addr->sin_addr.s_addr));
 	/**
-	 * ²úÉúÓÃÓÚÁ¬½ÓµÄrpc_clnt¿Í»§¶ËÊı¾İ½á¹¹¡£
+	 * äº§ç”Ÿç”¨äºè¿æ¥çš„rpc_clntå®¢æˆ·ç«¯æ•°æ®ç»“æ„ã€‚
 	 */
 	mnt_clnt = mnt_create(hostname, addr, version, protocol);
 	if (IS_ERR(mnt_clnt))
@@ -66,7 +66,7 @@ nfsroot_mount(struct sockaddr_in *addr, char *path, struct nfs_fh *fh,
 
 	call = (version == NFS_MNT3_VERSION) ? MOUNTPROC3_MNT : MNTPROC_MNT;
 	/**
-	 * µ÷ÓÃrpcÔ¶³Ìº¯Êırpc_call£¬ÊµÏÖ¶Ônfs_fhµÄÈ¡µÃ¡£
+	 * è°ƒç”¨rpcè¿œç¨‹å‡½æ•°rpc_callï¼Œå®ç°å¯¹nfs_fhçš„å–å¾—ã€‚
 	 */
 	status = rpc_call(mnt_clnt, call, path, &result, 0);
 	return status < 0? status : (result.status? -EACCES : 0);
@@ -80,14 +80,14 @@ mnt_create(char *hostname, struct sockaddr_in *srvaddr, int version,
 	struct rpc_clnt	*clnt;
 
 	/**
-	 * Xprt_create_protoÖ÷Òª¹¹ÔìÁËrpc´«Êä²ã½Ó¿ÚÊı¾İ½á¹¹
+	 * Xprt_create_protoä¸»è¦æ„é€ äº†rpcä¼ è¾“å±‚æ¥å£æ•°æ®ç»“æ„
 	 */
 	xprt = xprt_create_proto(protocol, srvaddr, NULL);
 	if (IS_ERR(xprt))
 		return (struct rpc_clnt *)xprt;
 
 	/**
-	 * rpc_create_clientº¯ÊıÊµÏÖÁËRPC¿Í»§»úµÄ¸ß²ãĞÅÏ¢µÄ¹¹Ôì£¬µÃµ½µÄĞÅÏ¢±£´æÔÚrpc_clnt½á¹¹ÖĞ¡£
+	 * rpc_create_clientå‡½æ•°å®ç°äº†RPCå®¢æˆ·æœºçš„é«˜å±‚ä¿¡æ¯çš„æ„é€ ï¼Œå¾—åˆ°çš„ä¿¡æ¯ä¿å­˜åœ¨rpc_clntç»“æ„ä¸­ã€‚
 	 */
 	clnt = rpc_create_client(xprt, hostname,
 				&mnt_program, version,
@@ -187,7 +187,7 @@ static struct rpc_version *	mnt_version[] = {
 static struct rpc_stat		mnt_stats;
 
 /**
- * MNTÔ¶³Ì³ÌĞòµÄ³ÌĞòºÅ¡¢°æ±¾ºÅµÈ
+ * MNTè¿œç¨‹ç¨‹åºçš„ç¨‹åºå·ã€ç‰ˆæœ¬å·ç­‰
  */
 struct rpc_program	mnt_program = {
 	.name		= "mount",

@@ -3,30 +3,30 @@
 
 #include <linux/raid/md.h>
 
-/* RAID0ÖĞµÄÌõ´øÇøÓòÃèÊö·û */
+/* RAID0ä¸­çš„æ¡å¸¦åŒºåŸŸæè¿°ç¬¦ */
 struct strip_zone
 {
-	/* µ±Ç°Ìõ´øµÄÆğÊ¼±àºÅ£¬ÒÔÉÈÇøÎªµ¥Î» */
+	/* å½“å‰æ¡å¸¦çš„èµ·å§‹ç¼–å·ï¼Œä»¥æ‰‡åŒºä¸ºå•ä½ */
 	sector_t zone_offset;	/* Zone offset in md_dev */
-	/* ¸ÃÌõ´øÔÚÕæÊµ´ÅÅÌÉÏµÄÆğÊ¼Î»ÖÃ */
+	/* è¯¥æ¡å¸¦åœ¨çœŸå®ç£ç›˜ä¸Šçš„èµ·å§‹ä½ç½® */
 	sector_t dev_offset;	/* Zone offset in real dev */
-	/* Ìõ´ø³¤¶È */
+	/* æ¡å¸¦é•¿åº¦ */
 	sector_t size;		/* Zone size */
-	/* ¸ÃÌõ´ø°üº¬µÄ´ÅÅÌ¸öÊı */
+	/* è¯¥æ¡å¸¦åŒ…å«çš„ç£ç›˜ä¸ªæ•° */
 	int nb_dev;		/* # of devices attached to the zone */
-	/* ¸ÃÌõ´ø°üº¬µÄËùÓĞÉè±¸ */
+	/* è¯¥æ¡å¸¦åŒ…å«çš„æ‰€æœ‰è®¾å¤‡ */
 	mdk_rdev_t **dev;	/* Devices attached to the zone */
 };
 
-/* RAID0Ë½ÓĞÊı¾İ½á¹¹ÃèÊö·û */
+/* RAID0ç§æœ‰æ•°æ®ç»“æ„æè¿°ç¬¦ */
 struct raid0_private_data
 {
 	struct strip_zone **hash_table; /* Table of indexes into strip_zone */
-	/* Ìõ´øÇøÓòÊı×é */
+	/* æ¡å¸¦åŒºåŸŸæ•°ç»„ */
 	struct strip_zone *strip_zone;
-	/* ³ÉÔ±´ÅÅÌÊı×é */
+	/* æˆå‘˜ç£ç›˜æ•°ç»„ */
 	mdk_rdev_t **devlist; /* lists of rdevs, pointed to by strip_zone->dev */
-	/* Ìõ´øÇøÓòÊıÄ¿ */
+	/* æ¡å¸¦åŒºåŸŸæ•°ç›® */
 	int nr_strip_zones;
 
 	sector_t hash_spacing;

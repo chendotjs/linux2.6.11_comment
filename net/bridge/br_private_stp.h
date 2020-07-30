@@ -19,7 +19,7 @@
 #define BPDU_TYPE_TCN 0x80
 
 /**
- * Ò»¸öÈëÅäÖÃBPDUÖ¡µÄ¹Ø¼ü×Ö¶Î±»¸´ÖÆµ½Õâ¸öÊı¾İ½á¹¹¡£²¢ÇÒÌæ»»Ô­Ê¼BPDUºó£¬´«µİ¸ø´¦ÀíÅäÖÃBPDUµÄº¯Êı¡£
+ * ä¸€ä¸ªå…¥é…ç½®BPDUå¸§çš„å…³é”®å­—æ®µè¢«å¤åˆ¶åˆ°è¿™ä¸ªæ•°æ®ç»“æ„ã€‚å¹¶ä¸”æ›¿æ¢åŸå§‹BPDUåï¼Œä¼ é€’ç»™å¤„ç†é…ç½®BPDUçš„å‡½æ•°ã€‚
  */
 struct br_config_bpdu
 {
@@ -37,7 +37,7 @@ struct br_config_bpdu
 
 /* called under bridge lock */
 /**
- * µ±ÊäÈë²ÎÊıÊÇÒ»¸öÖ¸ÅÉ¶Ë¿ÚÊ±£¬Br_is_designated_port·µ»Ø1,·ñÔò·µ»Ø0.
+ * å½“è¾“å…¥å‚æ•°æ˜¯ä¸€ä¸ªæŒ‡æ´¾ç«¯å£æ—¶ï¼ŒBr_is_designated_portè¿”å›1,å¦åˆ™è¿”å›0.
  */
 static inline int br_is_designated_port(const struct net_bridge_port *p)
 {

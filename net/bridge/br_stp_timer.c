@@ -22,7 +22,7 @@
 
 /* called under bridge lock */
 /**
- * Èç¹ûÍøÇÅÖÁÉÙÓµÓĞÒ»¸ö¶Ë¿Ú¾ßÓĞÖ¸ÅÉ½ÇÉ«£¬br_is_designated_for_some_port¾Í·µ»Ø1,·ñÔò·µ»Ø0.
+ * å¦‚æœç½‘æ¡¥è‡³å°‘æ‹¥æœ‰ä¸€ä¸ªç«¯å£å…·æœ‰æŒ‡æ´¾è§’è‰²ï¼Œbr_is_designated_for_some_portå°±è¿”å›1,å¦åˆ™è¿”å›0.
  */
 static int br_is_designated_for_some_port(const struct net_bridge *br)
 {
@@ -52,8 +52,8 @@ static void br_hello_timer_expired(unsigned long arg)
 }
 
 /**
- * µ±Ò»¸ö¶Ë¿Ú´ÓÖ¸ÅÉÍøÇÅ½ÓÊÕĞÅÏ¢³¬ÆÚÊ±£¨Ò»°ãÊÇÒòÎªÖ¸ÅÉÍøÇÅ²»ÔÙÊÇÖ¸ÅÉÍøÇÅ£¬»òÕßÖ¸ÅÉÍøÇÅÊ§Ğ§ÁË£©
- * Õâ¿ÉÄÜÒıÆğÍØÆË±ä»¯£¬Ò²¿ÉÄÜµ¼ÖÂ¸ùÇÅ±ä»¯¡£
+ * å½“ä¸€ä¸ªç«¯å£ä»æŒ‡æ´¾ç½‘æ¡¥æ¥æ”¶ä¿¡æ¯è¶…æœŸæ—¶ï¼ˆä¸€èˆ¬æ˜¯å› ä¸ºæŒ‡æ´¾ç½‘æ¡¥ä¸å†æ˜¯æŒ‡æ´¾ç½‘æ¡¥ï¼Œæˆ–è€…æŒ‡æ´¾ç½‘æ¡¥å¤±æ•ˆäº†ï¼‰
+ * è¿™å¯èƒ½å¼•èµ·æ‹“æ‰‘å˜åŒ–ï¼Œä¹Ÿå¯èƒ½å¯¼è‡´æ ¹æ¡¥å˜åŒ–ã€‚
  */
 static void br_message_age_timer_expired(unsigned long arg)
 {
@@ -93,7 +93,7 @@ static void br_message_age_timer_expired(unsigned long arg)
 }
 
 /**
- * µ±Ò»¸ö´¦ÓÚBR_STATE_LEARNING×´Ì¬µÄ¶Ë¿Ú£¬Æä×´Ì¬±äÎªBR_STATE_FORWARDING×´Ì¬Ê±µ÷ÓÃ¡£
+ * å½“ä¸€ä¸ªå¤„äºBR_STATE_LEARNINGçŠ¶æ€çš„ç«¯å£ï¼Œå…¶çŠ¶æ€å˜ä¸ºBR_STATE_FORWARDINGçŠ¶æ€æ—¶è°ƒç”¨ã€‚
  */
 static void br_forward_delay_timer_expired(unsigned long arg)
 {
@@ -164,7 +164,7 @@ static inline void br_timer_init(struct timer_list *timer,
 }
 
 /**
- * ³õÊ¼»¯ÍøÇÅÊ±ÖÓ¡£
+ * åˆå§‹åŒ–ç½‘æ¡¥æ—¶é’Ÿã€‚
  */
 void br_stp_timer_init(struct net_bridge *br)
 {
@@ -182,7 +182,7 @@ void br_stp_timer_init(struct net_bridge *br)
 }
 
 /**
- * ³õÊ¼»¯¶Ë¿ÚÊ±ÖÓ¡£
+ * åˆå§‹åŒ–ç«¯å£æ—¶é’Ÿã€‚
  */
 void br_stp_port_timer_init(struct net_bridge_port *p)
 {

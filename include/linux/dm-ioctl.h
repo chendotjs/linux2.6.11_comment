@@ -88,7 +88,7 @@
  * lookup (eg. for a DM_INFO) will be done on that, *not* the
  * name.
  */
-/* ÓÃ»§Ì¬ÏòÄÚºËÌ¬DMÄ£¿é´«µİIOCTLÃüÁîµÄ²ÎÊı */
+/* ç”¨æˆ·æ€å‘å†…æ ¸æ€DMæ¨¡å—ä¼ é€’IOCTLå‘½ä»¤çš„å‚æ•° */
 struct dm_ioctl {
 	/*
 	 * The version number is made up of three parts:

@@ -104,7 +104,7 @@ __strncpy_from_user(char *dst, const char __user *src, long count)
  * and returns @count.
  */
 /**
- * ´ÓÓÃ»§¿Õ¼ä¸´ÖÆÒ»¸öÒÔNULL½áÊøµÄ×Ö·û´®¡£
+ * ä»ç”¨æˆ·ç©ºé—´å¤åˆ¶ä¸€ä¸ªä»¥NULLç»“æŸçš„å­—ç¬¦ä¸²ã€‚
  */ 
 long
 strncpy_from_user(char *dst, const char __user *src, long count)
@@ -153,7 +153,7 @@ do {									\
  * On success, this will be zero.
  */
 /**
- * ÓÃ0Ìî³äÓÃ»§ñ¿µÄÒ»¸öÄÚ´æÇøÓò
+ * ç”¨0å¡«å……ç”¨æˆ·çª¨çš„ä¸€ä¸ªå†…å­˜åŒºåŸŸ
  */ 
 unsigned long
 clear_user(void __user *to, unsigned long n)
@@ -176,7 +176,7 @@ clear_user(void __user *to, unsigned long n)
  * On success, this will be zero.
  */
 /**
- * ÓÃ0Ìî³äÓÃ»§¿Õ¼äµÄÒ»¸öÄÚ´æÇøÓò
+ * ç”¨0å¡«å……ç”¨æˆ·ç©ºé—´çš„ä¸€ä¸ªå†…å­˜åŒºåŸŸ
  */
 unsigned long
 __clear_user(void __user *to, unsigned long n)
@@ -605,7 +605,7 @@ __copy_from_user_ll(void *to, const void __user *from, unsigned long n)
  * On success, this will be zero.
  */
 /**
- * °ÑÈÎÒâ´óĞ¡µÄ¿é¸´ÖÆµ½ÓÃ»§¿Õ¼ä
+ * æŠŠä»»æ„å¤§å°çš„å—å¤åˆ¶åˆ°ç”¨æˆ·ç©ºé—´
  */
 unsigned long
 copy_to_user(void __user *to, const void *from, unsigned long n)
@@ -635,7 +635,7 @@ EXPORT_SYMBOL(copy_to_user);
  * data to the requested size using zero bytes.
  */
 /**
- * ´ÓÓÃ»§¿Õ¼ä¸´ÖÆÈÎÒâ´óĞ¡µÄ¿é¡£
+ * ä»ç”¨æˆ·ç©ºé—´å¤åˆ¶ä»»æ„å¤§å°çš„å—ã€‚
  */
 unsigned long
 copy_from_user(void *to, const void __user *from, unsigned long n)

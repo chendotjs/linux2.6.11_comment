@@ -135,7 +135,7 @@ static const unsigned char header[6] = {0x42, 0x42, 0x03, 0x00, 0x00, 0x00};
 
 /* NO locks */
 /**
- * ´¦ÀíBPDUÖ¡¡£
+ * å¤„ç†BPDUå¸§ã€‚
  */
 int br_stp_handle_bpdu(struct sk_buff *skb)
 {
@@ -145,36 +145,36 @@ int br_stp_handle_bpdu(struct sk_buff *skb)
 
 	/* need at least the 802 and STP headers */
 	/**
-	 * ³¤¶È²»ÕıÈ·£¬²»ÊÇBPDUÈëÖ¡¡£
-	 * »òÕßÖ¡Í·²»ÊÇBPDU¡£
+	 * é•¿åº¦ä¸æ­£ç¡®ï¼Œä¸æ˜¯BPDUå…¥å¸§ã€‚
+	 * æˆ–è€…å¸§å¤´ä¸æ˜¯BPDUã€‚
 	 */
 	if (!pskb_may_pull(skb, sizeof(header)+1) ||
 	    memcmp(skb->data, header, sizeof(header)))
 		goto err;
 
 	/**
-	 * È¡Êı¾İ°üÄÚÈİ¡£
+	 * å–æ•°æ®åŒ…å†…å®¹ã€‚
 	 */
 	buf = skb_pull(skb, sizeof(header));
 
 	spin_lock_bh(&br->lock);
-	if (p->state == BR_STATE_DISABLED  /* ÍøÇÅ¶Ë¿Ú±»¹Ø±Õ */
-	    || !(br->dev->flags & IFF_UP)  /* ÍøÇÅÉè±¸±»¹Ø±Õ */
-	    || !br->stp_enabled)		   /* Ã»ÓĞÆôÓÃSTP */
+	if (p->state == BR_STATE_DISABLED  /* ç½‘æ¡¥ç«¯å£è¢«å…³é—­ */
+	    || !(br->dev->flags & IFF_UP)  /* ç½‘æ¡¥è®¾å¤‡è¢«å…³é—­ */
+	    || !br->stp_enabled)		   /* æ²¡æœ‰å¯ç”¨STP */
 		goto out;
 
 	/**
-	 * LINUXÄÚºË½ö½öÊµÏÖÁËIEEE802.1D STP£¬Ëü½ö½ö½ÓÊÕÅäÖÃBPDUºÍTCN BPDU¡£ÆäËûBPDUÀàĞÍ½«±»¶ªÆú¡£
+	 * LINUXå†…æ ¸ä»…ä»…å®ç°äº†IEEE802.1D STPï¼Œå®ƒä»…ä»…æ¥æ”¶é…ç½®BPDUå’ŒTCN BPDUã€‚å…¶ä»–BPDUç±»å‹å°†è¢«ä¸¢å¼ƒã€‚
 	 */
-	if (buf[0] == BPDU_TYPE_CONFIG) {/* ÅäÖÃBPDU */
+	if (buf[0] == BPDU_TYPE_CONFIG) {/* é…ç½®BPDU */
 		struct br_config_bpdu bpdu;
 
-		if (!pskb_may_pull(skb, 32))/* ¼ì²éÅäÖÃBPDU³¤¶È£¬²»ºÏ·¨ÔòÍË³ö¡£ */
+		if (!pskb_may_pull(skb, 32))/* æ£€æŸ¥é…ç½®BPDUé•¿åº¦ï¼Œä¸åˆæ³•åˆ™é€€å‡ºã€‚ */
 		    goto out;
 
 		buf = skb->data;
 		/**
-		 * ³õÊ¼»¯ÅäÖÃBPDU
+		 * åˆå§‹åŒ–é…ç½®BPDU
 		 */
 		bpdu.topology_change = (buf[1] & 0x01) ? 1 : 0;
 		bpdu.topology_change_ack = (buf[1] & 0x80) ? 1 : 0;
@@ -208,14 +208,14 @@ int br_stp_handle_bpdu(struct sk_buff *skb)
 		bpdu.forward_delay = br_get_ticks(buf+30);
 
 		/**
-		 * ´¦ÀíÅäÖÃBPDU¡£
+		 * å¤„ç†é…ç½®BPDUã€‚
 		 */
 		br_received_config_bpdu(p, &bpdu);
 	}
 
 	else if (buf[0] == BPDU_TYPE_TCN) {/* TCN BPDU */
 		/**
-		 * ´¦ÀíTCP BPDU¡£
+		 * å¤„ç†TCP BPDUã€‚
 		 */
 		br_received_tcn_bpdu(p);
 	}

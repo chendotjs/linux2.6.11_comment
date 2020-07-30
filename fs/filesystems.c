@@ -28,11 +28,11 @@
  */
 
 /**
- * ÎÄ¼şÏµÍ³ÀàĞÍÁ´±íÍ·Ö¸Õë¡£
+ * æ–‡ä»¶ç³»ç»Ÿç±»å‹é“¾è¡¨å¤´æŒ‡é’ˆã€‚
  */
 static struct file_system_type *file_systems;
 /**
- * ±£»¤file_systemsµÄ¶ÁĞ´Ëø¡£
+ * ä¿æŠ¤file_systemsçš„è¯»å†™é”ã€‚
  */
 static DEFINE_RWLOCK(file_systems_lock);
 
@@ -48,7 +48,7 @@ void put_filesystem(struct file_system_type *fs)
 }
 
 /**
- * ²éÕÒÖ¸¶¨ÀàĞÍµÄÎÄ¼şÏµÍ³¡£
+ * æŸ¥æ‰¾æŒ‡å®šç±»å‹çš„æ–‡ä»¶ç³»ç»Ÿã€‚
  */
 static struct file_system_type **find_filesystem(const char *name)
 {
@@ -73,7 +73,7 @@ static struct file_system_type **find_filesystem(const char *name)
  */
 
 /**
- * ×¢²áÎÄ¼şÏµÍ³£¬½«ÏàÓ¦µÄfile_system_type¼ÓÈëµ½Á´±íÖĞ¡£
+ * æ³¨å†Œæ–‡ä»¶ç³»ç»Ÿï¼Œå°†ç›¸åº”çš„file_system_typeåŠ å…¥åˆ°é“¾è¡¨ä¸­ã€‚
  */
 int register_filesystem(struct file_system_type * fs)
 {
@@ -109,7 +109,7 @@ EXPORT_SYMBOL(register_filesystem);
  *	may be freed or reused.
  */
 /**
- * µ±ÎÄ¼şÏµÍ³ÊÇ±»Ä£¿é×°ÔØ½øÄÚºËÊ±£¬¿ÉÒÔÓÃ¸Ãº¯ÊıĞ¶ÔØËü¡£
+ * å½“æ–‡ä»¶ç³»ç»Ÿæ˜¯è¢«æ¨¡å—è£…è½½è¿›å†…æ ¸æ—¶ï¼Œå¯ä»¥ç”¨è¯¥å‡½æ•°å¸è½½å®ƒã€‚
  */
 int unregister_filesystem(struct file_system_type * fs)
 {

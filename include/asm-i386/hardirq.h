@@ -7,7 +7,7 @@
 
 typedef struct {
 	/**
-	 * Ã¿¸öCPUÉÏ¹ÒÆğµÄÈíÖĞ¶Ï¡£
+	 * æ¯ä¸ªCPUä¸ŠæŒ‚èµ·çš„è½¯ä¸­æ–­ã€‚
 	 */
 	unsigned int __softirq_pending;
 	unsigned long idle_timestamp;

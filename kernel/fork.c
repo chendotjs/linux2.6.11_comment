@@ -76,7 +76,7 @@ int nr_processes(void)
 #ifndef __HAVE_ARCH_TASK_STRUCT_ALLOCATOR
 
 /**
- * ÎªĞÂ½ø³Ì»ñÈ¡½ø³ÌÃèÊö·û
+ * ä¸ºæ–°è¿›ç¨‹è·å–è¿›ç¨‹æè¿°ç¬¦
  */
 #define alloc_task_struct()	kmem_cache_alloc(task_struct_cachep, GFP_KERNEL)
 #define free_task_struct(tsk)	kmem_cache_free(task_struct_cachep, (tsk))
@@ -136,7 +136,7 @@ void __init fork_init(unsigned long mempages)
 }
 
 /**
- * Îª×Ó½ø³Ì»ñÈ¡½ø³ÌÃèÊö·û¡£
+ * ä¸ºå­è¿›ç¨‹è·å–è¿›ç¨‹æè¿°ç¬¦ã€‚
  */
 static struct task_struct *dup_task_struct(struct task_struct *orig)
 {
@@ -144,22 +144,22 @@ static struct task_struct *dup_task_struct(struct task_struct *orig)
 	struct thread_info *ti;
 
 	/**
-	 * prepare_to_copyÖĞ»áµ÷ÓÃunlazy_fpu¡£
-	 * Ëü°ÑFPU¡¢MMXºÍSSE/SSE2¼Ä´æÆ÷µÄÄÚÈİ±£´æµ½¸¸½ø³ÌµÄthread_info½á¹¹ÖĞ¡£
-	 * ÉÔºó£¬dup_task_struct½«°ÑÕâĞ©Öµ¸´ÖÆµ½×Ó½ø³ÌµÄthread_infoÖĞ¡£
+	 * prepare_to_copyä¸­ä¼šè°ƒç”¨unlazy_fpuã€‚
+	 * å®ƒæŠŠFPUã€MMXå’ŒSSE/SSE2å¯„å­˜å™¨çš„å†…å®¹ä¿å­˜åˆ°çˆ¶è¿›ç¨‹çš„thread_infoç»“æ„ä¸­ã€‚
+	 * ç¨åï¼Œdup_task_structå°†æŠŠè¿™äº›å€¼å¤åˆ¶åˆ°å­è¿›ç¨‹çš„thread_infoä¸­ã€‚
 	 */
 	prepare_to_copy(orig);
 
 	/**
-	 * alloc_task_structºêÎªĞÂ½ø³Ì»ñÈ¡½ø³ÌÃèÊö·û£¬²¢½«ÃèÊö·û±£´æµ½tsk¾Ö²¿±äÁ¿ÖĞ¡£
+	 * alloc_task_structå®ä¸ºæ–°è¿›ç¨‹è·å–è¿›ç¨‹æè¿°ç¬¦ï¼Œå¹¶å°†æè¿°ç¬¦ä¿å­˜åˆ°tskå±€éƒ¨å˜é‡ä¸­ã€‚
 	 */
 	tsk = alloc_task_struct();
 	if (!tsk)
 		return NULL;
 
 	/**
-	 * alloc_thread_infoºê»ñÈ¡Ò»¿é¿ÕÏĞÄÚ´æÇø£¬ÓÃÀ´´æ·ÅĞÂ½ø³ÌµÄthread_info½á¹¹ºÍÄÚºËÕ»¡£
-	 * Õâ¿éÄÚ´æÇø×Ö¶ÎµÄ´óĞ¡ÊÇ8KB»òÕß4KB¡£
+	 * alloc_thread_infoå®è·å–ä¸€å—ç©ºé—²å†…å­˜åŒºï¼Œç”¨æ¥å­˜æ”¾æ–°è¿›ç¨‹çš„thread_infoç»“æ„å’Œå†…æ ¸æ ˆã€‚
+	 * è¿™å—å†…å­˜åŒºå­—æ®µçš„å¤§å°æ˜¯8KBæˆ–è€…4KBã€‚
 	 */
 	ti = alloc_thread_info(tsk);
 	if (!ti) {
@@ -168,8 +168,8 @@ static struct task_struct *dup_task_struct(struct task_struct *orig)
 	}
 
 	/** 
-	 * ½«current½ø³ÌÃèÊö·ûµÄÄÚÈİ¸´ÖÆµ½tskËùÖ¸ÏòµÄtask_struct½á¹¹ÖĞ£¬È»ºó°Ñtsk_thread_infoÖÃÎªti
-	 * ½«current½ø³ÌµÄthread_infoÄÚÈİ¸´ÖÆ¸øtiÖ¸ÏòµÄ½á¹¹ÖĞ£¬²¢½«ti_taskÖÃÎªtsk.
+	 * å°†currentè¿›ç¨‹æè¿°ç¬¦çš„å†…å®¹å¤åˆ¶åˆ°tskæ‰€æŒ‡å‘çš„task_structç»“æ„ä¸­ï¼Œç„¶åæŠŠtsk_thread_infoç½®ä¸ºti
+	 * å°†currentè¿›ç¨‹çš„thread_infoå†…å®¹å¤åˆ¶ç»™tiæŒ‡å‘çš„ç»“æ„ä¸­ï¼Œå¹¶å°†ti_taskç½®ä¸ºtsk.
 	 */
 	*ti = *orig->thread_info;
 	*tsk = *orig;
@@ -178,8 +178,8 @@ static struct task_struct *dup_task_struct(struct task_struct *orig)
 
 	/* One for us, one for whoever does the "release_task()" (usually parent) */
 	/**
-	 * °ÑĞÂ½ø³ÌÃèÊö·ûµÄÊ¹ÓÃ¼ÆÊıÆ÷usageÉèÖÃÎª2£¬ÓÃÀ´±íÊ¾ÃèÊö·ûÕıÔÚ±»Ê¹ÓÃ¶øÇÒÆäÏàÓ¦µÄ½ø³Ì´¦ÓÚ»î¶¯×´Ì¬¡£
-	 * ½ø³Ì×´Ì¬¼È²»ÊÇEXIT_ZOMBIE£¬Ò²²»ÊÇEXIT_DEAD
+	 * æŠŠæ–°è¿›ç¨‹æè¿°ç¬¦çš„ä½¿ç”¨è®¡æ•°å™¨usageè®¾ç½®ä¸º2ï¼Œç”¨æ¥è¡¨ç¤ºæè¿°ç¬¦æ­£åœ¨è¢«ä½¿ç”¨è€Œä¸”å…¶ç›¸åº”çš„è¿›ç¨‹å¤„äºæ´»åŠ¨çŠ¶æ€ã€‚
+	 * è¿›ç¨‹çŠ¶æ€æ—¢ä¸æ˜¯EXIT_ZOMBIEï¼Œä¹Ÿä¸æ˜¯EXIT_DEAD
 	 */
 	atomic_set(&tsk->usage,2);
 	return tsk;
@@ -187,7 +187,7 @@ static struct task_struct *dup_task_struct(struct task_struct *orig)
 
 #ifdef CONFIG_MMU
 /**
- * ¼È¸´ÖÆ¸¸½ø³ÌµÄÏßĞÔÇø£¬Ò²¸´ÖÆËüµÄÒ³±í¡£
+ * æ—¢å¤åˆ¶çˆ¶è¿›ç¨‹çš„çº¿æ€§åŒºï¼Œä¹Ÿå¤åˆ¶å®ƒçš„é¡µè¡¨ã€‚
  */
 static inline int dup_mmap(struct mm_struct * mm, struct mm_struct * oldmm)
 {
@@ -213,7 +213,7 @@ static inline int dup_mmap(struct mm_struct * mm, struct mm_struct * oldmm)
 	pprev = &mm->mmap;
 
 	/**
-	 * ¸´ÖÆ¸¸½ø³ÌµÄÃ¿Ò»¸övm_area_structÏßĞÔÇøÃèÊö·û£¬²¢°Ñ¸´ÖÆÆ·²åÈëµ½×Ó½ø³ÌµÄÏßĞÔÇøÁ´±íºÍºìºÚÊ÷ÖĞ¡£
+	 * å¤åˆ¶çˆ¶è¿›ç¨‹çš„æ¯ä¸€ä¸ªvm_area_structçº¿æ€§åŒºæè¿°ç¬¦ï¼Œå¹¶æŠŠå¤åˆ¶å“æ’å…¥åˆ°å­è¿›ç¨‹çš„çº¿æ€§åŒºé“¾è¡¨å’Œçº¢é»‘æ ‘ä¸­ã€‚
 	 */
 	for (mpnt = current->mm->mmap ; mpnt ; mpnt = mpnt->vm_next) {
 		struct file *file;
@@ -274,9 +274,9 @@ static inline int dup_mmap(struct mm_struct * mm, struct mm_struct * oldmm)
 
 		mm->map_count++;
 		/**
-		 * copy_page_range´´½¨±ØÒªµÄÒ³±íÀ´Ó³ÉäÏßĞÔÇøËù°üº¬µÄÒ»×éÒ³¡£²¢ÇÒ³õÊ¼»¯ĞÂÒ³±íµÄ±íÏî¡£
-		 * ¶ÔË½ÓĞ¡¢¿ÉĞ´µÄÒ³£¨ÎŞVM_SHARED±êÖ¾£¬ÓĞVM_MAYWRITE±êÖ¾£©£¬¶Ô¸¸×Ó½ø³Ì¶¼±ê¼ÇÎªÖ»¶ÁµÄ¡£
-		 * ÎªĞ´Ê±¸´ÖÆ½øĞĞ´¦Àí¡£
+		 * copy_page_rangeåˆ›å»ºå¿…è¦çš„é¡µè¡¨æ¥æ˜ å°„çº¿æ€§åŒºæ‰€åŒ…å«çš„ä¸€ç»„é¡µã€‚å¹¶ä¸”åˆå§‹åŒ–æ–°é¡µè¡¨çš„è¡¨é¡¹ã€‚
+		 * å¯¹ç§æœ‰ã€å¯å†™çš„é¡µï¼ˆæ— VM_SHAREDæ ‡å¿—ï¼Œæœ‰VM_MAYWRITEæ ‡å¿—ï¼‰ï¼Œå¯¹çˆ¶å­è¿›ç¨‹éƒ½æ ‡è®°ä¸ºåªè¯»çš„ã€‚
+		 * ä¸ºå†™æ—¶å¤åˆ¶è¿›è¡Œå¤„ç†ã€‚
 		 */
 		retval = copy_page_range(mm, current->mm, tmp);
 		spin_unlock(&mm->page_table_lock);
@@ -352,7 +352,7 @@ static struct mm_struct * mm_init(struct mm_struct * mm)
  * Allocate and initialize an mm_struct.
  */
 /**
- * ÓÃÀ´»ñµÃÒ»¸öĞÂÄÚ´æÃèÊö·û
+ * ç”¨æ¥è·å¾—ä¸€ä¸ªæ–°å†…å­˜æè¿°ç¬¦
  */
 struct mm_struct * mm_alloc(void)
 {
@@ -393,7 +393,7 @@ void mmput(struct mm_struct *mm)
 			spin_unlock(&mmlist_lock);
 		}
 		/**
-		 * Èç¹û½ø³ÌÓµÓĞ½»»»±ê¼Ç£¬ÔòÊÍ·ÅËü¡£
+		 * å¦‚æœè¿›ç¨‹æ‹¥æœ‰äº¤æ¢æ ‡è®°ï¼Œåˆ™é‡Šæ”¾å®ƒã€‚
 		 */
 		put_swap_token(mm);
 		mmdrop(mm);
@@ -466,9 +466,9 @@ void mm_release(struct task_struct *tsk, struct mm_struct *mm)
 }
 
 /**
- * µ±´´½¨Ò»¸öĞÂµÄ½ø³ÌÊ±£¬ÄÚºËµ÷ÓÃcopy_mmº¯Êı£¬
- * Õâ¸öº¯ÊıÍ¨¹ı½¨Á¢ĞÂ½ø³ÌµÄËùÓĞÒ³±íºÍÄÚ´æÃèÊö·ûÀ´´´½¨½ø³ÌµÄµØÖ·¿Õ¼ä¡£
- * Í¨³££¬Ã¿¸ö½ø³Ì¶¼ÓĞ×Ô¼ºµÄµØÖ·¿Õ¼ä£¬µ«ÊÇÇáÁ¿¼¶½ø³Ì¹²ÏíÍ¬Ò»µØÖ·¿Õ¼ä£¬¼´ÔÊĞíËüÃÇ¶ÔÍ¬Ò»×éÒ³½øĞĞÑ°Ö·¡£
+ * å½“åˆ›å»ºä¸€ä¸ªæ–°çš„è¿›ç¨‹æ—¶ï¼Œå†…æ ¸è°ƒç”¨copy_mmå‡½æ•°ï¼Œ
+ * è¿™ä¸ªå‡½æ•°é€šè¿‡å»ºç«‹æ–°è¿›ç¨‹çš„æ‰€æœ‰é¡µè¡¨å’Œå†…å­˜æè¿°ç¬¦æ¥åˆ›å»ºè¿›ç¨‹çš„åœ°å€ç©ºé—´ã€‚
+ * é€šå¸¸ï¼Œæ¯ä¸ªè¿›ç¨‹éƒ½æœ‰è‡ªå·±çš„åœ°å€ç©ºé—´ï¼Œä½†æ˜¯è½»é‡çº§è¿›ç¨‹å…±äº«åŒä¸€åœ°å€ç©ºé—´ï¼Œå³å…è®¸å®ƒä»¬å¯¹åŒä¸€ç»„é¡µè¿›è¡Œå¯»å€ã€‚
  */
 static int copy_mm(unsigned long clone_flags, struct task_struct * tsk)
 {
@@ -488,17 +488,17 @@ static int copy_mm(unsigned long clone_flags, struct task_struct * tsk)
 	 */
 	oldmm = current->mm;
 	/**
-	 * ÄÚºËÏß³Ì£¿£¿
+	 * å†…æ ¸çº¿ç¨‹ï¼Ÿï¼Ÿ
 	 */
 	if (!oldmm)
 		return 0;
 
 	/**
-	 * Ö¸¶¨ÁËCLONE_VM±êÖ¾£¬±íÊ¾´´½¨Ïß³Ì¡£
+	 * æŒ‡å®šäº†CLONE_VMæ ‡å¿—ï¼Œè¡¨ç¤ºåˆ›å»ºçº¿ç¨‹ã€‚
 	 */
 	if (clone_flags & CLONE_VM) {
 		/**
-		 * ĞÂÏß³Ì¹²Ïí¸¸½ø³ÌµÄµØÖ·¿Õ¼ä£¬ËùÒÔĞèÒª½«mm_users¼ÓÒ»¡£
+		 * æ–°çº¿ç¨‹å…±äº«çˆ¶è¿›ç¨‹çš„åœ°å€ç©ºé—´ï¼Œæ‰€ä»¥éœ€è¦å°†mm_usersåŠ ä¸€ã€‚
 		 */
 		atomic_inc(&oldmm->mm_users);
 		mm = oldmm;
@@ -509,25 +509,25 @@ static int copy_mm(unsigned long clone_flags, struct task_struct * tsk)
 		 * is an example.
 		 */
 		/**
-		 * Èç¹ûÆäËûCPU³ÖÓĞ½ø³ÌÒ³±í×ÔĞıËø£¬¾ÍÍ¨¹ıspin_unlock_wait±£Ö¤ÔÚÊÍ·ÅËøÇ°£¬È±Ò³´¦Àí³ÌĞò²»»á½á¹û¡£
-		 * Êµ¼ÊÉÏ£¬Õâ¸öËø³ıÁË±£»¤Ò³±í£¬»¹±ØĞë½ûÖ¹´´½¨ĞÂµÄÇáÁ¿¼¶½ø³Ì¡£ÒòÎªËüÃÇ¹²ÏímmÃèÊö·û
+		 * å¦‚æœå…¶ä»–CPUæŒæœ‰è¿›ç¨‹é¡µè¡¨è‡ªæ—‹é”ï¼Œå°±é€šè¿‡spin_unlock_waitä¿è¯åœ¨é‡Šæ”¾é”å‰ï¼Œç¼ºé¡µå¤„ç†ç¨‹åºä¸ä¼šç»“æœã€‚
+		 * å®é™…ä¸Šï¼Œè¿™ä¸ªé”é™¤äº†ä¿æŠ¤é¡µè¡¨ï¼Œè¿˜å¿…é¡»ç¦æ­¢åˆ›å»ºæ–°çš„è½»é‡çº§è¿›ç¨‹ã€‚å› ä¸ºå®ƒä»¬å…±äº«mmæè¿°ç¬¦
 		 */
 		spin_unlock_wait(&oldmm->page_table_lock);
 		/**
-		 * ÔÚgood_mmÖĞ£¬½«¸¸½ø³ÌµÄµØÖ·¿Õ¼ä¸³¸ø×Ó½ø³Ì¡£
-		 * ×¢ÒâÇ°Ãæ¶ÔmmµÄ¸³Öµ£¬±íÊ¾ÁËĞÂÏß³ÌÊ¹ÓÃµÄmm
-		 * ÍêÁË£¬¾ÍÕâÃ´¼òµ¥
+		 * åœ¨good_mmä¸­ï¼Œå°†çˆ¶è¿›ç¨‹çš„åœ°å€ç©ºé—´èµ‹ç»™å­è¿›ç¨‹ã€‚
+		 * æ³¨æ„å‰é¢å¯¹mmçš„èµ‹å€¼ï¼Œè¡¨ç¤ºäº†æ–°çº¿ç¨‹ä½¿ç”¨çš„mm
+		 * å®Œäº†ï¼Œå°±è¿™ä¹ˆç®€å•
 		 */
 		goto good_mm;
 	}
 
 	/**
-	 * Ã»ÓĞCLONE_VM±êÖ¾£¬¾Í±ØĞë´´½¨Ò»¸öĞÂµÄµØÖ·¿Õ¼ä¡£
-	 * ±ØĞëÒªÓĞµØÖ·¿Õ¼ä£¬¼´Ê¹´ËÊ±²¢Ã»ÓĞ·ÖÅäÄÚ´æ¡£
+	 * æ²¡æœ‰CLONE_VMæ ‡å¿—ï¼Œå°±å¿…é¡»åˆ›å»ºä¸€ä¸ªæ–°çš„åœ°å€ç©ºé—´ã€‚
+	 * å¿…é¡»è¦æœ‰åœ°å€ç©ºé—´ï¼Œå³ä½¿æ­¤æ—¶å¹¶æ²¡æœ‰åˆ†é…å†…å­˜ã€‚
 	 */
 	retval = -ENOMEM;
 	/**
-	 * ·ÖÅäÒ»¸öĞÂµÄÄÚ´æÃèÊö·û¡£°ÑËüµÄµØÖ·´æ·ÅÔÚĞÂ½ø³ÌµÄmmÖĞ¡£
+	 * åˆ†é…ä¸€ä¸ªæ–°çš„å†…å­˜æè¿°ç¬¦ã€‚æŠŠå®ƒçš„åœ°å€å­˜æ”¾åœ¨æ–°è¿›ç¨‹çš„mmä¸­ã€‚
 	 */
 	mm = allocate_mm();
 	if (!mm)
@@ -535,23 +535,23 @@ static int copy_mm(unsigned long clone_flags, struct task_struct * tsk)
 
 	/* Copy the current MM stuff.. */
 	/**
-	 * ²¢´Óµ±Ç°½ø³Ì¸´ÖÆmmµÄÄÚÈİ¡£
+	 * å¹¶ä»å½“å‰è¿›ç¨‹å¤åˆ¶mmçš„å†…å®¹ã€‚
 	 */
 	memcpy(mm, oldmm, sizeof(*mm));
 	if (!mm_init(mm))
 		goto fail_nomem;
 
 	/**
-	 * µ÷ÓÃÒÀÀµÓÚÌåÏµ½á¹¹µÄinit_new_context¡£
-	 * ¶ÔÓÚ80X86À´Ëµ£¬¸Ãº¯Êı¼ì²éµ±Ç°½ø³ÌÊÇ·ñÓĞ¶¨ÖÆµÄ¾Ö²¿ÃèÊö·û±í¡£
-	 * Èç¹ûÓĞ£¬¾Í¸´ÖÆÒ»·İ¾Ö²¿ÃèÊö·û±í²¢°ÑËü²åÈëtskµÄµØÖ·¿Õ¼ä
+	 * è°ƒç”¨ä¾èµ–äºä½“ç³»ç»“æ„çš„init_new_contextã€‚
+	 * å¯¹äº80X86æ¥è¯´ï¼Œè¯¥å‡½æ•°æ£€æŸ¥å½“å‰è¿›ç¨‹æ˜¯å¦æœ‰å®šåˆ¶çš„å±€éƒ¨æè¿°ç¬¦è¡¨ã€‚
+	 * å¦‚æœæœ‰ï¼Œå°±å¤åˆ¶ä¸€ä»½å±€éƒ¨æè¿°ç¬¦è¡¨å¹¶æŠŠå®ƒæ’å…¥tskçš„åœ°å€ç©ºé—´
 	 */
 	if (init_new_context(tsk,mm))
 		goto fail_nocontext;
 
 	/**
-	 * dup_mmap²»µ«¸´ÖÆÁËÏß³ÌÇøºÍÒ³±í£¬Ò²ÉèÖÃÁËmmµÄÒ»Ğ©ÊôĞÔ.
-	 * ËüÒ²»á¸Ä±ä¸¸½ø³ÌµÄË½ÓĞ£¬¿ÉĞ´µÄÒ³ÎªÖ»¶ÁµÄ£¬ÒÔÊ¹Ğ´Ê±¸´ÖÆ»úÖÆÉúĞ§¡£
+	 * dup_mmapä¸ä½†å¤åˆ¶äº†çº¿ç¨‹åŒºå’Œé¡µè¡¨ï¼Œä¹Ÿè®¾ç½®äº†mmçš„ä¸€äº›å±æ€§.
+	 * å®ƒä¹Ÿä¼šæ”¹å˜çˆ¶è¿›ç¨‹çš„ç§æœ‰ï¼Œå¯å†™çš„é¡µä¸ºåªè¯»çš„ï¼Œä»¥ä½¿å†™æ—¶å¤åˆ¶æœºåˆ¶ç”Ÿæ•ˆã€‚
 	 */
 	retval = dup_mmap(mm, oldmm);
 	if (retval)
@@ -639,7 +639,7 @@ static int count_open_files(struct files_struct *files, int size)
 }
 
 /**
- * ¸´ÖÆ½ø³ÌÎÄ¼şÃèÊö·û
+ * å¤åˆ¶è¿›ç¨‹æ–‡ä»¶æè¿°ç¬¦
  */
 static int copy_files(unsigned long clone_flags, struct task_struct * tsk)
 {
@@ -874,8 +874,8 @@ asmlinkage long sys_set_tid_address(int __user *tidptr)
  * flags). The actual kick-off is left to the caller.
  */
 /**
- * ´´½¨½ø³ÌÃèÊö·ûÒÔ¼°×Ó½ø³ÌÖ´ĞĞËùĞèÒªµÄËùÓĞÆäËûÊı¾İ½á¹¹
- * ËüµÄ²ÎÊıÓëdo_forkÏàÍ¬¡£Íâ¼Ó×Ó½ø³ÌµÄPID¡£
+ * åˆ›å»ºè¿›ç¨‹æè¿°ç¬¦ä»¥åŠå­è¿›ç¨‹æ‰§è¡Œæ‰€éœ€è¦çš„æ‰€æœ‰å…¶ä»–æ•°æ®ç»“æ„
+ * å®ƒçš„å‚æ•°ä¸do_forkç›¸åŒã€‚å¤–åŠ å­è¿›ç¨‹çš„PIDã€‚
  */
 static task_t *copy_process(unsigned long clone_flags,
 				 unsigned long stack_start,
@@ -889,11 +889,11 @@ static task_t *copy_process(unsigned long clone_flags,
 	struct task_struct *p = NULL;
 
 	/**
-	 * ¼ì²éclone_flagsËù´«±êÖ¾µÄÒ»ÖÂĞÔ¡£
+	 * æ£€æŸ¥clone_flagsæ‰€ä¼ æ ‡å¿—çš„ä¸€è‡´æ€§ã€‚
 	 */
 
 	/**
-	 * Èç¹ûCLONE_NEWNSºÍCLONE_FS±êÖ¾¶¼±»ÉèÖÃ£¬·µ»Ø´íÎó
+	 * å¦‚æœCLONE_NEWNSå’ŒCLONE_FSæ ‡å¿—éƒ½è¢«è®¾ç½®ï¼Œè¿”å›é”™è¯¯
 	 */
 	if ((clone_flags & (CLONE_NEWNS|CLONE_FS)) == (CLONE_NEWNS|CLONE_FS))
 		return ERR_PTR(-EINVAL);
@@ -903,8 +903,8 @@ static task_t *copy_process(unsigned long clone_flags,
 	 * can only be started up within the thread group.
 	 */
 	/**
-	 * CLONE_THREAD±êÖ¾±»ÉèÖÃ£¬²¢ÇÒCLONE_SIGHANDÃ»ÓĞÉèÖÃ¡£
-	 * (Í¬Ò»Ïß³Ì×éÖĞµÄÇáÁ¿¼¶½ø³Ì±ØĞë¹²ÏíĞÅºÅ)
+	 * CLONE_THREADæ ‡å¿—è¢«è®¾ç½®ï¼Œå¹¶ä¸”CLONE_SIGHANDæ²¡æœ‰è®¾ç½®ã€‚
+	 * (åŒä¸€çº¿ç¨‹ç»„ä¸­çš„è½»é‡çº§è¿›ç¨‹å¿…é¡»å…±äº«ä¿¡å·)
 	 */
 	if ((clone_flags & CLONE_THREAD) && !(clone_flags & CLONE_SIGHAND))
 		return ERR_PTR(-EINVAL);
@@ -915,15 +915,15 @@ static task_t *copy_process(unsigned long clone_flags,
 	 * for various simplifications in other code.
 	 */
 	/**
-	 * CLONE_SIGHAND±»ÉèÖÃ£¬µ«ÊÇCLONE_VMÃ»ÓĞÉèÖÃ¡£
-	 * (¹²ÏíĞÅºÅ´¦Àí³ÌĞòµÄÇáÁ¿¼¶½ø³ÌÒ²±ØĞë¹²ÏíÄÚ´æÃèÊö·û)
+	 * CLONE_SIGHANDè¢«è®¾ç½®ï¼Œä½†æ˜¯CLONE_VMæ²¡æœ‰è®¾ç½®ã€‚
+	 * (å…±äº«ä¿¡å·å¤„ç†ç¨‹åºçš„è½»é‡çº§è¿›ç¨‹ä¹Ÿå¿…é¡»å…±äº«å†…å­˜æè¿°ç¬¦)
 	 */
 	if ((clone_flags & CLONE_SIGHAND) && !(clone_flags & CLONE_VM))
 		return ERR_PTR(-EINVAL);
 
 	/**
-	 * Í¨¹ıµ÷ÓÃsecurity_task_createÒÔ¼°ÉÔºóµ÷ÓÃsecurity_task_allocÖ´ĞĞËùÓĞ¸½¼ÓµÄ°²È«¼ì²é¡£
-	 * LINUX2.6Ìá¹©À©Õ¹°²È«ĞÔµÄ¹³×Óº¯Êı£¬Óë´«Í³unixÏà±È£¬Ëü¾ßÓĞ¸ü¼ÓÇ¿×³µÄ°²È«Ä£ĞÍ¡£
+	 * é€šè¿‡è°ƒç”¨security_task_createä»¥åŠç¨åè°ƒç”¨security_task_allocæ‰§è¡Œæ‰€æœ‰é™„åŠ çš„å®‰å…¨æ£€æŸ¥ã€‚
+	 * LINUX2.6æä¾›æ‰©å±•å®‰å…¨æ€§çš„é’©å­å‡½æ•°ï¼Œä¸ä¼ ç»Ÿunixç›¸æ¯”ï¼Œå®ƒå…·æœ‰æ›´åŠ å¼ºå£®çš„å®‰å…¨æ¨¡å‹ã€‚
 	 */
 	retval = security_task_create(clone_flags);
 	if (retval)
@@ -931,23 +931,23 @@ static task_t *copy_process(unsigned long clone_flags,
 
 	retval = -ENOMEM;
 	/**
-	 * µ÷ÓÃdup_task_structÎª×Ó½ø³Ì»ñÈ¡½ø³ÌÃèÊö·û¡£
+	 * è°ƒç”¨dup_task_structä¸ºå­è¿›ç¨‹è·å–è¿›ç¨‹æè¿°ç¬¦ã€‚
 	 */
 	p = dup_task_struct(current);
 	if (!p)
 		goto fork_out;
 
 	/**
-	 * ¼ì²é´æ·ÅÔÚcurrent->sigal->rlim[RLIMIT_NPROC].rlim_curÖĞµÄÏŞÖÆÖµ£¬ÊÇ·ñĞ¡ÓÚ»òÕßµÈÓÚÓÃ»§ËùÓµÓĞµÄ½ø³ÌÊı¡£
-	 * Èç¹ûÊÇ£¬Ôò·µ»Ø´íÎóÂë¡£µ±È»£¬ÓĞrootÈ¨ÏŞ³ıÍâ¡£
-	 * p->user±íÊ¾½ø³ÌµÄÓµÓĞÕß£¬p->user->processes±íÊ¾½ø³ÌÓµÓĞÕßµ±Ç°½ø³ÌÊı
-	 * xie.baoyou×¢£º´Ë´¦±È½ÏÊÇÓÃ>=¶ø²»ÊÇ>
+	 * æ£€æŸ¥å­˜æ”¾åœ¨current->sigal->rlim[RLIMIT_NPROC].rlim_curä¸­çš„é™åˆ¶å€¼ï¼Œæ˜¯å¦å°äºæˆ–è€…ç­‰äºç”¨æˆ·æ‰€æ‹¥æœ‰çš„è¿›ç¨‹æ•°ã€‚
+	 * å¦‚æœæ˜¯ï¼Œåˆ™è¿”å›é”™è¯¯ç ã€‚å½“ç„¶ï¼Œæœ‰rootæƒé™é™¤å¤–ã€‚
+	 * p->userè¡¨ç¤ºè¿›ç¨‹çš„æ‹¥æœ‰è€…ï¼Œp->user->processesè¡¨ç¤ºè¿›ç¨‹æ‹¥æœ‰è€…å½“å‰è¿›ç¨‹æ•°
+	 * xie.baoyouæ³¨ï¼šæ­¤å¤„æ¯”è¾ƒæ˜¯ç”¨>=è€Œä¸æ˜¯>
 	 */
 	retval = -EAGAIN;
 	if (atomic_read(&p->user->processes) >=
 			p->signal->rlim[RLIMIT_NPROC].rlim_cur) {
 		/**
-		 * µ±È»£¬ÓÃ»§ÓĞrootÈ¨ÏŞ¾ÍÁíµ±±ğÂÛÁË
+		 * å½“ç„¶ï¼Œç”¨æˆ·æœ‰rootæƒé™å°±å¦å½“åˆ«è®ºäº†
 		 */
 		if (!capable(CAP_SYS_ADMIN) && !capable(CAP_SYS_RESOURCE) &&
 				p->user != &root_user)
@@ -955,11 +955,11 @@ static task_t *copy_process(unsigned long clone_flags,
 	}
 
 	/**
-	 * µİÔöuser½á¹¹µÄÊ¹ÓÃ¼ÆÊıÆ÷
+	 * é€’å¢userç»“æ„çš„ä½¿ç”¨è®¡æ•°å™¨
 	 */
 	atomic_inc(&p->user->__count);
 	/**
-	 * Ôö¼ÓÓÃ»§ÓµÓĞµÄ½ø³Ì¼ÆÊı¡£
+	 * å¢åŠ ç”¨æˆ·æ‹¥æœ‰çš„è¿›ç¨‹è®¡æ•°ã€‚
 	 */
 	atomic_inc(&p->user->processes);
 	get_group_info(p->group_info);
@@ -970,16 +970,16 @@ static task_t *copy_process(unsigned long clone_flags,
 	 * to stop root fork bombs.
 	 */
 	/**
-	 * ¼ì²éÏµÍ³ÖĞµÄ½ø³ÌÊıÁ¿£¨nr_threads£©ÊÇ·ñ³¬¹ımax_threads
-	 * max_threadsµÄÈ±Ê¡ÖµÊÇÓÉÏµÍ³ÄÚ´æÈİÁ¿¾ö¶¨µÄ¡£×ÜµÄÔ­ÔòÊÇ£ºËùÓĞµÄthread_infoÃèÊö·ûºÍÄÚºËÕ»ËùÕ¼ÓÃµÄ¿Õ¼ä
-	 * ²»ÄÜ³¬¹ıÎïÀíÄÚ´æµÄ1/8¡£²»¹ı£¬ÏµÍ³¹ÜÀí¿ÉÒÔÍ¨¹ıĞ´/proc/sys/kernel/thread-maxÎÄ¼şÀ´¸Ä±äÕâ¸öÖµ¡£
+	 * æ£€æŸ¥ç³»ç»Ÿä¸­çš„è¿›ç¨‹æ•°é‡ï¼ˆnr_threadsï¼‰æ˜¯å¦è¶…è¿‡max_threads
+	 * max_threadsçš„ç¼ºçœå€¼æ˜¯ç”±ç³»ç»Ÿå†…å­˜å®¹é‡å†³å®šçš„ã€‚æ€»çš„åŸåˆ™æ˜¯ï¼šæ‰€æœ‰çš„thread_infoæè¿°ç¬¦å’Œå†…æ ¸æ ˆæ‰€å ç”¨çš„ç©ºé—´
+	 * ä¸èƒ½è¶…è¿‡ç‰©ç†å†…å­˜çš„1/8ã€‚ä¸è¿‡ï¼Œç³»ç»Ÿç®¡ç†å¯ä»¥é€šè¿‡å†™/proc/sys/kernel/thread-maxæ–‡ä»¶æ¥æ”¹å˜è¿™ä¸ªå€¼ã€‚
 	 */
 	if (nr_threads >= max_threads)
 		goto bad_fork_cleanup_count;
 
 	/**
-	 * Èç¹ûĞÂ½ø³ÌµÄÖ´ĞĞÓòºÍ¿ÉÕĞ´ı¸ñÊ½µÄÄÚºËº¯Êı¶¼°üº¬ÔÚÄÚºËÖĞÄ£¿éÖĞ£¬
-	 * ¾ÍµİÔöËüÃÇµÄÊ¹ÓÃ¼ÆÊıÆ÷¡£
+	 * å¦‚æœæ–°è¿›ç¨‹çš„æ‰§è¡ŒåŸŸå’Œå¯æ‹›å¾…æ ¼å¼çš„å†…æ ¸å‡½æ•°éƒ½åŒ…å«åœ¨å†…æ ¸ä¸­æ¨¡å—ä¸­ï¼Œ
+	 * å°±é€’å¢å®ƒä»¬çš„ä½¿ç”¨è®¡æ•°å™¨ã€‚
 	 */
 	if (!try_module_get(p->thread_info->exec_domain->module))
 		goto bad_fork_cleanup_count;
@@ -988,27 +988,27 @@ static task_t *copy_process(unsigned long clone_flags,
 		goto bad_fork_cleanup_put_domain;
 
 	/**
-	 * ÉèÖÃ¼¸¸öÓë½ø³Ì×´Ì¬Ïà¹ØµÄ¹Ø¼ü×Ö¶Î¡£
+	 * è®¾ç½®å‡ ä¸ªä¸è¿›ç¨‹çŠ¶æ€ç›¸å…³çš„å…³é”®å­—æ®µã€‚
 	 */
 
 	/**
-	 * did_execÊÇ½ø³Ì·¢³öµÄexecveÏµÍ³µ÷ÓÃµÄ´ÎÊı£¬³õÊ¼Îª0
+	 * did_execæ˜¯è¿›ç¨‹å‘å‡ºçš„execveç³»ç»Ÿè°ƒç”¨çš„æ¬¡æ•°ï¼Œåˆå§‹ä¸º0
 	 */
 	p->did_exec = 0;
 	/**
-	 * ¸üĞÂ´Ó¸¸½ø³Ì¸´ÖÆµ½tsk_flags×Ö¶ÎÖĞµÄÒ»Ğ©±êÖ¾¡£
-	 * Ê×ÏÈÇå³ıPF_SUPERPRIV¡£¸Ã±êÖ¾±íÊ¾½ø³ÌÊÇ·ñÊ¹ÓÃÁËÄ³ÖÖ³¬¼¶ÓÃ»§È¨ÏŞ¡£
-	 * È»ºóÉèÖÃPF_FORKNOEXEC±êÖ¾¡£Ëü±íÊ¾×Ó½ø³Ì»¹Ã»ÓĞ·¢³öexecveÏµÍ³µ÷ÓÃ¡£
+	 * æ›´æ–°ä»çˆ¶è¿›ç¨‹å¤åˆ¶åˆ°tsk_flagså­—æ®µä¸­çš„ä¸€äº›æ ‡å¿—ã€‚
+	 * é¦–å…ˆæ¸…é™¤PF_SUPERPRIVã€‚è¯¥æ ‡å¿—è¡¨ç¤ºè¿›ç¨‹æ˜¯å¦ä½¿ç”¨äº†æŸç§è¶…çº§ç”¨æˆ·æƒé™ã€‚
+	 * ç„¶åè®¾ç½®PF_FORKNOEXECæ ‡å¿—ã€‚å®ƒè¡¨ç¤ºå­è¿›ç¨‹è¿˜æ²¡æœ‰å‘å‡ºexecveç³»ç»Ÿè°ƒç”¨ã€‚
 	 */
 	copy_flags(clone_flags, p);
 	/**
-	 * ±£´æĞÂ½ø³ÌµÄpidÖµ¡£
+	 * ä¿å­˜æ–°è¿›ç¨‹çš„pidå€¼ã€‚
 	 */
 	p->pid = pid;
 	retval = -EFAULT;
 	/**
-	 * Èç¹ûCLONE_PARENT_SETTID±êÖ¾±»ÉèÖÃ£¬¾Í½«×Ó½ø³ÌµÄPID¸´ÖÆµ½²ÎÊıparent_tidptrÖ¸ÏòµÄÓÃ»§Ì¬±äÁ¿ÖĞ¡£
-	 * xie.baoyou:ÏëÏëÎÒÃÇ³£³£µ÷ÓÃµÄpid = fork()Óï¾ä°É¡£
+	 * å¦‚æœCLONE_PARENT_SETTIDæ ‡å¿—è¢«è®¾ç½®ï¼Œå°±å°†å­è¿›ç¨‹çš„PIDå¤åˆ¶åˆ°å‚æ•°parent_tidptræŒ‡å‘çš„ç”¨æˆ·æ€å˜é‡ä¸­ã€‚
+	 * xie.baoyou:æƒ³æƒ³æˆ‘ä»¬å¸¸å¸¸è°ƒç”¨çš„pid = fork()è¯­å¥å§ã€‚
 	 */
 	if (clone_flags & CLONE_PARENT_SETTID)
 		if (put_user(p->pid, parent_tidptr))
@@ -1017,8 +1017,8 @@ static task_t *copy_process(unsigned long clone_flags,
 	p->proc_dentry = NULL;
 
 	/**
-	 * ³õÊ¼»¯×Ó½ø³ÌÃèÊö·ûÖĞµÄlist_headÊı¾İ½á¹¹ºÍ×ÔĞıËø¡£
-	 * ²¢Îª¹ÒÆğĞÅºÅ£¬¶¨Ê±Æ÷¼°Ê±¼äÍ³¼Æ±íÏà¹ØµÄ¼¸¸ö×Ö¶Î¸³³õÖµ¡£
+	 * åˆå§‹åŒ–å­è¿›ç¨‹æè¿°ç¬¦ä¸­çš„list_headæ•°æ®ç»“æ„å’Œè‡ªæ—‹é”ã€‚
+	 * å¹¶ä¸ºæŒ‚èµ·ä¿¡å·ï¼Œå®šæ—¶å™¨åŠæ—¶é—´ç»Ÿè®¡è¡¨ç›¸å…³çš„å‡ ä¸ªå­—æ®µèµ‹åˆå€¼ã€‚
 	 */
 	INIT_LIST_HEAD(&p->children);
 	INIT_LIST_HEAD(&p->sibling);
@@ -1047,7 +1047,7 @@ static task_t *copy_process(unsigned long clone_flags,
 	acct_clear_integrals(p);
 
 	/**
-	 * °Ñ´óÄÚºËËø¼ÆÊıÆ÷³õÊ¼»¯Îª-1
+	 * æŠŠå¤§å†…æ ¸é”è®¡æ•°å™¨åˆå§‹åŒ–ä¸º-1
 	 */
 	p->lock_depth = -1;		/* -1 = no lock */
 	do_posix_clock_monotonic_gettime(&p->start_time);
@@ -1074,9 +1074,9 @@ static task_t *copy_process(unsigned long clone_flags,
 		goto bad_fork_cleanup_security;
 	/* copy all the process information */
 	/**
-	 * copy_semundo£¬copy_files£¬copy_fs£¬copy_sighand£¬copy_signal
-	 * copy_mm£¬copy_keys£¬copy_namespace´´½¨ĞÂµÄÊı¾İ½á¹¹£¬²¢°Ñ¸¸½ø³ÌÏàÓ¦Êı¾İ½á¹¹µÄÖµ¸´ÖÆµ½ĞÂÊı¾İ½á¹¹ÖĞ¡£
-	 * ³ı·Çclone_flags²ÎÊıÖ¸³öËüÃÇÓĞ²»Í¬µÄÖµ¡£
+	 * copy_semundoï¼Œcopy_filesï¼Œcopy_fsï¼Œcopy_sighandï¼Œcopy_signal
+	 * copy_mmï¼Œcopy_keysï¼Œcopy_namespaceåˆ›å»ºæ–°çš„æ•°æ®ç»“æ„ï¼Œå¹¶æŠŠçˆ¶è¿›ç¨‹ç›¸åº”æ•°æ®ç»“æ„çš„å€¼å¤åˆ¶åˆ°æ–°æ•°æ®ç»“æ„ä¸­ã€‚
+	 * é™¤éclone_flagså‚æ•°æŒ‡å‡ºå®ƒä»¬æœ‰ä¸åŒçš„å€¼ã€‚
 	 */
 	if ((retval = copy_semundo(clone_flags, p)))
 		goto bad_fork_cleanup_audit;
@@ -1095,21 +1095,21 @@ static task_t *copy_process(unsigned long clone_flags,
 	if ((retval = copy_namespace(clone_flags, p)))
 		goto bad_fork_cleanup_keys;
 	/**
-	 * µ÷ÓÃcopy_thread£¬ÓÃ·¢³öcloneÏµÍ³µ÷ÓÃÊ±CPU¼Ä´æÆ÷µÄÖµ£¨ËüÃÇ±£´æÔÚ¸¸½ø³ÌµÄÄÚºËÕ»ÖĞ£©
-	 * À´³õÊ¼»¯×Ó½ø³ÌµÄÄÚºËÕ»¡£²»¹ı£¬copy_thread°Ñeax¼Ä´æÆ÷¶ÔÓ¦×Ö¶ÎµÄÖµ£¨ÕâÊÇforkºÍcloneÏµÍ³µ÷ÓÃÔÚ×Ó½ø³ÌÖĞµÄ·µ»ØÖµ£©
-	 * Ç¿ĞĞÖÃÎª0¡£×Ó½ø³ÌÃèÊö·ûµÄthread.esp×Ö¶Î³õÊ¼»¯Îª×Ó½ø³ÌÄÚºËÕ»µÄ»ùµØÖ·¡£ret_from_forkµÄµØÖ·´æ·ÅÔÚthread.eipÖĞ¡£
-	 * Èç¹û¸¸½ø³ÌÊ¹ÓÃIOÈ¨ÏŞÎ»Í¼¡£Ôò×Ó½ø³Ì»ñÈ¡¸ÃÎ»Í¼µÄÒ»¸ö¿½±´¡£
-	 * ×îºó£¬Èç¹ûCLONE_SETTLS±êÖ¾±»ÖÃÎ»£¬Ôò×Ó½ø³Ì»ñÈ¡ÓÉCLONEÏµÍ³µ÷ÓÃµÄ²ÎÊıtlsÖ¸ÏòµÄÓÃ»§Ì¬Êı¾İ½á¹¹Ëù±íÊ¾µÄTLS¶Î¡£
+	 * è°ƒç”¨copy_threadï¼Œç”¨å‘å‡ºcloneç³»ç»Ÿè°ƒç”¨æ—¶CPUå¯„å­˜å™¨çš„å€¼ï¼ˆå®ƒä»¬ä¿å­˜åœ¨çˆ¶è¿›ç¨‹çš„å†…æ ¸æ ˆä¸­ï¼‰
+	 * æ¥åˆå§‹åŒ–å­è¿›ç¨‹çš„å†…æ ¸æ ˆã€‚ä¸è¿‡ï¼Œcopy_threadæŠŠeaxå¯„å­˜å™¨å¯¹åº”å­—æ®µçš„å€¼ï¼ˆè¿™æ˜¯forkå’Œcloneç³»ç»Ÿè°ƒç”¨åœ¨å­è¿›ç¨‹ä¸­çš„è¿”å›å€¼ï¼‰
+	 * å¼ºè¡Œç½®ä¸º0ã€‚å­è¿›ç¨‹æè¿°ç¬¦çš„thread.espå­—æ®µåˆå§‹åŒ–ä¸ºå­è¿›ç¨‹å†…æ ¸æ ˆçš„åŸºåœ°å€ã€‚ret_from_forkçš„åœ°å€å­˜æ”¾åœ¨thread.eipä¸­ã€‚
+	 * å¦‚æœçˆ¶è¿›ç¨‹ä½¿ç”¨IOæƒé™ä½å›¾ã€‚åˆ™å­è¿›ç¨‹è·å–è¯¥ä½å›¾çš„ä¸€ä¸ªæ‹·è´ã€‚
+	 * æœ€åï¼Œå¦‚æœCLONE_SETTLSæ ‡å¿—è¢«ç½®ä½ï¼Œåˆ™å­è¿›ç¨‹è·å–ç”±CLONEç³»ç»Ÿè°ƒç”¨çš„å‚æ•°tlsæŒ‡å‘çš„ç”¨æˆ·æ€æ•°æ®ç»“æ„æ‰€è¡¨ç¤ºçš„TLSæ®µã€‚
 	 */
 	retval = copy_thread(0, clone_flags, stack_start, stack_size, p, regs);
 	if (retval)
 		goto bad_fork_cleanup_namespace;
 
 	/**
-	 * Èç¹ûclone_flags²ÎÊıµÄÖµ±»ÖÃÎªCLONE_CHILD_SETTID»òCLONE_CHILD_CLEARTID
-	 * ¾Í°Ñchild_tidptr²ÎÊıµÄÖµ·Ö±ğ¸´ÖÆµ½set_child_tid»òclear_child_tid×Ö¶Î¡£
-	 * ÕâĞ©±êÖ¾ËµÃ÷£º±ØĞë¸Ä±ä×Ó½ø³ÌÓÃ»§Ì¬µØÖ·¿Õ¼äµÄdhild_tidptrËùÖ¸ÏòµÄ±äÁ¿µÄÖµ
-	 * ²»¹ıÊµ¼ÊµÄĞ´²Ù×÷ÒªÉÔºóÔÙÖ´ĞĞ¡£
+	 * å¦‚æœclone_flagså‚æ•°çš„å€¼è¢«ç½®ä¸ºCLONE_CHILD_SETTIDæˆ–CLONE_CHILD_CLEARTID
+	 * å°±æŠŠchild_tidptrå‚æ•°çš„å€¼åˆ†åˆ«å¤åˆ¶åˆ°set_child_tidæˆ–clear_child_tidå­—æ®µã€‚
+	 * è¿™äº›æ ‡å¿—è¯´æ˜ï¼šå¿…é¡»æ”¹å˜å­è¿›ç¨‹ç”¨æˆ·æ€åœ°å€ç©ºé—´çš„dhild_tidptræ‰€æŒ‡å‘çš„å˜é‡çš„å€¼
+	 * ä¸è¿‡å®é™…çš„å†™æ“ä½œè¦ç¨åå†æ‰§è¡Œã€‚
 	 */
 	p->set_child_tid = (clone_flags & CLONE_CHILD_SETTID) ? child_tidptr : NULL;
 	/*
@@ -1122,8 +1122,8 @@ static task_t *copy_process(unsigned long clone_flags,
 	 * of CLONE_PTRACE.
 	 */
 	/**
-	 * Çå³ıTIF_SYSCALL_TRACE±êÖ¾¡£Ê¹ret_from_forkº¯Êı²»»á°ÑÏµÍ³µ÷ÓÃ½áÊøµÄÏûÏ¢Í¨Öª¸øµ÷ÊÔ½ø³Ì¡£
-	 * Ò²²»Ó¦¸ÃÍ¨Öª¸øµ÷ÊÔ½ø³Ì£¬ÒòÎª×Ó½ø³Ì²¢Ã»ÓĞµ÷ÓÃfork.
+	 * æ¸…é™¤TIF_SYSCALL_TRACEæ ‡å¿—ã€‚ä½¿ret_from_forkå‡½æ•°ä¸ä¼šæŠŠç³»ç»Ÿè°ƒç”¨ç»“æŸçš„æ¶ˆæ¯é€šçŸ¥ç»™è°ƒè¯•è¿›ç¨‹ã€‚
+	 * ä¹Ÿä¸åº”è¯¥é€šçŸ¥ç»™è°ƒè¯•è¿›ç¨‹ï¼Œå› ä¸ºå­è¿›ç¨‹å¹¶æ²¡æœ‰è°ƒç”¨fork.
 	 */
 	clear_tsk_thread_flag(p, TIF_SYSCALL_TRACE);
 
@@ -1134,10 +1134,10 @@ static task_t *copy_process(unsigned long clone_flags,
 
 	/* ok, now we should be set up.. */
 	/**
-	 * ÓÃclone_flags²ÎÊıµÍÎ»µÄĞÅºÅÊı¾İ±àÂëÍ³½¨Ê¼»¯tsk_exit_signal×Ö¶Î¡£
-	 * ÈçCLONE_THREAD±êÖ¾±»ÖÃÎ»£¬¾Í°Ñexit_signal×Ö¶Î³õÊ¼»¯Îª-1¡£
-	 * ÕâÑù×öÊÇÒòÎª£ºµ±´´½¨Ïß³ÌÊ±£¬¼´Ê¹±»´´½¨µÄÏß³ÌËÀÍö£¬¶¼²»Ó¦¸Ã¸øÁìÍ·½ø³ÌµÄ¸¸½ø³Ì·¢ËÍĞÅºÅ¡£
-	 * ¶øÓ¦¸ÃÊÇÁìÍ·½ø³ÌËÀÍöºó£¬²ÅÏòÆäÁìÍ·½ø³ÌµÄ¸¸½ø³Ì·¢ËÍĞÅºÅ¡£
+	 * ç”¨clone_flagså‚æ•°ä½ä½çš„ä¿¡å·æ•°æ®ç¼–ç ç»Ÿå»ºå§‹åŒ–tsk_exit_signalå­—æ®µã€‚
+	 * å¦‚CLONE_THREADæ ‡å¿—è¢«ç½®ä½ï¼Œå°±æŠŠexit_signalå­—æ®µåˆå§‹åŒ–ä¸º-1ã€‚
+	 * è¿™æ ·åšæ˜¯å› ä¸ºï¼šå½“åˆ›å»ºçº¿ç¨‹æ—¶ï¼Œå³ä½¿è¢«åˆ›å»ºçš„çº¿ç¨‹æ­»äº¡ï¼Œéƒ½ä¸åº”è¯¥ç»™é¢†å¤´è¿›ç¨‹çš„çˆ¶è¿›ç¨‹å‘é€ä¿¡å·ã€‚
+	 * è€Œåº”è¯¥æ˜¯é¢†å¤´è¿›ç¨‹æ­»äº¡åï¼Œæ‰å‘å…¶é¢†å¤´è¿›ç¨‹çš„çˆ¶è¿›ç¨‹å‘é€ä¿¡å·ã€‚
 	 */
 	p->exit_signal = (clone_flags & CLONE_THREAD) ? -1 : (clone_flags & CSIGNAL);
 	p->pdeath_signal = 0;
@@ -1145,10 +1145,10 @@ static task_t *copy_process(unsigned long clone_flags,
 
 	/* Perform scheduler related setup */
 	/**
-	 * µ÷ÓÃsched_forkÍê³É¶ÔĞÂ½ø³Ìµ÷¶È³ÌĞòÊı¾İ½á¹¹µÄ³õÊ¼»¯¡£
-	 * ¸Ãº¯Êı°ÑĞÂ½ø³ÌµÄ×´Ì¬ÖÃÎªTASK_RUNNING£¬²¢°Ñthread_info½á¹¹µÄpreempt_count×Ö¶ÎÉèÖÃÎª1£¬
-	 * ´Ó¶ø½ûÖ¹ÇÀÕ¼¡£
-	 * ´ËÍâ£¬ÎªÁË±£Ö¤¹«Æ½µ÷¶È£¬¸¸×Ó½ø³Ì¹²Ïí¸¸½ø³ÌµÄÊ±¼äÆ¬¡£
+	 * è°ƒç”¨sched_forkå®Œæˆå¯¹æ–°è¿›ç¨‹è°ƒåº¦ç¨‹åºæ•°æ®ç»“æ„çš„åˆå§‹åŒ–ã€‚
+	 * è¯¥å‡½æ•°æŠŠæ–°è¿›ç¨‹çš„çŠ¶æ€ç½®ä¸ºTASK_RUNNINGï¼Œå¹¶æŠŠthread_infoç»“æ„çš„preempt_countå­—æ®µè®¾ç½®ä¸º1ï¼Œ
+	 * ä»è€Œç¦æ­¢æŠ¢å ã€‚
+	 * æ­¤å¤–ï¼Œä¸ºäº†ä¿è¯å…¬å¹³è°ƒåº¦ï¼Œçˆ¶å­è¿›ç¨‹å…±äº«çˆ¶è¿›ç¨‹çš„æ—¶é—´ç‰‡ã€‚
 	 */
 	sched_fork(p);
 
@@ -1172,7 +1172,7 @@ static task_t *copy_process(unsigned long clone_flags,
 	 */
 	p->cpus_allowed = current->cpus_allowed;
 	/**
-	 * ³õÊ¼»¯×ÓÏß³ÌµÄcpu×Ö¶Î¡£
+	 * åˆå§‹åŒ–å­çº¿ç¨‹çš„cpuå­—æ®µã€‚
 	 */
 	set_task_cpu(p, smp_processor_id());
 
@@ -1188,8 +1188,8 @@ static task_t *copy_process(unsigned long clone_flags,
 
 	/* CLONE_PARENT re-uses the old parent */
 	/**
-	 * ³õÊ¼»¯±íÊ¾Ç××Ó¹ØÏµµÄ×Ö¶Î£¬Èç¹ûCLONE_PARENT»òÕßCLONE_THREAD±»ÉèÖÃÁË
-	 * ¾ÍÓÃcurrent->real_parent³õÊ¼»¯£¬·ñÔò£¬µ±Ç°½ø³Ì¾ÍÊÇ³õ´´½¨½ø³ÌµÄ¸¸½ø³Ì¡£
+	 * åˆå§‹åŒ–è¡¨ç¤ºäº²å­å…³ç³»çš„å­—æ®µï¼Œå¦‚æœCLONE_PARENTæˆ–è€…CLONE_THREADè¢«è®¾ç½®äº†
+	 * å°±ç”¨current->real_parentåˆå§‹åŒ–ï¼Œå¦åˆ™ï¼Œå½“å‰è¿›ç¨‹å°±æ˜¯åˆåˆ›å»ºè¿›ç¨‹çš„çˆ¶è¿›ç¨‹ã€‚
 	 */
 	if (clone_flags & (CLONE_PARENT|CLONE_THREAD))
 		p->real_parent = current->real_parent;
@@ -1226,28 +1226,28 @@ static task_t *copy_process(unsigned long clone_flags,
 	}
 
 	/** 
-	 * °ÑĞÂ½ø³Ì¼ÓÈëµ½½ø³ÌÁ´±í
+	 * æŠŠæ–°è¿›ç¨‹åŠ å…¥åˆ°è¿›ç¨‹é“¾è¡¨
 	 */
 	SET_LINKS(p);
 
 	/**
-	 * PT_PTRACED±íÊ¾×Ó½ø³Ì±ØĞë±»¸ú×Ù£¬¾Í°Ñcurrent->parent¸³¸øtsk->parent£¬²¢½«×Ó½ø³Ì²åÈëµ÷ÊÔ³ÌĞòµÄ¸ú×ÙÁ´±íÖĞ¡£
+	 * PT_PTRACEDè¡¨ç¤ºå­è¿›ç¨‹å¿…é¡»è¢«è·Ÿè¸ªï¼Œå°±æŠŠcurrent->parentèµ‹ç»™tsk->parentï¼Œå¹¶å°†å­è¿›ç¨‹æ’å…¥è°ƒè¯•ç¨‹åºçš„è·Ÿè¸ªé“¾è¡¨ä¸­ã€‚
 	 */
 	if (unlikely(p->ptrace & PT_PTRACED))
 		__ptrace_link(p, current->parent);
 
 	/**
-	 * °ÑĞÂ½ø³ÌÃèÊö·ûµÄPID²åÈëpidhashÉ¢ÁĞ±íÖĞ¡£
+	 * æŠŠæ–°è¿›ç¨‹æè¿°ç¬¦çš„PIDæ’å…¥pidhashæ•£åˆ—è¡¨ä¸­ã€‚
 	 */
 	attach_pid(p, PIDTYPE_PID, p->pid);
 	attach_pid(p, PIDTYPE_TGID, p->tgid);
 
 	/**
-	 * Èç¹û×Ó½ø³ÌÊÇÏß³Ì×éµÄÁìÍ·½ø³Ì(CLONE_THREAD±êÖ¾±»Çå0)
+	 * å¦‚æœå­è¿›ç¨‹æ˜¯çº¿ç¨‹ç»„çš„é¢†å¤´è¿›ç¨‹(CLONE_THREADæ ‡å¿—è¢«æ¸…0)
 	 */
 	if (thread_group_leader(p)) {
 		/**
-		 * ½«½ø³Ì²åÈëÏàÓ¦µÄÉ¢ÁĞ±í¡£
+		 * å°†è¿›ç¨‹æ’å…¥ç›¸åº”çš„æ•£åˆ—è¡¨ã€‚
 		 */
 		attach_pid(p, PIDTYPE_PGID, process_group(p));
 		attach_pid(p, PIDTYPE_SID, p->signal->session);
@@ -1256,7 +1256,7 @@ static task_t *copy_process(unsigned long clone_flags,
 	}
 
 	/**
-	 * ¼ÆÊı
+	 * è®¡æ•°
 	 */
 	nr_threads++;
 	total_forks++;
@@ -1349,12 +1349,12 @@ static inline int fork_traceflag (unsigned clone_flags)
  * it and waits for it to finish using the VM if required.
  */
 /**
- * ¸ºÔğ´¦Àíclone,fork,vforkÏµÍ³µ÷ÓÃ¡£
- * clone_flags-ÓëcloneµÄflag²ÎÊıÏàÍ¬
- * stack_start-ÓëcloneµÄchild_stackÏàÍ¬
- * regs-Ö¸ÏòÍ¨ÓÃ¼Ä´æÆ÷µÄÖµ¡£ÊÇÔÚ´ÓÓÃ»§Ì¬ÇĞ»»µ½ÄÚºËÌ¬Ê±±»±£´æµ½ÄÚºËÌ¬¶ÑÕ»ÖĞµÄ¡£
- * stack_size-Î´Ê¹ÓÃ,×ÜÊÇÎª0
- * parent_tidptr,child_tidptr-cloneÖĞ¶ÔÓ¦²ÎÊıptid,ctidÏàÍ¬
+ * è´Ÿè´£å¤„ç†clone,fork,vforkç³»ç»Ÿè°ƒç”¨ã€‚
+ * clone_flags-ä¸cloneçš„flagå‚æ•°ç›¸åŒ
+ * stack_start-ä¸cloneçš„child_stackç›¸åŒ
+ * regs-æŒ‡å‘é€šç”¨å¯„å­˜å™¨çš„å€¼ã€‚æ˜¯åœ¨ä»ç”¨æˆ·æ€åˆ‡æ¢åˆ°å†…æ ¸æ€æ—¶è¢«ä¿å­˜åˆ°å†…æ ¸æ€å †æ ˆä¸­çš„ã€‚
+ * stack_size-æœªä½¿ç”¨,æ€»æ˜¯ä¸º0
+ * parent_tidptr,child_tidptr-cloneä¸­å¯¹åº”å‚æ•°ptid,ctidç›¸åŒ
  */
 long do_fork(unsigned long clone_flags,
 	      unsigned long stack_start,
@@ -1366,15 +1366,15 @@ long do_fork(unsigned long clone_flags,
 	struct task_struct *p;
 	int trace = 0;
 	/**
-	 * Í¨¹ı²éÕÒpidmap_arrayÎ»Í¼,Îª×Ó½ø³Ì·ÖÅäĞÂµÄpid²ÎÊı.
+	 * é€šè¿‡æŸ¥æ‰¾pidmap_arrayä½å›¾,ä¸ºå­è¿›ç¨‹åˆ†é…æ–°çš„pidå‚æ•°.
 	 */
 	long pid = alloc_pidmap();
 
 	if (pid < 0)
 		return -EAGAIN;
 	/**
-	 * Èç¹û¸¸½ø³ÌÕıÔÚ±»¸ú×Ù,¾Í¼ì²édebugger³ÌĞòÊÇ·ñÏë¸ú×Ù×Ó½ø³Ì.²¢ÇÒ×Ó½ø³Ì²»ÊÇÄÚºË½ø³Ì(CLONE_UNTRACEDÎ´ÉèÖÃ)
-	 * ÄÇÃ´¾ÍÉèÖÃCLONE_PTRACE±êÖ¾.
+	 * å¦‚æœçˆ¶è¿›ç¨‹æ­£åœ¨è¢«è·Ÿè¸ª,å°±æ£€æŸ¥debuggerç¨‹åºæ˜¯å¦æƒ³è·Ÿè¸ªå­è¿›ç¨‹.å¹¶ä¸”å­è¿›ç¨‹ä¸æ˜¯å†…æ ¸è¿›ç¨‹(CLONE_UNTRACEDæœªè®¾ç½®)
+	 * é‚£ä¹ˆå°±è®¾ç½®CLONE_PTRACEæ ‡å¿—.
 	 */
 	if (unlikely(current->ptrace)) {
 		trace = fork_traceflag (clone_flags);
@@ -1383,8 +1383,8 @@ long do_fork(unsigned long clone_flags,
 	}
 
 	/**
-	 * copy_process¸´ÖÆ½ø³ÌÃèÊö·û.Èç¹ûËùÓĞ±ØĞëµÄ×ÊÔ´¶¼ÊÇ¿ÉÓÃµÄ,¸Ãº¯Êı·µ»Ø¸Õ´´½¨µÄtask_structÃèÊö·ûµÄµØÖ·.
-	 * ÕâÊÇ´´½¨½ø³ÌµÄ¹Ø¼ü²½Öè.
+	 * copy_processå¤åˆ¶è¿›ç¨‹æè¿°ç¬¦.å¦‚æœæ‰€æœ‰å¿…é¡»çš„èµ„æºéƒ½æ˜¯å¯ç”¨çš„,è¯¥å‡½æ•°è¿”å›åˆšåˆ›å»ºçš„task_structæè¿°ç¬¦çš„åœ°å€.
+	 * è¿™æ˜¯åˆ›å»ºè¿›ç¨‹çš„å…³é”®æ­¥éª¤.
 	 */
 	p = copy_process(clone_flags, stack_start, regs, stack_size, parent_tidptr, child_tidptr, pid);
 	/*
@@ -1400,8 +1400,8 @@ long do_fork(unsigned long clone_flags,
 		}
 
 		/**
-		 * Èç¹ûÉèÖÃÁËCLONE_STOPPED,»òÕß±ØĞë¸ú×Ù×Ó½ø³Ì.
-		 * ¾ÍÉèÖÃ×Ó½ø³ÌÎªTASK_STOPPED×´Ì¬,²¢·¢ËÍSIGSTOPĞÅºÅ¹ÒÆğËü.
+		 * å¦‚æœè®¾ç½®äº†CLONE_STOPPED,æˆ–è€…å¿…é¡»è·Ÿè¸ªå­è¿›ç¨‹.
+		 * å°±è®¾ç½®å­è¿›ç¨‹ä¸ºTASK_STOPPEDçŠ¶æ€,å¹¶å‘é€SIGSTOPä¿¡å·æŒ‚èµ·å®ƒ.
 		 */
 		if ((p->ptrace & PT_PTRACED) || (clone_flags & CLONE_STOPPED)) {
 			/*
@@ -1412,21 +1412,21 @@ long do_fork(unsigned long clone_flags,
 		}
 
 		/**
-		 * Ã»ÓĞÉèÖÃCLONE_STOPPED,¾Íµ÷ÓÃwake_up_new_task
-		 * Ëüµ÷Õû¸¸½ø³ÌºÍ×Ó½ø³ÌµÄµ÷¶È²ÎÊı.
-		 * Èç¹û¸¸×Ó½ø³ÌÔËĞĞÔÚÍ¬Ò»¸öCPUÉÏ,²¢ÇÒ²»ÄÜ¹²ÏíÍ¬Ò»×éÒ³±í(CLONE_VM±êÖ¾±»Çå0).ÄÇÃ´,¾Í°Ñ×Ó½ø³Ì²åÈë¸¸½ø³ÌÔËĞĞ¶ÓÁĞ.
-		 * ²¢ÇÒ×Ó½ø³Ì²åÔÚ¸¸½ø³ÌÖ®Ç°.ÕâÑù×öµÄÄ¿µÄÊÇ:Èç¹û×Ó½ø³ÌÔÚ´´½¨Ö®ºóÖ´ĞĞĞÂ³ÌĞò,¾Í¿ÉÒÔ±ÜÃâĞ´Ê±¸´ÖÆ»úÖÆÖ´ĞĞ²»±ØÒªÊ±Ò³Ãæ¸´ÖÆ.
-		 * ·ñÔò,Èç¹ûÔËĞĞÔÚ²»Í¬µÄCPUÉÏ,»òÕß¸¸×Ó½ø³Ì¹²ÏíÍ¬Ò»×éÒ³±í.¾Í°Ñ×Ó½ø³Ì²åÈë¸¸½ø³ÌÔËĞĞ¶ÓÁĞµÄ¶ÓÎ².
+		 * æ²¡æœ‰è®¾ç½®CLONE_STOPPED,å°±è°ƒç”¨wake_up_new_task
+		 * å®ƒè°ƒæ•´çˆ¶è¿›ç¨‹å’Œå­è¿›ç¨‹çš„è°ƒåº¦å‚æ•°.
+		 * å¦‚æœçˆ¶å­è¿›ç¨‹è¿è¡Œåœ¨åŒä¸€ä¸ªCPUä¸Š,å¹¶ä¸”ä¸èƒ½å…±äº«åŒä¸€ç»„é¡µè¡¨(CLONE_VMæ ‡å¿—è¢«æ¸…0).é‚£ä¹ˆ,å°±æŠŠå­è¿›ç¨‹æ’å…¥çˆ¶è¿›ç¨‹è¿è¡Œé˜Ÿåˆ—.
+		 * å¹¶ä¸”å­è¿›ç¨‹æ’åœ¨çˆ¶è¿›ç¨‹ä¹‹å‰.è¿™æ ·åšçš„ç›®çš„æ˜¯:å¦‚æœå­è¿›ç¨‹åœ¨åˆ›å»ºä¹‹åæ‰§è¡Œæ–°ç¨‹åº,å°±å¯ä»¥é¿å…å†™æ—¶å¤åˆ¶æœºåˆ¶æ‰§è¡Œä¸å¿…è¦æ—¶é¡µé¢å¤åˆ¶.
+		 * å¦åˆ™,å¦‚æœè¿è¡Œåœ¨ä¸åŒçš„CPUä¸Š,æˆ–è€…çˆ¶å­è¿›ç¨‹å…±äº«åŒä¸€ç»„é¡µè¡¨.å°±æŠŠå­è¿›ç¨‹æ’å…¥çˆ¶è¿›ç¨‹è¿è¡Œé˜Ÿåˆ—çš„é˜Ÿå°¾.
 		 */
 		if (!(clone_flags & CLONE_STOPPED))
 			wake_up_new_task(p, clone_flags);
-		else/*Èç¹ûCLONE_STOPPED±êÖ¾±»ÉèÖÃ£¬¾Í°Ñ×Ó½ø³ÌÉèÖÃÎªTASK_STOPPED×´Ì¬¡£*/
+		else/*å¦‚æœCLONE_STOPPEDæ ‡å¿—è¢«è®¾ç½®ï¼Œå°±æŠŠå­è¿›ç¨‹è®¾ç½®ä¸ºTASK_STOPPEDçŠ¶æ€ã€‚*/
 			p->state = TASK_STOPPED;
 
 		/**
-		 * Èç¹û½ø³ÌÕı±»¸ú×Ù,Ôò°Ñ×Ó½ø³ÌµÄPID²åÈëµ½¸¸½ø³ÌµÄptrace_message,²¢µ÷ÓÃptrace_notify
-		 * ptrace_notifyÊ¹µ±Ç°½ø³ÌÍ£Ö¹ÔËĞĞ,²¢Ïòµ±Ç°½ø³ÌµÄ¸¸½ø³Ì·¢ËÍSIGCHLDĞÅºÅ.×Ó½ø³ÌµÄ×æ¸¸½ø³ÌÊÇ¸ú×Ù¸¸½ø³ÌµÄdebugger½ø³Ì.
-		 * dubugger½ø³Ì¿ÉÒÔÍ¨¹ıptrace_message»ñµÃ±»´´½¨×Ó½ø³ÌµÄPID.
+		 * å¦‚æœè¿›ç¨‹æ­£è¢«è·Ÿè¸ª,åˆ™æŠŠå­è¿›ç¨‹çš„PIDæ’å…¥åˆ°çˆ¶è¿›ç¨‹çš„ptrace_message,å¹¶è°ƒç”¨ptrace_notify
+		 * ptrace_notifyä½¿å½“å‰è¿›ç¨‹åœæ­¢è¿è¡Œ,å¹¶å‘å½“å‰è¿›ç¨‹çš„çˆ¶è¿›ç¨‹å‘é€SIGCHLDä¿¡å·.å­è¿›ç¨‹çš„ç¥–çˆ¶è¿›ç¨‹æ˜¯è·Ÿè¸ªçˆ¶è¿›ç¨‹çš„debuggerè¿›ç¨‹.
+		 * dubuggerè¿›ç¨‹å¯ä»¥é€šè¿‡ptrace_messageè·å¾—è¢«åˆ›å»ºå­è¿›ç¨‹çš„PID.
 		 */
 		if (unlikely (trace)) {
 			current->ptrace_message = pid;
@@ -1434,7 +1434,7 @@ long do_fork(unsigned long clone_flags,
 		}
 
 		/**
-		 * Èç¹ûÉèÖÃÁËCLONE_VFORK,¾Í°Ñ¸¸½ø³Ì²åÈëµÈ´ı¶ÓÁĞ,²¢¹ÒÆğ¸¸½ø³ÌÖ±µ½×Ó½ø³Ì½áÊø»òÕßÖ´ĞĞÁËĞÂµÄ³ÌĞò.
+		 * å¦‚æœè®¾ç½®äº†CLONE_VFORK,å°±æŠŠçˆ¶è¿›ç¨‹æ’å…¥ç­‰å¾…é˜Ÿåˆ—,å¹¶æŒ‚èµ·çˆ¶è¿›ç¨‹ç›´åˆ°å­è¿›ç¨‹ç»“æŸæˆ–è€…æ‰§è¡Œäº†æ–°çš„ç¨‹åº.
 		 */
 		if (clone_flags & CLONE_VFORK) {
 			wait_for_completion(&vfork);

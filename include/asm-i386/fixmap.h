@@ -104,7 +104,7 @@ extern void __set_fixmap (enum fixed_addresses idx,
 		__set_fixmap(idx, phys, PAGE_KERNEL_NOCACHE)
 
 /**
- * ³·Ïû¹Ì¶¨Ó³ÉäÏßĞÔµØÖ·idxºÍÎïÀíµØÖ·Ö®¼äµÄÁ¬½Ó
+ * æ’¤æ¶ˆå›ºå®šæ˜ å°„çº¿æ€§åœ°å€idxå’Œç‰©ç†åœ°å€ä¹‹é—´çš„è¿æ¥
  */
 #define clear_fixmap(idx) \
 		__set_fixmap(idx, 0, __pgprot(0))
@@ -114,7 +114,7 @@ extern void __set_fixmap (enum fixed_addresses idx,
 #define __FIXADDR_SIZE	(__end_of_permanent_fixed_addresses << PAGE_SHIFT)
 #define __FIXADDR_BOOT_SIZE	(__end_of_fixed_addresses << PAGE_SHIFT)
 /**
- * ¹Ì¶¨Ó³ÉäµÄÏßĞÔµØÖ·ÆğÊ¼µØÖ·¡£
+ * å›ºå®šæ˜ å°„çš„çº¿æ€§åœ°å€èµ·å§‹åœ°å€ã€‚
  */
 #define FIXADDR_START		(FIXADDR_TOP - __FIXADDR_SIZE)
 #define FIXADDR_BOOT_START	(FIXADDR_TOP - __FIXADDR_BOOT_SIZE)

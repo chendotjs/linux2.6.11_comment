@@ -833,7 +833,7 @@ acpi_process_madt(void)
  */
 
 /**
- * ÔÚÄÚ´æÖÐÕÒµ½RSDPºÍRSDT/XSDT£¬´Ó¶ø¶¨Î»ACPI±í¡£
+ * åœ¨å†…å­˜ä¸­æ‰¾åˆ°RSDPå’ŒRSDT/XSDTï¼Œä»Žè€Œå®šä½ACPIè¡¨ã€‚
  */
 int __init
 acpi_boot_table_init(void)

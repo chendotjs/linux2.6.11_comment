@@ -473,7 +473,7 @@ int pcibios_set_irq_routing(struct pci_dev *dev, int pin, int irq)
 }
 
 /**
- * Ä¿Ç°ÄÜÍ¨¹ıbiosÌ½²âPCI¡£
+ * ç›®å‰èƒ½é€šè¿‡biosæ¢æµ‹PCIã€‚
  */
 static int __init pci_pcbios_init(void)
 {

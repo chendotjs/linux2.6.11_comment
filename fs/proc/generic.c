@@ -615,7 +615,7 @@ struct proc_dir_entry *proc_mkdir_mode(const char *name, mode_t mode,
 }
 
 /**
- * ´´½¨procÄ¿Â¼Ïî¡£
+ * åˆ›å»ºprocç›®å½•é¡¹ã€‚
  */
 struct proc_dir_entry *proc_mkdir(const char *name,
 		struct proc_dir_entry *parent)

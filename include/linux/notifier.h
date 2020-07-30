@@ -12,21 +12,21 @@
 #include <linux/errno.h>
 
 /**
- * ֪ͨ������㡣
+ * 通知链表结点。
  */
 struct notifier_block
 {
 	/**
-	 * ��Ҫִ�еĺ���
+	 * 需要执行的函数
 	 */
 	int (*notifier_call)(struct notifier_block *self, unsigned long, void *);
 	/**
-	 * ָ����һ����ָ��
+	 * 指向下一结点的指针
 	 */
 	struct notifier_block *next;
 	/**
-	 * �������ȼ������ǣ���ʵ�ʵĴ����У�����ע��Ľڵ㲻������priority������ʹ��Ĭ�ϵ� 0��
-	 * �����ζ�ţ��ڵ��ִ��˳������ע���˳��
+	 * 函数优先级，但是，在实际的代码中，所有注册的节点不会设置priority，而是使用默认的 0。
+	 * 这就意味着，节点的执行顺序是它注册的顺序
 	 */
 	int priority;
 };
@@ -39,26 +39,26 @@ extern int notifier_chain_unregister(struct notifier_block **nl, struct notifier
 extern int notifier_call_chain(struct notifier_block **n, unsigned long val, void *v);
 
 /**
- * �����֪ͨ������Ȥ
+ * 对这个通知不感兴趣
  */
 #define NOTIFY_DONE		0x0000		/* Don't care */
 /**
- * ֪ͨ�����ɹ�
+ * 通知处理成功
  */
 #define NOTIFY_OK		0x0001		/* Suits me */
 /**
- * notifier_call_chain�����������ȷ����ֹͣ���������Ǽ�����
+ * notifier_call_chain检查这个标记来确定是停止遍历，还是继续。
  */
 #define NOTIFY_STOP_MASK	0x8000		/* Don't call further */
 /**
- * �д�������ֹͣ�Ե�ǰ�¼��Ĵ����� 
+ * 有错误发生。停止对当前事件的处理。 
  */
 #define NOTIFY_BAD		(NOTIFY_STOP_MASK|0x0002)	/* Bad/Veto action	*/
 /*
  * Clean way to return from the notifier and stop further calls.
  */
 /**
- * �ص�������������ˣ�����Ļص����������ᱻ���á�
+ * 回调函数出错。因此，后面的回调函数都不会被调用。
  */
 #define NOTIFY_STOP		(NOTIFY_OK|NOTIFY_STOP_MASK)
 
@@ -72,44 +72,44 @@ extern int notifier_call_chain(struct notifier_block **n, unsigned long val, voi
  
 /* netdevice notifier chain */
 /**
- * �������Ա����豸ʹ�ܡ�����dev_open������
+ * 被触发以报告设备使能。它由dev_open产生。
  */
 #define NETDEV_UP	0x0001	/* For now you can't veto a device up/down */
 /**
- * NETDEV_GOING_DOWN�������Ա��潫����ֹ����NETDEV_DOWN�����������豸�ѱ���ֹ�����߾���dev_close������
+ * NETDEV_GOING_DOWN被触发以报告将被禁止，而NETDEV_DOWN被触发报告设备已被禁止。两者均由dev_close产生。
  */
 #define NETDEV_DOWN	0x0002
 /**
- * �豸����Ӳ�������������Ŀǰ���ã�����
+ * 设备由于硬件错误而重启，目前不用，保留
  */
 #define NETDEV_REBOOT	0x0003	/* Tell a protocol stack a network interface
 				   detected a hardware crash and restarted
 				   - we can use this eg to kick tcp sessions
 				   once done */
 /**
- * �豸״̬���豸���øı䣬�ⱻ���ڸ�������������� NETDEV_CHANGEADDR ��NETDEV_CHANGENAME���Ρ�
- * ������dev->flags��־�ı�ʱ��
+ * 设备状态或设备配置改变，这被用在各种情况，而不被 NETDEV_CHANGEADDR 和NETDEV_CHANGENAME屏蔽。
+ * 它用于dev->flags标志改变时。
  */
 #define NETDEV_CHANGE	0x0004	/* Notify device state change */
 /**
- * �豸�Ѿ�ע�ᣬ�¼���register_netdevice����
+ * 设备已经注册，事件由register_netdevice产生
  */
 #define NETDEV_REGISTER 0x0005
 /**
- * �豸��ע�����¼���unregister_netdevice����
+ * 设备已注销，事件由unregister_netdevice产生
  */
 #define NETDEV_UNREGISTER	0x0006
 #define NETDEV_CHANGEMTU	0x0007
 /**
- * �豸Ӳ����ַ(��������Ĺ㲥��ַ)�Ѹı䡣
+ * 设备硬件地址(或相关联的广播地址)已改变。
  */
 #define NETDEV_CHANGEADDR	0x0008
 /**
- * NETDEV_GOING_DOWN�������Ա��潫����ֹ����NETDEV_DOWN�����������豸�ѱ���ֹ�����߾���dev_close������
+ * NETDEV_GOING_DOWN被触发以报告将被禁止，而NETDEV_DOWN被触发报告设备已被禁止。两者均由dev_close产生。
  */
 #define NETDEV_GOING_DOWN	0x0009
 /**
- * �豸�����ָı�
+ * 设备的名字改变
  */
 #define NETDEV_CHANGENAME	0x000A
 

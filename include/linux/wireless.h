@@ -551,7 +551,7 @@ struct	iw_thrspy
  * Wireless statistics (used for /proc/net/wireless)
  */
 /**
- * ÎŞÏßÍøÂçÉè±¸µÄÍ³¼ÆĞÅÏ¢
+ * æ— çº¿ç½‘ç»œè®¾å¤‡çš„ç»Ÿè®¡ä¿¡æ¯
  */
 struct	iw_statistics
 {

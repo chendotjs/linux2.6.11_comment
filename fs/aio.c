@@ -652,10 +652,10 @@ static inline int __queue_kicked_iocb(struct kiocb *iocb)
  * it avoids various potential races.
  */
 /**
- * ËüÊµ¼ÊÉÏµ÷ÓÃki_retry·½·¨ÎªÏàÓ¦µÄµÄÒì²½IO²Ù×÷Æô¶¯Êı¾İ´«Êä¡£
- * Èç¹ûki_retry·µ»Ø-EIOCBRETRYÔò±íÊ¾Òì²½IO²Ù×÷ÒÑÌá½»µ«ÊÇ»¹Ã»ÓĞÍêÈ«³É¹¦¡£
- * ÉÔºóÔÚÕâ¸ökiocbÉÏ£¬aio_run_iocbº¯Êı»á±»ÔÙ´Îµ÷ÓÃ
- * ·ñÔòµ÷ÓÃaio_completeÎªÒì²½²Ù×÷ÔÚaio»·¾³ÖĞµÄ»·ÖĞ×·¼ÓÍê³ÉÊÂ¼ş¡£
+ * å®ƒå®é™…ä¸Šè°ƒç”¨ki_retryæ–¹æ³•ä¸ºç›¸åº”çš„çš„å¼‚æ­¥IOæ“ä½œå¯åŠ¨æ•°æ®ä¼ è¾“ã€‚
+ * å¦‚æœki_retryè¿”å›-EIOCBRETRYåˆ™è¡¨ç¤ºå¼‚æ­¥IOæ“ä½œå·²æäº¤ä½†æ˜¯è¿˜æ²¡æœ‰å®Œå…¨æˆåŠŸã€‚
+ * ç¨ååœ¨è¿™ä¸ªkiocbä¸Šï¼Œaio_run_iocbå‡½æ•°ä¼šè¢«å†æ¬¡è°ƒç”¨
+ * å¦åˆ™è°ƒç”¨aio_completeä¸ºå¼‚æ­¥æ“ä½œåœ¨aioç¯å¢ƒä¸­çš„ç¯ä¸­è¿½åŠ å®Œæˆäº‹ä»¶ã€‚
  */
 static ssize_t aio_run_iocb(struct kiocb *iocb)
 {
@@ -933,7 +933,7 @@ EXPORT_SYMBOL(kick_iocb);
  *	only other user of the request can be the cancellation code.
  */
 /**
- * ÎªÒì²½I/O²Ù×÷ÔÚAIO»·¾³µÄ»·ÖĞ×·¼ÓÍê³ÉÊÂ¼ş
+ * ä¸ºå¼‚æ­¥I/Oæ“ä½œåœ¨AIOç¯å¢ƒçš„ç¯ä¸­è¿½åŠ å®Œæˆäº‹ä»¶
  */
 int fastcall aio_complete(struct kiocb *iocb, long res, long res2)
 {
@@ -1324,8 +1324,8 @@ asmlinkage long sys_io_destroy(aio_context_t ctx)
  * Responsible for updating iocb state as retries progress
  */
 /**
- * Èç¹ûÒì²½I/O²Ù×÷ÊÇÒ»¸ö¶ÁÇëÇó£¬ÄÇÃ´¶ÔÓ¦kiocbÃèÊö·ûµÄki_retry·½·¨ÊÇÓÉaio_preadÊµÏÖµÄ
- * ¸Ãº¯ÊıÊµ¼ÊÉÏÖ´ĞĞµÄÊÇÎÄ¼ş¶ÔÏóµÄaio_read·½·¨¡£È»ºó°´ÕÕaio_read·½·¨µÄ·µ»ØÖµ¸üĞÂkiocbÃèÊö·ûµÄki_bufºÍki_left×Ö¶Î¡£
+ * å¦‚æœå¼‚æ­¥I/Oæ“ä½œæ˜¯ä¸€ä¸ªè¯»è¯·æ±‚ï¼Œé‚£ä¹ˆå¯¹åº”kiocbæè¿°ç¬¦çš„ki_retryæ–¹æ³•æ˜¯ç”±aio_preadå®ç°çš„
+ * è¯¥å‡½æ•°å®é™…ä¸Šæ‰§è¡Œçš„æ˜¯æ–‡ä»¶å¯¹è±¡çš„aio_readæ–¹æ³•ã€‚ç„¶åæŒ‰ç…§aio_readæ–¹æ³•çš„è¿”å›å€¼æ›´æ–°kiocbæè¿°ç¬¦çš„ki_bufå’Œki_leftå­—æ®µã€‚
  */ 
 static ssize_t aio_pread(struct kiocb *iocb)
 {
@@ -1367,8 +1367,8 @@ static ssize_t aio_pread(struct kiocb *iocb)
  * Responsible for updating iocb state as retries progress
  */
 /**
- * Èç¹ûÒì²½I/O²Ù×÷ÊÇÒ»¸öĞ´ÇëÇó£¬ÄÇÃ´¶ÔÓ¦kiocbÃèÊö·ûµÄki_retry·½·¨ÊÇÓÉaio_pwriteÊµÏÖµÄ
- * ¸Ãº¯ÊıÊµ¼ÊÉÏÖ´ĞĞµÄÊÇÎÄ¼ş¶ÔÏóµÄaio_write·½·¨¡£È»ºó°´ÕÕaio_write·½·¨µÄ·µ»ØÖµ¸üĞÂkiocbÃèÊö·ûµÄki_bufºÍki_left×Ö¶Î¡£
+ * å¦‚æœå¼‚æ­¥I/Oæ“ä½œæ˜¯ä¸€ä¸ªå†™è¯·æ±‚ï¼Œé‚£ä¹ˆå¯¹åº”kiocbæè¿°ç¬¦çš„ki_retryæ–¹æ³•æ˜¯ç”±aio_pwriteå®ç°çš„
+ * è¯¥å‡½æ•°å®é™…ä¸Šæ‰§è¡Œçš„æ˜¯æ–‡ä»¶å¯¹è±¡çš„aio_writeæ–¹æ³•ã€‚ç„¶åæŒ‰ç…§aio_writeæ–¹æ³•çš„è¿”å›å€¼æ›´æ–°kiocbæè¿°ç¬¦çš„ki_bufå’Œki_leftå­—æ®µã€‚
  */
 static ssize_t aio_pwrite(struct kiocb *iocb)
 {

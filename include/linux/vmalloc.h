@@ -6,52 +6,52 @@
 
 /* bits in vm_struct->flags */
 /**
- * ��ʾʹ��ioremapӳ���Ӳ���豸�İ����ڴ档
+ * 表示使用ioremap映射的硬件设备的板上内存。
  */
 #define VM_IOREMAP	0x00000001	/* ioremap() and friends */
 /**
- * ��ʾʹ��vmalloc�õ���ҳ
+ * 表示使用vmalloc得到的页
  */
 #define VM_ALLOC	0x00000002	/* vmalloc() */
 /**
- * ��ʾʹ��vmapӳ����Ѿ��������ҳ��
+ * 表示使用vmap映射的已经被分配的页。
  */
 #define VM_MAP		0x00000004	/* vmap()ed pages */
 /* bits [20..32] reserved for arch specific ioremap internals */
 
 /**
- * �������ڴ�����������
+ * 非连续内存区的描述符
  */
 struct vm_struct {
 	/**
-	 * �ڴ����ڵ�һ���ڴ浥Ԫ�����Ե�ַ��
+	 * 内存区内第一个内存单元的线性地址。
 	 */
 	void			*addr;
 	/**
-	 * �ڴ�����С��4096(�ڴ���֮��İ�ȫ���Ĵ�С)
+	 * 内存区大小加4096(内存区之间的安全区的大小)
 	 */
 	unsigned long		size;
 	/**
-	 * �������ڴ���ӳ����ڴ�����͡�
-	 * VM_ALLOC��ʾʹ��vmalloc�õ���ҳ.
-	 * VM_MAP��ʾʹ��vmapӳ����Ѿ��������ҳ��
-	 * VM_IOREMAP��ʾʹ��ioremapӳ���Ӳ���豸�İ����ڴ档
+	 * 非连续内存区映射的内存的类型。
+	 * VM_ALLOC表示使用vmalloc得到的页.
+	 * VM_MAP表示使用vmap映射的已经被分配的页。
+	 * VM_IOREMAP表示使用ioremap映射的硬件设备的板上内存。
 	 */
 	unsigned long		flags;
 	/**
-	 * ָ��nr_pages�����ָ�룬��������ָ��ҳ��������ָ����ɡ�
+	 * 指向nr_pages数组的指针，该数组由指向页描述符的指针组成。
 	 */
 	struct page		**pages;
 	/**
-	 * �ڴ�������ҳ�ĸ�����
+	 * 内存区填充的页的个数。
 	 */
 	unsigned int		nr_pages;
 	/**
-	 * һ��Ϊ0,�����ڴ��Ѿ���������ӳ��һ��Ӳ���豸IO�����ڴ档
+	 * 一般为0,除非内存已经被创建来映射一个硬件设备IO共享内存。
 	 */
 	unsigned long		phys_addr;
 	/**
-	 * ָ����һ��vm_struct�ṹ��ָ�롣
+	 * 指向下一个vm_struct结构的指针。
 	 */
 	struct vm_struct	*next;
 };

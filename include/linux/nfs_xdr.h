@@ -9,7 +9,7 @@ struct nfs4_fsid {
 };
 
 /**
- * NFSÎÄ¼şÊôĞÔ¡£
+ * NFSæ–‡ä»¶å±æ€§ã€‚
  */
 struct nfs_fattr {
 	unsigned short		valid;		/* which fields are valid */
@@ -17,63 +17,63 @@ struct nfs_fattr {
 	struct timespec		pre_mtime;	/* pre_op_attr.mtime	  */
 	struct timespec		pre_ctime;	/* pre_op_attr.ctime	  */
 	/**
-	 * ÎÄ¼şµÄÀàĞÍ£ºÄ¿Â¼¡¢¿éÉè±¸¡¢×Ö·ûÉè±¸¡¢·ûºÅÁ¬½Ó 
+	 * æ–‡ä»¶çš„ç±»å‹ï¼šç›®å½•ã€å—è®¾å¤‡ã€å­—ç¬¦è®¾å¤‡ã€ç¬¦å·è¿æ¥ 
 	 */
 	enum nfs_ftype		type;		/* always use NFSv2 types */
 	/**
-	 * ÎÄ¼ş±£»¤Î» 
+	 * æ–‡ä»¶ä¿æŠ¤ä½ 
 	 */
 	__u32			mode;
 	/**
-	 * Ö¸ÏòÕâ¸öÎÄ¼şµÄÓ²Á¬½ÓÊı 
+	 * æŒ‡å‘è¿™ä¸ªæ–‡ä»¶çš„ç¡¬è¿æ¥æ•° 
 	 */
 	__u32			nlink;
 	/**
-	 * ÎÄ¼şÓµÓĞÕßµÄÓÃ»§ID
+	 * æ–‡ä»¶æ‹¥æœ‰è€…çš„ç”¨æˆ·ID
 	 */
 	__u32			uid;
 	/**
-	 * Õâ¸öÎÄ¼şËùÊôµÄ×é 
+	 * è¿™ä¸ªæ–‡ä»¶æ‰€å±çš„ç»„ 
 	 */
 	__u32			gid;
 	/**
-	 * ÎÄ¼şµÄ´óĞ¡£¨×Ö½ÚÊı£©
+	 * æ–‡ä»¶çš„å¤§å°ï¼ˆå­—èŠ‚æ•°ï¼‰
 	 */
 	__u64			size;
 	union {
 		struct {
-			__u32	blocksize;/* Ã¿¿é´óĞ¡ */
-			__u32	blocks;	  /* ÎÄ¼şËùÕ¼µÄ¿éÊı */
+			__u32	blocksize;/* æ¯å—å¤§å° */
+			__u32	blocks;	  /* æ–‡ä»¶æ‰€å çš„å—æ•° */
 		} nfs2;
 		struct {
 			__u64	used;
 		} nfs3;
 	} du;
 	/**
-	 * Èç¹ûÕâ¸öÎÄ¼şÊÇÉè±¸ÎÄ¼ş£¬ËüµÄÉè±¸ºÅ 
+	 * å¦‚æœè¿™ä¸ªæ–‡ä»¶æ˜¯è®¾å¤‡æ–‡ä»¶ï¼Œå®ƒçš„è®¾å¤‡å· 
 	 */
 	dev_t			rdev;
 	/**
-	 * Õâ¸öÎÄ¼şµÄÎÄ¼şÏµÍ³id  
+	 * è¿™ä¸ªæ–‡ä»¶çš„æ–‡ä»¶ç³»ç»Ÿid  
 	 */
 	union {
 		__u64		nfs3;		/* also nfs2 */
 		struct nfs4_fsid nfs4;
 	} fsid_u;
 	/**
-	 * Õâ¸öÎÄ¼şµÄidºÅ 
+	 * è¿™ä¸ªæ–‡ä»¶çš„idå· 
 	 */
 	__u64			fileid;
 	/** 
-	 * ÎÄ¼şµÄ×îºó´æÈ¡Ê±¼ä 
+	 * æ–‡ä»¶çš„æœ€åå­˜å–æ—¶é—´ 
 	 */
 	struct timespec		atime;
 	/**
-	 * ÎÄ¼şµÄ×îºóĞŞ¸ÄÊ±¼ä 
+	 * æ–‡ä»¶çš„æœ€åä¿®æ”¹æ—¶é—´ 
 	 */
 	struct timespec		mtime;
 	/** 
-	 * ÎÄ¼şµÄinodeĞŞ¸ÄÊ±¼ä 
+	 * æ–‡ä»¶çš„inodeä¿®æ”¹æ—¶é—´ 
 	 */
 	struct timespec		ctime;
 	__u32			bitmap[2];	/* NFSv4 returned attribute bitmap */
@@ -92,7 +92,7 @@ struct nfs_fattr {
  * Info on the file system
  */
 /**
- * Ô¶³ÌNFSÎÄ¼şÏµÍ³ĞÅÏ¢
+ * è¿œç¨‹NFSæ–‡ä»¶ç³»ç»Ÿä¿¡æ¯
  */
 struct nfs_fsinfo {
 	struct nfs_fattr	*fattr; /* Post-op attributes */

@@ -88,7 +88,7 @@ void __init pcibios_update_irq(struct pci_dev *dev, int irq)
 }
 
 /**
- * Ê¹ÄÜACPIºó£¬PCI³õÊ¼»¯×ÓÏµÍ³½«µ÷ÓÃ´Ëº¯Êı¡£
+ * ä½¿èƒ½ACPIåï¼ŒPCIåˆå§‹åŒ–å­ç³»ç»Ÿå°†è°ƒç”¨æ­¤å‡½æ•°ã€‚
  */
 static int __init pcibios_init(void)
 {
@@ -107,7 +107,7 @@ static int __init pcibios_init(void)
 	pci_scan_bus(pci_bus1, &pci_root_ops, NULL);
 	pci_fixup_irqs(visws_swizzle, visws_map_irq);
 	/**
-	 * ¼ì²éµ±Ç°´¦ÀíÆ÷ÏµÍ³µÄËùÓĞPCIÉè±¸µÄBAR¿Õ¼ä£¬²¢²»»á²Ù×÷PCIÉè±¸µÄBAR¼Ä´æÆ÷£¬¶øÖ»ÊÇ¼ì²éËùÓĞPCIÉè±¸µÄpci_dev->resourceÊÇ·ñºÏ·¨¡£
+	 * æ£€æŸ¥å½“å‰å¤„ç†å™¨ç³»ç»Ÿçš„æ‰€æœ‰PCIè®¾å¤‡çš„BARç©ºé—´ï¼Œå¹¶ä¸ä¼šæ“ä½œPCIè®¾å¤‡çš„BARå¯„å­˜å™¨ï¼Œè€Œåªæ˜¯æ£€æŸ¥æ‰€æœ‰PCIè®¾å¤‡çš„pci_dev->resourceæ˜¯å¦åˆæ³•ã€‚
 	 */
 	pcibios_resource_survey();
 	return 0;

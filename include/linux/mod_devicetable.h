@@ -15,23 +15,23 @@ typedef unsigned long kernel_ulong_t;
 #define PCI_ANY_ID (~0)
 
 /**
- * �豸��ʶ�š��ⲻ��Linux�ж����ID,������PCI��׼�ж����ID��
+ * 设备标识号。这不是Linux中定义的ID,而是在PCI标准中定义的ID。
  */
 struct pci_device_id {
 	/**
-	 * vendor��device�Ѿ��㹻Ψһ��ʶһ���豸
+	 * vendor和device已经足够唯一标识一个设备
 	 */
 	__u32 vendor, device;		/* Vendor and device ID or PCI_ANY_ID*/
 	/**
-	 * subvendor��subdevice���ٻ�ʹ�õ�������ͨ���ᱻ�ó�ƥ�������豸(PCI_ANY_ID)
+	 * subvendor和subdevice很少会使用到，所以通常会被置成匹配任意设备(PCI_ANY_ID)
 	 */
 	__u32 subvendor, subdevice;	/* Subsystem ID's or PCI_ANY_ID */
 	/**
-	 * class��class_mark��ʾ����豸�����ĸ����,��NETWORK.
+	 * class和class_mark表示这个设备属于哪个类别,如NETWORK.
 	 */
 	__u32 class, class_mask;	/* (class,subclass,prog-if) triplet */
 	/**
-	 * driver_data����PCIID��һ���֣������豸ʹ�õ�˽�в�����
+	 * driver_data不是PCIID的一部分，这是设备使用的私有参数。
 	 */
 	kernel_ulong_t driver_data;	/* Data private to the driver */
 };
@@ -110,35 +110,35 @@ struct ieee1394_device_id {
  * record quirks of specific products.
  */
 /**
- * �ṩ��һ�в�ͬ���͵���������֧�ֵ�USB�豸��USB����ʹ�ø��б����ж϶���һ���豸����ʹ����һ����������
- * �Ȳ���ű�ʹ������ȷ����һ���ض����豸���뵽ϵͳʱ���Զ�װ����һ����������
+ * 提供了一列不同类型的驱动程序支持的USB设备。USB核心使用该列表来判断对于一个设备，该使用哪一个驱动程序。
+ * 热拨插脚本使用它来确定当一个特定的设备插入到系统时该自动装载哪一个驱动程序。
  */
 struct usb_device_id {
 	/* which fields to match against? */
 	/**
-	 * ȷ���豸�ͽṹ���������ֶ��е���һ����ƥ�䡣��Щ�ֶ���USB_DEVICE_ID_MATCH_*�����λ�ֶΡ�
-	 * ͨ����ֱ�����ø��ֶΣ�����ʹ��USB_DEVICE������ʼ����
+	 * 确定设备和结构体中下列字段中的哪一个相匹配。这些字段是USB_DEVICE_ID_MATCH_*定义的位字段。
+	 * 通常不直接设置该字段，而是使用USB_DEVICE宏来初始化。
 	 */
 	__u16		match_flags;
 
 	/* Used for product specific matches; range is inclusive */
 	/**
-	 * �豸��USB������ID���ñ������USB��ָ̳�ɸ����Ա�ġ�
+	 * 设备的USB制造商ID。该编号是由USB论坛指派给其成员的。
 	 */
 	__u16		idVendor;
 	/**
-	 * �豸��USB��ƷID������ָ����������ID�������̶���������ĸ������ƷID��
+	 * 设备的USB产品ID。所有指派了制造商ID的制造商都可以随意的赋予其产品ID。
 	 */
 	__u16		idProduct;
 	/**
-	 * ������������ָ�ɵĲ�Ʒ�İ汾�з�Χ�����ֵ�����ֵ����ʽΪBCD��
+	 * 定义了制造商指派的产品的版本叫范围的最低值和最高值。格式为BCD。
 	 */
 	__u16		bcdDevice_lo;
 	__u16		bcdDevice_hi;
 
 	/* Used for device class matches */
 	/**
-	 * �ֱ����豸�����͡������ͺ�Э�顣��Щ�����USB��ָ̳�ɣ�������USB�淶�С���ϸ˵���������豸����Ϊ���������豸�ϵ����нӿڡ�
+	 * 分别定义设备的类型、子类型和协议。这些编号由USB论坛指派，定义在USB规范中。详细说明了整个设备的行为，包括该设备上的所有接口。
 	 */
 	__u8		bDeviceClass;
 	__u8		bDeviceSubClass;
@@ -146,7 +146,7 @@ struct usb_device_id {
 
 	/* Used for interface class matches */
 	/**
-	 * �ֱ������͡������ͺ͵����ӿڵ�Э�顣��Щ�����USB��ָ̳�ɣ�������USB�淶�С�
+	 * 分别定义类型、子类型和单个接口的协议。这些编号由USB论坛指派，定义在USB规范中。
 	 */
 	__u8		bInterfaceClass;
 	__u8		bInterfaceSubClass;
@@ -154,7 +154,7 @@ struct usb_device_id {
 
 	/* not matched against */
 	/** 
-	 * ��ֵ���������Ƚ��Ƿ�ƥ��ģ�����������������������USB���������̽��ص������п����������ֲ�ͬ�豸����Ϣ��
+	 * 该值不是用来比较是否匹配的，不过它包含了驱动程序在USB驱动程序的探测回调函数中可以用来区分不同设备的信息。
 	 */
 	kernel_ulong_t	driver_info;
 };

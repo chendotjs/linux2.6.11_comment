@@ -89,7 +89,7 @@ EXPORT_SYMBOL(pci_remove_bus);
  * (/sbin/hotplug).
  */
 /**
- * ÒÆ³ýÒ»¸öPCIÉè±¸¡£
+ * ç§»é™¤ä¸€ä¸ªPCIè®¾å¤‡ã€‚
  */
 void pci_remove_bus_device(struct pci_dev *dev)
 {

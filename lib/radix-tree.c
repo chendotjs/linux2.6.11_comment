@@ -45,21 +45,21 @@
 	((RADIX_TREE_MAP_SIZE + BITS_PER_LONG - 1) / BITS_PER_LONG)
 
 /**
- * ҳ���ٻ�������Ľڵ���������
+ * 页高速缓冲基树的节点描述符。
  */
 struct radix_tree_node {
 	/**
-	 * �ڵ��зǿ�ָ�������ļ�������
+	 * 节点中非空指针数量的计数器。
 	 */
 	unsigned int	count;
 	/**
-	 * ����64��ָ������飬��Щָ�����ָ��ҳ��������Ҳ����ָ�������ڵ��ָ�롣
+	 * 包含64个指针的数组，这些指针可能指向页描述符，也可能指向其他节点的指针。
 	 */
 	void		*slots[RADIX_TREE_MAP_SIZE];
 	/**
-	 * ��־���顣
-	 * tags[0]���������ǡ�
-	 * tags[1]������д�ر�ǡ�
+	 * 标志数组。
+	 * tags[0]数组是脏标记。
+	 * tags[1]数组是写回标记。
 	 */
 	unsigned long	tags[RADIX_TREE_TAGS][RADIX_TREE_TAG_LONGS];
 };
@@ -248,12 +248,12 @@ int radix_tree_insert(struct radix_tree_root *root,
 
 	/* Make sure the tree is high enough.  */
 	/**
-	 * ����radix_tree_maxindex����������ֵ�����������ܱ�������е�ǰ��ȵĻ�����
+	 * 调用radix_tree_maxindex获得最大索引值，该索引可能被插入具有当前深度的基树。
 	 */
 	if ((!index && !root->rnode) ||
 			index > radix_tree_maxindex(root->height)) {
 		/**
-		 * ��ҳ����������ͨ���õ�ǰ��ȱ�ʾ�������radix_tree_extend�����ʵ��Ľڵ�������������ȡ�
+		 * 新页的索引不能通过用当前深度表示，则调用radix_tree_extend增加适当的节点来增加树的深度。
 		 */
 		error = radix_tree_extend(root, index);
 		if (error)
@@ -269,8 +269,8 @@ int radix_tree_insert(struct radix_tree_root *root,
 		if (*slot == NULL) {
 			/* Have to add a child node.  */
 			/**
-			 * radix_tree_node_alloc��slab���������ٻ����л��radix_tree_node��
-			 * �������ʧ�ܣ��ʹ�radix_tree_preloads��Ԥ����Ľṹ���л��radix_tree_node��
+			 * radix_tree_node_alloc从slab分配器高速缓存中获得radix_tree_node。
+			 * 如果分配失败，就从radix_tree_preloads中预分配的结构池中获得radix_tree_node。
 			 */
 			if (!(tmp = radix_tree_node_alloc(root)))
 				return -ENOMEM;
@@ -281,7 +281,7 @@ int radix_tree_insert(struct radix_tree_root *root,
 
 		/* Go a level down */
 		/**
-		 * ����ҳ������ƫ�������Ӹ��ڵ㿪ʼ��������ֱ��Ҷ�ӽڵ㡣
+		 * 根据页索引的偏移量，从根节点开始遍历树，直到叶子节点。
 		 */
 		offset = (index >> shift) & RADIX_TREE_MAP_MASK;
 		node = *slot;
@@ -350,10 +350,10 @@ EXPORT_SYMBOL(radix_tree_lookup);
  *	item is a bug.
  */
 /**
- * ����ҳ���ٻ�����ҳ��PG_dirty��PG_writeback��־��
- * root:	�����ĸ�
- * index:	ҳ������
- * tag:		Ҫ���õı�����͡�
+ * 设置页高速缓存中页的PG_dirty或PG_writeback标志。
+ * root:	基树的根
+ * index:	页的索引
+ * tag:		要设置的标记类型。
  */
 void *radix_tree_tag_set(struct radix_tree_root *root,
 			unsigned long index, int tag)
@@ -369,7 +369,7 @@ void *radix_tree_tag_set(struct radix_tree_root *root,
 	slot = &root->rnode;
 
 	/**
-	 * ��������ʼ������������ָ��������Ӧ��Ҷ�ӽڵ㣬��·���ϵ�ÿһ���ڵ㣬����tag_set�������ǡ�
+	 * 从树根开始向下搜索到与指定索引对应的叶子节点，对路径上的每一个节点，调用tag_set设置其标记。
 	 */
 	while (height > 0) {
 		int offset;
@@ -400,10 +400,10 @@ EXPORT_SYMBOL(radix_tree_tag_set);
  *	has the same return value and semantics as radix_tree_lookup().
  */
 /**
- * ���ҳ���ٻ�����ҳ��PG_dirty��PG_writeback��־��
- * root:	�����ĸ�
- * index:	ҳ������
- * tag:		Ҫ����ı�����͡�
+ * 清除页高速缓存中页的PG_dirty或PG_writeback标志。
+ * root:	基树的根
+ * index:	页的索引
+ * tag:		要清除的标记类型。
  */
 void *radix_tree_tag_clear(struct radix_tree_root *root,
 			unsigned long index, int tag)
@@ -421,8 +421,8 @@ void *radix_tree_tag_clear(struct radix_tree_root *root,
 	pathp->slot = &root->rnode;
 
 	/**
-	 * ��������ʼ���£�һֱ�ҵ��ڵ����ڵ�Ҷ�ӽڵ㡣
-	 * ��·�����浽radix_tree_path���顣
+	 * 从树根开始向下，一直找到节点所在的叶子节点。
+	 * 将路径保存到radix_tree_path数组。
 	 */
 	while (height > 0) {
 		int offset;
@@ -445,24 +445,24 @@ void *radix_tree_tag_clear(struct radix_tree_root *root,
 		goto out;
 
 	/**
-	 * ��Ҷ�ӽڵ㵽���ڵ㷴�����������ײ�ڵ�ı�ǡ�
+	 * 从叶子节点到根节点反射操作，清除底层节点的标记。
 	 */
 	do {
 		int idx;
 
 		/**
-		 * ���õ�ǰ���ı�ǡ�
+		 * 设置当前结点的标记。
 		 */
 		tag_clear(pathp[0].node, tag, pathp[0].offset);
 		/**
-	 	 * Ȼ����ڵ����������б���Ƿ񶼱���0.
+	 	 * 然后检查节点数组中所有标记是否都被清0.
 	 	 */
 		for (idx = 0; idx < RADIX_TREE_TAG_LONGS; idx++) {
 			if (pathp[0].node->tags[tag][idx])
 				goto out;
 		}
 		/**
-		 * ���������нڵ㶼��0,��������·������һ���ڵ㡣
+		 * 数组中所有节点都是0,继续处理路径中上一级节点。
 		 */
 		pathp--;
 	} while (pathp[0].node);
@@ -710,7 +710,7 @@ EXPORT_SYMBOL(radix_tree_gang_lookup_tag);
  *	Returns the address of the deleted item, or NULL if it was not present.
  */
 /**
- * �Ӹ��ٻ���ҳ������ɾ���ڵ㡣
+ * 从高速缓存页基树中删除节点。
  */
 void *radix_tree_delete(struct radix_tree_root *root, unsigned long index)
 {
@@ -730,8 +730,8 @@ void *radix_tree_delete(struct radix_tree_root *root, unsigned long index)
 	pathp->slot = &root->rnode;
 
 	/**
-	 * ����ҳ�����Ӹ��ڵ㿪ʼ��������ֱ������Ҷ�ӽڵ㡣
-	 * ����ʱ������radix_tree_patho���飬�����������Ӹ���Ҫɾ����ҳ��Ӧ��Ҷ�ӽڵ��·����
+	 * 根据页索引从根节点开始遍历树，直到到达叶子节点。
+	 * 遍历时，建立radix_tree_patho数组，此数组描述从根到要删除的页相应的叶子节点的路径。
 	 */
 	while (height > 0) {
 		int offset;
@@ -760,8 +760,8 @@ void *radix_tree_delete(struct radix_tree_root *root, unsigned long index)
 	 */
 	memset(tags, 0, sizeof(tags));
 	/**
-	 * �����һ���ڵ㿪ʼ����·�������еĽڵ㿪ʼѭ��������
-	 * ��ѭ�����ҳ���ǡ�
+	 * 从最后一个节点开始，对路径数组中的节点开始循环操作。
+	 * 该循环清除页面标记。
 	 */
 	do {
 		int tag;
@@ -807,8 +807,8 @@ EXPORT_SYMBOL(radix_tree_delete);
  *	@tag:		tag to test
  */
 /**
- * �����������н��ı�����������Ի����Ƿ����ٰ���һ��ָ��״̬��ҳ��
- * ʹ�ñ�������һ��������ȷ��һ��������ҳ�������ڵ��Ƿ�Ҫд�ش��̡�
+ * 利用树的所有结点的标记数组来测试基树是否至少包括一个指定状态的页。
+ * 使用本函数的一个例子是确定一个包含脏页的索引节点是否要写回磁盘。
  */
 int radix_tree_tagged(struct radix_tree_root *root, int tag)
 {
@@ -817,7 +817,7 @@ int radix_tree_tagged(struct radix_tree_root *root, int tag)
 	if (!root->rnode)
 		return 0;
 	/**
-	 * ��Ϊ�������н��ı�Ƕ�����ȷ�ĸ��¹�����˱�����ֻ��Ҫ����һ��ı�ǡ�
+	 * 因为基树所有结点的标记都被正确的更新过，因此本函数只需要检查第一层的标记。
 	 */
 	for (idx = 0; idx < RADIX_TREE_TAG_LONGS; idx++) {
 		if (root->rnode->tags[tag][idx])

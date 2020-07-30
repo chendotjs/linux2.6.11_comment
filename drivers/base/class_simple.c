@@ -14,7 +14,7 @@
 #include <linux/err.h>
 
 /**
- * ¼òµ¥Éè±¸Àà¡£
+ * ç®€å•è®¾å¤‡ç±»ã€‚
  */
 struct class_simple {
 	struct class_device_attribute attr;
@@ -63,7 +63,7 @@ static void class_simple_release(struct class *class)
  * call to class_simple_destroy().
  */
 /**
- * ´´½¨Ò»¸ö¼òµ¥Éè±¸Àà¡£
+ * åˆ›å»ºä¸€ä¸ªç®€å•è®¾å¤‡ç±»ã€‚
  */
 struct class_simple *class_simple_create(struct module *owner, char *name)
 {
@@ -107,7 +107,7 @@ EXPORT_SYMBOL(class_simple_create);
  * class_simple_create().
  */
 /**
- * Ïú»ÙÒ»¸ö¼òµ¥Éè±¸Àà¡£
+ * é”€æ¯ä¸€ä¸ªç®€å•è®¾å¤‡ç±»ã€‚
  */
 void class_simple_destroy(struct class_simple *cs)
 {
@@ -135,12 +135,12 @@ EXPORT_SYMBOL(class_simple_destroy);
  * created with a call to class_simple_create().
  */
 /**
- * ÎªÒ»¸ö¼òµ¥Éè±¸ÀàÌí¼ÓÉè±¸¡£
- *		cs:			½«Éè±¸Ìí¼Óµ½´Ë¼òµ¥Éè±¸Àà¡£
- *		devnum:		·ÖÅäµÄÉè±¸ºÅ¡£
- *		device:		ÒªÌí¼ÓµÄÉè±¸¡£
- *		fmt:		ÓÃÓÚ¸ñÊ½»¯Ãû³Æ¡£
- * Èç¹ûdevice²»ÎªNULL£¬ÔòÒ»¸ö·ûºÅÁ´½Ó½«Ö¸Ïò/sys/device¡£
+ * ä¸ºä¸€ä¸ªç®€å•è®¾å¤‡ç±»æ·»åŠ è®¾å¤‡ã€‚
+ *		cs:			å°†è®¾å¤‡æ·»åŠ åˆ°æ­¤ç®€å•è®¾å¤‡ç±»ã€‚
+ *		devnum:		åˆ†é…çš„è®¾å¤‡å·ã€‚
+ *		device:		è¦æ·»åŠ çš„è®¾å¤‡ã€‚
+ *		fmt:		ç”¨äºæ ¼å¼åŒ–åç§°ã€‚
+ * å¦‚æœdeviceä¸ä¸ºNULLï¼Œåˆ™ä¸€ä¸ªç¬¦å·é“¾æ¥å°†æŒ‡å‘/sys/deviceã€‚
  */
 struct class_device *class_simple_device_add(struct class_simple *cs, dev_t dev, struct device *device, const char *fmt, ...)
 {
@@ -194,7 +194,7 @@ EXPORT_SYMBOL(class_simple_device_add);
  * class on the hotplug event.
  */
 /**
- * ÔÚÈÈ²å²¦Éè±¸Ê±£¬¿ÉÒÔÊ¹ÓÃ´Ëº¯ÊıÉèÖÃ»Øµ÷º¯Êı£¬»Øµ÷º¯ÊıÓÃÓÚÏòÓ¦ÓÃ³ÌĞòÌí¼Ó»·¾³±äÁ¿¡£
+ * åœ¨çƒ­æ’æ‹¨è®¾å¤‡æ—¶ï¼Œå¯ä»¥ä½¿ç”¨æ­¤å‡½æ•°è®¾ç½®å›è°ƒå‡½æ•°ï¼Œå›è°ƒå‡½æ•°ç”¨äºå‘åº”ç”¨ç¨‹åºæ·»åŠ ç¯å¢ƒå˜é‡ã€‚
  */
 int class_simple_set_hotplug(struct class_simple *cs,
 	int (*hotplug)(struct class_device *dev, char **envp, int num_envp, char *buffer, int buffer_size))
@@ -214,7 +214,7 @@ EXPORT_SYMBOL(class_simple_set_hotplug);
  * call to class_device_simple_add()
  */
 /**
- * µ±²¦³ıÉè±¸Ê±£¬Ê¹ÓÃÏÂÃæµÄº¯ÊıÉ¾³ıÀàÈë¿Ú¡£
+ * å½“æ‹¨é™¤è®¾å¤‡æ—¶ï¼Œä½¿ç”¨ä¸‹é¢çš„å‡½æ•°åˆ é™¤ç±»å…¥å£ã€‚
  */
 void class_simple_device_remove(dev_t dev)
 {

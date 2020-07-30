@@ -14,7 +14,7 @@
 #include <asm/uaccess.h>
 
 /**
- * ext2µÄioctlÊµÏÖ·½·¨¡£
+ * ext2çš„ioctlå®žçŽ°æ–¹æ³•ã€‚
  */
 int ext2_ioctl (struct inode * inode, struct file * filp, unsigned int cmd,
 		unsigned long arg)

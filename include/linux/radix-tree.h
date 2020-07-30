@@ -23,19 +23,19 @@
 #include <linux/types.h>
 
 /**
- * ҳ���ٻ�������ĸ�
+ * 页高速缓存基树的根
  */
 struct radix_tree_root {
 	/**
-	 * ���ĵ�ǰ��ȡ�������Ҷ�ӽڵ㡣
+	 * 树的当前深度。不包含叶子节点。
 	 */
 	unsigned int		height;
 	/**
-	 * Ϊ�½ڵ������ڴ�ʱ���õı�־��
+	 * 为新节点请求内存时所用的标志。
 	 */
 	int			gfp_mask;
 	/**
-	 * ָ�������е�һ��ڵ���Ӧ�����ݽṹ��
+	 * 指向与树中第一层节点相应的数据结构。
 	 */
 	struct radix_tree_node	*rnode;
 };

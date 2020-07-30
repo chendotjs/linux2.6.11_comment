@@ -87,8 +87,8 @@ nfs_proc_get_root(struct nfs_server *server, struct nfs_fh *fhandle,
  * One function for each procedure in the NFS protocol.
  */
 /**
- * µ÷ÓÃ·şÎñÆ÷¶ËµÄNFS_GETATTR¡£
- * nfs_fattr¶¨ÒåÁËNFSµÄÎÄ¼şÊôĞÔ½á¹¹
+ * è°ƒç”¨æœåŠ¡å™¨ç«¯çš„NFS_GETATTRã€‚
+ * nfs_fattrå®šä¹‰äº†NFSçš„æ–‡ä»¶å±æ€§ç»“æ„
  */
 static int
 nfs_proc_getattr(struct nfs_server *server, struct nfs_fh *fhandle,
@@ -105,8 +105,8 @@ nfs_proc_getattr(struct nfs_server *server, struct nfs_fh *fhandle,
 }
 
 /**
- * ¿Í»§»úÉèÖÃÎÄ¼şµÄÄ³Ğ©ÊôĞÔ¡£¿Í»§»ú²»ÄÜÉèÖÃËùÓĞÊôĞÔ£¨ÀıÈçfsid¡¢rdev¡¢fileidµÈ£©¡£Èç¹ûµ÷ÓÃ³É¹¦£¬½«»á·µ»Ø¸Ä±äºóÎÄ¼şµÄÊôĞÔ¡£
- * 		sattr			:ĞŞ¸ÄºóµÄÊôĞÔ¡£
+ * å®¢æˆ·æœºè®¾ç½®æ–‡ä»¶çš„æŸäº›å±æ€§ã€‚å®¢æˆ·æœºä¸èƒ½è®¾ç½®æ‰€æœ‰å±æ€§ï¼ˆä¾‹å¦‚fsidã€rdevã€fileidç­‰ï¼‰ã€‚å¦‚æœè°ƒç”¨æˆåŠŸï¼Œå°†ä¼šè¿”å›æ”¹å˜åæ–‡ä»¶çš„å±æ€§ã€‚
+ * 		sattr			:ä¿®æ”¹åçš„å±æ€§ã€‚
  */
 static int
 nfs_proc_setattr(struct dentry *dentry, struct nfs_fattr *fattr,
@@ -127,10 +127,10 @@ nfs_proc_setattr(struct dentry *dentry, struct nfs_fattr *fattr,
 }
 
 /**
- * Ò»¸öÄ¿Â¼ÖĞËÑË÷Ä³¸öÎÄ¼ş¡£Èç¹û³É¹¦£¬Ôò·µ»ØµÄÖµÓÉ¸ÃÎÄ¼şµÄÊôĞÔ¼°Æä¾ä±ú×é³É¡£
- * 			name		:ÊÇËÑË÷µÄÎÄ¼şÃû.
- *			dir			:ÊÇËÑË÷ËùÔÚµÄÄ¿Â¼.
- *			fhandle,fattr		:·µ»ØÖµ¡£
+ * ä¸€ä¸ªç›®å½•ä¸­æœç´¢æŸä¸ªæ–‡ä»¶ã€‚å¦‚æœæˆåŠŸï¼Œåˆ™è¿”å›çš„å€¼ç”±è¯¥æ–‡ä»¶çš„å±æ€§åŠå…¶å¥æŸ„ç»„æˆã€‚
+ * 			name		:æ˜¯æœç´¢çš„æ–‡ä»¶å.
+ *			dir			:æ˜¯æœç´¢æ‰€åœ¨çš„ç›®å½•.
+ *			fhandle,fattr		:è¿”å›å€¼ã€‚
  */
 static int
 nfs_proc_lookup(struct inode *dir, struct qstr *name,
@@ -155,7 +155,7 @@ nfs_proc_lookup(struct inode *dir, struct qstr *name,
 }
 
 /**
- * ÔÊĞí¿Í»§»ú°Ñ·ûºÅÁ¬½ÓµÄÖµ¶Á³öÀ´¡£
+ * å…è®¸å®¢æˆ·æœºæŠŠç¬¦å·è¿æ¥çš„å€¼è¯»å‡ºæ¥ã€‚
  */
 static int nfs_proc_readlink(struct inode *inode, struct page *page,
 		unsigned int pgbase, unsigned int pglen)
@@ -175,7 +175,7 @@ static int nfs_proc_readlink(struct inode *inode, struct page *page,
 }
 
 /**
- * ÔÊĞí¿Í»§»ú´ÓÄ³¸öÎÄ¼şÖĞ¶Á³öÊı¾İ¡£·şÎñÆ÷Èç¹û²Ù×÷³É¹¦£¬·µ»Ø½á¹û°üº¬ÁËËùĞèÒªµÄÊı¾İ¼°¸ÃÎÄ¼şµÄÊôĞÔ£»Èç¹û²Ù×÷Ê§°Ü£¬Ôò×´Ì¬Öµ°üº¬ÁËÒ»¸ö²î´í´úÂë¡£
+ * å…è®¸å®¢æˆ·æœºä»æŸä¸ªæ–‡ä»¶ä¸­è¯»å‡ºæ•°æ®ã€‚æœåŠ¡å™¨å¦‚æœæ“ä½œæˆåŠŸï¼Œè¿”å›ç»“æœåŒ…å«äº†æ‰€éœ€è¦çš„æ•°æ®åŠè¯¥æ–‡ä»¶çš„å±æ€§ï¼›å¦‚æœæ“ä½œå¤±è´¥ï¼Œåˆ™çŠ¶æ€å€¼åŒ…å«äº†ä¸€ä¸ªå·®é”™ä»£ç ã€‚
  */
 static int nfs_proc_read(struct nfs_read_data *rdata)
 {
@@ -207,7 +207,7 @@ static int nfs_proc_read(struct nfs_read_data *rdata)
 }
 
 /**
- * ÔÊĞí¿Í»§ÏòÒ»¸öÔ¶³ÌÎÄ¼şĞ´ÈëÊı¾İ¡£µ÷ÓÃ³É¹¦·µ»ØÎÄ¼şµÄÊôĞÔ£¬·ñÔò°üº¬Ò»¸ö´íÎó´úÂë¡£
+ * å…è®¸å®¢æˆ·å‘ä¸€ä¸ªè¿œç¨‹æ–‡ä»¶å†™å…¥æ•°æ®ã€‚è°ƒç”¨æˆåŠŸè¿”å›æ–‡ä»¶çš„å±æ€§ï¼Œå¦åˆ™åŒ…å«ä¸€ä¸ªé”™è¯¯ä»£ç ã€‚
  */
 static int nfs_proc_write(struct nfs_write_data *wdata)
 {

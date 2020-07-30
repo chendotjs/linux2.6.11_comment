@@ -13,41 +13,41 @@ struct open_intent {
 enum { MAX_NESTED_LINKS = 5 };
 
 /**
- * ·�����ҵĽ��
+ * 路径查找的结果
  */
 struct nameidata {
 	/**
-	 * ���ҵ���Ŀ¼����
+	 * 查找到的目录对象。
 	 */
 	struct dentry	*dentry;
 	/**
-	 * �Ѿ���װ���ļ�ϵͳ����
+	 * 已经安装的文件系统对象。
 	 */
 	struct vfsmount *mnt;
 	/**
-	 * ·���������һ����������ָ��LOOKUP_PARENTʱʹ�á�
+	 * 路径名的最后一个分量。当指定LOOKUP_PARENT时使用。
 	 */
 	struct qstr	last;
 	/**
-	 * ���ұ�־��
+	 * 查找标志。
 	 */
 	unsigned int	flags;
 	/**
-	 * ·�������һ�����������͡���LAST_NORM
+	 * 路径名最后一个分量的类型。如LAST_NORM
 	 */
 	int		last_type;
 	/**
-	 * �������Ӳ��ҵ�Ƕ����ȡ�
+	 * 符号链接查找的嵌套深度。
 	 */
 	unsigned	depth;
 	/**
-	 * Ƕ�׹���·�������顣
+	 * 嵌套关联路径名数组。
 	 */
 	char *saved_names[MAX_NESTED_LINKS + 1];
 
 	/* Intent data */
 	/**
-	 * ָ����η����ļ���
+	 * 指定如何访问文件。
 	 */
 	union {
 		struct open_intent open;
@@ -58,11 +58,11 @@ struct nameidata {
  * Type of the last component on LOOKUP_PARENT
  */
 /**
- * LAST_NORM:	���һ����������ͨ�ļ���
- * LAST_ROOT:	���һ��������"/"
- * LAST_DOT:	���һ��������"."
- * LAST_DOTDOT:	���һ��������".."
- * LAST_BIND:	���һ�����������ӵ������ļ�ϵͳ�ķ�������
+ * LAST_NORM:	最后一个分量是普通文件名
+ * LAST_ROOT:	最后一个分量是"/"
+ * LAST_DOT:	最后一个分量是"."
+ * LAST_DOTDOT:	最后一个分量是".."
+ * LAST_BIND:	最后一个分量是链接到特殊文件系统的符号链接
  */
 enum {LAST_NORM, LAST_ROOT, LAST_DOT, LAST_DOTDOT, LAST_BIND};
 
@@ -75,38 +75,38 @@ enum {LAST_NORM, LAST_ROOT, LAST_DOT, LAST_DOTDOT, LAST_BIND};
  *  - locked when lookup done with dcache_lock held
  */
 /**
- * ������һ�������Ƿ������ӣ����������
+ * 如果最后一个分量是符号链接，则解释它。
  */
 #define LOOKUP_FOLLOW		 1
 /**
- * ���һ������������Ŀ¼��
+ * 最后一个分量必须是目录。
  */
 #define LOOKUP_DIRECTORY	 2
 /**
- * ��·�����л����ļ���Ҫ��顣
+ * 在路径名中还有文件名要检查。
  */
 #define LOOKUP_CONTINUE		 4
 /**
- * �������һ���������ڵ�Ŀ¼
+ * 查找最后一个分量所在的目录
  */
 #define LOOKUP_PARENT		16
 /**
- * ������ģ���Ŀ¼
+ * 不考虑模拟根目录
  */
 #define LOOKUP_NOALT		32
 /*
  * Intent data
  */
 /**
- * ��ͼ��һ���ļ�
+ * 试图打开一个文件
  */
 #define LOOKUP_OPEN		(0x0100)
 /**
- * ��ͼ����һ���ļ�
+ * 试图创建一个文件
  */
 #define LOOKUP_CREATE		(0x0200)
 /**
- * ��ͼΪһ���ļ�����û���Ȩ�ޡ�
+ * 试图为一个文件检查用户的权限。
  */
 #define LOOKUP_ACCESS		(0x0400)
 

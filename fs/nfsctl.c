@@ -87,8 +87,8 @@ static struct {
 };
 
 /**
- * NFS·şÎñÆ÷¶Ë¿ØÖÆÏµÍ³µ÷ÓÃ¡£
- *		cmd:		·şÎñµÄÖÖÀà¡£ÈçNFSCTL_SVC
+ * NFSæœåŠ¡å™¨ç«¯æ§åˆ¶ç³»ç»Ÿè°ƒç”¨ã€‚
+ *		cmd:		æœåŠ¡çš„ç§ç±»ã€‚å¦‚NFSCTL_SVC
  */
 long
 asmlinkage sys_nfsservctl(int cmd, struct nfsctl_arg __user *arg, void __user *res)

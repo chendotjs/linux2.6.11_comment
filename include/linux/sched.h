@@ -40,75 +40,75 @@ struct exec_domain;
  */
 #define CSIGNAL		0x000000ff	/* signal mask to be sent at exit */
 /**
- * �����ڴ�������������ҳ��
+ * 共享内存描述符和所有页表
  */
 #define CLONE_VM	0x00000100	/* set if VM shared between processes */
 /**
- * ������Ŀ¼�͵�ǰ����Ŀ¼���ڵı����Լ������������ļ���ʼ����Ȩ��λ����ֵ
+ * 共享根目录和当前工作目录所在的表，以及用于屏蔽新文件初始许可权的位掩码值
  */
 #define CLONE_FS	0x00000200	/* set if fs info shared between processes */
 /**
- * �������ļ���
+ * 共享打开文件表
  */
 #define CLONE_FILES	0x00000400	/* set if open files shared between processes */
 /**
- * �����źŴ�������ı��������źű��͹����źű�
- * ����ñ�־Ϊ1����ôһ��Ҫ����CLONE_VM
+ * 共享信号处理程序的表、阻塞信号表和挂起信号表
+ * 如果该标志为1，那么一定要设置CLONE_VM
  */
 #define CLONE_SIGHAND	0x00000800	/* set if signal handlers and blocked signals shared */
 /**
- * ��������̱����٣���ô���ӽ���Ҳ�����١�
- * �����ǣ�debugger�������ϣ�����Լ���Ϊ�������������ӽ��̡�����������£��ں˰Ѹñ�־ǿ��Ϊ1
+ * 如果父进程被跟踪，那么，子进程也被跟踪。
+ * 尤其是，debugger程序可能希望以自己作为父进程来跟踪子进程。在这种情况下，内核把该标志强设为1
  */
 #define CLONE_PTRACE	0x00002000	/* set if we want to let tracing continue on the child too */
 /**
- * �ڷ���vforkϵͳ����ʱ����
+ * 在发出vfork系统调用时设置
  */
 #define CLONE_VFORK	0x00004000	/* set if the parent wants the child to wake it up on mm_release */
 /**
- * �����ӽ��̵ĸ�����Ϊ���ý��̵ĸ����̡�
+ * 设置子进程的父进程为调用进程的父进程。
  */
 #define CLONE_PARENT	0x00008000	/* set if we want to have the same parent as the cloner */
 /**
- * ���ӽ��̲��뵽�����̵�ͬһ�߳����С���ʹ�ӽ��̹��������̵��ź������������Ҳ�����ӽ��̵�tgid�ֶκ�group_leader�ֶΡ�
- * ��������־λΪ1�����������CLONE_SIGHAND��־��
+ * 把子进程插入到父进程的同一线程组中。并使子进程共享父进程的信号描述符。因此也设置子进程的tgid字段和group_leader字段。
+ * 如果这个标志位为1，则必须设置CLONE_SIGHAND标志。
  */
 #define CLONE_THREAD	0x00010000	/* Same thread group? */
 /**
- * ��clone��Ҫ�Լ��������ռ�ʱ�����øñ�־������ͬʱ���ñ���־��CLONE_FS��
+ * 当clone需要自己的命名空间时，设置该标志。不能同时设置本标志和CLONE_FS。
  */
 #define CLONE_NEWNS	0x00020000	/* New namespace group? */
 /**
- * ����System V IPCȡ���ź����Ĳ�����
+ * 共享System V IPC取消信号量的操作。
  */
 #define CLONE_SYSVSEM	0x00040000	/* share system V SEM_UNDO semantics */
 /**
- * Ϊ���������̴����µ��ֲ߳̾��洢�Σ�TLS�����ö��ɲ���tls��ָ��Ľṹ����������
+ * 为轻量级进程创建新的线程局部存储段（TLS），该段由参数tls所指向的结构进行描述。
  */
 #define CLONE_SETTLS	0x00080000	/* create a new TLS for the child */
 /**
- * ���ӽ��̵�PIDд����ptid������ָ��ĸ����̵��û�̬������
+ * 把子进程的PID写入由ptid参数所指向的父进程的用户态变量。
  */
 #define CLONE_PARENT_SETTID	0x00100000	/* set the TID in the parent */
 /**
- * ����ñ�־�����ã����ں˽���һ�ִ������ƣ������ӽ���Ҫ�˳���Ҫ��ʼִ���³���
- * ����Щ����£��ں˽�����ɲ���ctid��ָ����û�̬�����������ѵȴ�����¼����κν���
+ * 如果该标志被设置，则内核建立一种触发机制，用在子进程要退出或要开始执行新程序。
+ * 在这些情况下，内核将清除由参数ctid所指向的用户态变量，并唤醒等待这个事件的任何进程
  */
 #define CLONE_CHILD_CLEARTID	0x00200000	/* clear the TID in the child */
 /**
- * ������־�������ں˺���
+ * 遗留标志，将被内核忽略
  */
 #define CLONE_DETACHED		0x00400000	/* Unused, ignored */
 /**
- * �ں����������־��ʹCLONE_PTRACE��־�ƶ����ã���ֹ�ں��̸߳��ٽ��̣�
+ * 内核设置这个标志以使CLONE_PTRACE标志推动作用（禁止内核线程跟踪进程）
  */
 #define CLONE_UNTRACED		0x00800000	/* set if the tracing process can't force CLONE_PTRACE on this clone */
 /**
- * ���ӽ��̵�PIDд����ctid������ָ����ӽ��̵��û�̬������
+ * 把子进程的PID写入由ctid参数所指向的子进程的用户态变量中
  */
 #define CLONE_CHILD_SETTID	0x01000000	/* set the TID in the child */
 /**
- * ǿ���ӽ��̿�ʼ��TASK_STOPPED״̬
+ * 强迫子进程开始于TASK_STOPPED状态
  */
 #define CLONE_STOPPED		0x02000000	/* Start in stopped state */
 
@@ -159,48 +159,48 @@ extern unsigned long nr_iowait(void);
 #include <asm/processor.h>
 
 /**
- * ����Ҫô��CPU��ִ�У�Ҫô׼��ִ�С�
+ * 进程要么在CPU上执行，要么准备执行。
  */
 #define TASK_RUNNING		0
 /**
- * ���жϵĵȴ�״̬��
+ * 可中断的等待状态。
  */
 #define TASK_INTERRUPTIBLE	1
 /**
- * �����жϵĵȴ�״̬��
- * ����������٣�������ʱҲ���ã�������̴�һ���豸�ļ�������Ӧ������������̽��Ӳ���豸ʱ����������״̬��
- * ��̽�����ǰ���豸��������������жϣ���ôӲ���豸��״̬���ܻᴦ�ڲ���Ԥ֪״̬��
+ * 不可中断的等待状态。
+ * 这种情况很少，但是有时也有用：比如进程打开一个设备文件，其相应的驱动程序在探测硬件设备时，就是这种状态。
+ * 在探测完成前，设备驱动程序如果被中断，那么硬件设备的状态可能会处于不可预知状态。
  */
 #define TASK_UNINTERRUPTIBLE	2
 /**
- * ��ͣ״̬�����յ�SIGSTOP,SIGTSTP,SIGTTIN����SIGTTOU�źź󣬻�����״̬��
+ * 暂停状态。当收到SIGSTOP,SIGTSTP,SIGTTIN或者SIGTTOU信号后，会进入此状态。
  */
 #define TASK_STOPPED		4
 /**
- * ������״̬�������̱�����һ�����̼��ʱ���κ��źŶ����԰�������ڸ�
+ * 被跟踪状态。当进程被另外一个进程监控时，任何信号都可以把这个置于该
  */
 #define TASK_TRACED		8
 /**
- * ����״̬�����̵�ִ�б���ֹ�����ǣ������̻�û�е�����wait4��waitpid�������й�
- * �������̵���Ϣ���ڴ�ʱ���ں˲����ͷ�������ݽṹ����Ϊ�����̿��ܻ���Ҫ����
+ * 僵死状态。进程的执行被终止，但是，父进程还没有调用完wait4和waitpid来返回有关
+ * 死亡进程的信息。在此时，内核不能释放相关数据结构，因为父进程可能还需要它。
  */
 #define EXIT_ZOMBIE		16
 /**
- * �ڸ����̵���wait4��ɾ��ǰ��Ϊ��������������ͬһ������Ҳִ��wait4����
- * ����״̬��EXIT_ZOMBIEתΪEXIT_DEAD������������״̬��
+ * 在父进程调用wait4后，删除前，为避免其他进程在同一进程上也执行wait4调用
+ * 将其状态由EXIT_ZOMBIE转为EXIT_DEAD，即僵死撤销状态。
  */
 #define EXIT_DEAD		32
 
 #define __set_task_state(tsk, state_value)		\
 	do { (tsk)->state = (state_value); } while (0)
 /**
- * ���ý���״̬��ͬʱ������ڴ����ϡ�
+ * 设置进程状态。同时会加上内存屏障。
  */
 #define set_task_state(tsk, state_value)		\
 	set_mb((tsk)->state, (state_value))
 
 /**
- * ���õ�ǰ����״̬��ͬʱ������ڴ����ϡ�
+ * 设置当前进程状态。同时会加上内存屏障。
  */
 #define __set_current_state(state_value)			\
 	do { current->state = (state_value); } while (0)
@@ -233,7 +233,7 @@ struct sched_param {
  */
 extern rwlock_t tasklist_lock;
 /**
- * �������ڴ������������ķ��ʡ�
+ * 保护对内存描述符链表的访问。
  */
 extern spinlock_t mmlist_lock;
 
@@ -294,68 +294,68 @@ extern void arch_unmap_area_topdown(struct vm_area_struct *area);
 
 
 /**
- * �ڴ���������task_struct��mm�ֶ�ָ������
- * �������˽��̵�ַ�ռ��йص�ȫ����Ϣ��
+ * 内存描述符。task_struct的mm字段指向它。
+ * 它包含了进程地址空间有关的全部信息。
  */
 struct mm_struct {
 	/**
-	 * ָ�����������������ͷ��
+	 * 指向线性区对象的链表头。
 	 */
 	struct vm_area_struct * mmap;		/* list of VMAs */
 	/**
-	 * ָ������������ĺ�-�����ĸ�
+	 * 指向线性区对象的红-黑树的根
 	 */
 	struct rb_root mm_rb;
 	/**
-	 * ָ�����һ�����õ�����������
+	 * 指向最后一个引用的线性区对象。
 	 */
 	struct vm_area_struct * mmap_cache;	/* last find_vma result */
 	/**
-	 * �ڽ��̵�ַ�ռ���������Ч���Ե�ַ���ķ�����
+	 * 在进程地址空间中搜索有效线性地址区的方法。
 	 */
 	unsigned long (*get_unmapped_area) (struct file *filp,
 				unsigned long addr, unsigned long len,
 				unsigned long pgoff, unsigned long flags);
 	/**
-	 * �ͷ����Ե�ַ����ʱ���õķ�����
+	 * 释放线性地址区间时调用的方法。
 	 */
 	void (*unmap_area) (struct vm_area_struct *area);
 	/**
-	 * ��ʶ��һ��������������������ļ��ڴ�ӳ������Ե�ַ��
+	 * 标识第一个分配的匿名线性区或文件内存映射的线性地址。
 	 */
 	unsigned long mmap_base;		/* base of mmap area */
 	/**
-	 * �ں˴������ַ��ʼ�������̵�ַ�ռ������Ե�ַ�Ŀռ����䡣
+	 * 内核从这个地址开始搜索进程地址空间中线性地址的空间区间。
 	 */
 	unsigned long free_area_cache;		/* first hole */
 	/**
-	 * ָ��ҳȫ��Ŀ¼��
+	 * 指向页全局目录。
 	 */
 	pgd_t * pgd;
 	/**
-	 * ��ʹ�ü���������Ź���mm_struct���ݽṹ�����������̵ĸ�����
+	 * 次使用计数器。存放共享mm_struct数据结构的轻量级进程的个数。
 	 */
 	atomic_t mm_users;			/* How many users with user space? */
 	/**
-	 * ��ʹ�ü�������ÿ��mm_count�ݼ�ʱ���ں˶�Ҫ������Ƿ��Ϊ0,����ǣ���Ҫ�������ڴ���������
+	 * 主使用计数器。每当mm_count递减时，内核都要检查它是否变为0,如果是，就要解除这个内存描述符。
 	 */
 	atomic_t mm_count;			/* How many references to "struct mm_struct" (users count as 1) */
 	/**
-	 * �������ĸ�����
+	 * 线性区的个数。
 	 */
 	int map_count;				/* number of VMAs */
 	/**
-	 * �ڴ��������Ķ�д�ź�����
-	 * ���������������ڼ������������̼乲����ͨ������ź������Ա��⾺��������
+	 * 内存描述符的读写信号量。
+	 * 由于描述符可能在几个轻量级进程间共享，通过这个信号量可以避免竞争条件。
 	 */
 	struct rw_semaphore mmap_sem;
 	/**
-	 * ��������ҳ������������
+	 * 线性区和页表的自旋锁。
 	 */
 	spinlock_t page_table_lock;		/* Protects page tables, mm->rss, mm->anon_rss */
 
 	/**
-	 * ָ���ڴ������������е�����Ԫ�ء�
+	 * 指向内存描述符链表中的相邻元素。
 	 */
 	struct list_head mmlist;		/* List of maybe swapped mm's.  These are globally strung
 						 * together off init_mm.mmlist, and are protected
@@ -363,123 +363,123 @@ struct mm_struct {
 						 */
 
 	/**
-	 * start_code-��ִ�д������ʼ��ַ��
-	 * end_code-��ִ�д��������ַ��
-	 * start_data-�ѳ�ʼ�����ݵ���ʼ��ַ��
-	 * end_data--�ѳ�ʼ�����ݵĽ�����ַ��
+	 * start_code-可执行代码的起始地址。
+	 * end_code-可执行代码的最后地址。
+	 * start_data-已初始化数据的起始地址。
+	 * end_data--已初始化数据的结束地址。
 	 */
 	unsigned long start_code, end_code, start_data, end_data;
 	/**
-	 * start_brk-�ѵĳ�ʼ��ַ��
-	 * brk-�ѵĵ�ǰ����ַ��
-	 * start_stack-�û�̬��ջ����ʼ��ַ��
+	 * start_brk-堆的超始地址。
+	 * brk-堆的当前最后地址。
+	 * start_stack-用户态堆栈的起始地址。
 	 */
 	unsigned long start_brk, brk, start_stack;
 	/**
-	 * arg_start-�����в�������ʼ��ַ��
-	 * arg_end-�����в����Ľ�����ַ��
-	 * env_start-������������ʼ��ַ��
-	 * env_end-���������Ľ�����ַ��
+	 * arg_start-命令行参数的起始地址。
+	 * arg_end-命令行参数的结束地址。
+	 * env_start-环境变量的起始地址。
+	 * env_end-环境变量的结束地址。
 	 */
 	unsigned long arg_start, arg_end, env_start, env_end;
 	/**
-	 * rss-��������̵�ҳ������
-	 * anon_rss-����������ڴ�ӳ���ҳ������s
-	 * total_vm-���̵�ַ�ռ�Ĵ�С(ҳ����)
-	 * locked_vm-��ס�����ܻ�����ҳ�ĸ�����
-	 * shared_vm-�����ļ��ڴ�ӳ���е�ҳ����
+	 * rss-分配给进程的页框总数
+	 * anon_rss-分配给匿名内存映射的页框数。s
+	 * total_vm-进程地址空间的大小(页框数)
+	 * locked_vm-锁住而不能换出的页的个数。
+	 * shared_vm-共享文件内存映射中的页数。
 	 */
 	unsigned long rss, anon_rss, total_vm, locked_vm, shared_vm;
 	/**
-	 * exec_vm-��ִ���ڴ�ӳ���ҳ����
-	 * stack_vm-�û�̬��ջ�е�ҳ����
-	 * reserved_vm-�ڱ������е�ҳ�����������������е�ҳ����
-	 * def_flags-������Ĭ�ϵķ��ʱ�־��
-	 * nr_ptes-this���̵�ҳ������
+	 * exec_vm-可执行内存映射的页数。
+	 * stack_vm-用户态堆栈中的页数。
+	 * reserved_vm-在保留区中的页数或在特殊线性区中的页数。
+	 * def_flags-线性区默认的访问标志。
+	 * nr_ptes-this进程的页表数。
 	 */
 	unsigned long exec_vm, stack_vm, reserved_vm, def_flags, nr_ptes;
 
 	/**
-	 * ��ʼִ��elf����ʱʹ�á�
+	 * 开始执行elf程序时使用。
 	 */
 	unsigned long saved_auxv[42]; /* for /proc/PID/auxv */
 
 	/**
-	 * ��ʾ�Ƿ���Բ����ڴ���Ϣת���ı�־��
+	 * 表示是否可以产生内存信息转储的标志。
 	 */
 	unsigned dumpable:1;
 	/**
-	 * ����TLB������λ���롣
+	 * 懒惰TLB交换的位掩码。
 	 */
 	cpumask_t cpu_vm_mask;
 
 	/* Architecture-specific MM context */
 	/**
-	 * ������ϵ�ṹ��Ϣ�ı���
-	 * ��80X86ƽ̨�ϵ�LDT��ַ��
+	 * 特殊体系结构信息的表。
+	 * 如80X86平台上的LDT地址。
 	 */
 	mm_context_t context;
 
 	/* Token based thrashing protection. */
 	/**
-	 * �������ʸ��ý�����ǵ�ʱ�䡣
+	 * 进程有资格获得交换标记的时间。
 	 */
 	unsigned long swap_token_time;
 	/**
-	 * ��������������ȱҳ�������øñ�־��
+	 * 如果最近发生了主缺页。则设置该标志。
 	 */
 	char recent_pagein;
 
 	/* coredumping support */
 	/**
-	 * ���ڰѽ��̵�ַ�ռ������ж�ص�ת���ļ��е����������̵�������
+	 * 正在把进程地址空间的内容卸载到转储文件中的轻量级进程的数量。
 	 */
 	int core_waiters;
 	/**
-	 * core_startup_done-ָ�򴴽��ڴ�ת���ļ�ʱ�Ĳ���ԭ�
-	 * core_done-�����ڴ�ת���ļ�ʱʹ�õĲ���ԭ�
+	 * core_startup_done-指向创建内存转储文件时的补充原语。
+	 * core_done-创建内存转储文件时使用的补充原语。
 	 */
 	struct completion *core_startup_done, core_done;
 
 	/* aio bits */
 	/**
-	 * ���ڱ����첽IO����������������
+	 * 用于保护异步IO上下文链表的锁。
 	 */
 	rwlock_t		ioctx_list_lock;
 	/**
-	 * �첽IO������������
+	 * 异步IO上下文链表。
 	 */
 	struct kioctx		*ioctx_list;
 
 	/**
-	 * Ĭ�ϵ��첽IO�����ġ�
+	 * 默认的异步IO上下文。
 	 */
 	struct kioctx		default_kioctx;
 
 	/**
-	 * ������ӵ�е����ҳ������
+	 * 进程所拥有的最大页框数。
 	 */
 	unsigned long hiwater_rss;	/* High-water RSS usage */
 	/**
-	 * �����������е����ҳ����
+	 * 进程线性区中的最大页数。
 	 */
 	unsigned long hiwater_vm;	/* High-water virtual memory usage */
 };
 
 /**
- * �źŴ�������������
+ * 信号处理程序描述符
  */
 struct sighand_struct {
 	/**
-	 * �źŴ�������������ʹ�ü�������
+	 * 信号处理程序描述的使用计数器。
 	 */
 	atomic_t		count;
 	/**
-	 * ˵�����������ź���ִ�в����Ľṹ���顣
+	 * 说明在所传递信号上执行操作的结构数组。
 	 */
 	struct k_sigaction	action[_NSIG];
 	/**
-	 * �����ź����������źŴ�����������������������
+	 * 保护信号描述符和信号处理程序描述符的自旋锁。
 	 */
 	spinlock_t		siglock;
 };
@@ -492,38 +492,38 @@ struct sighand_struct {
  * the locking of signal_struct.
  */
 /**
- * �ź���������������ͬһ�߳�������н��̹�����
+ * 信号描述符，被属于同一线程组的所有进程共享。
  */
 struct signal_struct {
 	/**
-	 * ��������ʹ�ü�����
+	 * 描述符的使用计数。
 	 */
 	atomic_t		count;
 	/**
-	 * �߳����л���̵�������
+	 * 线程组中活动进程的数量。
 	 */
 	atomic_t		live;
 
 	/**
-	 * ��ϵͳ����wait4��˯�ߵĽ��̵ĵȴ����С�
+	 * 在系统调用wait4中睡眠的进程的等待队列。
 	 */
 	wait_queue_head_t	wait_chldexit;	/* for wait4() */
 
 	/* current thread group signal load-balancing target: */
 	/**
-	 * �����źŵ��߳����У����һ�����̵���������
+	 * 接收信号的线程组中，最后一个进程的描述符。
 	 */
 	task_t			*curr_target;
 
 	/* shared signal handling: */
 	/**
-	 * ��Ź��������źŵ����ݽṹ��
+	 * 存放共享挂起信号的数据结构。
 	 */
 	struct sigpending	shared_pending;
 
 	/* thread group exit support */
 	/**
-	 * �߳���Ľ�����ֹ����
+	 * 线程组的进程终止代码
 	 */
 	int			group_exit_code;
 	/* overloaded:
@@ -532,21 +532,21 @@ struct signal_struct {
 	 *   of fatal signals, group_exit_task processes the signal.
 	 */
 	/**
-	 * ɱ�������߳����ʱ��ʹ��
+	 * 杀死整个线程组的时候使用
 	 */
 	struct task_struct	*group_exit_task;
 	/**
-	 * ɱ�������߳����ʱ��ʹ��
+	 * 杀死整个线程组的时候使用
 	 */
 	int			notify_count;
 
 	/* thread group stop support, overloads group_exit_code too */
 	/**
-	 * ֹͣ�����߳����ʱ��ʹ��
+	 * 停止整个线程组的时候使用
 	 */
 	int			group_stop_count;
 	/**
-	 * �ڴ����޸Ľ���״̬���ź�ʱʹ�õı�־��
+	 * 在传递修改进程状态的信号时使用的标志。
 	 */
 	unsigned int		flags; /* see SIGNAL_* flags below */
 
@@ -555,19 +555,19 @@ struct signal_struct {
 
 	/* job control IDs */
 	/**
-	 * ����ͷ����
+	 * 组领头进程
 	 */
 	pid_t pgrp;
 	pid_t tty_old_pgrp;
 	/**
-	 * �Ự��ͷ���̡�
+	 * 会话领头进程。
 	 */
 	pid_t session;
 	/* boolean value for session group leader */
 	int leader;
 	
 	/**
-	 * �������ص�tty.
+	 * 与进程相关的tty.
 	 */
 	struct tty_struct *tty; /* NULL if no tty */
 
@@ -591,7 +591,7 @@ struct signal_struct {
 	 * have no need to disable irqs.
 	 */
 	/**
-	 * ��Դ��������
+	 * 资源限制数组
 	 */
 	struct rlimit rlim[RLIM_NLIMITS];
 };
@@ -694,7 +694,7 @@ enum idle_type
 #define SD_SHARE_CPUPOWER	64	/* Domain members share cpu power */
 
 /**
- * ���������
+ * 调度域的组
  */
 struct sched_group {
 	struct sched_group *next;	/* Must be a circular list */
@@ -708,16 +708,16 @@ struct sched_group {
 };
 
 /**
- * ������
+ * 调度域
  */
 struct sched_domain {
 	/* These fields must be setup */
 	/**
-	 * ��������
+	 * 父调度域。
 	 */
 	struct sched_domain *parent;	/* top domain must be null terminated */
 	/**
-	 * ���������ĵ�һ��Ԫ�ء�
+	 * 组描述符的第一个元素。
 	 */
 	struct sched_group *groups;	/* the balancing groups of the domain */
 	cpumask_t span;			/* span of all CPUs in this domain */
@@ -804,11 +804,11 @@ struct mempolicy;
 
 struct task_struct {
 	/**
-	 * ����״̬��
+	 * 进程状态。
 	 */
 	volatile long state;	/* -1 unrunnable, 0 runnable, >0 stopped */
 	/**
-	 * ���̵Ļ�����Ϣ��
+	 * 进程的基本信息。
 	 */
 	struct thread_info *thread_info;
 	atomic_t usage;
@@ -818,50 +818,50 @@ struct task_struct {
 	int lock_depth;		/* Lock depth */
 
 	/**
-	 * ���еĶ�̬����Ȩ�;�̬����Ȩ
+	 * 进行的动态优先权和静态优先权
 	 */
 	int prio, static_prio;
 	/**
-	 * �����������ж��С�ÿ�����ȼ���Ӧһ�����ж��С�
+	 * 进程所在运行队列。每个优先级对应一个运行队列。
 	 */
 	struct list_head run_list;
 	/**
-	 * ָ��ǰ���ж��е�prio_array_t
+	 * 指向当前运行队列的prio_array_t
 	 */
 	prio_array_t *array;
 
 	/**
-	 * ���̵�ƽ��˯��ʱ��
+	 * 进程的平均睡眠时间
 	 */
 	unsigned long sleep_avg;
 	/**
-	 * timestamp-��������������ж��е�ʱ�䡣���漰�����̵����һ�ν����л���ʱ��
-	 * last_ran-���һ���滻�����̵Ľ����л�ʱ�䡣
+	 * timestamp-进程最近插入运行队列的时间。或涉及本进程的最近一次进程切换的时间
+	 * last_ran-最近一次替换本进程的进程切换时间。
 	 */
 	unsigned long long timestamp, last_ran;
 	/**
-	 * ���̱�����ʱ��ʹ�õĴ��롣
-	 *     0:���̴���TASK_RUNNING״̬��
-	 *     1:���̴���TASK_INTERRUPTIBLE����TASK_STOPPED״̬���������ڱ�ϵͳ���÷������̻��ں��̻߳��ѡ�
-	 *     2:���̴���TASK_INTERRUPTIBLE����TASK_STOPPED״̬���������ڱ�ISR���߿��ӳٺ������ѡ�
-	 *     -1:��ʾ��UNINTERRUPTIBLE״̬������
+	 * 进程被唤醒时所使用的代码。
+	 *     0:进程处于TASK_RUNNING状态。
+	 *     1:进程处于TASK_INTERRUPTIBLE或者TASK_STOPPED状态，而且正在被系统调用服务例程或内核线程唤醒。
+	 *     2:进程处于TASK_INTERRUPTIBLE或者TASK_STOPPED状态，而且正在被ISR或者可延迟函数唤醒。
+	 *     -1:表示从UNINTERRUPTIBLE状态被唤醒
 	 */
 	int activated;
 
 	/**
-	 * ���̵ĵ�������:sched_normal,sched_rr����sched_fifo
+	 * 进程的调度类型:sched_normal,sched_rr或者sched_fifo
 	 */
 	unsigned long policy;
 	/**
-	 * ��ִ�н��̵�CPU��λ����
+	 * 能执行进程的CPU的位掩码
 	 */
 	cpumask_t cpus_allowed;
 	/**
-	 * time_slice-�ڽ��̵�ʱ��Ƭ�У���ʣ���ʱ�ӽ�������
-	 * first_time_slice-������̿϶�����������ʱ��Ƭ���ͰѸñ�־����Ϊ1.
-	 *            xie.baoyouע:ԭ�����,Ӧ���Ǳ�ʾ�����Ƿ��ǵ�һ��ִ�С�����������ǵ�һ��ִ�У������ڿ�ʼ����
-	 *                         �ĵ�һ��ʱ��Ƭ�ھ�������ϣ���ô�ͽ�ʣ���ʱ��Ƭ���������̡���Ҫ�ǿ��ǵ��н���
-	 *                         ������Ķ�̬�����ӽ���ʱ�����ӽ��̻������˳�������������������������ʱ��Ƭ��������ֽ��̲���ƽ��
+	 * time_slice-在进程的时间片中，还剩余的时钟节拍数。
+	 * first_time_slice-如果进程肯定不会用完其时间片，就把该标志设置为1.
+	 *            xie.baoyou注:原文如此,应该是表示任务是否是第一次执行。这样，如果是第一次执行，并且在开始运行
+	 *                         的第一个时间片内就运行完毕，那么就将剩余的时间片还给父进程。主要是考虑到有进程
+	 *                         会大量的动态创建子进程时，而子进程会立即退出这种情况。如果不还给父进程时间片，会对这种进程不公平。
 	 */
 	unsigned int time_slice, first_time_slice;
 
@@ -870,7 +870,7 @@ struct task_struct {
 #endif
 
 	/**
-	 * ͨ�������������н������ӵ�һ��˫�������С�
+	 * 通过此链表把所有进程链接到一个双向链表中。
 	 */
 	struct list_head tasks;
 	/*
@@ -878,16 +878,16 @@ struct task_struct {
 	 * that were stolen by a ptracer.
 	 */
 	/**
-	 * ������ͷ���������������б�debugger������ٵ�P���ӽ��̡�
+	 * 链表的头。该链表包含所有被debugger程序跟踪的P的子进程。
 	 */
 	struct list_head ptrace_children;
 	/**
-	 * ָ�������ٽ�����ʵ�ʸ�����������ǰһ����һ��Ԫ�ء�
+	 * 指向所跟踪进程其实际父进程链表的前一个下一个元素。
 	 */
 	struct list_head ptrace_list;
 
 	/**
-	 * mm:ָ���ڴ�����������ָ��
+	 * mm:指向内存区描述符的指针
 	 */
 	struct mm_struct *mm, *active_mm;
 
@@ -899,15 +899,15 @@ struct task_struct {
 	/* ??? */
 	unsigned long personality;
 	/**
-	 * ���̷���execveϵͳ���õĴ�����
+	 * 进程发出execve系统调用的次数。
 	 */
 	unsigned did_exec:1;
 	/**
-	 * ����PID
+	 * 进程PID
 	 */
 	pid_t pid;
 	/**
-	 * �߳�����ͷ�̵߳�PID��
+	 * 线程组领头线程的PID。
 	 */
 	pid_t tgid;
 	/* 
@@ -916,15 +916,15 @@ struct task_struct {
 	 * p->parent->pid)
 	 */
 	/**
-	 * ָ�򴴽����̵Ľ��̵���������
-	 * ������̵ĸ����̲��ٴ��ڣ���ָ�����1����������
-	 * ��ˣ�����û�����һ����̨���̶����˳���shell����̨���̾ͻ��Ϊinit���ӽ��̡�
+	 * 指向创建进程的进程的描述符。
+	 * 如果进程的父进程不再存在，就指向进程1的描述符。
+	 * 因此，如果用户运行一个后台进程而且退出了shell，后台进程就会成为init的子进程。
 	 */
 	struct task_struct *real_parent; /* real parent process (when being debugged) */
 	/**
-	 * ָ����̵ĵ�ǰ�����̡����ֽ��̵��ӽ�����ֹʱ�������򸸽��̷��źš�
-	 * ����ֵͨ����real_parentһ�¡�
-	 * ��ż��Ҳ���Բ�ͬ�����磺����һ�����̷�����ؽ��̵�ptraceϵͳ��������ʱ��
+	 * 指向进程的当前父进程。这种进程的子进程终止时，必须向父进程发信号。
+	 * 它的值通常与real_parent一致。
+	 * 但偶尔也可以不同。例如：当另一个进程发出监控进程的ptrace系统调用请求时。
 	 */
 	struct task_struct *parent;	/* parent process */
 	/*
@@ -932,50 +932,50 @@ struct task_struct {
 	 * tasks I'm ptracing.
 	 */
 	/**
-	 * ����ͷ��������ָ�������Ԫ�ض��ǽ��̴������ӽ��̡�
+	 * 链表头部。链表指向的所有元素都是进程创建的子进程。
 	 */
 	struct list_head children;	/* list of my children */
 	/**
-	 * ָ���ֵܽ�����������һ��Ԫ�ػ�ǰһ��Ԫ�ص�ָ�롣
+	 * 指向兄弟进程链表的下一个元素或前一个元素的指针。
 	 */
 	struct list_head sibling;	/* linkage in my parent's children list */
 	/**
-	 * P���ڽ��������ͷ���̵�������ָ�롣
+	 * P所在进程组的领头进程的描述符指针。
 	 */
 	struct task_struct *group_leader;	/* threadgroup leader */
 
 	/* PID/PID hash table linkage. */
 	/**
-	 * PIDɢ�б���ͨ�����ĸ��������Է���Ĳ���ͬһ�߳���������̣߳�ͬһ�Ự���������̵ȵȡ�
+	 * PID散列表。通过这四个表，可以方便的查找同一线程组的其他线程，同一会话的其他进程等等。
 	 */
 	struct pid pids[PIDTYPE_MAX];
 
 	struct completion *vfork_done;		/* for vfork() */
 	/**
-	 * �ӽ������û�̬�ĵ�ַ����Щ�û�̬��ַ��ֵ�������û��������
-	 * ��do_forkʱ��¼��Щ��ַ���Ժ������û���������ǵ�ֵ��
+	 * 子进程在用户态的地址。这些用户态地址的值将被设置或者清除。
+	 * 在do_fork时记录这些地址，稍后再设置或者清除它们的值。
 	 */
 	int __user *set_child_tid;		/* CLONE_CHILD_SETTID */
 	int __user *clear_child_tid;		/* CLONE_CHILD_CLEARTID */
 
 	/**
-	 * ���̵�ʵʱ���ȼ���
+	 * 进程的实时优先级。
 	 */
 	unsigned long rt_priority;
 	/**
-	 * ��������ֵ�����û�̬�Ķ�ʱ��������ʱ������ʱ�������û�̬���̷����źš�
-	 * ÿһ��ֵ�ֱ����������ź�֮���Խ���Ϊ��λ�ļ��������ʱ���ĵ�ǰֵ��
+	 * 以下三对值用于用户态的定时器。当定时器到期时，会向用户态进程发送信号。
+	 * 每一对值分别存放了两个信号之间以节拍为单位的间隔，及定时器的当前值。
 	 */
 	unsigned long it_real_value, it_real_incr;
 	cputime_t it_virt_value, it_virt_incr;
 	cputime_t it_prof_value, it_prof_incr;
 	/**
-	 * ÿ�����̵Ķ�̬��ʱ��������ʵ��ITIMER_REAL���͵ļ����ʱ����
-	 * ��settimerϵͳ���ó�ʼ����
+	 * 每个进程的动态定时器。用于实现ITIMER_REAL类型的间隔定时器。
+	 * 由settimer系统调用初始化。
 	 */
 	struct timer_list real_timer;
 	/**
-	 * �������û�̬���ں�̬�¾����Ľ�����
+	 * 进程在用户态和内核态下经过的节拍数
 	 */
 	cputime_t utime, stime;
 	unsigned long nvcsw, nivcsw; /* context switch counts */
@@ -998,9 +998,9 @@ struct task_struct {
 	char comm[TASK_COMM_LEN];
 /* file system info */
 	/**
-	 * �ļ�ϵͳ�ڲ���·��ʱʹ�ã�����������Ӳ�����ȹ��������ѭ����
-	 * link_count��__do_follow_link�ݹ���õĲ�Ρ�
-	 * total_link_count����__do_follow_link���ܴ�����
+	 * 文件系统在查找路径时使用，避免符号链接查找深度过深，导致死循环。
+	 * link_count是__do_follow_link递归调用的层次。
+	 * total_link_count调用__do_follow_link的总次数。
 	 */
 	int link_count, total_link_count;
 /* ipc stuff */
@@ -1009,50 +1009,50 @@ struct task_struct {
 	struct thread_struct thread;
 /* filesystem information */
 	/**
-	 * ���ļ�ϵͳ��ص���Ϣ���統ǰĿ¼��
+	 * 与文件系统相关的信息。如当前目录。
 	 */
 	struct fs_struct *fs;
 /* open file information */
 	/**
-	 * ָ���ļ���������ָ��
+	 * 指向文件描述符的指针
 	 */
 	struct files_struct *files;
 /* namespace */
 	struct namespace *namespace;
 /* signal handlers */
 	/**
-	 * ָ����̵��ź���������ָ��
+	 * 指向进程的信号描述符的指针
 	 */
 	struct signal_struct *signal;
 	/**
-	 * ָ����̵��źŴ���������������ָ��
+	 * 指向进程的信号处理程序描述符的指针
 	 */
 	struct sighand_struct *sighand;
 
 	/**
-	 * blocked-���������źŵ�����
-	 * real_blocked-�������źŵ���ʱ���루��rt_sigtimedwaitϵͳ����ʹ�ã�
+	 * blocked-被阻塞的信号的掩码
+	 * real_blocked-被阻塞信号的临时掩码（由rt_sigtimedwait系统调用使用）
 	 */
 	sigset_t blocked, real_blocked;
 	/**
-	 * ���˽�й����źŵ����ݽṹ
+	 * 存放私有挂起信号的数据结构
 	 */
 	struct sigpending pending;
 
 	/**
-	 * �źŴ��������ö�ջ�ĵ�ַ
+	 * 信号处理程序备用堆栈的地址
 	 */
 	unsigned long sas_ss_sp;
 	/**
-	 * �źŴ��������ö�ջ�Ĵ�С
+	 * 信号处理程序备用堆栈的大小
 	 */
 	size_t sas_ss_size;
 	/**
-	 * ָ��һ��������ָ�룬�豸��������ʹ����������������̵�ĳЩ�ź�
+	 * 指向一个函数的指针，设备驱动程序使用这个函数阻塞进程的某些信号
 	 */
 	int (*notifier)(void *priv);
 	/**
-	 * ָ��notifier��������ʹ�õ�����
+	 * 指向notifier函数可能使用的数据
 	 */
 	void *notifier_data;
 	sigset_t *notifier_mask;
@@ -1072,8 +1072,8 @@ struct task_struct {
 
 /* journalling filesystem info */
 	/**
-	 * ��ǰ���־���������ĵ�ַ��
-	 * ����ʹ�õ�ԭ�Ӳ�������
+	 * 当前活动日志操作处理的地址。
+	 * 正在使用的原子操作对象。
 	 */
 	void *journal_info;
 
@@ -1140,11 +1140,11 @@ do { if (atomic_dec_and_test(&(tsk)->usage)) __put_task_struct(tsk); } while(0)
 #define PF_EXITING	0x00000004	/* getting shut down */
 #define PF_DEAD		0x00000008	/* Dead */
 /**
- * ���̻�û�з�����execveϵͳ����
+ * 进程还没有发出过execve系统调用
  */
 #define PF_FORKNOEXEC	0x00000040	/* forked but didn't exec */
 /**
- * �����Ƿ�ʹ����ĳ�ֳ����û�Ȩ��
+ * 进程是否使用了某种超级用户权限
  */
 #define PF_SUPERPRIV	0x00000100	/* used super-user privileges */
 #define PF_DUMPCORE	0x00000200	/* dumped core */
@@ -1161,7 +1161,7 @@ do { if (atomic_dec_and_test(&(tsk)->usage)) __put_task_struct(tsk); } while(0)
 #define PF_FSTRANS	0x00020000	/* inside a filesystem transaction */
 #define PF_KSWAPD	0x00040000	/* I am kswapd */
 /**
- * ���øñ�־λ����ҳ�����ز���ʱ��OOM����select_bad_process��ǿ��ѡ��ɾ���ý��̡�
+ * 设置该标志位后，在页框严重不足时，OOM调用select_bad_process会强制选择将删除该进程。
  */
 #define PF_SWAPOFF	0x00080000	/* I am in swapoff */
 #define PF_LESS_THROTTLE 0x00100000	/* Throttle me less: I clean memory */
@@ -1236,7 +1236,7 @@ void yield(void);
 extern struct exec_domain	default_exec_domain;
 
 /**
- * �ں�ջ��thread_info�������塣
+ * 内核栈与thread_info的联合体。
  */
 union thread_union {
 	struct thread_info thread_info;
@@ -1359,7 +1359,7 @@ static inline int sas_ss_flags(unsigned long sp)
 extern int capable(int cap);
 #else
 /**
- * ��鵱ǰ�����Ƿ���ĳ��Ȩ��
+ * 检查当前进程是否有某种权能
  */
 static inline int capable(int cap)
 {
@@ -1428,7 +1428,7 @@ extern void wait_task_inactive(task_t * p);
 #define add_parent(p, parent)	list_add_tail(&(p)->sibling,&(parent)->children)
 
 /**
- * �����̴�������ɾ����
+ * 将进程从链表中删除。
  */
 #define REMOVE_LINKS(p) do {					\
 	if (thread_group_leader(p))				\
@@ -1437,7 +1437,7 @@ extern void wait_task_inactive(task_t * p);
 	} while (0)
 
 /**
- * �����̲��뵽���������С�
+ * 将进程插入到进程链表中。
  */
 #define SET_LINKS(p) do {					\
 	if (thread_group_leader(p))				\
@@ -1532,8 +1532,8 @@ static inline void clear_tsk_need_resched(struct task_struct *tsk)
 }
 
 /**
- * �����������������ʾ�Ľ����з������Ĺ����źţ��ͷ���1�����򷵻�0��
- * �ú���ֻ��ͨ�������̵�TIF_SIGPENDING��־��
+ * 如果进程描述符所表示的进程有非阻塞的挂起信号，就返回1。否则返回0。
+ * 该函数只是通过检查进程的TIF_SIGPENDING标志。
  */
 static inline int signal_pending(struct task_struct *p)
 {

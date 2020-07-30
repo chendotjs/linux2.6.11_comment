@@ -25,7 +25,7 @@
  *
  * FIXME: write proper description
  */
-/* ¼ì²â·¢ËÍ»º³åÇøµÄ´óÐ¡£¬Èç¹û¿ÉÓÃÔò»½ÐÑµÈ´ýµÄÏß³Ì */
+/* æ£€æµ‹å‘é€ç¼“å†²åŒºçš„å¤§å°ï¼Œå¦‚æžœå¯ç”¨åˆ™å”¤é†’ç­‰å¾…çš„çº¿ç¨‹ */
 void sk_stream_write_space(struct sock *sk)
 {
 	struct socket *sock = sk->sk_socket;
@@ -111,7 +111,7 @@ EXPORT_SYMBOL(sk_stream_wait_close);
  * @sk - socket to wait for memory
  * @timeo_p - for how long
  */
-/* ·¢ËÍÊý¾ÝÊ±£¬Èç¹û·ÖÅä»º´æÇøÊ§°Ü£¬Ôòµ÷ÓÃ´Ëº¯Êý½øÐÐµÈ´ý */
+/* å‘é€æ•°æ®æ—¶ï¼Œå¦‚æžœåˆ†é…ç¼“å­˜åŒºå¤±è´¥ï¼Œåˆ™è°ƒç”¨æ­¤å‡½æ•°è¿›è¡Œç­‰å¾… */
 int sk_stream_wait_memory(struct sock *sk, long *timeo_p)
 {
 	int err = 0;
@@ -171,14 +171,14 @@ do_interrupted:
 EXPORT_SYMBOL(sk_stream_wait_memory);
 
 /**
- * µ±ÊÍ·ÅÓëTCPÏà¹ØµÄ½ÓÊÕ±¨ÎÄÊ±£¬»Øµ÷´Ëº¯Êý¡£
+ * å½“é‡Šæ”¾ä¸ŽTCPç›¸å…³çš„æŽ¥æ”¶æŠ¥æ–‡æ—¶ï¼Œå›žè°ƒæ­¤å‡½æ•°ã€‚
  */
 void sk_stream_rfree(struct sk_buff *skb)
 {
 	struct sock *sk = skb->sk;
 
-	atomic_sub(skb->truesize, &sk->sk_rmem_alloc);/* ¼õÉÙ½ÓÊÕ»º´æ×ÜÊý */
-	sk->sk_forward_alloc += skb->truesize;/* Ôö¼ÓÔ¤·ÖÅä×ÜÊý */
+	atomic_sub(skb->truesize, &sk->sk_rmem_alloc);/* å‡å°‘æŽ¥æ”¶ç¼“å­˜æ€»æ•° */
+	sk->sk_forward_alloc += skb->truesize;/* å¢žåŠ é¢„åˆ†é…æ€»æ•° */
 }
 
 EXPORT_SYMBOL(sk_stream_rfree);
@@ -198,10 +198,10 @@ void __sk_stream_mem_reclaim(struct sock *sk)
 {
 	if (sk->sk_forward_alloc >= SK_STREAM_MEM_QUANTUM) {
 		atomic_sub(sk->sk_forward_alloc / SK_STREAM_MEM_QUANTUM,
-			   sk->sk_prot->memory_allocated);/* ½«Ô¤·ÖÅä»º´æ¹é»¹ºó£¬ÐèÒª¼õÉÙÒ³Ãæ·ÖÅä¼ÆÊý */
+			   sk->sk_prot->memory_allocated);/* å°†é¢„åˆ†é…ç¼“å­˜å½’è¿˜åŽï¼Œéœ€è¦å‡å°‘é¡µé¢åˆ†é…è®¡æ•° */
 		sk->sk_forward_alloc &= SK_STREAM_MEM_QUANTUM - 1;
-		if (*sk->sk_prot->memory_pressure &&/* Ä¿Ç°ÒÑ¾­½øÈë¸æ¾¯×´Ì¬ */
-		    (atomic_read(sk->sk_prot->memory_allocated) </* ÒÑ¾­·ÖÅäµÄÄÚ´æµÍÓÚ¸æ¾¯Ïß£¬ÍË³ö¸æ¾¯×´Ì¬ */
+		if (*sk->sk_prot->memory_pressure &&/* ç›®å‰å·²ç»è¿›å…¥å‘Šè­¦çŠ¶æ€ */
+		    (atomic_read(sk->sk_prot->memory_allocated) </* å·²ç»åˆ†é…çš„å†…å­˜ä½ŽäºŽå‘Šè­¦çº¿ï¼Œé€€å‡ºå‘Šè­¦çŠ¶æ€ */
 		     sk->sk_prot->sysctl_mem[0]))
 			*sk->sk_prot->memory_pressure = 0;
 	}
@@ -209,18 +209,18 @@ void __sk_stream_mem_reclaim(struct sock *sk)
 
 EXPORT_SYMBOL(__sk_stream_mem_reclaim);
 
-/* È·ÈÏÌ×½Ó¿ÚÊÇ·ñÄÜ¹»·ÖÅäÌØ¶¨³¤¶ÈµÄ»º´æ */
+/* ç¡®è®¤å¥—æŽ¥å£æ˜¯å¦èƒ½å¤Ÿåˆ†é…ç‰¹å®šé•¿åº¦çš„ç¼“å­˜ */
 int sk_stream_mem_schedule(struct sock *sk, int size, int kind)
 {
-	/* ½«³¤¶È×ª»¯ÎªÒ³ÃæÊý */
+	/* å°†é•¿åº¦è½¬åŒ–ä¸ºé¡µé¢æ•° */
 	int amt = sk_stream_pages(size);
 
-	/* µ÷ÕûÔ¤·ÖÅäÁ¿£¬¼°×Ü·ÖÅäÁ¿ */
+	/* è°ƒæ•´é¢„åˆ†é…é‡ï¼ŒåŠæ€»åˆ†é…é‡ */
 	sk->sk_forward_alloc += amt * SK_STREAM_MEM_QUANTUM;
 	atomic_add(amt, sk->sk_prot->memory_allocated);
 
 	/* Under limit. */
-	/* ÒÑ·ÖÅäÄÚ´æµÍÓÚµÍË®Æ½Ïß£¬È¡Ïû¸æ¾¯×´Ì¬ */
+	/* å·²åˆ†é…å†…å­˜ä½ŽäºŽä½Žæ°´å¹³çº¿ï¼Œå–æ¶ˆå‘Šè­¦çŠ¶æ€ */
 	if (atomic_read(sk->sk_prot->memory_allocated) < sk->sk_prot->sysctl_mem[0]) {
 		if (*sk->sk_prot->memory_pressure)
 			*sk->sk_prot->memory_pressure = 0;
@@ -228,35 +228,35 @@ int sk_stream_mem_schedule(struct sock *sk, int size, int kind)
 	}
 
 	/* Over hard limit. */
-	/* ³¬¹ý¸æ¾¯ÏÞÖÆ£¬½øÈë¸æ¾¯´¦Àí */
+	/* è¶…è¿‡å‘Šè­¦é™åˆ¶ï¼Œè¿›å…¥å‘Šè­¦å¤„ç† */
 	if (atomic_read(sk->sk_prot->memory_allocated) > sk->sk_prot->sysctl_mem[2]) {
 		sk->sk_prot->enter_memory_pressure();
 		goto suppress_allocation;
 	}
 
 	/* Under pressure. */
-	/* ¸ßÓÚ¸æ¾¯Ïß£¬µ«ÊÇµÍÓÚÓ²ÐÔÏÞÖÆÏß£¬Ôò½øÈë¸æ¾¯´¦Àí */
+	/* é«˜äºŽå‘Šè­¦çº¿ï¼Œä½†æ˜¯ä½ŽäºŽç¡¬æ€§é™åˆ¶çº¿ï¼Œåˆ™è¿›å…¥å‘Šè­¦å¤„ç† */
 	if (atomic_read(sk->sk_prot->memory_allocated) > sk->sk_prot->sysctl_mem[1])
 		sk->sk_prot->enter_memory_pressure();
 
-	if (kind) {/* Èç¹û´ýÈ·ÈÏµÄÊÇ½ÓÊÕ»º´æ */
-		/* ½ÓÊÕ¶ÓÁÐÖÐµÄÊý¾Ý×Ü³¤¶ÈÐ¡ÓÚ½ÓÊÕ»º´æ²¿ÇøµÄ³¤¶ÈÉÏÏÞ£¬Ôò·µ»Ø³É¹¦ */
+	if (kind) {/* å¦‚æžœå¾…ç¡®è®¤çš„æ˜¯æŽ¥æ”¶ç¼“å­˜ */
+		/* æŽ¥æ”¶é˜Ÿåˆ—ä¸­çš„æ•°æ®æ€»é•¿åº¦å°äºŽæŽ¥æ”¶ç¼“å­˜éƒ¨åŒºçš„é•¿åº¦ä¸Šé™ï¼Œåˆ™è¿”å›žæˆåŠŸ */
 		if (atomic_read(&sk->sk_rmem_alloc) < sk->sk_prot->sysctl_rmem[0])
 			return 1;
-	} else if (sk->sk_wmem_queued < sk->sk_prot->sysctl_wmem[0])/* Èç¹û·¢ËÍ»º´æ×Ü³¤¶ÈÐ¡ÓÚÉÏÏÞ£¬Ò²·µ»Ø³É¹¦ */
+	} else if (sk->sk_wmem_queued < sk->sk_prot->sysctl_wmem[0])/* å¦‚æžœå‘é€ç¼“å­˜æ€»é•¿åº¦å°äºŽä¸Šé™ï¼Œä¹Ÿè¿”å›žæˆåŠŸ */
 		return 1;
 
-	if (!*sk->sk_prot->memory_pressure ||/* Ã»ÓÐ½øÈë¸æ¾¯×´Ì¬ */
+	if (!*sk->sk_prot->memory_pressure ||/* æ²¡æœ‰è¿›å…¥å‘Šè­¦çŠ¶æ€ */
 	    sk->sk_prot->sysctl_mem[2] > atomic_read(sk->sk_prot->sockets_allocated) *
 				sk_stream_pages(sk->sk_wmem_queued +
 						atomic_read(&sk->sk_rmem_alloc) +
-						sk->sk_forward_alloc))/* »òÕß×ÜÊý¾Ý³¤¶ÈÐ¡ÓÚÓ²ÐÔÏÞÖÆÏß£¬Ò²·µ»Ø³É¹¦ */
+						sk->sk_forward_alloc))/* æˆ–è€…æ€»æ•°æ®é•¿åº¦å°äºŽç¡¬æ€§é™åˆ¶çº¿ï¼Œä¹Ÿè¿”å›žæˆåŠŸ */
 		return 1;
 
 suppress_allocation:
 
-	if (!kind) {/* È·ÈÏµÄÊÇ·¢ËÍ»º´æ */
-		/* ËõÐ¡·¢ËÍ»º³åÇøµÄÔ¤·ÖÅä´óÐ¡ÎªÒÑ¾­·ÖÅäµÄ»º³å¶ÓÁÐ´óÐ¡µÄÒ»°ë */
+	if (!kind) {/* ç¡®è®¤çš„æ˜¯å‘é€ç¼“å­˜ */
+		/* ç¼©å°å‘é€ç¼“å†²åŒºçš„é¢„åˆ†é…å¤§å°ä¸ºå·²ç»åˆ†é…çš„ç¼“å†²é˜Ÿåˆ—å¤§å°çš„ä¸€åŠ */
 		sk_stream_moderate_sndbuf(sk);
 
 		/* Fail only if socket is _under_ its sndbuf.
@@ -267,7 +267,7 @@ suppress_allocation:
 	}
 
 	/* Alas. Undo changes. */
-	/* ÎÞ·¨Í¨¹ýÈ·ÈÏ£¬»Ö¸´Ô¤·ÖÅäÖµ */
+	/* æ— æ³•é€šè¿‡ç¡®è®¤ï¼Œæ¢å¤é¢„åˆ†é…å€¼ */
 	sk->sk_forward_alloc -= amt * SK_STREAM_MEM_QUANTUM;
 	atomic_sub(amt, sk->sk_prot->memory_allocated);
 	return 0;

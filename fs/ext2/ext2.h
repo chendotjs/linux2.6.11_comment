@@ -5,11 +5,11 @@
  * second extended file system inode data in memory
  */
 /**
- * ÄÚ´æÖĞµÄext2Ë÷Òı½Úµã
+ * å†…å­˜ä¸­çš„ext2ç´¢å¼•èŠ‚ç‚¹
  */
 struct ext2_inode_info {
 	/**
-	 * ´ÅÅÌË÷Òı½ÚµãÖĞµÄ´ó²¿·ÖĞÅÏ¢¡£
+	 * ç£ç›˜ç´¢å¼•èŠ‚ç‚¹ä¸­çš„å¤§éƒ¨åˆ†ä¿¡æ¯ã€‚
 	 */
 	__le32	i_data[15];
 	__u32	i_flags;
@@ -20,7 +20,7 @@ struct ext2_inode_info {
 	__u32	i_file_acl;
 	__u32	i_dir_acl;
 	/**
-	 * É¾³ıÊ±¼ä¡£
+	 * åˆ é™¤æ—¶é—´ã€‚
 	 */
 	__u32	i_dtime;
 
@@ -32,7 +32,7 @@ struct ext2_inode_info {
 	 * near to their parent directory's inode.
 	 */
 	/**
-	 * °üº¬Õâ¸öË÷Òı½ÚµãµÄ¿é×éË÷Òı¡£
+	 * åŒ…å«è¿™ä¸ªç´¢å¼•èŠ‚ç‚¹çš„å—ç»„ç´¢å¼•ã€‚
 	 */
 	__u32	i_block_group;
 
@@ -42,7 +42,7 @@ struct ext2_inode_info {
 	 * We use this for detecting linearly ascending allocation requests.
 	 */
 	/**
-	 * ×î½üÎªÎÄ¼ş·ÖÅäµÄ´ÅÅÌ¿éµÄÂß¼­¿éºÅ¡£
+	 * æœ€è¿‘ä¸ºæ–‡ä»¶åˆ†é…çš„ç£ç›˜å—çš„é€»è¾‘å—å·ã€‚
 	 */
 	__u32	i_next_alloc_block;
 
@@ -53,11 +53,11 @@ struct ext2_inode_info {
 	 * allocation when we detect linearly ascending requests.
 	 */
 	/**
-	 * ×î½üÎªÎÄ¼ş·ÖÅäµÄÎïÀí¿éºÅ¡£
+	 * æœ€è¿‘ä¸ºæ–‡ä»¶åˆ†é…çš„ç‰©ç†å—å·ã€‚
 	 */
 	__u32	i_next_alloc_goal;
 	/**
-	 * ÓÃÓÚÊı¾İ¿éÔ¤·ÖÅä¡£
+	 * ç”¨äºæ•°æ®å—é¢„åˆ†é…ã€‚
 	 */
 	__u32	i_prealloc_block;
 	__u32	i_prealloc_count;
@@ -71,20 +71,20 @@ struct ext2_inode_info {
 	 * EAs.
 	 */
 	/**
-	 * ÔÊĞíÔöÇ¿ÊôĞÔÓëÎÄ¼şÊı¾İÍ¬Ê±¶ÁÈëµÄĞÅºÅºÅ¡£
+	 * å…è®¸å¢å¼ºå±æ€§ä¸æ–‡ä»¶æ•°æ®åŒæ—¶è¯»å…¥çš„ä¿¡å·å·ã€‚
 	 */
 	struct rw_semaphore xattr_sem;
 #endif
 #ifdef CONFIG_EXT2_FS_POSIX_ACL
 	/**
-	 * Ö¸ÏòÎÄ¼şµÄ·ÃÎÊ¿ØÖÆÁĞ±í¡£
+	 * æŒ‡å‘æ–‡ä»¶çš„è®¿é—®æ§åˆ¶åˆ—è¡¨ã€‚
 	 */
 	struct posix_acl	*i_acl;
 	struct posix_acl	*i_default_acl;
 #endif
 	rwlock_t i_meta_lock;
 	/**
-	 * VFSË÷Òı½Úµã¶ÔÏó¡£
+	 * VFSç´¢å¼•èŠ‚ç‚¹å¯¹è±¡ã€‚
 	 */
 	struct inode	vfs_inode;
 };

@@ -40,9 +40,9 @@
  * There is no point in duplicating all that complexity.
  */
 /**
- * mpage_readpageµÄbioµÄÍê³É·½·¨¡£µ±IOÊı¾İ´«ÊäÍê³ÉÊ±£¬µ÷ÓÃËü¡£
- * Èç¹ûÃ»ÓĞIO´íÎó£¬ÔòÉèÖÃÒ³ÃèÊö·ûµÄPG_uptodate£¬µ÷ÓÃunlock_pageÀ´½âËøÒ³Ãæ£¬²¢»½ĞÑµÈ´ı¸ÃÊÂ¼şµÄ½ø³Ì¡£
- * ×îºóµ÷ÓÃbio_putÀ´Çå³ıbioÃèÊö·û¡£
+ * mpage_readpageçš„bioçš„å®Œæˆæ–¹æ³•ã€‚å½“IOæ•°æ®ä¼ è¾“å®Œæˆæ—¶ï¼Œè°ƒç”¨å®ƒã€‚
+ * å¦‚æœæ²¡æœ‰IOé”™è¯¯ï¼Œåˆ™è®¾ç½®é¡µæè¿°ç¬¦çš„PG_uptodateï¼Œè°ƒç”¨unlock_pageæ¥è§£é”é¡µé¢ï¼Œå¹¶å”¤é†’ç­‰å¾…è¯¥äº‹ä»¶çš„è¿›ç¨‹ã€‚
+ * æœ€åè°ƒç”¨bio_putæ¥æ¸…é™¤bioæè¿°ç¬¦ã€‚
  */
 static int mpage_end_io_read(struct bio *bio, unsigned int bytes_done, int err)
 {
@@ -211,7 +211,7 @@ map_buffer_to_page(struct page *page, struct buffer_head *bh, int page_block)
  * This all causes the disk requests to be issued in the correct order.
  */
 /**
- * ¶Ô´ó¶àÊıÎÄ¼şÀ´Ëµ£¬±¾º¯ÊıÊÇÆäreadpageµÄÊµÏÖ·½·¨¡£
+ * å¯¹å¤§å¤šæ•°æ–‡ä»¶æ¥è¯´ï¼Œæœ¬å‡½æ•°æ˜¯å…¶readpageçš„å®ç°æ–¹æ³•ã€‚
  */
 static struct bio *
 do_mpage_readpage(struct bio *bio, struct page *page, unsigned nr_pages,
@@ -220,11 +220,11 @@ do_mpage_readpage(struct bio *bio, struct page *page, unsigned nr_pages,
 	struct inode *inode = page->mapping->host;
 
 	/**
-	 * µÃµ½¿éµÄ´óĞ¡
+	 * å¾—åˆ°å—çš„å¤§å°
 	 */
 	const unsigned blkbits = inode->i_blkbits;
 	/**
-	 * Ò³ÖĞµÄ¿éÊı
+	 * é¡µä¸­çš„å—æ•°
 	 */
 	const unsigned blocks_per_page = PAGE_CACHE_SIZE >> blkbits;
 	const unsigned blocksize = 1 << blkbits;
@@ -239,14 +239,14 @@ do_mpage_readpage(struct bio *bio, struct page *page, unsigned nr_pages,
 	int fully_mapped = 1;
 
 	/**
-	 * ¼ì²épageµÄPG_private±êÖ¾£¬Èç¹û¸Ã±êÖ¾±»ÖÃÎ»£¬ÄÇÃ´±íÊ¾¸ÃÒ³ÒÑ¾­´Ó´ÅÅÌÉÏ¶ÁÈë¹ı£¬¶øÇÒÒ³ÖĞµÄ¿éÔÚ´ÅÅÌÉÏ²»ÊÇÏàÁÚµÄ¡£
-	 * Òò´ËÒÔÒ»´Î¶ÁÒ»¿éµÄ·½Ê½¶ÁÈ¡¸ÃÒ³¡£
+	 * æ£€æŸ¥pageçš„PG_privateæ ‡å¿—ï¼Œå¦‚æœè¯¥æ ‡å¿—è¢«ç½®ä½ï¼Œé‚£ä¹ˆè¡¨ç¤ºè¯¥é¡µå·²ç»ä»ç£ç›˜ä¸Šè¯»å…¥è¿‡ï¼Œè€Œä¸”é¡µä¸­çš„å—åœ¨ç£ç›˜ä¸Šä¸æ˜¯ç›¸é‚»çš„ã€‚
+	 * å› æ­¤ä»¥ä¸€æ¬¡è¯»ä¸€å—çš„æ–¹å¼è¯»å–è¯¥é¡µã€‚
 	 */
 	if (page_has_buffers(page))
 		goto confused;
 
 	/**
-	 * Ò³ÖĞµÚÒ»¿éµÄÎÄ¼ş¿éºÅ¡£
+	 * é¡µä¸­ç¬¬ä¸€å—çš„æ–‡ä»¶å—å·ã€‚
 	 */
 	block_in_file = page->index << (PAGE_CACHE_SHIFT - blkbits);
 	last_block = (i_size_read(inode) + blocksize - 1) >> blkbits;
@@ -257,8 +257,8 @@ do_mpage_readpage(struct bio *bio, struct page *page, unsigned nr_pages,
 		bh.b_state = 0;
 		if (block_in_file < last_block) {
 			/**
-			 * µ÷ÓÃget_blockµÃµ½Âß¼­¿éºÅ£¬¼´Ïà¶ÔÓÚ´ÅÅÌ»ò·ÖÇø¿ªÊ¼Î»ÖÃµÄ¿éË÷Òı¡£
-			 * Ò³ÖĞÃ¿Ò»¿éµÄÂß¼­ºÅ´æ·ÅÔÚÒ»¸ö±¾µØÊı¾İÖĞ¡£
+			 * è°ƒç”¨get_blockå¾—åˆ°é€»è¾‘å—å·ï¼Œå³ç›¸å¯¹äºç£ç›˜æˆ–åˆ†åŒºå¼€å§‹ä½ç½®çš„å—ç´¢å¼•ã€‚
+			 * é¡µä¸­æ¯ä¸€å—çš„é€»è¾‘å·å­˜æ”¾åœ¨ä¸€ä¸ªæœ¬åœ°æ•°æ®ä¸­ã€‚
 			 */
 			if (get_block(inode, block_in_file, &bh, 0))
 				goto confused;
@@ -266,9 +266,9 @@ do_mpage_readpage(struct bio *bio, struct page *page, unsigned nr_pages,
 
 
 		/**
-		 * µ±·¢ÉúÒÔÏÂÒì³£Çé¿öÊ±£¬²ÉÓÃÒ»´Î¶ÁÈ¡Ò»¿éµÄ·½Ê½¶Á¸ÃÒ³:
-		 *     Ò»Ğ©¿éÔÚ´ÅÅÌÉÏ²»ÏàÁÚ¡£
-		 *     Ä³Ğ©¿éÔÚÎÄ¼ş¶´ÖĞ¡£
+		 * å½“å‘ç”Ÿä»¥ä¸‹å¼‚å¸¸æƒ…å†µæ—¶ï¼Œé‡‡ç”¨ä¸€æ¬¡è¯»å–ä¸€å—çš„æ–¹å¼è¯»è¯¥é¡µ:
+		 *     ä¸€äº›å—åœ¨ç£ç›˜ä¸Šä¸ç›¸é‚»ã€‚
+		 *     æŸäº›å—åœ¨æ–‡ä»¶æ´ä¸­ã€‚
 		 */
 		if (!buffer_mapped(&bh)) {
 			fully_mapped = 0;
@@ -299,11 +299,11 @@ do_mpage_readpage(struct bio *bio, struct page *page, unsigned nr_pages,
 	}
 
 	/**
-	 * ÔËĞĞµ½´Ë£¬ËµÃ÷Ò³ÖĞµÄËùÓĞ¿éÔÚ´ÅÅÌÉÏÊÇÏàÁÚµÄ¡£
+	 * è¿è¡Œåˆ°æ­¤ï¼Œè¯´æ˜é¡µä¸­çš„æ‰€æœ‰å—åœ¨ç£ç›˜ä¸Šæ˜¯ç›¸é‚»çš„ã€‚
 	 */
 	if (first_hole != blocks_per_page) {
 		/**
-		 * Èç¹ûÒ³ÊÇÎÄ¼şÖĞµÄ×îºóÒ»Ò³£¬Ä³Ğ©¿éÔÚ´ÅÅÌÖĞÃ»ÓĞÓ³Ïñ¡£½«ÏàÓ¦µÄ¿é»º³åÇøÌîÉÏ0.
+		 * å¦‚æœé¡µæ˜¯æ–‡ä»¶ä¸­çš„æœ€åä¸€é¡µï¼ŒæŸäº›å—åœ¨ç£ç›˜ä¸­æ²¡æœ‰æ˜ åƒã€‚å°†ç›¸åº”çš„å—ç¼“å†²åŒºå¡«ä¸Š0.
 		 */
 		char *kaddr = kmap_atomic(page, KM_USER0);
 		memset(kaddr + (first_hole << blkbits), 0,
@@ -317,7 +317,7 @@ do_mpage_readpage(struct bio *bio, struct page *page, unsigned nr_pages,
 		}
 	} else if (fully_mapped) {
 		/**
-		 * ²»ÊÇÎÄ¼şµÄ×îºóÒ»Ò³£¬½«Ò³ÃèÊö·ûµÄ±êÖ¾PG_mappedtodiskÖÃÎ»¡£
+		 * ä¸æ˜¯æ–‡ä»¶çš„æœ€åä¸€é¡µï¼Œå°†é¡µæè¿°ç¬¦çš„æ ‡å¿—PG_mappedtodiskç½®ä½ã€‚
 		 */
 		SetPageMappedToDisk(page);
 	}
@@ -329,7 +329,7 @@ do_mpage_readpage(struct bio *bio, struct page *page, unsigned nr_pages,
 		bio = mpage_bio_submit(READ, bio);
 
 alloc_new:
-	if (bio == NULL) {/* ·ÖÅäÒ»¸öbio£¬²¢³õÊ¼»¯Ëü */
+	if (bio == NULL) {/* åˆ†é…ä¸€ä¸ªbioï¼Œå¹¶åˆå§‹åŒ–å®ƒ */
 		bio = mpage_alloc(bdev, blocks[0] << (blkbits - 9),
 			  	min_t(int, nr_pages, bio_get_nr_vecs(bdev)),
 				GFP_KERNEL);
@@ -344,7 +344,7 @@ alloc_new:
 	}
 
 	/**
-	 * ÏòÇı¶¯Ìá½»bioÇëÇó¡£
+	 * å‘é©±åŠ¨æäº¤bioè¯·æ±‚ã€‚
 	 */
 	if (buffer_boundary(&bh) || (first_hole != blocks_per_page))
 		bio = mpage_bio_submit(READ, bio);
@@ -354,19 +354,19 @@ out:
 	return bio;
 
 /**
- * º¯ÊıÔËĞĞµ½ÕâÀï£¬ÔòÒ³ÖĞº¬ÓĞµÄ¿éÔÚ´ÅÅÌ²»Á¬Ğø¡£
+ * å‡½æ•°è¿è¡Œåˆ°è¿™é‡Œï¼Œåˆ™é¡µä¸­å«æœ‰çš„å—åœ¨ç£ç›˜ä¸è¿ç»­ã€‚
  */
 confused:
 	if (bio)
 		bio = mpage_bio_submit(READ, bio);
 	if (!PageUptodate(page))
 		/**
-		 * Ò³²»ÊÇ×îĞÂµÄ£¬Ôòµ÷ÓÃblock_read_full_pageÒ»´Î¶ÁÒ»¿éµÄ·½Ê½¶Á¸ÃÒ³¡£
+		 * é¡µä¸æ˜¯æœ€æ–°çš„ï¼Œåˆ™è°ƒç”¨block_read_full_pageä¸€æ¬¡è¯»ä¸€å—çš„æ–¹å¼è¯»è¯¥é¡µã€‚
 		 */
 	    block_read_full_page(page, get_block);
 	else
 		/**
-		 * Èç¹ûÒ³ÊÇ×îĞÂµÄ£¬Ôòµ÷ÓÃunlock_pageÀ´¶Ô¸ÃÒ³½âËø¡£
+		 * å¦‚æœé¡µæ˜¯æœ€æ–°çš„ï¼Œåˆ™è°ƒç”¨unlock_pageæ¥å¯¹è¯¥é¡µè§£é”ã€‚
 		 */
 		unlock_page(page);
 	goto out;
@@ -410,17 +410,17 @@ EXPORT_SYMBOL(mpage_readpages);
  * This isn't called much at all
  */
 /**
- * ¶Ô´ó¶àÊıÎÄ¼şÀ´Ëµ£¬Æäaddress_space¶ÔÏóµÄreadpage¶ÔÏóÒ»°ã¶¼ÊÇmpage_readpageµÄ·â×°º¯Êı¡£
+ * å¯¹å¤§å¤šæ•°æ–‡ä»¶æ¥è¯´ï¼Œå…¶address_spaceå¯¹è±¡çš„readpageå¯¹è±¡ä¸€èˆ¬éƒ½æ˜¯mpage_readpageçš„å°è£…å‡½æ•°ã€‚
  */
 int mpage_readpage(struct page *page, get_block_t get_block)
 {
 	struct bio *bio = NULL;
 	sector_t last_block_in_bio = 0;
 
-	/* Ö´ĞĞ¾ßÌåµÄ¹¤×÷ */
+	/* æ‰§è¡Œå…·ä½“çš„å·¥ä½œ */
 	bio = do_mpage_readpage(bio, page, 1,
 			&last_block_in_bio, get_block);
-	if (bio)/* do_mpage_readpage»¹ÓĞÎ´Ìá½»µÄbio£¬ÔÚÕâÀïÌá½»Ëü */
+	if (bio)/* do_mpage_readpageè¿˜æœ‰æœªæäº¤çš„bioï¼Œåœ¨è¿™é‡Œæäº¤å®ƒ */
 		mpage_bio_submit(READ, bio);
 	return 0;
 }
@@ -443,9 +443,9 @@ EXPORT_SYMBOL(mpage_readpage);
  * just allocate full-size (16-page) BIOs.
  */
 /**
- * Ğí¶à·ÇÈÕÖ¾ĞÍÎÄ¼şÏµÍ³ÒÀÀµÓÚmpage_writepage¶ø²»ÊÇ×Ô¶¨ÒåµÄwritepage·½·¨¡£
- * ÕâÑù¿ÉÒÔ¸ÄÉÆĞÔÄÜ£¬ÒòÎªmpage_writepageº¯ÊıÔÚ½øĞĞIO´«ÊäÊ±£¬ÔÚÍ¬Ò»¸öbioÃèÊö·ûÖĞ¾Û¼¯¾¡¿ÉÄÜ¶àµÄÒ³¡£
- * Õâ¾ÍÊ¹µÃ¿éÉè±¸Çı¶¯³ÌĞòÄÜÀûÓÃÏÖ´úÓ²ÅÌ¿ØÖÆÆ÷µÄDMA·ÖÉ¢¡¢¾Û¼¯ÄÜÁ¦¡£
+ * è®¸å¤šéæ—¥å¿—å‹æ–‡ä»¶ç³»ç»Ÿä¾èµ–äºmpage_writepageè€Œä¸æ˜¯è‡ªå®šä¹‰çš„writepageæ–¹æ³•ã€‚
+ * è¿™æ ·å¯ä»¥æ”¹å–„æ€§èƒ½ï¼Œå› ä¸ºmpage_writepageå‡½æ•°åœ¨è¿›è¡ŒIOä¼ è¾“æ—¶ï¼Œåœ¨åŒä¸€ä¸ªbioæè¿°ç¬¦ä¸­èšé›†å°½å¯èƒ½å¤šçš„é¡µã€‚
+ * è¿™å°±ä½¿å¾—å—è®¾å¤‡é©±åŠ¨ç¨‹åºèƒ½åˆ©ç”¨ç°ä»£ç¡¬ç›˜æ§åˆ¶å™¨çš„DMAåˆ†æ•£ã€èšé›†èƒ½åŠ›ã€‚
  */
 static struct bio *
 mpage_writepage(struct bio *bio, struct page *page, get_block_t get_block,
@@ -582,13 +582,13 @@ page_is_mapped:
 		bio = mpage_bio_submit(WRITE, bio);
 
 	/**
-	 * ½«Ò³×·¼ÓÎªbioÃèÊö·ûÖĞµÄÒ»¶Î¡£
+	 * å°†é¡µè¿½åŠ ä¸ºbioæè¿°ç¬¦ä¸­çš„ä¸€æ®µã€‚
 	 */
 alloc_new:
 	/**
-	 * Èç¹û´«ÈëµÄbioÎª¿Õ£¬¾Í³õÊ¼»¯Ò»¸öĞÂµÄbioÃèÊö·ûµØÖ·¡£
-	 * ²¢½«¸ÃÃèÊö·û·µ»Ø¸øµ÷ÓÃº¯Êı£¬µ÷ÓÃº¯ÊıÏÂ´Îµ÷ÓÃmpage_writepageÊ±£¬½«¸ÃÃèÊö·ûÔÙ´Î´«Èë¡£
-	 * ÕâÑù£¬Í¬Ò»¸öbio¿ÉÒÔ¼ÓÔØ¼¸¸öÒ³¡£
+	 * å¦‚æœä¼ å…¥çš„bioä¸ºç©ºï¼Œå°±åˆå§‹åŒ–ä¸€ä¸ªæ–°çš„bioæè¿°ç¬¦åœ°å€ã€‚
+	 * å¹¶å°†è¯¥æè¿°ç¬¦è¿”å›ç»™è°ƒç”¨å‡½æ•°ï¼Œè°ƒç”¨å‡½æ•°ä¸‹æ¬¡è°ƒç”¨mpage_writepageæ—¶ï¼Œå°†è¯¥æè¿°ç¬¦å†æ¬¡ä¼ å…¥ã€‚
+	 * è¿™æ ·ï¼ŒåŒä¸€ä¸ªbioå¯ä»¥åŠ è½½å‡ ä¸ªé¡µã€‚
 	 */
 	if (bio == NULL) {
 		bio = mpage_alloc(bdev, blocks[0] << (blkbits - 9),
@@ -604,8 +604,8 @@ alloc_new:
 	 */
 	length = first_unmapped << blkbits;
 	/**
-	 * Èç¹ûbioÖĞÄ³Ò³ÓëÉÏÒ»¸ö¼ÓÔØÒ³²»ÏàÁÚ£¬Ôòµ÷ÓÃmpage_bio_submit¿ªÊ¼ĞÂµÄIOÊı¾İ´«Êä¡£
-	 * È»ºó·ÖÅäÒ»¸öĞÂµÄbio¡£
+	 * å¦‚æœbioä¸­æŸé¡µä¸ä¸Šä¸€ä¸ªåŠ è½½é¡µä¸ç›¸é‚»ï¼Œåˆ™è°ƒç”¨mpage_bio_submitå¼€å§‹æ–°çš„IOæ•°æ®ä¼ è¾“ã€‚
+	 * ç„¶ååˆ†é…ä¸€ä¸ªæ–°çš„bioã€‚
 	 */
 	if (bio_add_page(bio, page, length, 0) < length) {
 		bio = mpage_bio_submit(WRITE, bio);
@@ -690,8 +690,8 @@ out:
  * existing IO to complete.
  */
 /**
- * ½«ÔàÒ³Ğ´»Ø´ÅÅÌ¡£
- * pdflush¼°Í¬²½Ğ´ĞèÒªµ÷ÓÃ¡£
+ * å°†è„é¡µå†™å›ç£ç›˜ã€‚
+ * pdflushåŠåŒæ­¥å†™éœ€è¦è°ƒç”¨ã€‚
  */
 int
 mpage_writepages(struct address_space *mapping,
@@ -711,7 +711,7 @@ mpage_writepages(struct address_space *mapping,
 	int is_range = 0;
 
 	/**
-	 * ÇëÇó¶ÓÁĞĞ´ÓµÈû£¬²¢ÇÒ½ø³Ì²»Ï£Íû×èÈû£¬¾ÍÖ±½Ó·µ»Ø¡£
+	 * è¯·æ±‚é˜Ÿåˆ—å†™æ‹¥å¡ï¼Œå¹¶ä¸”è¿›ç¨‹ä¸å¸Œæœ›é˜»å¡ï¼Œå°±ç›´æ¥è¿”å›ã€‚
 	 */
 	if (wbc->nonblocking && bdi_write_congested(bdi)) {
 		wbc->encountered_congestion = 1;
@@ -724,14 +724,14 @@ mpage_writepages(struct address_space *mapping,
 
 	pagevec_init(&pvec, 0);
 	/**
-	 * È·¶¨Ê×Ò³¡£Èç¹ûwbcÃèÊö·ûÖ¸¶¨Ïß³ÌÎŞĞèµÈ´ıIOÊı¾İ´«Êä½áÊø£¬Ôò½«mapping->writeback_indexÉèÎª³õÊ¼Ò³Ë÷Òı¡£
-	 * Ò²¾ÍÊÇËµ£¬´ÓÉÏÒ»¸öĞ´»Ø²Ù×÷µÄ×îºóÒ»Ò³¿ªÊ¼É¨Ãè¡£
+	 * ç¡®å®šé¦–é¡µã€‚å¦‚æœwbcæè¿°ç¬¦æŒ‡å®šçº¿ç¨‹æ— éœ€ç­‰å¾…IOæ•°æ®ä¼ è¾“ç»“æŸï¼Œåˆ™å°†mapping->writeback_indexè®¾ä¸ºåˆå§‹é¡µç´¢å¼•ã€‚
+	 * ä¹Ÿå°±æ˜¯è¯´ï¼Œä»ä¸Šä¸€ä¸ªå†™å›æ“ä½œçš„æœ€åä¸€é¡µå¼€å§‹æ‰«æã€‚
 	 */
 	if (wbc->sync_mode == WB_SYNC_NONE) {
 		index = mapping->writeback_index; /* Start from prev offset */
 	} else {
 		/**
-		 * ·ñÔò£¬½ø³Ì±ØĞëµÈ´ıIOÊı¾İ´«ÊäÍê±Ï£¬´ÓÎÄ¼şµÄµÚÒ»Ò³¿ªÊ¼É¨Ãè¡£
+		 * å¦åˆ™ï¼Œè¿›ç¨‹å¿…é¡»ç­‰å¾…IOæ•°æ®ä¼ è¾“å®Œæ¯•ï¼Œä»æ–‡ä»¶çš„ç¬¬ä¸€é¡µå¼€å§‹æ‰«æã€‚
 		 */
 		index = 0;			  /* whole-file sweep */
 		scanned = 1;
@@ -744,7 +744,7 @@ mpage_writepages(struct address_space *mapping,
 	}
 retry:
 	/**
-	 * pagevec_lookup_tag»áµ÷ÓÃfind_get_pages_tagÔÚÒ³¸ßËÙ»º´æÖĞ²éÕÒÔàÒ³ÃèÊö·û¡£
+	 * pagevec_lookup_tagä¼šè°ƒç”¨find_get_pages_tagåœ¨é¡µé«˜é€Ÿç¼“å­˜ä¸­æŸ¥æ‰¾è„é¡µæè¿°ç¬¦ã€‚
 	 */
 	while (!done && (index <= end) &&
 			(nr_pages = pagevec_lookup_tag(&pvec, mapping, &index,
@@ -754,7 +754,7 @@ retry:
 
 		scanned = 1;
 		/**
-		 * ´¦ÀíÕÒµ½µÄÃ¿¸öÔàÒ³¡£
+		 * å¤„ç†æ‰¾åˆ°çš„æ¯ä¸ªè„é¡µã€‚
 		 */
 		for (i = 0; i < nr_pages; i++) {
 			struct page *page = pvec.pages[i];
@@ -767,13 +767,13 @@ retry:
 			 * mapping
 			 */
 			/**
-			 * ÏÈËø×¡ÔàÒ³.
+			 * å…ˆé”ä½è„é¡µ.
 			 */
 			lock_page(page);
 
 			/**
-			 * È·ÈÏÒ³ÊÇÓĞĞ§µÄ£¬²¢ÔÚÒ³¸ßËÙ»º´æÄÚ¡£
-			 * ÕâÊÇÒòÎªÔÚËø×¡Ò³Ö®Ç°£¬ÆäËûÄÚºË´úÂë¿ÉÄÜ²Ù×÷ÁË¸ÃÒ³¡£
+			 * ç¡®è®¤é¡µæ˜¯æœ‰æ•ˆçš„ï¼Œå¹¶åœ¨é¡µé«˜é€Ÿç¼“å­˜å†…ã€‚
+			 * è¿™æ˜¯å› ä¸ºåœ¨é”ä½é¡µä¹‹å‰ï¼Œå…¶ä»–å†…æ ¸ä»£ç å¯èƒ½æ“ä½œäº†è¯¥é¡µã€‚
 			 */
 			if (unlikely(page->mapping != mapping)) {
 				unlock_page(page);
@@ -787,14 +787,14 @@ retry:
 			}
 
 			/**
-			 * ¼ì²éÒ³ÃæPG_writeback±êÖ¾£¬Èç¹ûÖÃÎ»£¬±íÊ¾Ò³ÒÑ¾­±»Ë¢ĞÂµ½´ÅÅÌ¡£
-			 * Èç¹û±ØĞëµÈ´ıIOÊı¾İ´«ÊäÍê±Ï£¬Ôòµ÷ÓÃwait_on_page_bitÔÚPG_writebackÇå0Ö®Ç°Ò»Ö±×èÈûµ±Ç°½ø³Ì¡£
+			 * æ£€æŸ¥é¡µé¢PG_writebackæ ‡å¿—ï¼Œå¦‚æœç½®ä½ï¼Œè¡¨ç¤ºé¡µå·²ç»è¢«åˆ·æ–°åˆ°ç£ç›˜ã€‚
+			 * å¦‚æœå¿…é¡»ç­‰å¾…IOæ•°æ®ä¼ è¾“å®Œæ¯•ï¼Œåˆ™è°ƒç”¨wait_on_page_bitåœ¨PG_writebackæ¸…0ä¹‹å‰ä¸€ç›´é˜»å¡å½“å‰è¿›ç¨‹ã€‚
 			 */
 			if (wbc->sync_mode != WB_SYNC_NONE)
 				wait_on_page_writeback(page);
 
 			/** 
-			 * Èç¹ûPG_writeback±êÖ¾ÖÃÎ»£¬Ôò¼ì²éPG_dirty£¬Èç¹û¸Ã±êÖ¾Îª0£¬ÔòÕıÔÚÔËĞĞµÄĞ´»Ø²Ù×÷½«´¦Àí¸ÃÒ³¡£´¦ÀíÏÂÒ»Ò³¡£
+			 * å¦‚æœPG_writebackæ ‡å¿—ç½®ä½ï¼Œåˆ™æ£€æŸ¥PG_dirtyï¼Œå¦‚æœè¯¥æ ‡å¿—ä¸º0ï¼Œåˆ™æ­£åœ¨è¿è¡Œçš„å†™å›æ“ä½œå°†å¤„ç†è¯¥é¡µã€‚å¤„ç†ä¸‹ä¸€é¡µã€‚
 			 */
 			if (PageWriteback(page) ||
 					!clear_page_dirty_for_io(page)) {
@@ -804,7 +804,7 @@ retry:
 
 			if (writepage) {
 				/**
-				 * get_blockÎªNULL£¬Ôòµ÷ÓÃmapping->writepage·½·¨½«Ò³Ë¢ĞÂµ½´ÅÅÌ¡£
+				 * get_blockä¸ºNULLï¼Œåˆ™è°ƒç”¨mapping->writepageæ–¹æ³•å°†é¡µåˆ·æ–°åˆ°ç£ç›˜ã€‚
 				 */
 				ret = (*writepage)(page, wbc);
 				if (ret) {
@@ -817,7 +817,7 @@ retry:
 				}
 			} else {
 				/**
-				 * get_block²»ÎªNULL,Ôòµ÷ÓÃmpage_writepageË¢ĞÂÒ³Ãæ¡£
+				 * get_blockä¸ä¸ºNULL,åˆ™è°ƒç”¨mpage_writepageåˆ·æ–°é¡µé¢ã€‚
 				 */
 				bio = mpage_writepage(bio, page, get_block,
 						&last_block_in_bio, &ret, wbc);
@@ -831,12 +831,12 @@ retry:
 		}
 		pagevec_release(&pvec);
 		/**
-		 * Ôö¼ÓÒ»¸öµ÷¶Èµã¡£
+		 * å¢åŠ ä¸€ä¸ªè°ƒåº¦ç‚¹ã€‚
 		 */
 		cond_resched();
 	}
 	/**
-	 * Ã»ÓĞÉ¨ÃèÍê¸ø¶¨·¶Î§ÄÚµÄËùÓĞÒ³£¬»òÕßĞ´µ½´ÅÅÌµÄÓĞĞ§Ò³ÊıĞ¡ÓÚwbcÖĞ¸ø¶¨µÄÖµ£¬Ôò¼ÌĞø
+	 * æ²¡æœ‰æ‰«æå®Œç»™å®šèŒƒå›´å†…çš„æ‰€æœ‰é¡µï¼Œæˆ–è€…å†™åˆ°ç£ç›˜çš„æœ‰æ•ˆé¡µæ•°å°äºwbcä¸­ç»™å®šçš„å€¼ï¼Œåˆ™ç»§ç»­
 	 */
 	if (!scanned && !done) {
 		/*
@@ -848,12 +848,12 @@ retry:
 		goto retry;
 	}
 	/**
-	 * Èç¹ûwbcÖĞÃ»ÓĞ¸ø¶¨ÎÄ¼şÄÚµÄ³õÊ¼Î»ÖÃ£¬Ôò½«×îºóÒ»¸öÉ¨ÃèµÄÒ³¸³¸ømapping->writeback_index
+	 * å¦‚æœwbcä¸­æ²¡æœ‰ç»™å®šæ–‡ä»¶å†…çš„åˆå§‹ä½ç½®ï¼Œåˆ™å°†æœ€åä¸€ä¸ªæ‰«æçš„é¡µèµ‹ç»™mapping->writeback_index
 	 */
 	if (!is_range)
 		mapping->writeback_index = index;
 	/**
-	 * Èç¹ûÔø¾­µ÷ÓÃ¹ımpage_writepageº¯Êı£¬¶øÇÒ·µ»ØÁËbioÃèÊö·ûµØÖ·£¬Ôòµ÷ÓÃmpage_bio_submit
+	 * å¦‚æœæ›¾ç»è°ƒç”¨è¿‡mpage_writepageå‡½æ•°ï¼Œè€Œä¸”è¿”å›äº†bioæè¿°ç¬¦åœ°å€ï¼Œåˆ™è°ƒç”¨mpage_bio_submit
 	 */
 	if (bio)
 		mpage_bio_submit(WRITE, bio);

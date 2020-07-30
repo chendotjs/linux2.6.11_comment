@@ -61,10 +61,10 @@ void usb_init_urb(struct urb *urb)
  * The driver must call usb_free_urb() when it is finished with the urb.
  */
 /**
- * ´´½¨urb¡£
- * ²»ÄÜÊ¹ÓÃ¾²Ì¬±äÁ¿£¬ÕâÑù»áÆÆ»µUSBºËĞÄ¶ÔurbËùÊ¹ÓÃµÄ¼ÆÊı¡£
- *		iso_packets:		µÈÊ±Êı¾İ°üµÄÊıÁ¿¡£Èç¹û²»´´½¨µÈÊ±urb£¬Ôò´ËÖµÎª0¡£
- *		mem_flag:			·ÖÅäÄÚ´æÊ±Ê¹ÓÃµÄ±êÖ¾¡£
+ * åˆ›å»ºurbã€‚
+ * ä¸èƒ½ä½¿ç”¨é™æ€å˜é‡ï¼Œè¿™æ ·ä¼šç ´åUSBæ ¸å¿ƒå¯¹urbæ‰€ä½¿ç”¨çš„è®¡æ•°ã€‚
+ *		iso_packets:		ç­‰æ—¶æ•°æ®åŒ…çš„æ•°é‡ã€‚å¦‚æœä¸åˆ›å»ºç­‰æ—¶urbï¼Œåˆ™æ­¤å€¼ä¸º0ã€‚
+ *		mem_flag:			åˆ†é…å†…å­˜æ—¶ä½¿ç”¨çš„æ ‡å¿—ã€‚
  */
 struct urb *usb_alloc_urb(int iso_packets, int mem_flags)
 {
@@ -92,7 +92,7 @@ struct urb *usb_alloc_urb(int iso_packets, int mem_flags)
  * done elsewhere.
  */
 /**
- * Ïú»Ùurb¡£
+ * é”€æ¯urbã€‚
  */
 void usb_free_urb(struct urb *urb)
 {
@@ -234,9 +234,9 @@ struct urb * usb_get_urb(struct urb *urb)
  *
  */
 /**
- * Ìá½»urbµ½USBºËĞÄ¡£½«Æä·¢ËÍµ½USBÉè±¸¡£
- *		urb:		¼´½«±»Ìá½»µÄurbÖ¸Õë¡£
- *		mem_flags:	¸æËßUSBºËĞÄÈçºÎÔÚ´ËÊ±¼°Ê±µØ·ÖÅäÄÚ´æ»º³åÇø¡£
+ * æäº¤urbåˆ°USBæ ¸å¿ƒã€‚å°†å…¶å‘é€åˆ°USBè®¾å¤‡ã€‚
+ *		urb:		å³å°†è¢«æäº¤çš„urbæŒ‡é’ˆã€‚
+ *		mem_flags:	å‘Šè¯‰USBæ ¸å¿ƒå¦‚ä½•åœ¨æ­¤æ—¶åŠæ—¶åœ°åˆ†é…å†…å­˜ç¼“å†²åŒºã€‚
  */
 int usb_submit_urb(struct urb *urb, int mem_flags)
 {
@@ -460,8 +460,8 @@ int usb_submit_urb(struct urb *urb, int mem_flags)
  * a soft error resulting from a short-packet with URB_SHORT_NOT_OK set.
  */
 /**
- * ÖÕÖ¹Ò»¸öurb£¬µ«ÊÇ²¢²»µÈµ½urbÍêÈ«±»ÖÕÖ¹Ö®ºó²Å·µ»Øµ½µ÷ÓÃº¯Êı¡£
- * ÔÚÖĞ¶Ïº¯Êı»òÕß³ÖÓĞÒ»¸öurbÊ±ÓĞÓÃ¡£ÒòÎªµÈ´ıÒ»¸öurbÍêÈ«±»ÖÕÖ¹ĞèÒª½øĞĞË¯Ãß¡£
+ * ç»ˆæ­¢ä¸€ä¸ªurbï¼Œä½†æ˜¯å¹¶ä¸ç­‰åˆ°urbå®Œå…¨è¢«ç»ˆæ­¢ä¹‹åæ‰è¿”å›åˆ°è°ƒç”¨å‡½æ•°ã€‚
+ * åœ¨ä¸­æ–­å‡½æ•°æˆ–è€…æŒæœ‰ä¸€ä¸ªurbæ—¶æœ‰ç”¨ã€‚å› ä¸ºç­‰å¾…ä¸€ä¸ªurbå®Œå…¨è¢«ç»ˆæ­¢éœ€è¦è¿›è¡Œç¡çœ ã€‚
  */
 int usb_unlink_urb(struct urb *urb)
 {
@@ -504,7 +504,7 @@ int usb_unlink_urb(struct urb *urb)
  * situations where the caller can't schedule().
  */
 /**
- * ÖÕÖ¹Ò»¸öÒÑ¾­±»Ìá½»µ½USBºËĞÄµÄurb¡£¸ÃurbµÄÉúÃüÖÜÆÚ±»ÖÕÖ¹¡£Í¨³£ÊÇµ±Éè±¸´ÓÏµÍ³ÖĞ±»¶Ï¿ªÊ±£¬ÔÚ¶Ï¿ª»Øµ÷º¯ÊıÖĞµ÷ÓÃ¸Ãº¯Êı¡£
+ * ç»ˆæ­¢ä¸€ä¸ªå·²ç»è¢«æäº¤åˆ°USBæ ¸å¿ƒçš„urbã€‚è¯¥urbçš„ç”Ÿå‘½å‘¨æœŸè¢«ç»ˆæ­¢ã€‚é€šå¸¸æ˜¯å½“è®¾å¤‡ä»ç³»ç»Ÿä¸­è¢«æ–­å¼€æ—¶ï¼Œåœ¨æ–­å¼€å›è°ƒå‡½æ•°ä¸­è°ƒç”¨è¯¥å‡½æ•°ã€‚
  */
 void usb_kill_urb(struct urb *urb)
 {

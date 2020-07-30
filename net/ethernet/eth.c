@@ -156,7 +156,7 @@ int eth_rebuild_header(struct sk_buff *skb)
  *	This is normal practice and works for any 'now in use' protocol.
  */
 /**
- * ÉèÖÃÒÔÌ«ÍøÖ¡ÀàĞÍ¡¢Ğ­Òé¡¢³¤¶È¡£
+ * è®¾ç½®ä»¥å¤ªç½‘å¸§ç±»å‹ã€åè®®ã€é•¿åº¦ã€‚
  */
 unsigned short eth_type_trans(struct sk_buff *skb, struct net_device *dev)
 {
@@ -166,20 +166,20 @@ unsigned short eth_type_trans(struct sk_buff *skb, struct net_device *dev)
 	skb->mac.raw=skb->data;
 	skb_pull(skb,ETH_HLEN);
 	/**
-	 * È¡µÃÒÔÌ«ÍøÖ¡Í·¡£
+	 * å–å¾—ä»¥å¤ªç½‘å¸§å¤´ã€‚
 	 */
 	eth = eth_hdr(skb);
 	skb->input_dev = dev;
 
 	/**
-	 * Î»0±íÊ¾ÊÇ·ñ¶à²¥µØÖ·¡£¹ã²¥µØÖ·ÊÇÌØÊâµÄ¶à²¥µØÖ·¡£µ±Îª1Ê±£¬±íÊ¾¶à²¥£¬Îª0Ê±£¬±íÊ¾²»ÊÇ¶à²¥¡£
+	 * ä½0è¡¨ç¤ºæ˜¯å¦å¤šæ’­åœ°å€ã€‚å¹¿æ’­åœ°å€æ˜¯ç‰¹æ®Šçš„å¤šæ’­åœ°å€ã€‚å½“ä¸º1æ—¶ï¼Œè¡¨ç¤ºå¤šæ’­ï¼Œä¸º0æ—¶ï¼Œè¡¨ç¤ºä¸æ˜¯å¤šæ’­ã€‚
 	 */
 	if(*eth->h_dest&1)
 	{
 		if(memcmp(eth->h_dest,dev->broadcast, ETH_ALEN)==0)
-			skb->pkt_type=PACKET_BROADCAST;/* ¹ã²¥Ö¡ */
+			skb->pkt_type=PACKET_BROADCAST;/* å¹¿æ’­å¸§ */
 		else
-			skb->pkt_type=PACKET_MULTICAST;/* ¶à²¥Ö¡ */
+			skb->pkt_type=PACKET_MULTICAST;/* å¤šæ’­å¸§ */
 	}
 	
 	/*
@@ -193,27 +193,27 @@ unsigned short eth_type_trans(struct sk_buff *skb, struct net_device *dev)
 	else if(1 /*dev->flags&IFF_PROMISC*/)
 	{
 		/**
-		 * Ö¡Ã»ÓĞ·¢ËÍ¸øµ±Ç°½ÓÊÕÍø¿¨¡£ÎŞÂÛÈçºÎ£¬Ö¡²»»á±»Á¢¼´¶ªÆú£¬¶øÊÇ±»´«µİ¸ø¸ü¸ßÒ»²ã¡£
-		 * ¿ÉÄÜÓĞĞáÌ½Æ÷»òÕßÆäËû°®¹ÜÏĞÊÂµÄĞ­ÒéĞèÒª¿´Ò»¿´Ö¡¡£
+		 * å¸§æ²¡æœ‰å‘é€ç»™å½“å‰æ¥æ”¶ç½‘å¡ã€‚æ— è®ºå¦‚ä½•ï¼Œå¸§ä¸ä¼šè¢«ç«‹å³ä¸¢å¼ƒï¼Œè€Œæ˜¯è¢«ä¼ é€’ç»™æ›´é«˜ä¸€å±‚ã€‚
+		 * å¯èƒ½æœ‰å—…æ¢å™¨æˆ–è€…å…¶ä»–çˆ±ç®¡é—²äº‹çš„åè®®éœ€è¦çœ‹ä¸€çœ‹å¸§ã€‚
 		 */
 		if(memcmp(eth->h_dest,dev->dev_addr, ETH_ALEN))
 			skb->pkt_type=PACKET_OTHERHOST;
 	}
 	/**
-	 * Èç¹ûeth_type_transÃ»ÓĞÃ÷È·µÄÉèÖÃskb->pkt_type£¬ËüµÄÖµ×îÖÕ»áÊÇ0£¬¼´PACKET_HOST¡£
+	 * å¦‚æœeth_type_transæ²¡æœ‰æ˜ç¡®çš„è®¾ç½®skb->pkt_typeï¼Œå®ƒçš„å€¼æœ€ç»ˆä¼šæ˜¯0ï¼Œå³PACKET_HOSTã€‚
 	 */
 
 	/**
-	 * ³¬¹ı1536±íÊ¾¾ÉĞ­Òé(Ò»°ãµÄĞ­ÒéÈçETH_P_IP)
-	 * ´óÓÚ1536Ê±£¬Öµ±»½âÊÍÎªĞ­ÒéID£¬Çı¶¯ÈçºÎÕÒµ½½ÓÊÕÖ¡µÄ³¤¶ÈÄØ£¿
-	 * ²»ÂÛĞ­Òé/³¤¶ÈÖµÊÇĞ¡ÓÚ1500»òÕß´óÓÚ1536£¬Éè±¸×Ô¼º±£´æÖ¡³¤¶Èµ½ËüµÄ¼Ä´æÆ÷ÖĞ£¬Çı¶¯¿ÉÒÔ¶ÁËü¡£
-	 * Çı¶¯ÄÜ¹»¼ÆËãÃ¿Ò»¸öÖ¡µÄ³¤¶È¡£
+	 * è¶…è¿‡1536è¡¨ç¤ºæ—§åè®®(ä¸€èˆ¬çš„åè®®å¦‚ETH_P_IP)
+	 * å¤§äº1536æ—¶ï¼Œå€¼è¢«è§£é‡Šä¸ºåè®®IDï¼Œé©±åŠ¨å¦‚ä½•æ‰¾åˆ°æ¥æ”¶å¸§çš„é•¿åº¦å‘¢ï¼Ÿ
+	 * ä¸è®ºåè®®/é•¿åº¦å€¼æ˜¯å°äº1500æˆ–è€…å¤§äº1536ï¼Œè®¾å¤‡è‡ªå·±ä¿å­˜å¸§é•¿åº¦åˆ°å®ƒçš„å¯„å­˜å™¨ä¸­ï¼Œé©±åŠ¨å¯ä»¥è¯»å®ƒã€‚
+	 * é©±åŠ¨èƒ½å¤Ÿè®¡ç®—æ¯ä¸€ä¸ªå¸§çš„é•¿åº¦ã€‚
 	 */
 	if (ntohs(eth->h_proto) >= 1536)
 		return eth->h_proto;
 
 	/**
-	 * ½ÓÏÂÀ´´¦ÀíSNAP(802.3)ºÍLLC(802.2)¡£
+	 * æ¥ä¸‹æ¥å¤„ç†SNAP(802.3)å’ŒLLC(802.2)ã€‚
 	 */
 	rawp = skb->data;
 	
@@ -291,12 +291,12 @@ static int eth_change_mtu(struct net_device *dev, int new_mtu)
  * Fill in the fields of the device structure with ethernet-generic values.
  */
 /**
- * Éè±¸ÀàĞÍ³õÊ¼»¯:ÒÔÌ«Íø
+ * è®¾å¤‡ç±»å‹åˆå§‹åŒ–:ä»¥å¤ªç½‘
  */
 void ether_setup(struct net_device *dev)
 {
 	/**
-	 * º¯Êı½ö½ö³õÊ¼»¯ÈÎºÎÒÔÌ«Íø¿¨Ëù¹²ÏíµÄ×Ö¶ÎºÍº¯ÊıÖ¸Õë£ºMTUÉèÎª 1500£¬Á´Â·²ã¹ã²¥µØÖ·ÉèÎªFF:FF:FF:FF:FF:FF£¬·¢ËÍ¶ÓÁĞ³¤¶ÈÉèÎª1000¸ö°ü³¤¶È
+	 * å‡½æ•°ä»…ä»…åˆå§‹åŒ–ä»»ä½•ä»¥å¤ªç½‘å¡æ‰€å…±äº«çš„å­—æ®µå’Œå‡½æ•°æŒ‡é’ˆï¼šMTUè®¾ä¸º 1500ï¼Œé“¾è·¯å±‚å¹¿æ’­åœ°å€è®¾ä¸ºFF:FF:FF:FF:FF:FFï¼Œå‘é€é˜Ÿåˆ—é•¿åº¦è®¾ä¸º1000ä¸ªåŒ…é•¿åº¦
 	 */
 	dev->change_mtu		= eth_change_mtu;
 	dev->hard_header	= eth_header;
@@ -332,7 +332,7 @@ EXPORT_SYMBOL(ether_setup);
  */
 
 /**
- * ·ÖÅäÒÔÌ«Íø¿¨Éè±¸¡£
+ * åˆ†é…ä»¥å¤ªç½‘å¡è®¾å¤‡ã€‚
  */
 struct net_device *alloc_etherdev(int sizeof_priv)
 {

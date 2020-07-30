@@ -41,7 +41,7 @@
 DEFINE_SPINLOCK(i8259A_lock);
 
 /**
- * Ó¦´ğ8259ÖĞ¶Ï¡£
+ * åº”ç­”8259ä¸­æ–­ã€‚
  */
 static void end_8259A_irq (unsigned int irq)
 {
@@ -106,7 +106,7 @@ void disable_8259A_irq(unsigned int irq)
 }
 
 /**
- * ÆôÓÃ8259AÏàÓ¦µÄIRQÏß¡£
+ * å¯ç”¨8259Aç›¸åº”çš„IRQçº¿ã€‚
  */
 void enable_8259A_irq(unsigned int irq)
 {

@@ -43,43 +43,43 @@ extern struct pci_ops pci_root_ops;
 
 /* pci-irq.c */
 
-/* PCI²å²ÛµÄIRQÃèÊö±í */
+/* PCIæ’æ§½çš„IRQæè¿°è¡¨ */
 struct irq_info {
-	/* ×ÜÏß£¬²å²Û/¹¦ÄÜ±àºÅ */
+	/* æ€»çº¿ï¼Œæ’æ§½/åŠŸèƒ½ç¼–å· */
 	u8 bus, devfn;			/* Bus, device and function */
 	struct {
-		/* Á´Â·Öµ£¬ÒÀÀµÓÚĞ¾Æ¬×é£¬0±íÊ¾Î´Â·ÓÉ */
+		/* é“¾è·¯å€¼ï¼Œä¾èµ–äºèŠ¯ç‰‡ç»„ï¼Œ0è¡¨ç¤ºæœªè·¯ç”± */
 		u8 link;		/* IRQ line ID, chipset dependent, 0=not routed */
-		/* ÔÊĞíÊ¹ÓÃµÄIRQ±àºÅÎ»Í¼ */
+		/* å…è®¸ä½¿ç”¨çš„IRQç¼–å·ä½å›¾ */
 		u16 bitmap;		/* Available IRQs */
 	} __attribute__((packed)) irq[4];
-	/* ²å²Û±àºÅ£¬0±íÊ¾¼¯³ÉÉè±¸ */
+	/* æ’æ§½ç¼–å·ï¼Œ0è¡¨ç¤ºé›†æˆè®¾å¤‡ */
 	u8 slot;			/* Slot number, 0=onboard */
-	/* ±£ÁôÎ´ÓÃ */
+	/* ä¿ç•™æœªç”¨ */
 	u8 rfu;
 } __attribute__((packed));
 
-/* ÖĞ¶ÏÂ·ÓÉ±í£¬ĞèÒªÔÚBIOS ROMÖĞ²éÕÒ¸Ã±í */
+/* ä¸­æ–­è·¯ç”±è¡¨ï¼Œéœ€è¦åœ¨BIOS ROMä¸­æŸ¥æ‰¾è¯¥è¡¨ */
 struct irq_routing_table {
-	/* Ç©Ãû£¬±ØĞëÊÇ"$PIR" */
+	/* ç­¾åï¼Œå¿…é¡»æ˜¯"$PIR" */
 	u32 signature;			/* PIRQ_SIGNATURE should be here */
-	/* °æ±¾ºÅ */
+	/* ç‰ˆæœ¬å· */
 	u16 version;			/* PIRQ_VERSION */
-	/* ÒÔ×Ö½ÚÎªµ¥Î»µÄ±í³¤¶È */
+	/* ä»¥å­—èŠ‚ä¸ºå•ä½çš„è¡¨é•¿åº¦ */
 	u16 size;			/* Table size in bytes */
-	/* ÖĞ¶ÏÂ·ÓÉÆ÷ËùÔÚ×ÜÏß±àºÅºÍ²å²Û/¹¦ÄÜ±àºÅ */
+	/* ä¸­æ–­è·¯ç”±å™¨æ‰€åœ¨æ€»çº¿ç¼–å·å’Œæ’æ§½/åŠŸèƒ½ç¼–å· */
 	u8 rtr_bus, rtr_devfn;		/* Where the interrupt router lies */
-	/* ÅÅËüĞÔIRQÎ»Í¼£¬Îª1±íÊ¾ÏàÓ¦ÊäÈëÓ¦µ±×¨ÓÃ */
+	/* æ’å®ƒæ€§IRQä½å›¾ï¼Œä¸º1è¡¨ç¤ºç›¸åº”è¾“å…¥åº”å½“ä¸“ç”¨ */
 	u16 exclusive_irqs;		/* IRQs devoted exclusively to PCI usage */
-	/* ÖĞ¶ÏÂ·ÓÉÆ÷µÄ³§ÉÌIDºÍÉè±¸ID */
+	/* ä¸­æ–­è·¯ç”±å™¨çš„å‚å•†IDå’Œè®¾å¤‡ID */
 	u16 rtr_vendor, rtr_device;	/* Vendor and device ID of interrupt router */
-	/* Î´ÓÃ */
+	/* æœªç”¨ */
 	u32 miniport_data;		/* Crap */
-	/* ±£ÁôÎ´ÓÃ */
+	/* ä¿ç•™æœªç”¨ */
 	u8 rfu[11];
-	/* Ğ£ÑéºÍ£¬±ØĞëÎª0 */
+	/* æ ¡éªŒå’Œï¼Œå¿…é¡»ä¸º0 */
 	u8 checksum;			/* Modulo 256 checksum must give zero */
-	/* ÖĞ¶ÏÂ·ÓÉ±íÏî£¬Ã¿¸öPCI²å²ÛÕ¼ÓĞÒ»Ïî */
+	/* ä¸­æ–­è·¯ç”±è¡¨é¡¹ï¼Œæ¯ä¸ªPCIæ’æ§½å æœ‰ä¸€é¡¹ */
 	struct irq_info slots[0];
 } __attribute__((packed));
 

@@ -357,9 +357,9 @@ static inline void rotate_irqs_among_cpus(unsigned long useful_load_threshold)
 }
 
 /**
- * ±»kirqdÄÚºËÏß³ÌÖÜÆÚÐÔµÄµ÷ÓÃ.
- * ¸Ãº¯Êý¸ú×ÙÔÚ×î½üµÄÊ±¼ä¼ä¸ôÄÚ,Ã¿¸öCPU½ÓÊÕµÄÖÐ¶Ï´ÎÊý.Èç¹û·¢ÏÖ¸ººÉ×îÖØµÄCPUºÍ¸ººÉ×îÇáµÄCPUÖ®¼äIRQ¸ºÔØ²»Æ½ºâµÄÎÊÌâÌ«ÑÏÖØ,
- * ËüÒªÃ´°ÑIRQ´ÓÒ»¸öCPU×ªÒÆÖ§ÁíÍâÒ»¸öCPU,ÒªÃ´ÈÃËùÓÐµÄIRQÔÚCPUÖ®¼äÂÖ×ª.
+ * è¢«kirqdå†…æ ¸çº¿ç¨‹å‘¨æœŸæ€§çš„è°ƒç”¨.
+ * è¯¥å‡½æ•°è·Ÿè¸ªåœ¨æœ€è¿‘çš„æ—¶é—´é—´éš”å†…,æ¯ä¸ªCPUæŽ¥æ”¶çš„ä¸­æ–­æ¬¡æ•°.å¦‚æžœå‘çŽ°è´Ÿè·æœ€é‡çš„CPUå’Œè´Ÿè·æœ€è½»çš„CPUä¹‹é—´IRQè´Ÿè½½ä¸å¹³è¡¡çš„é—®é¢˜å¤ªä¸¥é‡,
+ * å®ƒè¦ä¹ˆæŠŠIRQä»Žä¸€ä¸ªCPUè½¬ç§»æ”¯å¦å¤–ä¸€ä¸ªCPU,è¦ä¹ˆè®©æ‰€æœ‰çš„IRQåœ¨CPUä¹‹é—´è½®è½¬.
  */
 static void do_irq_balance(void)
 {
@@ -2524,7 +2524,7 @@ int io_apic_set_pci_routing (int ioapic, int pin, int irq, int edge_level, int a
 		add_pin_to_irq(irq, ioapic, pin);
 
 	/**
-	 * ½«Íâ²¿Éè±¸Ê¹ÓÃµÄGSIºÅÓëIO APICÖÐREDIR_TLB±í½¨Á¢ÁªÏµ£¬²¢½«Æä½á¹û¼ÇÂ¼µ½CPUµÄvector_irq±íÖÐ¡£
+	 * å°†å¤–éƒ¨è®¾å¤‡ä½¿ç”¨çš„GSIå·ä¸ŽIO APICä¸­REDIR_TLBè¡¨å»ºç«‹è”ç³»ï¼Œå¹¶å°†å…¶ç»“æžœè®°å½•åˆ°CPUçš„vector_irqè¡¨ä¸­ã€‚
 	 */
 	entry.vector = assign_irq_vector(irq);
 

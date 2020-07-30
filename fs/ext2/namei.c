@@ -68,7 +68,7 @@ static inline int ext2_add_nondir(struct dentry *dentry, struct inode *inode)
  */
 
 /**
- * ext2µÄloopupÊµÏÖ·½·¨¡£
+ * ext2çš„loopupå®ç°æ–¹æ³•ã€‚
  */
 static struct dentry *ext2_lookup(struct inode * dir, struct dentry *dentry, struct nameidata *nd)
 {
@@ -125,7 +125,7 @@ struct dentry *ext2_get_parent(struct dentry *child)
  * with d_instantiate(). 
  */
 /**
- * ext2ÔÚvfsÖĞµÄcreateÊµÏÖº¯Êı¡£
+ * ext2åœ¨vfsä¸­çš„createå®ç°å‡½æ•°ã€‚
  */
 static int ext2_create (struct inode * dir, struct dentry * dentry, int mode, struct nameidata *nd)
 {
@@ -145,7 +145,7 @@ static int ext2_create (struct inode * dir, struct dentry * dentry, int mode, st
 }
 
 /**
- * ext2µÄmknodÊµÏÖ·½·¨¡£
+ * ext2çš„mknodå®ç°æ–¹æ³•ã€‚
  */
 static int ext2_mknod (struct inode * dir, struct dentry *dentry, int mode, dev_t rdev)
 {
@@ -169,7 +169,7 @@ static int ext2_mknod (struct inode * dir, struct dentry *dentry, int mode, dev_
 }
 
 /**
- * ext2µÄsymlinkÊµÏÖ·½·¨¡£
+ * ext2çš„symlinkå®ç°æ–¹æ³•ã€‚
  */
 static int ext2_symlink (struct inode * dir, struct dentry * dentry,
 	const char * symname)
@@ -216,7 +216,7 @@ out_fail:
 }
 
 /**
- * ext2µÄlinkÊµÏÖ·½·¨¡£
+ * ext2çš„linkå®ç°æ–¹æ³•ã€‚
  */
 static int ext2_link (struct dentry * old_dentry, struct inode * dir,
 	struct dentry *dentry)
@@ -234,7 +234,7 @@ static int ext2_link (struct dentry * old_dentry, struct inode * dir,
 }
 
 /**
- * ext2µÄmkdirÊµÏÖ·½·¨¡£
+ * ext2çš„mkdirå®ç°æ–¹æ³•ã€‚
  */
 static int ext2_mkdir(struct inode * dir, struct dentry * dentry, int mode)
 {
@@ -282,7 +282,7 @@ out_dir:
 }
 
 /**
- * ext2µÄunlinkÊµÏÖ·½·¨¡£
+ * ext2çš„unlinkå®ç°æ–¹æ³•ã€‚
  */
 static int ext2_unlink(struct inode * dir, struct dentry *dentry)
 {
@@ -323,7 +323,7 @@ static int ext2_rmdir (struct inode * dir, struct dentry *dentry)
 }
 
 /**
- * ext2µÄrenameÊµÏÖ·½·¨¡£
+ * ext2çš„renameå®ç°æ–¹æ³•ã€‚
  */
 static int ext2_rename (struct inode * old_dir, struct dentry * old_dentry,
 	struct inode * new_dir,	struct dentry * new_dentry )
@@ -411,7 +411,7 @@ out:
 }
 
 /**
- * Ä¿Â¼ÎÄ¼şµÄË÷Òı½Úµã²Ù×÷·½·¨
+ * ç›®å½•æ–‡ä»¶çš„ç´¢å¼•èŠ‚ç‚¹æ“ä½œæ–¹æ³•
  */
 struct inode_operations ext2_dir_inode_operations = {
 	.create		= ext2_create,

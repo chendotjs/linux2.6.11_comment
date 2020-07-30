@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2001 Flaga hf. Medical Devices, Kári Davíðsson <kd@flaga.is>
+ *  Copyright  2001 Flaga hf. Medical Devices, Kri Davçœ‡sson <kd@flaga.is>
  *
  *  $Id: cfi_flagadm.c,v 1.14 2004/11/04 13:24:14 gleixner Exp $
  *  
@@ -135,5 +135,5 @@ module_exit(cleanup_flagadm);
 
 
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Kári Davíðsson <kd@flaga.is>");
+MODULE_AUTHOR("Kri Davçœ‡sson <kd@flaga.is>");
 MODULE_DESCRIPTION("MTD map driver for Flaga digital module");

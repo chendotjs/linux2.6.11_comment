@@ -49,11 +49,11 @@
 #define BR_STATE_LISTENING 1
 #define BR_STATE_LEARNING 2
 /**
- * ���Ŷ˿ڴ��ڼ���״̬��
+ * 网桥端口处于激活状态。
  */
 #define BR_STATE_FORWARDING 3
 /**
- * ���Ŷ˿ڴ�������״̬���ܽ��յ��ǲ��ܷ��Ͱ���
+ * 网桥端口处于阻塞状态。能接收但是不能发送包。
  */
 #define BR_STATE_BLOCKING 4
 
@@ -72,7 +72,7 @@ struct __bridge_info
 	__u8 topology_change_detected;
 	__u8 root_port;
 	/**
-	 * �������Ƿ�����STP��
+	 * 该网桥是否启用STP。
 	 */
 	__u8 stp_enabled;
 	__u32 ageing_time;

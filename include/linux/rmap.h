@@ -25,18 +25,18 @@
  * pointing to this anon_vma once its vma list is empty.
  */
 /**
- * ÓÃÓÚ¹²ÏíÄäÃûÒ³µÄ·´ÉäÓ³Éä¡£
- *		µ±´´½¨ÐÂ½ø³ÌÊ±£¬¸¸½ø³ÌµÄËùÓÐÒ³¿ò£¬°üº¬ÄäÃûÒ³£¬¶¼Í¬Ê±·ÖÅä¸ø×Ó½ø³Ì¡£
- *		µ±½ø³Ì´´½¨ÏßÐÔÇøÊ±£¬Èç¹ûÖ¸¶¨ÁËMAP_ANONYMOUSºÍMAP_SHARED£¬ÔòÕâ¸öÇøÓòÄÚµÄÒ³½«ÓÉ¸Ã½ø³ÌºóÃæµÄ×Ó½ø³Ì¹²Ïí¡£
- * µ±ÄÚºËÎªÒ»¸öÄäÃûÏßÐÔÇø·ÖÅäµÚÒ»Ò³Ê±£¬ÄÚºË´´½¨Ò»¸öÐÂµÄanon_vmaÊý¾Ý½á¹¹¡£
+ * ç”¨äºŽå…±äº«åŒ¿åé¡µçš„åå°„æ˜ å°„ã€‚
+ *		å½“åˆ›å»ºæ–°è¿›ç¨‹æ—¶ï¼Œçˆ¶è¿›ç¨‹çš„æ‰€æœ‰é¡µæ¡†ï¼ŒåŒ…å«åŒ¿åé¡µï¼Œéƒ½åŒæ—¶åˆ†é…ç»™å­è¿›ç¨‹ã€‚
+ *		å½“è¿›ç¨‹åˆ›å»ºçº¿æ€§åŒºæ—¶ï¼Œå¦‚æžœæŒ‡å®šäº†MAP_ANONYMOUSå’ŒMAP_SHAREDï¼Œåˆ™è¿™ä¸ªåŒºåŸŸå†…çš„é¡µå°†ç”±è¯¥è¿›ç¨‹åŽé¢çš„å­è¿›ç¨‹å…±äº«ã€‚
+ * å½“å†…æ ¸ä¸ºä¸€ä¸ªåŒ¿åçº¿æ€§åŒºåˆ†é…ç¬¬ä¸€é¡µæ—¶ï¼Œå†…æ ¸åˆ›å»ºä¸€ä¸ªæ–°çš„anon_vmaæ•°æ®ç»“æž„ã€‚
  */
 struct anon_vma {
 	/**
-	 * ±£»¤±¾½á¹¹µÄËø¡£
+	 * ä¿æŠ¤æœ¬ç»“æž„çš„é”ã€‚
 	 */
 	spinlock_t lock;	/* Serialize access to vma list */
 	/**
-	 * ÏßÐÔÇøÃèÊö·ûË«ÏòÑ­»·Á´±íµÄÍ·²¿¡£
+	 * çº¿æ€§åŒºæè¿°ç¬¦åŒå‘å¾ªçŽ¯é“¾è¡¨çš„å¤´éƒ¨ã€‚
 	 */ 
 	struct list_head head;	/* List of private "related" vmas */
 };

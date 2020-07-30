@@ -368,7 +368,7 @@ static void scsi_single_lun_run(struct scsi_device *current_sdev)
 	unsigned long flags;
 
 	spin_lock_irqsave(shost->host_lock, flags);
-	/* Çå¿Õ´Ë±êÖ¾£¬±íÊ¾Ã»ÓĞÉè±¸ÔÚ½øĞĞIO */
+	/* æ¸…ç©ºæ­¤æ ‡å¿—ï¼Œè¡¨ç¤ºæ²¡æœ‰è®¾å¤‡åœ¨è¿›è¡ŒIO */
 	scsi_target(current_sdev)->starget_sdev_user = NULL;
 	spin_unlock_irqrestore(shost->host_lock, flags);
 
@@ -378,21 +378,21 @@ static void scsi_single_lun_run(struct scsi_device *current_sdev)
 	 * but in most cases, we will be first. Ideally, each LU on the
 	 * target would get some limited time or requests on the target.
 	 */
-	/* ÔËĞĞµ±Ç°Éè±¸ÉÏµÄÇëÇó¶ÓÁĞ */
+	/* è¿è¡Œå½“å‰è®¾å¤‡ä¸Šçš„è¯·æ±‚é˜Ÿåˆ— */
 	blk_run_queue(current_sdev->request_queue);
 
 	spin_lock_irqsave(shost->host_lock, flags);
-	/* Èç¹ûÉè±¸ÉÏÓĞÇëÇó£¬ÔòÍË³ö */
+	/* å¦‚æœè®¾å¤‡ä¸Šæœ‰è¯·æ±‚ï¼Œåˆ™é€€å‡º */
 	if (scsi_target(current_sdev)->starget_sdev_user)
 		goto out;
-	/* ±éÀúÏàÁÚÉè±¸ */
+	/* éå†ç›¸é‚»è®¾å¤‡ */
 	list_for_each_entry_safe(sdev, tmp, &current_sdev->same_target_siblings,
 			same_target_siblings) {
-		if (scsi_device_get(sdev))/* ²»ÄÜ»ñµÃÉè±¸µÄÒıÓÃ */
+		if (scsi_device_get(sdev))/* ä¸èƒ½è·å¾—è®¾å¤‡çš„å¼•ç”¨ */
 			continue;
 
 		spin_unlock_irqrestore(shost->host_lock, flags);
-		/* ÔËĞĞ¸ÃÉè±¸ÉÏµÄ¶ÓÁĞ */
+		/* è¿è¡Œè¯¥è®¾å¤‡ä¸Šçš„é˜Ÿåˆ— */
 		blk_run_queue(sdev->request_queue);
 		spin_lock_irqsave(shost->host_lock, flags);
 	
@@ -420,11 +420,11 @@ static void scsi_run_queue(struct request_queue *q)
 	struct Scsi_Host *shost = sdev->host;
 	unsigned long flags;
 
-	if (sdev->single_lun)/* Ò»´ÎÖ»ÔÊĞí¶ÔÄ¿±ê½ÚµãµÄÒ»¸öÂß¼­µ¥Ôª½øĞĞIO */
+	if (sdev->single_lun)/* ä¸€æ¬¡åªå…è®¸å¯¹ç›®æ ‡èŠ‚ç‚¹çš„ä¸€ä¸ªé€»è¾‘å•å…ƒè¿›è¡ŒIO */
 		scsi_single_lun_run(sdev);
 
 	spin_lock_irqsave(shost->host_lock, flags);
-	while (!list_empty(&shost->starved_list) &&/* ¼¢¶öÁ´±íÖĞ»¹ÓĞÉè±¸ */
+	while (!list_empty(&shost->starved_list) &&/* é¥¥é¥¿é“¾è¡¨ä¸­è¿˜æœ‰è®¾å¤‡ */
 	       !shost->host_blocked && !shost->host_self_blocked &&
 		!((shost->can_queue > 0) &&
 		  (shost->host_busy >= shost->can_queue))) {
@@ -440,11 +440,11 @@ static void scsi_run_queue(struct request_queue *q)
 		 */
 		sdev = list_entry(shost->starved_list.next,
 					  struct scsi_device, starved_entry);
-		/* ½«Ëü´Ó¼¢¶öÁ´±íÖĞÕª³ı */
+		/* å°†å®ƒä»é¥¥é¥¿é“¾è¡¨ä¸­æ‘˜é™¤ */
 		list_del_init(&sdev->starved_entry);
 		spin_unlock_irqrestore(shost->host_lock, flags);
 
-		/* ÔËĞĞ¼¢¶öÉè±¸ÉÏµÄÇëÇó¶ÓÁĞ */
+		/* è¿è¡Œé¥¥é¥¿è®¾å¤‡ä¸Šçš„è¯·æ±‚é˜Ÿåˆ— */
 		blk_run_queue(sdev->request_queue);
 
 		spin_lock_irqsave(shost->host_lock, flags);
@@ -458,7 +458,7 @@ static void scsi_run_queue(struct request_queue *q)
 	}
 	spin_unlock_irqrestore(shost->host_lock, flags);
 
-	/* ´¦ÀíÍê¼¢¶öÉè±¸µÄÇëÇóºó£¬´¦Àíµ±Ç°Éè±¸ÉÏµÄÇëÇó */
+	/* å¤„ç†å®Œé¥¥é¥¿è®¾å¤‡çš„è¯·æ±‚åï¼Œå¤„ç†å½“å‰è®¾å¤‡ä¸Šçš„è¯·æ±‚ */
 	blk_run_queue(q);
 }
 
@@ -524,7 +524,7 @@ void scsi_run_host_queues(struct Scsi_Host *shost)
  *		We are guaranteeing that the request queue will be goosed
  *		at some point during this call.
  */
-/* µ±Ò»¸öSCSIÃüÁîÍê³Éºó£¬µ÷ÓÃ´Ëº¯Êı */
+/* å½“ä¸€ä¸ªSCSIå‘½ä»¤å®Œæˆåï¼Œè°ƒç”¨æ­¤å‡½æ•° */
 static struct scsi_cmnd *scsi_end_request(struct scsi_cmnd *cmd, int uptodate,
 					  int bytes, int requeue)
 {
@@ -536,29 +536,29 @@ static struct scsi_cmnd *scsi_end_request(struct scsi_cmnd *cmd, int uptodate,
 	 * If there are blocks left over at the end, set up the command
 	 * to queue the remainder of them.
 	 */
-	if (end_that_request_chunk(req, uptodate, bytes)) {/* ¸ÃÇëÇó»¹Ã»ÓĞÍêÈ«´¦ÀíÍê£¬»¹ÓĞÊ£ÓàµÄ¿é */
+	if (end_that_request_chunk(req, uptodate, bytes)) {/* è¯¥è¯·æ±‚è¿˜æ²¡æœ‰å®Œå…¨å¤„ç†å®Œï¼Œè¿˜æœ‰å‰©ä½™çš„å— */
 		int leftover = (req->hard_nr_sectors << 9);
 
-		if (blk_pc_request(req))/* ¼ÆËãÊ£ÓàµÄÇëÇó */
+		if (blk_pc_request(req))/* è®¡ç®—å‰©ä½™çš„è¯·æ±‚ */
 			leftover = req->data_len;
 
 		/* kill remainder if no retrys */
-		if (!uptodate && blk_noretry_request(req))/* ÉÏ²ã²»ÔÊĞíÖØÊÔ */
-			end_that_request_chunk(req, 0, leftover);/* ½áÊø´¦ÀíÕâ¸öÃüÁîµÄÊ£Óà²¿·Ö */
-		else {/* Ã»ÓĞ´íÎó»òÕßÔÊĞíÖØÊÔ */
+		if (!uptodate && blk_noretry_request(req))/* ä¸Šå±‚ä¸å…è®¸é‡è¯• */
+			end_that_request_chunk(req, 0, leftover);/* ç»“æŸå¤„ç†è¿™ä¸ªå‘½ä»¤çš„å‰©ä½™éƒ¨åˆ† */
+		else {/* æ²¡æœ‰é”™è¯¯æˆ–è€…å…è®¸é‡è¯• */
 			if (requeue)
 				/*
 				 * Bleah.  Leftovers again.  Stick the
 				 * leftovers in the front of the
 				 * queue, and goose the queue again.
 				 */
-				scsi_requeue_command(q, cmd);/* ½«ÃüÁî²åÈëµ½¶ÓÁĞÖĞ */
+				scsi_requeue_command(q, cmd);/* å°†å‘½ä»¤æ’å…¥åˆ°é˜Ÿåˆ—ä¸­ */
 
 			return cmd;
 		}
 	}
 
-	add_disk_randomness(req->rq_disk);/* Ëæ»úìØ´¦Àí */
+	add_disk_randomness(req->rq_disk);/* éšæœºç†µå¤„ç† */
 
 	spin_lock_irqsave(q->queue_lock, flags);
 	if (blk_rq_tagged(req))
@@ -694,7 +694,7 @@ static void scsi_release_buffers(struct scsi_cmnd *cmd)
  *		b) We can just use scsi_requeue_command() here.  This would
  *		   be used if we just wanted to retry, for example.
  */
-/* µ±SCSIÃüÁîÍê³Éºóµ÷ÓÃ´Ëº¯Êı */
+/* å½“SCSIå‘½ä»¤å®Œæˆåè°ƒç”¨æ­¤å‡½æ•° */
 void scsi_io_completion(struct scsi_cmnd *cmd, unsigned int good_bytes,
 			unsigned int block_bytes)
 {
@@ -725,12 +725,12 @@ void scsi_io_completion(struct scsi_cmnd *cmd, unsigned int good_bytes,
 	}
 
 	if (result) {
-		/* ¹æ¸ñ»¯Êı¾İ¸ñÊ½ */
+		/* è§„æ ¼åŒ–æ•°æ®æ ¼å¼ */
 		sense_valid = scsi_command_normalize_sense(cmd, &sshdr);
 		if (sense_valid)
 			sense_deferred = scsi_sense_is_deferred(&sshdr);
 	}
-	/* ´¦Àí¹«¹²·şÎñ²ãµÄÇëÇó£¬Ö÷ÒªÀ´×ÔÓÚioctl */
+	/* å¤„ç†å…¬å…±æœåŠ¡å±‚çš„è¯·æ±‚ï¼Œä¸»è¦æ¥è‡ªäºioctl */
 	if (blk_pc_request(req)) { /* SG_IO ioctl from block level */
 		req->errors = result;
 		if (result) {
@@ -781,14 +781,14 @@ void scsi_io_completion(struct scsi_cmnd *cmd, unsigned int good_bytes,
 		 * requeueing right here - we will requeue down below
 		 * when we handle the bad sectors.
 		 */
-		/* ´¦ÀíÒ»²¿·Ö½áÊøSCSIÃüÁîµÄ¹¤×÷ */
+		/* å¤„ç†ä¸€éƒ¨åˆ†ç»“æŸSCSIå‘½ä»¤çš„å·¥ä½œ */
 		cmd = scsi_end_request(cmd, 1, good_bytes, result == 0);
 
 		/*
 		 * If the command completed without error, then either finish off the
 		 * rest of the command, or start a new one.
 		 */
-		if (result == 0 || cmd == NULL ) {/* Èç¹ûscsi_end_request´¦ÀíÍêÃüÁîÔòÍË³ö */
+		if (result == 0 || cmd == NULL ) {/* å¦‚æœscsi_end_requestå¤„ç†å®Œå‘½ä»¤åˆ™é€€å‡º */
 			return;
 		}
 	}
@@ -797,30 +797,30 @@ void scsi_io_completion(struct scsi_cmnd *cmd, unsigned int good_bytes,
 	 * sense buffer.  We can extract information from this, so we
 	 * can choose a block to remap, etc.
 	 */
-	/* scsi_end_request²»ÄÜ´¦ÀíÕû¸öÃüÁî£¬ÕâÀï¼ÌĞø´¦Àí */
+	/* scsi_end_requestä¸èƒ½å¤„ç†æ•´ä¸ªå‘½ä»¤ï¼Œè¿™é‡Œç»§ç»­å¤„ç† */
 	if (sense_valid && !sense_deferred) {
 		switch (sshdr.sense_key) {
 		case UNIT_ATTENTION:
-			if (cmd->device->removable) {/* ¸Ğ²âµ½¿ÉÒÆ¶¯½éÖÊ·¢Éú±ä»¯ */
+			if (cmd->device->removable) {/* æ„Ÿæµ‹åˆ°å¯ç§»åŠ¨ä»‹è´¨å‘ç”Ÿå˜åŒ– */
 				/* detected disc change.  set a bit 
 				 * and quietly refuse further access.
 				 */
 				cmd->device->changed = 1;
 				cmd = scsi_end_request(cmd, 0,
-						this_count, 1);/* ½áÊøÕâ¸öÃüÁî£¬±íÊ¾ÆäÖ´ĞĞÊ§°Ü */
+						this_count, 1);/* ç»“æŸè¿™ä¸ªå‘½ä»¤ï¼Œè¡¨ç¤ºå…¶æ‰§è¡Œå¤±è´¥ */
 				return;
-			} else {/* ·ñÔò¾ÍÊÇµçÔ´¹ÊÕÏ»ò×ÜÏß¸´Î» */
+			} else {/* å¦åˆ™å°±æ˜¯ç”µæºæ•…éšœæˆ–æ€»çº¿å¤ä½ */
 				/*
 				* Must have been a power glitch, or a
 				* bus reset.  Could not have been a
 				* media change, so we just retry the
 				* request and see what happens.  
 				*/
-				scsi_requeue_command(q, cmd);/* ÖØÊÔÕâ¸öÃüÁî */
+				scsi_requeue_command(q, cmd);/* é‡è¯•è¿™ä¸ªå‘½ä»¤ */
 				return;
 			}
 			break;
-		case ILLEGAL_REQUEST:/* ¿ÉÄÜÖ´ĞĞÁË²»Ö§³ÖµÄÃüÁî */
+		case ILLEGAL_REQUEST:/* å¯èƒ½æ‰§è¡Œäº†ä¸æ”¯æŒçš„å‘½ä»¤ */
 			/*
 		 	* If we had an ILLEGAL REQUEST returned, then we may
 		 	* have performed an unsupported command.  The only
@@ -829,36 +829,36 @@ void scsi_io_completion(struct scsi_cmnd *cmd, unsigned int good_bytes,
 			* system where READ CAPACITY failed, we may have read
 			* past the end of the disk.
 		 	*/
-			if (cmd->device->use_10_for_rw &&/* Ö´ĞĞÁË10×Ö½ÚµÄ¶ÁĞ´ÃüÁî */
+			if (cmd->device->use_10_for_rw &&/* æ‰§è¡Œäº†10å­—èŠ‚çš„è¯»å†™å‘½ä»¤ */
 			    (cmd->cmnd[0] == READ_10 ||
 			     cmd->cmnd[0] == WRITE_10)) {
-				cmd->device->use_10_for_rw = 0;/* ¹Ø±Õ´Ë±êÖ¾£¬ÖØÊÔÊ±¾ÍÖ»·¢ËÍ6×Ö½ÚÃüÁîÁË */
+				cmd->device->use_10_for_rw = 0;/* å…³é—­æ­¤æ ‡å¿—ï¼Œé‡è¯•æ—¶å°±åªå‘é€6å­—èŠ‚å‘½ä»¤äº† */
 				/*
 				 * This will cause a retry with a 6-byte
 				 * command.
 				 */
-				scsi_requeue_command(q, cmd);/* ½«ÃüÁîÖØĞÂ²åÈë¶ÓÁĞ */
+				scsi_requeue_command(q, cmd);/* å°†å‘½ä»¤é‡æ–°æ’å…¥é˜Ÿåˆ— */
 				result = 0;
-			} else {/* ÆäËûÇé¿öÏÂ£¬¶¼ÊÇÊ§°ÜµÄ½á¹û½áÊø´ËÃüÁî */
+			} else {/* å…¶ä»–æƒ…å†µä¸‹ï¼Œéƒ½æ˜¯å¤±è´¥çš„ç»“æœç»“æŸæ­¤å‘½ä»¤ */
 				cmd = scsi_end_request(cmd, 0, this_count, 1);
 				return;
 			}
 			break;
-		case NOT_READY:/* Éè±¸ÕıÔÚÆô¶¯¹ı³ÌÖĞ£¬»òÕßÁÙÊ±±»×èÈûÁË */
+		case NOT_READY:/* è®¾å¤‡æ­£åœ¨å¯åŠ¨è¿‡ç¨‹ä¸­ï¼Œæˆ–è€…ä¸´æ—¶è¢«é˜»å¡äº† */
 			/*
 			 * If the device is in the process of becoming ready,
 			 * retry.
 			 */
-			if (sshdr.asc == 0x04 && sshdr.ascq == 0x01) {/* ÕıÔÚµÈ´ıÉè±¸¾ÍĞ÷ */
-				scsi_requeue_command(q, cmd);/* ÖØÊÔÃüÁî */
+			if (sshdr.asc == 0x04 && sshdr.ascq == 0x01) {/* æ­£åœ¨ç­‰å¾…è®¾å¤‡å°±ç»ª */
+				scsi_requeue_command(q, cmd);/* é‡è¯•å‘½ä»¤ */
 				return;
 			}
 			printk(KERN_INFO "Device %s not ready.\n",
 			       req->rq_disk ? req->rq_disk->disk_name : "");
-			/* ·ñÔò¾ÍÊÇÉè±¸±»×èÈûÁË£¬½áÊø´ËÃüÁî */
+			/* å¦åˆ™å°±æ˜¯è®¾å¤‡è¢«é˜»å¡äº†ï¼Œç»“æŸæ­¤å‘½ä»¤ */
 			cmd = scsi_end_request(cmd, 0, this_count, 1);
 			return;
-		case VOLUME_OVERFLOW:/* ÕâÖÖÇé¿öÏÂ£¬±íÊ¾Ö´ĞĞÊ§°Ü£¬½áÊøÃüÁî */
+		case VOLUME_OVERFLOW:/* è¿™ç§æƒ…å†µä¸‹ï¼Œè¡¨ç¤ºæ‰§è¡Œå¤±è´¥ï¼Œç»“æŸå‘½ä»¤ */
 			printk(KERN_INFO "Volume overflow <%d %d %d %d> CDB: ",
 			       cmd->device->host->host_no,
 			       (int)cmd->device->channel,
@@ -871,13 +871,13 @@ void scsi_io_completion(struct scsi_cmnd *cmd, unsigned int good_bytes,
 			break;
 		}
 	}			/* driver byte != 0 */
-	if (host_byte(result) == DID_RESET) {/* ÕâÖÖÇé¿öÏÂ±íÊ¾×ÜÏß¸´Î»»òÕß´íÎó»Ö¸´Ô­Òò¶ø¸´Î» */
+	if (host_byte(result) == DID_RESET) {/* è¿™ç§æƒ…å†µä¸‹è¡¨ç¤ºæ€»çº¿å¤ä½æˆ–è€…é”™è¯¯æ¢å¤åŸå› è€Œå¤ä½ */
 		/*
 		 * Third party bus reset or reset for error
 		 * recovery reasons.  Just retry the request
 		 * and see what happens.  
 		 */
-		scsi_requeue_command(q, cmd);/* ÖØÊÔ´ËÃüÁî */
+		scsi_requeue_command(q, cmd);/* é‡è¯•æ­¤å‘½ä»¤ */
 		return;
 	}
 	if (result) {
@@ -993,7 +993,7 @@ static int scsi_issue_flush_fn(request_queue_t *q, struct gendisk *disk,
 	return -EOPNOTSUPP;
 }
 
-/* ÔÚ³õÊ¼»¯ÇëÇó¶ÓÁĞÊ±£¬±¾º¯Êı±»ÉèÖÃÎªÇëÇó¶ÓÁĞµÄÔ¤´¦Àíº¯Êı */
+/* åœ¨åˆå§‹åŒ–è¯·æ±‚é˜Ÿåˆ—æ—¶ï¼Œæœ¬å‡½æ•°è¢«è®¾ç½®ä¸ºè¯·æ±‚é˜Ÿåˆ—çš„é¢„å¤„ç†å‡½æ•° */
 static int scsi_prep_fn(struct request_queue *q, struct request *req)
 {
 	struct scsi_device *sdev = q->queuedata;
@@ -1005,12 +1005,12 @@ static int scsi_prep_fn(struct request_queue *q, struct request *req)
 	 * refuse to process any commands.  The device must be brought
 	 * online before trying any recovery commands
 	 */
-	if (unlikely(!scsi_device_online(sdev))) {/* Éè±¸²»ÔÚÏß£¬ÍË³ö */
+	if (unlikely(!scsi_device_online(sdev))) {/* è®¾å¤‡ä¸åœ¨çº¿ï¼Œé€€å‡º */
 		printk(KERN_ERR "scsi%d (%d:%d): rejecting I/O to offline device\n",
 		       sdev->host->host_no, sdev->id, sdev->lun);
 		return BLKPREP_KILL;
 	}
-	if (unlikely(sdev->sdev_state != SDEV_RUNNING)) {/* ¼ì²éÉè±¸ÊÇ·ñ½ÓÊÜÃüÁî */
+	if (unlikely(sdev->sdev_state != SDEV_RUNNING)) {/* æ£€æŸ¥è®¾å¤‡æ˜¯å¦æ¥å—å‘½ä»¤ */
 		/* OK, we're not in a running state don't prep
 		 * user commands */
 		if (sdev->sdev_state == SDEV_DEL) {
@@ -1035,7 +1035,7 @@ static int scsi_prep_fn(struct request_queue *q, struct request *req)
 	 * these two cases differently.  We differentiate by looking
 	 * at request->cmd, as this tells us the real story.
 	 */
-	/* ÎªÕâ¸öÉè±¸·ÖÅäÃüÁîÃèÊö·û */
+	/* ä¸ºè¿™ä¸ªè®¾å¤‡åˆ†é…å‘½ä»¤æè¿°ç¬¦ */
 	if (req->flags & REQ_SPECIAL) {
 		struct scsi_request *sreq = req->special;
 
@@ -1222,7 +1222,7 @@ static inline int scsi_host_queue_ready(struct request_queue *q,
  *
  * Lock status: IO request lock assumed to be held when called.
  */
-/* SCSI´ÅÅÌ²ßÂÔº¯Êı£¬½«¶ÓÁĞĞ¹Á÷ºó£¬ÏòµÍ²ãÇı¶¯·¢ËÍSCSIÃüÁî */
+/* SCSIç£ç›˜ç­–ç•¥å‡½æ•°ï¼Œå°†é˜Ÿåˆ—æ³„æµåï¼Œå‘ä½å±‚é©±åŠ¨å‘é€SCSIå‘½ä»¤ */
 static void scsi_request_fn(struct request_queue *q)
 {
 	struct scsi_device *sdev = q->queuedata;
@@ -1238,18 +1238,18 @@ static void scsi_request_fn(struct request_queue *q)
 	 * To start with, we keep looping until the queue is empty, or until
 	 * the host is no longer able to accept any more requests.
 	 */
-	while (!blk_queue_plugged(q)) {/* ¶ÓÁĞÃ»ÓĞ±ä»¯ */
+	while (!blk_queue_plugged(q)) {/* é˜Ÿåˆ—æ²¡æœ‰å˜åŒ– */
 		int rtn;
 		/*
 		 * get next queueable request.  We do this early to make sure
 		 * that the request is fully prepared even if we cannot 
 		 * accept it.
 		 */
-		req = elv_next_request(q);/* »ñµÃ¶ÓÁĞÖĞÏÂÒ»¸öÇëÇó */
+		req = elv_next_request(q);/* è·å¾—é˜Ÿåˆ—ä¸­ä¸‹ä¸€ä¸ªè¯·æ±‚ */
 		if (!req || !scsi_dev_queue_ready(q, sdev))
 			break;
 
-		if (unlikely(!scsi_device_online(sdev))) {/* Èç¹ûÉè±¸ÒÑ¾­ÀëÏß£¬ÔòÍË³ö */
+		if (unlikely(!scsi_device_online(sdev))) {/* å¦‚æœè®¾å¤‡å·²ç»ç¦»çº¿ï¼Œåˆ™é€€å‡º */
 			printk(KERN_ERR "scsi%d (%d:%d): rejecting I/O to offline device\n",
 			       sdev->host->host_no, sdev->id, sdev->lun);
 			blkdev_dequeue_request(req);
@@ -1264,16 +1264,16 @@ static void scsi_request_fn(struct request_queue *q)
 		/*
 		 * Remove the request from the request list.
 		 */
-		/* ´Ó¶ÓÁĞÖĞÈ¡³öÇëÇó£¬²¢ÓÉÇı¶¯´¦ÀíÇëÇó£¬ÉèÖÃËüµÄ³¬Ê±¶¨Ê±Æ÷ */
+		/* ä»é˜Ÿåˆ—ä¸­å–å‡ºè¯·æ±‚ï¼Œå¹¶ç”±é©±åŠ¨å¤„ç†è¯·æ±‚ï¼Œè®¾ç½®å®ƒçš„è¶…æ—¶å®šæ—¶å™¨ */
 		if (!(blk_queue_tagged(q) && !blk_queue_start_tag(q, req)))
 			blkdev_dequeue_request(req);
-		/* µİÔö·Ö·¢¸øÇı¶¯µÄÇëÇóÊı */
+		/* é€’å¢åˆ†å‘ç»™é©±åŠ¨çš„è¯·æ±‚æ•° */
 		sdev->device_busy++;
 
 		spin_unlock(q->queue_lock);
 		spin_lock(shost->host_lock);
 
-		/* ¼ì²éÎÒÃÇÊÇ·ñ¿ÉÒÔ·¢ËÍÃüÁîµ½Ö÷»úÊÊÅäÆ÷ */
+		/* æ£€æŸ¥æˆ‘ä»¬æ˜¯å¦å¯ä»¥å‘é€å‘½ä»¤åˆ°ä¸»æœºé€‚é…å™¨ */
 		if (!scsi_host_queue_ready(q, shost, sdev))
 			goto not_ready;
 		if (sdev->single_lun) {
@@ -1282,7 +1282,7 @@ static void scsi_request_fn(struct request_queue *q)
 				goto not_ready;
 			scsi_target(sdev)->starget_sdev_user = sdev;
 		}
-		shost->host_busy++;/* ·Ö·¢µ½Ö÷»úÊÊÅäÆ÷µÄ¼ÆÊı */
+		shost->host_busy++;/* åˆ†å‘åˆ°ä¸»æœºé€‚é…å™¨çš„è®¡æ•° */
 
 		/*
 		 * XXX(hch): This is rather suboptimal, scsi_dispatch_cmd will
@@ -1290,7 +1290,7 @@ static void scsi_request_fn(struct request_queue *q)
 		 */
 		spin_unlock_irq(shost->host_lock);
 
-		cmd = req->special;/* »ñÈ¡SCSIÃüÁîÃèÊö·û£¬ÔÚprep_rq_fnÖĞ×¼±¸µÄ */
+		cmd = req->special;/* è·å–SCSIå‘½ä»¤æè¿°ç¬¦ï¼Œåœ¨prep_rq_fnä¸­å‡†å¤‡çš„ */
 		if (unlikely(cmd == NULL)) {
 			printk(KERN_CRIT "impossible request in %s.\n"
 					 "please mail a stack trace to "
@@ -1303,18 +1303,18 @@ static void scsi_request_fn(struct request_queue *q)
 		 * Finally, initialize any error handling parameters, and set up
 		 * the timers for timeouts.
 		 */
-		scsi_init_cmd_errh(cmd);/* ³õÊ¼»¯´íÎó´¦Àí²ÎÊı£¬ÉèÖÃ³¬Ê±¶¨Ê±Æ÷ */
+		scsi_init_cmd_errh(cmd);/* åˆå§‹åŒ–é”™è¯¯å¤„ç†å‚æ•°ï¼Œè®¾ç½®è¶…æ—¶å®šæ—¶å™¨ */
 
 		/*
 		 * Dispatch the command to the low-level driver.
 		 */
-		rtn = scsi_dispatch_cmd(cmd);/* ·Ö·¢ÃüÁîµ½Çı¶¯ */
+		rtn = scsi_dispatch_cmd(cmd);/* åˆ†å‘å‘½ä»¤åˆ°é©±åŠ¨ */
 		spin_lock_irq(q->queue_lock);
-		if(rtn) {/* ·¢ÉúÁË´íÎó */
+		if(rtn) {/* å‘ç”Ÿäº†é”™è¯¯ */
 			/* we're refusing the command; because of
 			 * the way locks get dropped, we need to 
 			 * check here if plugging is required */
-			if(sdev->device_busy == 0)/* ¼ì²éÊÇ·ñĞèÒª¶Ô¶ÓÁĞ½øĞĞĞîÁ÷ */
+			if(sdev->device_busy == 0)/* æ£€æŸ¥æ˜¯å¦éœ€è¦å¯¹é˜Ÿåˆ—è¿›è¡Œè“„æµ */
 				blk_plug_device(q);
 
 			break;

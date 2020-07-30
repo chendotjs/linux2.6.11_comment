@@ -389,9 +389,9 @@ out:
  *	firmware image for this or any other device.
  **/
 /**
- * ´ÓÓÃ»§¿Õ¼äÎªÄÚºË¶¨Î»²¢Ìá¹©Ò»¸ö¹Ì¼şÓ³ÏñÎÄ¼ş¡£
- *		name:			ĞèÒªµÄ¹Ì¼ş¡£Í¨³£ÊÇ¹©Ó¦ÉÌÌá¹©µÄ¹Ì¼şÎÄ¼şÃû³Æ¡£
- *		firmware_p:		°üº¬ÁËÊµ¼ÊµÄ¹Ì¼ş¡£Çë×¢ÒâÔÚ½«Ó³Ïñ´«µİ¸øÓ²¼şÇ°£¬¶ÔËü½øĞĞ¼ì²é¡£
+ * ä»ç”¨æˆ·ç©ºé—´ä¸ºå†…æ ¸å®šä½å¹¶æä¾›ä¸€ä¸ªå›ºä»¶æ˜ åƒæ–‡ä»¶ã€‚
+ *		name:			éœ€è¦çš„å›ºä»¶ã€‚é€šå¸¸æ˜¯ä¾›åº”å•†æä¾›çš„å›ºä»¶æ–‡ä»¶åç§°ã€‚
+ *		firmware_p:		åŒ…å«äº†å®é™…çš„å›ºä»¶ã€‚è¯·æ³¨æ„åœ¨å°†æ˜ åƒä¼ é€’ç»™ç¡¬ä»¶å‰ï¼Œå¯¹å®ƒè¿›è¡Œæ£€æŸ¥ã€‚
  */
 int
 request_firmware(const struct firmware **firmware_p, const char *name,
@@ -453,7 +453,7 @@ out:
  * release_firmware: - release the resource associated with a firmware image
  **/
 /**
- * ÊÍ·Å±£´æ¹Ì¼şµÄÄÚºË¶ÔÏó¡£
+ * é‡Šæ”¾ä¿å­˜å›ºä»¶çš„å†…æ ¸å¯¹è±¡ã€‚
  */
 void
 release_firmware(const struct firmware *fw)
@@ -524,8 +524,8 @@ request_firmware_work_func(void *arg)
  *
  **/
 /**
- * Óërequest_firmwareÀàËÆ£¬µ«ÊÇËü²¢²»µÈ´ıÓÃ»§¿Õ¼äÍê³É¹Ì¼ş¼ÓÔØ²Ù×÷¡£
- * µ±¼ÓÔØÍê³Éºó£¬»Øµ÷contÍ¨Öª¼ÓÔØ½á¹û¡£
+ * ä¸request_firmwareç±»ä¼¼ï¼Œä½†æ˜¯å®ƒå¹¶ä¸ç­‰å¾…ç”¨æˆ·ç©ºé—´å®Œæˆå›ºä»¶åŠ è½½æ“ä½œã€‚
+ * å½“åŠ è½½å®Œæˆåï¼Œå›è°ƒconté€šçŸ¥åŠ è½½ç»“æœã€‚
  */
 int
 request_firmware_nowait(

@@ -226,7 +226,7 @@ int blkdev_ioctl(struct inode *inode, struct file *file, unsigned cmd,
    This assumes the blkdev's low level compat_ioctl always returns
    ENOIOCTLCMD for unknown ioctls. */
 /**
- * def_blk_fops的compat_ioctl方法
+ * def_blk_fops鐨刢ompat_ioctl鏂规硶
  */
 long compat_blkdev_ioctl(struct file *file, unsigned cmd, unsigned long arg)
 {

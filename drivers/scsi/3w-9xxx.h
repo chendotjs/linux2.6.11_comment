@@ -407,7 +407,7 @@ static twa_message_type twa_error_table[] = {
 #define TW_IOCTL_ERROR_STATUS_AEN_CLOBBER     0x1004 // AEN clobber occurred
 #define TW_IOCTL_ERROR_OS_EFAULT	      -EFAULT // Bad address
 /**
- * µ±ÏµÍ³µ÷ÓÃ±»ĞÅºÅ´ò¶ÏÊ±£¬·µ»Ø-EINTR¡£
+ * å½“ç³»ç»Ÿè°ƒç”¨è¢«ä¿¡å·æ‰“æ–­æ—¶ï¼Œè¿”å›-EINTRã€‚
  */
 #define TW_IOCTL_ERROR_OS_EINTR		      -EINTR  // Interrupted system call
 #define TW_IOCTL_ERROR_OS_EINVAL	      -EINVAL // Invalid argument

@@ -2,7 +2,7 @@
  *
  *			Linux MegaRAID device driver
  *
- * Copyright © 2002  LSI Logic Corporation.
+ * Copyright  2002  LSI Logic Corporation.
  *
  *	   This program is free software; you can redistribute it and/or
  *	   modify it under the terms of the GNU General Public License

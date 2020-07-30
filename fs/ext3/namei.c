@@ -1630,9 +1630,9 @@ static int ext3_add_nondir(handle_t *handle,
  * with d_instantiate(). 
  */
 /**
- * ´´½¨Ò»¸öÐÂÎÄ¼þ
- *	dir:		¸¸Ä¿Â¼µÄinode
- *	dentry:	ÐÂµÄÄ¿Â¼Ïî£¬µ«ÊÇ»¹Ã»ÓÐÓëinode¹ØÁª
+ * åˆ›å»ºä¸€ä¸ªæ–°æ–‡ä»¶
+ *	dir:		çˆ¶ç›®å½•çš„inode
+ *	dentry:	æ–°çš„ç›®å½•é¡¹ï¼Œä½†æ˜¯è¿˜æ²¡æœ‰ä¸Žinodeå…³è”
  */
 static int ext3_create (struct inode * dir, struct dentry * dentry, int mode,
 		struct nameidata *nd)
@@ -1643,7 +1643,7 @@ static int ext3_create (struct inode * dir, struct dentry * dentry, int mode,
 
 retry:
 	/**
-	 * »ñµÃÔ­×Ó²Ù×÷ÃèÊö·û
+	 * èŽ·å¾—åŽŸå­æ“ä½œæè¿°ç¬¦
 	 */
 	handle = ext3_journal_start(dir, EXT3_DATA_TRANS_BLOCKS +
 					EXT3_INDEX_EXTRA_TRANS_BLOCKS + 3 +
@@ -1655,26 +1655,26 @@ retry:
 		handle->h_sync = 1;
 
 	/**
-	 * ÔÚÄ¿Â¼dirËùÔÚµÄ¿é×éÖÐ·ÖÅäÒ»¸öÐÂµÄinode
-	 * ¼´ÔÚ¿é×éµÄinodeÎ»Í¼ÖÐÑ°ÕÒÒ»¸öÎª0µÄÎ»£¬È»ºó±ê¼ÇÎª1
+	 * åœ¨ç›®å½•diræ‰€åœ¨çš„å—ç»„ä¸­åˆ†é…ä¸€ä¸ªæ–°çš„inode
+	 * å³åœ¨å—ç»„çš„inodeä½å›¾ä¸­å¯»æ‰¾ä¸€ä¸ªä¸º0çš„ä½ï¼Œç„¶åŽæ ‡è®°ä¸º1
 	 */
 	inode = ext3_new_inode (handle, dir, mode);
 	err = PTR_ERR(inode);
-	if (!IS_ERR(inode)) {/* ÎÄ¼þ */
+	if (!IS_ERR(inode)) {/* æ–‡ä»¶ */
 		/**
-		 * ÉèÖÃÎÄ¼þ²Ù×÷»Øµ÷º¯Êý
+		 * è®¾ç½®æ–‡ä»¶æ“ä½œå›žè°ƒå‡½æ•°
 		 */
 		inode->i_op = &ext3_file_inode_operations;
 		inode->i_fop = &ext3_file_operations;
 		ext3_set_aops(inode);
 		/**
-		 * ½«ÐÂ·ÖÅäµÄinodeÓëÄ¿Â¼Ïî¹ØÁªÆðÀ´
-		 * ÕâÑù¿ÉÒÔ²éÕÒµ½ÎÄ¼þ
+		 * å°†æ–°åˆ†é…çš„inodeä¸Žç›®å½•é¡¹å…³è”èµ·æ¥
+		 * è¿™æ ·å¯ä»¥æŸ¥æ‰¾åˆ°æ–‡ä»¶
 		 */
 		err = ext3_add_nondir(handle, dentry, inode);
 	}
 	/**
-	 *  ¹Ø±ÕÔ­×Ó²Ù×÷ÃèÊö·û
+	 *  å…³é—­åŽŸå­æ“ä½œæè¿°ç¬¦
 	 */
 	ext3_journal_stop(handle);
 	if (err == -ENOSPC && ext3_should_retry_alloc(dir->i_sb, &retries))
@@ -1876,7 +1876,7 @@ static int empty_dir (struct inode * inode)
  * inodes and truncating linked inodes in ext3_orphan_cleanup().
  */
 /**
- * ½«orphan inodeÌí¼Óµ½´ÅÅÌºÍÄÚ´æÁ´±íÖÐ¡£
+ * å°†orphan inodeæ·»åŠ åˆ°ç£ç›˜å’Œå†…å­˜é“¾è¡¨ä¸­ã€‚
  */
 int ext3_orphan_add(handle_t *handle, struct inode *inode)
 {
@@ -1886,7 +1886,7 @@ int ext3_orphan_add(handle_t *handle, struct inode *inode)
 
 	lock_super(sb);
 	/**
-	 * ÒÑ¾­½«Ëü¼ÓÈëµ½Á´±íÖÐÁË¡£
+	 * å·²ç»å°†å®ƒåŠ å…¥åˆ°é“¾è¡¨ä¸­äº†ã€‚
 	 */
 	if (!list_empty(&EXT3_I(inode)->i_orphan))
 		goto out_unlock;
@@ -1914,12 +1914,12 @@ int ext3_orphan_add(handle_t *handle, struct inode *inode)
 
 	/* Insert this inode at the head of the on-disk orphan list... */
 	/**
-	 * ½«³¬¼¶¿éÖÐ±£´æµÄµÚÒ»¸öorphan½ÚµãÁ´½Óµ½inode¡£
+	 * å°†è¶…çº§å—ä¸­ä¿å­˜çš„ç¬¬ä¸€ä¸ªorphanèŠ‚ç‚¹é“¾æŽ¥åˆ°inodeã€‚
 	 */
 	NEXT_ORPHAN(inode) = le32_to_cpu(EXT3_SB(sb)->s_es->s_last_orphan);
 	/**
-	 * ½«µ±Ç°½Úµã×÷ÎªµÚÒ»¸ö½Úµã¡£
-	 * ¼´Í·²å·¨¡£
+	 * å°†å½“å‰èŠ‚ç‚¹ä½œä¸ºç¬¬ä¸€ä¸ªèŠ‚ç‚¹ã€‚
+	 * å³å¤´æ’æ³•ã€‚
 	 */
 	EXT3_SB(sb)->s_es->s_last_orphan = cpu_to_le32(inode->i_ino);
 	err = ext3_journal_dirty_metadata(handle, EXT3_SB(sb)->s_sbh);
@@ -1936,7 +1936,7 @@ int ext3_orphan_add(handle_t *handle, struct inode *inode)
 	 * This is safe: on error we're going to ignore the orphan list
 	 * anyway on the next recovery. */
 	/**
-	 * ½«orphan½ÚµãÁ´½Óµ½ÄÚ´æÁ´±íÖÐ¡£
+	 * å°†orphanèŠ‚ç‚¹é“¾æŽ¥åˆ°å†…å­˜é“¾è¡¨ä¸­ã€‚
 	 */
 	if (!err)
 		list_add(&EXT3_I(inode)->i_orphan, &EXT3_SB(sb)->s_orphan);
@@ -1955,7 +1955,7 @@ out_unlock:
  * of such inodes stored on disk, because it is finally being cleaned up.
  */
 /**
- * ÔÚ´ÅÅÌºÍÄÚ´æÖÐÉ¾³ýorphan½Úµã¡£
+ * åœ¨ç£ç›˜å’Œå†…å­˜ä¸­åˆ é™¤orphanèŠ‚ç‚¹ã€‚
  */
 int ext3_orphan_del(handle_t *handle, struct inode *inode)
 {
@@ -1968,7 +1968,7 @@ int ext3_orphan_del(handle_t *handle, struct inode *inode)
 
 	lock_super(inode->i_sb);
 	/**
-	 * ²»ÊÇorphan½Úµã¡£
+	 * ä¸æ˜¯orphanèŠ‚ç‚¹ã€‚
 	 */
 	if (list_empty(&ei->i_orphan)) {
 		unlock_super(inode->i_sb);
@@ -1976,11 +1976,11 @@ int ext3_orphan_del(handle_t *handle, struct inode *inode)
 	}
 
 	/**
-	 *  È¡´ÅÅÌÖÐ±£´æµÄÏÂÒ»¸ö½Úµã¡£
+	 *  å–ç£ç›˜ä¸­ä¿å­˜çš„ä¸‹ä¸€ä¸ªèŠ‚ç‚¹ã€‚
 	 */
 	ino_next = NEXT_ORPHAN(inode);
 	/**
-	 * È¡ÄÚ´æÖÐµÄÉÏÒ»¸ö½Úµã¡£
+	 * å–å†…å­˜ä¸­çš„ä¸Šä¸€ä¸ªèŠ‚ç‚¹ã€‚
 	 */
 	prev = ei->i_orphan.prev;
 	sbi = EXT3_SB(inode->i_sb);
@@ -2000,14 +2000,14 @@ int ext3_orphan_del(handle_t *handle, struct inode *inode)
 	if (err)
 		goto out_err;
 
-	/* µÚÒ»¸öorphan ½Úµã */
+	/* ç¬¬ä¸€ä¸ªorphan èŠ‚ç‚¹ */
 	if (prev == &sbi->s_orphan) {
 		jbd_debug(4, "superblock will point to %lu\n", ino_next);
 		BUFFER_TRACE(sbi->s_sbh, "get_write_access");
 		err = ext3_journal_get_write_access(handle, sbi->s_sbh);
 		if (err)
 			goto out_brelse;
-		/* ÐÞ¸ÄÍ·½Úµã£¬É¾³ýµ±Ç°½Úµã*/
+		/* ä¿®æ”¹å¤´èŠ‚ç‚¹ï¼Œåˆ é™¤å½“å‰èŠ‚ç‚¹*/
 		sbi->s_es->s_last_orphan = cpu_to_le32(ino_next);
 		err = ext3_journal_dirty_metadata(handle, sbi->s_sbh);
 	} else {
@@ -2020,7 +2020,7 @@ int ext3_orphan_del(handle_t *handle, struct inode *inode)
 		err = ext3_reserve_inode_write(handle, i_prev, &iloc2);
 		if (err)
 			goto out_brelse;
-		/* ÐÞ¸ÄÇ°Ò»½ÚµãµÄi_dtime£¬Ê¹ÆäÖ¸ÏòÏÂÒ»¸ö½Úµã */
+		/* ä¿®æ”¹å‰ä¸€èŠ‚ç‚¹çš„i_dtimeï¼Œä½¿å…¶æŒ‡å‘ä¸‹ä¸€ä¸ªèŠ‚ç‚¹ */
 		NEXT_ORPHAN(i_prev) = ino_next;
 		err = ext3_mark_iloc_dirty(handle, i_prev, &iloc2);
 	}
@@ -2141,10 +2141,10 @@ static int ext3_unlink(struct inode * dir, struct dentry *dentry)
 	ext3_update_dx_flag(dir);
 	ext3_mark_inode_dirty(handle, dir);
 	inode->i_nlink--;
-	if (!inode->i_nlink) /* Á´½Ó¼ÆÊýÎª0 */
+	if (!inode->i_nlink) /* é“¾æŽ¥è®¡æ•°ä¸º0 */
 		/**
-		 * ½«µ±Ç°½ÚµãÌí¼ÓÁËorphanÁ´±íÖÐ
-		 * ÒÔ±¸iput½áÊøÒýÓÃÊ±³¹µ×É¾³ý 
+		 * å°†å½“å‰èŠ‚ç‚¹æ·»åŠ äº†orphané“¾è¡¨ä¸­
+		 * ä»¥å¤‡iputç»“æŸå¼•ç”¨æ—¶å½»åº•åˆ é™¤ 
 		 */
 		ext3_orphan_add(handle, inode);
 	inode->i_ctime = dir->i_ctime;

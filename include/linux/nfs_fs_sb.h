@@ -8,39 +8,39 @@
  * NFS client parameters stored in the superblock.
  */
 /**
- * NFSµÄ¿Í»§¶ËĞÅÏ¢£¬Ëü·ÅÔÚsuper_block½á¹¹ÖĞ
+ * NFSçš„å®¢æˆ·ç«¯ä¿¡æ¯ï¼Œå®ƒæ”¾åœ¨super_blockç»“æ„ä¸­
  */
 struct nfs_server {
 	/**
-	 * RPC¿Í»§¶Ë½á¹¹Ö¸Õë
+	 * RPCå®¢æˆ·ç«¯ç»“æ„æŒ‡é’ˆ
 	 */
 	struct rpc_clnt *	client;		/* RPC client handle */
 	struct rpc_clnt *	client_sys;	/* 2nd handle for FSINFO */
 	struct nfs_rpc_ops *	rpc_ops;	/* NFS protocol vector */
 	struct backing_dev_info	backing_dev_info;
 	/**
-	 * ÊôĞÔĞÅÏ¢ 
+	 * å±æ€§ä¿¡æ¯ 
 	 */
 	int			flags;		/* various flags */
 	unsigned int		caps;		/* server capabilities */
 	/**
-	 * Ã¿´Î¶ÁµÄ×Ö½ÚÊı 
+	 * æ¯æ¬¡è¯»çš„å­—èŠ‚æ•° 
 	 */
 	unsigned int		rsize;		/* read size */
 	unsigned int		rpages;		/* read size (in pages) */
 	/**
-	 * Ã¿´ÎĞ´µÄ×Ö½ÚÊı 
+	 * æ¯æ¬¡å†™çš„å­—èŠ‚æ•° 
 	 */
 	unsigned int		wsize;		/* write size */
 	unsigned int		wpages;		/* write size (in pages) */
 	unsigned int		wtmult;		/* server disk block size */
 	unsigned int		dtsize;		/* readdir size */
 	/**
-	 * ·şÎñÆ÷¿éµÄ´óĞ¡ 
+	 * æœåŠ¡å™¨å—çš„å¤§å° 
 	 */
 	unsigned int		bsize;		/* server block size */
 	/**
-	 * »º´æ³¬Ê±Ê±¼äĞÅÏ¢ 
+	 * ç¼“å­˜è¶…æ—¶æ—¶é—´ä¿¡æ¯ 
 	 */
 	unsigned int		acregmin;	/* attr cache timeouts */
 	unsigned int		acregmax;
@@ -48,7 +48,7 @@ struct nfs_server {
 	unsigned int		acdirmax;
 	unsigned int		namelen;
 	/**
-	 * Ô¶·½·şÎñÆ÷Ãû³Æ 
+	 * è¿œæ–¹æœåŠ¡å™¨åç§° 
 	 */
 	char *			hostname;	/* remote hostname */
 	struct nfs_fh		fh;

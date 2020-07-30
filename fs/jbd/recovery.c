@@ -28,11 +28,11 @@
  * the different passes can carry information between them. 
  */
 /**
- * »Ö¸´ÈÕÖ¾ËùÓÃĞÅÏ¢
+ * æ¢å¤æ—¥å¿—æ‰€ç”¨ä¿¡æ¯
  */
 struct recovery_info 
 {
-	/* ÆğÖ¹ÊÂÎñºÅ */
+	/* èµ·æ­¢äº‹åŠ¡å· */
 	tid_t		start_transaction;
 	tid_t		end_transaction;
 
@@ -44,11 +44,11 @@ struct recovery_info
 
 /**
  * PASS_SCAN:
- *	²éÕÒµ½ÈÕÖ¾Ä©¶Ë¡£
+ *	æŸ¥æ‰¾åˆ°æ—¥å¿—æœ«ç«¯ã€‚
  * PASS_REVOKE:
- *	²éÕÒÈÕÖ¾ÖĞËùÓĞ³·Ïú¿é¡£
+ *	æŸ¥æ‰¾æ—¥å¿—ä¸­æ‰€æœ‰æ’¤é”€å—ã€‚
  * PASS_REPLAY:
- *	½«ËùÓĞÎ´±»³·ÏúµÄ¿éĞ´Èëµ½´ÅÅÌ£¬ÒÔÈ·±£Ò»ÖÂĞÔ¡£
+ *	å°†æ‰€æœ‰æœªè¢«æ’¤é”€çš„å—å†™å…¥åˆ°ç£ç›˜ï¼Œä»¥ç¡®ä¿ä¸€è‡´æ€§ã€‚
  */
 enum passtype {PASS_SCAN, PASS_REVOKE, PASS_REPLAY};
 static int do_one_pass(journal_t *journal,
@@ -235,7 +235,7 @@ do {									\
  * in the log.  
  */
 /**
- * ÈÕÖ¾»Ö¸´Ö÷º¯Êı
+ * æ—¥å¿—æ¢å¤ä¸»å‡½æ•°
  */
 int journal_recover(journal_t *journal)
 {
@@ -253,24 +253,24 @@ int journal_recover(journal_t *journal)
 	 * unmounted.  
 	 */
 
-	/* ÎÄ¼şÏµÍ³±»Õı³£Ğ¶ÔØ */
+	/* æ–‡ä»¶ç³»ç»Ÿè¢«æ­£å¸¸å¸è½½ */
 	if (!sb->s_start) {
 		jbd_debug(1, "No recovery required, last transaction %d\n",
 			  be32_to_cpu(sb->s_sequence));
 		/**
-		 * µİÔöÈÕÖ¾ĞòºÅ£¬ÍË³ö
+		 * é€’å¢æ—¥å¿—åºå·ï¼Œé€€å‡º
 		 */
 		journal->j_transaction_sequence = be32_to_cpu(sb->s_sequence) + 1;
 		return 0;
 	}
 
-	/* ÕÒµ½ÈÕÖ¾µÄÖÕµãºÍÆğµã */
+	/* æ‰¾åˆ°æ—¥å¿—çš„ç»ˆç‚¹å’Œèµ·ç‚¹ */
 	err = do_one_pass(journal, &info, PASS_SCAN);
 	if (!err)
-		/* ÕÒµ½³·Ïú¿é£¬½«ÆäĞÅÏ¢¶Áµ½¹şÏ£±íÖĞ */
+		/* æ‰¾åˆ°æ’¤é”€å—ï¼Œå°†å…¶ä¿¡æ¯è¯»åˆ°å“ˆå¸Œè¡¨ä¸­ */
 		err = do_one_pass(journal, &info, PASS_REVOKE);
 	if (!err)
-		/* ¸ù¾İÈÕÖ¾ÃèÊö·ûµÄÖ¸Ê¾£¬½«Êı¾İ»Ö¸´µ½´ÅÅÌ */
+		/* æ ¹æ®æ—¥å¿—æè¿°ç¬¦çš„æŒ‡ç¤ºï¼Œå°†æ•°æ®æ¢å¤åˆ°ç£ç›˜ */
 		err = do_one_pass(journal, &info, PASS_REPLAY);
 
 	jbd_debug(0, "JBD: recovery, exit status %d, "
@@ -282,13 +282,13 @@ int journal_recover(journal_t *journal)
 	/* Restart the log at the next transaction ID, thus invalidating
 	 * any existing commit records in the log. */
 	/**
-	 * µİÔöÈÕÖ¾ĞòºÅ£¬Ê¹ÆäÎŞĞ§
+	 * é€’å¢æ—¥å¿—åºå·ï¼Œä½¿å…¶æ— æ•ˆ
 	 */
 	journal->j_transaction_sequence = ++info.end_transaction;
 
-	/* Çå¿Õ³·Ïú±í */
+	/* æ¸…ç©ºæ’¤é”€è¡¨ */
 	journal_clear_revoke(journal);
-	/* Í¬²½ÈÕÖ¾´ÅÅÌÊı¾İ */
+	/* åŒæ­¥æ—¥å¿—ç£ç›˜æ•°æ® */
 	sync_blockdev(journal->j_fs_dev);
 	return err;
 }
@@ -359,9 +359,9 @@ static int do_one_pass(journal_t *journal,
 	 */
 
 	sb = journal->j_superblock;
-	/* ÏÂÒ»¸öÊÂÎñºÅ */
+	/* ä¸‹ä¸€ä¸ªäº‹åŠ¡å· */
 	next_commit_ID = be32_to_cpu(sb->s_sequence);
-	/* ÏÂÒ»¸öÒª¶ÁÈ¡µÄÈÕÖ¾¿éºÅ */
+	/* ä¸‹ä¸€ä¸ªè¦è¯»å–çš„æ—¥å¿—å—å· */
 	next_log_block = be32_to_cpu(sb->s_start);
 
 	first_commit_ID = next_commit_ID;
@@ -378,7 +378,7 @@ static int do_one_pass(journal_t *journal,
 	 */
 
 	/**
-	 * ±éÀúËùÓĞ¿é
+	 * éå†æ‰€æœ‰å—
 	 */
 	while (1) {
 		int			flags;
@@ -405,13 +405,13 @@ static int do_one_pass(journal_t *journal,
 		 * record. */
 
 		jbd_debug(3, "JBD: checking block %ld\n", next_log_block);
-		/* ¶Áµ±Ç°¿é */
+		/* è¯»å½“å‰å— */
 		err = jread(&bh, journal, next_log_block);
 		if (err)
 			goto failed;
 
 		next_log_block++;
-		/* »·ĞÎ»º³åÇø£¬»ØÈÆ´¦Àí */
+		/* ç¯å½¢ç¼“å†²åŒºï¼Œå›ç»•å¤„ç† */
 		wrap(journal, next_log_block);
 
 		/* What kind of buffer is it? 
@@ -423,21 +423,21 @@ static int do_one_pass(journal_t *journal,
 		tmp = (journal_header_t *)bh->b_data;
 
 		/**
-		 * ²»ÊÇÈÕÖ¾ÃèÊö¿é
-		 * ×¢ÒâÔÚÌá½»ÈÕÖ¾Ê±£¬ÔªÊı¾İ¿éÊÇ×ªÒåÁËµÄ
+		 * ä¸æ˜¯æ—¥å¿—æè¿°å—
+		 * æ³¨æ„åœ¨æäº¤æ—¥å¿—æ—¶ï¼Œå…ƒæ•°æ®å—æ˜¯è½¬ä¹‰äº†çš„
 		 */
 		if (tmp->h_magic != cpu_to_be32(JFS_MAGIC_NUMBER)) {
 			brelse(bh);
 			break;
 		}
 
-		/* ÃèÊö¿éÀàĞÍ¼°ÊÂÎñĞòºÅ */
+		/* æè¿°å—ç±»å‹åŠäº‹åŠ¡åºå· */
 		blocktype = be32_to_cpu(tmp->h_blocktype);
 		sequence = be32_to_cpu(tmp->h_sequence);
 		jbd_debug(3, "Found magic %d, sequence %d\n", 
 			  blocktype, sequence);
 
-		/* ºÍÔ¤ÆÚĞòºÅ²»·û£¬ÍË */
+		/* å’Œé¢„æœŸåºå·ä¸ç¬¦ï¼Œé€€ */
 		if (sequence != next_commit_ID) {
 			brelse(bh);
 			break;
@@ -448,13 +448,13 @@ static int do_one_pass(journal_t *journal,
 		 * to do with it?  That depends on the pass... */
 
 		switch(blocktype) {
-		/* ÃèÊö·û¿é£¬ºó¸úÔªÊı¾İ */
+		/* æè¿°ç¬¦å—ï¼Œåè·Ÿå…ƒæ•°æ® */
 		case JFS_DESCRIPTOR_BLOCK:
 			/* If it is a valid descriptor block, replay it
 			 * in pass REPLAY; otherwise, just skip over the
 			 * blocks it describes. */
 			if (pass != PASS_REPLAY) {
-				/* ¼ÆËãÊı¾İ¿éÓĞ¶àÉÙ */
+				/* è®¡ç®—æ•°æ®å—æœ‰å¤šå°‘ */
 				next_log_block +=
 					count_tags(bh, journal->j_blocksize);
 				wrap(journal, next_log_block);
@@ -467,21 +467,21 @@ static int do_one_pass(journal_t *journal,
 			 * getting done here! */
 
 			/**
-			 * ÕâÀï¿ªÊ¼Ö´ĞĞreplay²Ù×÷
-			 * ÏÈ¶Á³öÈÕÖ¾¿éµÄÍ·
+			 * è¿™é‡Œå¼€å§‹æ‰§è¡Œreplayæ“ä½œ
+			 * å…ˆè¯»å‡ºæ—¥å¿—å—çš„å¤´
 			 */
 			tagp = &bh->b_data[sizeof(journal_header_t)];
 			while ((tagp - bh->b_data +sizeof(journal_block_tag_t))
-			       <= journal->j_blocksize) {/* ±éÀúÒ»¸öÕû¿é£¬ÕÒtag */
+			       <= journal->j_blocksize) {/* éå†ä¸€ä¸ªæ•´å—ï¼Œæ‰¾tag */
 				unsigned long io_block;
 
 				tag = (journal_block_tag_t *) tagp;
 				flags = be32_to_cpu(tag->t_flags);
 
-				/* ÏÂÒ»¸öÔªÊı¾İ¿é */
+				/* ä¸‹ä¸€ä¸ªå…ƒæ•°æ®å— */
 				io_block = next_log_block++;
 				wrap(journal, next_log_block);
-				/* ½«ÔªÊı¾İ¶Áµ½ÄÚ´æÖĞ */
+				/* å°†å…ƒæ•°æ®è¯»åˆ°å†…å­˜ä¸­ */
 				err = jread(&obh, journal, io_block);
 				if (err) {/* :( */
 					/* Recover what we can, but
@@ -495,13 +495,13 @@ static int do_one_pass(journal_t *journal,
 					unsigned long blocknr;
 
 					J_ASSERT(obh != NULL);
-					/* Ä¿±êÎÄ¼şµÄ¿éºÅ */
+					/* ç›®æ ‡æ–‡ä»¶çš„å—å· */
 					blocknr = be32_to_cpu(tag->t_blocknr);
 
 					/* If the block has been
 					 * revoked, then we're all done
 					 * here. */
-					/* Î»ÓÚ³·Ïú¿é£¬Ê¡µãÊÂÇé£¬ÂÔ¹ı */
+					/* ä½äºæ’¤é”€å—ï¼Œçœç‚¹äº‹æƒ…ï¼Œç•¥è¿‡ */
 					if (journal_test_revoke
 					    (journal, blocknr, 
 					     next_commit_ID)) {
@@ -513,9 +513,9 @@ static int do_one_pass(journal_t *journal,
 					/* Find a buffer for the new
 					 * data being restored */
 					/**
-					 * ¶ÁÈ¡Ä¿±êÎÄ¼şÏµÍ³µÄÊı¾İ
-					 * Òª±»¸²¸ÇµÄ£¬µ«ÊÇÒ²ĞèÒª¶Á
-					 * ÕâÑù²ÅÄÜÔÚ¿éÉè±¸²ãÖĞĞÎ³É»º´æ
+					 * è¯»å–ç›®æ ‡æ–‡ä»¶ç³»ç»Ÿçš„æ•°æ®
+					 * è¦è¢«è¦†ç›–çš„ï¼Œä½†æ˜¯ä¹Ÿéœ€è¦è¯»
+					 * è¿™æ ·æ‰èƒ½åœ¨å—è®¾å¤‡å±‚ä¸­å½¢æˆç¼“å­˜
 					 */
 					nbh = __getblk(journal->j_fs_dev,
 							blocknr,
@@ -530,30 +530,30 @@ static int do_one_pass(journal_t *journal,
 						goto failed;
 					}
 
-					/* Ëø¶¨Ä¿±ê¿é */
+					/* é”å®šç›®æ ‡å— */
 					lock_buffer(nbh);
-					/* ´ÓÈÕÖ¾ÖĞ¸´ÖÆÊı¾İ¹ıÈ¥ */
+					/* ä»æ—¥å¿—ä¸­å¤åˆ¶æ•°æ®è¿‡å» */
 					memcpy(nbh->b_data, obh->b_data,
 							journal->j_blocksize);
-					/* ×ªÒåÁË */
+					/* è½¬ä¹‰äº† */
 					if (flags & JFS_FLAG_ESCAPE) {
-						/* »Ö¸´±»×ªÒåµÄ×Ö½Ú */
+						/* æ¢å¤è¢«è½¬ä¹‰çš„å­—èŠ‚ */
 						*((__be32 *)bh->b_data) =
 						cpu_to_be32(JFS_MAGIC_NUMBER);
 					}
 
-					/* balabala£¬É¨Î² */
+					/* balabalaï¼Œæ‰«å°¾ */
 					BUFFER_TRACE(nbh, "marking dirty");
 					/**
-					 * ÕâÀï½ö½öÊÇ±ê¼ÇÔà
+					 * è¿™é‡Œä»…ä»…æ˜¯æ ‡è®°è„
 					 */
 					set_buffer_uptodate(nbh);
 					mark_buffer_dirty(nbh);
 					BUFFER_TRACE(nbh, "marking uptodate");
 					++info->nr_replays;
 					/**
-					 * ÕâÀïÒ²Ã»ÓĞÌá½»¿é£¬´úÂë±»×¢ÊÍµôÁË
-					 * ÄÜĞá³öÒ»µãÊ²Ã´²»¶ÔµÄµØ·½Âğ?
+					 * è¿™é‡Œä¹Ÿæ²¡æœ‰æäº¤å—ï¼Œä»£ç è¢«æ³¨é‡Šæ‰äº†
+					 * èƒ½å—…å‡ºä¸€ç‚¹ä»€ä¹ˆä¸å¯¹çš„åœ°æ–¹å—?
 					 */
 					/* ll_rw_block(WRITE, 1, &nbh); */
 					unlock_buffer(nbh);
@@ -573,7 +573,7 @@ static int do_one_pass(journal_t *journal,
 			brelse(bh);
 			continue;
 
-		/* Ìá½»¿é£¬Ó¦µ±¿ªÆôÏÂÒ»¸öÊÂÎñ */
+		/* æäº¤å—ï¼Œåº”å½“å¼€å¯ä¸‹ä¸€ä¸ªäº‹åŠ¡ */
 		case JFS_COMMIT_BLOCK:
 			/* Found an expected commit block: not much to
 			 * do other than move on to the next sequence
@@ -582,18 +582,18 @@ static int do_one_pass(journal_t *journal,
 			next_commit_ID++;
 			continue;
 
-		/* ³·Ïú¿é */
+		/* æ’¤é”€å— */
 		case JFS_REVOKE_BLOCK:
 			/* If we aren't in the REVOKE pass, then we can
 			 * just skip over this block. */
-			if (pass != PASS_REVOKE) {/* ½ö½öÔÚµÚ¶ş²½²ÅÓĞÓÃ */
+			if (pass != PASS_REVOKE) {/* ä»…ä»…åœ¨ç¬¬äºŒæ­¥æ‰æœ‰ç”¨ */
 				brelse(bh);
 				continue;
 			}
 
 			/**
-			 * µÚ¶ş²½
-			 * ½«³·Ïú¿é¼ÇÂ¼µ½ÄÚ´æÖĞ
+			 * ç¬¬äºŒæ­¥
+			 * å°†æ’¤é”€å—è®°å½•åˆ°å†…å­˜ä¸­
 			 */
 			err = scan_revoke_records(journal, bh,
 						  next_commit_ID, info);
@@ -602,7 +602,7 @@ static int do_one_pass(journal_t *journal,
 				goto failed;
 			continue;
 
-		/* ×²ÉÏ¹íÁË */
+		/* æ’ä¸Šé¬¼äº† */
 		default:
 			jbd_debug(3, "Unrecognised magic %d, end of scan.\n",
 				  blocktype);
@@ -618,9 +618,9 @@ static int do_one_pass(journal_t *journal,
 	 * transaction marks the end of the valid log.
 	 */
 
-	/* µÚÒ»±é±éÀú */
+	/* ç¬¬ä¸€ééå† */
 	if (pass == PASS_SCAN)
-		info->end_transaction = next_commit_ID;/* ¼ÇÂ¼ÏÂÆğÖ¹ÊÂÎñºÅ¼´¿É */
+		info->end_transaction = next_commit_ID;/* è®°å½•ä¸‹èµ·æ­¢äº‹åŠ¡å·å³å¯ */
 	else {
 		/* It's really bad news if different passes end up at
 		 * different places (but possible due to IO errors). */
@@ -650,21 +650,21 @@ static int scan_revoke_records(journal_t *journal, struct buffer_head *bh,
 
 	header = (journal_revoke_header_t *) bh->b_data;
 	offset = sizeof(journal_revoke_header_t);
-	/* ³·Ïú¿éÕ¼ÓÃµÄ×Ö½ÚÊı */
+	/* æ’¤é”€å—å ç”¨çš„å­—èŠ‚æ•° */
 	max = be32_to_cpu(header->r_count);
 
-	while (offset < max) {/* ±éÀú´ÅÅÌÉÏËùÓĞ×Ö½Ú */
+	while (offset < max) {/* éå†ç£ç›˜ä¸Šæ‰€æœ‰å­—èŠ‚ */
 		unsigned long blocknr;
 		int err;
 
-		/* ±»³·ÏúµÄ¿éºÅ */
+		/* è¢«æ’¤é”€çš„å—å· */
 		blocknr = be32_to_cpu(* ((__be32 *) (bh->b_data+offset)));
 		offset += 4;
-		/* ¼ÇÂ¼µ½ÄÚ´æÖĞ */
+		/* è®°å½•åˆ°å†…å­˜ä¸­ */
 		err = journal_set_revoke(journal, blocknr, sequence);
 		if (err)
 			return err;
-		/* ³·Ïú¿é¼ÆÊı */
+		/* æ’¤é”€å—è®¡æ•° */
 		++info->nr_revokes;
 	}
 	return 0;

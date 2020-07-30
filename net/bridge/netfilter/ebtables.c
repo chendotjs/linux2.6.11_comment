@@ -863,7 +863,7 @@ static int translate_table(struct ebt_replace *repl,
 				return -EINVAL;
 			}
 
-	/* we now know the following (along with E=mc²):
+	/* we now know the following (along with E=mc):
 	   - the nr of entries in each chain is right
 	   - the size of the allocated space is right
 	   - all valid hooks have a corresponding chain

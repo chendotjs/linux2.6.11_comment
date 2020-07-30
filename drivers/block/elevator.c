@@ -226,13 +226,13 @@ int elevator_global_init(void)
 }
 
 /**
- * ÅÐ¶ÏBIOÊÇ·ñ¿ÉÒÔ±»ºÏ²¢µ½reqÖÐ¡£
+ * åˆ¤æ–­BIOæ˜¯å¦å¯ä»¥è¢«åˆå¹¶åˆ°reqä¸­ã€‚
  */
 int elv_merge(request_queue_t *q, struct request **req, struct bio *bio)
 {
 	elevator_t *e = q->elevator;
 
-	if (e->ops->elevator_merge_fn)/* ¶Ô×îºóÆÚÏÞËã·¨À´Ëµ£¬»Øµ÷º¯ÊýÊÇdeadline_merge */
+	if (e->ops->elevator_merge_fn)/* å¯¹æœ€åŽæœŸé™ç®—æ³•æ¥è¯´ï¼Œå›žè°ƒå‡½æ•°æ˜¯deadline_merge */
 		return e->ops->elevator_merge_fn(q, req, bio);
 
 	return ELEVATOR_NO_MERGE;
@@ -259,7 +259,7 @@ void elv_merge_requests(request_queue_t *q, struct request *rq,
 }
 
 /**
- * ½«ÒÑ¾­È¡³öµÄÇëÇó·Å»Ø¿éÉè±¸ÇëÇó¶ÓÁÐÖÐ¡£
+ * å°†å·²ç»å–å‡ºçš„è¯·æ±‚æ”¾å›žå—è®¾å¤‡è¯·æ±‚é˜Ÿåˆ—ä¸­ã€‚
  */
 void elv_requeue_request(request_queue_t *q, struct request *rq)
 {
@@ -296,7 +296,7 @@ void __elv_add_request(request_queue_t *q, struct request *rq, int where,
 	rq->q = q;
 
 	if (!test_bit(QUEUE_FLAG_DRAIN, &q->queue_flags)) {
-		/* ¶Ô×îºóÆÚÏÞËã·¨À´Ëµ£¬»Øµ÷º¯ÊýÊÇdeadline_add_request */
+		/* å¯¹æœ€åŽæœŸé™ç®—æ³•æ¥è¯´ï¼Œå›žè°ƒå‡½æ•°æ˜¯deadline_add_request */
 		q->elevator->ops->elevator_add_req_fn(q, rq, where);
 
 		if (blk_queue_plugged(q)) {
@@ -326,56 +326,56 @@ void elv_add_request(request_queue_t *q, struct request *rq, int where,
 }
 
 /**
- * ´Óµ÷¶È¶ÓÁÐÖÐ»ñÈ¡ÏÂÒ»¸öÇëÇó¡£
+ * ä»Žè°ƒåº¦é˜Ÿåˆ—ä¸­èŽ·å–ä¸‹ä¸€ä¸ªè¯·æ±‚ã€‚
  */
 static inline struct request *__elv_next_request(request_queue_t *q)
 {
-	/* ´Ó¶ÓÁÐÖÐ»ñÈ¡ÏÂÒ»¸öÇëÇó£¬¶Ô×îºóÆÚÏÞËã·¨À´Ëµ£¬»Øµ÷º¯ÊýÊÇdeadline_dispatch_requests */
+	/* ä»Žé˜Ÿåˆ—ä¸­èŽ·å–ä¸‹ä¸€ä¸ªè¯·æ±‚ï¼Œå¯¹æœ€åŽæœŸé™ç®—æ³•æ¥è¯´ï¼Œå›žè°ƒå‡½æ•°æ˜¯deadline_dispatch_requests */
 	return q->elevator->ops->elevator_next_req_fn(q);
 }
 
 /**
- * ·µ»ØÇëÇó¶ÓÁÐÖÐÏÂÒ»¸öÒª´¦ÀíµÄÇëÇó¡£
- * ËüÒÀÈ»½«ÇëÇó±£´æÔÚ¶ÓÁÐÖÐ£¬µ«ÊÇÎªÆä×öÁË»î¶¯±ê¼Ç¡£¸Ã±ê¼ÇÊÇ·ÀÖ¹IOµ÷¶ÈÆ÷½«ÆäÓëÆäËûÇëÇóºÏ²¢¡£
+ * è¿”å›žè¯·æ±‚é˜Ÿåˆ—ä¸­ä¸‹ä¸€ä¸ªè¦å¤„ç†çš„è¯·æ±‚ã€‚
+ * å®ƒä¾ç„¶å°†è¯·æ±‚ä¿å­˜åœ¨é˜Ÿåˆ—ä¸­ï¼Œä½†æ˜¯ä¸ºå…¶åšäº†æ´»åŠ¨æ ‡è®°ã€‚è¯¥æ ‡è®°æ˜¯é˜²æ­¢IOè°ƒåº¦å™¨å°†å…¶ä¸Žå…¶ä»–è¯·æ±‚åˆå¹¶ã€‚
  */
 struct request *elv_next_request(request_queue_t *q)
 {
 	struct request *rq;
 	int ret;
 
-	while ((rq = __elv_next_request(q)) != NULL) {/* ´ÓµçÌÝ¶ÓÁÐÖÐÈ¡³öÒ»¸öÇëÇó½øÐÐ´¦Àí */
+	while ((rq = __elv_next_request(q)) != NULL) {/* ä»Žç”µæ¢¯é˜Ÿåˆ—ä¸­å–å‡ºä¸€ä¸ªè¯·æ±‚è¿›è¡Œå¤„ç† */
 		/*
 		 * just mark as started even if we don't start it, a request
 		 * that has been delayed should not be passed by new incoming
 		 * requests
 		 */
-		rq->flags |= REQ_STARTED;/* ´Ó¶ÓÁÐÖÐÈ¡³öºó£¬Èç¹û½ñºóÔÙ¿´µ½Õâ¸öÇëÇó£¬±ØÐëÊÇÖØÐÂÈë¶ÓµÄ */
+		rq->flags |= REQ_STARTED;/* ä»Žé˜Ÿåˆ—ä¸­å–å‡ºåŽï¼Œå¦‚æžœä»ŠåŽå†çœ‹åˆ°è¿™ä¸ªè¯·æ±‚ï¼Œå¿…é¡»æ˜¯é‡æ–°å…¥é˜Ÿçš„ */
 
-		if (rq == q->last_merge)/* µ±Ç°ÇëÇóÊÇ¶ÓÁÐÖÐµÄÇëÇó±ß½ç(IOÆÁÕÏ) */
+		if (rq == q->last_merge)/* å½“å‰è¯·æ±‚æ˜¯é˜Ÿåˆ—ä¸­çš„è¯·æ±‚è¾¹ç•Œ(IOå±éšœ) */
 			q->last_merge = NULL;
 
-		/* Èç¹û¶ÓÁÐ²»ÐèÒªÎªSCSI½øÐÐÌØ¶¨µÄ×¼±¸¹¤×÷ÔòÍË³ö */
+		/* å¦‚æžœé˜Ÿåˆ—ä¸éœ€è¦ä¸ºSCSIè¿›è¡Œç‰¹å®šçš„å‡†å¤‡å·¥ä½œåˆ™é€€å‡º */
 		if ((rq->flags & REQ_DONTPREP) || !q->prep_rq_fn)
 			break;
 
-		ret = q->prep_rq_fn(q, rq);/* ÐèÒª½øÐÐÒ»Ð©SCSIÃüÁî×¼±¸¹¤×÷ */
-		if (ret == BLKPREP_OK) {/* ×¼±¸¹¤×÷Ô²Âú·µ»Ø */
+		ret = q->prep_rq_fn(q, rq);/* éœ€è¦è¿›è¡Œä¸€äº›SCSIå‘½ä»¤å‡†å¤‡å·¥ä½œ */
+		if (ret == BLKPREP_OK) {/* å‡†å¤‡å·¥ä½œåœ†æ»¡è¿”å›ž */
 			break;
-		} else if (ret == BLKPREP_DEFER) {/* ÔÝÊ±²»ÄÜ¼ÌÐø´¦Àí£¬ÐèÒª½«ÇëÇóÖØÐÂÈë¶Ó */
+		} else if (ret == BLKPREP_DEFER) {/* æš‚æ—¶ä¸èƒ½ç»§ç»­å¤„ç†ï¼Œéœ€è¦å°†è¯·æ±‚é‡æ–°å…¥é˜Ÿ */
 			rq = NULL;
 			break;
-		} else if (ret == BLKPREP_KILL) {/* ³öÏÖ´íÎó£¬Ã»ÓÐ°ì·¨¼ÌÐø´¦Àí */
+		} else if (ret == BLKPREP_KILL) {/* å‡ºçŽ°é”™è¯¯ï¼Œæ²¡æœ‰åŠžæ³•ç»§ç»­å¤„ç† */
 			int nr_bytes = rq->hard_nr_sectors << 9;
 
 			if (!nr_bytes)
 				nr_bytes = rq->data_len;
 
-			/* ÏòÉÏ²ã·µ»Ø´íÎó */
+			/* å‘ä¸Šå±‚è¿”å›žé”™è¯¯ */
 			blkdev_dequeue_request(rq);
 			rq->flags |= REQ_QUIET;
 			end_that_request_chunk(rq, 0, nr_bytes);
 			end_that_request_last(rq);
-		} else {/* ÒâÍâ */
+		} else {/* æ„å¤– */
 			printk(KERN_ERR "%s: bad return=%d\n", __FUNCTION__,
 								ret);
 			break;
@@ -414,7 +414,7 @@ void elv_remove_request(request_queue_t *q, struct request *rq)
 }
 
 /**
- * ¼ì²éÇëÇó¶ÓÁÐÖÐÊÇ·ñ´æÔÚ´ý´¦ÀíÇëÇó¡£
+ * æ£€æŸ¥è¯·æ±‚é˜Ÿåˆ—ä¸­æ˜¯å¦å­˜åœ¨å¾…å¤„ç†è¯·æ±‚ã€‚
  */
 int elv_queue_empty(request_queue_t *q)
 {
@@ -487,7 +487,7 @@ int elv_may_queue(request_queue_t *q, int rw)
 	return ELV_MQUEUE_MAY;
 }
 
-/* µ±Ò»¸öIOÇëÇóÍê³ÉÊ±µ÷ÓÃ */
+/* å½“ä¸€ä¸ªIOè¯·æ±‚å®Œæˆæ—¶è°ƒç”¨ */
 void elv_completed_request(request_queue_t *q, struct request *rq)
 {
 	elevator_t *e = q->elevator;

@@ -1,7 +1,7 @@
 /* -*- c-basic-offset: 8 -*-
  *
  * cmp.c - Connection Management Procedures
- * Copyright (C) 2001 Kristian Høgsberg
+ * Copyright (C) 2001 Kristian Hgsberg
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

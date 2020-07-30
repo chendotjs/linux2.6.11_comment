@@ -23,7 +23,7 @@
  * second extended-fs super-block data in memory
  */
 /**
- * ÄÚ´æÖĞµÄext2³¬¼¶¿é
+ * å†…å­˜ä¸­çš„ext2è¶…çº§å—
  */
 struct ext2_sb_info {
 	unsigned long s_frag_size;	/* Size of a fragment in bytes */
@@ -35,20 +35,20 @@ struct ext2_sb_info {
 	unsigned long s_itb_per_group;	/* Number of inode table blocks per group */
 	unsigned long s_gdb_count;	/* Number of group descriptor blocks */
 	/**
-	 * ¿ÉÒÔ·ÅÔÚÒ»¸ö¿éÖĞµÄ×éÃèÊö·û¸öÊı¡£
+	 * å¯ä»¥æ”¾åœ¨ä¸€ä¸ªå—ä¸­çš„ç»„æè¿°ç¬¦ä¸ªæ•°ã€‚
 	 */
 	unsigned long s_desc_per_block;	/* Number of group descriptors per block */
 	unsigned long s_groups_count;	/* Number of groups in the fs */
 	/**
-	 * Ö¸Ïò°üº¬´ÅÅÌ³¬¼¶¿éµÄ»º³åÇøµÄ»º³åÇøÊ×²¿¡£
+	 * æŒ‡å‘åŒ…å«ç£ç›˜è¶…çº§å—çš„ç¼“å†²åŒºçš„ç¼“å†²åŒºé¦–éƒ¨ã€‚
 	 */
 	struct buffer_head * s_sbh;	/* Buffer containing the super block */
 	/**
-	 * Ö¸Ïò´ÅÅÌ³¬¼¶¿é¡£
+	 * æŒ‡å‘ç£ç›˜è¶…çº§å—ã€‚
 	 */
 	struct ext2_super_block * s_es;	/* Pointer to the super block in the buffer */
 	/**
-	 * Ö¸ÏòÒ»¸ö°üº¬×éÃèÊö·ûµÄ»º³åÇøÊ×²¿Êı¾İ
+	 * æŒ‡å‘ä¸€ä¸ªåŒ…å«ç»„æè¿°ç¬¦çš„ç¼“å†²åŒºé¦–éƒ¨æ•°æ®
 	 */
 	struct buffer_head ** s_group_desc;
 	unsigned long  s_mount_opt;

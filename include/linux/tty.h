@@ -121,7 +121,7 @@ extern struct screen_info screen_info;
 #define TTY_FLIPBUF_SIZE 512
 
 /**
- * ´Ë½á¹¹ÓÃÓÚ»º³å´ÓÉè±¸½ÓÊÕµÄÊı¾İ¡£
+ * æ­¤ç»“æ„ç”¨äºç¼“å†²ä»è®¾å¤‡æ¥æ”¶çš„æ•°æ®ã€‚
  */
 struct tty_flip_buffer {
 	struct work_struct		work;
@@ -243,17 +243,17 @@ struct device;
  * 						- TYT, 9/14/92
  */
 /**
- * ±£´æµ±Ç°ÌØ¶¨tty¶Ë¿ÚµÄ×´Ì¬¡£
+ * ä¿å­˜å½“å‰ç‰¹å®šttyç«¯å£çš„çŠ¶æ€ã€‚
  */
 struct tty_struct {
 	int	magic;
 	/**
-	 * ¿ØÖÆÉè±¸µÄÇı¶¯³ÌĞò¡£
+	 * æ§åˆ¶è®¾å¤‡çš„é©±åŠ¨ç¨‹åºã€‚
 	 */
 	struct tty_driver *driver;
 	int index;
 	/**
-	 * ttyÉè±¸µÄÏßÂ·¹æ³Ì¡£
+	 * ttyè®¾å¤‡çš„çº¿è·¯è§„ç¨‹ã€‚
 	 */
 	struct tty_ldisc ldisc;
 	struct semaphore termios_sem;
@@ -262,15 +262,15 @@ struct tty_struct {
 	int pgrp;
 	int session;
 	/**
-	 * µ±Ç°ttyÉè±¸µÄ×´Ì¬¡£¿ÉÒÔÓÃÒÔÏÂºê·ÃÎÊ¸ÃÖµ:TTY_THROTTLED¡¢TTY_IO_ERRORµÈ¡£
+	 * å½“å‰ttyè®¾å¤‡çš„çŠ¶æ€ã€‚å¯ä»¥ç”¨ä»¥ä¸‹å®è®¿é—®è¯¥å€¼:TTY_THROTTLEDã€TTY_IO_ERRORç­‰ã€‚
 	 */
 	unsigned long flags;
 	int count;
 	struct winsize winsize;
 	/**
-	 * stopped:		Éè±¸ÊÇ·ñÒÑ¾­Í£Ö¹¡£
-	 * hw_stopped:	Ó²¼şÊÇ·ñÒÑ¾­Í£Ö¹¡£
-	 * low_latency:	ÊÇ·ñÊÇÒ»¸öÂıËÙÉè±¸¡£ÊÇ·ñÄÜ½ÓÊÕ¸ßËÙ´«ÊäµÄÊı¾İ¡£
+	 * stopped:		è®¾å¤‡æ˜¯å¦å·²ç»åœæ­¢ã€‚
+	 * hw_stopped:	ç¡¬ä»¶æ˜¯å¦å·²ç»åœæ­¢ã€‚
+	 * low_latency:	æ˜¯å¦æ˜¯ä¸€ä¸ªæ…¢é€Ÿè®¾å¤‡ã€‚æ˜¯å¦èƒ½æ¥æ”¶é«˜é€Ÿä¼ è¾“çš„æ•°æ®ã€‚
 	 */
 	unsigned char stopped:1, hw_stopped:1, flow_stopped:1, packet:1;
 	unsigned char low_latency:1, warned:1;
@@ -279,20 +279,20 @@ struct tty_struct {
 	struct tty_struct *link;
 	struct fasync_struct *fasync;
 	/**
-	 * ttyÉè±¸µÄ½»Ìæ»º³åÇø¡£
+	 * ttyè®¾å¤‡çš„äº¤æ›¿ç¼“å†²åŒºã€‚
 	 */
 	struct tty_flip_buffer flip;
 	int max_flip_cnt;
 	int alt_speed;		/* For magic substitution of 38400 bps */
 	/**
-	 * µÈ´ı¶ÁÈ¡Êı¾İµÄµÈ´ı¶ÓÁĞ¡£µ±ÓĞÊı¾İ¿É¶ÁÊ±£¬Ó¦µ±»½ĞÑ¸Ã¶ÓÁĞ¡£
+	 * ç­‰å¾…è¯»å–æ•°æ®çš„ç­‰å¾…é˜Ÿåˆ—ã€‚å½“æœ‰æ•°æ®å¯è¯»æ—¶ï¼Œåº”å½“å”¤é†’è¯¥é˜Ÿåˆ—ã€‚
 	 */
 	wait_queue_head_t write_wait;
 	wait_queue_head_t read_wait;
 	struct work_struct hangup_work;
 	void *disc_data;
 	/**
-	 * ¹©Çı¶¯³ÌĞòÁÙÊ±Êı¾İÓÃµÄÖ¸Õë¡£²»ÄÜÓÉttyºËĞÄĞŞ¸Ä¡£
+	 * ä¾›é©±åŠ¨ç¨‹åºä¸´æ—¶æ•°æ®ç”¨çš„æŒ‡é’ˆã€‚ä¸èƒ½ç”±ttyæ ¸å¿ƒä¿®æ”¹ã€‚
 	 */
 	void *driver_data;
 	struct list_head tty_files;
@@ -306,7 +306,7 @@ struct tty_struct {
 	unsigned int column;
 	unsigned char lnext:1, erasing:1, raw:1, real_raw:1, icanon:1;
 	/**
-	 * ttyÉè±¸ÊÇ·ñÕıÔÚ¹Ø±Õ¶Ë¿Ú¡£
+	 * ttyè®¾å¤‡æ˜¯å¦æ­£åœ¨å…³é—­ç«¯å£ã€‚
 	 */
 	unsigned char closing:1;
 	unsigned short minimum_to_wake;

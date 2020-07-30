@@ -665,7 +665,7 @@ int pci_hp_change_slot_info (struct hotplug_slot *slot, struct hotplug_slot_info
 }
 
 /**
- * Ö÷ÒªÓÃÀ´Ö§³ÖCompactPCIµÄÈÈ²å²¦¹¦ÄÜ£¬ÔÚÍ¨ĞÅÏµÍ³ÖĞ½ÏÎª³£¼û¡£
+ * ä¸»è¦ç”¨æ¥æ”¯æŒCompactPCIçš„çƒ­æ’æ‹¨åŠŸèƒ½ï¼Œåœ¨é€šä¿¡ç³»ç»Ÿä¸­è¾ƒä¸ºå¸¸è§ã€‚
  */
 static int __init pci_hotplug_init (void)
 {

@@ -1254,8 +1254,8 @@ int copy_semundo(unsigned long clone_flags, struct task_struct *tsk)
  * and SVID should be consulted to determine what behavior is mandated.
  */
 /**
- * ´Ó½ø³ÌÃèÊö·ûÖĞ·ÖÀë³öÓëĞÅºÅÁ¿Ïà¹ØµÄÊı¾İ½á¹¹¡£
- * Èç¹ûÃ»ÓĞÆäËû½ø³Ì¹²Ïí¸Ã½á¹¹£¬»¹É¾³ıËùÓĞÕâĞ©Êı¾İ½á¹¹¡£
+ * ä»è¿›ç¨‹æè¿°ç¬¦ä¸­åˆ†ç¦»å‡ºä¸ä¿¡å·é‡ç›¸å…³çš„æ•°æ®ç»“æ„ã€‚
+ * å¦‚æœæ²¡æœ‰å…¶ä»–è¿›ç¨‹å…±äº«è¯¥ç»“æ„ï¼Œè¿˜åˆ é™¤æ‰€æœ‰è¿™äº›æ•°æ®ç»“æ„ã€‚
  */
 void exit_sem(struct task_struct *tsk)
 {

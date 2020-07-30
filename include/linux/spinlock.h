@@ -251,16 +251,16 @@ typedef struct {
 				1 : ({preempt_enable(); local_bh_enable(); 0;});})
 
 /**
- * µ±ÄÚºË²»¿ÉÇÀÕ¼Ê±£¬spin_lockµÄÊµÏÖ¹ı³Ì¡£
+ * å½“å†…æ ¸ä¸å¯æŠ¢å æ—¶ï¼Œspin_lockçš„å®ç°è¿‡ç¨‹ã€‚
  */
 #define _spin_lock(lock)	\
 do { \
 	/**
-	 * µ÷ÓÃpreempt_disable½ûÓÃÇÀÕ¼¡£
+	 * è°ƒç”¨preempt_disableç¦ç”¨æŠ¢å ã€‚
 	 */
 	preempt_disable(); \
 	/**
-	 * _raw_spin_lock¶Ô×ÔĞıËøµÄslock×Ö¶ÎÖ´ĞĞÔ­×ÓĞÔµÄ²âÊÔºÍÉèÖÃ²Ù×÷¡£
+	 * _raw_spin_lockå¯¹è‡ªæ—‹é”çš„slockå­—æ®µæ‰§è¡ŒåŸå­æ€§çš„æµ‹è¯•å’Œè®¾ç½®æ“ä½œã€‚
 	 */
 	_raw_spin_lock(lock); \
 	__acquire(lock); \
@@ -454,14 +454,14 @@ do { \
  * methods are defined as nops in the case they are not required.
  */
 /**
- * °Ñ×ÔĞıËøÖÃÎª0£¨ËøÉÏ£©£¬Èç¹ûÔ­À´ËøµÄÖµÊÇ1£¬Ôò·µ»Ø1£¬·ñÔò·µ»Ø0
+ * æŠŠè‡ªæ—‹é”ç½®ä¸º0ï¼ˆé”ä¸Šï¼‰ï¼Œå¦‚æœåŸæ¥é”çš„å€¼æ˜¯1ï¼Œåˆ™è¿”å›1ï¼Œå¦åˆ™è¿”å›0
  */
 #define spin_trylock(lock)	__cond_lock(_spin_trylock(lock))
 #define read_trylock(lock)	__cond_lock(_read_trylock(lock))
 #define write_trylock(lock)	__cond_lock(_write_trylock(lock))
 
 /**
- * Ñ­»·£¬Ö±µ½×ÔĞıËø±äÎª1£¨Î´Ëø£©£¬È»ºó°Ñ×ÔĞıËøÖÃÎª0£¨ËøÉÏ£©
+ * å¾ªç¯ï¼Œç›´åˆ°è‡ªæ—‹é”å˜ä¸º1ï¼ˆæœªé”ï¼‰ï¼Œç„¶åæŠŠè‡ªæ—‹é”ç½®ä¸º0ï¼ˆé”ä¸Šï¼‰
  */
 #define spin_lock(lock)		_spin_lock(lock)
 #define write_lock(lock)	_write_lock(lock)
@@ -487,11 +487,11 @@ do { \
 #define write_lock_bh(lock)		_write_lock_bh(lock)
 
 /**
- * °Ñ×ÔĞıËøÖÃÎª1£¨Î´Ëø£©
+ * æŠŠè‡ªæ—‹é”ç½®ä¸º1ï¼ˆæœªé”ï¼‰
  */
 #define spin_unlock(lock)	_spin_unlock(lock)
 /**
- * ÊÍ·ÅĞ´Ëø¡£
+ * é‡Šæ”¾å†™é”ã€‚
  */
 #define write_unlock(lock)	_write_unlock(lock)
 #define read_unlock(lock)	_read_unlock(lock)

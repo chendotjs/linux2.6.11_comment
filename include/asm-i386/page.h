@@ -30,7 +30,7 @@
  
 #define clear_page(page)	memset((void *)(page), 0, PAGE_SIZE)
 /**
- * ¸´ÖÆÒ³¿òµÄÄÚÈİ
+ * å¤åˆ¶é¡µæ¡†çš„å†…å®¹
  */
 #define copy_page(to,from)	memcpy((void *)(to), (void *)(from), PAGE_SIZE)
 
@@ -143,7 +143,7 @@ extern int sysctl_legacy_va_layout;
 #define pfn_valid(pfn)		((pfn) < max_mapnr)
 #endif /* !CONFIG_DISCONTIGMEM */
 /**
- * ½«ÄÚºËÂß¼­µØÖ·×ª»»ÎªÏàÓ¦µÄpage½á¹¹Ö¸Õë¡£
+ * å°†å†…æ ¸é€»è¾‘åœ°å€è½¬æ¢ä¸ºç›¸åº”çš„pageç»“æ„æŒ‡é’ˆã€‚
  */
 #define virt_to_page(kaddr)	pfn_to_page(__pa(kaddr) >> PAGE_SHIFT)
 

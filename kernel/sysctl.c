@@ -1189,8 +1189,8 @@ int do_sysctl_strategy (ctl_table *table,
  * to the table header on success.
  */
 /**
- * /proc/sys Ä¿Â¼ÏÂµÄÎÄ¼şºÍÄ¿Â¼¶¼¿ÉÒÔÓÃ ctl_table ½á¹¹À´¶¨Òå¡£
- * ctl_table ½á¹¹¿ÉÒÔÓÃregister_sysctl_table ºÍ unregister_sysctl_table À´·Ö±ğ×¢²áºÍĞ¶ÔØ£¬
+ * /proc/sys ç›®å½•ä¸‹çš„æ–‡ä»¶å’Œç›®å½•éƒ½å¯ä»¥ç”¨ ctl_table ç»“æ„æ¥å®šä¹‰ã€‚
+ * ctl_table ç»“æ„å¯ä»¥ç”¨register_sysctl_table å’Œ unregister_sysctl_table æ¥åˆ†åˆ«æ³¨å†Œå’Œå¸è½½ï¼Œ
  */
 struct ctl_table_header *register_sysctl_table(ctl_table * table, 
 					       int insert_at_head)
@@ -1219,8 +1219,8 @@ struct ctl_table_header *register_sysctl_table(ctl_table * table,
  * actually be removed until they are no longer used by anyone.
  */
 /**
- * /proc/sys Ä¿Â¼ÏÂµÄÎÄ¼şºÍÄ¿Â¼¶¼¿ÉÒÔÓÃ ctl_table ½á¹¹À´¶¨Òå¡£
- * ctl_table ½á¹¹¿ÉÒÔÓÃregister_sysctl_table ºÍ unregister_sysctl_table À´·Ö±ğ×¢²áºÍĞ¶ÔØ£¬
+ * /proc/sys ç›®å½•ä¸‹çš„æ–‡ä»¶å’Œç›®å½•éƒ½å¯ä»¥ç”¨ ctl_table ç»“æ„æ¥å®šä¹‰ã€‚
+ * ctl_table ç»“æ„å¯ä»¥ç”¨register_sysctl_table å’Œ unregister_sysctl_table æ¥åˆ†åˆ«æ³¨å†Œå’Œå¸è½½ï¼Œ
  */
 void unregister_sysctl_table(struct ctl_table_header * header)
 {

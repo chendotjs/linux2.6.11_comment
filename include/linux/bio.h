@@ -54,20 +54,20 @@
  * was unsigned short, but we might as well be ready for > 64kB I/O pages
  */
 /**
- * bioÖĞµÄÃ¿¸ö¶ÎÓÉbio_vec±íÊ¾¡£
- * bioÖĞµÄbi_io_vec×Ö¶ÎÖ¸Ïòboi_vecÊı¾İ½á¹¹µÄµÚÒ»¸öÔªËØ¡£bi_vcnt×Ö¶ÎÔò´æ·ÅÁËbio_vecÊı×éÖĞµ±Ç°µÄÔªËØ¸öÊı
+ * bioä¸­çš„æ¯ä¸ªæ®µç”±bio_vecè¡¨ç¤ºã€‚
+ * bioä¸­çš„bi_io_vecå­—æ®µæŒ‡å‘boi_vecæ•°æ®ç»“æ„çš„ç¬¬ä¸€ä¸ªå…ƒç´ ã€‚bi_vcntå­—æ®µåˆ™å­˜æ”¾äº†bio_vecæ•°ç»„ä¸­å½“å‰çš„å…ƒç´ ä¸ªæ•°
  */
 struct bio_vec {
 	/**
-	 * Ö¸Ïò¶ÎµÄÒ³¿òÖĞÒ³ÃèÊö·ûµÄÖ¸Õë
+	 * æŒ‡å‘æ®µçš„é¡µæ¡†ä¸­é¡µæè¿°ç¬¦çš„æŒ‡é’ˆ
 	 */
 	struct page	*bv_page;
 	/**
-	 * ¶ÎµÄ×Ö½Ú³¤¶È
+	 * æ®µçš„å­—èŠ‚é•¿åº¦
 	 */
 	unsigned int	bv_len;
 	/**
-	 * Ò³¿òÖĞ¶ÎÊı¾İµÄÆ«ÒÆÁ¿
+	 * é¡µæ¡†ä¸­æ®µæ•°æ®çš„åç§»é‡
 	 */
 	unsigned int	bv_offset;
 };
@@ -81,42 +81,42 @@ typedef void (bio_destructor_t) (struct bio *);
  * stacking drivers)
  */
 /**
- * Í¨ÓÃ¿éµÄºËĞÄÊı¾İ½á¹¹¡£ËüÃèÊöÁË¿éÉè±¸µÄIO²Ù×÷¡£
- * Í¨ÓÃ¿é²ãÊÇÒ»¸öÄÚºË×é¼ş£¬Ëü´¦ÀíÀ´×ÔÏµÍ³ÖĞµÄËùÓĞ¿éÉè±¸·¢³öµÄÇëÇó¡£
- * Ã¿¸öbio¶¼ÒûÊ³Ò»¸ö´ÅÅÌ´æ´¢Çø±êÊ¶·û£¨´æ´¢ÇøÖĞµÄÆğÊ¼ÉÈÇøºÅºÍÉÈÇøÊı£©¡£
- * ºÍÒ»¸ö»òÕß¶à¸öÃèÊöÓëIO²Ù×÷Ïà¹ØµÄÄÚ´æÇøµÄ¶Î¡£
+ * é€šç”¨å—çš„æ ¸å¿ƒæ•°æ®ç»“æ„ã€‚å®ƒæè¿°äº†å—è®¾å¤‡çš„IOæ“ä½œã€‚
+ * é€šç”¨å—å±‚æ˜¯ä¸€ä¸ªå†…æ ¸ç»„ä»¶ï¼Œå®ƒå¤„ç†æ¥è‡ªç³»ç»Ÿä¸­çš„æ‰€æœ‰å—è®¾å¤‡å‘å‡ºçš„è¯·æ±‚ã€‚
+ * æ¯ä¸ªbioéƒ½é¥®é£Ÿä¸€ä¸ªç£ç›˜å­˜å‚¨åŒºæ ‡è¯†ç¬¦ï¼ˆå­˜å‚¨åŒºä¸­çš„èµ·å§‹æ‰‡åŒºå·å’Œæ‰‡åŒºæ•°ï¼‰ã€‚
+ * å’Œä¸€ä¸ªæˆ–è€…å¤šä¸ªæè¿°ä¸IOæ“ä½œç›¸å…³çš„å†…å­˜åŒºçš„æ®µã€‚
  */
 struct bio {
 	/**
-	 * ¿éIO²Ù×÷µÄµÚÒ»¸ö´ÅÅÌÉÈÇø
+	 * å—IOæ“ä½œçš„ç¬¬ä¸€ä¸ªç£ç›˜æ‰‡åŒº
 	 */
 	sector_t		bi_sector;
 	/**
-	 * Á´½Óµ½ÇëÇó¶ÓÁĞÖĞµÄÏÂÒ»¸öbio
+	 * é“¾æ¥åˆ°è¯·æ±‚é˜Ÿåˆ—ä¸­çš„ä¸‹ä¸€ä¸ªbio
 	 */
 	struct bio		*bi_next;	/* request queue link */
 	/**
-	 * Ö¸Ïò¿éÉè±¸ÃèÊö·ûµÄÖ¸Õë
+	 * æŒ‡å‘å—è®¾å¤‡æè¿°ç¬¦çš„æŒ‡é’ˆ
 	 */
 	struct block_device	*bi_bdev;
 	/**
-	 * bioµÄ×´Ì¬±êÖ¾¡£ 
-	 * Èç¹ûÊÇĞ´ÇëÇó£¬×îµÍÓĞĞ§Î»½«±»ÉèÖÃ¡£ĞèÒªÊ¹ÓÃbio_data_dirºêÀ´È·¶¨¶ÁĞ´±êÖ¾¡£
+	 * bioçš„çŠ¶æ€æ ‡å¿—ã€‚ 
+	 * å¦‚æœæ˜¯å†™è¯·æ±‚ï¼Œæœ€ä½æœ‰æ•ˆä½å°†è¢«è®¾ç½®ã€‚éœ€è¦ä½¿ç”¨bio_data_dirå®æ¥ç¡®å®šè¯»å†™æ ‡å¿—ã€‚
 	 */
 	unsigned long		bi_flags;	/* status, command, etc */
 	/**
-	 * io²Ù×÷±êÖ¾¡£ 
+	 * ioæ“ä½œæ ‡å¿—ã€‚ 
 	 */
 	unsigned long		bi_rw;		/* bottom bits READ/WRITE,
 						 * top bits priority
 						 */
 
 	/**
-	 * bioµÄbio_vecÊı×éÖĞµÄÊıÄ¿¡£
+	 * bioçš„bio_vecæ•°ç»„ä¸­çš„æ•°ç›®ã€‚
 	 */
 	unsigned short		bi_vcnt;	/* how many bio_vec's */
 	/**
-	 * bioµÄbio_vecÊı×éÖĞ¶ÎµÄµ±Ç°Ë÷ÒıÖµ
+	 * bioçš„bio_vecæ•°ç»„ä¸­æ®µçš„å½“å‰ç´¢å¼•å€¼
 	 */
 	unsigned short		bi_idx;		/* current index into bvl_vec */
 
@@ -124,7 +124,7 @@ struct bio {
 	 * physical address coalescing is performed.
 	 */
 	/**
-	 * ºÏ²¢Ö®ºóbioÖĞÎïÀí¶ÎµÄÊıÄ¿
+	 * åˆå¹¶ä¹‹åbioä¸­ç‰©ç†æ®µçš„æ•°ç›®
 	 */
 	unsigned short		bi_phys_segments;
 
@@ -132,12 +132,12 @@ struct bio {
 	 * hardware coalescing is performed.
 	 */
 	/**
-	 * ºÏ²¢Ö®ºóÓ²¼ş¶ÎµÄÊıÄ¿¡£
+	 * åˆå¹¶ä¹‹åç¡¬ä»¶æ®µçš„æ•°ç›®ã€‚
 	 */
 	unsigned short		bi_hw_segments;
 
 	/**
-	 * ĞèÒª´«ËÍµÄ×Ö½ÚÊı
+	 * éœ€è¦ä¼ é€çš„å­—èŠ‚æ•°
 	 */
 	unsigned int		bi_size;	/* residual I/O count */
 
@@ -147,40 +147,40 @@ struct bio {
 	 * in this bio
 	 */
 	/**
-	 * Ó²¼ş¶ÎºÏ²¢Ëã·¨Ê¹ÓÃ
+	 * ç¡¬ä»¶æ®µåˆå¹¶ç®—æ³•ä½¿ç”¨
 	 */
 	unsigned int		bi_hw_front_size;
 	/**
-	 * Ó²¼ş¶ÎºÏ²¢Ëã·¨Ê¹ÓÃ
+	 * ç¡¬ä»¶æ®µåˆå¹¶ç®—æ³•ä½¿ç”¨
 	 */
 	unsigned int		bi_hw_back_size;
 
 	/**
-	 * bioµÄbio_vecÊı×éÖĞÔÊĞíµÄ×î´ó¶ÎÊı
+	 * bioçš„bio_vecæ•°ç»„ä¸­å…è®¸çš„æœ€å¤§æ®µæ•°
 	 */
 	unsigned int		bi_max_vecs;	/* max bvl_vecs we can hold */
 
 	/**
-	 * Ö¸ÏòbioµÄbio_vecÊı×éµÄÖ¸Õë£¬ËüÃèÊöÁËÒª´«ËÍµÄÊı¾İ»º³åÇø¡£
+	 * æŒ‡å‘bioçš„bio_vecæ•°ç»„çš„æŒ‡é’ˆï¼Œå®ƒæè¿°äº†è¦ä¼ é€çš„æ•°æ®ç¼“å†²åŒºã€‚
 	 */
 	struct bio_vec		*bi_io_vec;	/* the actual vec list */
 
 	/**
-	 * bioµÄIO²Ù×÷½áÊøÊ±µ÷ÓÃµÄ·½·¨
+	 * bioçš„IOæ“ä½œç»“æŸæ—¶è°ƒç”¨çš„æ–¹æ³•
 	 */
 	bio_end_io_t		*bi_end_io;
 	/**
-	 * bioµÄÒıÓÃ¼ÆÊıÆ÷
+	 * bioçš„å¼•ç”¨è®¡æ•°å™¨
 	 */
 	atomic_t		bi_cnt;		/* pin count */
 
 	/**
-	 * Í¨ÓÃ¿é²ãºÍ¿éÉè±¸Çı¶¯³ÌĞòµÄIOÍê³É·½·¨Ê¹ÓÃµÄÖ¸Õë
+	 * é€šç”¨å—å±‚å’Œå—è®¾å¤‡é©±åŠ¨ç¨‹åºçš„IOå®Œæˆæ–¹æ³•ä½¿ç”¨çš„æŒ‡é’ˆ
 	 */
 	void			*bi_private;
 
 	/**
-	 * ÊÍ·ÅbioÊ±µ÷ÓÃµÄÎö¹¹·½·¨£¨Í¨³£ÊÇbio_destructor·½·¨£©
+	 * é‡Šæ”¾bioæ—¶è°ƒç”¨çš„ææ„æ–¹æ³•ï¼ˆé€šå¸¸æ˜¯bio_destructoræ–¹æ³•ï¼‰
 	 */
 	bio_destructor_t	*bi_destructor;	/* destructor */
 };
@@ -191,8 +191,8 @@ struct bio {
 #define BIO_UPTODATE	0	/* ok after I/O completion */
 #define BIO_RW_BLOCK	1	/* RW_AHEAD set, and read/write would block */
 /**
- * Èç¹ûÇëÇóµÄ¿é²Ù×÷³¬¹ıÁË¿éÉè±¸µÄÉÈÇøÊı£¬bio->bi_flags¾Í»á±»ÖÃÉÏ¸Ã±êÖ¾¡£
- * È»ºóÄÚºË´òÓ¡Ò»Ìõ³ö´í±êÖ¾¡£²¢µ÷ÓÃbio_endioº¯ÊıºóÖÕÖ¹¡£
+ * å¦‚æœè¯·æ±‚çš„å—æ“ä½œè¶…è¿‡äº†å—è®¾å¤‡çš„æ‰‡åŒºæ•°ï¼Œbio->bi_flagså°±ä¼šè¢«ç½®ä¸Šè¯¥æ ‡å¿—ã€‚
+ * ç„¶åå†…æ ¸æ‰“å°ä¸€æ¡å‡ºé”™æ ‡å¿—ã€‚å¹¶è°ƒç”¨bio_endioå‡½æ•°åç»ˆæ­¢ã€‚
  */
 #define BIO_EOF		2	/* out-out-bounds error */
 #define BIO_SEG_VALID	3	/* nr_hw_seg valid */
@@ -221,15 +221,15 @@ struct bio {
  */
 #define BIO_RW		0
 /**
- * bio->bi_rwµÄ±êÖ¾ÖµÖ®Ò»¡£±íÊ¾±¾´ÎIO²Ù×÷ÊÇÒ»´ÎÔ¤¶Á¡£
- * µ±Ò»¸öbioÊÇÔ¤¶Á£¬²¢ÇÒÃ»ÓĞ×ã¹»µÄÄÚ´æÊ±£¬¾Í»áÖ±½ÓÍË³ö²¢µ÷ÓÃbio_endio.
+ * bio->bi_rwçš„æ ‡å¿—å€¼ä¹‹ä¸€ã€‚è¡¨ç¤ºæœ¬æ¬¡IOæ“ä½œæ˜¯ä¸€æ¬¡é¢„è¯»ã€‚
+ * å½“ä¸€ä¸ªbioæ˜¯é¢„è¯»ï¼Œå¹¶ä¸”æ²¡æœ‰è¶³å¤Ÿçš„å†…å­˜æ—¶ï¼Œå°±ä¼šç›´æ¥é€€å‡ºå¹¶è°ƒç”¨bio_endio.
  */
 #define BIO_RW_AHEAD	1
 #define BIO_RW_BARRIER	2
 #define BIO_RW_FAILFAST	3
 /**
- * Í¬²½¶ÁĞ´±êÖ¾¡£
- * Èç¹ûÉèÖÃÁË±¾±êÖ¾£¬ÄÇÃ´__make_requestÍË³ö£¬¾Í»á´ÓÇëÇó¶ÓÁĞÖĞÕª³ı
+ * åŒæ­¥è¯»å†™æ ‡å¿—ã€‚
+ * å¦‚æœè®¾ç½®äº†æœ¬æ ‡å¿—ï¼Œé‚£ä¹ˆ__make_requesté€€å‡ºï¼Œå°±ä¼šä»è¯·æ±‚é˜Ÿåˆ—ä¸­æ‘˜é™¤
  */
 #define BIO_RW_SYNC	4
 
@@ -240,25 +240,25 @@ struct bio {
 #define bio_iovec_idx(bio, idx)	(&((bio)->bi_io_vec[(idx)]))
 #define bio_iovec(bio)		bio_iovec_idx((bio), (bio)->bi_idx)
 /**
- * Ö¸ÏòÏÂÒ»¸ö´«ÊäÒ³µÄpage½á¹¹µÄÖ¸Õë¡£
+ * æŒ‡å‘ä¸‹ä¸€ä¸ªä¼ è¾“é¡µçš„pageç»“æ„çš„æŒ‡é’ˆã€‚
  */
 #define bio_page(bio)		bio_iovec((bio))->bv_page
 /**
- * Ò³ÖĞ±»´«ÊäÊı¾İµÄÆ«ÒÆÁ¿¡£
+ * é¡µä¸­è¢«ä¼ è¾“æ•°æ®çš„åç§»é‡ã€‚
  */
 #define bio_offset(bio)		bio_iovec((bio))->bv_offset
 #define bio_segments(bio)	((bio)->bi_vcnt - (bio)->bi_idx)
 /**
- * µÃµ½BIOÇëÇóÒª´«ÊäµÄÉÈÇøÊı¡£
+ * å¾—åˆ°BIOè¯·æ±‚è¦ä¼ è¾“çš„æ‰‡åŒºæ•°ã€‚
  */
 #define bio_sectors(bio)	((bio)->bi_size >> 9)
 /**
- * ÔÚµ±Ç°Ò³ÖĞ´«ÊäµÄÉÈÇøÊıÁ¿¡£
+ * åœ¨å½“å‰é¡µä¸­ä¼ è¾“çš„æ‰‡åŒºæ•°é‡ã€‚
  */
 #define bio_cur_sectors(bio)	(bio_iovec(bio)->bv_len >> 9)
 /**
- * ±»´«ÊäÊı¾İµÄÄÚºËÂß¼­µØÖ·¡£Ö»ÓĞÕıÔÚ´¦ÀíµÄÒ³²»ÔÚ¸ß¶ËÄÚ´æÊ±£¬¸ÃµØÖ·²ÅÓĞĞ§¡£
- * Ä¬ÈÏÇé¿öÏÂ£¬¿éÉè±¸×ÓÏµÍ³²»»á°Ñ¸ß¶ËÄÚ´æÖĞµÄ»º³åÇø´«µİ¸øÇı¶¯³ÌĞò£¬µ«ÊÇÈç¹ûÊ¹ÓÃblk_queue_bounce_limit¸Ä±äÁËÕâÒ»ÉèÖÃ£¬¾Í²»Ó¦¸ÃÔÙÊ¹ÓÃbio_dataÁË¡£
+ * è¢«ä¼ è¾“æ•°æ®çš„å†…æ ¸é€»è¾‘åœ°å€ã€‚åªæœ‰æ­£åœ¨å¤„ç†çš„é¡µä¸åœ¨é«˜ç«¯å†…å­˜æ—¶ï¼Œè¯¥åœ°å€æ‰æœ‰æ•ˆã€‚
+ * é»˜è®¤æƒ…å†µä¸‹ï¼Œå—è®¾å¤‡å­ç³»ç»Ÿä¸ä¼šæŠŠé«˜ç«¯å†…å­˜ä¸­çš„ç¼“å†²åŒºä¼ é€’ç»™é©±åŠ¨ç¨‹åºï¼Œä½†æ˜¯å¦‚æœä½¿ç”¨blk_queue_bounce_limitæ”¹å˜äº†è¿™ä¸€è®¾ç½®ï¼Œå°±ä¸åº”è¯¥å†ä½¿ç”¨bio_dataäº†ã€‚
  */
 #define bio_data(bio)		(page_address(bio_page((bio))) + bio_offset((bio)))
 #define bio_barrier(bio)	((bio)->bi_rw & (1 << BIO_RW_BARRIER))
@@ -279,7 +279,7 @@ struct bio {
  * I/O completely on that queue (see ide-dma for example)
  */
 /**
- * Ó³ÉäbioÖĞµÄ´ı´«ÊäÒ³¡£
+ * æ˜ å°„bioä¸­çš„å¾…ä¼ è¾“é¡µã€‚
  */
 #define __bio_kmap_atomic(bio, idx, kmtype)				\
 	(kmap_atomic(bio_iovec_idx((bio), (idx))->bv_page, kmtype) +	\
@@ -323,8 +323,8 @@ struct bio {
 	     bvl++, i++)
 
 /**
- * ÎªÁË´ÓË÷Òıbi_idxÖ¸ÏòµÄµ±Ç°¶Î¿ªÊ¼²»¶ÏÖØ¸´bioÖĞµÄ¶Î£¬
- * Çı¶¯³ÌĞò¿ÉÒÔÖ´ĞĞºêbio_for_each_segment
+ * ä¸ºäº†ä»ç´¢å¼•bi_idxæŒ‡å‘çš„å½“å‰æ®µå¼€å§‹ä¸æ–­é‡å¤bioä¸­çš„æ®µï¼Œ
+ * é©±åŠ¨ç¨‹åºå¯ä»¥æ‰§è¡Œå®bio_for_each_segment
  */
 #define bio_for_each_segment(bvl, bio, i)				\
 	__bio_for_each_segment(bvl, bio, i, (bio)->bi_idx)
@@ -399,7 +399,7 @@ extern int bio_uncopy_user(struct bio *);
  * Hence the `extern inline'.
  */
 /**
- * ÎªÈÎºÎ»º³åÇø·µ»ØÄÚ´æĞéÄâµØÖ·¡£
+ * ä¸ºä»»ä½•ç¼“å†²åŒºè¿”å›å†…å­˜è™šæ‹Ÿåœ°å€ã€‚
  */
 extern inline char *bvec_kmap_irq(struct bio_vec *bvec, unsigned long *flags)
 {

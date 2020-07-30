@@ -1,7 +1,7 @@
 /*
  * linux/drivers/video/virgefb.c -- CyberVision64/3D frame buffer device
  *
- *    Copyright (C) 1997 André Heynatz
+ *    Copyright (C) 1997 Andr Heynatz
  *
  *
  * This file is based on the CyberVision frame buffer device (cyberfb.c):

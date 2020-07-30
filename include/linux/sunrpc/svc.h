@@ -28,36 +28,36 @@
  * We currently do not support more than one RPC program per daemon.
  */
 /**
- * RPC·şÎñ¡£
+ * RPCæœåŠ¡ã€‚
  */
 struct svc_serv {
 	/**
-	 * ¿ÕÏĞ·şÎñÏß³ÌÁ´±í¡£
+	 * ç©ºé—²æœåŠ¡çº¿ç¨‹é“¾è¡¨ã€‚
 	 */
 	struct list_head	sv_threads;	/* idle server threads */
 	/**
-	 * ¹ÒÆğµÄÌ×½Ó×Ö¡£
+	 * æŒ‚èµ·çš„å¥—æ¥å­—ã€‚
 	 */
 	struct list_head	sv_sockets;	/* pending sockets */
 	/**
-	 * RPC³ÌĞò¡£
+	 * RPCç¨‹åºã€‚
 	 */
 	struct svc_program *	sv_program;	/* RPC program */
 	/**
-	 * RPCÍ³¼ÆÊı×Ö 
+	 * RPCç»Ÿè®¡æ•°å­— 
 	 */
 	struct svc_stat *	sv_stats;	/* RPC statistics */
 	spinlock_t		sv_lock;
 	/**
-	 * ·şÎñÏß³ÌµÄ¸öÊı 
+	 * æœåŠ¡çº¿ç¨‹çš„ä¸ªæ•° 
 	 */
 	unsigned int		sv_nrthreads;	/* # of server threads */
 	/**
-	 * Êı¾İ±¨»º³å³Ø´óĞ¡ 
+	 * æ•°æ®æŠ¥ç¼“å†²æ± å¤§å° 
 	 */
 	unsigned int		sv_bufsz;	/* datagram buffer size */
 	/**
-	 * XDR»º³å³Ø´óĞ¡ 
+	 * XDRç¼“å†²æ± å¤§å° 
 	 */
 	unsigned int		sv_xdrsize;	/* XDR buffer size */
 
@@ -66,7 +66,7 @@ struct svc_serv {
 	int			sv_tmpcnt;	/* count of temporary sockets */
 
 	/**
-	 * ·şÎñÃû
+	 * æœåŠ¡å
 	 */
 	char *			sv_name;	/* service name */
 };
@@ -136,38 +136,38 @@ static inline void svc_putu32(struct kvec *iov, u32 val)
  * NOTE: First two items must be prev/next.
  */
 /**
- * NFS·şÎñÏß³ÌÉÏÏÂÎÄ¡£
+ * NFSæœåŠ¡çº¿ç¨‹ä¸Šä¸‹æ–‡ã€‚
  */
 struct svc_rqst {
 	/**
-	 * ¿ÕÏĞÏß³ÌÁ´±íÖ¸Õë
+	 * ç©ºé—²çº¿ç¨‹é“¾è¡¨æŒ‡é’ˆ
 	 */
 	struct list_head	rq_list;	/* idle list */
 	/**
-	 * Ì×½Ó×Ö 
+	 * å¥—æ¥å­— 
 	 */
 	struct svc_sock *	rq_sock;	/* socket */
 	/**
-	 * µØÖ· 
+	 * åœ°å€ 
 	 */
 	struct sockaddr_in	rq_addr;	/* peer address */
 	int			rq_addrlen;
 
 	/**
-	 * RPC·şÎñ½á¹¹Ö¸Õë 
+	 * RPCæœåŠ¡ç»“æ„æŒ‡é’ˆ 
 	 */
 	struct svc_serv *	rq_server;	/* RPC service definition */
 	/**
-	 * RPC¹ı³ÌĞÅÏ¢ 
+	 * RPCè¿‡ç¨‹ä¿¡æ¯ 
 	 */
 	struct svc_procedure *	rq_procinfo;	/* procedure info */
 	struct auth_ops *	rq_authop;	/* authentication flavour */
 	/**
-	 * ¼ø±ğĞÅÏ¢ 
+	 * é‰´åˆ«ä¿¡æ¯ 
 	 */
 	struct svc_cred		rq_cred;	/* auth info */
 	/** 
-	 * ¸ßËÙ½ÓÊÕinet»º³å 
+	 * é«˜é€Ÿæ¥æ”¶inetç¼“å†² 
 	 */
 	struct sk_buff *	rq_skbuff;	/* fast recv inet buffer */
 	struct svc_deferred_req*rq_deferred;	/* deferred request we are replaying */
@@ -182,27 +182,27 @@ struct svc_rqst {
 	short			rq_resused;	/* pages used for result */
 
 	/**
-	 * ´«Êäid 
+	 * ä¼ è¾“id 
 	 */
 	u32			rq_xid;		/* transmission id */
 	/** 
-	 * Ô¶³Ì³ÌĞòºÅ 
+	 * è¿œç¨‹ç¨‹åºå· 
 	 */
 	u32			rq_prog;	/* program number */
 	/**
-	 * Ô¶³Ì°æ±¾ºÅ 
+	 * è¿œç¨‹ç‰ˆæœ¬å· 
 	 */
 	u32			rq_vers;	/* program version */
 	/** 
-	 * Ô¶³Ì¹ı³ÌºÅ 
+	 * è¿œç¨‹è¿‡ç¨‹å· 
 	 */
 	u32			rq_proc;	/* procedure number */
 	/**
-	 * IPĞ­Òé 
+	 * IPåè®® 
 	 */
 	u32			rq_prot;	/* IP protocol */
 	/**
-	 * °²È«¶Ë¿Ú 
+	 * å®‰å…¨ç«¯å£ 
 	 */
 	unsigned short
 				rq_secure  : 1;	/* secure port */
@@ -211,11 +211,11 @@ struct svc_rqst {
 	__u32			rq_daddr;	/* dest addr of request - reply from here */
 
 	/**
-	 * ÒëÂë²ÎÊı
+	 * è¯‘ç å‚æ•°
 	 */
 	void *			rq_argp;	/* decoded arguments */
 	/**
-	 * xdr½á¹û 
+	 * xdrç»“æœ 
 	 */
 	void *			rq_resp;	/* xdr'd results */
 	void *			rq_auth_data;	/* flavor-specific data */
@@ -229,11 +229,11 @@ struct svc_rqst {
 						 */
 	/* Catering to nfsd */
 	/**
-	 * RPC clientĞÅÏ¢ 
+	 * RPC clientä¿¡æ¯ 
 	 */
 	struct auth_domain *	rq_client;	/* RPC peer info */
 	/**
-	 * »º³åĞÅÏ¢ 
+	 * ç¼“å†²ä¿¡æ¯ 
 	 */
 	struct svc_cacherep *	rq_cacherep;	/* cache info */
 	struct knfsd_fh *	rq_reffh;	/* Referrence filehandle, used to
@@ -242,7 +242,7 @@ struct svc_rqst {
 						 */
 
 	/**
-	 * Í¬²½µÈ´ı¶ÓÁĞ
+	 * åŒæ­¥ç­‰å¾…é˜Ÿåˆ—
 	 */
 	wait_queue_head_t	rq_wait;	/* synchronization */
 };

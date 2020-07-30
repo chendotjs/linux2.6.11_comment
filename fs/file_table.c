@@ -19,7 +19,7 @@
 
 /* sysctl tunables... */
 /**
- * ¿É·ÖÅäµÄÎÄ¼ş¶ÔÏóµÄ×î´óÊıÄ¿¡£¿ÉÍ¨¹ı/proc/sys/fs/file-maxÎÄ¼şÀ´ĞŞ¸ÄÕâ¸öÖµ¡£
+ * å¯åˆ†é…çš„æ–‡ä»¶å¯¹è±¡çš„æœ€å¤§æ•°ç›®ã€‚å¯é€šè¿‡/proc/sys/fs/file-maxæ–‡ä»¶æ¥ä¿®æ”¹è¿™ä¸ªå€¼ã€‚
  */
 struct files_stat_struct files_stat = {
 	.max_files = NR_FILE
@@ -65,7 +65,7 @@ static inline void file_free(struct file *f)
  * we run out of memory.
  */
 /**
- * get_empty_filpÎªpipefsÎÄ¼şÏµÍ³ÖĞµÄ¹ÜµÀ·ÖÅäÒ»¸öË÷Òı½Úµã¶ÔÏó²¢¶ÔÆä½øĞĞ³õÊ¼»¯¡£
+ * get_empty_filpä¸ºpipefsæ–‡ä»¶ç³»ç»Ÿä¸­çš„ç®¡é“åˆ†é…ä¸€ä¸ªç´¢å¼•èŠ‚ç‚¹å¯¹è±¡å¹¶å¯¹å…¶è¿›è¡Œåˆå§‹åŒ–ã€‚
  */
 struct file *get_empty_filp(void)
 {
@@ -78,7 +78,7 @@ struct file *get_empty_filp(void)
 	if (files_stat.nr_files < files_stat.max_files ||
 				capable(CAP_SYS_ADMIN)) {
 		/**
-		 * ·ÖÅäÎÄ¼şË÷Òı½áµã
+		 * åˆ†é…æ–‡ä»¶ç´¢å¼•ç»“ç‚¹
 		 */
 		f = kmem_cache_alloc(filp_cachep, GFP_KERNEL);
 		if (f) {
@@ -115,7 +115,7 @@ fail:
 EXPORT_SYMBOL(get_empty_filp);
 
 /**
- * ÊÍ·Å¶ÔfileµÄÒıÓÃ¡£
+ * é‡Šæ”¾å¯¹fileçš„å¼•ç”¨ã€‚
  */
 void fastcall fput(struct file *file)
 {
@@ -148,8 +148,8 @@ void fastcall __fput(struct file *file)
 	if (unlikely(inode->i_cdev != NULL))
 		cdev_put(inode->i_cdev);
 	fops_put(file->f_op);
-	if (file->f_mode & FMODE_WRITE)/* ¿ÉĞ´·½Ê½´ò¿ª */
-		put_write_access(inode);/* ¼õÉÙi_writecount¼ÆÊı */
+	if (file->f_mode & FMODE_WRITE)/* å¯å†™æ–¹å¼æ‰“å¼€ */
+		put_write_access(inode);/* å‡å°‘i_writecountè®¡æ•° */
 	file_kill(file);
 	file->f_dentry = NULL;
 	file->f_vfsmnt = NULL;
@@ -159,7 +159,7 @@ void fastcall __fput(struct file *file)
 }
 
 /**
- * ¸ù¾İ½ø³ÌÎÄ¼şÃèÊö·û»ñµÃÎÄ¼ş¶ÔÏóµÄµØÖ·¡£²¢Ôö¼ÓÆäÒıÓÃ¼ÆÊı¡£
+ * æ ¹æ®è¿›ç¨‹æ–‡ä»¶æè¿°ç¬¦è·å¾—æ–‡ä»¶å¯¹è±¡çš„åœ°å€ã€‚å¹¶å¢åŠ å…¶å¼•ç”¨è®¡æ•°ã€‚
  */
 struct file fastcall *fget(unsigned int fd)
 {

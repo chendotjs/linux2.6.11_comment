@@ -22,9 +22,9 @@ struct dma_coherent_mem {
 };
 
 /**
- * ÎªÁË·ÖÅä»º³åÇøºÍ½¨Á¢Ò»ÖÂĞÔDMAÓ³Éä£¬ÄÚºËÌá¹©ÁËÒÀÀµÌåÏµ½á¹¹µÄpci_alloc_consistentºÍdma_alloc_coherent
- * ËüÃÇ¾ù·µ»ØĞÂ»º³åÇøµÄÏßĞÔµØÖ·ºÍ×ÜÏßµØÖ·¡£
- * ÔÚ80x86ÖĞ£¬ËüÃÇ·µ»ØĞÂ»º³åÇøµÄÏßĞÔµØÖ·ºÍÎïÀíµØÖ·¡£
+ * ä¸ºäº†åˆ†é…ç¼“å†²åŒºå’Œå»ºç«‹ä¸€è‡´æ€§DMAæ˜ å°„ï¼Œå†…æ ¸æä¾›äº†ä¾èµ–ä½“ç³»ç»“æ„çš„pci_alloc_consistentå’Œdma_alloc_coherent
+ * å®ƒä»¬å‡è¿”å›æ–°ç¼“å†²åŒºçš„çº¿æ€§åœ°å€å’Œæ€»çº¿åœ°å€ã€‚
+ * åœ¨80x86ä¸­ï¼Œå®ƒä»¬è¿”å›æ–°ç¼“å†²åŒºçš„çº¿æ€§åœ°å€å’Œç‰©ç†åœ°å€ã€‚
  */
 void *dma_alloc_coherent(struct device *dev, size_t size,
 			   dma_addr_t *dma_handle, int gfp)
@@ -61,8 +61,8 @@ void *dma_alloc_coherent(struct device *dev, size_t size,
 }
 
 /**
- * ÎªÁË·ÖÅä»º³åÇøºÍ½¨Á¢Ò»ÖÂĞÔDMAÓ³Éä£¬ÄÚºËÌá¹©ÁËÒÀÀµÌåÏµ½á¹¹µÄpci_alloc_consistentºÍdma_alloc_coherent
- * ÊÍ·ÅÓ³ÉäºÍ»º³åÇøÊ¹ÓÃpci_free_consistentºÍdma_free_coherent
+ * ä¸ºäº†åˆ†é…ç¼“å†²åŒºå’Œå»ºç«‹ä¸€è‡´æ€§DMAæ˜ å°„ï¼Œå†…æ ¸æä¾›äº†ä¾èµ–ä½“ç³»ç»“æ„çš„pci_alloc_consistentå’Œdma_alloc_coherent
+ * é‡Šæ”¾æ˜ å°„å’Œç¼“å†²åŒºä½¿ç”¨pci_free_consistentå’Œdma_free_coherent
  */
 void dma_free_coherent(struct device *dev, size_t size,
 			 void *vaddr, dma_addr_t dma_handle)

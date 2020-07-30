@@ -35,155 +35,155 @@ enum scsi_device_state {
 				 * to the scsi lld. */
 };
 
-/* SCSIÂß¼­Éè±¸ÃèÊö·û */
+/* SCSIé€»è¾‘è®¾å¤‡æè¿°ç¬¦ */
 struct scsi_device {
-	/* ËùÔÚµÄÖ÷»úÊÊÅäÆ÷ */
+	/* æ‰€åœ¨çš„ä¸»æœºé€‚é…å™¨ */
 	struct Scsi_Host *host;
-	/* ¸ÃÉè±¸µÄÇëÇó¶ÓÁĞµÄÖ¸Õë */
+	/* è¯¥è®¾å¤‡çš„è¯·æ±‚é˜Ÿåˆ—çš„æŒ‡é’ˆ */
 	struct request_queue *request_queue;
 
 	/* the next two are protected by the host->host_lock */
-	/* Á´Èëµ½ËùÊôÖ÷»úÊÊÅäÆ÷µÄSCSIÉè±¸Á´±í */
+	/* é“¾å…¥åˆ°æ‰€å±ä¸»æœºé€‚é…å™¨çš„SCSIè®¾å¤‡é“¾è¡¨ */
 	struct list_head    siblings;   /* list of all devices on this host */
-	/* Á´Èëµ½ËùÊôÄ¿±ê½ÚµãµÄSCSIÉè±¸Á´±í */
+	/* é“¾å…¥åˆ°æ‰€å±ç›®æ ‡èŠ‚ç‚¹çš„SCSIè®¾å¤‡é“¾è¡¨ */
 	struct list_head    same_target_siblings; /* just the devices sharing same target id */
 
-	/* ÒÑ¾­ÅÉ·¢¸øSCSIÉè±¸µ×²ãÇı¶¯µÄÃüÁîÊı */
+	/* å·²ç»æ´¾å‘ç»™SCSIè®¾å¤‡åº•å±‚é©±åŠ¨çš„å‘½ä»¤æ•° */
 	volatile unsigned short device_busy;	/* commands actually active on low-level */
 	spinlock_t sdev_lock;           /* also the request queue_lock */
-	/* ÓÃÓÚ±£»¤±¾½á¹¹Ä³Ğ©Á´±íµÄÖ¸Õë */
+	/* ç”¨äºä¿æŠ¤æœ¬ç»“æ„æŸäº›é“¾è¡¨çš„æŒ‡é’ˆ */
 	spinlock_t list_lock;
-	/* SCSIÃüÁî¶ÓÁĞ */
+	/* SCSIå‘½ä»¤é˜Ÿåˆ— */
 	struct list_head cmd_list;	/* queue of in use SCSI Command structures */
-	/* Á´ÈëËùÊôÖ÷»úÊÊÅäÆ÷µÄ¼¢¶öÁ´±íµÄÁ¬½Ó¼ş */
+	/* é“¾å…¥æ‰€å±ä¸»æœºé€‚é…å™¨çš„é¥¥é¥¿é“¾è¡¨çš„è¿æ¥ä»¶ */
 	struct list_head starved_entry;
-	/* µ±Ç°»î¶¯ÃüÁî */
+	/* å½“å‰æ´»åŠ¨å‘½ä»¤ */
 	struct scsi_cmnd *current_cmnd;	/* currently active command */
-	/* ¶ÓÁĞÉî¶È£¬¼´ÔÊĞíÁ´Èë¶ÓÁĞµÄÃüÁîÊıÁ¿ */
+	/* é˜Ÿåˆ—æ·±åº¦ï¼Œå³å…è®¸é“¾å…¥é˜Ÿåˆ—çš„å‘½ä»¤æ•°é‡ */
 	unsigned short queue_depth;	/* How deep of a queue we want */
-	/* ÉÏ´Î±¨¸æ¶ÓÁĞÂúÊ±µÄ»î¶¯ÃüÁîÊı */
+	/* ä¸Šæ¬¡æŠ¥å‘Šé˜Ÿåˆ—æ»¡æ—¶çš„æ´»åŠ¨å‘½ä»¤æ•° */
 	unsigned short last_queue_full_depth; /* These two are used by */
 	unsigned short last_queue_full_count; /* scsi_track_queue_full() */
-	/* ÉÏ´Î±¨¸æ¶ÓÁĞÂúµÄÊ±¼ä */
+	/* ä¸Šæ¬¡æŠ¥å‘Šé˜Ÿåˆ—æ»¡çš„æ—¶é—´ */
 	unsigned long last_queue_full_time;/* don't let QUEUE_FULLs on the same
 					   jiffie count on our counter, they
 					   could all be from the same event. */
 
 	/**
-	 * ID:	ËùÔÚÄ¿±ê½ÚµãµÄID 
-	 * lun:	Éè±¸µÄLUN±àºÅ
-	 * channel:	ËùÔÚµÄÍ¨µÀºÅ
+	 * ID:	æ‰€åœ¨ç›®æ ‡èŠ‚ç‚¹çš„ID 
+	 * lun:	è®¾å¤‡çš„LUNç¼–å·
+	 * channel:	æ‰€åœ¨çš„é€šé“å·
 	 */
 	unsigned int id, lun, channel;
 
-	/* Éè±¸ÖÆÔìÉÌ */
+	/* è®¾å¤‡åˆ¶é€ å•† */
 	unsigned int manufacturer;	/* Manufacturer of device, for using 
 					 * vendor-specific cmd's */
-	/* Ó²¼şÉÈÇø³¤¶È */
+	/* ç¡¬ä»¶æ‰‡åŒºé•¿åº¦ */
 	unsigned sector_size;	/* size in bytes */
 
-	/* ×¨ÓĞÊı¾İÖ¸Õë */
+	/* ä¸“æœ‰æ•°æ®æŒ‡é’ˆ */
 	void *hostdata;		/* available to low-level driver */
 	char devfs_name[256];	/* devfs junk */
-	/* SCSIÉè±¸ÀàĞÍ */
+	/* SCSIè®¾å¤‡ç±»å‹ */
 	char type;
-	/* SCSI¹æ·¶µÄ°æ±¾ºÅ */
+	/* SCSIè§„èŒƒçš„ç‰ˆæœ¬å· */
 	char scsi_level;
-	/* INQUIRYÖĞµÄPQÓò */
+	/* INQUIRYä¸­çš„PQåŸŸ */
 	char inq_periph_qual;	/* PQ from INQUIRY data */
-	/* INQUIRY×Ö·û´®µÄÓĞĞ§³¤¶È */
+	/* INQUIRYå­—ç¬¦ä¸²çš„æœ‰æ•ˆé•¿åº¦ */
 	unsigned char inquiry_len;	/* valid bytes in 'inquiry' */
-	/* INQUIRY×Ö·û´® */
+	/* INQUIRYå­—ç¬¦ä¸² */
 	unsigned char * inquiry;	/* INQUIRY response data */
-	/* ³§ÉÌ */
+	/* å‚å•† */
 	char * vendor;		/* [back_compat] point into 'inquiry' ... */
-	/* ²úÆ· */
+	/* äº§å“ */
 	char * model;		/* ... after scan; point to static string */
-	/* ²úÆ·ĞŞÕıºÅ */
+	/* äº§å“ä¿®æ­£å· */
 	char * rev;		/* ... "nullnullnullnull" before scan */
-	/* µ±Ç°±êÇ© */
+	/* å½“å‰æ ‡ç­¾ */
 	unsigned char current_tag;	/* current tag */
-	/* ËùÊôÄ¿±ê½Úµã£¬½öÓÃÓÚsingle_lun */
+	/* æ‰€å±ç›®æ ‡èŠ‚ç‚¹ï¼Œä»…ç”¨äºsingle_lun */
 	struct scsi_target      *sdev_target;   /* used only for single_lun */
 
-	/* ¶îÍâ±êÖ¾£¬¿ÉÄÜÊÇÓÃ»§ÉèÖÃµÄ */
+	/* é¢å¤–æ ‡å¿—ï¼Œå¯èƒ½æ˜¯ç”¨æˆ·è®¾ç½®çš„ */
 	unsigned int	sdev_bflags; /* black/white flags as also found in
 				 * scsi_devinfo.[hc]. For now used only to
 				 * pass settings from slave_alloc to scsi
 				 * core. */
-	/* ÊÇ·ñ¿ÉĞ´ */
+	/* æ˜¯å¦å¯å†™ */
 	unsigned writeable:1;
-	/* ÊÇ·ñ¿ÉÒÆ³ı */
+	/* æ˜¯å¦å¯ç§»é™¤ */
 	unsigned removable:1;
-	/* ÊÇ·ñÒÑ¾­²úÉú±ä»¯¶øµ¼ÖÂÊı¾İ²»ÔÙÓĞĞ§ */
+	/* æ˜¯å¦å·²ç»äº§ç”Ÿå˜åŒ–è€Œå¯¼è‡´æ•°æ®ä¸å†æœ‰æ•ˆ */
 	unsigned changed:1;	/* Data invalid due to media change */
-	/* ÕıÃ¦£¬·ÀÖ¹¾ºÕù */
+	/* æ­£å¿™ï¼Œé˜²æ­¢ç«äº‰ */
 	unsigned busy:1;	/* Used to prevent races */
-	/* ¿ÉÒÔ±»ÉÏËø£¬·ÀÖ¹Éè±¸±»ÒÆ³ı */
+	/* å¯ä»¥è¢«ä¸Šé”ï¼Œé˜²æ­¢è®¾å¤‡è¢«ç§»é™¤ */
 	unsigned lockable:1;	/* Able to prevent media removal */
-	/* ÒÑ¾­ÉÏËø£¬²»ÔÊĞíÒÆ³ı½éÖÊ */
+	/* å·²ç»ä¸Šé”ï¼Œä¸å…è®¸ç§»é™¤ä»‹è´¨ */
 	unsigned locked:1;      /* Media removal disabled */
-	/* Éè±¸ÓĞÎÕÊÖÎÊÌâ */
+	/* è®¾å¤‡æœ‰æ¡æ‰‹é—®é¢˜ */
 	unsigned borken:1;	/* Tell the Seagate driver to be 
 				 * painfully slow on this device */
-	/* ¿ÉÒÔ¶Ï¿ªÁ¬½Ó */
+	/* å¯ä»¥æ–­å¼€è¿æ¥ */
 	unsigned disconnect:1;	/* can disconnect */
-	/* Ê¹ÓÃÈí¸´Î»Ñ¡Ïî */
+	/* ä½¿ç”¨è½¯å¤ä½é€‰é¡¹ */
 	unsigned soft_reset:1;	/* Uses soft reset option */
-	/* Éè±¸Ö§³ÖÍ¬²½´«Êä£¬ÓÃÓÚSPIÉè±¸ */
+	/* è®¾å¤‡æ”¯æŒåŒæ­¥ä¼ è¾“ï¼Œç”¨äºSPIè®¾å¤‡ */
 	unsigned sdtr:1;	/* Device supports SDTR messages */
-	/* Éè±¸Ö§³Ö16Î»¿íÊı¾İ´«Êä£¬ÓÃÓÚSPIÉè±¸ */
+	/* è®¾å¤‡æ”¯æŒ16ä½å®½æ•°æ®ä¼ è¾“ï¼Œç”¨äºSPIè®¾å¤‡ */
 	unsigned wdtr:1;	/* Device supports WDTR messages */
-	/* Ö§³ÖPPRÏûÏ¢(²¢ĞĞĞ­ÒéÇëÇó) */
+	/* æ”¯æŒPPRæ¶ˆæ¯(å¹¶è¡Œåè®®è¯·æ±‚) */
 	unsigned ppr:1;		/* Device supports PPR messages */
-	/* Ö§³ÖSCSI-II tagged queuing */
+	/* æ”¯æŒSCSI-II tagged queuing */
 	unsigned tagged_supported:1;	/* Supports SCSI-II tagged queuing */
 	unsigned simple_tags:1;	/* simple queue tag messages are enabled */
 	unsigned ordered_tags:1;/* ordered queue tag messages are enabled */
 	unsigned single_lun:1;	/* Indicates we should only allow I/O to
 				 * one of the luns for the device at a 
 				 * time. */
-	/* ±íÊ¾¸Õ×ö¹ı¸´Î» */
+	/* è¡¨ç¤ºåˆšåšè¿‡å¤ä½ */
 	unsigned was_reset:1;	/* There was a bus reset on the bus for 
 				 * this device */
-	/* ±íÊ¾ÆÚÍûÊÕµ½Check Condition */
+	/* è¡¨ç¤ºæœŸæœ›æ”¶åˆ°Check Condition */
 	unsigned expecting_cc_ua:1; /* Expecting a CHECK_CONDITION/UNIT_ATTN
 				     * because we did a bus reset. */
-	/* Ê×ÏÈ³¢ÊÔ10×Ö½ÚµÄ¶ÁĞ´ÃüÁî */
+	/* é¦–å…ˆå°è¯•10å­—èŠ‚çš„è¯»å†™å‘½ä»¤ */
 	unsigned use_10_for_rw:1; /* first try 10-byte read / write */
-	/* Ê×ÏÈ³¢ÊÔ10×Ö½ÚµÄMode Sense/SelectÃüÁî */
+	/* é¦–å…ˆå°è¯•10å­—èŠ‚çš„Mode Sense/Selectå‘½ä»¤ */
 	unsigned use_10_for_ms:1; /* first try 10-byte mode sense/select */
 	unsigned skip_ms_page_8:1;	/* do not use MODE SENSE page 0x08 */
 	unsigned skip_ms_page_3f:1;	/* do not use MODE SENSE page 0x3f */
 	unsigned use_192_bytes_for_3f:1; /* ask for 192 bytes from page 0x3f */
-	/* Ìí¼ÓÉè±¸Ê±£¬²»Òª×Ô¶¯Æô¶¯Ëü */
+	/* æ·»åŠ è®¾å¤‡æ—¶ï¼Œä¸è¦è‡ªåŠ¨å¯åŠ¨å®ƒ */
 	unsigned no_start_on_add:1;	/* do not issue start on add */
-	/* ±íÊ¾ÔÊĞíÔÚ´íÎó´¦Àíº¯ÊıÖĞ·¢ËÍSTART_UNITÃüÁî */
+	/* è¡¨ç¤ºå…è®¸åœ¨é”™è¯¯å¤„ç†å‡½æ•°ä¸­å‘é€START_UNITå‘½ä»¤ */
 	unsigned allow_restart:1; /* issue START_UNIT in error handler */
-	/* Èç¹ûÎª1£¬±íÊ¾½ûÖ¹Éè±¸Á¬½Óµ½¸ß²ãÇı¶¯ */
+	/* å¦‚æœä¸º1ï¼Œè¡¨ç¤ºç¦æ­¢è®¾å¤‡è¿æ¥åˆ°é«˜å±‚é©±åŠ¨ */
 	unsigned no_uld_attach:1; /* disable connecting to upper level drivers */
-	/* ±íÊ¾Éè±¸±»Ñ¡ÖĞÊ±£¬²»ĞèÒªAssert ATN */
+	/* è¡¨ç¤ºè®¾å¤‡è¢«é€‰ä¸­æ—¶ï¼Œä¸éœ€è¦Assert ATN */
 	unsigned select_no_atn:1;
-	/* Èç¹ûÎª1£¬±íÊ¾READ_CAPACITY¿ÉÄÜ¶àÁË1¸ö */
+	/* å¦‚æœä¸º1ï¼Œè¡¨ç¤ºREAD_CAPACITYå¯èƒ½å¤šäº†1ä¸ª */
 	unsigned fix_capacity:1;	/* READ_CAPACITY is too high by 1 */
 
-	/* ×èÈû¼ÆÊıÆ÷ */
+	/* é˜»å¡è®¡æ•°å™¨ */
 	unsigned int device_blocked;	/* Device returned QUEUE_FULL. */
 
-	/* ×î´óµÄ×èÈûÊıÁ¿ */
+	/* æœ€å¤§çš„é˜»å¡æ•°é‡ */
 	unsigned int max_device_blocked; /* what device_blocked counts down from  */
 #define SCSI_DEFAULT_DEVICE_BLOCKED	3
 
 	int timeout;
 
-	/* ÄÚÇ¶Í¨ÓÃÉè±¸ */
+	/* å†…åµŒé€šç”¨è®¾å¤‡ */
 	struct device		sdev_gendev;
-	/* ÄÚÇ¶ÀàÉè±¸ */
+	/* å†…åµŒç±»è®¾å¤‡ */
 	struct class_device	sdev_classdev;
 
-	/* Éè±¸×´Ì¬ */
+	/* è®¾å¤‡çŠ¶æ€ */
 	enum scsi_device_state sdev_state;
-	/* ÓÃÓÚ´«Êä²ã */
+	/* ç”¨äºä¼ è¾“å±‚ */
 	unsigned long		sdev_data[0];
 } __attribute__((aligned(sizeof(unsigned long))));
 #define	to_scsi_device(d)	\
@@ -198,20 +198,20 @@ struct scsi_device {
  * used for single_lun devices. If no one has active IO to the target,
  * starget_sdev_user is NULL, else it points to the active sdev.
  */
-/* SCSIÄ¿±ê½ÚµãÃèÊö·û */
+/* SCSIç›®æ ‡èŠ‚ç‚¹æè¿°ç¬¦ */
 struct scsi_target {
-	/* Èç¹ûÃ»ÓĞIO£¬ÔòÎªNULL¡£·ñÔòÎªÖ¸ÏòÕıÔÚ½øĞĞIOµÄSCSIÉè±¸ */
+	/* å¦‚æœæ²¡æœ‰IOï¼Œåˆ™ä¸ºNULLã€‚å¦åˆ™ä¸ºæŒ‡å‘æ­£åœ¨è¿›è¡ŒIOçš„SCSIè®¾å¤‡ */
 	struct scsi_device	*starget_sdev_user;
-	/* ÄÚÇ¶Í¨ÓÃÉè±¸ */
+	/* å†…åµŒé€šç”¨è®¾å¤‡ */
 	struct device		dev;
-	/* ËùÔÚÍ¨µÀºÅ */
+	/* æ‰€åœ¨é€šé“å· */
 	unsigned int		channel;
-	/* Ä¿±ê½ÚµãµÄID */
+	/* ç›®æ ‡èŠ‚ç‚¹çš„ID */
 	unsigned int		id; /* target id ... replace
 				     * scsi_device.id eventually */
-	/* Èç¹ûÎª1£¬±íÊ¾ĞèÒª±»Ìí¼Ó */
+	/* å¦‚æœä¸º1ï¼Œè¡¨ç¤ºéœ€è¦è¢«æ·»åŠ  */
 	unsigned long		create:1; /* signal that it needs to be added */
-	/* ÓÃÓÚ´«Êä²ã */
+	/* ç”¨äºä¼ è¾“å±‚ */
 	unsigned long		starget_data[0];
 } __attribute__((aligned(sizeof(unsigned long))));
 

@@ -119,7 +119,7 @@ pci_find_slot(unsigned int bus, unsigned int devfn)
  * If no device is found, %NULL is returned.
  */
 /**
- * ÔÚÖ¸¶¨pci_busÉÏµÄÏµÍ³PCIÉè±¸ÁĞ±íÖĞ²éÕÒÖ¸¶¨µÄÉè±¸ºÍPCIÉè±¸µÄ¹¦ÄÜ±àºÅ¡£
+ * åœ¨æŒ‡å®špci_busä¸Šçš„ç³»ç»ŸPCIè®¾å¤‡åˆ—è¡¨ä¸­æŸ¥æ‰¾æŒ‡å®šçš„è®¾å¤‡å’ŒPCIè®¾å¤‡çš„åŠŸèƒ½ç¼–å·ã€‚
  */
 struct pci_dev * pci_get_slot(struct pci_bus *bus, unsigned int devfn)
 {
@@ -227,7 +227,7 @@ pci_find_device(unsigned int vendor, unsigned int device, const struct pci_dev *
  * The reference count for @from is always decremented if it is not %NULL.
  */
 /**
- * Óëpci_get_deviceÀàËÆ£¬µ«ÊÇÔÊĞíÖ¸¶¨×ÓÏµÍ³³§ÉÌºÍ×ÓÏµÍ³Éè±¸¡£
+ * ä¸pci_get_deviceç±»ä¼¼ï¼Œä½†æ˜¯å…è®¸æŒ‡å®šå­ç³»ç»Ÿå‚å•†å’Œå­ç³»ç»Ÿè®¾å¤‡ã€‚
  */
 struct pci_dev * 
 pci_get_subsys(unsigned int vendor, unsigned int device,
@@ -273,7 +273,7 @@ exit:
  * always decremented if it is not %NULL.
  */
 /**
- * ²éÕÒÌØ¶¨µÄPCIÉè±¸¡£É¨Ãèµ±Ç°´æÔÚµÄPCIÉè±¸ÁĞ±í¡£
+ * æŸ¥æ‰¾ç‰¹å®šçš„PCIè®¾å¤‡ã€‚æ‰«æå½“å‰å­˜åœ¨çš„PCIè®¾å¤‡åˆ—è¡¨ã€‚
  */
 struct pci_dev *
 pci_get_device(unsigned int vendor, unsigned int device, struct pci_dev *from)

@@ -102,7 +102,7 @@ void dev_mc_upload(struct net_device *dev)
  *	Delete a device level multicast
  */
 /**
- * É¾³ıÉè±¸µÄ¶à²¥µØÖ·
+ * åˆ é™¤è®¾å¤‡çš„å¤šæ’­åœ°å€
  */
 int dev_mc_delete(struct net_device *dev, void *addr, int alen, int glbl)
 {
@@ -155,7 +155,7 @@ done:
  *	Add a device level multicast
  */
 /**
- * Ìí¼ÓÉè±¸µÄ¶à²¥µØÖ·¡£
+ * æ·»åŠ è®¾å¤‡çš„å¤šæ’­åœ°å€ã€‚
  */
 int dev_mc_add(struct net_device *dev, void *addr, int alen, int glbl)
 {

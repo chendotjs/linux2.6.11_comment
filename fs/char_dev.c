@@ -25,9 +25,9 @@
 #endif
 
 /**
- * kobj_map°üº¬Ò»¸öÉ¢ÁĞ±í£¬ËüÓĞ255¸ö±íÏî¡£²¢ÓÉ0-255·¶Î§µÄÖ÷Éè±¸ºÅ½øĞĞË÷Òı¡£
- * É¢ÁĞ±í´æ·ÅprobeÀàĞÍµÄ¶ÔÏó¡£Ã¿¸ö¶ÔÏó¶¼ÓµÓĞÒ»¸öÒÑ¾­×¢²áµÄÖ÷Éè±¸ºÅºÍ´ÎÉè±¸ºÅ¡£
- * cdev_mapÊÇ×Ö·ûÉè±¸µÄkobjectÓ³ÉäÓò¡£
+ * kobj_mapåŒ…å«ä¸€ä¸ªæ•£åˆ—è¡¨ï¼Œå®ƒæœ‰255ä¸ªè¡¨é¡¹ã€‚å¹¶ç”±0-255èŒƒå›´çš„ä¸»è®¾å¤‡å·è¿›è¡Œç´¢å¼•ã€‚
+ * æ•£åˆ—è¡¨å­˜æ”¾probeç±»å‹çš„å¯¹è±¡ã€‚æ¯ä¸ªå¯¹è±¡éƒ½æ‹¥æœ‰ä¸€ä¸ªå·²ç»æ³¨å†Œçš„ä¸»è®¾å¤‡å·å’Œæ¬¡è®¾å¤‡å·ã€‚
+ * cdev_mapæ˜¯å­—ç¬¦è®¾å¤‡çš„kobjectæ˜ å°„åŸŸã€‚
  */
 static struct kobj_map *cdev_map;
 
@@ -36,38 +36,38 @@ static struct kobj_map *cdev_map;
 static DEFINE_RWLOCK(chrdevs_lock);
 
 /**
- * ÎªÁË¼ÇÂ¼ÒÑ¾­·ÖÅäÄÄĞ©×Ö·ûÉè±¸ºÅ£¬ÄÚºËÊ¹ÓÃÉ¢ÁĞ±íchrdevs£¬±íµÄ´óĞ¡²»³¬¹ıÉè±¸ºÅ·¶Î§¡£
- * Á½¸ö²»Í¬µÄÉè±¸ºÅ·¶Î§¿ÉÄÜ¹²ÏíÍ¬Ò»¸öÖ÷Éè±¸ºÅ£¬µ«ÊÇ·¶Î§²»ÄÜÖØµş¡£
- * chrdevs°üº¬255¸ö±íÏî£¬ÓÉÓÚÉ¢ÁĞº¯ÊıÆÁ±ÎÁËÖ÷Éè±¸ºÅµÄ¸ßËÄÎ»£¬Òò´ËĞèÒª½«Éè±¸½øĞĞÉ¢ÁĞ¡£
- * ³åÍ»Á´±íµÄÃ¿Ò»ÏîÊÇÒ»¸öchar_device_struct
+ * ä¸ºäº†è®°å½•å·²ç»åˆ†é…å“ªäº›å­—ç¬¦è®¾å¤‡å·ï¼Œå†…æ ¸ä½¿ç”¨æ•£åˆ—è¡¨chrdevsï¼Œè¡¨çš„å¤§å°ä¸è¶…è¿‡è®¾å¤‡å·èŒƒå›´ã€‚
+ * ä¸¤ä¸ªä¸åŒçš„è®¾å¤‡å·èŒƒå›´å¯èƒ½å…±äº«åŒä¸€ä¸ªä¸»è®¾å¤‡å·ï¼Œä½†æ˜¯èŒƒå›´ä¸èƒ½é‡å ã€‚
+ * chrdevsåŒ…å«255ä¸ªè¡¨é¡¹ï¼Œç”±äºæ•£åˆ—å‡½æ•°å±è”½äº†ä¸»è®¾å¤‡å·çš„é«˜å››ä½ï¼Œå› æ­¤éœ€è¦å°†è®¾å¤‡è¿›è¡Œæ•£åˆ—ã€‚
+ * å†²çªé“¾è¡¨çš„æ¯ä¸€é¡¹æ˜¯ä¸€ä¸ªchar_device_struct
  */
 static struct char_device_struct {
 	/**
-	 * ³åÍ»Á´±íÖĞÏÂÒ»¸öÔªËØµÄÖ¸Õë
+	 * å†²çªé“¾è¡¨ä¸­ä¸‹ä¸€ä¸ªå…ƒç´ çš„æŒ‡é’ˆ
 	 */
 	struct char_device_struct *next;
 	/**
-	 * Éè±¸ºÅ·¶Î§ÄÚµÄÖ÷Éè±¸ºÅ
+	 * è®¾å¤‡å·èŒƒå›´å†…çš„ä¸»è®¾å¤‡å·
 	 */
 	unsigned int major;
 	/**
-	 * Éè±¸ºÅ·¶Î§ÄÚµÄ³õÊ¼´ÎÉè±¸ºÅ
+	 * è®¾å¤‡å·èŒƒå›´å†…çš„åˆå§‹æ¬¡è®¾å¤‡å·
 	 */
 	unsigned int baseminor;
 	/**
-	 * Éè±¸ºÅ·¶Î§µÄ´óĞ¡
+	 * è®¾å¤‡å·èŒƒå›´çš„å¤§å°
 	 */
 	int minorct;
 	/**
-	 * ´¦ÀíÉè±¸ºÅ·¶Î§ÄÚµÄÉè±¸Çı¶¯³ÌĞòµÄÃû³Æ
+	 * å¤„ç†è®¾å¤‡å·èŒƒå›´å†…çš„è®¾å¤‡é©±åŠ¨ç¨‹åºçš„åç§°
 	 */
 	const char *name;
 	/**
-	 * Ã»ÓĞÊ¹ÓÃ
+	 * æ²¡æœ‰ä½¿ç”¨
 	 */
 	struct file_operations *fops;
 	/**
-	 * Ö¸Ïò×Ö·ûÉè±¸Çı¶¯³ÌĞòÃèÊö·ûµÄÖ¸Õë
+	 * æŒ‡å‘å­—ç¬¦è®¾å¤‡é©±åŠ¨ç¨‹åºæè¿°ç¬¦çš„æŒ‡é’ˆ
 	 */
 	struct cdev *cdev;		/* will die */
 } *chrdevs[MAX_PROBE_HASH];
@@ -109,7 +109,7 @@ int get_chrdev_list(char *page)
  * Returns a -ve errno on failure.
  */
 /**
- * Îª×Ö·ûÉè±¸Çı¶¯³ÌĞò·ÖÅäÒ»¸ö·¶Î§ÄÚµÄÉè±¸ºÅ¡£ËùÓĞĞÂµÄÇı¶¯³ÌĞò¶¼Ê¹ÓÃ¶øÇÒÓ¦µ±Ê¹ÓÃÕâÖÖ·½·¨¶ø²»ÊÇregister_chrdev
+ * ä¸ºå­—ç¬¦è®¾å¤‡é©±åŠ¨ç¨‹åºåˆ†é…ä¸€ä¸ªèŒƒå›´å†…çš„è®¾å¤‡å·ã€‚æ‰€æœ‰æ–°çš„é©±åŠ¨ç¨‹åºéƒ½ä½¿ç”¨è€Œä¸”åº”å½“ä½¿ç”¨è¿™ç§æ–¹æ³•è€Œä¸æ˜¯register_chrdev
  */
 static struct char_device_struct *
 __register_chrdev_region(unsigned int major, unsigned int baseminor,
@@ -120,7 +120,7 @@ __register_chrdev_region(unsigned int major, unsigned int baseminor,
 	int i;
 
 	/**
-	 * ·ÖÅäÒ»¸öĞÂ½á¹¹²¢ÓÃ0Ìî³ä
+	 * åˆ†é…ä¸€ä¸ªæ–°ç»“æ„å¹¶ç”¨0å¡«å……
 	 */
 	cd = kmalloc(sizeof(struct char_device_struct), GFP_KERNEL);
 	if (cd == NULL)
@@ -132,8 +132,8 @@ __register_chrdev_region(unsigned int major, unsigned int baseminor,
 
 	/* temporary */
 	/**
-	 * Ö÷Éè±¸ºÅÎª0£¬ÄÇÃ´ÇëÇó¶¯Ì¬·ÖÅäÒ»¸öÉè±¸ºÅ
-	 * ´ÓÄ©Î²Ïî¿ªÊ¼¼ÌĞøÏòÇ°Ñ°ÕÒÒ»¸öÉĞÎ´Ê¹ÓÃµÄÖ÷Éè±¸ºÅ¶ÔÓ¦µÄ¿Õ³åÍ»Á´±í£¬Ã»ÓĞÕÒµ½¾Í·µ»Ø´íÎó
+	 * ä¸»è®¾å¤‡å·ä¸º0ï¼Œé‚£ä¹ˆè¯·æ±‚åŠ¨æ€åˆ†é…ä¸€ä¸ªè®¾å¤‡å·
+	 * ä»æœ«å°¾é¡¹å¼€å§‹ç»§ç»­å‘å‰å¯»æ‰¾ä¸€ä¸ªå°šæœªä½¿ç”¨çš„ä¸»è®¾å¤‡å·å¯¹åº”çš„ç©ºå†²çªé“¾è¡¨ï¼Œæ²¡æœ‰æ‰¾åˆ°å°±è¿”å›é”™è¯¯
 	 */
 	if (major == 0) {
 		for (i = ARRAY_SIZE(chrdevs)-1; i > 0; i--) {
@@ -150,7 +150,7 @@ __register_chrdev_region(unsigned int major, unsigned int baseminor,
 	}
 
 	/**
-	 * ³õÊ¼»¯char_device_struct½á¹¹ÖĞµÄ³õÊ¼Éè±¸ºÅ¡¢·¶Î§´óĞ¡¡¢Çı¶¯³ÌĞòÃû³Æ
+	 * åˆå§‹åŒ–char_device_structç»“æ„ä¸­çš„åˆå§‹è®¾å¤‡å·ã€èŒƒå›´å¤§å°ã€é©±åŠ¨ç¨‹åºåç§°
 	 */
 	cd->major = major;
 	cd->baseminor = baseminor;
@@ -158,19 +158,19 @@ __register_chrdev_region(unsigned int major, unsigned int baseminor,
 	cd->name = name;
 
 	/**
-	 * Ö´ĞĞÉ¢ÁĞº¯Êı¼ÆËãÓëÖ÷Éè±¸ºÅ¶ÔÓ¦µÄÉ¢ÁĞ±íË÷Òı
+	 * æ‰§è¡Œæ•£åˆ—å‡½æ•°è®¡ç®—ä¸ä¸»è®¾å¤‡å·å¯¹åº”çš„æ•£åˆ—è¡¨ç´¢å¼•
 	 */
 	i = major_to_index(major);
 
 	/**
-	 * ±éÀú³åÍ»Á´±í£¬ÎªĞÂµÄ½á¹¹Ñ°ÕÒÕıÈ·µÄÎ»ÖÃ
+	 * éå†å†²çªé“¾è¡¨ï¼Œä¸ºæ–°çš„ç»“æ„å¯»æ‰¾æ­£ç¡®çš„ä½ç½®
 	 */
 	for (cp = &chrdevs[i]; *cp; cp = &(*cp)->next)
 		if ((*cp)->major > major ||
 		    ((*cp)->major == major && (*cp)->baseminor >= baseminor))
 			break;
 	/**
-	 * Èç¹ûÕÒµ½ÓëÇëÇóµÄÉè±¸ºÅ·¶Î§ÖØµşµÄ·¶Î§£¬Ôò·µ»Ø´íÎó
+	 * å¦‚æœæ‰¾åˆ°ä¸è¯·æ±‚çš„è®¾å¤‡å·èŒƒå›´é‡å çš„èŒƒå›´ï¼Œåˆ™è¿”å›é”™è¯¯
 	 */
 	if (*cp && (*cp)->major == major &&
 	    (*cp)->baseminor < baseminor + minorct) {
@@ -208,8 +208,8 @@ __unregister_chrdev_region(unsigned major, unsigned baseminor, int minorct)
 }
 
 /**
- * register_chrdev_region½ÓÊÕÈı¸ö²ÎÊı£º³õÊ¼Éè±¸ºÅ£¬Éè±¸ºÅ·¶Î§´óĞ¡£¬Çı¶¯Ãû³Æ
- * Îª×Ö·ûÉè±¸·ÖÅäÉè±¸ºÅ¡£ĞÂÇı¶¯¶¼Ó¦µ±Ê¹ÓÃÕâ¸ö·½·¨¡£
+ * register_chrdev_regionæ¥æ”¶ä¸‰ä¸ªå‚æ•°ï¼šåˆå§‹è®¾å¤‡å·ï¼Œè®¾å¤‡å·èŒƒå›´å¤§å°ï¼Œé©±åŠ¨åç§°
+ * ä¸ºå­—ç¬¦è®¾å¤‡åˆ†é…è®¾å¤‡å·ã€‚æ–°é©±åŠ¨éƒ½åº”å½“ä½¿ç”¨è¿™ä¸ªæ–¹æ³•ã€‚
  */
 int register_chrdev_region(dev_t from, unsigned count, const char *name)
 {
@@ -237,8 +237,8 @@ fail:
 }
 
 /**
- * alloc_chrdev_regionÓëregister_chrdev_regionÀàËÆ£¬µ«ÊÇËü¿ÉÒÔ¶¯Ì¬µÄ·ÖÅäÒ»¸öÖ÷Éè±¸ºÅ¡£
- * Ëü½ÓÊÕµÄ²ÎÊıÎªÉè±¸ºÅ·¶Î§ÄÚµÄ³õÊ¼´ÎÉè±¸ºÅ£¬·¶Î§µÄ´óĞ¡¼°Çı¶¯³ÌĞòµÄÃû³Æ¡£
+ * alloc_chrdev_regionä¸register_chrdev_regionç±»ä¼¼ï¼Œä½†æ˜¯å®ƒå¯ä»¥åŠ¨æ€çš„åˆ†é…ä¸€ä¸ªä¸»è®¾å¤‡å·ã€‚
+ * å®ƒæ¥æ”¶çš„å‚æ•°ä¸ºè®¾å¤‡å·èŒƒå›´å†…çš„åˆå§‹æ¬¡è®¾å¤‡å·ï¼ŒèŒƒå›´çš„å¤§å°åŠé©±åŠ¨ç¨‹åºçš„åç§°ã€‚
  */
 int alloc_chrdev_region(dev_t *dev, unsigned baseminor, unsigned count,
 			const char *name)
@@ -252,12 +252,12 @@ int alloc_chrdev_region(dev_t *dev, unsigned baseminor, unsigned count,
 }
 
 /**
- * ×¢²áÒ»¸ö×Ö·ûÉè±¸Çı¶¯³ÌĞòµÄÀÏ·½·¨¡£
- * Îª¸ø¶¨µÄÖ÷Éè±¸ºÅ×¢²á0£­255Îª´ÎÉè±¸ºÅ¡£²¢ÎªÃ¿¸öÉè±¸½¨Á¢Ò»¸ö¶ÔÓ¦µÄÄ¬ÈÏcdev½á¹¹¡£
- * Ê¹ÓÃÕâÒ»½Ó¿ÚµÄÇı¶¯³ÌĞòÄÜ¹»´¦ÀíËùÓĞ256¸ö´ÎÉè±¸ºÅÉÏµÄopenµ÷ÓÃ(¼´Ê¹Ã»ÓĞ¶ÔÓ¦µÄÊµ¼ÊÉè±¸)£¬Ò²²»ÄÜÊ¹ÓÃ´óÓÚ255µÄÖ÷Éè±¸ºÅºÍ´ÎÉè±¸ºÅ¡£
- *		major:		Éè±¸µÄÖ÷Éè±¸ºÅ¡£
- *		name:		Çı¶¯³ÌĞòµÄÃû³Æ¡£
- *		fops:		Ä¬ÈÏµÄfile_operations½á¹¹¡£
+ * æ³¨å†Œä¸€ä¸ªå­—ç¬¦è®¾å¤‡é©±åŠ¨ç¨‹åºçš„è€æ–¹æ³•ã€‚
+ * ä¸ºç»™å®šçš„ä¸»è®¾å¤‡å·æ³¨å†Œ0ï¼255ä¸ºæ¬¡è®¾å¤‡å·ã€‚å¹¶ä¸ºæ¯ä¸ªè®¾å¤‡å»ºç«‹ä¸€ä¸ªå¯¹åº”çš„é»˜è®¤cdevç»“æ„ã€‚
+ * ä½¿ç”¨è¿™ä¸€æ¥å£çš„é©±åŠ¨ç¨‹åºèƒ½å¤Ÿå¤„ç†æ‰€æœ‰256ä¸ªæ¬¡è®¾å¤‡å·ä¸Šçš„openè°ƒç”¨(å³ä½¿æ²¡æœ‰å¯¹åº”çš„å®é™…è®¾å¤‡)ï¼Œä¹Ÿä¸èƒ½ä½¿ç”¨å¤§äº255çš„ä¸»è®¾å¤‡å·å’Œæ¬¡è®¾å¤‡å·ã€‚
+ *		major:		è®¾å¤‡çš„ä¸»è®¾å¤‡å·ã€‚
+ *		name:		é©±åŠ¨ç¨‹åºçš„åç§°ã€‚
+ *		fops:		é»˜è®¤çš„file_operationsç»“æ„ã€‚
  */
 int register_chrdev(unsigned int major, const char *name,
 		    struct file_operations *fops)
@@ -268,25 +268,25 @@ int register_chrdev(unsigned int major, const char *name,
 	int err = -ENOMEM;
 
 	/**
-	 * ·ÖÅäÇëÇóµÄÉè±¸ºÅ·¶Î§¡£
+	 * åˆ†é…è¯·æ±‚çš„è®¾å¤‡å·èŒƒå›´ã€‚
 	 */
 	cd = __register_chrdev_region(major, 0, 256, name);
-	if (IS_ERR(cd))/* Éè±¸ºÅ³åÍ»£¬·µ»Ø¡£ */
+	if (IS_ERR(cd))/* è®¾å¤‡å·å†²çªï¼Œè¿”å›ã€‚ */
 		return PTR_ERR(cd);
 
-	/* ÎªÉè±¸Çı¶¯³ÌĞò·ÖÅäÒ»¸öĞÂµÄcdev½á¹¹ */
+	/* ä¸ºè®¾å¤‡é©±åŠ¨ç¨‹åºåˆ†é…ä¸€ä¸ªæ–°çš„cdevç»“æ„ */
 	cdev = cdev_alloc();
 	if (!cdev)
 		goto out2;
 
-	/* ³õÊ¼»¯cdev½á¹¹ */
+	/* åˆå§‹åŒ–cdevç»“æ„ */
 	cdev->owner = fops->owner;
 	cdev->ops = fops;
 	kobject_set_name(&cdev->kobj, "%s", name);
 	for (s = strchr(kobject_name(&cdev->kobj),'/'); s; s = strchr(s, '/'))
 		*s = '!';
 
-	/* ½«Éè±¸Ìí¼Óµ½Éè±¸Çı¶¯Ä£ĞÍÖĞ */
+	/* å°†è®¾å¤‡æ·»åŠ åˆ°è®¾å¤‡é©±åŠ¨æ¨¡å‹ä¸­ */
 	err = cdev_add(cdev, MKDEV(cd->major, 0), 256);
 	if (err)
 		goto out;
@@ -302,7 +302,7 @@ out2:
 }
 
 /**
- * Óëregister_chrdevÉè±¸¶ÔÓ¦µÄÒÆ³ıº¯Êı¡£
+ * ä¸register_chrdevè®¾å¤‡å¯¹åº”çš„ç§»é™¤å‡½æ•°ã€‚
  */
 void unregister_chrdev_region(dev_t from, unsigned count)
 {
@@ -354,9 +354,9 @@ void cdev_put(struct cdev *p)
  * Called every time a character special file is opened
  */
 /**
- * ×Ö·ûÉè±¸µÄ´ò¿ª·½·¨¡£openµ÷ÓÃ´¥·¢dentry_open£¬dentry_openµ÷ÓÃdef_chr_fops±íÖĞµÄopen×Ö¶Î¼´±¾·½·¨¡£
- * inode-Ë÷Òı½áµãµÄµØÖ·
- * filp-´ò¿ªµÄÎÄ¼şÖ¸Õë
+ * å­—ç¬¦è®¾å¤‡çš„æ‰“å¼€æ–¹æ³•ã€‚openè°ƒç”¨è§¦å‘dentry_openï¼Œdentry_openè°ƒç”¨def_chr_fopsè¡¨ä¸­çš„openå­—æ®µå³æœ¬æ–¹æ³•ã€‚
+ * inode-ç´¢å¼•ç»“ç‚¹çš„åœ°å€
+ * filp-æ‰“å¼€çš„æ–‡ä»¶æŒ‡é’ˆ
  */
 int chrdev_open(struct inode * inode, struct file * filp)
 {
@@ -366,7 +366,7 @@ int chrdev_open(struct inode * inode, struct file * filp)
 
 	spin_lock(&cdev_lock);
 	/**
-	 * ¼ì²éinode->i_cdev,Èç¹û²»Îª¿Õ£¬±íÊ¾inode½á¹¹ÒÑ¾­±»·ÃÎÊ£¬ÔòÔö¼ÓcdevµÄÒıÓÃ¼ÆÊı
+	 * æ£€æŸ¥inode->i_cdev,å¦‚æœä¸ä¸ºç©ºï¼Œè¡¨ç¤ºinodeç»“æ„å·²ç»è¢«è®¿é—®ï¼Œåˆ™å¢åŠ cdevçš„å¼•ç”¨è®¡æ•°
 	 */
 	p = inode->i_cdev;
 	if (!p) {
@@ -374,31 +374,31 @@ int chrdev_open(struct inode * inode, struct file * filp)
 		int idx;
 		spin_unlock(&cdev_lock);
 		/**
-		 * µ÷ÓÃkobj_lookupËÑË÷°üÀ¨¸ÃÉè±¸ºÅÔÚÄÚµÄ·¶Î§¡£
+		 * è°ƒç”¨kobj_lookupæœç´¢åŒ…æ‹¬è¯¥è®¾å¤‡å·åœ¨å†…çš„èŒƒå›´ã€‚
 		 */
 		kobj = kobj_lookup(cdev_map, inode->i_rdev, &idx);
 		/**
-		 * ¸Ã·¶Î§²»´æÔÚ£¬Ö±½Ó·µ»Ø´íÎó
+		 * è¯¥èŒƒå›´ä¸å­˜åœ¨ï¼Œç›´æ¥è¿”å›é”™è¯¯
 		 */
 		if (!kobj)
 			return -ENXIO;
 		/**
-		 * ·¶Î§´æÔÚ£¬¼ÆËãÓë¸Ã·¶Î§Ïà¶ÔÓ¦µÄcdevÃèÊö·ûµÄµØÖ·¡£
+		 * èŒƒå›´å­˜åœ¨ï¼Œè®¡ç®—ä¸è¯¥èŒƒå›´ç›¸å¯¹åº”çš„cdevæè¿°ç¬¦çš„åœ°å€ã€‚
 		 */
 		new = container_of(kobj, struct cdev, kobj);
 		spin_lock(&cdev_lock);
 		p = inode->i_cdev;
 		if (!p) {
 			/**
-			 * inodeÃ»ÓĞ±»·ÃÎÊ¹ı£¬½«ÕÒµ½µÄcdevÃèÊö·ûµØÖ·×÷Îªinode->i_cdev
+			 * inodeæ²¡æœ‰è¢«è®¿é—®è¿‡ï¼Œå°†æ‰¾åˆ°çš„cdevæè¿°ç¬¦åœ°å€ä½œä¸ºinode->i_cdev
 			 */
 			inode->i_cdev = p = new;
 			/**
-			 * ²¢ÉèÖÃi_cindex
+			 * å¹¶è®¾ç½®i_cindex
 			 */
 			inode->i_cindex = idx;
 			/**
-			 * ½«inode¶ÔÏó¼ÓÈëµ½cdevÃèÊö·ûµÄlistÁ´±íÖĞ
+			 * å°†inodeå¯¹è±¡åŠ å…¥åˆ°cdevæè¿°ç¬¦çš„listé“¾è¡¨ä¸­
 			 */
 			list_add(&inode->i_devices, &p->list);
 			new = NULL;
@@ -411,7 +411,7 @@ int chrdev_open(struct inode * inode, struct file * filp)
 	if (ret)
 		return ret;
 	/**
-	 * ³õÊ¼»¯ÎÄ¼ş²Ù×÷Ö¸Õë
+	 * åˆå§‹åŒ–æ–‡ä»¶æ“ä½œæŒ‡é’ˆ
 	 */
 	filp->f_op = fops_get(p->ops);
 	if (!filp->f_op) {
@@ -419,12 +419,12 @@ int chrdev_open(struct inode * inode, struct file * filp)
 		return -ENXIO;
 	}
 	/**
-	 * ¶¨ÒåÁËopen·½·¨£¬¾ÍÖ´ĞĞËü¡£
+	 * å®šä¹‰äº†openæ–¹æ³•ï¼Œå°±æ‰§è¡Œå®ƒã€‚
 	 */
 	if (filp->f_op->open) {
 		lock_kernel();
 		/**
-		 * Èç¹ûÉè±¸Çı¶¯³ÌĞò´¦ÀíÒ»¸öÒÔÉÏµÄÉè±¸ºÅ£¬Ôò±¾º¯ÊıÒ»°ã»áÔÙ´ÎÉèÖÃfileµÄf_op
+		 * å¦‚æœè®¾å¤‡é©±åŠ¨ç¨‹åºå¤„ç†ä¸€ä¸ªä»¥ä¸Šçš„è®¾å¤‡å·ï¼Œåˆ™æœ¬å‡½æ•°ä¸€èˆ¬ä¼šå†æ¬¡è®¾ç½®fileçš„f_op
 		 */
 		ret = filp->f_op->open(inode,filp);
 		unlock_kernel();
@@ -432,7 +432,7 @@ int chrdev_open(struct inode * inode, struct file * filp)
 	if (ret)
 		cdev_put(p);
 	/**
-	 * ³É¹¦Íê³ÉÁËËùÓĞÈÎÎñ£¬·µ»Ø0»òÕßfilp->f_op->openµÄ½á¹û
+	 * æˆåŠŸå®Œæˆäº†æ‰€æœ‰ä»»åŠ¡ï¼Œè¿”å›0æˆ–è€…filp->f_op->opençš„ç»“æœ
 	 */
 	return ret;
 }
@@ -479,10 +479,10 @@ static int exact_lock(dev_t dev, void *data)
 }
 
 /**
- * ÔÚÉè±¸Çı¶¯³ÌĞòÄ£ĞÍÖĞ×¢²áÒ»¸öcdevÃèÊö·û¡£
- * Ëü³õÊ¼»¯cdevÃèÊö·ûÖĞµÄdevºÍcount×Ö¶Î£¬È»ºóµ÷ÓÃkobj_mapº¯Êı¡£
- * kobj_mapÒÀ´Î½¨Á¢Éè±¸Çı¶¯³ÌĞòÄ£ĞÍµÄÊı¾İ½á¹¹£¬°ÑÉè±¸ºÅ·¶Î§¸´ÖÆµ½Éè±¸Çı¶¯³ÌĞòµÄÃèÊö·ûÖĞ¡£
- * count¾­³£Îª1£¬µ«ÊÇÒ²ÓĞÌØÊâÇé¿ö¡£ÈçSCSI´Å´øÇı¶¯³ÌĞò£¬ËüÍ¨³£Ã¿¸öÎïÀíÉè±¸µÄ¶à¸ö´ÎÉè±¸ºÅÔÊĞíÓÃ»§¿Õ¼äÑ¡Ôñ²»Í¬µÄ²Ù×÷Ä£Ê½(ÈçÃÜ¶È)
+ * åœ¨è®¾å¤‡é©±åŠ¨ç¨‹åºæ¨¡å‹ä¸­æ³¨å†Œä¸€ä¸ªcdevæè¿°ç¬¦ã€‚
+ * å®ƒåˆå§‹åŒ–cdevæè¿°ç¬¦ä¸­çš„devå’Œcountå­—æ®µï¼Œç„¶åè°ƒç”¨kobj_mapå‡½æ•°ã€‚
+ * kobj_mapä¾æ¬¡å»ºç«‹è®¾å¤‡é©±åŠ¨ç¨‹åºæ¨¡å‹çš„æ•°æ®ç»“æ„ï¼ŒæŠŠè®¾å¤‡å·èŒƒå›´å¤åˆ¶åˆ°è®¾å¤‡é©±åŠ¨ç¨‹åºçš„æè¿°ç¬¦ä¸­ã€‚
+ * countç»å¸¸ä¸º1ï¼Œä½†æ˜¯ä¹Ÿæœ‰ç‰¹æ®Šæƒ…å†µã€‚å¦‚SCSIç£å¸¦é©±åŠ¨ç¨‹åºï¼Œå®ƒé€šå¸¸æ¯ä¸ªç‰©ç†è®¾å¤‡çš„å¤šä¸ªæ¬¡è®¾å¤‡å·å…è®¸ç”¨æˆ·ç©ºé—´é€‰æ‹©ä¸åŒçš„æ“ä½œæ¨¡å¼(å¦‚å¯†åº¦)
  */
 int cdev_add(struct cdev *p, dev_t dev, unsigned count)
 {
@@ -497,7 +497,7 @@ static void cdev_unmap(dev_t dev, unsigned count)
 }
 
 /**
- * ´ÓÏµÍ³ÖĞÒÆ³ıÒ»¸ö×Ö·ûÉè±¸¡£
+ * ä»ç³»ç»Ÿä¸­ç§»é™¤ä¸€ä¸ªå­—ç¬¦è®¾å¤‡ã€‚
  */
 void cdev_del(struct cdev *p)
 {
@@ -530,7 +530,7 @@ static struct kobj_type ktype_cdev_dynamic = {
 };
 
 /**
- * ¶¯Ì¬·ÖÅäcdevÃèÊö·û£¬²¢³õÊ¼»¯ÄÚÇ¶µÄkobjectÊı¾İ½á¹¹¡£
+ * åŠ¨æ€åˆ†é…cdevæè¿°ç¬¦ï¼Œå¹¶åˆå§‹åŒ–å†…åµŒçš„kobjectæ•°æ®ç»“æ„ã€‚
  */
 struct cdev *cdev_alloc(void)
 {
@@ -545,7 +545,7 @@ struct cdev *cdev_alloc(void)
 }
 
 /**
- * ³õÊ¼»¯cdevÃèÊö·û¡£µ±cdevÃèÊö·ûÊÇÇ¶ÈëÔÚÆäËû½á¹¹ÖĞÊ±£¬ÕâÊÇÓĞÓÃµÄ·½·¨¡£
+ * åˆå§‹åŒ–cdevæè¿°ç¬¦ã€‚å½“cdevæè¿°ç¬¦æ˜¯åµŒå…¥åœ¨å…¶ä»–ç»“æ„ä¸­æ—¶ï¼Œè¿™æ˜¯æœ‰ç”¨çš„æ–¹æ³•ã€‚
  */
 void cdev_init(struct cdev *cdev, struct file_operations *fops)
 {

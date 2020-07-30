@@ -309,7 +309,7 @@ out:
  *     are copied to the Scsi_Device at @sreq->sr_device (sdev);
  *     any flags value is stored in *@bflags.
  **/
-/* ·¢ËÍINQUIRYÃüÁîÌ½²âÂß¼­µ¥Ôª */
+/* å‘é€INQUIRYå‘½ä»¤æ¢æµ‹é€»è¾‘å•å…ƒ */
 static void scsi_probe_lun(struct scsi_request *sreq, char *inq_result,
 			   int *bflags)
 {
@@ -325,7 +325,7 @@ static void scsi_probe_lun(struct scsi_request *sreq, char *inq_result,
 	/* Perform up to 3 passes.  The first pass uses a conservative
 	 * transfer length of 36 unless sdev->inquiry_len specifies a
 	 * different value. */
-	/* µÚÒ»ÂÖÌ½²âÃüÁîµÄ³¤¶È£¬Ä¬ÈÏÎª36 */
+	/* ç¬¬ä¸€è½®æ¢æµ‹å‘½ä»¤çš„é•¿åº¦ï¼Œé»˜è®¤ä¸º36 */
 	first_inquiry_len = sdev->inquiry_len ? sdev->inquiry_len : 36;
 	try_inquiry_len = first_inquiry_len;
 	pass = 1;
@@ -385,7 +385,7 @@ static void scsi_probe_lun(struct scsi_request *sreq, char *inq_result,
 		 * corresponding bit fields in Scsi_Device, so bflags
 		 * need not be passed as an argument.
 		 */
-		/* ¸ù¾İ³§ÉÌºÍÉè±¸id£¬ÉèÖÃÒ»Ğ©ÌØÊâµÄ±êÖ¾¡£ÒòÎª×ÜÓĞÒ»Ğ©Ææ¹ÖµÄÉè±¸ĞèÒªÌØÊâ´¦Àí */
+		/* æ ¹æ®å‚å•†å’Œè®¾å¤‡idï¼Œè®¾ç½®ä¸€äº›ç‰¹æ®Šçš„æ ‡å¿—ã€‚å› ä¸ºæ€»æœ‰ä¸€äº›å¥‡æ€ªçš„è®¾å¤‡éœ€è¦ç‰¹æ®Šå¤„ç† */
 		*bflags = scsi_get_device_flags(sdev, &inq_result[8],
 				&inq_result[16]);
 
@@ -480,7 +480,7 @@ static void scsi_probe_lun(struct scsi_request *sreq, char *inq_result,
  *     SCSI_SCAN_NO_RESPONSE: could not allocate or setup a Scsi_Device
  *     SCSI_SCAN_LUN_PRESENT: a new Scsi_Device was allocated and initialized
  **/
-/* ½«Âß¼­Éè±¸LUNÌí¼Óµ½ÏµÍ³ */
+/* å°†é€»è¾‘è®¾å¤‡LUNæ·»åŠ åˆ°ç³»ç»Ÿ */
 static int scsi_add_lun(struct scsi_device *sdev, char *inq_result, int *bflags)
 {
 	/*
@@ -493,7 +493,7 @@ static int scsi_add_lun(struct scsi_device *sdev, char *inq_result, int *bflags)
 	 * scanning run at their own risk, or supply a user level program
 	 * that can correctly scan.
 	 */
-	/* ¸ù¾İINQUIRYÏìÓ¦Êı¾İÀ´ÉèÖÃSCSIÉè±¸ÃèÊö·û¸÷¸öÓò */
+	/* æ ¹æ®INQUIRYå“åº”æ•°æ®æ¥è®¾ç½®SCSIè®¾å¤‡æè¿°ç¬¦å„ä¸ªåŸŸ */
 	sdev->inquiry = kmalloc(sdev->inquiry_len, GFP_ATOMIC);
 	if (sdev->inquiry == NULL) {
 		return SCSI_SCAN_NO_RESPONSE;
@@ -627,7 +627,7 @@ static int scsi_add_lun(struct scsi_device *sdev, char *inq_result, int *bflags)
 
 	transport_configure_device(&sdev->sdev_gendev);
 
-	/* Èç¹ûÖ÷»úÊÊÅäÆ÷Ä£°åÊµÏÖÁËslave_configure»Øµ÷£¬Ôò»Øµ÷Ëü£¬ÓÃÓÚ½øĞĞÒ»Ğ©ÌØÊâµÄÉèÖÃ */
+	/* å¦‚æœä¸»æœºé€‚é…å™¨æ¨¡æ¿å®ç°äº†slave_configureå›è°ƒï¼Œåˆ™å›è°ƒå®ƒï¼Œç”¨äºè¿›è¡Œä¸€äº›ç‰¹æ®Šçš„è®¾ç½® */
 	if (sdev->host->hostt->slave_configure)
 		sdev->host->hostt->slave_configure(sdev);
 
@@ -636,7 +636,7 @@ static int scsi_add_lun(struct scsi_device *sdev, char *inq_result, int *bflags)
 	 * register it and tell the rest of the kernel
 	 * about it.
 	 */
-	/* ½«scsiÉè±¸¼°¶ÔÓ¦µÄÄ¿±ê½ÚµãÌí¼Óµ½sysfsÎÄ¼şÏµÍ³£¬²¢´´½¨¶ÔÓ¦µÄÊôĞÔÎÄ¼ş */
+	/* å°†scsiè®¾å¤‡åŠå¯¹åº”çš„ç›®æ ‡èŠ‚ç‚¹æ·»åŠ åˆ°sysfsæ–‡ä»¶ç³»ç»Ÿï¼Œå¹¶åˆ›å»ºå¯¹åº”çš„å±æ€§æ–‡ä»¶ */
 	scsi_sysfs_add_sdev(sdev);
 
 	return SCSI_SCAN_LUN_PRESENT;
@@ -658,7 +658,7 @@ static int scsi_add_lun(struct scsi_device *sdev, char *inq_result, int *bflags)
  *         attached at the LUN
  *     SCSI_SCAN_LUN_PRESENT: a new Scsi_Device was allocated and initialized
  **/
-/* ¶ÔÖ¸¶¨Ä¿±ê½ÚµãÉÏµÄÌØ¶¨Âß¼­µ¥Ôª½øĞĞÌ½²â */
+/* å¯¹æŒ‡å®šç›®æ ‡èŠ‚ç‚¹ä¸Šçš„ç‰¹å®šé€»è¾‘å•å…ƒè¿›è¡Œæ¢æµ‹ */
 static int scsi_probe_and_add_lun(struct Scsi_Host *host,
 		uint channel, uint id, uint lun, int *bflagsp,
 		struct scsi_device **sdevp, int rescan, void *hostdata)
@@ -673,9 +673,9 @@ static int scsi_probe_and_add_lun(struct Scsi_Host *host,
 	 * host adapter calls into here with rescan == 0.
 	 */
 	if (rescan) {
-		/* ÔÚÄ¿±ê½ÚµãÃèÊö·ûµÄÉè±¸Á´±íÖĞ²éÕÒ¶ÔÓ¦¸ÃlunµÄSCSIÉè±¸ÊÇ·ñ´æÔÚ */
+		/* åœ¨ç›®æ ‡èŠ‚ç‚¹æè¿°ç¬¦çš„è®¾å¤‡é“¾è¡¨ä¸­æŸ¥æ‰¾å¯¹åº”è¯¥lunçš„SCSIè®¾å¤‡æ˜¯å¦å­˜åœ¨ */
 		sdev = scsi_device_lookup(host, channel, id, lun);
-		if (sdev) {/* ÒÑ¾­´æÔÚ */
+		if (sdev) {/* å·²ç»å­˜åœ¨ */
 			SCSI_LOG_SCAN_BUS(3, printk(KERN_INFO
 				"scsi scan: device exists on <%d:%d:%d:%d>\n",
 				host->host_no, channel, id, lun));
@@ -691,28 +691,28 @@ static int scsi_probe_and_add_lun(struct Scsi_Host *host,
 		}
 	}
 
-	/* ·ÖÅäÒ»¸öÂß¼­Éè±¸ÃèÊö·û */
+	/* åˆ†é…ä¸€ä¸ªé€»è¾‘è®¾å¤‡æè¿°ç¬¦ */
 	sdev = scsi_alloc_sdev(host, channel, id, lun, hostdata);
 	if (!sdev)
 		goto out;
 	sreq = scsi_allocate_request(sdev, GFP_ATOMIC);
 	if (!sreq)
 		goto out_free_sdev;
-	/* ÁÙÊ±»º³åÇø£¬ÓÃÓÚ±£´æ·¢ËÍµÄSCSIÃüÁîµÄÏìÓ¦½á¹û */
+	/* ä¸´æ—¶ç¼“å†²åŒºï¼Œç”¨äºä¿å­˜å‘é€çš„SCSIå‘½ä»¤çš„å“åº”ç»“æœ */
 	result = kmalloc(256, GFP_ATOMIC |
 			(host->unchecked_isa_dma) ? __GFP_DMA : 0);
 	if (!result)
 		goto out_free_sreq;
 
-	/* ·¢ËÍINQUIRYÃüÁîÌ½²âÂß¼­µ¥Ôª */
+	/* å‘é€INQUIRYå‘½ä»¤æ¢æµ‹é€»è¾‘å•å…ƒ */
 	scsi_probe_lun(sreq, result, &bflags);
-	if (sreq->sr_result)/* Éè±¸²»´æÔÚ£¬ÍË³ö */
+	if (sreq->sr_result)/* è®¾å¤‡ä¸å­˜åœ¨ï¼Œé€€å‡º */
 		goto out_free_result;
 
 	/*
 	 * result contains valid SCSI INQUIRY data.
 	 */
-	if ((result[0] >> 5) == 3) {/* ¸ù¾İ¹æ·¶£¬Õâ¸ö½á¹û±íÊ¾Ä¿±êµ¥Ôª´æÔÚ£¬µ«ÊÇÃ»ÓĞÎïÀíÉè±¸¡£ */
+	if ((result[0] >> 5) == 3) {/* æ ¹æ®è§„èŒƒï¼Œè¿™ä¸ªç»“æœè¡¨ç¤ºç›®æ ‡å•å…ƒå­˜åœ¨ï¼Œä½†æ˜¯æ²¡æœ‰ç‰©ç†è®¾å¤‡ã€‚ */
 		/*
 		 * For a Peripheral qualifier 3 (011b), the SCSI
 		 * spec says: The device server is not capable of
@@ -730,7 +730,7 @@ static int scsi_probe_and_add_lun(struct Scsi_Host *host,
 		goto out_free_result;
 	}
 
-	/* ½«Âß¼­Éè±¸Ìí¼Óµ½ÏµÍ³ÖĞ */
+	/* å°†é€»è¾‘è®¾å¤‡æ·»åŠ åˆ°ç³»ç»Ÿä¸­ */
 	res = scsi_add_lun(sdev, result, &bflags);
 	if (res == SCSI_SCAN_LUN_PRESENT) {
 		if (bflags & BLIST_KEY) {
@@ -1135,7 +1135,7 @@ EXPORT_SYMBOL(scsi_rescan_device);
  *     First try a REPORT LUN scan, if that does not scan the target, do a
  *     sequential scan of LUNs on the target id.
  **/
-/* É¨ÃèÌØ¶¨µÄscsi½Úµã */
+/* æ‰«æç‰¹å®šçš„scsièŠ‚ç‚¹ */
 static void scsi_scan_target(struct Scsi_Host *shost, unsigned int channel,
 			     unsigned int id, unsigned int lun, int rescan)
 {
@@ -1143,14 +1143,14 @@ static void scsi_scan_target(struct Scsi_Host *shost, unsigned int channel,
 	int res;
 	struct scsi_device *sdev;
 
-	/* ½ÚµãID¾ÍÊÇÖ÷»úÊÊÅäÆ÷ID£¬Ö±½ÓÍË³ö */
+	/* èŠ‚ç‚¹IDå°±æ˜¯ä¸»æœºé€‚é…å™¨IDï¼Œç›´æ¥é€€å‡º */
 	if (shost->this_id == id)
 		/*
 		 * Don't scan the host adapter
 		 */
 		return;
 
-	if (lun != SCAN_WILD_CARD) {/* É¨ÃèÌØ¶¨Âß¼­µ¥Ôª */
+	if (lun != SCAN_WILD_CARD) {/* æ‰«æç‰¹å®šé€»è¾‘å•å…ƒ */
 		/*
 		 * Scan for a specific host/chan/id/lun.
 		 */
@@ -1163,17 +1163,17 @@ static void scsi_scan_target(struct Scsi_Host *shost, unsigned int channel,
 	 * Scan LUN 0, if there is some response, scan further. Ideally, we
 	 * would not configure LUN 0 until all LUNs are scanned.
 	 */
-	/* ÏÈÌ½²âLUN0£¬Ä¿±ê½Úµã±ØĞëÏìÓ¦¶ÔLUN0µÄÉ¨Ãè */
+	/* å…ˆæ¢æµ‹LUN0ï¼Œç›®æ ‡èŠ‚ç‚¹å¿…é¡»å“åº”å¯¹LUN0çš„æ‰«æ */
 	res = scsi_probe_and_add_lun(shost, channel, id, 0, &bflags, &sdev,
 				     rescan, NULL);
-	if (res == SCSI_SCAN_LUN_PRESENT) {/* LUN0ÓĞÂß¼­µ¥Ôª */
-		/* Í¨¹ıREPORT LUNÃüÁîÌ½²âÂß¼­µ¥ÔªÊıÁ¿£¬²¢¶ÔÃ¿¸öÂß¼­µ¥Ôª½øĞĞÌ½²â */
+	if (res == SCSI_SCAN_LUN_PRESENT) {/* LUN0æœ‰é€»è¾‘å•å…ƒ */
+		/* é€šè¿‡REPORT LUNå‘½ä»¤æ¢æµ‹é€»è¾‘å•å…ƒæ•°é‡ï¼Œå¹¶å¯¹æ¯ä¸ªé€»è¾‘å•å…ƒè¿›è¡Œæ¢æµ‹ */
 		if (scsi_report_lun_scan(sdev, bflags, rescan) != 0)
 			/*
 			 * The REPORT LUN did not scan the target,
 			 * do a sequential scan.
 			 */
-			/* Ì½²âÊ§°Ü£¬´Ó1µ½×î´ó±àºÅ½øĞĞÒÀ´ÎÌ½²â */
+			/* æ¢æµ‹å¤±è´¥ï¼Œä»1åˆ°æœ€å¤§ç¼–å·è¿›è¡Œä¾æ¬¡æ¢æµ‹ */
 			scsi_sequential_lun_scan(shost, channel, id, bflags,
 				       	res, sdev->scsi_level, rescan);
 	} else if (res == SCSI_SCAN_TARGET_PRESENT) {
@@ -1188,14 +1188,14 @@ static void scsi_scan_target(struct Scsi_Host *shost, unsigned int channel,
 	}
 }
 
-/* É¨ÃèÌØ¶¨µÄÍ¨µÀÉè±¸ÊÇ·ñ´æÔÚ */
+/* æ‰«æç‰¹å®šçš„é€šé“è®¾å¤‡æ˜¯å¦å­˜åœ¨ */
 static void scsi_scan_channel(struct Scsi_Host *shost, unsigned int channel,
 			      unsigned int id, unsigned int lun, int rescan)
 {
 	uint order_id;
 
-	if (id == SCAN_WILD_CARD)/* É¨ÃèËùÓĞ¿ÉÄÜµÄ½Úµã */
-		for (id = 0; id < shost->max_id; ++id) {/* É¨ÃèËùÓĞ¿ÉÄÜµÄ½Úµã */
+	if (id == SCAN_WILD_CARD)/* æ‰«ææ‰€æœ‰å¯èƒ½çš„èŠ‚ç‚¹ */
+		for (id = 0; id < shost->max_id; ++id) {/* æ‰«ææ‰€æœ‰å¯èƒ½çš„èŠ‚ç‚¹ */
 			/*
 			 * XXX adapter drivers when possible (FCP, iSCSI)
 			 * could modify max_id to match the current max,
@@ -1205,38 +1205,38 @@ static void scsi_scan_channel(struct Scsi_Host *shost, unsigned int channel,
 			 * the FC ID can be the same as a target id
 			 * without a huge overhead of sparse id's.
 			 */
-			if (shost->reverse_ordering)/* ÄæÏòÉ¨Ãè£¬½»»»ID */
+			if (shost->reverse_ordering)/* é€†å‘æ‰«æï¼Œäº¤æ¢ID */
 				/*
 				 * Scan from high to low id.
 				 */
 				order_id = shost->max_id - id - 1;
 			else
 				order_id = id;
-			/* É¨ÃèÌØ¶¨µÄ½Úµã */
+			/* æ‰«æç‰¹å®šçš„èŠ‚ç‚¹ */
 			scsi_scan_target(shost, channel, order_id, lun, rescan);
 		}
-	else/* É¨ÃèÌØ¶¨½Úµã */
+	else/* æ‰«æç‰¹å®šèŠ‚ç‚¹ */
 		scsi_scan_target(shost, channel, id, lun, rescan);
 }
 
-/* SCSIÖĞ¼ä²ãÌá¹©µÄÉ¨ÃèSCSI×ÜÏßµÄº¯Êı */
+/* SCSIä¸­é—´å±‚æä¾›çš„æ‰«æSCSIæ€»çº¿çš„å‡½æ•° */
 int scsi_scan_host_selected(struct Scsi_Host *shost, unsigned int channel,
 			    unsigned int id, unsigned int lun, int rescan)
 {
 	SCSI_LOG_SCAN_BUS(3, printk (KERN_INFO "%s: <%u:%u:%u:%u>\n",
 		__FUNCTION__, shost->host_no, channel, id, lun));
 
-	/* ¼ì²éÒªÉ¨ÃèµÄIDºÅÊÇ·ñÕıÈ· */
+	/* æ£€æŸ¥è¦æ‰«æçš„IDå·æ˜¯å¦æ­£ç¡® */
 	if (((channel != SCAN_WILD_CARD) && (channel > shost->max_channel)) ||
 	    ((id != SCAN_WILD_CARD) && (id > shost->max_id)) ||
 	    ((lun != SCAN_WILD_CARD) && (lun > shost->max_lun)))
 		return -EINVAL;
 
-	down(&shost->scan_mutex);/* »ñÈ¡É¨ÃèµÄËø */
-	if (channel == SCAN_WILD_CARD) /* ÒªÇóÉ¨ÃèËùÓĞÍ¨µÀ */
-		/* ±éÀúËùÓĞ¿ÉÄÜµÄÍ¨µÀ */
+	down(&shost->scan_mutex);/* è·å–æ‰«æçš„é” */
+	if (channel == SCAN_WILD_CARD) /* è¦æ±‚æ‰«ææ‰€æœ‰é€šé“ */
+		/* éå†æ‰€æœ‰å¯èƒ½çš„é€šé“ */
 		for (channel = 0; channel <= shost->max_channel; channel++)
-			scsi_scan_channel(shost, channel, id, lun, rescan);/* É¨Ãè¸ÃÍ¨µÀ */
+			scsi_scan_channel(shost, channel, id, lun, rescan);/* æ‰«æè¯¥é€šé“ */
 	else
 		scsi_scan_channel(shost, channel, id, lun, rescan);
 	up(&shost->scan_mutex);
@@ -1248,7 +1248,7 @@ int scsi_scan_host_selected(struct Scsi_Host *shost, unsigned int channel,
  * scsi_scan_host - scan the given adapter
  * @shost:	adapter to scan
  **/
-/* SCSIÖĞ¼ä²ãÌá¹©µÄÉ¨ÃèSCSI×ÜÏßµÄº¯Êı */
+/* SCSIä¸­é—´å±‚æä¾›çš„æ‰«æSCSIæ€»çº¿çš„å‡½æ•° */
 void scsi_scan_host(struct Scsi_Host *shost)
 {
 	scsi_scan_host_selected(shost, SCAN_WILD_CARD, SCAN_WILD_CARD,

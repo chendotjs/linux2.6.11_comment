@@ -134,11 +134,11 @@ u32 ic_gateway = INADDR_NONE;	/* Gateway IP address */
 u32 ic_servaddr = INADDR_NONE;	/* Boot server IP address */
 
 /**
- * NFS¸ùÎÄ¼şÏµÍ³·şÎñÆ÷µØÖ·¡£
+ * NFSæ ¹æ–‡ä»¶ç³»ç»ŸæœåŠ¡å™¨åœ°å€ã€‚
  */
 u32 root_server_addr = INADDR_NONE;	/* Address of NFS server */
 /**
- * NFS rootÎÄ¼şÏµÍ³·şÎñÆ÷µÄnfsÄ¿Â¼
+ * NFS rootæ–‡ä»¶ç³»ç»ŸæœåŠ¡å™¨çš„nfsç›®å½•
  */
 u8 root_server_path[256] = { 0, };	/* Path to mount as root */
 
@@ -1218,8 +1218,8 @@ static struct file_operations pnp_seq_fops = {
  *  can override it.
  */
 /**
- * ´Ó×÷ÎªÊäÈëµÄnfs_root_nameÖĞÈ¡³ö×Ö·û´®£¬¾­Óï·¨·ÖÎö£¬»ñµÃ×÷Îª¸ùÎÄ¼şÏµÍ³µÄNFS·şÎñÆ÷µÄIPµØÖ·¡£
- * ·ÅÈëÔÚipconfig.hÏÂ¶¨ÒåºÃµÄ±äÁ¿root_server_addrÖĞ¡£
+ * ä»ä½œä¸ºè¾“å…¥çš„nfs_root_nameä¸­å–å‡ºå­—ç¬¦ä¸²ï¼Œç»è¯­æ³•åˆ†æï¼Œè·å¾—ä½œä¸ºæ ¹æ–‡ä»¶ç³»ç»Ÿçš„NFSæœåŠ¡å™¨çš„IPåœ°å€ã€‚
+ * æ”¾å…¥åœ¨ipconfig.hä¸‹å®šä¹‰å¥½çš„å˜é‡root_server_addrä¸­ã€‚
  */
 u32 __init root_nfs_parse_addr(char *name)
 {

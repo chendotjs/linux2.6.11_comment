@@ -212,12 +212,12 @@ fastcall void do_invalid_op(struct pt_regs *, unsigned long);
  *	bit 2 == 0 means kernel, 1 means user-mode
  */
 /**
- * ȱҳ�жϷ������
- * regs-�����쳣ʱ�Ĵ�����ֵ
- * error_code-���쳣����ʱ�����Ƶ�Ԫѹ��ջ�еĴ�����롣
- *			  ����0λ����0ʱ�����쳣����һ�������ڵ�ҳ������ġ�����������Ч�ķ���Ȩ������ġ�
- *			  �����1λ����0�����쳣�ɶ����ʻ���ִ�з�����������������ã����쳣��д��������
- *			  �����2λ����0�����쳣�������ں�̬�������쳣�������û�̬��
+ * 缺页中断服务程序。
+ * regs-发生异常时寄存器的值
+ * error_code-当异常发生时，控制单元压入栈中的错误代码。
+ *			  当第0位被清0时，则异常是由一个不存在的页所引起的。否则是由无效的访问权限引起的。
+ *			  如果第1位被清0，则异常由读访问或者执行访问所引起，如果被设置，则异常由写访问引起。
+ *			  如果第2位被清0，则异常发生在内核态，否则异常发生在用户态。
  */
 fastcall void do_page_fault(struct pt_regs *regs, unsigned long error_code)
 {
@@ -231,7 +231,7 @@ fastcall void do_page_fault(struct pt_regs *regs, unsigned long error_code)
 
 	/* get the address */
 	/**
-	 * ��ȡ�����쳣�����Ե�ַ��CPU���Ƶ�Ԫ�����ֵ�����cr2���ƼĴ����С�
+	 * 读取引起异常的线性地址。CPU控制单元把这个值存放在cr2控制寄存器中。
 	 */
 	__asm__("movl %%cr2,%0":"=r" (address));
 
@@ -240,8 +240,8 @@ fastcall void do_page_fault(struct pt_regs *regs, unsigned long error_code)
 		return;
 	/* It's safe to allow irq's after cr2 has been saved */
 	/**
-	 * ֻ�ڱ�����cr2�Ϳ��Դ��ж��ˡ�
-	 * ����жϷ���ǰ�������жϵģ���������������8086ģʽ���ʹ��жϡ�
+	 * 只在保存了cr2就可以打开中断了。
+	 * 如果中断发生前是允许中断的，或者运行在虚拟8086模式，就打开中断。
 	 */
 	if (regs->eflags & (X86_EFLAGS_IF|VM_MASK))
 		local_irq_enable();
@@ -264,14 +264,14 @@ fastcall void do_page_fault(struct pt_regs *regs, unsigned long error_code)
 	 * protection error (error_code & 1) == 0.
 	 */
 	/**
-	 * �����쳣��ַ���ж��Ƿ����ں�̬��ַ�����û�̬��ַ�������쳣��
-	 * xie.baoyouע���Ⲣ�������쳣�������û�̬�����ں�̬��
+	 * 根据异常地址，判断是访问内核态地址还是用户态地址发生了异常。
+	 * xie.baoyou注：这并不代表异常发生在用户态还是内核态。
 	 */
 	if (unlikely(address >= TASK_SIZE)) { 
 		if (!(error_code & 5))
 			/**
-			 * �ں�̬������һ�������ڵ�ҳ��������������ں�̬���ʷ������ڴ���������ġ�
-			 * ע:vmalloc���ܴ������ں�ҳ�����������л��󣬲�û�������޸���Щҳ�������ܻ������쳣���������쳣��ʵ���ǳ����߼�����
+			 * 内核态访问了一个不存在的页框，这可能是由于内核态访问非连续内存区而引起的。
+			 * 注:vmalloc可能打乱了内核页表，而进程切换后，并没有随着修改这些页表项。这可能会引起异常，而这种异常其实不是程序逻辑错误。
 			 */
 			goto vmalloc_fault;
 		/* 
@@ -279,7 +279,7 @@ fastcall void do_page_fault(struct pt_regs *regs, unsigned long error_code)
 		 * fault we could otherwise deadlock.
 		 */
 		/**
-		 * ���򣬵�0λ���ߵ�2λ�����ˣ�������û�з���Ȩ�޻����û�̬����������ں�̬��ַ��
+		 * 否则，第0位或者第2位设置了，可能是没有访问权限或者用户态程序访问了内核态地址。
 		 */
 		goto bad_area_nosemaphore;
 	} 
@@ -291,11 +291,11 @@ fastcall void do_page_fault(struct pt_regs *regs, unsigned long error_code)
 	 * atomic region then we must not take the fault..
 	 */
 	/**
-	 * �ں��Ƿ���ִ��һЩ�ؼ����̣��������ں��̳߳����ˡ�
-	 * in_atomic��ʾ�ں����ڽ�ֹ��ռ��һ�����жϴ������򡢿��ӳٺ������ٽ������ں��߳��С�
-	 * һ����˵����Щ���򲻻�ȥ�����û��ռ��ַ����Ϊ������Щ��ַ���ǿ�����ɵ���������
-	 * ����Щ�ط��ǲ����������ġ�
-	 * ��֮�������е����ء�
+	 * 内核是否在执行一些关键例程，或者是内核线程出错了。
+	 * in_atomic表示内核现在禁止抢占，一般是中断处理程序、可延迟函数、临界区或内核线程中。
+	 * 一般来说，这些程序不会去访问用户空间地址。因为访问这些地址总是可能造成导致阻塞。
+	 * 而这些地方是不允许阻塞的。
+	 * 总之，问题有点严重。
 	 */
 	if (in_atomic() || !mm)
 		goto bad_area_nosemaphore;
@@ -316,66 +316,66 @@ fastcall void do_page_fault(struct pt_regs *regs, unsigned long error_code)
 	 * thus avoiding the deadlock.
 	 */
 	/**
-	 * ȱҳû�з������жϴ������򡢿��ӳٺ������ٽ������ں��߳���
-	 * ��ô������Ҫ��������ӵ�е����������Ծ�������ȱҳ�����Ե�ַ�Ƿ�����ڽ��̵ĵ�ַ�ռ���
-	 * Ϊ�ˣ������ý��̵�mmap_sem��д�ź�����
+	 * 缺页没有发生在中断处理程序、可延迟函数、临界区、内核线程中
+	 * 那么，就需要检查进程所拥有的线性区，以决定引起缺页的线性地址是否包含在进程的地址空间中
+	 * 为此，必须获得进程的mmap_sem读写信号量。
 	 */
 
 	/**
-	 * ��Ȼ�����ں�BUG��Ҳ����Ӳ�����ϣ���ôȱҳ����ʱ����ǰ���̾ͻ�û��Ϊд������ź���mmap_sem.
-	 * ����Ϊ��������������ǵ���down_read_trylockȷ��mmap_semû�б������ط�ռ�á�
+	 * 既然不是内核BUG，也不是硬件故障，那么缺页发生时，当前进程就还没有为写而获得信号量mmap_sem.
+	 * 但是为了稳妥起见，还是调用down_read_trylock确保mmap_sem没有被其他地方占用。
 	 */
 	if (!down_read_trylock(&mm->mmap_sem)) {
 		/**
-		 * һ�㲻�����е���������
-		 * ���е������ʾ:�źű��ر��ˡ�
+		 * 一般不会运行到这里来。
+		 * 运行到这里表示:信号被关闭了。
 		 */
 		if ((error_code & 4) == 0 &&
 		    !search_exception_tables(regs->eip))
 		    /**
-		     * �ں�̬�쳣�����쳣����������û�ж�Ӧ�Ĵ���������
-		     * ת��bad_area_nosemaphore�������ټ��һ�£��Ƿ���ʹ����Ϊϵͳ���ò��������ݸ��ں˵����Ե�ַ��
-		     * �����һ��,access_okֻ�����˼򵥵ļ�飬����ȷ�����Ե�ַ�ռ���Ĵ��ڣ�ֻҪ���û�̬��ַ�����ˣ�
-		     * Ҳ����˵���û�̬�����ڵ���ϵͳ���õ�ʱ�򣬿��ܴ�����һ���Ƿ����û�̬��ַ���ںˡ�
-		     * ���ں���ͼ��д�����ַ��ʱ�򣬾ͳ�����
-		     * ��ȷ������ͻᴦ����������
+		     * 内核态异常，在异常处理表中又没有对应的处理函数。
+		     * 转到bad_area_nosemaphore，它会再检查一下：是否是使用作为系统调用参数被传递给内核的线性地址。
+		     * 请回想一下,access_ok只是作了简单的检查，并不确保线性地址空间真的存在（只要是用户态地址就行了）
+		     * 也就是说：用户态程序在调用系统调用的时候，可能传递了一个非法的用户态地址给内核。
+		     * 而内核试图读写这个地址的时候，就出错了
+		     * 的确，这里就会处理这个情况。
 		     */
 			goto bad_area_nosemaphore;
 		/**
-		 * ���򣬲����ں��쳣�������ص�Ӳ�����ϡ������ź����������߳�ռ���ˣ��ȴ������߳��ͷ��ź����������
+		 * 否则，不是内核异常或者严重的硬件故障。并且信号量被其他线程占用了，等待其他线程释放信号量后继续。
 		 */
 		down_read(&mm->mmap_sem);
 	}
 
 	/**
-	 * ���е��ˣ����Ѿ������mmap_sem�ź�����
-	 * ���Է��ĵĲ���mm�ˡ�
-	 * ���ڿ�ʼ����������ַ���ڵ���������
+	 * 运行到此，就已经获得了mmap_sem信号量。
+	 * 可以放心的操作mm了。
+	 * 现在开始搜索出错地址所在的线性区。
 	 */
 	vma = find_vma(mm, address);
 
 	/**
-	 * ���vmaΪ�գ�˵���ڳ�����ַ����û���������ˣ�˵������ĵ�ַ�϶�����Ч�ġ�
+	 * 如果vma为空，说明在出错地址后面没有线性区了，说明错误的地址肯定是无效的。
 	 */ 
 	if (!vma)
 		goto bad_area;
 	/**
-	 * vma��address���棬����������ʼ��ַ��addressǰ�棬˵�������������������ַ��
-	 * л��л�أ���ܿ��ܲ�����Ĵ��󣬿�����COW�����������ˣ�Ҳ��������Ҫ��ҳ�ˡ�
+	 * vma在address后面，并且它的起始地址在address前面，说明线性区包含了这个地址。
+	 * 谢天谢地，这很可能不是真的错误，可能是COW机制起作用了，也可能是需要调页了。
 	 */
 	if (vma->vm_start <= address)
 		goto good_area;
 
 	/**
-	 * ���е��ˣ�˵����ַ�������������С�
-	 * �������ǻ�Ҫ���ж�һ�£��п�����pushָ��������쳣����vma==NULL����̫һ����
-	 * ֱ��ת��bad_area�ǲ���ȷ�ġ�
+	 * 运行到此，说明地址并不在线性区中。
+	 * 但是我们还要再判断一下，有可能是push指令引起的异常。和vma==NULL还不太一样。
+	 * 直接转到bad_area是不正确的。
 	 */
 	if (!(vma->vm_flags & VM_GROWSDOWN))
 		goto bad_area;
 	/**
-	 * ���е��ˣ�˵��address��ַ�����vma��VM_GROWSDOWN��־����ʾ����һ����ջ��
-	 * ��ע�⣬������ں�̬�����û�̬�Ķ�ջ�ռ䣬��Ӧ��ֱ����չ��ջ�������ж�if (address + 32 < regs->esp)
+	 * 运行到此，说明address地址后面的vma有VM_GROWSDOWN标志，表示它是一个堆栈区
+	 * 请注意，如果是内核态访问用户态的堆栈空间，就应该直接扩展堆栈，而不判断if (address + 32 < regs->esp)
 	 */
 	if (error_code & 4) {
 		/*
@@ -385,15 +385,15 @@ fastcall void do_page_fault(struct pt_regs *regs, unsigned long error_code)
 		 * doesn't show up until later..
 		 */
 		/**
-		 * ��Ȼ��һ���������Ƕ�ջ��������Ƿ���ַ̫Զ�ˣ��������ǲ�����ջ����Ĵ���
-		 * xie.baoyouע��32������4�ǿ��ǵ�pusha�Ĵ��ڡ�
+		 * 虽然下一个线性区是堆栈，可是离非法地址太远了，不可能是操作堆栈引起的错误
+		 * xie.baoyou注：32而不是4是考虑到pusha的存在。
 		 */
 		if (address + 32 < regs->esp)
 			goto bad_area;
 	}
 	/**
-	 * �̶߳�ջ�ռ䲻�㣬����չһ�£�һ���ɹ��ģ��������е�bad_area.
-	 * ע��:����쳣�������ں�̬��˵���ں����ڷ����û�̬��ջ����ֱ����չ�û�ջ��
+	 * 线程堆栈空间不足，就扩展一下，一般会成功的，不会运行到bad_area.
+	 * 注意:如果异常发生在内核态，说明内核正在访问用户态的栈，就直接扩展用户栈。
 	 */
 	if (expand_stack(vma, address))
 		goto bad_area;
@@ -402,14 +402,14 @@ fastcall void do_page_fault(struct pt_regs *regs, unsigned long error_code)
  * we can handle it..
  */
 /**
- * ������ַ�ռ��ڵĴ����ַ����ʵ���ܲ����Ǵ����ַ��
+ * 处理地址空间内的错误地址。其实可能并不是错误地址。
  */
 good_area:
 	info.si_code = SEGV_ACCERR;
 	write = 0;
-	switch (error_code & 3) {/* ��������д��������� */
+	switch (error_code & 3) {/* 错误是由写访问引起的 */
 		/**
-		 * ��Ȩд����
+		 * 无权写？？
 		 */
 		default:	/* 3: write, present */
 #ifdef TEST_VERIFY_AREA
@@ -418,44 +418,44 @@ good_area:
 #endif
 			/* fall through */
 		/**
-		 * д���ʳ�����
+		 * 写访问出错。
 		 */
 		case 2:		/* write, not present */
 			/**
-			 * ����������������д���ѵ�����дֻ�����������ߴ���Σ�����
-			 * ע�⣬��errcode==3Ҳ�ᵽ����
+			 * 但是线性区不允许写，难道是想写只读数据区或者代码段？？？
+			 * 注意，当errcode==3也会到这里
 			 */
 			if (!(vma->vm_flags & VM_WRITE))
 				goto bad_area;
 			/**
-			 * ��������д�����Ǵ�ʱ������д���ʴ���
-			 * ˵����������дʱ���ƻ������ҳ�ˡ���write++��ʵ���ǽ�����1
+			 * 线性区可写，但是此时发生了写访问错误。
+			 * 说明可以启动写时复制或请求调页了。将write++其实就是将它置1
 			 */
 			write++;
 			break;
 		/**
-		 * û�ж�Ȩ�ޣ���
-		 * ���������ڽ�����ͼ����һ������Ȩ��ҳ��
+		 * 没有读权限？？
+		 * 可能是由于进程试图访问一个有特权的页框。
 		 */
 		case 1:		/* read, present */
 			goto bad_area;
 		/**
-		 * Ҫ����ҳ�����ڣ�����Ƿ���Ŀɶ����߿�ִ��
+		 * 要读的页不存在，检查是否真的可读或者可执行
 		 */
 		case 0:		/* read, not present */
 			/**
-			 * Ҫ����ҳ�����ڣ�Ҳ����������ִ�У���Ҳ��һ�ִ���
+			 * 要读的页不存在，也不允许读和执行，那也是一种错误
 			 */
 			if (!(vma->vm_flags & (VM_READ | VM_EXEC)))
 				goto bad_area;
 			/**
-			 * ���е����˵��Ҫ����ҳ�����ڣ�������������������˵������Ҫ��ҳ�ˡ�
+			 * 运行到这里，说明要读的页不存在，但是线性区允许读，说明是需要调页了。
 			 */
 	}
 
 /**
- * �������ѣ����ܲ��������Ĵ���
- * �Ǻǣ��ҿ�ë����������
+ * 幸免于难，可能不是真正的错误。
+ * 呵呵，找块毛巾擦擦汗。
  */
  survive:
 	/*
@@ -464,32 +464,32 @@ good_area:
 	 * the fault.
 	 */
 	/**
-	 * �������ķ���Ȩ���������쳣��������ƥ�䣬����handle_mm_fault����һ����ҳ��
-	 * handle_mm_fault�лᴦ�������ҳ��дʱ�������ֻ��ơ�
+	 * 线性区的访问权限与引起异常的类型相匹配，调用handle_mm_fault分配一个新页框。
+	 * handle_mm_fault中会处理请求调页和写时复制两种机制。
 	 */
 	switch (handle_mm_fault(mm, vma, address, write)) {
 		/**
-		 * VM_FAULT_MINOR��ʾû��������ǰ���̣�����ȱҳ��
+		 * VM_FAULT_MINOR表示没有阻塞当前进程，即次缺页。
 		 */
 		case VM_FAULT_MINOR:
 			tsk->min_flt++;
 			break;
 		/**
-		 * VM_FAULT_MAJOR��ʾ�����˵�ǰ���̣�����ȱҳ��
-		 * �ܿ��������ڵ��ô����ϵ���������������ҳ��ʱ������ʱ�䡣
+		 * VM_FAULT_MAJOR表示阻塞了当前进程，即主缺页。
+		 * 很可能是由于当用磁盘上的数据填充所分配的页框时花费了时间。
 		 */			
 		case VM_FAULT_MAJOR:
 			tsk->maj_flt++;
 			break;
 		/**
-		 * VM_FAULT_SIGBUS��ʾ��������
-		 * do_sigbus������̷���SIGBUS�źš�
+		 * VM_FAULT_SIGBUS表示其他错误。
+		 * do_sigbus会向进程发送SIGBUS信号。
 		 */
 		case VM_FAULT_SIGBUS:
 			goto do_sigbus;
 		/**
-		 * VM_FAULT_OOM��ʾû���㹻���ڴ�
-		 * �������init���̣���ɱ����������͵��������������У��ȴ��ڴ汻�ͷų�����
+		 * VM_FAULT_OOM表示没有足够的内存
+		 * 如果不是init进程，就杀死它，否则就调度其他进程运行，等待内存被释放出来。
 		 */
 		case VM_FAULT_OOM:
 			goto out_of_memory;
@@ -513,22 +513,22 @@ good_area:
  * Fix it, but check if it's kernel or user first..
  */
 /**
- * ������ַ�ռ�����Ĵ����ַ��
- * ��Ҫ���ʵĵ�ַ���ڽ��̵ĵ�ַ�ռ���ʱ��ִ�е��ˡ�
+ * 处理地址空间以外的错误地址。
+ * 当要访问的地址不在进程的地址空间内时，执行到此。
  */
 bad_area:
 	up_read(&mm->mmap_sem);
 
 /**
- * �û�̬����������ں�̬��ַ�����߷�����û��Ȩ�޵�ҳ��
- * �������ں�̬�̳߳����ˣ�Ҳ�����ǵ�ǰ�кܽ�Ҫ�Ĳ���
- * ��֮�����е�����ɲ���ʲô���¡�
+ * 用户态程序访问了内核态地址，或者访问了没有权限的页框。
+ * 或者是内核态线程出错了，也或者是当前有很紧要的操作
+ * 总之，运行到这里可不是什么好事。
  */
 bad_area_nosemaphore:
 	/* User mode accesses just cause a SIGSEGV */
 	/**
-	 * �������û�̬�Ĵ����ַ��
-	 * �ͷ���һ��SIGSEGV�źŸ�current���̣�������������
+	 * 发生在用户态的错误地址。
+	 * 就发生一个SIGSEGV信号给current进程，并结束函数。
 	 */
 	if (error_code & 4) {
 		/* 
@@ -547,8 +547,8 @@ bad_area_nosemaphore:
 		/* info.si_code has been set above */
 		info.si_addr = (void __user *)address;
 		/**
-		 * force_sig_infoȷ�Ž��̲����Ի�����SIGSEGV�ź�
-		 * SEGV_MAPERR��SEGV_ACCERR�Ѿ���������info.si_code�С�
+		 * force_sig_info确信进程不忽略或阻塞SIGSEGV信号
+		 * SEGV_MAPERR或SEGV_ACCERR已经被设置在info.si_code中。
 		 */
 		force_sig_info(SIGSEGV, &info, tsk);
 		return;
@@ -570,14 +570,14 @@ bad_area_nosemaphore:
 	}
 #endif
 	/**
-	 * �쳣�������ں�̬��
+	 * 异常发生在内核态。
 	 */
 no_context:
 	/* Are we prepared to handle this kernel fault?  */
 	/**
-	 * �쳣����������Ϊ��ĳ�����Ե�ַ��Ϊϵͳ���õĲ������ݸ��ںˡ�
-	 * ����fixup_exception�ж��������������������Ļ�����л��л�أ������޸��Ŀ��ܡ�
-	 * ���͵ģ�fixup_exception���ܻ�����̷���SIGSEGV�źŻ�����һ���ʵ��ĳ�������ֹϵͳ���ô�������
+	 * 异常的引起是因为把某个线性地址作为系统调用的参数传递给内核。
+	 * 调用fixup_exception判断这种情况，如果是这样的话，那谢天谢地，还有修复的可能。
+	 * 典型的：fixup_exception可能会向进程发送SIGSEGV信号或者用一个适当的出错码终止系统调用处理程序。
 	 */
 	if (fixup_exception(regs))
 		return;
@@ -606,8 +606,8 @@ no_context:
 	}
 #endif
 	/**
-	 * ��Ը����Ҫ���е���������������oops������^-^
-	 * ����oops��ʲô�أ��������ں˸����ڵ��Ž����Щ������
+	 * 但愿程序不要运行到这里来，著名的oops出现了^-^
+	 * 不过oops算什么呢，真正的内核高手在等着解决这些错误呢
 	 */
 	if (address < PAGE_SIZE)
 		printk(KERN_ALERT "Unable to handle kernel NULL pointer dereference");
@@ -642,7 +642,7 @@ no_context:
  * us unable to handle the page fault gracefully.
  */
 /**
- * ȱҳ�ˣ�����û���ڴ��ˣ���ɱ�����̣�init���⣩
+ * 缺页了，但是没有内存了，就杀死进程（init除外）
  */
 out_of_memory:
 	up_read(&mm->mmap_sem);
@@ -657,7 +657,7 @@ out_of_memory:
 	goto no_context;
 
 /**
- * ȱҳ�ˣ����Ƿ���ҳʱ�����˴��󣬾�����̷���SIGBUS�źš�
+ * 缺页了，但是分配页时出现了错误，就向进程发送SIGBUS信号。
  */
 do_sigbus:
 	up_read(&mm->mmap_sem);
@@ -681,9 +681,9 @@ do_sigbus:
 	return;
 
 /**
- * �ں˷����˲����ڵ�ҳ��
- * �ں��ڸ��·������ڴ�����Ӧ��ҳ����ʱ�Ƿǳ�����ġ�ʵ���ϣ�vmalloc��vfree����ֻ���Լ������ڸ������ں�ҳ������ȫ��Ŀ¼��������ҳ������
- * ���ǣ�����ں���ķ��ʵ���vmalloc�Ŀռ䣬����Ҫ��ҳ����������ˡ�
+ * 内核访问了不存在的页框。
+ * 内核在更新非连续内存区对应的页表项时是非常懒惰的。实际上，vmalloc和vfree函数只把自己限制在更新主内核页表（即全局目录和它的子页表）。
+ * 但是，如果内核真的访问到了vmalloc的空间，就需要把页表项补充完整了。
  */
 vmalloc_fault:
 	{
@@ -702,19 +702,19 @@ vmalloc_fault:
 		pte_t *pte_k;
 
 		/**
-		 * ��cr3�е�ǰ����ҳȫ��Ŀ¼��������ַ�����ֲ�����pgd_paddr��
-		 * ע���ں˲�ʹ��current->mm->pgd������ǰ���̵�ҳȫ��Ŀ¼��ַ����Ϊ����ȱҳ�������κ�ʱ�̷����������ڽ����л��ڼ䷢����
+		 * 把cr3中当前进程页全局目录的物理地址赋给局部变量pgd_paddr。
+		 * 注：内核不使用current->mm->pgd导出当前进程的页全局目录地址。因为这种缺页可能在任何时刻发生，甚至在进程切换期间发生。
 		 */
 		asm("movl %%cr3,%0":"=r" (pgd_paddr));
 		pgd = index + (pgd_t *)__va(pgd_paddr);
 		/**
-		 * �����ں�ҳȫ��Ŀ¼�����Ե�ַ����pgd_k
+		 * 把主内核页全局目录的线性地址赋给pgd_k
 		 */
 		pgd_k = init_mm.pgd + index;
 
 		/**
-		 * pgd_k��Ӧ�����ں�ҳȫ��Ŀ¼��Ϊ�ա�˵�����Ƿ������ڴ��������Ĵ���
-		 * ��Ϊ�������ڴ���������ȱҳ������û��ҳ���������ȱ��Ŀ¼�
+		 * pgd_k对应的主内核页全局目录项为空。说明不是非连续内存区产生的错误。
+		 * 因为非连续内存区产生的缺页仅仅是没有页表项，而不会缺少目录项。
 		 */
 		if (!pgd_present(*pgd_k))
 			goto no_context;
@@ -726,8 +726,8 @@ vmalloc_fault:
 		 */
 
 		/**
-		 * �����ȫ��Ŀ¼������������ں�ҳ�ϼ�Ŀ¼����м�Ŀ¼�
-		 * �����������һ��Ϊ�գ�Ҳת��no_context
+		 * 检查了全局目录项，还必须检查主内核页上级目录项和中间目录项。
+		 * 如果它们中有一个为空，也转到no_context
 		 */
 		pud = pud_offset(pgd, address);
 		pud_k = pud_offset(pgd_k, address);
@@ -739,7 +739,7 @@ vmalloc_fault:
 		if (!pmd_present(*pmd_k))
 			goto no_context;
 		/**
-		 * Ŀ¼�Ϊ�գ�˵��������ڷ��ʷ������ڴ������Ͱ���Ŀ¼��Ƶ�����ҳ�м�Ŀ¼����Ӧ���С�
+		 * 目录项不为空，说明真的是在访问非连续内存区。就把主目录项复制到进程页中间目录的相应项中。
 		 */
 		set_pmd(pmd, *pmd_k);
 

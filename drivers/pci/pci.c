@@ -211,21 +211,21 @@ pci_find_parent_resource(const struct pci_dev *dev, struct resource *res)
 	struct resource *best = NULL;
 
 	/**
-	 * ¶ÔPCIÇÅ¹ÜÀíµÄµØÖ·¿Õ¼ä½øĞĞ¼ì²é¡£
+	 * å¯¹PCIæ¡¥ç®¡ç†çš„åœ°å€ç©ºé—´è¿›è¡Œæ£€æŸ¥ã€‚
 	 */
 	for(i = 0; i < PCI_BUS_NUM_RESOURCES; i++) {
 		struct resource *r = bus->resource[i];
 		if (!r)
 			continue;
 		/**
-		 * ¼ì²éµØÖ·¿Õ¼äÊÇ·ñÔÚÉÏÓÎÉè±¸µÄµØÖ·¿Õ¼äÄÚ¡£
+		 * æ£€æŸ¥åœ°å€ç©ºé—´æ˜¯å¦åœ¨ä¸Šæ¸¸è®¾å¤‡çš„åœ°å€ç©ºé—´å†…ã€‚
 		 */
 		if (res->start && !(res->start >= r->start && res->end <= r->end))
 			continue;	/* Not contained */
 		if ((res->flags ^ r->flags) & (IORESOURCE_IO | IORESOURCE_MEM))
 			continue;	/* Wrong type */
 		/**
-		 * ÉÏÓÎÇÅÉè±¸ÊÇ²»¿ÉÔ¤¶Á¿Õ¼ä¡£
+		 * ä¸Šæ¸¸æ¡¥è®¾å¤‡æ˜¯ä¸å¯é¢„è¯»ç©ºé—´ã€‚
 		 */
 		if (!((res->flags ^ r->flags) & IORESOURCE_PREFETCH))
 			return r;	/* Exact match */
@@ -407,7 +407,7 @@ pci_enable_device_bars(struct pci_dev *dev, int bars)
  *  Beware, this function can fail.
  */
 /**
- * ¼¤»îPCIÉè±¸¡£Ëü°ÑÉè±¸»½ĞÑ£¬ÔÚÄ³Ğ©Çé¿öÏÂ»¹Ö¸ÅÉËüµÄÖĞ¶ÏÏßºÍIOÇøÓò¡£
+ * æ¿€æ´»PCIè®¾å¤‡ã€‚å®ƒæŠŠè®¾å¤‡å”¤é†’ï¼Œåœ¨æŸäº›æƒ…å†µä¸‹è¿˜æŒ‡æ´¾å®ƒçš„ä¸­æ–­çº¿å’ŒIOåŒºåŸŸã€‚
  */
 int
 pci_enable_device(struct pci_dev *dev)
@@ -470,7 +470,7 @@ pci_disable_device(struct pci_dev *dev)
  * 
  */
 /**
- * ¿ªÆô»òÕß¹Ø±ÕWOL¹¦ÄÜ
+ * å¼€å¯æˆ–è€…å…³é—­WOLåŠŸèƒ½
  */
 int pci_enable_wake(struct pci_dev *dev, pci_power_t state, int enable)
 {
@@ -768,7 +768,7 @@ pci_set_dma_mask(struct pci_dev *dev, u64 mask)
 }
 
 /**
- * ÉèÖÃdacµØÖ·ÑÚÂë¡£µ±·µ»ØÖµÎª0Ê±£¬²ÅÄÜÊ¹ÓÃDACµØÖ·¡£
+ * è®¾ç½®dacåœ°å€æ©ç ã€‚å½“è¿”å›å€¼ä¸º0æ—¶ï¼Œæ‰èƒ½ä½¿ç”¨DACåœ°å€ã€‚
  */
 int
 pci_dac_set_dma_mask(struct pci_dev *dev, u64 mask)
@@ -794,7 +794,7 @@ pci_set_consistent_dma_mask(struct pci_dev *dev, u64 mask)
 #endif
 
 /**
- * ¶ÔÒÑ¾­Íê³ÉÃ¶¾ÙµÄPCIÉè±¸½øĞĞĞŞ¸´¹¤×÷£¬ÓÃÓÚĞŞ²¹Ò»Ğ©BIOSÖĞ¶ÔPCIÉè±¸ÓĞÓ°ÏìµÄBUG¡£
+ * å¯¹å·²ç»å®Œæˆæšä¸¾çš„PCIè®¾å¤‡è¿›è¡Œä¿®å¤å·¥ä½œï¼Œç”¨äºä¿®è¡¥ä¸€äº›BIOSä¸­å¯¹PCIè®¾å¤‡æœ‰å½±å“çš„BUGã€‚
  */
 static int __devinit pci_init(void)
 {

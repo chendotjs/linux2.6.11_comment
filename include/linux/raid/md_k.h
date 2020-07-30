@@ -149,31 +149,31 @@ static inline void mark_disk_nonsync(mdp_disk_t * d)
 /*
  * MD's 'extended' device
  */
-/* SCSIÉè±¸ÖĞµÄ´ÅÅÌÃèÊö·û */
+/* SCSIè®¾å¤‡ä¸­çš„ç£ç›˜æè¿°ç¬¦ */
 struct mdk_rdev_s
 {
-	/* Í¨¹ı´Ë×Ö¶ÎÁ´½Óµ½SCSIÉè±¸µÄ´ÅÅÌÁ´±íÖĞ */
+	/* é€šè¿‡æ­¤å­—æ®µé“¾æ¥åˆ°SCSIè®¾å¤‡çš„ç£ç›˜é“¾è¡¨ä¸­ */
 	struct list_head same_set;	/* RAID devices within the same set */
 
-	/* Éè±¸µÄ´ÅÅÌÉÈÇø³¤¶È */
+	/* è®¾å¤‡çš„ç£ç›˜æ‰‡åŒºé•¿åº¦ */
 	sector_t size;			/* Device size (in blocks) */
-	/* ËùÊôSCSIÉè±¸ */
+	/* æ‰€å±SCSIè®¾å¤‡ */
 	mddev_t *mddev;			/* RAID array if running */
-	/* IOÊÂ¼şÊ±¼ä´Á£¬ÓÃÓÚÅĞ¶ÏSCSIÉè±¸×î½üÊÇ·ñ¿ÕÏĞ */
+	/* IOäº‹ä»¶æ—¶é—´æˆ³ï¼Œç”¨äºåˆ¤æ–­SCSIè®¾å¤‡æœ€è¿‘æ˜¯å¦ç©ºé—² */
 	unsigned long last_events;	/* IO event timestamp */
 
-	/* ´ÅÅÌµÄ¿éÉè±¸ÃèÊö·û */
+	/* ç£ç›˜çš„å—è®¾å¤‡æè¿°ç¬¦ */
 	struct block_device *bdev;	/* block device handle */
 
-	/* ±£´æ´ÅÅÌ³¬¼¶¿éµÄÒ³Ãæ */
+	/* ä¿å­˜ç£ç›˜è¶…çº§å—çš„é¡µé¢ */
 	struct page	*sb_page;
-	/* Èç¹ûÎª1£¬±íÊ¾¸Ã´ÅÅÌµÄRAID³¬¼¶¿éÒÑ¾­¶ÁÈëÄÚ´æ */
+	/* å¦‚æœä¸º1ï¼Œè¡¨ç¤ºè¯¥ç£ç›˜çš„RAIDè¶…çº§å—å·²ç»è¯»å…¥å†…å­˜ */
 	int		sb_loaded;
-	/* ´ÅÅÌÕóÁĞÊı¾İµÄÆğÊ¼Î»ÖÃ */
+	/* ç£ç›˜é˜µåˆ—æ•°æ®çš„èµ·å§‹ä½ç½® */
 	sector_t	data_offset;	/* start of data in array */
-	/* ³¬¼¶¿éÔÚ´ÅÅÌÉÏµÄÆğÊ¼ÉÈÇøºÅ */
+	/* è¶…çº§å—åœ¨ç£ç›˜ä¸Šçš„èµ·å§‹æ‰‡åŒºå· */
 	sector_t	sb_offset;
-	/* ´ÎÉè±¸ºÅ */
+	/* æ¬¡è®¾å¤‡å· */
 	int		preferred_minor;	/* autorun support */
 
 	/* A device can be in one of three states based on two flags:
@@ -189,12 +189,12 @@ struct mdk_rdev_s
 	int faulty;			/* if faulty do not issue IO requests */
 	int in_sync;			/* device is a full member of the array */
 
-	/* ±¾´ÅÅÌÔÚMS³¬¼¶¿éÖĞµÄÃèÊö·ûË÷Òı */
+	/* æœ¬ç£ç›˜åœ¨MSè¶…çº§å—ä¸­çš„æè¿°ç¬¦ç´¢å¼• */
 	int desc_nr;			/* descriptor index in the superblock */
-	/* ÔÚ´ÅÅÌÕóÁĞÖĞµÄ½ÇÉ« */
+	/* åœ¨ç£ç›˜é˜µåˆ—ä¸­çš„è§’è‰² */
 	int raid_disk;			/* role of device in array */
 
-	/* ÕıÔÚ´¦ÀíµÄÇëÇóÊıÄ¿  */
+	/* æ­£åœ¨å¤„ç†çš„è¯·æ±‚æ•°ç›®  */
 	atomic_t	nr_pending;	/* number of pending requests.
 					 * only maintained for arrays that
 					 * support hot removal
@@ -203,65 +203,65 @@ struct mdk_rdev_s
 
 typedef struct mdk_personality_s mdk_personality_t;
 
-/* RAIDÉè±¸ÃèÊö·û */
+/* RAIDè®¾å¤‡æè¿°ç¬¦ */
 struct mddev_s
 {
-	/* ²»Í¬RAID¼¶±ğµÄ¸öĞÔ»¯ÉèÖÃ */
+	/* ä¸åŒRAIDçº§åˆ«çš„ä¸ªæ€§åŒ–è®¾ç½® */
 	void				*private;
-	/* ¸öĞÔ»¯»Øµ÷º¯Êı */
+	/* ä¸ªæ€§åŒ–å›è°ƒå‡½æ•° */
 	mdk_personality_t		*pers;
-	/* Éè±¸ºÅ */
+	/* è®¾å¤‡å· */
 	dev_t				unit;
-	/* ´ÎÉè±¸ºÅ */
+	/* æ¬¡è®¾å¤‡å· */
 	int				md_minor;
-	/* Õâ¸öÉè±¸µÄËùÓĞ³ÉÔ±Éè±¸Á´±í */
+	/* è¿™ä¸ªè®¾å¤‡çš„æ‰€æœ‰æˆå‘˜è®¾å¤‡é“¾è¡¨ */
 	struct list_head 		disks;
 	int				sb_dirty;
-	/* 0±íÊ¾¿ÉĞ´£¬1±íÊ¾Ö»¶Á£¬2±íÊ¾Ö»¶Á£¬µ«ÊÇÔÚµÚÒ»´ÎĞ´Ê±×Ô¶¯×ª»»Îª¿ÉĞ´ */
+	/* 0è¡¨ç¤ºå¯å†™ï¼Œ1è¡¨ç¤ºåªè¯»ï¼Œ2è¡¨ç¤ºåªè¯»ï¼Œä½†æ˜¯åœ¨ç¬¬ä¸€æ¬¡å†™æ—¶è‡ªåŠ¨è½¬æ¢ä¸ºå¯å†™ */
 	int				ro;
 
-	/* Í¨ÓÃ´ÅÅÌÃèÊö·û */
+	/* é€šç”¨ç£ç›˜æè¿°ç¬¦ */
 	struct gendisk			*gendisk;
 
 	/* Superblock information */
-	/* ³¬¼¶¿éµÄÖ÷°æ±¾ºÅ¡¢´Î°æ±¾ºÅ¡¢²¹¶¡ºÅ */
+	/* è¶…çº§å—çš„ä¸»ç‰ˆæœ¬å·ã€æ¬¡ç‰ˆæœ¬å·ã€è¡¥ä¸å· */
 	int				major_version,
 					minor_version,
 					patch_version;
-	/* ÊÇ·ñÓĞ³Ö¾Ã»¯µÄ³¬¼¶¿é */
+	/* æ˜¯å¦æœ‰æŒä¹…åŒ–çš„è¶…çº§å— */
 	int				persistent;
-	/* Ìõ´ø³¤¶È */
+	/* æ¡å¸¦é•¿åº¦ */
 	int				chunk_size;
-	/* MDÉè±¸µÄ´´½¨Ê±¼ä¡¢³¬¼¶¿éµÄĞŞ¸ÄÊ±¼ä */
+	/* MDè®¾å¤‡çš„åˆ›å»ºæ—¶é—´ã€è¶…çº§å—çš„ä¿®æ”¹æ—¶é—´ */
 	time_t				ctime, utime;
-	/* MDÉè±¸µÄ¼¶±ğ¡¢²¼¾Ö(½öÊÊÓÃÓÚÄ³Ğ©RAID¼¶±ğ) */
+	/* MDè®¾å¤‡çš„çº§åˆ«ã€å¸ƒå±€(ä»…é€‚ç”¨äºæŸäº›RAIDçº§åˆ«) */
 	int				level, layout;
-	/* ³ÉÔ±´ÅÅÌ¸öÊı */
+	/* æˆå‘˜ç£ç›˜ä¸ªæ•° */
 	int				raid_disks;
-	/* ×î´óµÄ´ÅÅÌ³ÉÔ±¸öÊı */
+	/* æœ€å¤§çš„ç£ç›˜æˆå‘˜ä¸ªæ•° */
 	int				max_disks;
-	/* ³¤¶È */
+	/* é•¿åº¦ */
 	sector_t			size; /* used size of component devices */
-	/* µ¼³öµÄÕóÁĞ³¤¶È */
+	/* å¯¼å‡ºçš„é˜µåˆ—é•¿åº¦ */
 	sector_t			array_size; /* exported array size */
-	/* MDÉè±¸µÄ¸üĞÂ¼ÆÊıÆ÷£¬ÔÚ´´½¨Ê±ÉèÖÃÎª0£¬Ã¿·¢ÉúÒ»´ÎÖØÒªÊÂ¼ş¼Ó1 */
+	/* MDè®¾å¤‡çš„æ›´æ–°è®¡æ•°å™¨ï¼Œåœ¨åˆ›å»ºæ—¶è®¾ç½®ä¸º0ï¼Œæ¯å‘ç”Ÿä¸€æ¬¡é‡è¦äº‹ä»¶åŠ 1 */
 	__u64				events;
 
-	/* Éè±¸±êÊ¶ */
+	/* è®¾å¤‡æ ‡è¯† */
 	char				uuid[16];
 
-	/* ¹ÜÀíÏß³ÌÃèÊö·û£¬½ö¶ÔÄ³Ğ©¼¶±ğµÄRAIDÓĞÓÃ */
+	/* ç®¡ç†çº¿ç¨‹æè¿°ç¬¦ï¼Œä»…å¯¹æŸäº›çº§åˆ«çš„RAIDæœ‰ç”¨ */
 	struct mdk_thread_s		*thread;	/* management thread */
-	/* Í¬²½Ïß³ÌÃèÊö·û */
+	/* åŒæ­¥çº¿ç¨‹æè¿°ç¬¦ */
 	struct mdk_thread_s		*sync_thread;	/* doing resync or reconstruct */
-	/* ×î½üÒÑ¾­µ÷¶ÈµÄ¿é */
+	/* æœ€è¿‘å·²ç»è°ƒåº¦çš„å— */
 	sector_t			curr_resync;	/* blocks scheduled */
-	/* ×î½ü²É¼¯µãµÄÊ±¼ä´Á£¬ÓÃÓÚ¼ÆËãÍ¬²½ËÙ¶È */
+	/* æœ€è¿‘é‡‡é›†ç‚¹çš„æ—¶é—´æˆ³ï¼Œç”¨äºè®¡ç®—åŒæ­¥é€Ÿåº¦ */
 	unsigned long			resync_mark;	/* a recent timestamp */
-	/* ×î½ü²É¼¯µãµÄÒÑÍ¬²½¿éÊı */
+	/* æœ€è¿‘é‡‡é›†ç‚¹çš„å·²åŒæ­¥å—æ•° */
 	sector_t			resync_mark_cnt;/* blocks written at resync_mark */
 
-	/* ËùĞèÒªÍ¬²½µÄ×î´óÉÈÇøÊı */
+	/* æ‰€éœ€è¦åŒæ­¥çš„æœ€å¤§æ‰‡åŒºæ•° */
 	sector_t			resync_max_sectors; /* may be set by personality */
 	/* recovery/resync flags 
 	 * NEEDED:   we might need to start a resync/recover
@@ -277,43 +277,43 @@ struct mddev_s
 #define	MD_RECOVERY_INTR	3
 #define	MD_RECOVERY_DONE	4
 #define	MD_RECOVERY_NEEDED	5
-	/* Í¬²½/»Ö¸´±êÖ¾ */
+	/* åŒæ­¥/æ¢å¤æ ‡å¿— */
 	unsigned long			recovery;
 
-	/* Èç¹ûÎª1£¬±íÊ¾Õâ¸öRAID´¦ÓÚÍ¬²½×´Ì¬£¬²»ĞèÒªÍ¬²½¡£µ±¿ªÊ¼Ğ´Ê±½«ÆäÉèÖÃÎª0£¬ËùÓĞµ¥Ôª¶¼³É¹¦Ğ´ÈëºóÉèÖÃÎª1 */
+	/* å¦‚æœä¸º1ï¼Œè¡¨ç¤ºè¿™ä¸ªRAIDå¤„äºåŒæ­¥çŠ¶æ€ï¼Œä¸éœ€è¦åŒæ­¥ã€‚å½“å¼€å§‹å†™æ—¶å°†å…¶è®¾ç½®ä¸º0ï¼Œæ‰€æœ‰å•å…ƒéƒ½æˆåŠŸå†™å…¥åè®¾ç½®ä¸º1 */
 	int				in_sync;	/* know to not need resync */
-	/* ÅäÖÃÊ±Ê¹ÓÃµÄĞÅºÅÁ¿ */
+	/* é…ç½®æ—¶ä½¿ç”¨çš„ä¿¡å·é‡ */
 	struct semaphore		reconfig_sem;
-	/* ÒıÓÃ¼ÆÊı */
+	/* å¼•ç”¨è®¡æ•° */
 	atomic_t			active;
 
-	/* Èç¹ûÎª1£¬±íÊ¾ĞèÒªÖØĞÂ¶ÁÈë·ÖÇøĞÅÏ¢ */
+	/* å¦‚æœä¸º1ï¼Œè¡¨ç¤ºéœ€è¦é‡æ–°è¯»å…¥åˆ†åŒºä¿¡æ¯ */
 	int				changed;	/* true if we might need to reread partition info */
-	/* ÓĞ¹ÊÕÏµÄ´ÅÅÌÊı */
+	/* æœ‰æ•…éšœçš„ç£ç›˜æ•° */
 	int				degraded;	/* whether md should consider
 							 * adding a spare
 							 */
 
-	/* ÒÑ¾­µ÷¶È£¬µ«Ã»ÓĞĞ´ÈëµÄ¿éÊı¡£ÔÚÌá½»Í¬²½ÇëÇóÊ±Ôö¼Ó£¬Íê³É»Øµ÷ÖĞ¼õÉÙ */
+	/* å·²ç»è°ƒåº¦ï¼Œä½†æ²¡æœ‰å†™å…¥çš„å—æ•°ã€‚åœ¨æäº¤åŒæ­¥è¯·æ±‚æ—¶å¢åŠ ï¼Œå®Œæˆå›è°ƒä¸­å‡å°‘ */
 	atomic_t			recovery_active; /* blocks scheduled, but not written */
-	/* Í¬²½µÈ´ı¶ÓÁĞ */
+	/* åŒæ­¥ç­‰å¾…é˜Ÿåˆ— */
 	wait_queue_head_t		recovery_wait;
-	/* ÉÏ´ÎÍ¬²½µÄÎ»ÖÃ£¬ÏÂ´ÎÆô¶¯Ê±¿ÉÒÔ´ÓÕâ¸öÎ»ÖÃ¿ªÊ¼¼ÌĞøÍ¬²½¡£ */
+	/* ä¸Šæ¬¡åŒæ­¥çš„ä½ç½®ï¼Œä¸‹æ¬¡å¯åŠ¨æ—¶å¯ä»¥ä»è¿™ä¸ªä½ç½®å¼€å§‹ç»§ç»­åŒæ­¥ã€‚ */
 	sector_t			recovery_cp;
-	/* °²È«Ä£Ê½£¬ÔÚÃ»ÓĞĞ´Èë²Ù×÷Ê±×ÜÊÇ¸üĞÂ³¬¼¶¿é */
+	/* å®‰å…¨æ¨¡å¼ï¼Œåœ¨æ²¡æœ‰å†™å…¥æ“ä½œæ—¶æ€»æ˜¯æ›´æ–°è¶…çº§å— */
 	unsigned int			safemode;	/* if set, update "clean" superblock
 							 * when no writes pending.
 							 */ 
-	/* ÓÃÓÚ°²È«Ä£Ê½µÄ³¬Ê±Ê±¼ä */
+	/* ç”¨äºå®‰å…¨æ¨¡å¼çš„è¶…æ—¶æ—¶é—´ */
 	unsigned int			safemode_delay;
-	/* °²È«Ä£Ê½µÄ¶¨Ê±Æ÷ */
+	/* å®‰å…¨æ¨¡å¼çš„å®šæ—¶å™¨ */
 	struct timer_list		safemode_timer;
-	/* Ä¿Ç°ÕıÔÚ´¦ÀíµÄĞ´ÇëÇóÊıÄ¿¡£ */
+	/* ç›®å‰æ­£åœ¨å¤„ç†çš„å†™è¯·æ±‚æ•°ç›®ã€‚ */
 	atomic_t			writes_pending; 
-	/* ÇëÇó¶ÓÁĞ */
+	/* è¯·æ±‚é˜Ÿåˆ— */
 	request_queue_t			*queue;	/* for plugging ... */
 
-	/* Í¨¹ı´Ë×Ö¶ÎÁ´½Óµ½ËùÓĞSCSIÉè±¸µÄÁ´±í */
+	/* é€šè¿‡æ­¤å­—æ®µé“¾æ¥åˆ°æ‰€æœ‰SCSIè®¾å¤‡çš„é“¾è¡¨ */
 	struct list_head		all_mddevs;
 };
 
@@ -330,35 +330,35 @@ static inline void md_sync_acct(struct block_device *bdev, unsigned long nr_sect
         atomic_add(nr_sectors, &bdev->bd_contains->bd_disk->sync_io);
 }
 
-/* RAID¼¶±ğÃèÊö·û */
+/* RAIDçº§åˆ«æè¿°ç¬¦ */
 struct mdk_personality_s
 {
-	/* ¼¶±ğÃû³Æ */
+	/* çº§åˆ«åç§° */
 	char *name;
-	/* ËùÊôÄ£¿é */
+	/* æ‰€å±æ¨¡å— */
 	struct module *owner;
-	/* ÔÚ½«ÇëÇó´«µİ¸øMDÉè±¸Ê±µ÷ÓÃ£¬Ö´ĞĞÌØÓĞµÄÂß¼­ */
+	/* åœ¨å°†è¯·æ±‚ä¼ é€’ç»™MDè®¾å¤‡æ—¶è°ƒç”¨ï¼Œæ‰§è¡Œç‰¹æœ‰çš„é€»è¾‘ */
 	int (*make_request)(request_queue_t *q, struct bio *bio);
-	/* ÔÚÆô¶¯¸ÃRAID¼¶±ğÊ±Ê¹ÓÃ */
+	/* åœ¨å¯åŠ¨è¯¥RAIDçº§åˆ«æ—¶ä½¿ç”¨ */
 	int (*run)(mddev_t *mddev);
-	/* Í£Ö¹¸ÃRAID¼¶±ğÊ±Ê¹ÓÃ */
+	/* åœæ­¢è¯¥RAIDçº§åˆ«æ—¶ä½¿ç”¨ */
 	int (*stop)(mddev_t *mddev);
-	/* ²éÑ¯×´Ì¬Ê±»Øµ÷ */
+	/* æŸ¥è¯¢çŠ¶æ€æ—¶å›è°ƒ */
 	void (*status)(struct seq_file *seq, mddev_t *mddev);
 	/* error_handler must set ->faulty and clear ->in_sync
 	 * if appropriate, and should abort recovery if needed 
 	 */
-	/* MDÉè±¸¼ì²âµ½Ä³¸ö´ÅÅÌ·¢Éú¹ÊÕÏÊ±µ÷ÓÃ£¬Èç¹ûÃ»ÓĞÈİ´íÄÜÁ¦µÄ£¬Ôò¸ÃÖ¸ÕëÎªNULL */
+	/* MDè®¾å¤‡æ£€æµ‹åˆ°æŸä¸ªç£ç›˜å‘ç”Ÿæ•…éšœæ—¶è°ƒç”¨ï¼Œå¦‚æœæ²¡æœ‰å®¹é”™èƒ½åŠ›çš„ï¼Œåˆ™è¯¥æŒ‡é’ˆä¸ºNULL */
 	void (*error_handler)(mddev_t *mddev, mdk_rdev_t *rdev);
-	/* ¶¯Ì¬Ìí¼Ó´ÅÅÌÊ±µ÷ÓÃ */
+	/* åŠ¨æ€æ·»åŠ ç£ç›˜æ—¶è°ƒç”¨ */
 	int (*hot_add_disk) (mddev_t *mddev, mdk_rdev_t *rdev);
-	/* ¶¯Ì¬ÒÆ³ı´ÅÅÌÊ±µ÷ÓÃ */
+	/* åŠ¨æ€ç§»é™¤ç£ç›˜æ—¶è°ƒç”¨ */
 	int (*hot_remove_disk) (mddev_t *mddev, int number);
-	/* Éè±¸´Ó¹ÊÕÏÖĞ»Ö¸´£¬ĞèÒª¼¤»î±¸ÓÃÅÌÊ±µ÷ÓÃ */
+	/* è®¾å¤‡ä»æ•…éšœä¸­æ¢å¤ï¼Œéœ€è¦æ¿€æ´»å¤‡ç”¨ç›˜æ—¶è°ƒç”¨ */
 	int (*spare_active) (mddev_t *mddev);
-	/* Í¬²½Ê±µ÷ÓÃ£¬Èç¹û²»Ö§³ÖÈßÓà£¬ÔòÎªNULL */
+	/* åŒæ­¥æ—¶è°ƒç”¨ï¼Œå¦‚æœä¸æ”¯æŒå†—ä½™ï¼Œåˆ™ä¸ºNULL */
 	int (*sync_request)(mddev_t *mddev, sector_t sector_nr, int go_faster);
-	/* ±äÁ¿Éè±¸ÈİÁ¿Ê±µ÷ÓÃ */
+	/* å˜é‡è®¾å¤‡å®¹é‡æ—¶è°ƒç”¨ */
 	int (*resize) (mddev_t *mddev, sector_t sectors);
 	int (*reshape) (mddev_t *mddev, int raid_disks);
 	int (*reconfig) (mddev_t *mddev, int layout, int chunk_size);
@@ -394,18 +394,18 @@ extern mdk_rdev_t * find_rdev_nr(mddev_t *mddev, int nr);
 #define ITERATE_RDEV_PENDING(rdev,tmp)					\
 	ITERATE_RDEV_GENERIC(pending_raid_disks,rdev,tmp)
 
-/* RAIDÊØ»¤Ïß³ÌÃèÊö·û */
+/* RAIDå®ˆæŠ¤çº¿ç¨‹æè¿°ç¬¦ */
 typedef struct mdk_thread_s {
-	/* Ïß³Ì´¦Àíº¯ÊıÖ¸Õë */
+	/* çº¿ç¨‹å¤„ç†å‡½æ•°æŒ‡é’ˆ */
 	void			(*run) (mddev_t *mddev);
-	/* MDÉè±¸ÃèÊö·ûµÄÖ¸Õë */
+	/* MDè®¾å¤‡æè¿°ç¬¦çš„æŒ‡é’ˆ */
 	mddev_t			*mddev;
-	/* ÊØ»¤Ïß³ÌÃ¿Ö´ĞĞÒ»´Î£¬¾Í½«×Ô¼º¹Òµ½¸Ã¶ÓÁĞÉÏ£¬µÈ´ıÏÂÒ»´Î»½ĞÑ»ò³¬Ê± */
+	/* å®ˆæŠ¤çº¿ç¨‹æ¯æ‰§è¡Œä¸€æ¬¡ï¼Œå°±å°†è‡ªå·±æŒ‚åˆ°è¯¥é˜Ÿåˆ—ä¸Šï¼Œç­‰å¾…ä¸‹ä¸€æ¬¡å”¤é†’æˆ–è¶…æ—¶ */
 	wait_queue_head_t	wqueue;
-	/* ±êÖ¾£¬µ±Ç°½öÖ§³ÖTHREAD_WAKEUP */
+	/* æ ‡å¿—ï¼Œå½“å‰ä»…æ”¯æŒTHREAD_WAKEUP */
 	unsigned long           flags;
 	struct completion	*event;
-	/* ½ø³ÌÃèÊö·û */
+	/* è¿›ç¨‹æè¿°ç¬¦ */
 	struct task_struct	*tsk;
 	const char		*name;
 } mdk_thread_t;

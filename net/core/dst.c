@@ -29,9 +29,9 @@
  * 4) All operations modify state, so a spinlock is used.
  */
 /**
- * µÈ´ı±»É¾³ıµÄdst_entry½á¹¹×é³ÉµÄÁ´±í¡£
- * µ±dst_gc_timer¶¨Ê±Æ÷µ½ÆÚÊ±£¬Ö´ĞĞ¶¨Ê±´¦Àí¹³×Óº¯Êı¡£
- * Ö»ÓĞÒıÓÃ¼ÆÊı__refcnt´óÓÚ0µÄ£¨²»ÄÜ±»Ö±½ÓÉ¾³ıµÄ£©±íÏî²Å±»·ÅÈë¸ÃÁ´±íÄÚ£¬ÒÔ±ÜÃâ±»Ö±½ÓÉ¾³ı¡£ĞÂ±íÏî±»²åÈëµ½Á´±íÊ×²¿¡£
+ * ç­‰å¾…è¢«åˆ é™¤çš„dst_entryç»“æ„ç»„æˆçš„é“¾è¡¨ã€‚
+ * å½“dst_gc_timerå®šæ—¶å™¨åˆ°æœŸæ—¶ï¼Œæ‰§è¡Œå®šæ—¶å¤„ç†é’©å­å‡½æ•°ã€‚
+ * åªæœ‰å¼•ç”¨è®¡æ•°__refcntå¤§äº0çš„ï¼ˆä¸èƒ½è¢«ç›´æ¥åˆ é™¤çš„ï¼‰è¡¨é¡¹æ‰è¢«æ”¾å…¥è¯¥é“¾è¡¨å†…ï¼Œä»¥é¿å…è¢«ç›´æ¥åˆ é™¤ã€‚æ–°è¡¨é¡¹è¢«æ’å…¥åˆ°é“¾è¡¨é¦–éƒ¨ã€‚
  */
 static struct dst_entry 	*dst_garbage_list;
 #if RT_CACHE_DEBUG >= 2 
@@ -40,8 +40,8 @@ static atomic_t			 dst_total = ATOMIC_INIT(0);
 static DEFINE_SPINLOCK(dst_lock);
 
 /**
- * dst_gc_timer_expiresÊÇ¶¨Ê±Æ÷ÔÚµ½ÆÚÖ®Ç°µÈ´ıµÄÃëÊı£¬È¡Öµ·¶Î§ÔÚDST_GC_MINºÍDST_GC_MAXÖ®¼ä£¬µ±¶¨Ê±´¦Àí¹³×Óº¯Êıdst_run_gcÔËĞĞ¶øÃ»ÄÜÇå¿Õdst_garbage_listÁ´±íÊ±£¬µÈ´ıÊ±¼äÔö¼Ódst_gc_timer_inc¡£
- * µ«dst_gc_timer_inc±ØĞëÔÚDST_GC_MINµ½DST_GC_MAXµÄ·¶Î§ÄÚ¡£
+ * dst_gc_timer_expiresæ˜¯å®šæ—¶å™¨åœ¨åˆ°æœŸä¹‹å‰ç­‰å¾…çš„ç§’æ•°ï¼Œå–å€¼èŒƒå›´åœ¨DST_GC_MINå’ŒDST_GC_MAXä¹‹é—´ï¼Œå½“å®šæ—¶å¤„ç†é’©å­å‡½æ•°dst_run_gcè¿è¡Œè€Œæ²¡èƒ½æ¸…ç©ºdst_garbage_listé“¾è¡¨æ—¶ï¼Œç­‰å¾…æ—¶é—´å¢åŠ dst_gc_timer_incã€‚
+ * ä½†dst_gc_timer_incå¿…é¡»åœ¨DST_GC_MINåˆ°DST_GC_MAXçš„èŒƒå›´å†…ã€‚
  */
 static unsigned long dst_gc_timer_expires;
 static unsigned long dst_gc_timer_inc = DST_GC_MAX;
@@ -52,7 +52,7 @@ static struct timer_list dst_gc_timer =
 	TIMER_INITIALIZER(dst_run_gc, DST_GC_MIN, 0);
 
 /**
- * ´ËÀ¬»ø»ØÊÕ¶¨Ê±Æ÷ÖÜÆÚĞÔµØ±éÀúdst_garbage_listÁ´±í£¬ÀûÓÃdst_destroyÀ´É¾³ıÒıÓÃ¼ÆÊıÎª0µÄ±íÏî¡£
+ * æ­¤åƒåœ¾å›æ”¶å®šæ—¶å™¨å‘¨æœŸæ€§åœ°éå†dst_garbage_listé“¾è¡¨ï¼Œåˆ©ç”¨dst_destroyæ¥åˆ é™¤å¼•ç”¨è®¡æ•°ä¸º0çš„è¡¨é¡¹ã€‚
  */
 static void dst_run_gc(unsigned long dummy)
 {
@@ -60,7 +60,7 @@ static void dst_run_gc(unsigned long dummy)
 	struct dst_entry * dst, **dstp;
 
 	/**
-	 * Ëø¾ºÕùÊ§°Ü£¬ÑÓºó´¦Àí¡£
+	 * é”ç«äº‰å¤±è´¥ï¼Œå»¶åå¤„ç†ã€‚
 	 */
 	if (!spin_trylock(&dst_lock)) {
 		mod_timer(&dst_gc_timer, jiffies + HZ/10);
@@ -79,11 +79,11 @@ static void dst_run_gc(unsigned long dummy)
 		*dstp = dst->next;
 
 		/**
-		 * ÒıÓÃ¼ÆÊıÒÑ¾­±ä³É0£¬É¾³ıËü¡£
+		 * å¼•ç”¨è®¡æ•°å·²ç»å˜æˆ0ï¼Œåˆ é™¤å®ƒã€‚
 		 */
 		dst = dst_destroy(dst);
 		/**
-		 * Èç¹ûchildÁ´±íÖĞÄ³¸ö½Úµã»¹±»ÒıÓÃ£¬Ôò½«½ÚµãÔÙ´Î¹ÒÈëÁ´±í£¬µÈ´ıÏÂ´ÎÉ¾³ı¡£
+		 * å¦‚æœchildé“¾è¡¨ä¸­æŸä¸ªèŠ‚ç‚¹è¿˜è¢«å¼•ç”¨ï¼Œåˆ™å°†èŠ‚ç‚¹å†æ¬¡æŒ‚å…¥é“¾è¡¨ï¼Œç­‰å¾…ä¸‹æ¬¡åˆ é™¤ã€‚
 		 */
 		if (dst) {
 			/* NOHASH and still referenced. Unless it is already
@@ -108,7 +108,7 @@ static void dst_run_gc(unsigned long dummy)
 		goto out;
 	}
 	/**
-	 * Ã»ÓĞÉ¾³ıËùÓĞÀ¬»øDST£¬ÖØÆô¶¨Ê±Æ÷¡£
+	 * æ²¡æœ‰åˆ é™¤æ‰€æœ‰åƒåœ¾DSTï¼Œé‡å¯å®šæ—¶å™¨ã€‚
 	 */
 	if ((dst_gc_timer_expires += dst_gc_timer_inc) > DST_GC_MAX)
 		dst_gc_timer_expires = DST_GC_MAX;
@@ -137,27 +137,27 @@ static int dst_discard_out(struct sk_buff *skb)
 }
 
 /**
- * ·ÖÅäÒ»¸öÂ·ÓÉ»º´æ±íÏî¡£¸ù¾İËù´¦µÄ»·¾³£¬¿ÉÄÜ·µ»Ørtable(IPV4)Ò²¿ÉÄÜ·µ»Ørt6_info(IPV6)¡£
+ * åˆ†é…ä¸€ä¸ªè·¯ç”±ç¼“å­˜è¡¨é¡¹ã€‚æ ¹æ®æ‰€å¤„çš„ç¯å¢ƒï¼Œå¯èƒ½è¿”å›rtable(IPV4)ä¹Ÿå¯èƒ½è¿”å›rt6_info(IPV6)ã€‚
  */
 void * dst_alloc(struct dst_ops * ops)
 {
 	struct dst_entry * dst;
 
 	/**
-	 * ¼ì²é»º´æÏîÊÇ·ñ³¬¹ıÏŞÖÆ£¬Èç¹ûÊÇ£¬ÔòÆô¶¯»ØÊÕ¹ı³Ì¡£
+	 * æ£€æŸ¥ç¼“å­˜é¡¹æ˜¯å¦è¶…è¿‡é™åˆ¶ï¼Œå¦‚æœæ˜¯ï¼Œåˆ™å¯åŠ¨å›æ”¶è¿‡ç¨‹ã€‚
 	 */
 	if (ops->gc && atomic_read(&ops->entries) > ops->gc_thresh) {
 		if (ops->gc())
 			return NULL;
 	}
 	/**
-	 * ÎªĞÂ»º´æ±íÏî·ÖÅä¿Õ¼ä¡£
+	 * ä¸ºæ–°ç¼“å­˜è¡¨é¡¹åˆ†é…ç©ºé—´ã€‚
 	 */
 	dst = kmem_cache_alloc(ops->kmem_cachep, SLAB_ATOMIC);
 	if (!dst)
 		return NULL;
 	/**
-	 * ¶Ô»º´æÏîµÄÒ»Ğ©×Ö¶Î³õÊ¼»¯£¬ÓÈÆäÖØÒªµÄÊÇÒÔÏÂ×Ö¶Î£º
+	 * å¯¹ç¼“å­˜é¡¹çš„ä¸€äº›å­—æ®µåˆå§‹åŒ–ï¼Œå°¤å…¶é‡è¦çš„æ˜¯ä»¥ä¸‹å­—æ®µï¼š
 	 * 		rth->u.dst.input
 	 * 		rth->u.dst.output
 	 */
@@ -269,16 +269,16 @@ static inline void dst_ifdown(struct dst_entry *dst, struct net_device *dev,
 
 	if (!unregister) {
 		/**
-		 * ÒòÎªÉè±¸Îªdown£¬ËùÒÔ²»ÔÙÄÜ¹»Ïò¸ÃÉè±¸·¢ËÍÁ÷Á¿¡£
-		 * Òò¶ø£¬dst_entryÖĞµÄinputºÍoutput³ÌĞò±»·Ö±ğÉèÖÃÎªdst_discard_inºÍdst_discard_out¡£
-		 * ÕâÁ½¸ö³ÌĞò½«ËÍÀ´µÄÈÎºÎÊäÈëbuffer£¨¼´ËüÃÇ±»ÒªÇó´¦ÀíµÄÈÎÒâÖ¡£©¼òµ¥¶ªÆúµô¡£
+		 * å› ä¸ºè®¾å¤‡ä¸ºdownï¼Œæ‰€ä»¥ä¸å†èƒ½å¤Ÿå‘è¯¥è®¾å¤‡å‘é€æµé‡ã€‚
+		 * å› è€Œï¼Œdst_entryä¸­çš„inputå’Œoutputç¨‹åºè¢«åˆ†åˆ«è®¾ç½®ä¸ºdst_discard_inå’Œdst_discard_outã€‚
+		 * è¿™ä¸¤ä¸ªç¨‹åºå°†é€æ¥çš„ä»»ä½•è¾“å…¥bufferï¼ˆå³å®ƒä»¬è¢«è¦æ±‚å¤„ç†çš„ä»»æ„å¸§ï¼‰ç®€å•ä¸¢å¼ƒæ‰ã€‚
 		 */
 		dst->input = dst_discard_in;
 		dst->output = dst_discard_out;
 	} else {
 		/**
-		 * µ±Éè±¸±»×¢ÏúÊ±£¬¶Ô¸ÃÉè±¸µÄËùÓĞÒıÓÃ¶¼±ØĞë±»É¾³ı¡£
-		 * dst_ifdown½«dst_entry½á¹¹ºÍÏà¹ØµÄneighbourÊµÀıÖĞµ½¸ÃÉè±¸µÄÒıÓÃ¶¼Ìæ»»Îªµ½loopbackÉè±¸µÄÒıÓÃ¡£
+		 * å½“è®¾å¤‡è¢«æ³¨é”€æ—¶ï¼Œå¯¹è¯¥è®¾å¤‡çš„æ‰€æœ‰å¼•ç”¨éƒ½å¿…é¡»è¢«åˆ é™¤ã€‚
+		 * dst_ifdownå°†dst_entryç»“æ„å’Œç›¸å…³çš„neighbourå®ä¾‹ä¸­åˆ°è¯¥è®¾å¤‡çš„å¼•ç”¨éƒ½æ›¿æ¢ä¸ºåˆ°loopbackè®¾å¤‡çš„å¼•ç”¨ã€‚
 		 */
 		dst->dev = &loopback_dev;
 		dev_hold(&loopback_dev);
@@ -292,7 +292,7 @@ static inline void dst_ifdown(struct dst_entry *dst, struct net_device *dev,
 }
 
 /**
- * DST×ÓÏµÍ³´¦ÀíÉè±¸ÊÂ¼şµÄ´úÂë¡£
+ * DSTå­ç³»ç»Ÿå¤„ç†è®¾å¤‡äº‹ä»¶çš„ä»£ç ã€‚
  */
 static int dst_dev_event(struct notifier_block *this, unsigned long event, void *ptr)
 {
@@ -304,8 +304,8 @@ static int dst_dev_event(struct notifier_block *this, unsigned long event, void 
 	case NETDEV_DOWN:
 		spin_lock_bh(&dst_lock);
 		/**
-		 * ±éÀúÓÉdead dst_entry½á¹¹×é³ÉµÄdst_garbage_listÁ´±í£¬¶ÔÃ¿Ò»Ïîµ÷ÓÃdst_ifdown¡£
-		 * dst_ifdownµÄ×îºóÒ»¸öÊäÈë²ÎÊıÎªÒª´¦ÀíµÄÊÂ¼ş¡£
+		 * éå†ç”±dead dst_entryç»“æ„ç»„æˆçš„dst_garbage_listé“¾è¡¨ï¼Œå¯¹æ¯ä¸€é¡¹è°ƒç”¨dst_ifdownã€‚
+		 * dst_ifdownçš„æœ€åä¸€ä¸ªè¾“å…¥å‚æ•°ä¸ºè¦å¤„ç†çš„äº‹ä»¶ã€‚
 		 */
 		for (dst = dst_garbage_list; dst; dst = dst->next) {
 			dst_ifdown(dst, dev, event != NETDEV_DOWN);
@@ -321,7 +321,7 @@ static struct notifier_block dst_dev_notifier = {
 };
 
 /**
- * ³õÊ¼»¯DSTĞ­ÒéÎŞ¹ØÂ·ÓÉ»º´æ¡£ÓÉnet_dev_initµ÷ÓÃ¡£
+ * åˆå§‹åŒ–DSTåè®®æ— å…³è·¯ç”±ç¼“å­˜ã€‚ç”±net_dev_initè°ƒç”¨ã€‚
  */
 void __init dst_init(void)
 {

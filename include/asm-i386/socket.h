@@ -7,89 +7,89 @@
 #define SOL_SOCKET	1
 
 /**
- * ʹ�ܴ�ѡ�������ģ������SOCK_DEBUG������Ļ������־���������Ϣ��
+ * 使能此选项后，网络模块会调用SOCK_DEBUG宏向屏幕或者日志输出调试信息。
  */
 #define SO_DEBUG	1
 /**
- * ���������׽ӿڸ��õ�ַ�Ͷ˿ڡ�
- * Ҫ�������׽ӿڶ����ô�ѡ����ߵڶ����׽ӿ����ô�ѡ�����1.
+ * 允许两个套接口复用地址和端口。
+ * 要求两个套接口都设置此选项，或者第二个套接口设置此选项大于1.
  */
 #define SO_REUSEADDR	2
 /**
- * �Ӵ�����ƿ��л���׽ӿڵ����ͣ���SOCK_DGRAM��SOCK_STREAM��
+ * 从传输控制块中获得套接口的类型，如SOCK_DGRAM、SOCK_STREAM。
  */
 #define SO_TYPE		3
 /**
- * �Ӵ�����ƿ��л�ô����롣���ȴ�sk_err�л�ã����Ϊ0���ٴ�sk_err_soft�л�ô����롣
- * 0��ʾû�д���
+ * 从传输控制块中获得错误码。首先从sk_err中获得，如果为0，再从sk_err_soft中获得错误码。
+ * 0表示没有错误。
  */
 #define SO_ERROR	4
 /**
- * ����Ҫ��ѯ·�ɱ���ֱ�ӴӰ󶨵Ľӿڽ����ݷ��ͳ�ȥ��
- * ��ѡ���ֵ�����ڴ�����ƿ��SOCK_LOCALROUTE��־λ�С�
+ * 不需要查询路由表，直接从绑定的接口将数据发送出去。
+ * 此选项的值保存在传输控制块的SOCK_LOCALROUTE标志位中。
  */
 #define SO_DONTROUTE	5
 /**
- * ��ʾ�׽ӿ��Ѿ����ó��շ��㲥��Ϣ����ѡ������Է�SOCK_STREAM���͵��׽ӿ���Ч��
+ * 表示套接口已经配置成收发广播消息。此选项仅仅对非SOCK_STREAM类型的套接口有效。
  */
 #define SO_BROADCAST	6
 /**
- * ���÷��ͻ�������С�����ܴ���sysctl_wmem_max��
- * ��������ã���Ĭ�ϻ�������СΪtcp_wmem[1]
+ * 设置发送缓冲区大小。不能大于sysctl_wmem_max。
+ * 如果不设置，则默认缓冲区大小为tcp_wmem[1]
  */
 #define SO_SNDBUF	7
 /**
- * ���ý��ջ�������С��
+ * 设置接收缓冲区大小。
  */
 #define SO_RCVBUF	8
 /**
- * �Ƿ���������ܡ�
- * �����ڴ�����ƿ��SOCK_KEEPOPEN��־�С�
+ * 是否启动保活功能。
+ * 保存在传输控制块的SOCK_KEEPOPEN标志中。
  */
 #define SO_KEEPALIVE	9
 /**
- * ������������ͨ������һ��
- * ������ֵ������SOCK_URGINLINE��־�С�
+ * 带外数据与普通数据流一起。
+ * 此设置值保存在SOCK_URGINLINE标志中。
  */
 #define SO_OOBINLINE	10
 /**
- * ���ھ���RAW��UDP�Ƿ����У��͡�������sk_no_check��Ա�С�
+ * 用于决定RAW和UDP是否进行校验和。保存在sk_no_check成员中。
  */
 #define SO_NO_CHECK	11
 /**
- * ���÷��ͻ���ת������QoS���ѡ��ֵ������sk_priorit��Ա�С���ֵ�������0-6֮�䡣
+ * 设置发送或者转发包的QoS类别，选项值保存在sk_priorit成员中。其值必须介于0-6之间。
  */
 #define SO_PRIORITY	12
 /**
- * ���û��߻�ȡ�׽ӿڵ��ӳ�ʱ��ֵ��
+ * 设置或者获取套接口的延迟时间值。
  */
 #define SO_LINGER	13
 /**
- * �Ѿ�����
+ * 已经废弃
  */
 #define SO_BSDCOMPAT	14
 /* To add :#define SO_REUSEPORT 15 */
 /**
- * ��Ҫ����PF_UNIXЭ����
+ * 主要用于PF_UNIX协议族
  */
 #define SO_PASSCRED	16
 #define SO_PEERCRED	17
 /**
- * ���ջ�������ֵ�������ڴ�����ƿ��sk_rcvlowat��Ա�С�
+ * 接收缓存下限值。保存在传输控制块的sk_rcvlowat成员中。
  */
 #define SO_RCVLOWAT	18
 /**
- * ���ͻ�������ֵ��ʼ��Ϊ1.
+ * 发送缓存下限值。始终为1.
  */
 #define SO_SNDLOWAT	19
 /**
- * ���û��߻�ȡ���ճ�ʱֵ���Ժ���Ϊ��λ��
- * ������sk_rcvtimeo��Ա�С�
+ * 设置或者获取接收超时值，以毫秒为单位。
+ * 保存在sk_rcvtimeo成员中。
  */
 #define SO_RCVTIMEO	20
 /**
- * ���ͳ�ʱֵ���Ժ���Ϊ��λ��
- * ������sk_sndtimeo��Ա�С�
+ * 发送超时值，以毫秒为单位。
+ * 保存在sk_sndtimeo成员中。
  */
 #define SO_SNDTIMEO	21
 
@@ -99,36 +99,36 @@
 #define SO_SECURITY_ENCRYPTION_NETWORK		24
 
 /**
- * ���׽ӿڰ󶨵�ָ���豸�ϡ�
- * ������sk_bound_def_if��Ա�С�
+ * 将套接口绑定到指定设备上。
+ * 保存在sk_bound_def_if成员中。
  */
 #define SO_BINDTODEVICE	25
 
 /* Socket filtering */
 /**
- * װ�ء�ж���׽ӿڵĹ�������
+ * 装载、卸载套接口的过滤器。
  */
 #define SO_ATTACH_FILTER        26
 #define SO_DETACH_FILTER        27
 
 /**
- * ��ȡ�Զ˵ĵ�ַ�Ͷ˿ڡ�������daddr��dport�С�
+ * 获取对端的地址和端口。保存在daddr和dport中。
  */
 #define SO_PEERNAME		28
 /**
- * ���ΪTRUE����ô�����ݰ�����ʱ����Ϊʱ�����
- * ������SOCK_RCVTSTAMP��־λ�С�
+ * 如果为TRUE，那么将数据包接收时间作为时间戳。
+ * 保存在SOCK_RCVTSTAMP标志位中。
  */
 #define SO_TIMESTAMP		29
 #define SCM_TIMESTAMP		SO_TIMESTAMP
 
 /**
- * �Ƿ���listen״̬��
+ * 是否处于listen状态。
  */
 #define SO_ACCEPTCONN		30
 
 /**
- * �Ӱ�ȫģ���л�ȡ��ȫ��֤�������ġ�
+ * 从安全模块中获取安全认证的上下文。
  */
 #define SO_PEERSEC		31
 

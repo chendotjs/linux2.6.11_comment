@@ -49,7 +49,7 @@ extern void __init reserve_bootmem (unsigned long addr, unsigned long size);
 #define alloc_bootmem_pages(x) \
 	__alloc_bootmem((x), PAGE_SIZE, __pa(MAX_DMA_ADDRESS))
 /**
- * ·ÖÅäÒ³ÖĞ¼äÄ¿Â¼
+ * åˆ†é…é¡µä¸­é—´ç›®å½•
  */
 #define alloc_bootmem_low_pages(x) \
 	__alloc_bootmem((x), PAGE_SIZE, 0)

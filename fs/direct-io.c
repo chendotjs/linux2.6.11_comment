@@ -1145,8 +1145,8 @@ direct_io_worker(int rw, struct kiocb *iocb, struct inode *inode,
  * Additional i_alloc_sem locking requirements described inline below.
  */
 /**
- * ¶Ô´æ·ÅÔÚÏàÓ¦¿éÖĞÒª¶Á»òĞ´µÄÊı¾İ½øĞĞ²ğ·Ö£¬È·¶¨Êı¾İÔÚ´ÅÅÌÉÏµÄÎ»ÖÃ¡£
- * ²¢Ìí¼ÓÒ»¸ö»ò¶à¸öÓÃÓÚÃèÊöÒª½øĞĞµÄIO²Ù×÷µÄBIOÃèÊö·û¡£
+ * å¯¹å­˜æ”¾åœ¨ç›¸åº”å—ä¸­è¦è¯»æˆ–å†™çš„æ•°æ®è¿›è¡Œæ‹†åˆ†ï¼Œç¡®å®šæ•°æ®åœ¨ç£ç›˜ä¸Šçš„ä½ç½®ã€‚
+ * å¹¶æ·»åŠ ä¸€ä¸ªæˆ–å¤šä¸ªç”¨äºæè¿°è¦è¿›è¡Œçš„IOæ“ä½œçš„BIOæè¿°ç¬¦ã€‚
  */
 ssize_t
 __blockdev_direct_IO(int rw, struct kiocb *iocb, struct inode *inode,

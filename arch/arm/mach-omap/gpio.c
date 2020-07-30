@@ -4,7 +4,7 @@
  * Support functions for OMAP GPIO
  *
  * Copyright (C) 2003 Nokia Corporation
- * Written by Juha Yrjölä <juha.yrjola@nokia.com>
+ * Written by Juha Yrjl <juha.yrjola@nokia.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as

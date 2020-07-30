@@ -92,7 +92,7 @@ void ext2_discard_prealloc (struct inode * inode)
 }
 
 /**
- * ÔÚext2·ÖÇøËÑË÷Ò»¸ö¿ÕÏĞ¿é¡£Èç¹ûĞèÒª£¬¸Ãº¯Êı»¹Îª¼ä½ÓÑ°Ö··ÖÅäÏàÓ¦µÄ¿é
+ * åœ¨ext2åˆ†åŒºæœç´¢ä¸€ä¸ªç©ºé—²å—ã€‚å¦‚æœéœ€è¦ï¼Œè¯¥å‡½æ•°è¿˜ä¸ºé—´æ¥å¯»å€åˆ†é…ç›¸åº”çš„å—
  */
 static int ext2_alloc_block (struct inode * inode, unsigned long goal, int *err)
 {
@@ -106,19 +106,19 @@ static int ext2_alloc_block (struct inode * inode, unsigned long goal, int *err)
 	struct ext2_inode_info *ei = EXT2_I(inode);
 	write_lock(&ei->i_meta_lock);
 	if (ei->i_prealloc_count &&
-	    (goal == ei->i_prealloc_block || goal + 1 == ei->i_prealloc_block))/* Õı±»·ÖÅäµÄ¿éÓëÇ°ÃæÒÑ¾­·ÖÅäµÄ¿éÓĞÁ¬ĞøµÄÎÄ¼ş¿éºÅ */
+	    (goal == ei->i_prealloc_block || goal + 1 == ei->i_prealloc_block))/* æ­£è¢«åˆ†é…çš„å—ä¸å‰é¢å·²ç»åˆ†é…çš„å—æœ‰è¿ç»­çš„æ–‡ä»¶å—å· */
 	{
-		result = ei->i_prealloc_block++;/* Ê¹ÓÃÔ¤·ÖÅäµÄ¿é */
+		result = ei->i_prealloc_block++;/* ä½¿ç”¨é¢„åˆ†é…çš„å— */
 		ei->i_prealloc_count--;
 		write_unlock(&ei->i_meta_lock);
 		ext2_debug ("preallocation hit (%lu/%lu).\n",
 			    ++alloc_hits, ++alloc_attempts);
-	} else {/* ²»ÄÜÔ¤·ÖÅä */
+	} else {/* ä¸èƒ½é¢„åˆ†é… */
 		write_unlock(&ei->i_meta_lock);
-		ext2_discard_prealloc (inode);/* ÔİÍ£Ô¤·ÖÅä */
+		ext2_discard_prealloc (inode);/* æš‚åœé¢„åˆ†é… */
 		ext2_debug ("preallocation miss (%lu/%lu).\n",
 			    alloc_hits, ++alloc_attempts);
-		if (S_ISREG(inode->i_mode))/* ÔÚ¿é×éÖĞ·ÖÅäÒ»¸ö¿é */
+		if (S_ISREG(inode->i_mode))/* åœ¨å—ç»„ä¸­åˆ†é…ä¸€ä¸ªå— */
 			result = ext2_new_block (inode, goal, 
 				 &ei->i_prealloc_count,
 				 &ei->i_prealloc_block, err);
@@ -527,9 +527,9 @@ changed:
  * reachable from inode.
  */
 /**
- * ·ÖÅäÒ»¸öÊı¾İ¿éÀ´±£´æext2ÆÕÍ¨ÎÄ¼şµÄÊı¾İ¡£
- * Èç¹û¿é²»´æÔÚ£¬¾Í×Ô¶¯ÎªÎÄ¼ş·ÖÅä¿é¡£¾¡Á¿ÔÚ×îºóÒ»´Î·ÖÅäµÄ¿é¸½½üËÑË÷¿é£¬±ØÒªÊ±»áÔÚÆäËû¿é×éÖĞ»ñµÃ¿ÕÏĞ¿é¡£
- * Í¬Ê±»¹²ÉÓÃÔ¤·ÖÅä²ßÂÔ¡£
+ * åˆ†é…ä¸€ä¸ªæ•°æ®å—æ¥ä¿å­˜ext2æ™®é€šæ–‡ä»¶çš„æ•°æ®ã€‚
+ * å¦‚æœå—ä¸å­˜åœ¨ï¼Œå°±è‡ªåŠ¨ä¸ºæ–‡ä»¶åˆ†é…å—ã€‚å°½é‡åœ¨æœ€åä¸€æ¬¡åˆ†é…çš„å—é™„è¿‘æœç´¢å—ï¼Œå¿…è¦æ—¶ä¼šåœ¨å…¶ä»–å—ç»„ä¸­è·å¾—ç©ºé—²å—ã€‚
+ * åŒæ—¶è¿˜é‡‡ç”¨é¢„åˆ†é…ç­–ç•¥ã€‚
  */
 int ext2_get_block(struct inode *inode, sector_t iblock, struct buffer_head *bh_result, int create)
 {
@@ -584,7 +584,7 @@ out:
 
 	left = (chain + depth) - partial;
 	/**
-	 * ÔÚext2·ÖÇøÖĞËÑË÷Ò»¸ö¿ÕÏĞ¿é¡£
+	 * åœ¨ext2åˆ†åŒºä¸­æœç´¢ä¸€ä¸ªç©ºé—²å—ã€‚
 	 */
 	err = ext2_alloc_branch(inode, left, goal,
 					offsets+(partial-chain), partial);
@@ -623,7 +623,7 @@ ext2_readpages(struct file *file, struct address_space *mapping,
 }
 
 /**
- * ext2µÄprepare_writeÊµÏÖ·½·¨¡£
+ * ext2çš„prepare_writeå®ç°æ–¹æ³•ã€‚
  */
 static int
 ext2_prepare_write(struct file *file, struct page *page,
@@ -668,7 +668,7 @@ ext2_direct_IO(int rw, struct kiocb *iocb, const struct iovec *iov,
 }
 
 /**
- * ½«ÔàÒ³Ğ´»Ø´ÅÅÌ¡£
+ * å°†è„é¡µå†™å›ç£ç›˜ã€‚
  */
 static int
 ext2_writepages(struct address_space *mapping, struct writeback_control *wbc)
@@ -882,7 +882,7 @@ static void ext2_free_branches(struct inode *inode, __le32 *p, __le32 *q, int de
 }
 
 /**
- * ext2µÄtruncateÊµÏÖ·½·¨¡£
+ * ext2çš„truncateå®ç°æ–¹æ³•ã€‚
  */
 void ext2_truncate (struct inode * inode)
 {
@@ -1269,7 +1269,7 @@ int ext2_sync_inode(struct inode *inode)
 }
 
 /**
- * ext2µÄsetattrÊµÏÖ·½·¨¡£
+ * ext2çš„setattrå®ç°æ–¹æ³•ã€‚
  */
 int ext2_setattr(struct dentry *dentry, struct iattr *iattr)
 {

@@ -19,8 +19,8 @@
  *
  *
  *	Fixes/additions:
- *		Juha Sievänen (Juha.Sievanen@cs.Helsinki.FI),
- *		Auvo Häkkinen (Auvo.Hakkinen@cs.Helsinki.FI)
+ *		Juha Sievnen (Juha.Sievanen@cs.Helsinki.FI),
+ *		Auvo Hkkinen (Auvo.Hakkinen@cs.Helsinki.FI)
  *		University of Helsinki, Department of Computer Science
  *			LAN entries
  *		Markus Lidel <Markus.Lidel@shadowconnect.com>

@@ -57,7 +57,7 @@
  * Special inode numbers
  */
 /**
- * ±£ÁôµÄinodeºÅ
+ * ä¿ç•™çš„inodeå·
  */
 #define	EXT2_BAD_INO		 1	/* Bad blocks inode */
 #define EXT2_ROOT_INO		 2	/* Root inode */
@@ -137,40 +137,40 @@ static inline struct ext2_sb_info *EXT2_SB(struct super_block *sb)
  * Structure of a blocks group descriptor
  */
 /**
- * ext2ÎÄ¼şÏµÍ³µÄ¿é×éÃèÊö·û,ÄÚ´æ¡¢´ÅÅÌÖĞµÄÊı¾İ½á¹¹ÊÇÒ»ÖÂµÄ¡£
+ * ext2æ–‡ä»¶ç³»ç»Ÿçš„å—ç»„æè¿°ç¬¦,å†…å­˜ã€ç£ç›˜ä¸­çš„æ•°æ®ç»“æ„æ˜¯ä¸€è‡´çš„ã€‚
  */
 struct ext2_group_desc
 {
 	/**
-	 * ¿éÎ»Í¼µÄ¿éºÅ
+	 * å—ä½å›¾çš„å—å·
 	 */
 	__le32	bg_block_bitmap;		/* Blocks bitmap block */
 	/**
-	 * Ë÷Òı½ÚµãÎ»Í¼µÄ¿éºÅ
+	 * ç´¢å¼•èŠ‚ç‚¹ä½å›¾çš„å—å·
 	 */
 	__le32	bg_inode_bitmap;		/* Inodes bitmap block */
 	/**
-	 * µÚÒ»¸öË÷Òı½Úµã±í¿éµÄ¿éºÅ¡£
+	 * ç¬¬ä¸€ä¸ªç´¢å¼•èŠ‚ç‚¹è¡¨å—çš„å—å·ã€‚
 	 */
 	__le32	bg_inode_table;		/* Inodes table block */
 	/**
-	 * ×éÖĞ¿ÕÏĞ¿éµÄ¸öÊı¡£
+	 * ç»„ä¸­ç©ºé—²å—çš„ä¸ªæ•°ã€‚
 	 */
 	__le16	bg_free_blocks_count;	/* Free blocks count */
 	/**
-	 * ×éÖĞ¿ÕÏĞË÷Òı½ÚµãµÄ¸öÊı¡£
+	 * ç»„ä¸­ç©ºé—²ç´¢å¼•èŠ‚ç‚¹çš„ä¸ªæ•°ã€‚
 	 */
 	__le16	bg_free_inodes_count;	/* Free inodes count */
 	/**
-	 * ×éÖĞÄ¿Â¼µÄ¸öÊı
+	 * ç»„ä¸­ç›®å½•çš„ä¸ªæ•°
 	 */
 	__le16	bg_used_dirs_count;	/* Directories count */
 	/**
-	 * ÓÃÓÚ¶ÔÆë
+	 * ç”¨äºå¯¹é½
 	 */
 	__le16	bg_pad;
 	/**
-	 * NULL£¬±£Áô
+	 * NULLï¼Œä¿ç•™
 	 */
 	__le32	bg_reserved[3];
 };
@@ -197,7 +197,7 @@ struct ext2_group_desc
 #define	EXT2_DIND_BLOCK			(EXT2_IND_BLOCK + 1)
 #define	EXT2_TIND_BLOCK			(EXT2_DIND_BLOCK + 1)
 /**
- * Êı¾İ¿éÖ¸ÕëµÄ¸öÊı¡£
+ * æ•°æ®å—æŒ‡é’ˆçš„ä¸ªæ•°ã€‚
  */
 #define	EXT2_N_BLOCKS			(EXT2_TIND_BLOCK + 1)
 
@@ -205,46 +205,46 @@ struct ext2_group_desc
  * Inode flags
  */
 /**
- * °²È«É¾³ı¡£
- * ÔÚÉ¾³ıÎÄ¼şÊ±£¬½«ÆäÊı¾İ¿éÖĞĞ´ÈëËæ»úÊı¡£
+ * å®‰å…¨åˆ é™¤ã€‚
+ * åœ¨åˆ é™¤æ–‡ä»¶æ—¶ï¼Œå°†å…¶æ•°æ®å—ä¸­å†™å…¥éšæœºæ•°ã€‚
  */
 #define	EXT2_SECRM_FL			0x00000001 /* Secure deletion */
 /**
- * ÔÚÉ¾³ıÎÄ¼şÊ±£¬²¢²»ÕæµÄÉ¾³ı£¬¶øÊÇ·Åµ½ÁÙÊ±Î»ÖÃ¡£
+ * åœ¨åˆ é™¤æ–‡ä»¶æ—¶ï¼Œå¹¶ä¸çœŸçš„åˆ é™¤ï¼Œè€Œæ˜¯æ”¾åˆ°ä¸´æ—¶ä½ç½®ã€‚
  */
 #define	EXT2_UNRM_FL			0x00000002 /* Undelete */
 /**
- * ÎÄ¼ş±»Ñ¹Ëõ´æ´¢¡£
+ * æ–‡ä»¶è¢«å‹ç¼©å­˜å‚¨ã€‚
  */
 #define	EXT2_COMPR_FL			0x00000004 /* Compress file */
 /**
- * Í¬²½¸üĞÂ´ÅÅÌ¡£ÓÃÓÚÖØÒªµÄÊı¾İÎÄ¼ş¡£
+ * åŒæ­¥æ›´æ–°ç£ç›˜ã€‚ç”¨äºé‡è¦çš„æ•°æ®æ–‡ä»¶ã€‚
  */
 #define EXT2_SYNC_FL			0x00000008 /* Synchronous updates */
 /**
- * ²»ÄÜ±»ÒÆ¶¯Î»ÖÃ¡£
- * ÔÚ·´ËéÆ¬ÕûÀíÊ±£¬Ò²²»ÄÜÒÆ¶¯ËüµÄÎ»ÖÃ¡£
- * Ö÷ÒªÓÃÓÚÆô¶¯ÎÄ¼ş¡£
+ * ä¸èƒ½è¢«ç§»åŠ¨ä½ç½®ã€‚
+ * åœ¨åç¢ç‰‡æ•´ç†æ—¶ï¼Œä¹Ÿä¸èƒ½ç§»åŠ¨å®ƒçš„ä½ç½®ã€‚
+ * ä¸»è¦ç”¨äºå¯åŠ¨æ–‡ä»¶ã€‚
  */
 #define EXT2_IMMUTABLE_FL		0x00000010 /* Immutable file */
 /**
- * Ö»ÄÜÌí¼Ó¶ø²»ÄÜĞŞ¸ÄÏÖÓĞÎÄ¼şµÄÄÚÈİ¡£
+ * åªèƒ½æ·»åŠ è€Œä¸èƒ½ä¿®æ”¹ç°æœ‰æ–‡ä»¶çš„å†…å®¹ã€‚
  */
 #define EXT2_APPEND_FL			0x00000020 /* writes to file may only append */
 /**
  * No dump/delete
- * ¼´Ê¹link count == 0£¬Ò²²»ÕæÕıÉ¾³ıÎÄ¼ş¡£
+ * å³ä½¿link count == 0ï¼Œä¹Ÿä¸çœŸæ­£åˆ é™¤æ–‡ä»¶ã€‚
  */
 #define EXT2_NODUMP_FL			0x00000040 /* do not dump file */
 /**
- * ²»ĞŞ¸ÄÎÄ¼ş·ÃÎÊÊ±¼ä¡£
- * Óë×÷ÕßÉù³ÆµÄÏà·´£¬Õâ¸öÎ»²¢²»ÊÇÎªÁË°²È«£¬¶øÊÇĞÔÄÜ¡£
+ * ä¸ä¿®æ”¹æ–‡ä»¶è®¿é—®æ—¶é—´ã€‚
+ * ä¸ä½œè€…å£°ç§°çš„ç›¸åï¼Œè¿™ä¸ªä½å¹¶ä¸æ˜¯ä¸ºäº†å®‰å…¨ï¼Œè€Œæ˜¯æ€§èƒ½ã€‚
  */
 #define EXT2_NOATIME_FL			0x00000080 /* do not update atime */
 /* Reserved for compression usage... */
 #define EXT2_DIRTY_FL			0x00000100
 /**
- * ´æÔÚÑ¹Ëõ¿é£¬ËÆºõÎ´ÓÃ¡£
+ * å­˜åœ¨å‹ç¼©å—ï¼Œä¼¼ä¹æœªç”¨ã€‚
  */
 #define EXT2_COMPRBLK_FL		0x00000200 /* One or more compressed clusters */
 #define EXT2_NOCOMP_FL			0x00000400 /* Don't compress */
@@ -252,7 +252,7 @@ struct ext2_group_desc
 /* End compression flags --- maybe not all used */	
 #define EXT2_BTREE_FL			0x00001000 /* btree format dir */
 /**
- * Ê¹ÓÃÁËÄ¿Â¼Ë÷Òı¡£
+ * ä½¿ç”¨äº†ç›®å½•ç´¢å¼•ã€‚
  */
 #define EXT2_INDEX_FL			0x00001000 /* hash-indexed directory */
 #define EXT2_IMAGIC_FL			0x00002000 /* AFS directory */
@@ -277,71 +277,71 @@ struct ext2_group_desc
  * Structure of an inode on the disk
  */
 /**
- * ´ÅÅÌÉÏ´æ·ÅµÄext2Ë÷Òı½Úµã¡£
+ * ç£ç›˜ä¸Šå­˜æ”¾çš„ext2ç´¢å¼•èŠ‚ç‚¹ã€‚
  */
 struct ext2_inode {
 	/**
-	 * ÎÄ¼şÀàĞÍºÍ·ÃÎÊÈ¨ÏŞ¡£
-	 *		0:Î´ÖªÎÄ¼ş
-	 *		1:ÆÕÍ¨ÎÄ¼ş
-	 *		2:Ä¿Â¼
-	 *		3:×Ö·ûÉè±¸
-	 *		4:¿éÉè±¸
-	 *		5:ÃüÃû¹ÜµÀ
-	 *		6:Ì×½Ó×Ö
-	 *		7:·ûºÅÁ´½Ó
+	 * æ–‡ä»¶ç±»å‹å’Œè®¿é—®æƒé™ã€‚
+	 *		0:æœªçŸ¥æ–‡ä»¶
+	 *		1:æ™®é€šæ–‡ä»¶
+	 *		2:ç›®å½•
+	 *		3:å­—ç¬¦è®¾å¤‡
+	 *		4:å—è®¾å¤‡
+	 *		5:å‘½åç®¡é“
+	 *		6:å¥—æ¥å­—
+	 *		7:ç¬¦å·é“¾æ¥
 	 */
 	__le16	i_mode;		/* File mode */
 	/**
-	 * ÓµÓĞÕß±êÊ¶·û¡£
+	 * æ‹¥æœ‰è€…æ ‡è¯†ç¬¦ã€‚
 	 */
 	__le16	i_uid;		/* Low 16 bits of Owner Uid */
 	/**
-	 * ÒÔ×Ö½ÚÎªµ¥Î»µÄÎÄ¼ş³¤¶È¡£
+	 * ä»¥å­—èŠ‚ä¸ºå•ä½çš„æ–‡ä»¶é•¿åº¦ã€‚
 	 */
 	__le32	i_size;		/* Size in bytes */
 	/**
-	 * ×îºóÒ»´Î·ÃÎÊÎÄ¼şµÄÊ±¼ä¡£
+	 * æœ€åä¸€æ¬¡è®¿é—®æ–‡ä»¶çš„æ—¶é—´ã€‚
 	 */
 	__le32	i_atime;	/* Access time */
 	/**
-	 * Ë÷Òı½Úµã×îºó¸Ä±äµÄÊ±¼ä¡£
+	 * ç´¢å¼•èŠ‚ç‚¹æœ€åæ”¹å˜çš„æ—¶é—´ã€‚
 	 */
 	__le32	i_ctime;	/* Creation time */
 	/**
-	 * ÎÄ¼şÄÚÈİ×îºóĞŞ¸ÄµÄÊ±¼ä¡£
+	 * æ–‡ä»¶å†…å®¹æœ€åä¿®æ”¹çš„æ—¶é—´ã€‚
 	 */
 	__le32	i_mtime;	/* Modification time */
 	/**
-	 * ÎÄ¼şÉ¾³ıµÄÊ±¼ä¡£
+	 * æ–‡ä»¶åˆ é™¤çš„æ—¶é—´ã€‚
 	 */
 	__le32	i_dtime;	/* Deletion Time */
 	/**
-	 * ÓÃ»§×é±êÊ¶·û¡£
+	 * ç”¨æˆ·ç»„æ ‡è¯†ç¬¦ã€‚
 	 */
 	__le16	i_gid;		/* Low 16 bits of Group Id */
 	/**
-	 * Ó²Á´½Ó¼ÆÊı¡£
+	 * ç¡¬é“¾æ¥è®¡æ•°ã€‚
 	 */
 	__le16	i_links_count;	/* Links count */
 	/**
-	 * ÎÄ¼şµÄÊı¾İ¿éÊı¡£ÒÔ512BÎªµ¥Î»
-	 * °üº¬ÒÑ¾­ÓÃÊıÁ¿£¬ÒÔ¼°±£ÁôÊıÁ¿¡£
+	 * æ–‡ä»¶çš„æ•°æ®å—æ•°ã€‚ä»¥512Bä¸ºå•ä½
+	 * åŒ…å«å·²ç»ç”¨æ•°é‡ï¼Œä»¥åŠä¿ç•™æ•°é‡ã€‚
 	 */
 	__le32	i_blocks;	/* Blocks count */
 	/**
-	 * ÎÄ¼ş±êÖ¾¡£
+	 * æ–‡ä»¶æ ‡å¿—ã€‚
 	 */
 	__le32	i_flags;	/* File flags */
 	/**
-	 * ÌØ¶¨µÄ²Ù×÷ÏµÍ³ĞÅÏ¢¡£
+	 * ç‰¹å®šçš„æ“ä½œç³»ç»Ÿä¿¡æ¯ã€‚
 	 */
 	union {
 		struct {
 			__le32  l_i_reserved1;
 		} linux1;
 		/**
-		 * ½ö½öHURDÊ¹ÓÃÁË´Ë±£ÁôÖµ¡£
+		 * ä»…ä»…HURDä½¿ç”¨äº†æ­¤ä¿ç•™å€¼ã€‚
 		 */
 		struct {
 			__le32  h_i_translator;
@@ -351,31 +351,31 @@ struct ext2_inode {
 		} masix1;
 	} osd1;				/* OS dependent 1 */
 	/**
-	 * Ö¸ÏòÊı¾İ¿éµÄÖ¸Õë¡£
-	 * Ç°12¸ö¿éÊÇÖ±½ÓÊı¾İ¿é¡£
-	 * µÚ13¿éÊÇÒ»¼¶¼ä½Ó¿éºÅ¡£
-	 * 14->¶ş¼¶¼ä½Ó¿é¡£
-	 * 15->Èı¼¶¼ä½Ó¿é¡£
+	 * æŒ‡å‘æ•°æ®å—çš„æŒ‡é’ˆã€‚
+	 * å‰12ä¸ªå—æ˜¯ç›´æ¥æ•°æ®å—ã€‚
+	 * ç¬¬13å—æ˜¯ä¸€çº§é—´æ¥å—å·ã€‚
+	 * 14->äºŒçº§é—´æ¥å—ã€‚
+	 * 15->ä¸‰çº§é—´æ¥å—ã€‚
 	 */
 	__le32	i_block[EXT2_N_BLOCKS];/* Pointers to blocks */
 	/**
-	 * ÎÄ¼ş°æ±¾£¬ÓÃÓÚNFS
+	 * æ–‡ä»¶ç‰ˆæœ¬ï¼Œç”¨äºNFS
 	 */
 	__le32	i_generation;	/* File version (for NFS) */
 	/**
-	 * ÎÄ¼ş·ÃÎÊ¿ØÖÆÁĞ±í¡£
+	 * æ–‡ä»¶è®¿é—®æ§åˆ¶åˆ—è¡¨ã€‚
 	 */
 	__le32	i_file_acl;	/* File ACL */
 	/**
-	 * Ä¿Â¼·ÃÎÊ¿ØÖÆÁĞ±í¡£
+	 * ç›®å½•è®¿é—®æ§åˆ¶åˆ—è¡¨ã€‚
 	 */
 	__le32	i_dir_acl;	/* Directory ACL */
 	/**
-	 * ×îºóÒ»¸öÎÄ¼şÆ¬µÄµØÖ·¡£
+	 * æœ€åä¸€ä¸ªæ–‡ä»¶ç‰‡çš„åœ°å€ã€‚
 	 */
 	__le32	i_faddr;	/* Fragment address */
 	/**
-	 * ÌØ¶¨µÄ²Ù×÷ÏµÍ³ĞÅÏ¢¡£
+	 * ç‰¹å®šçš„æ“ä½œç³»ç»Ÿä¿¡æ¯ã€‚
 	 */
 	union {
 		struct {
@@ -436,7 +436,7 @@ struct ext2_inode {
  * File system states
  */
 /**
- * ÎÄ¼şÏµÍ³×´Ì¬£¬Õı³£
+ * æ–‡ä»¶ç³»ç»ŸçŠ¶æ€ï¼Œæ­£å¸¸
  */
 #define	EXT2_VALID_FS			0x0001	/* Unmounted cleanly */
 #define	EXT2_ERROR_FS			0x0002	/* Errors detected */
@@ -471,15 +471,15 @@ struct ext2_inode {
  * Behaviour when detecting errors
  */
 /**
- * µ±³öÏÖ´íÎóÊ±£¬ºöÂÔ´íÎó
+ * å½“å‡ºç°é”™è¯¯æ—¶ï¼Œå¿½ç•¥é”™è¯¯
  */
 #define EXT2_ERRORS_CONTINUE		1	/* Continue execution */
 /**
- * µ±³öÏÖ´íÎóÊ±£¬Ö»ÄÜÒÔÖ»¶Á·½Ê½mount
+ * å½“å‡ºç°é”™è¯¯æ—¶ï¼Œåªèƒ½ä»¥åªè¯»æ–¹å¼mount
  */
 #define EXT2_ERRORS_RO			2	/* Remount fs read-only */
 /**
- *  µ±³öÏÖ´íÎóÊ±£¬ÏµÍ³Í£Ö¹
+ *  å½“å‡ºç°é”™è¯¯æ—¶ï¼Œç³»ç»Ÿåœæ­¢
  */
 #define EXT2_ERRORS_PANIC		3	/* Panic */
 #define EXT2_ERRORS_DEFAULT		EXT2_ERRORS_CONTINUE
@@ -488,107 +488,107 @@ struct ext2_inode {
  * Structure of the super block
  */
 /**
- * ext2ÔÚ´ÅÅÌÉÏµÄ³¬¼¶¿é¡£
+ * ext2åœ¨ç£ç›˜ä¸Šçš„è¶…çº§å—ã€‚
  */
 struct ext2_super_block {
 	/**
-	 * Ë÷Òı½áµãµÄ×ÜÊı¡£
+	 * ç´¢å¼•ç»“ç‚¹çš„æ€»æ•°ã€‚
 	 */
 	__le32	s_inodes_count;		/* Inodes count */
 	/**
-	 * ÒÔ¿éÎªµ¥Î»µÄÎÄ¼şÏµÍ³µÄ´óĞ¡¡£
+	 * ä»¥å—ä¸ºå•ä½çš„æ–‡ä»¶ç³»ç»Ÿçš„å¤§å°ã€‚
 	 */
 	__le32	s_blocks_count;		/* Blocks count */
 	/**
-	 * ±£ÁôµÄ¿éÊı¡£
+	 * ä¿ç•™çš„å—æ•°ã€‚
 	 */
 	__le32	s_r_blocks_count;	/* Reserved blocks count */
 	/**
-	 * ¿ÕÏĞ¿é¼ÆÊıÆ÷¡£
+	 * ç©ºé—²å—è®¡æ•°å™¨ã€‚
 	 */
 	__le32	s_free_blocks_count;	/* Free blocks count */
 	/**
-	 * ¿ÕÏĞË÷Òı½áµã¼ÆÊıÆ÷¡£
+	 * ç©ºé—²ç´¢å¼•ç»“ç‚¹è®¡æ•°å™¨ã€‚
 	 */
 	__le32	s_free_inodes_count;	/* Free inodes count */
 	/**
-	 * µÚÒ»¸öÊ¹ÓÃµÄ¿éºÅ¡£
+	 * ç¬¬ä¸€ä¸ªä½¿ç”¨çš„å—å·ã€‚
 	 */
 	__le32	s_first_data_block;	/* First Data Block */
 	/**
-	 * ¿éµÄ´óĞ¡¡£
+	 * å—çš„å¤§å°ã€‚
 	 */
 	__le32	s_log_block_size;	/* Block size */
 	/**
-	 * Æ¬µÄ´óĞ¡
+	 * ç‰‡çš„å¤§å°
 	 */
 	__le32	s_log_frag_size;	/* Fragment size */
 	/**
-	 * Ã¿×éÖĞµÄ¿éÊı¡£
+	 * æ¯ç»„ä¸­çš„å—æ•°ã€‚
 	 */
 	__le32	s_blocks_per_group;	/* # Blocks per group */
 	/**
-	 * Ã¿×éÖĞµÄÆ¬Êı¡£
+	 * æ¯ç»„ä¸­çš„ç‰‡æ•°ã€‚
 	 */
 	__le32	s_frags_per_group;	/* # Fragments per group */
 	/**
-	 * Ã¿×éÖĞµÄË÷Òı½áµãÊı
+	 * æ¯ç»„ä¸­çš„ç´¢å¼•ç»“ç‚¹æ•°
 	 */
 	__le32	s_inodes_per_group;	/* # Inodes per group */
 	/**
-	 * ×îºóÒ»´Î°²×°²Ù×÷µÄÊ±¼ä¡£
+	 * æœ€åä¸€æ¬¡å®‰è£…æ“ä½œçš„æ—¶é—´ã€‚
 	 */
 	__le32	s_mtime;		/* Mount time */
 	/**
-	 * ×îºóÒ»´ÎĞ´²Ù×÷µÄÊ±¼ä¡£
+	 * æœ€åä¸€æ¬¡å†™æ“ä½œçš„æ—¶é—´ã€‚
 	 */
 	__le32	s_wtime;		/* Write time */
 	/**
-	 * °²×°²Ù×÷¼ÆÊıÆ÷¡£
+	 * å®‰è£…æ“ä½œè®¡æ•°å™¨ã€‚
 	 */
 	__le16	s_mnt_count;		/* Mount count */
 	/**
-	 * °²×°²Ù×÷µÄ´ÎÊı¡£
+	 * å®‰è£…æ“ä½œçš„æ¬¡æ•°ã€‚
 	 */
 	__le16	s_max_mnt_count;	/* Maximal mount count */
 	/**
-	 * Ä§Êõ×Ö¡£
+	 * é­”æœ¯å­—ã€‚
 	 */
 	__le16	s_magic;		/* Magic signature */
 	/**
-	 * ×´Ì¬±êÖ¾¡£0ÒÑ¾­°²×°»òÕßÃ»ÓĞÕı³£Ğ¶ÔØ¡£1±»Õı³£Ğ¶ÔØ¡£2°üº¬´íÎó¡£
+	 * çŠ¶æ€æ ‡å¿—ã€‚0å·²ç»å®‰è£…æˆ–è€…æ²¡æœ‰æ­£å¸¸å¸è½½ã€‚1è¢«æ­£å¸¸å¸è½½ã€‚2åŒ…å«é”™è¯¯ã€‚
 	 */
 	__le16	s_state;		/* File system state */
 	/**
-	 * µ±¼ì²éµ½´íÎóÊ±µÄĞĞÎª¡£
+	 * å½“æ£€æŸ¥åˆ°é”™è¯¯æ—¶çš„è¡Œä¸ºã€‚
 	 */
 	__le16	s_errors;		/* Behaviour when detecting errors */
 	/**
-	 * ´Î°æ±¾ºÅ¡£
+	 * æ¬¡ç‰ˆæœ¬å·ã€‚
 	 */
 	__le16	s_minor_rev_level; 	/* minor revision level */
 	/**
-	 * ×îºóÒ»´Î¼ì²éµÄÊ±¼ä¡£
+	 * æœ€åä¸€æ¬¡æ£€æŸ¥çš„æ—¶é—´ã€‚
 	 */
 	__le32	s_lastcheck;		/* time of last check */
 	/**
-	 * ÔÙ´Î¼ì²éÖ®¼äµÄÊ±¼ä¼ä¸ô¡£
+	 * å†æ¬¡æ£€æŸ¥ä¹‹é—´çš„æ—¶é—´é—´éš”ã€‚
 	 */
 	__le32	s_checkinterval;	/* max. time between checks */
 	/**
-	 * ´´½¨ÎÄ¼şÏµÍ³µÄOS
+	 * åˆ›å»ºæ–‡ä»¶ç³»ç»Ÿçš„OS
 	 */
 	__le32	s_creator_os;		/* OS */
 	/**
-	 * °æ±¾ºÅ¡£
+	 * ç‰ˆæœ¬å·ã€‚
 	 */
 	__le32	s_rev_level;		/* Revision level */
 	/**
-	 * ±£Áô¿éµÄÈ±Ê¡UID¡£
+	 * ä¿ç•™å—çš„ç¼ºçœUIDã€‚
 	 */
 	__le16	s_def_resuid;		/* Default uid for reserved blocks */
 	/**
-	 * ±£Áô¿éµÄÈ±Ê¡ÓÃ»§×éID¡£
+	 * ä¿ç•™å—çš„ç¼ºçœç”¨æˆ·ç»„IDã€‚
 	 */
 	__le16	s_def_resgid;		/* Default gid for reserved blocks */
 	/*
@@ -605,43 +605,43 @@ struct ext2_super_block {
 	 * things it doesn't understand...
 	 */
 	/**
-	 * µÚÒ»¸ö·Ç±£ÁôµÄË÷Òı½áµãºÅ¡£
+	 * ç¬¬ä¸€ä¸ªéä¿ç•™çš„ç´¢å¼•ç»“ç‚¹å·ã€‚
 	 */
 	__le32	s_first_ino; 		/* First non-reserved inode */
 	/**
-	 * ´ÅÅÌÉÏË÷Òı½áµã½á¹¹µÄ´óĞ¡¡£
+	 * ç£ç›˜ä¸Šç´¢å¼•ç»“ç‚¹ç»“æ„çš„å¤§å°ã€‚
 	 */
 	__le16   s_inode_size; 		/* size of inode structure */
 	/**
-	 * ³¬¼¶¿éµÄ¿é×éºÅ¡£
+	 * è¶…çº§å—çš„å—ç»„å·ã€‚
 	 */
 	__le16	s_block_group_nr; 	/* block group # of this superblock */
 	/**
-	 * ¾ßÓĞ¼æÈİÌØµãµÄÎ»Í¼¡£
+	 * å…·æœ‰å…¼å®¹ç‰¹ç‚¹çš„ä½å›¾ã€‚
 	 */
 	__le32	s_feature_compat; 	/* compatible feature set */
 	/**
-	 * ¾ßÓĞ·Ç¼æÈİÌØµãµÄÎ»Í¼¡£
+	 * å…·æœ‰éå…¼å®¹ç‰¹ç‚¹çš„ä½å›¾ã€‚
 	 */
 	__le32	s_feature_incompat; 	/* incompatible feature set */
 	/**
-	 * Ö»¶Á¼æÈİÌØµãµÄÎ»Í¼¡£
+	 * åªè¯»å…¼å®¹ç‰¹ç‚¹çš„ä½å›¾ã€‚
 	 */
 	__le32	s_feature_ro_compat; 	/* readonly-compatible feature set */
 	/**
-	 * 128Î»ÎÄ¼şÏµÍ³±êÊ¶·û¡£
+	 * 128ä½æ–‡ä»¶ç³»ç»Ÿæ ‡è¯†ç¬¦ã€‚
 	 */
 	__u8	s_uuid[16];		/* 128-bit uuid for volume */
 	/**
-	 * ¾íÃû
+	 * å·å
 	 */
 	char	s_volume_name[16]; 	/* volume name */
 	/**
-	 * ×îºóÒ»¸ö°²×°µãµÄÂ·¾¶Ãû¡£
+	 * æœ€åä¸€ä¸ªå®‰è£…ç‚¹çš„è·¯å¾„åã€‚
 	 */
 	char	s_last_mounted[64]; 	/* directory where last mounted */
 	/**
-	 * ÓÃÓÚÑ¹Ëõ¡£
+	 * ç”¨äºå‹ç¼©ã€‚
 	 */
 	__le32	s_algorithm_usage_bitmap; /* For compression */
 	/*
@@ -649,15 +649,15 @@ struct ext2_super_block {
 	 * happen if the EXT2_COMPAT_PREALLOC flag is on.
 	 */
 	/**
-	 * Ô¤·ÖÅäµÄ¿éÊı¡£
+	 * é¢„åˆ†é…çš„å—æ•°ã€‚
 	 */
 	__u8	s_prealloc_blocks;	/* Nr of blocks to try to preallocate*/
 	/**
-	 * ÎªÄ¿Â¼Ô¤·ÖÅäµÄ¿éÊı
+	 * ä¸ºç›®å½•é¢„åˆ†é…çš„å—æ•°
 	 */
 	__u8	s_prealloc_dir_blocks;	/* Nr to preallocate for dirs */
 	/**
-	 * °´×Ö¶ÔÆë£¬²¹¿Õ¡£
+	 * æŒ‰å­—å¯¹é½ï¼Œè¡¥ç©ºã€‚
 	 */
 	__u16	s_padding1;
 	/*
@@ -674,7 +674,7 @@ struct ext2_super_block {
 	__le32	s_default_mount_opts;
  	__le32	s_first_meta_bg; 	/* First metablock block group */
 	/**
-	 * ÓÃNULLÌî³ä1024×Ö½Ú¡£ 
+	 * ç”¨NULLå¡«å……1024å­—èŠ‚ã€‚ 
 	 */
 	__u32	s_reserved[190];	/* Padding to the end of the block */
 };
@@ -775,7 +775,7 @@ struct ext2_super_block {
  * Structure of a directory entry
  */
 /**
- * ext2ÎÄ¼şÃûµÄ×î´ó³¤¶È¡£
+ * ext2æ–‡ä»¶åçš„æœ€å¤§é•¿åº¦ã€‚
  */
 #define EXT2_NAME_LEN 255
 
@@ -793,29 +793,29 @@ struct ext2_dir_entry {
  * file_type field.
  */
 /**
- * ext2Ä¿Â¼Ïî½á¹¹¡£ÊÇÒ»¸ö±ä³¤½á¹¹¡£µ«ÊÇÎªÁËĞ§ÂÊµÄÔ­Òò£¬ËüµÄ³¤¶ÈÊÇ4µÄ±¶Êı¡£
- * ¸Ã½á¹¹´æ·ÅÔÚÄ¿Â¼ÏîµÄÊı¾İ¿éÄÚ¡£
+ * ext2ç›®å½•é¡¹ç»“æ„ã€‚æ˜¯ä¸€ä¸ªå˜é•¿ç»“æ„ã€‚ä½†æ˜¯ä¸ºäº†æ•ˆç‡çš„åŸå› ï¼Œå®ƒçš„é•¿åº¦æ˜¯4çš„å€æ•°ã€‚
+ * è¯¥ç»“æ„å­˜æ”¾åœ¨ç›®å½•é¡¹çš„æ•°æ®å—å†…ã€‚
  */
 struct ext2_dir_entry_2 {
 	/**
-	 * Ë÷Òı½áµãºÅ
+	 * ç´¢å¼•ç»“ç‚¹å·
 	 */
 	__le32	inode;			/* Inode number */
 	/**
-	 * Ä¿Â¼Ïî³¤¶È¡£Ò²¿ÉÒÔ½âÊÍ³ÉÒ»¸öÖ¸Õë¡£
-	 * ÎªÁËĞÔÄÜÓÅ»¯£¬Ä³Ğ©ÊµÏÖ¿ÉÄÜ½«´Ë×Ö¶Î²¹Æë¡£
+	 * ç›®å½•é¡¹é•¿åº¦ã€‚ä¹Ÿå¯ä»¥è§£é‡Šæˆä¸€ä¸ªæŒ‡é’ˆã€‚
+	 * ä¸ºäº†æ€§èƒ½ä¼˜åŒ–ï¼ŒæŸäº›å®ç°å¯èƒ½å°†æ­¤å­—æ®µè¡¥é½ã€‚
 	 */
 	__le16	rec_len;		/* Directory entry length */
 	/**
-	 * ÎÄ¼şÃû³¤¶È
+	 * æ–‡ä»¶åé•¿åº¦
 	 */
 	__u8	name_len;		/* Name length */
 	/**
-	 * ÎÄ¼şÀàĞÍ¡£
+	 * æ–‡ä»¶ç±»å‹ã€‚
 	 */
 	__u8	file_type;
 	/**
-	 * ÎÄ¼şÃû
+	 * æ–‡ä»¶å
 	 */
 	char	name[EXT2_NAME_LEN];	/* File name */
 };

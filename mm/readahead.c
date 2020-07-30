@@ -386,7 +386,7 @@ int do_page_cache_readahead(struct address_space *mapping, struct file *filp,
  * readhaead mode. Otherwise return failure.
  */
 /**
- * Ô¤¶Á
+ * é¢„è¯»
  */
 static int
 blockable_page_cache_readahead(struct address_space *mapping, struct file *filp,
@@ -412,13 +412,13 @@ blockable_page_cache_readahead(struct address_space *mapping, struct file *filp,
  * readahead window size management and submits the readahead I/O.
  */
 /**
- * ´¦ÀíÎÄ¼şÔ¤¶Á¡£
- * ËüÌîĞ´µ±Ç°´°¿ÚºÍÔ¤¶Á´°¿Ú£¬¸ù¾İÔ¤¶ÁÃüÖĞÊı¸üĞÂµ±Ç°´°¿ÚºÍÔ¤¶Á´°¿ÚµÄ´óĞ¡¡£
- * mapping:		ÃèÊöÒ³ËùÓĞÕßµÄaddress_space¶ÔÏóµÄÖ¸Õë¡£
- * ra:			°üº¬¸ÃÒ³µÄÎÄ¼şfile_ra_stateÃèÊö·ûÖ¸Õë¡£
- * filp:		ÎÄ¼ş¶ÔÏóµØÖ·¡£
- * offset:		ÎÄ¼şÄÚÒ³µÄÆ«ÒÆÁ¿¡£
- * req_size:	ÒªÍê³Éµ±Ç°¶Á²Ù×÷»¹ĞèÒª¶ÁµÄÒ³Êı¡£
+ * å¤„ç†æ–‡ä»¶é¢„è¯»ã€‚
+ * å®ƒå¡«å†™å½“å‰çª—å£å’Œé¢„è¯»çª—å£ï¼Œæ ¹æ®é¢„è¯»å‘½ä¸­æ•°æ›´æ–°å½“å‰çª—å£å’Œé¢„è¯»çª—å£çš„å¤§å°ã€‚
+ * mapping:		æè¿°é¡µæ‰€æœ‰è€…çš„address_spaceå¯¹è±¡çš„æŒ‡é’ˆã€‚
+ * ra:			åŒ…å«è¯¥é¡µçš„æ–‡ä»¶file_ra_stateæè¿°ç¬¦æŒ‡é’ˆã€‚
+ * filp:		æ–‡ä»¶å¯¹è±¡åœ°å€ã€‚
+ * offset:		æ–‡ä»¶å†…é¡µçš„åç§»é‡ã€‚
+ * req_size:	è¦å®Œæˆå½“å‰è¯»æ“ä½œè¿˜éœ€è¦è¯»çš„é¡µæ•°ã€‚
  */
 unsigned long
 page_cache_readahead(struct address_space *mapping, struct file_ra_state *ra,

@@ -52,22 +52,22 @@ static void page_pool_free(void *page, void *data)
  */
 #ifdef CONFIG_HIGHMEM
 /**
- * Pkmap_countÊı×é°üº¬LAST_PKMAP¸ö¼ÆÊıÆ÷£¬pkmap_page_tableÒ³±íÖĞÃ¿Ò»Ïî¶¼ÓĞÒ»¸ö¡£
- * Ëü¼ÇÂ¼ÁËÓÀ¾ÃÄÚºËÓ³ÉäÊ¹ÓÃÁËÄÄĞ©Ò³±íÏî¡£
- * ËüµÄÖµ¿ÉÄÜÎª£º
- *	0£º¶ÔÓ¦µÄÒ³±íÏîÃ»ÓĞÓ³ÉäÈÎºÎ¸ß¶ËÄÚ´æÒ³¿ò£¬²¢ÇÒÊÇ¿ÉÓÃµÄ¡£
- *	1£º¶ÔÓ¦Ò³±íÏîÃ»ÓĞÓ³ÉäÈÎºÎ¸ß¶ËÄÚ´æ£¬µ«ÊÇËüÈÔÈ»²»¿ÉÓÃ¡£ÒòÎª×Ô´ÓËü×îºóÒ»´ÎÊ¹ÓÃÒÔÀ´£¬ÏàÓ¦µÄTLB±í»¹Ã»ÓĞ±»Ë¢ĞÂ¡£
- *	>1£ºÏàÓ¦µÄÒ³±íÏîÓ³ÉäÁËÒ»¸ö¸ß¶ËÄÚ´æÒ³¿ò¡£²¢ÇÒÕıºÃÓĞn-1¸öÄÚºËÕıÔÚÊ¹ÓÃÕâ¸öÒ³¿ò¡£
+ * Pkmap_countæ•°ç»„åŒ…å«LAST_PKMAPä¸ªè®¡æ•°å™¨ï¼Œpkmap_page_tableé¡µè¡¨ä¸­æ¯ä¸€é¡¹éƒ½æœ‰ä¸€ä¸ªã€‚
+ * å®ƒè®°å½•äº†æ°¸ä¹…å†…æ ¸æ˜ å°„ä½¿ç”¨äº†å“ªäº›é¡µè¡¨é¡¹ã€‚
+ * å®ƒçš„å€¼å¯èƒ½ä¸ºï¼š
+ *	0ï¼šå¯¹åº”çš„é¡µè¡¨é¡¹æ²¡æœ‰æ˜ å°„ä»»ä½•é«˜ç«¯å†…å­˜é¡µæ¡†ï¼Œå¹¶ä¸”æ˜¯å¯ç”¨çš„ã€‚
+ *	1ï¼šå¯¹åº”é¡µè¡¨é¡¹æ²¡æœ‰æ˜ å°„ä»»ä½•é«˜ç«¯å†…å­˜ï¼Œä½†æ˜¯å®ƒä»ç„¶ä¸å¯ç”¨ã€‚å› ä¸ºè‡ªä»å®ƒæœ€åä¸€æ¬¡ä½¿ç”¨ä»¥æ¥ï¼Œç›¸åº”çš„TLBè¡¨è¿˜æ²¡æœ‰è¢«åˆ·æ–°ã€‚
+ *	>1ï¼šç›¸åº”çš„é¡µè¡¨é¡¹æ˜ å°„äº†ä¸€ä¸ªé«˜ç«¯å†…å­˜é¡µæ¡†ã€‚å¹¶ä¸”æ­£å¥½æœ‰n-1ä¸ªå†…æ ¸æ­£åœ¨ä½¿ç”¨è¿™ä¸ªé¡µæ¡†ã€‚
  */
 static int pkmap_count[LAST_PKMAP];
 static unsigned int last_pkmap_nr;
 static  __cacheline_aligned_in_smp DEFINE_SPINLOCK(kmap_lock);
 
 /**
- * ÓÃÓÚ½¨Á¢ÓÀ¾ÃÄÚºËÓ³ÉäµÄÒ³±í¡£
- * ÕâÑù£¬ÄÚºË¿ÉÒÔ³¤ÆÚÓ³Éä¸ß¶ËÄÚ´æµ½ÄÚºËµØÖ·¿Õ¼äÖĞ¡£
- * Ò³±íÖĞµÄ±íÏîÊıÓÉLAST_PKMAPºê²úÉú£¬È¡¾öÓÚÊÇ·ñ´ò¿ªPAE£¬ËüµÄÖµ¿ÉÄÜÊÇ512»òÕß1024£¬
- * ÕâÑù¿ÉÄÜÓ³Éä2MB»ò4MBµÄÓÀ¾ÃÄÚºËÓ³Éä¡£
+ * ç”¨äºå»ºç«‹æ°¸ä¹…å†…æ ¸æ˜ å°„çš„é¡µè¡¨ã€‚
+ * è¿™æ ·ï¼Œå†…æ ¸å¯ä»¥é•¿æœŸæ˜ å°„é«˜ç«¯å†…å­˜åˆ°å†…æ ¸åœ°å€ç©ºé—´ä¸­ã€‚
+ * é¡µè¡¨ä¸­çš„è¡¨é¡¹æ•°ç”±LAST_PKMAPå®äº§ç”Ÿï¼Œå–å†³äºæ˜¯å¦æ‰“å¼€PAEï¼Œå®ƒçš„å€¼å¯èƒ½æ˜¯512æˆ–è€…1024ï¼Œ
+ * è¿™æ ·å¯èƒ½æ˜ å°„2MBæˆ–4MBçš„æ°¸ä¹…å†…æ ¸æ˜ å°„ã€‚
  */
 pte_t * pkmap_page_table;
 
@@ -112,7 +112,7 @@ static void flush_all_zero_pkmaps(void)
 }
 
 /**
- * Îª½¨Á¢ÓÀ¾ÃÄÚºËÓ³Éä½¨Á¢³õÊ¼Ó³Éä.
+ * ä¸ºå»ºç«‹æ°¸ä¹…å†…æ ¸æ˜ å°„å»ºç«‹åˆå§‹æ˜ å°„.
  */
 static inline unsigned long map_new_virtual(struct page *page)
 {
@@ -123,28 +123,28 @@ start:
 	count = LAST_PKMAP;
 	/* Find an empty entry */
 	/**
-	 * É¨Ãèpkmap_countÖĞµÄËùÓĞ¼ÆÊıÆ÷Öµ,Ö±µ½ÕÒµ½Ò»¸ö¿ÕÖµ.
+	 * æ‰«æpkmap_countä¸­çš„æ‰€æœ‰è®¡æ•°å™¨å€¼,ç›´åˆ°æ‰¾åˆ°ä¸€ä¸ªç©ºå€¼.
 	 */
 	for (;;) {
 		/**
-		 * ´ÓÉÏ´Î½áÊøµÄµØ·½¿ªÊ¼ËÑË÷.
+		 * ä»ä¸Šæ¬¡ç»“æŸçš„åœ°æ–¹å¼€å§‹æœç´¢.
 		 */
 		last_pkmap_nr = (last_pkmap_nr + 1) & LAST_PKMAP_MASK;
 		/**
-		 * ËÑË÷µ½×îºóÒ»Î»ÁË.ÔÚ´Ó0¿ªÊ¼ËÑË÷Ç°,Ë¢ĞÂ¼ÆÊıÎª1µÄÏî.
-		 * µ±¼ÆÊıÖµÎª1±íÊ¾Ò³±íÏî¿ÉÓÃ,µ«ÊÇ¶ÔÓ¦µÄTLB»¹Ã»ÓĞË¢ĞÂ.
+		 * æœç´¢åˆ°æœ€åä¸€ä½äº†.åœ¨ä»0å¼€å§‹æœç´¢å‰,åˆ·æ–°è®¡æ•°ä¸º1çš„é¡¹.
+		 * å½“è®¡æ•°å€¼ä¸º1è¡¨ç¤ºé¡µè¡¨é¡¹å¯ç”¨,ä½†æ˜¯å¯¹åº”çš„TLBè¿˜æ²¡æœ‰åˆ·æ–°.
 		 */
 		if (!last_pkmap_nr) {
 			flush_all_zero_pkmaps();
 			count = LAST_PKMAP;
 		}
 		/**
-		 * ÕÒµ½¼ÆÊıÎª0µÄÒ³±íÏî,±íÊ¾¸ÃÒ³¿ÕÏĞÇÒ¿ÉÓÃ.
+		 * æ‰¾åˆ°è®¡æ•°ä¸º0çš„é¡µè¡¨é¡¹,è¡¨ç¤ºè¯¥é¡µç©ºé—²ä¸”å¯ç”¨.
 		 */
 		if (!pkmap_count[last_pkmap_nr])
 			break;	/* Found a usable entry */
 		/**
-		 * countÊÇÔÊĞíµÄËÑË÷´ÎÊı.Èç¹û»¹ÔÊĞí¼ÌĞøËÑË÷ÏÂÒ»¸öÒ³±íÏî.Ôò¼ÌĞø,·ñÔò±íÊ¾Ã»ÓĞ¿ÕÏĞÏî,ÍË³ö.
+		 * countæ˜¯å…è®¸çš„æœç´¢æ¬¡æ•°.å¦‚æœè¿˜å…è®¸ç»§ç»­æœç´¢ä¸‹ä¸€ä¸ªé¡µè¡¨é¡¹.åˆ™ç»§ç»­,å¦åˆ™è¡¨ç¤ºæ²¡æœ‰ç©ºé—²é¡¹,é€€å‡º.
 		 */
 		if (--count)
 			continue;
@@ -153,15 +153,15 @@ start:
 		 * Sleep for somebody else to unmap their entries
 		 */
 		/**
-		 * ÔËĞĞµ½ÕâÀï,±íÊ¾Ã»ÓĞÕÒµ½¿ÕÏĞÒ³±íÏî.ÏÈË¯ÃßÒ»ÏÂ.
-		 * µÈ´ıÆäËûÏß³ÌÊÍ·ÅÒ³±íÏî,È»ºó»½ĞÑ±¾Ïß³Ì.
+		 * è¿è¡Œåˆ°è¿™é‡Œ,è¡¨ç¤ºæ²¡æœ‰æ‰¾åˆ°ç©ºé—²é¡µè¡¨é¡¹.å…ˆç¡çœ ä¸€ä¸‹.
+		 * ç­‰å¾…å…¶ä»–çº¿ç¨‹é‡Šæ”¾é¡µè¡¨é¡¹,ç„¶åå”¤é†’æœ¬çº¿ç¨‹.
 		 */
 		{
 			DECLARE_WAITQUEUE(wait, current);
 
 			__set_current_state(TASK_UNINTERRUPTIBLE);
 			/**
-			 * ½«µ±Ç°Ïß³Ì¹Òµ½pkmap_map_waitµÈ´ı¶ÓÁĞÉÏ.
+			 * å°†å½“å‰çº¿ç¨‹æŒ‚åˆ°pkmap_map_waitç­‰å¾…é˜Ÿåˆ—ä¸Š.
 			 */
 			add_wait_queue(&pkmap_map_wait, &wait);
 			spin_unlock(&kmap_lock);
@@ -171,13 +171,13 @@ start:
 
 			/* Somebody else might have mapped it while we slept */
 			/**
-			 * ÔÚµ±Ç°Ïß³ÌµÈ´ıµÄ¹ı³ÌÖĞ,ÆäËûÏß³Ì¿ÉÄÜÒÑ¾­½«Ò³Ãæ½øĞĞÁËÓ³Éä.
-			 * ¼ì²âÒ»ÏÂ,Èç¹ûÒÑ¾­Ó³ÉäÁË,¾ÍÍË³ö.
-			 * ×¢Òâ,ÕâÀïÃ»ÓĞ¶Ôkmap_lock½øĞĞ½âËø²Ù×÷.¹ØÓÚkmap_lockËøµÄ²Ù×÷,ĞèÒª½áºÏkmap_highÀ´·ÖÎö.
-			 * ×ÜµÄÔ­ÔòÊÇ:½øÈë±¾º¯ÊıÊ±±£Ö¤¹ØËø,È»ºóÔÚ±¾¾äÇ°Ãæ¹ØËø,±¾¾äºóÃæ½âËø.
-			 * ÔÚº¯Êı·µ»Øºó,ËøÈÔÈ»ÊÇ¹ØµÄ.ÔòÍâ²ã½âËø.
-			 * ¼´Ê¹ÔÚ±¾º¯ÊıÖĞÑ­»·Ò²ÊÇÕâÑù.
-			 * ÄÚºË¾ÍÊÇÕâÃ´ÂÒ,¿´¾ÃÁË¾ÍÏ°¹ßÁË.²»¹ıÄãÄ¿Ç°¿ÉÄÜ±ØĞëµÃÑ§×ÅÊÊÓ¦ÕâÖÖ´úÂë.
+			 * åœ¨å½“å‰çº¿ç¨‹ç­‰å¾…çš„è¿‡ç¨‹ä¸­,å…¶ä»–çº¿ç¨‹å¯èƒ½å·²ç»å°†é¡µé¢è¿›è¡Œäº†æ˜ å°„.
+			 * æ£€æµ‹ä¸€ä¸‹,å¦‚æœå·²ç»æ˜ å°„äº†,å°±é€€å‡º.
+			 * æ³¨æ„,è¿™é‡Œæ²¡æœ‰å¯¹kmap_lockè¿›è¡Œè§£é”æ“ä½œ.å…³äºkmap_locké”çš„æ“ä½œ,éœ€è¦ç»“åˆkmap_highæ¥åˆ†æ.
+			 * æ€»çš„åŸåˆ™æ˜¯:è¿›å…¥æœ¬å‡½æ•°æ—¶ä¿è¯å…³é”,ç„¶ååœ¨æœ¬å¥å‰é¢å…³é”,æœ¬å¥åé¢è§£é”.
+			 * åœ¨å‡½æ•°è¿”å›å,é”ä»ç„¶æ˜¯å…³çš„.åˆ™å¤–å±‚è§£é”.
+			 * å³ä½¿åœ¨æœ¬å‡½æ•°ä¸­å¾ªç¯ä¹Ÿæ˜¯è¿™æ ·.
+			 * å†…æ ¸å°±æ˜¯è¿™ä¹ˆä¹±,çœ‹ä¹…äº†å°±ä¹ æƒ¯äº†.ä¸è¿‡ä½ ç›®å‰å¯èƒ½å¿…é¡»å¾—å­¦ç€é€‚åº”è¿™ç§ä»£ç .
 			 */
 			if (page_address(page))
 				return (unsigned long)page_address(page);
@@ -187,19 +187,19 @@ start:
 		}
 	}
 	/**
-	 * ²»¹ÜºÎÖÖÂ·¾¶ÔËĞĞµ½ÕâÀïÀ´,kmap_lock¶¼ÊÇËø×ÅµÄ.
-	 * ²¢ÇÒlast_pkmap_nr¶ÔÓ¦µÄÊÇÒ»¸ö¿ÕÏĞÇÒ¿ÉÓÃµÄ±íÏî.
+	 * ä¸ç®¡ä½•ç§è·¯å¾„è¿è¡Œåˆ°è¿™é‡Œæ¥,kmap_lockéƒ½æ˜¯é”ç€çš„.
+	 * å¹¶ä¸”last_pkmap_nrå¯¹åº”çš„æ˜¯ä¸€ä¸ªç©ºé—²ä¸”å¯ç”¨çš„è¡¨é¡¹.
 	 */
 	vaddr = PKMAP_ADDR(last_pkmap_nr);
 	/**
-	 * ÉèÖÃÒ³±íÊôĞÔ,½¨Á¢ĞéÄâµØÖ·ºÍÎïÀíµØÖ·Ö®¼äµÄÓ³Éä.
+	 * è®¾ç½®é¡µè¡¨å±æ€§,å»ºç«‹è™šæ‹Ÿåœ°å€å’Œç‰©ç†åœ°å€ä¹‹é—´çš„æ˜ å°„.
 	 */
 	set_pte(&(pkmap_page_table[last_pkmap_nr]), mk_pte(page, kmap_prot));
 
 	/**
-	 * 1±íÊ¾ÏàÓ¦µÄÏî¿ÉÓÃ,µ«ÊÇTLBĞèÒªË¢ĞÂ.
-	 * µ«ÊÇÎÒÃÇÕâÀïÃ÷Ã÷½¨Á¢ÁËÓ³Éä,ÎªÊ²Ã´»¹ÊÇ¿ÉÓÃµÄÄØ,ÆäËûµØ·½²»»á½«Õ¼ÓÃÃ´å?
-	 * ÆäÊµ²»ÓÃµ£ĞÄ,ÒòÎª·µ»Økmap_highºó,kmap_highº¯Êı»á½«ËüÔÙ¼Ó1.
+	 * 1è¡¨ç¤ºç›¸åº”çš„é¡¹å¯ç”¨,ä½†æ˜¯TLBéœ€è¦åˆ·æ–°.
+	 * ä½†æ˜¯æˆ‘ä»¬è¿™é‡Œæ˜æ˜å»ºç«‹äº†æ˜ å°„,ä¸ºä»€ä¹ˆè¿˜æ˜¯å¯ç”¨çš„å‘¢,å…¶ä»–åœ°æ–¹ä¸ä¼šå°†å ç”¨ä¹ˆ?
+	 * å…¶å®ä¸ç”¨æ‹…å¿ƒ,å› ä¸ºè¿”å›kmap_highå,kmap_highå‡½æ•°ä¼šå°†å®ƒå†åŠ 1.
 	 */
 	pkmap_count[last_pkmap_nr] = 1;
 	set_page_address(page, (void *)vaddr);
@@ -208,7 +208,7 @@ start:
 }
 
 /**
- * Îª¸ß¶ËÄÚ´æ½¨Á¢ÓÀ¾ÃÄÚºËÓ³Éä¡£
+ * ä¸ºé«˜ç«¯å†…å­˜å»ºç«‹æ°¸ä¹…å†…æ ¸æ˜ å°„ã€‚
  */
 void fastcall *kmap_high(struct page *page)
 {
@@ -221,33 +221,33 @@ void fastcall *kmap_high(struct page *page)
 	 * We cannot call this from interrupts, as it may block
 	 */
 	/**
-	 * Õâ¸öº¯Êı²»»áÔÚÖĞ¶ÏÖĞµ÷ÓÃ£¬Ò²²»ÄÜÔÚÖĞ¶ÏÖĞµ÷ÓÃ¡£
-	 * ËùÒÔ£¬ÔÚÕâÀïÖ»ĞèÒª»ñÈ¡×ÔĞıËø¾ÍĞĞÁË¡£
+	 * è¿™ä¸ªå‡½æ•°ä¸ä¼šåœ¨ä¸­æ–­ä¸­è°ƒç”¨ï¼Œä¹Ÿä¸èƒ½åœ¨ä¸­æ–­ä¸­è°ƒç”¨ã€‚
+	 * æ‰€ä»¥ï¼Œåœ¨è¿™é‡Œåªéœ€è¦è·å–è‡ªæ—‹é”å°±è¡Œäº†ã€‚
 	 */
 	spin_lock(&kmap_lock);
 	/**
-	 * page_addressÓĞ¼ì²éÒ³¿òÊÇ·ñ±»Ó³ÉäµÄ×÷ÓÃ¡£
+	 * page_addressæœ‰æ£€æŸ¥é¡µæ¡†æ˜¯å¦è¢«æ˜ å°„çš„ä½œç”¨ã€‚
 	 */
 	vaddr = (unsigned long)page_address(page);
 	/**
-	 * Ã»ÓĞ±»Ó³Éä£¬¾Íµ÷ÓÃmap_new_virtual°ÑÒ³¿òµÄÎïÀíµØÖ·²åÈëµ½pkmap_page_tableµÄÒ»¸öÏîÖĞ¡£
-	 * ²¢ÔÚpage_address_htableÉ¢ÁĞ±íÖĞ¼ÓÈëÒ»¸öÔªËØ¡£
+	 * æ²¡æœ‰è¢«æ˜ å°„ï¼Œå°±è°ƒç”¨map_new_virtualæŠŠé¡µæ¡†çš„ç‰©ç†åœ°å€æ’å…¥åˆ°pkmap_page_tableçš„ä¸€ä¸ªé¡¹ä¸­ã€‚
+	 * å¹¶åœ¨page_address_htableæ•£åˆ—è¡¨ä¸­åŠ å…¥ä¸€ä¸ªå…ƒç´ ã€‚
 	 */
 	if (!vaddr)
 		vaddr = map_new_virtual(page);
 	/**
-	 * Ê¹Ò³¿òµÄÏßĞÔµØÖ·Ëù¶ÔÓ¦µÄ¼ÆÊıÆ÷¼Ó1.
+	 * ä½¿é¡µæ¡†çš„çº¿æ€§åœ°å€æ‰€å¯¹åº”çš„è®¡æ•°å™¨åŠ 1.
 	 */
 	pkmap_count[PKMAP_NR(vaddr)]++;
 	/**
-	 * ³õ´ÎÓ³ÉäÊ±,map_new_virtualÖĞ»á½«¼ÆÊıÖÃÎª1,ÉÏÒ»¾äÔÙ¼Ó1.
-	 * ¶à´ÎÓ³ÉäÊ±,¼ÆÊıÖµ»áÔÙ¼Ó1.
-	 * ×ÜÖ®,¼ÆÊıÖµ¾ö²»»áĞ¡ÓÚ2.
+	 * åˆæ¬¡æ˜ å°„æ—¶,map_new_virtualä¸­ä¼šå°†è®¡æ•°ç½®ä¸º1,ä¸Šä¸€å¥å†åŠ 1.
+	 * å¤šæ¬¡æ˜ å°„æ—¶,è®¡æ•°å€¼ä¼šå†åŠ 1.
+	 * æ€»ä¹‹,è®¡æ•°å€¼å†³ä¸ä¼šå°äº2.
 	 */
 	if (pkmap_count[PKMAP_NR(vaddr)] < 2)
 		BUG();
 	/**
-	 * ÊÍ·Å×ÔĞıËø.
+	 * é‡Šæ”¾è‡ªæ—‹é”.
 	 */
 	spin_unlock(&kmap_lock);
 	return (void*) vaddr;
@@ -256,7 +256,7 @@ void fastcall *kmap_high(struct page *page)
 EXPORT_SYMBOL(kmap_high);
 
 /**
- * ½â³ı¸ß¶ËÄÚ´æµÄÓÀ¾ÃÄÚºËÓ³Éä
+ * è§£é™¤é«˜ç«¯å†…å­˜çš„æ°¸ä¹…å†…æ ¸æ˜ å°„
  */
 void fastcall kunmap_high(struct page *page)
 {
@@ -266,17 +266,17 @@ void fastcall kunmap_high(struct page *page)
 
 	spin_lock(&kmap_lock);
 	/**
-	 * µÃµ½ÎïÀíÒ³¶ÔÓ¦µÄĞéÄâµØÖ·¡£
+	 * å¾—åˆ°ç‰©ç†é¡µå¯¹åº”çš„è™šæ‹Ÿåœ°å€ã€‚
 	 */
 	vaddr = (unsigned long)page_address(page);
 	/**
-	 * vaddr»á==0£¬¿ÉÄÜÊÇÄÚ´æÔ½½çµÈÑÏÖØ¹ÊÕÏÁË°É¡£
-	 * BUGÒ»ÏÂ
+	 * vaddrä¼š==0ï¼Œå¯èƒ½æ˜¯å†…å­˜è¶Šç•Œç­‰ä¸¥é‡æ•…éšœäº†å§ã€‚
+	 * BUGä¸€ä¸‹
 	 */
 	if (!vaddr)
 		BUG();
 	/**
-	 * ¸ù¾İĞéÄâµØÖ·£¬ÕÒµ½Ò³±íÏîÔÚpkmap_countÖĞµÄĞòºÅ¡£
+	 * æ ¹æ®è™šæ‹Ÿåœ°å€ï¼Œæ‰¾åˆ°é¡µè¡¨é¡¹åœ¨pkmap_countä¸­çš„åºå·ã€‚
 	 */
 	nr = PKMAP_NR(vaddr);
 
@@ -287,7 +287,7 @@ void fastcall kunmap_high(struct page *page)
 	need_wakeup = 0;
 	switch (--pkmap_count[nr]) {
 	case 0:
-		BUG();/* Ò»¶¨ÊÇÂß¼­´íÎóÁË£¬¶à´Îµ÷ÓÃÁËunmap */
+		BUG();/* ä¸€å®šæ˜¯é€»è¾‘é”™è¯¯äº†ï¼Œå¤šæ¬¡è°ƒç”¨äº†unmap */
 	case 1:
 		/*
 		 * Avoid an unnecessary wake_up() function call.
@@ -300,7 +300,7 @@ void fastcall kunmap_high(struct page *page)
 		 * test if the queue is empty.
 		 */
 		/**
-		 * Ò³±íÏî¿ÉÓÃÁË¡£need_wakeup»á»½ĞÑµÈ´ı¶ÓÁĞÉÏ×èÈûµÄÏß³Ì¡£
+		 * é¡µè¡¨é¡¹å¯ç”¨äº†ã€‚need_wakeupä¼šå”¤é†’ç­‰å¾…é˜Ÿåˆ—ä¸Šé˜»å¡çš„çº¿ç¨‹ã€‚
 		 */
 		need_wakeup = waitqueue_active(&pkmap_map_wait);
 	}
@@ -308,7 +308,7 @@ void fastcall kunmap_high(struct page *page)
 
 	/* do wake-up, if needed, race-free outside of the spin lock */
 	/**
-	 * ÓĞµÈ´ıÏß³Ì£¬»½ĞÑËü¡£
+	 * æœ‰ç­‰å¾…çº¿ç¨‹ï¼Œå”¤é†’å®ƒã€‚
 	 */
 	if (need_wakeup)
 		wake_up(&pkmap_map_wait);
@@ -494,25 +494,25 @@ static void __blk_queue_bounce(request_queue_t *q, struct bio **bio_orig,
 		/*
 		 * is destination page below bounce pfn?
 		 */
-		if (page_to_pfn(page) < q->bounce_pfn)/* ¸ÃÒ³²»ĞèÒª»Øµ¯ */
+		if (page_to_pfn(page) < q->bounce_pfn)/* è¯¥é¡µä¸éœ€è¦å›å¼¹ */
 			continue;
 
 		/*
 		 * irk, bounce it
 		 */
-		if (!bio)/* ·ÖÅäÒ»¸öbio */
+		if (!bio)/* åˆ†é…ä¸€ä¸ªbio */
 			bio = bio_alloc(GFP_NOIO, (*bio_orig)->bi_vcnt);
 
 		to = bio->bi_io_vec + i;
 
 		/**
-		 * ·ÖÅäĞÂÒ³¿ò£¬²¢¸üĞÂbio
+		 * åˆ†é…æ–°é¡µæ¡†ï¼Œå¹¶æ›´æ–°bio
 		 */
 		to->bv_page = mempool_alloc(pool, q->bounce_gfp);
 		to->bv_len = from->bv_len;
 		to->bv_offset = from->bv_offset;
 
-		if (rw == WRITE) {/* Èç¹ûÊÇÒ»¸öĞ´²Ù×÷£¬ÄÇÃ´µ÷ÓÃkmap½«¸ß¶ËÄÚ´æÖĞµÄÊı¾İ¸´ÖÆµ½µÍ¶ËÄÚ´æÖĞ */
+		if (rw == WRITE) {/* å¦‚æœæ˜¯ä¸€ä¸ªå†™æ“ä½œï¼Œé‚£ä¹ˆè°ƒç”¨kmapå°†é«˜ç«¯å†…å­˜ä¸­çš„æ•°æ®å¤åˆ¶åˆ°ä½ç«¯å†…å­˜ä¸­ */
 			char *vto, *vfrom;
 
 			flush_dcache_page(from->bv_page);
@@ -544,7 +544,7 @@ static void __blk_queue_bounce(request_queue_t *q, struct bio **bio_orig,
 
 	bio->bi_bdev = (*bio_orig)->bi_bdev;
 	/**
-	 * ÉèÖÃ»Øµ¯±êÖ¾
+	 * è®¾ç½®å›å¼¹æ ‡å¿—
 	 */
 	bio->bi_flags |= (1 << BIO_BOUNCED);
 	bio->bi_sector = (*bio_orig)->bi_sector;
@@ -554,7 +554,7 @@ static void __blk_queue_bounce(request_queue_t *q, struct bio **bio_orig,
 	bio->bi_idx = (*bio_orig)->bi_idx;
 	bio->bi_size = (*bio_orig)->bi_size;
 
-	if (pool == page_pool) {/* Ê¹ÓÃ»Øµ¯»º³åÇøºó£¬ĞèÒªÉèÖÃbi_end_io×Ö¶Î£¬²¢ÇÒÔÚbio½áÊøºóÊÍ·Å»Øµ¯»º³åÇø¡£ */
+	if (pool == page_pool) {/* ä½¿ç”¨å›å¼¹ç¼“å†²åŒºåï¼Œéœ€è¦è®¾ç½®bi_end_ioå­—æ®µï¼Œå¹¶ä¸”åœ¨bioç»“æŸåé‡Šæ”¾å›å¼¹ç¼“å†²åŒºã€‚ */
 		bio->bi_end_io = bounce_end_io_write;
 		if (rw == READ)
 			bio->bi_end_io = bounce_end_io_read;
@@ -569,7 +569,7 @@ static void __blk_queue_bounce(request_queue_t *q, struct bio **bio_orig,
 }
 
 /**
- * ½¨Á¢Ò»¸ö»Øµ¯»º³åÇø¡£
+ * å»ºç«‹ä¸€ä¸ªå›å¼¹ç¼“å†²åŒºã€‚
  */
 void blk_queue_bounce(request_queue_t *q, struct bio **bio_orig)
 {
@@ -581,10 +581,10 @@ void blk_queue_bounce(request_queue_t *q, struct bio **bio_orig)
 	 * don't waste time iterating over bio segments
 	 */
 	/**
-	 * ²é¿´bounce_gfp±êÖ¾ºÍbounce_pfnÖĞãĞÖµ£¬´Ó¶øÈ·¶¨»Øµ¯»º³åÇøÊÇ·ñÊÇ±ØĞëµÄ¡£
-	 * Í¨³££¬µ±ÇëÇóÖĞµÄÒ»ÒıÆğ»º³åÇøÎ»ÓÚ¸ß¶ËÄÚ´æ¶øÓ²¼şÉè±¸²»ÄÜ·ÃÎÊËüÃÇÊ±·¢ÉúÕâÖÖÇé¿ö¡£
-	 * ISA×ÜÏßÊ¹ÓÃÀÏÊ½DMA·½Ê½Ö»ÄÜ´¦Àí24Î»µØÖ·£¬Òò´Ë£¬»Øµ¯»º³åÇøµÄÉÏÏŞÉèÖÃÎª16MB¡£¼´Ò³¿òºÅÎª4096¡£
-	 * ²»¹ı£¬´¦ÀíÀÏÊ½Éè±¸Ê±£¬¿éÉè±¸Çı¶¯³ÌĞòÒ»°ã²»ÓÃ»Øµ¯»º³åÇø¡£¶øÊÇÇãÏòÓÚÖ±½ÓÔÚZONE_DMAÖĞ·ÖÅä»º³åÇø¡£
+	 * æŸ¥çœ‹bounce_gfpæ ‡å¿—å’Œbounce_pfnä¸­é˜ˆå€¼ï¼Œä»è€Œç¡®å®šå›å¼¹ç¼“å†²åŒºæ˜¯å¦æ˜¯å¿…é¡»çš„ã€‚
+	 * é€šå¸¸ï¼Œå½“è¯·æ±‚ä¸­çš„ä¸€å¼•èµ·ç¼“å†²åŒºä½äºé«˜ç«¯å†…å­˜è€Œç¡¬ä»¶è®¾å¤‡ä¸èƒ½è®¿é—®å®ƒä»¬æ—¶å‘ç”Ÿè¿™ç§æƒ…å†µã€‚
+	 * ISAæ€»çº¿ä½¿ç”¨è€å¼DMAæ–¹å¼åªèƒ½å¤„ç†24ä½åœ°å€ï¼Œå› æ­¤ï¼Œå›å¼¹ç¼“å†²åŒºçš„ä¸Šé™è®¾ç½®ä¸º16MBã€‚å³é¡µæ¡†å·ä¸º4096ã€‚
+	 * ä¸è¿‡ï¼Œå¤„ç†è€å¼è®¾å¤‡æ—¶ï¼Œå—è®¾å¤‡é©±åŠ¨ç¨‹åºä¸€èˆ¬ä¸ç”¨å›å¼¹ç¼“å†²åŒºã€‚è€Œæ˜¯å€¾å‘äºç›´æ¥åœ¨ZONE_DMAä¸­åˆ†é…ç¼“å†²åŒºã€‚
 	 */
 	if (!(q->bounce_gfp & GFP_DMA)) {
 		if (q->bounce_pfn >= blk_max_pfn)
@@ -626,7 +626,7 @@ static spinlock_t pool_lock;			/* protects page_address_pool */
  * Hash table bucket
  */
 /**
- * ±¾É¢ÁĞ±í¼ÇÂ¼ÁË¸ß¶ËÄÚ´æÒ³¿òÓëÓÀ¾ÃÄÚºËÓ³ÉäÓ³Éä°üº¬µÄÏßĞÔµØÖ·¡£
+ * æœ¬æ•£åˆ—è¡¨è®°å½•äº†é«˜ç«¯å†…å­˜é¡µæ¡†ä¸æ°¸ä¹…å†…æ ¸æ˜ å°„æ˜ å°„åŒ…å«çš„çº¿æ€§åœ°å€ã€‚
  */
 static struct page_address_slot {
 	struct list_head lh;			/* List of page_address_maps */
@@ -639,7 +639,7 @@ static struct page_address_slot *page_slot(struct page *page)
 }
 
 /**
- * page_address·µ»ØÒ³¿ò¶ÔÓ¦µÄÏßĞÔµØÖ·¡£
+ * page_addressè¿”å›é¡µæ¡†å¯¹åº”çš„çº¿æ€§åœ°å€ã€‚
  */
 void *page_address(struct page *page)
 {
@@ -648,17 +648,17 @@ void *page_address(struct page *page)
 	struct page_address_slot *pas;
 
 	/**
-	 * Èç¹ûÒ³¿ò²»ÔÚ¸ß¶ËÄÚ´æÖĞ(PG_highmem±êÖ¾Îª0)£¬ÔòÏßĞÔµØÖ·×ÜÊÇ´æÔÚµÄ¡£
-	 * ²¢ÇÒÍ¨¹ı¼ÆËãÒ³¿òÏÂ±ê£¬È»ºó½«Æä×ª»»³ÉÎïÀíµØÖ·£¬×îºó¸ù¾İÎïÀíµØÖ·µÃµ½ÏßĞÔµØÖ·¡£
+	 * å¦‚æœé¡µæ¡†ä¸åœ¨é«˜ç«¯å†…å­˜ä¸­(PG_highmemæ ‡å¿—ä¸º0)ï¼Œåˆ™çº¿æ€§åœ°å€æ€»æ˜¯å­˜åœ¨çš„ã€‚
+	 * å¹¶ä¸”é€šè¿‡è®¡ç®—é¡µæ¡†ä¸‹æ ‡ï¼Œç„¶åå°†å…¶è½¬æ¢æˆç‰©ç†åœ°å€ï¼Œæœ€åæ ¹æ®ç‰©ç†åœ°å€å¾—åˆ°çº¿æ€§åœ°å€ã€‚
 	 */
 	if (!PageHighMem(page))
 		/**
-		 * ±¾¾äµÈ¼ÛÓÚ__va((unsigned long)(page - mem_map) << 12)
+		 * æœ¬å¥ç­‰ä»·äº__va((unsigned long)(page - mem_map) << 12)
 		 */
 		return lowmem_page_address(page);
 
 	/**
-	 * ·ñÔòÒ³¿òÔÚ¸ß¶ËÄÚ´æÖĞ(PG_highmem±êÖ¾Îª1)£¬Ôòµ½page_address_htableÉ¢ÁĞ±íÖĞ²éÕÒ¡£
+	 * å¦åˆ™é¡µæ¡†åœ¨é«˜ç«¯å†…å­˜ä¸­(PG_highmemæ ‡å¿—ä¸º1)ï¼Œåˆ™åˆ°page_address_htableæ•£åˆ—è¡¨ä¸­æŸ¥æ‰¾ã€‚
 	 */
 	pas = page_slot(page);
 	ret = NULL;
@@ -668,7 +668,7 @@ void *page_address(struct page *page)
 
 		list_for_each_entry(pam, &pas->lh, list) {
 			/**
-			 * ÔÚpage_address_htableÖĞÕÒµ½£¬·µ»Ø¶ÔÓ¦µÄÎïÀíµØÖ·¡£
+			 * åœ¨page_address_htableä¸­æ‰¾åˆ°ï¼Œè¿”å›å¯¹åº”çš„ç‰©ç†åœ°å€ã€‚
 			 */
 			if (pam->page == page) {
 				ret = pam->virtual;
@@ -677,7 +677,7 @@ void *page_address(struct page *page)
 		}
 	}
 	/**
-	 * Ã»ÓĞÔÚpage_address_htableÖĞÕÒµ½£¬·µ»ØÄ¬ÈÏÖµNULL¡£
+	 * æ²¡æœ‰åœ¨page_address_htableä¸­æ‰¾åˆ°ï¼Œè¿”å›é»˜è®¤å€¼NULLã€‚
 	 */
 done:
 	spin_unlock_irqrestore(&pas->lock, flags);

@@ -101,18 +101,18 @@ DEFINE_RWLOCK(notifier_lock);
  *	Currently always returns zero.
  */
 /**
- * ÔÚÍ¨ÖªÁ´±íÉÏ×¢²áÒ»¸ö½Úµã
+ * åœ¨é€šçŸ¥é“¾è¡¨ä¸Šæ³¨å†Œä¸€ä¸ªèŠ‚ç‚¹
  */
 int notifier_chain_register(struct notifier_block **list, struct notifier_block *n)
 {
 	/**
-	 * ¶ÔÍ¨ÖªÁ´±íµÄ·ÃÎÊ£¬ÓÃnotifier_lockËù±£»¤¡£
-	 * Ê¹ÓÃÒ»¸öËøÀ´±£»¤ËùÓĞµÄÍ¨ÖªÁ´±í²»ÊÇÒ»¸ö´óµÄÈ±Ïİ£¬Ò²²»»áÓ°ÏìĞÔÄÜ£¬ÒòÎª×ÓÏµÍ³×¢²ánotifier_call¶¼ÊÇÔÚÏµÍ³Æô¶¯»òÕßÄ£¿é¼ÓÔØµÄÊ±ºò£¬×¢²áÍê³Éºó£¬¶ÔÁ´±íµÄ·ÃÎÊ¾ÍÊÇÖ»¶ÁÄ£Ê½ÁË
+	 * å¯¹é€šçŸ¥é“¾è¡¨çš„è®¿é—®ï¼Œç”¨notifier_lockæ‰€ä¿æŠ¤ã€‚
+	 * ä½¿ç”¨ä¸€ä¸ªé”æ¥ä¿æŠ¤æ‰€æœ‰çš„é€šçŸ¥é“¾è¡¨ä¸æ˜¯ä¸€ä¸ªå¤§çš„ç¼ºé™·ï¼Œä¹Ÿä¸ä¼šå½±å“æ€§èƒ½ï¼Œå› ä¸ºå­ç³»ç»Ÿæ³¨å†Œnotifier_calléƒ½æ˜¯åœ¨ç³»ç»Ÿå¯åŠ¨æˆ–è€…æ¨¡å—åŠ è½½çš„æ—¶å€™ï¼Œæ³¨å†Œå®Œæˆåï¼Œå¯¹é“¾è¡¨çš„è®¿é—®å°±æ˜¯åªè¯»æ¨¡å¼äº†
 	 */
 	write_lock(&notifier_lock);
 	/**
-	 * ¶ÔÃ¿Ò»¸öÍ¨ÖªÁ´±í£¬notifier_block ÊµÀı²åÈëÁ´±í£¬²¢°´ÓÅÏÈ¼¶ÅÅĞò¡£
-	 * ÏàÍ¬ÓÅÏÈ¼¶µÄ½Úµã°´²åÈëÊ±¼äÅÅĞò£ºĞÂ¼ÓÈëµÄ½ÚµãÔÚ±íÎ²¡£
+	 * å¯¹æ¯ä¸€ä¸ªé€šçŸ¥é“¾è¡¨ï¼Œnotifier_block å®ä¾‹æ’å…¥é“¾è¡¨ï¼Œå¹¶æŒ‰ä¼˜å…ˆçº§æ’åºã€‚
+	 * ç›¸åŒä¼˜å…ˆçº§çš„èŠ‚ç‚¹æŒ‰æ’å…¥æ—¶é—´æ’åºï¼šæ–°åŠ å…¥çš„èŠ‚ç‚¹åœ¨è¡¨å°¾ã€‚
 	 */
 	while(*list)
 	{
@@ -173,7 +173,7 @@ EXPORT_SYMBOL(notifier_chain_unregister);
  *	of the last notifier function called.
  */
 /**
- * ¸øÍ¨ÖªÁ´·¢ËÍÊÂ¼ş¡£
+ * ç»™é€šçŸ¥é“¾å‘é€äº‹ä»¶ã€‚
  */
 int notifier_call_chain(struct notifier_block **n, unsigned long val, void *v)
 {
@@ -181,7 +181,7 @@ int notifier_call_chain(struct notifier_block **n, unsigned long val, void *v)
 	struct notifier_block *nb = *n;
 
 	/**
-	 * °´Ë³Ğò¼¤»îËùÓĞÍ¨ÖªÁ´±íÉÏ×¢²áµÄº¯Êı
+	 * æŒ‰é¡ºåºæ¿€æ´»æ‰€æœ‰é€šçŸ¥é“¾è¡¨ä¸Šæ³¨å†Œçš„å‡½æ•°
 	 */
 	while(nb)
 	{
@@ -871,7 +871,7 @@ asmlinkage long sys_setfsuid(uid_t uid)
 }
 
 /*
- * Samma på svenska..
+ * Samma p svenska..
  */
 asmlinkage long sys_setfsgid(gid_t gid)
 {

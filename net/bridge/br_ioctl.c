@@ -390,7 +390,7 @@ int br_ioctl_deviceless_stub(unsigned int cmd, void __user *uarg)
 }
 
 /**
- * ´¦ÀíÍøÇÅÏà¹ØµÄioctlÃüÁî¡£
+ * å¤„ç†ç½‘æ¡¥ç›¸å…³çš„ioctlå‘½ä»¤ã€‚
  */
 int br_dev_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
 {

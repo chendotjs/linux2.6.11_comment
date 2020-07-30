@@ -16,19 +16,19 @@ typedef u32	rpc_authflavor_t;
 
 enum rpc_auth_flavors {
 	/**
-	 * Ã»ÓÐ¼ø±ðÐÅÏ¢
+	 * æ²¡æœ‰é‰´åˆ«ä¿¡æ¯
 	 */
 	RPC_AUTH_NULL  = 0,
 	/**
-	 * UNIXµÄ¼ø±ð»úÖÆ
+	 * UNIXçš„é‰´åˆ«æœºåˆ¶
 	 */
 	RPC_AUTH_UNIX  = 1,
 	/**
-	 * ¼òµ¥ÐÎÊ½µÄ¼ø±ð
+	 * ç®€å•å½¢å¼çš„é‰´åˆ«
 	 */
 	RPC_AUTH_SHORT = 2,
 	/**
-	 * NTSTµÄDES¼ø±ð
+	 * NTSTçš„DESé‰´åˆ«
 	 */
 	RPC_AUTH_DES   = 3,
 	RPC_AUTH_KRB   = 4,

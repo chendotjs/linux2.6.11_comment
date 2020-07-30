@@ -183,7 +183,7 @@ bad:
 #endif
 
 /**
- * ¼ì²éÎÄ¼ş¶ÁĞ´ÇøÓò
+ * æ£€æŸ¥æ–‡ä»¶è¯»å†™åŒºåŸŸ
  */
 int rw_verify_area(int read_write, struct file *file, loff_t *ppos, size_t count)
 {
@@ -191,19 +191,19 @@ int rw_verify_area(int read_write, struct file *file, loff_t *ppos, size_t count
 	loff_t pos;
 
 	/**
-	 * ²ÎÊıºÏ·¨ĞÔ¼ì²é
+	 * å‚æ•°åˆæ³•æ€§æ£€æŸ¥
 	 */
 	if (unlikely(count > file->f_maxcount))
 		goto Einval;
 	pos = *ppos;
 	/**
-	 * Òç³ö¼ì²é¡£
+	 * æº¢å‡ºæ£€æŸ¥ã€‚
 	 */
 	if (unlikely((pos < 0) || (loff_t) (pos + count) < 0))
 		goto Einval;
 
 	inode = file->f_dentry->d_inode;
-	if (inode->i_flock && MANDATORY_LOCK(inode))/* Ëø³åÍ»¼ì²é */
+	if (inode->i_flock && MANDATORY_LOCK(inode))/* é”å†²çªæ£€æŸ¥ */
 		return locks_mandatory_area(read_write == READ ? FLOCK_VERIFY_READ : FLOCK_VERIFY_WRITE, inode, file, pos, count);
 	return 0;
 
@@ -218,7 +218,7 @@ ssize_t do_sync_read(struct file *filp, char __user *buf, size_t len, loff_t *pp
 
 	init_sync_kiocb(&kiocb, filp);
 	kiocb.ki_pos = *ppos;
-	/* ´ó²¿·ÖÖ¸Ïògeneric_file_aio_read */
+	/* å¤§éƒ¨åˆ†æŒ‡å‘generic_file_aio_read */
 	ret = filp->f_op->aio_read(&kiocb, buf, len, kiocb.ki_pos);
 	if (-EIOCBQUEUED == ret)
 		ret = wait_on_sync_kiocb(&kiocb);
@@ -233,30 +233,30 @@ ssize_t vfs_read(struct file *file, char __user *buf, size_t count, loff_t *pos)
 	ssize_t ret;
 
 	/**
-	 * ¼ì²éÎÄ¼ş¶ÁÈ¨ÏŞ
+	 * æ£€æŸ¥æ–‡ä»¶è¯»æƒé™
 	 */
 	if (!(file->f_mode & FMODE_READ))
 		return -EBADF;
 	if (!file->f_op || (!file->f_op->read && !file->f_op->aio_read))
 		return -EINVAL;
 	/**
-	 * ÓÃ»§Ì¬µØÖ·²»¿ÉĞ´¡£
+	 * ç”¨æˆ·æ€åœ°å€ä¸å¯å†™ã€‚
 	 */
 	if (unlikely(!access_ok(VERIFY_WRITE, buf, count)))
 		return -EFAULT;
 
 	/**
-	 * ¶ÔÒª·ÃÎÊµÄÎÄ¼ş²¿·Ö½øĞĞËø³åÍ»¼ì²é¡£
+	 * å¯¹è¦è®¿é—®çš„æ–‡ä»¶éƒ¨åˆ†è¿›è¡Œé”å†²çªæ£€æŸ¥ã€‚
 	 */
 	ret = rw_verify_area(READ, file, pos, count);
 	if (!ret) {
 		/**
-		 * ¼ì²éÎÄ¼şÈ¨ÏŞ¡£
+		 * æ£€æŸ¥æ–‡ä»¶æƒé™ã€‚
 		 */
 		ret = security_file_permission (file, MAY_READ);
 		if (!ret) {
 			/**
-			 * µ÷ÓÃÎÄ¼şÏµÍ³µÄread»òÕßaio_read
+			 * è°ƒç”¨æ–‡ä»¶ç³»ç»Ÿçš„readæˆ–è€…aio_read
 			 */
 			if (file->f_op->read)
 				ret = file->f_op->read(file, buf, count, pos);
@@ -264,7 +264,7 @@ ssize_t vfs_read(struct file *file, char __user *buf, size_t count, loff_t *pos)
 				ret = do_sync_read(file, buf, count, pos);
 			if (ret > 0) {
 				/**
-				 * Ä¿Â¼ÊÂ¼şÍ¨Öª¡£
+				 * ç›®å½•äº‹ä»¶é€šçŸ¥ã€‚
 				 */
 				dnotify_parent(file->f_dentry, DN_ACCESS);
 				current->rchar += ret;
@@ -337,7 +337,7 @@ static inline void file_pos_write(struct file *file, loff_t pos)
 }
 
 /**
- * ¶ÁÎÄ¼ş
+ * è¯»æ–‡ä»¶
  */
 asmlinkage ssize_t sys_read(unsigned int fd, char __user * buf, size_t count)
 {
@@ -346,13 +346,13 @@ asmlinkage ssize_t sys_read(unsigned int fd, char __user * buf, size_t count)
 	int fput_needed;
 
 	/**
-	 * ½«fd×ª»¯Îªfile¶ÔÏó¡£
+	 * å°†fdè½¬åŒ–ä¸ºfileå¯¹è±¡ã€‚
 	 */
 	file = fget_light(fd, &fput_needed);
-	if (file) {/* ÓĞĞ§¾ä±ú */
+	if (file) {/* æœ‰æ•ˆå¥æŸ„ */
 		loff_t pos = file_pos_read(file);
 		/**
-		 * Ö´ĞĞÕæÕıµÄ¶Á
+		 * æ‰§è¡ŒçœŸæ­£çš„è¯»
 		 */
 		ret = vfs_read(file, buf, count, &pos);
 		file_pos_write(file, pos);

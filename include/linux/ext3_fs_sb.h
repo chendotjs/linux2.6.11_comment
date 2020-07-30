@@ -37,7 +37,7 @@ struct ext3_sb_info {
 	unsigned long s_itb_per_group;	/* Number of inode table blocks per group */
 	unsigned long s_gdb_count;	/* Number of group descriptor blocks */
 	unsigned long s_desc_per_block;	/* Number of group descriptors per block */
-	/* ¿é×éÊıÁ¿ */
+	/* å—ç»„æ•°é‡ */
 	unsigned long s_groups_count;	/* Number of groups in the fs */
 	struct buffer_head * s_sbh;	/* Buffer containing the super block */
 	struct ext3_super_block * s_es;	/* Pointer to the super block in the buffer */
@@ -69,7 +69,7 @@ struct ext3_sb_info {
 	struct inode * s_journal_inode;
 	struct journal_s * s_journal;
 	/**
-	 * orphanÁ´±íÍ·¡£
+	 * orphané“¾è¡¨å¤´ã€‚
 	 */
 	struct list_head s_orphan;
 	unsigned long s_commit_interval;

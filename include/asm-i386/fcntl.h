@@ -4,23 +4,23 @@
 /* open/fcntl - O_SYNC is only implemented on blocks devices and on files
    located on an ext2 file system */
 #define O_ACCMODE	   0003
-#define O_RDONLY	     00/* Ö»¶Á */
-#define O_WRONLY	     01/* Ö»Ğ´ */
-#define O_RDWR		     02/* ¶ÁĞ´ */
-#define O_CREAT		   0100	/* ²»´æÔÚÔò´´½¨ *//* not fcntl */
-#define O_EXCL		   0200	/* ¶ÔO_CREAT±êÖ¾£¬Èç¹ûÎÄ¼ş´æÔÚ£¬ÔòÊ§°Ü *//* not fcntl */
-#define O_NOCTTY	   0400	/* ´Ó²»°ÑÎÄ¼ş¿´×÷¿ØÖÆÖÕ¶Ë *//* not fcntl */
-#define O_TRUNC		  01000	/* ½Ø¶ÏÎÄ¼ş£¬É¾³ıÏÖÓĞÄÚÈİ *//* not fcntl */
-#define O_APPEND	  02000/* ÔÚÎÄ¼şÄ©Î²¿ªÊ¼Ğ´ */
-#define O_NONBLOCK	  04000/* ·Ç×èÈû¶Á */
+#define O_RDONLY	     00/* åªè¯» */
+#define O_WRONLY	     01/* åªå†™ */
+#define O_RDWR		     02/* è¯»å†™ */
+#define O_CREAT		   0100	/* ä¸å­˜åœ¨åˆ™åˆ›å»º *//* not fcntl */
+#define O_EXCL		   0200	/* å¯¹O_CREATæ ‡å¿—ï¼Œå¦‚æœæ–‡ä»¶å­˜åœ¨ï¼Œåˆ™å¤±è´¥ *//* not fcntl */
+#define O_NOCTTY	   0400	/* ä»ä¸æŠŠæ–‡ä»¶çœ‹ä½œæ§åˆ¶ç»ˆç«¯ *//* not fcntl */
+#define O_TRUNC		  01000	/* æˆªæ–­æ–‡ä»¶ï¼Œåˆ é™¤ç°æœ‰å†…å®¹ *//* not fcntl */
+#define O_APPEND	  02000/* åœ¨æ–‡ä»¶æœ«å°¾å¼€å§‹å†™ */
+#define O_NONBLOCK	  04000/* éé˜»å¡è¯» */
 #define O_NDELAY	O_NONBLOCK
-#define O_SYNC		 010000/* Í¬²½Ğ´ */
-#define FASYNC		 020000	/* Í¨¹ıĞÅºÅ·¢³öIOÊÂ¼şÍ¨¸æ *//* fcntl, for BSD compatibility */
-#define O_DIRECT	 040000	/* Ö±½ÓIO *//* direct disk access hint */
-#define O_LARGEFILE	0100000/* ´óĞÍÎÄ¼ş£¬´óĞ¡³¬¹ı2G */
-#define O_DIRECTORY	0200000/* Èç¹ûÎÄ¼ş²»ÊÇÄ¿Â¼£¬ÔòÊ§°Ü */	/* must be a directory */
-#define O_NOFOLLOW	0400000 /* ²»½âÊÍÂ·¾¶ÃûÄ©Î²µÄ·ûºÅÁ´½Ó *//* don't follow links */
-#define O_NOATIME	01000000/* ²»¸üĞÂË÷Òı½ÚµãµÄ·ÃÎÊÊ±¼ä */
+#define O_SYNC		 010000/* åŒæ­¥å†™ */
+#define FASYNC		 020000	/* é€šè¿‡ä¿¡å·å‘å‡ºIOäº‹ä»¶é€šå‘Š *//* fcntl, for BSD compatibility */
+#define O_DIRECT	 040000	/* ç›´æ¥IO *//* direct disk access hint */
+#define O_LARGEFILE	0100000/* å¤§å‹æ–‡ä»¶ï¼Œå¤§å°è¶…è¿‡2G */
+#define O_DIRECTORY	0200000/* å¦‚æœæ–‡ä»¶ä¸æ˜¯ç›®å½•ï¼Œåˆ™å¤±è´¥ */	/* must be a directory */
+#define O_NOFOLLOW	0400000 /* ä¸è§£é‡Šè·¯å¾„åæœ«å°¾çš„ç¬¦å·é“¾æ¥ *//* don't follow links */
+#define O_NOATIME	01000000/* ä¸æ›´æ–°ç´¢å¼•èŠ‚ç‚¹çš„è®¿é—®æ—¶é—´ */
 
 #define F_DUPFD		0	/* dup */
 #define F_GETFD		1	/* get close_on_exec */
@@ -57,20 +57,20 @@
 
 /* operations for bsd flock(), also used by the kernel implementation */
 /**
- * ÉêÇëÒ»¸ö¹²Ïí¶ÁËø¡£
+ * ç”³è¯·ä¸€ä¸ªå…±äº«è¯»é”ã€‚
  */
 #define LOCK_SH		1	/* shared lock */
 /**
- * ÉêÇëÒ»¸öÅÅËüËø£¬¼´Ğ´Ëø¡£
+ * ç”³è¯·ä¸€ä¸ªæ’å®ƒé”ï¼Œå³å†™é”ã€‚
  */
 #define LOCK_EX		2	/* exclusive lock */
 /**
- * µ±ÉêÇëÎÄ¼şËøÊ±£¬Èç¹û²»ÄÜÁ¢¼´ÉêÇëµ½£¬Ôò²»×èÈû·µ»Ø¡£
+ * å½“ç”³è¯·æ–‡ä»¶é”æ—¶ï¼Œå¦‚æœä¸èƒ½ç«‹å³ç”³è¯·åˆ°ï¼Œåˆ™ä¸é˜»å¡è¿”å›ã€‚
  */
 #define LOCK_NB		4	/* or'd with one of the above to prevent
 				   blocking */
 /**
- * ÊÍ·ÅÎÄ¼şÈ°¸æËø¡£
+ * é‡Šæ”¾æ–‡ä»¶åŠå‘Šé”ã€‚
  */
 #define LOCK_UN		8	/* remove lock */
 
@@ -80,27 +80,27 @@
 #define LOCK_RW		192	/* ... Which allows concurrent read & write ops */
 
 /**
- * ÓÃ»§Ì¬½¨Á¢FL_POSIXËøÊ±£¬ÏòÄÚºË´«µİµÄ²ÎÊı¡£
+ * ç”¨æˆ·æ€å»ºç«‹FL_POSIXé”æ—¶ï¼Œå‘å†…æ ¸ä¼ é€’çš„å‚æ•°ã€‚
  */
 struct flock {
 	/**
-	 * ÇëÇóÀàĞÍ
+	 * è¯·æ±‚ç±»å‹
 	 */
 	short l_type;
 	/**
-	 * ´ÓÊ²Ã´µØ·½¿ªÊ¼¼ÓËø¡£
+	 * ä»ä»€ä¹ˆåœ°æ–¹å¼€å§‹åŠ é”ã€‚
 	 */
 	short l_whence;
 	/**
-	 * ÉêÇëµÄÆ«ÒÆÁ¿
+	 * ç”³è¯·çš„åç§»é‡
 	 */
 	off_t l_start;
 	/**
-	 * ¼ÓËøÇøÓòµÄ³¤¶È¡£
+	 * åŠ é”åŒºåŸŸçš„é•¿åº¦ã€‚
 	 */
 	off_t l_len;
 	/**
-	 * ÓµÓĞÕßµÄPID
+	 * æ‹¥æœ‰è€…çš„PID
 	 */
 	pid_t l_pid;
 };

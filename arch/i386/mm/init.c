@@ -231,7 +231,7 @@ static inline int page_is_ram(unsigned long pagenr)
 
 #ifdef CONFIG_HIGHMEM
 /**
- * µÈÓÚfix_to_virt(FIX_KMAP_BEGIN)
+ * ç­‰äºŽfix_to_virt(FIX_KMAP_BEGIN)
  */
 pte_t *kmap_pte;
 pgprot_t kmap_prot;

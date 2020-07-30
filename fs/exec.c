@@ -492,8 +492,8 @@ struct file *open_exec(const char *name)
 
 	nd.intent.open.flags = FMODE_READ;
 	/**
-	 * µ÷ÓÃpath_lookup,dentry_open,path_releaseÒÔ»ñµÃÓë¿ÉÖ´ĞĞÎÄ¼ş
-	 * Ïà¹ØµÄÄ¿Â¼Ïî¶ÔÏó¡¢ÎÄ¼ş¶ÔÏóºÍË÷Òı½áµã¶ÔÏó¡£
+	 * è°ƒç”¨path_lookup,dentry_open,path_releaseä»¥è·å¾—ä¸å¯æ‰§è¡Œæ–‡ä»¶
+	 * ç›¸å…³çš„ç›®å½•é¡¹å¯¹è±¡ã€æ–‡ä»¶å¯¹è±¡å’Œç´¢å¼•ç»“ç‚¹å¯¹è±¡ã€‚
 	 */
 	err = path_lookup(name, LOOKUP_FOLLOW|LOOKUP_OPEN, &nd);
 	file = ERR_PTR(err);
@@ -504,7 +504,7 @@ struct file *open_exec(const char *name)
 		if (!(nd.mnt->mnt_flags & MNT_NOEXEC) &&
 		    S_ISREG(inode->i_mode)) {
 		    /**
-		     * ¼ì²éÖ´ĞĞÈ¨ÏŞ
+		     * æ£€æŸ¥æ‰§è¡Œæƒé™
 		     */
 			int err = permission(inode, MAY_EXEC, &nd);
 			if (!err && !(inode->i_mode & 0111))
@@ -514,8 +514,8 @@ struct file *open_exec(const char *name)
 				file = dentry_open(nd.dentry, nd.mnt, O_RDONLY);
 				if (!IS_ERR(file)) {
 					/**
-					 * deny_write_accessÍ¨¹ı¼ì²éË÷Òı½áµãµÄi_writecount×Ö¶Î£¬
-					 * È·¶¨¿ÉÖ´ĞĞÎÄ¼şÃ»ÓĞ±»Ğ´Èë¡£²¢°Ñ-1´æ·ÅÔÚÕâ¸ö×Ö¶ÎÒÔ½ûÖ¹½øÒ»²½µÄĞ´·ÃÎÊ
+					 * deny_write_accessé€šè¿‡æ£€æŸ¥ç´¢å¼•ç»“ç‚¹çš„i_writecountå­—æ®µï¼Œ
+					 * ç¡®å®šå¯æ‰§è¡Œæ–‡ä»¶æ²¡æœ‰è¢«å†™å…¥ã€‚å¹¶æŠŠ-1å­˜æ”¾åœ¨è¿™ä¸ªå­—æ®µä»¥ç¦æ­¢è¿›ä¸€æ­¥çš„å†™è®¿é—®
 					 */
 					err = deny_write_access(file);
 					if (err) {
@@ -552,7 +552,7 @@ int kernel_read(struct file *file, unsigned long offset,
 EXPORT_SYMBOL(kernel_read);
 
 /**
- * ÊÍ·Å·ÖÅä¸ø½ø³ÌµÄÄÚ´æÃèÊö·û¡¢ËùÓĞÏßĞÔÇø¼°ËùÓĞÒ³¿ò£¬²¢Çå³ı½ø³ÌµÄÒ³±í¡£
+ * é‡Šæ”¾åˆ†é…ç»™è¿›ç¨‹çš„å†…å­˜æè¿°ç¬¦ã€æ‰€æœ‰çº¿æ€§åŒºåŠæ‰€æœ‰é¡µæ¡†ï¼Œå¹¶æ¸…é™¤è¿›ç¨‹çš„é¡µè¡¨ã€‚
  */
 static int exec_mmap(struct mm_struct *mm)
 {
@@ -603,8 +603,8 @@ static int exec_mmap(struct mm_struct *mm)
  * table via the CLONE_SIGHAND option to clone().)
  */
 /**
- * Èç¹ûĞÅºÅ´¦Àí³ÌĞòµÄ±íÎªÆäËû½ø³ÌËù¹²Ïí£¬ÄÇÃ´¾Í·ÖÅäÒ»¸öĞÂ±í²¢°Ñ¾É±íµÄÒıÓÃ¼ÆÊı¼õÒ»¡£
- * ¶øÇÒËü½«½ø³Ì´Ó¾ÉµÄÏß³Ì×éÍÑÀë¡£
+ * å¦‚æœä¿¡å·å¤„ç†ç¨‹åºçš„è¡¨ä¸ºå…¶ä»–è¿›ç¨‹æ‰€å…±äº«ï¼Œé‚£ä¹ˆå°±åˆ†é…ä¸€ä¸ªæ–°è¡¨å¹¶æŠŠæ—§è¡¨çš„å¼•ç”¨è®¡æ•°å‡ä¸€ã€‚
+ * è€Œä¸”å®ƒå°†è¿›ç¨‹ä»æ—§çš„çº¿ç¨‹ç»„è„±ç¦»ã€‚
  */
 static inline int de_thread(struct task_struct *tsk)
 {
@@ -939,7 +939,7 @@ int prepare_binprm(struct linux_binprm *bprm)
 	 * generic_permission lets a non-executable through
 	 */
 	/**
-	 * ¼ì²â¿ÉÖ´ĞĞÎÄ¼şÊÇ·ñ¿ÉÖ´ĞĞ
+	 * æ£€æµ‹å¯æ‰§è¡Œæ–‡ä»¶æ˜¯å¦å¯æ‰§è¡Œ
 	 */
 	if (!(mode & 0111))	/* with at least _one_ execute bit set */
 		return -EACCES;
@@ -947,7 +947,7 @@ int prepare_binprm(struct linux_binprm *bprm)
 		return -EACCES;
 
 	/**
-	 * ³õÊ¼»¯e_uidºÍe_gid×Ö¶Î¡£ºóÃæ»¹ĞèÒª¸ù¾İÕâÁ½¸öÖµ¼ì²âÓÃ»§È¨ÄÜ¡£
+	 * åˆå§‹åŒ–e_uidå’Œe_gidå­—æ®µã€‚åé¢è¿˜éœ€è¦æ ¹æ®è¿™ä¸¤ä¸ªå€¼æ£€æµ‹ç”¨æˆ·æƒèƒ½ã€‚
 	 */
 	bprm->e_uid = current->euid;
 	bprm->e_gid = current->egid;
@@ -977,8 +977,8 @@ int prepare_binprm(struct linux_binprm *bprm)
 		return retval;
 
 	/**
-	 * ÓÃ¿ÉÖ´ĞĞÎÄ¼şµÄÇ°128¸ö×Ö½ÚÌî³älinux_binprm½á¹¹µÄbuf×Ö¶Î¡£ÕâĞ©×Ö½Ú°üº¬µÄÊÇÊÊºÏÓÚÊ¶±ğ¿É
-	 * Ö´ĞĞÎÄ¼şµÄÒ»¸öÄ§ÊıºÍÆäËûĞÅÏ¢¡£
+	 * ç”¨å¯æ‰§è¡Œæ–‡ä»¶çš„å‰128ä¸ªå­—èŠ‚å¡«å……linux_binprmç»“æ„çš„bufå­—æ®µã€‚è¿™äº›å­—èŠ‚åŒ…å«çš„æ˜¯é€‚åˆäºè¯†åˆ«å¯
+	 * æ‰§è¡Œæ–‡ä»¶çš„ä¸€ä¸ªé­”æ•°å’Œå…¶ä»–ä¿¡æ¯ã€‚
 	 */
 	memset(bprm->buf,0,BINPRM_BUF_SIZE);
 	return kernel_read(bprm->file,0,bprm->buf,BINPRM_BUF_SIZE);
@@ -1162,7 +1162,7 @@ int do_execve(char * filename,
 
 	retval = -ENOMEM;
 	/**
-	 * ¶¯Ì¬·ÖÅälinux_binprm½á¹¹£¬²¢ÓÃĞÂµÄ¿ÉÖ´ĞĞÎÄ¼şµÄÊı¾İÌî³äÕâ¸ö½á¹¹¡£
+	 * åŠ¨æ€åˆ†é…linux_binprmç»“æ„ï¼Œå¹¶ç”¨æ–°çš„å¯æ‰§è¡Œæ–‡ä»¶çš„æ•°æ®å¡«å……è¿™ä¸ªç»“æ„ã€‚
 	 */
 	bprm = kmalloc(sizeof(*bprm), GFP_KERNEL);
 	if (!bprm)
@@ -1170,10 +1170,10 @@ int do_execve(char * filename,
 	memset(bprm, 0, sizeof(*bprm));
 
 	/**
-	 * open_execµ÷ÓÃpath_lookup,dentry_open,path_releaseÒÔ»ñµÃÓë¿ÉÖ´ĞĞÎÄ¼ş
-	 * Ïà¹ØµÄÄ¿Â¼Ïî¶ÔÏó¡¢ÎÄ¼ş¶ÔÏóºÍË÷Òı½áµã¶ÔÏó¡£
-	 * fileÒ²¿ÉÄÜÊÇ´íÎóÂë£¬ËùÒÔµ÷ÓÃIS_ERR(file)½øĞĞÅĞ¶Ï
-	 * ×¢£ºopen_execÒ²»á¼ì²éÖ´ĞĞÈ¨ÏŞ¡£
+	 * open_execè°ƒç”¨path_lookup,dentry_open,path_releaseä»¥è·å¾—ä¸å¯æ‰§è¡Œæ–‡ä»¶
+	 * ç›¸å…³çš„ç›®å½•é¡¹å¯¹è±¡ã€æ–‡ä»¶å¯¹è±¡å’Œç´¢å¼•ç»“ç‚¹å¯¹è±¡ã€‚
+	 * fileä¹Ÿå¯èƒ½æ˜¯é”™è¯¯ç ï¼Œæ‰€ä»¥è°ƒç”¨IS_ERR(file)è¿›è¡Œåˆ¤æ–­
+	 * æ³¨ï¼šopen_execä¹Ÿä¼šæ£€æŸ¥æ‰§è¡Œæƒé™ã€‚
 	 */
 	file = open_exec(filename);
 	retval = PTR_ERR(file);
@@ -1181,8 +1181,8 @@ int do_execve(char * filename,
 		goto out_kfree;
 
 	/**
-	 * ÔÚ¶à´¦ÀíÆ÷ÖĞ£¬µ÷ÓÃsched_execÒÔÈ·¶¨×îĞ¡¸ºÔØCPUÒÔÖ´ĞĞĞÂ³ÌĞò¡£
-	 * ²¢°Ñµ±Ç°½ø³Ì×ªÒÆ¹ıÈ¥¡£
+	 * åœ¨å¤šå¤„ç†å™¨ä¸­ï¼Œè°ƒç”¨sched_execä»¥ç¡®å®šæœ€å°è´Ÿè½½CPUä»¥æ‰§è¡Œæ–°ç¨‹åºã€‚
+	 * å¹¶æŠŠå½“å‰è¿›ç¨‹è½¬ç§»è¿‡å»ã€‚
 	 */
 	sched_exec();
 
@@ -1197,8 +1197,8 @@ int do_execve(char * filename,
 		goto out_file;
 
 	/**
-	 * init_new_context¼ì²éµ±Ç°½ø³ÌÊÇ·ñÊ¹ÓÃ×Ô¶¨Òå¾Ö²¿ÃèÊö·û±í¡£
-	 * Èç¹ûÊÇ£¬º¯ÊıÎªĞÂ³ÌĞò·ÖÅäºÍ×¼±¸Ò»¸öĞÂµÄLDT
+	 * init_new_contextæ£€æŸ¥å½“å‰è¿›ç¨‹æ˜¯å¦ä½¿ç”¨è‡ªå®šä¹‰å±€éƒ¨æè¿°ç¬¦è¡¨ã€‚
+	 * å¦‚æœæ˜¯ï¼Œå‡½æ•°ä¸ºæ–°ç¨‹åºåˆ†é…å’Œå‡†å¤‡ä¸€ä¸ªæ–°çš„LDT
 	 */
 	retval = init_new_context(current, bprm->mm);
 	if (retval < 0)
@@ -1217,15 +1217,15 @@ int do_execve(char * filename,
 		goto out;
 
 	/**
-	 * prepare_binprmÌî³älinux_binprmÊı¾İ½á¹¹¡£
+	 * prepare_binprmå¡«å……linux_binprmæ•°æ®ç»“æ„ã€‚
 	 */
 	retval = prepare_binprm(bprm);
 	if (retval < 0)
 		goto out;
 
 	/**
-	 * °ÑÂ·¾¶Ãû£¬ÃüÁîĞĞ²ÎÊı£¬»·¾³´®¸´ÖÆµ½Ò»¸ö»òÕß¶à¸öĞÂ·ÖÅäµÄÒ³¿òÖĞ£¬
-	 * ×îÖÕ£¬ËüÃÇ»á±»·ÖÅä¸øÓÃ»§Ì¬µØÖ·¿Õ¼ä
+	 * æŠŠè·¯å¾„åï¼Œå‘½ä»¤è¡Œå‚æ•°ï¼Œç¯å¢ƒä¸²å¤åˆ¶åˆ°ä¸€ä¸ªæˆ–è€…å¤šä¸ªæ–°åˆ†é…çš„é¡µæ¡†ä¸­ï¼Œ
+	 * æœ€ç»ˆï¼Œå®ƒä»¬ä¼šè¢«åˆ†é…ç»™ç”¨æˆ·æ€åœ°å€ç©ºé—´
 	 */
 	retval = copy_strings_kernel(1, &bprm->filename, bprm);
 	if (retval < 0)
@@ -1241,13 +1241,13 @@ int do_execve(char * filename,
 		goto out;
 
 	/**
-	 * µ÷ÓÃsearch_binary_handlerº¯Êı¶ÔformatsÁ´±í½øĞĞÉ¨Ãè£¬²¢¾¡Á¦Ó¦ÓÃÃ¿¸öÔªËØµÄload_binary·½·¨£¬°Ñ
-	 * linxu_binprmÊı¾İ½á¹¹´«µİ¸øÕâ¸öº¯Êı¡£Ö»Òªload_binary·½·¨³É¹¦Ó¦´ğÁËÎÄ¼şµÄ¿ÉÖ´ĞĞ¸ñÊ½¡£¶ÔformatsµÄÉ¨Ãè¾ÍÖÕÖ¹¡£
+	 * è°ƒç”¨search_binary_handlerå‡½æ•°å¯¹formatsé“¾è¡¨è¿›è¡Œæ‰«æï¼Œå¹¶å°½åŠ›åº”ç”¨æ¯ä¸ªå…ƒç´ çš„load_binaryæ–¹æ³•ï¼ŒæŠŠ
+	 * linxu_binprmæ•°æ®ç»“æ„ä¼ é€’ç»™è¿™ä¸ªå‡½æ•°ã€‚åªè¦load_binaryæ–¹æ³•æˆåŠŸåº”ç­”äº†æ–‡ä»¶çš„å¯æ‰§è¡Œæ ¼å¼ã€‚å¯¹formatsçš„æ‰«æå°±ç»ˆæ­¢ã€‚
 	 */
 	retval = search_binary_handler(bprm,regs);
 	if (retval >= 0) {
 		/**
-		 * ÔÚformatsÖĞÕÒµ½ÁË£¬¾ÍÊÍ·Ålinux_binprmÊı¾İ½á¹¹£¬²¢·µ»Øload_binaryËù»ñµÃµÄ´úÂë¡£
+		 * åœ¨formatsä¸­æ‰¾åˆ°äº†ï¼Œå°±é‡Šæ”¾linux_binprmæ•°æ®ç»“æ„ï¼Œå¹¶è¿”å›load_binaryæ‰€è·å¾—çš„ä»£ç ã€‚
 		 */
 		free_arg_pages(bprm);
 
@@ -1262,7 +1262,7 @@ int do_execve(char * filename,
 out:
 	/* Something went wrong, return the inode and free the argument pages*/
 	/**
-	 * ¿ÉÖ´ĞĞÎÄ¼ş¸ñÊ½²»ÔÚformatsÁ´±íÖĞ£¬¾ÍÊÍ·ÅËù·ÖÅäµÄËùÓĞÒ³¿ò²¢·µ»Ø´íÎóÂë-ENOEXEC
+	 * å¯æ‰§è¡Œæ–‡ä»¶æ ¼å¼ä¸åœ¨formatsé“¾è¡¨ä¸­ï¼Œå°±é‡Šæ”¾æ‰€åˆ†é…çš„æ‰€æœ‰é¡µæ¡†å¹¶è¿”å›é”™è¯¯ç -ENOEXEC
 	 */
 	for (i = 0 ; i < MAX_ARG_PAGES ; i++) {
 		struct page * page = bprm->page[i];

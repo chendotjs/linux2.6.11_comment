@@ -43,88 +43,88 @@ struct kioctx;
 #define kiocbIsKicked(iocb)	test_bit(KIF_KICKED, &(iocb)->ki_flags)
 #define kiocbIsCancelled(iocb)	test_bit(KIF_CANCELLED, &(iocb)->ki_flags)
 /**
- * Í¬²½ºÍÒì²½Io²Ù×÷µÄÍê³É×´Ì¬¡£
+ * åŒæ­¥å’Œå¼‚æ­¥Ioæ“ä½œçš„å®ŒæˆçŠ¶æ€ã€‚
  */
 struct kiocb {
 	/**
-	 * ÒªÖØÐÂ²Ù×÷µÄIOÁ´±íÖ¸Õë¡£
+	 * è¦é‡æ–°æ“ä½œçš„IOé“¾è¡¨æŒ‡é’ˆã€‚
 	 */
 	struct list_head	ki_run_list;
 	/**
-	 * ÃèÊö·û±êÖ¾
+	 * æè¿°ç¬¦æ ‡å¿—
 	 */
 	long			ki_flags;
 	/**
-	 * ÃèÊö·ûµÄÒýÓÃ¼ÆÊýÆ÷¡£
+	 * æè¿°ç¬¦çš„å¼•ç”¨è®¡æ•°å™¨ã€‚
 	 */
 	int			ki_users;
 	/**
-	 * Òì²½IO²Ù×÷±êÊ¶·û¡£Í¬²½IO²Ù×÷±êÊ¶·ûÎª0xffffffff
+	 * å¼‚æ­¥IOæ“ä½œæ ‡è¯†ç¬¦ã€‚åŒæ­¥IOæ“ä½œæ ‡è¯†ç¬¦ä¸º0xffffffff
 	 */
 	unsigned		ki_key;		/* id of this request */
 
 	/**
-	 * IO²Ù×÷Ïà¹ØµÄÎÄ¼þ¶ÔÏóÖ¸Õë
+	 * IOæ“ä½œç›¸å…³çš„æ–‡ä»¶å¯¹è±¡æŒ‡é’ˆ
 	 */
 	struct file		*ki_filp;
 	/**
-	 * Òì²½IO»·¾³ÃèÊö·ûÖ¸Õë
+	 * å¼‚æ­¥IOçŽ¯å¢ƒæè¿°ç¬¦æŒ‡é’ˆ
 	 */
 	struct kioctx		*ki_ctx;	/* may be NULL for sync ops */
 	/**
-	 * È¡ÏûÒì²½Io²Ù×÷Ê±µÄ»Øµ÷·½·¨¡£
+	 * å–æ¶ˆå¼‚æ­¥Ioæ“ä½œæ—¶çš„å›žè°ƒæ–¹æ³•ã€‚
 	 */
 	int			(*ki_cancel)(struct kiocb *, struct io_event *);
 	/**
-	 * ÖØÊÔÒì²½IOÊ±µÄ»Øµ÷·½·¨¡£
+	 * é‡è¯•å¼‚æ­¥IOæ—¶çš„å›žè°ƒæ–¹æ³•ã€‚
 	 */
 	ssize_t			(*ki_retry)(struct kiocb *);
 	/**
-	 * Çå³ýkiocbÃèÊö·ûÊ±µÄ»Øµ÷·½·¨¡£
+	 * æ¸…é™¤kiocbæè¿°ç¬¦æ—¶çš„å›žè°ƒæ–¹æ³•ã€‚
 	 */
 	void			(*ki_dtor)(struct kiocb *);
 
 	/**
-	 * ÔÚÒì²½²Ù×÷»·¾³ÏÂ£¬µ±Ç°½øÐÐµÄIO²Ù×÷Á´±íµÄÖ¸Õë¡£
+	 * åœ¨å¼‚æ­¥æ“ä½œçŽ¯å¢ƒä¸‹ï¼Œå½“å‰è¿›è¡Œçš„IOæ“ä½œé“¾è¡¨çš„æŒ‡é’ˆã€‚
 	 */
 	struct list_head	ki_list;	/* the aio core uses this
 						 * for cancellation */
 
 	/**
-	 * ¶ÔÓÚÍ¬²½²Ù×÷£¬ÕâÖ¼Ö¸Ïò·¢³ö¸Ã²Ù×÷µÄ½ø³ÌÃèÊö·ûµÄÖ¸Õë¡£
-	 * ¶ÔÓÚÒì²½²Ù×÷£¬ËüÊÇÖ¸ÏòÓÃ»§Ì¬Êý¾Ý½á¹¹iocbµÄÖ¸Õë¡£
+	 * å¯¹äºŽåŒæ­¥æ“ä½œï¼Œè¿™æ—¨æŒ‡å‘å‘å‡ºè¯¥æ“ä½œçš„è¿›ç¨‹æè¿°ç¬¦çš„æŒ‡é’ˆã€‚
+	 * å¯¹äºŽå¼‚æ­¥æ“ä½œï¼Œå®ƒæ˜¯æŒ‡å‘ç”¨æˆ·æ€æ•°æ®ç»“æž„iocbçš„æŒ‡é’ˆã€‚
 	 */
 	union {
 		void __user		*user;
 		struct task_struct	*tsk;
 	} ki_obj;
 	/**
-	 * ¸øÓÃ»§Ì¬½ø³Ì·µ»ØµÄÖµ¡£
+	 * ç»™ç”¨æˆ·æ€è¿›ç¨‹è¿”å›žçš„å€¼ã€‚
 	 */
 	__u64			ki_user_data;	/* user's data for completion */
 	/**
-	 * ÕýÔÚ½øÐÐIO²Ù×÷µÄµ±Ç°ÎÄ¼þÎ»ÖÃ¡£
+	 * æ­£åœ¨è¿›è¡ŒIOæ“ä½œçš„å½“å‰æ–‡ä»¶ä½ç½®ã€‚
 	 */
 	loff_t			ki_pos;
 	/* State that we remember to be able to restart/retry  */
 	/**
-	 * ²Ù×÷ÀàÐÍ:read,write,sync
+	 * æ“ä½œç±»åž‹:read,write,sync
 	 */
 	unsigned short		ki_opcode;
 	/**
-	 * ±»´«ÊäµÄ×Ö½ÚÊý¡£
+	 * è¢«ä¼ è¾“çš„å­—èŠ‚æ•°ã€‚
 	 */
 	size_t			ki_nbytes; 	/* copy of iocb->aio_nbytes */
 	/**
-	 * ÓÃ»§Ì¬»º³åÇøµÄµ±Ç°Î»ÖÃ¡£
+	 * ç”¨æˆ·æ€ç¼“å†²åŒºçš„å½“å‰ä½ç½®ã€‚
 	 */
 	char 			__user *ki_buf;	/* remaining iocb->aio_buf */
 	/**
-	 * ´ý´«ÊäµÄ×Ö½ÚÊý¡£
+	 * å¾…ä¼ è¾“çš„å­—èŠ‚æ•°ã€‚
 	 */
 	size_t			ki_left; 	/* remaining bytes */
 	/**
-	 * Òì²½IO²Ù×÷µÈ´ý¶ÓÁÐ¡£
+	 * å¼‚æ­¥IOæ“ä½œç­‰å¾…é˜Ÿåˆ—ã€‚
 	 */
 	wait_queue_t		ki_wait;
 	long			ki_retried; 	/* just for testing */
@@ -132,14 +132,14 @@ struct kiocb {
 	long			ki_queued; 	/* just for testing */
 
 	/**
-	 * ÓÉÎÄ¼þÏµÍ³²ã×ÔÓÉÊ¹ÓÃ¡£
+	 * ç”±æ–‡ä»¶ç³»ç»Ÿå±‚è‡ªç”±ä½¿ç”¨ã€‚
 	 */
 	void			*private;
 };
 
 /**
- * ÎÄ¼þ¶ÁÐ´¿ØÖÆ¿éÊÇ·ñÎªÍ¬²½¶ÁÐ´¡£
- * Èç¹ûÊÇ£¬ÄÇÃ´£¬¼´Ê¹ÔÚÒì²½¶ÁÐ´º¯Êý(Èçaio_read)ÖÐ£¬Ò²±ØÐëµÈ´ý¶ÁÐ´ÈÎÎñÍê³É¡£
+ * æ–‡ä»¶è¯»å†™æŽ§åˆ¶å—æ˜¯å¦ä¸ºåŒæ­¥è¯»å†™ã€‚
+ * å¦‚æžœæ˜¯ï¼Œé‚£ä¹ˆï¼Œå³ä½¿åœ¨å¼‚æ­¥è¯»å†™å‡½æ•°(å¦‚aio_read)ä¸­ï¼Œä¹Ÿå¿…é¡»ç­‰å¾…è¯»å†™ä»»åŠ¡å®Œæˆã€‚
  */
 #define is_sync_kiocb(iocb)	((iocb)->ki_key == KIOCB_SYNC_KEY)
 #define init_sync_kiocb(x, filp)			\

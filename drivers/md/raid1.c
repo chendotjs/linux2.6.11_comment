@@ -9,7 +9,7 @@
  *
  * Better read-balancing code written by Mika Kuoppala <miku@iki.fi>, 2000
  *
- * Fixes to reconstruction by Jakob Østergaard" <jakob@ostenfeld.dk>
+ * Fixes to reconstruction by Jakob stergaard" <jakob@ostenfeld.dk>
  * Various fixes by Neil Brown <neilb@cse.unsw.edu.au>
  *
  * This program is free software; you can redistribute it and/or modify

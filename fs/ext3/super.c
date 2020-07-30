@@ -1094,7 +1094,7 @@ static int ext3_check_descriptors (struct super_block * sb)
  * inode cleanup for us, so we can safely abort without any further action.
  */
 /**
- * ÔÚmountÊ±µ÷ÓÃ£¬ÓÃÓÚÇåÀíorphan½Úµã£¬»ØÊÕ¿Õ¼ä¡£
+ * åœ¨mountæ—¶è°ƒç”¨ï¼Œç”¨äºæ¸…ç†orphanèŠ‚ç‚¹ï¼Œå›æ”¶ç©ºé—´ã€‚
  */
 static void ext3_orphan_cleanup (struct super_block * sb,
 				 struct ext3_super_block * es)
@@ -1139,15 +1139,15 @@ static void ext3_orphan_cleanup (struct super_block * sb,
 #endif
 
 	/**
-	 * Ñ­»·´¦Àí
-	 * Ö±µ½Ã»ÓĞorphan½Úµã´æÔÚ¡£
+	 * å¾ªç¯å¤„ç†
+	 * ç›´åˆ°æ²¡æœ‰orphanèŠ‚ç‚¹å­˜åœ¨ã€‚
 	 */
 	while (es->s_last_orphan) {
 		struct inode *inode;
 
 		/**
-		 * ´Ó´ÅÅÌÉÏ¶ÁÈ¡ÏÂÒ»¸öorphan½ÚµãµÄĞÅÏ¢¡£
-		 * Èç¹û¶ÁÈ¡Ê§°Ü£¬»òÕßÃ»ÓĞ¸ü¶àµÄ½Úµã£¬¾ÍÍË³ö¡£
+		 * ä»ç£ç›˜ä¸Šè¯»å–ä¸‹ä¸€ä¸ªorphanèŠ‚ç‚¹çš„ä¿¡æ¯ã€‚
+		 * å¦‚æœè¯»å–å¤±è´¥ï¼Œæˆ–è€…æ²¡æœ‰æ›´å¤šçš„èŠ‚ç‚¹ï¼Œå°±é€€å‡ºã€‚
 		 */
 		if (!(inode =
 		      ext3_orphan_get(sb, le32_to_cpu(es->s_last_orphan)))) {
@@ -1156,17 +1156,17 @@ static void ext3_orphan_cleanup (struct super_block * sb,
 		}
 
 		/**
-		 * ½«½ÚµãÌí¼Óµ½ÄÚ´æÁ´±íÖĞ¡£
+		 * å°†èŠ‚ç‚¹æ·»åŠ åˆ°å†…å­˜é“¾è¡¨ä¸­ã€‚
 		 */
 		list_add(&EXT3_I(inode)->i_orphan, &EXT3_SB(sb)->s_orphan);
 		DQUOT_INIT(inode);
-		if (inode->i_nlink) {/* »¹ÓĞÓ²Á¬½Ó¼ÆÊı? */
+		if (inode->i_nlink) {/* è¿˜æœ‰ç¡¬è¿æ¥è®¡æ•°? */
 			printk(KERN_DEBUG
 				"%s: truncating inode %ld to %Ld bytes\n",
 				__FUNCTION__, inode->i_ino, inode->i_size);
 			jbd_debug(2, "truncating inode %ld to %Ld bytes\n",
 				  inode->i_ino, inode->i_size);
-			/* Çå³ı´ÅÅÌÉÏµÄË÷ÒıĞÅÏ¢ */
+			/* æ¸…é™¤ç£ç›˜ä¸Šçš„ç´¢å¼•ä¿¡æ¯ */
 			ext3_truncate(inode);
 			nr_truncates++;
 		} else {
@@ -1178,9 +1178,9 @@ static void ext3_orphan_cleanup (struct super_block * sb,
 			nr_orphans++;
 		}
 		/**
-		 * ÕæÕıÉñÆæµÄµØ·½ÔÚÕâÀï¡£
-		 * iput»áÕæÕıµÄµ÷ÓÃext3_orphan_delÉ¾³ı¹ı³Ì
-		 * ½«inodeĞÅÏ¢´Ó´ÅÅÌÉÏÇå³ı£¬²¢ÇÒorphanÁ´±íĞÅÏ¢
+		 * çœŸæ­£ç¥å¥‡çš„åœ°æ–¹åœ¨è¿™é‡Œã€‚
+		 * iputä¼šçœŸæ­£çš„è°ƒç”¨ext3_orphan_delåˆ é™¤è¿‡ç¨‹
+		 * å°†inodeä¿¡æ¯ä»ç£ç›˜ä¸Šæ¸…é™¤ï¼Œå¹¶ä¸”orphané“¾è¡¨ä¿¡æ¯
 		 */
 		iput(inode);  /* The delete magic happens here! */
 	}

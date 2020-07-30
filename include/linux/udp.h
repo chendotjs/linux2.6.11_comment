@@ -41,29 +41,29 @@ struct udphdr {
 #include <linux/ip.h>
 
 /**
- * UDP´«Êä¿ØÖÆ¿é
+ * UDPä¼ è¾“æ§åˆ¶å—
  */
 struct udp_sock {
 	/* inet_sock has to be the first member */
 	struct inet_sock inet;
 	/**
-	 * 0±íÊ¾Êı¾İÒÑ¾­´ÓUDPÌ×½Ó¿Ú·¢ËÍµ½IP²ã£¬¿ÉÒÔ¼ÌĞøµ÷ÓÃsendmsg·¢ËÍÊı¾İ¡£
-	 * AF_INET±íÊ¾UDPÕıÔÚ´¦Àíµ÷ÓÃsendmsgµÄ·¢ËÍÊı¾İ£¬²»ĞèÒª´¦ÀíÄ¿µÄµØÖ·¡¢Â·ÓÉµÈĞÅÏ¢£¬Ö±½Ó´¦ÀíUDPÊı¾İ
+	 * 0è¡¨ç¤ºæ•°æ®å·²ç»ä»UDPå¥—æ¥å£å‘é€åˆ°IPå±‚ï¼Œå¯ä»¥ç»§ç»­è°ƒç”¨sendmsgå‘é€æ•°æ®ã€‚
+	 * AF_INETè¡¨ç¤ºUDPæ­£åœ¨å¤„ç†è°ƒç”¨sendmsgçš„å‘é€æ•°æ®ï¼Œä¸éœ€è¦å¤„ç†ç›®çš„åœ°å€ã€è·¯ç”±ç­‰ä¿¡æ¯ï¼Œç›´æ¥å¤„ç†UDPæ•°æ®
 	 */
 	int		 pending;	/* Any pending frames ? */
 	/**
-	 * ±êÊ¶·¢ËÍµÄUDPÊı¾İÊÇ·ñ×é³ÉÒ»¸öµ¥¶ÀµÄIPÊı¾İ±¨·¢ËÍ³öÈ¥£¬ÓÉUDPµÄUDP_CORKÑ¡ÏîÉèÖÃ¡£
+	 * æ ‡è¯†å‘é€çš„UDPæ•°æ®æ˜¯å¦ç»„æˆä¸€ä¸ªå•ç‹¬çš„IPæ•°æ®æŠ¥å‘é€å‡ºå»ï¼Œç”±UDPçš„UDP_CORKé€‰é¡¹è®¾ç½®ã€‚
 	 */
 	unsigned int	 corkflag;	/* Cork is required */
 	/**
-	 * ±êÊ¶±¾Ì×½Ó¿ÚÊÇ·ñÍ¨¹ıIPSEC·â×°£¬ÓÉUDPµÄUDP_ENCAPÌ×½Ó¿ÚÑ¡ÏîÉèÖÃ¡£
+	 * æ ‡è¯†æœ¬å¥—æ¥å£æ˜¯å¦é€šè¿‡IPSECå°è£…ï¼Œç”±UDPçš„UDP_ENCAPå¥—æ¥å£é€‰é¡¹è®¾ç½®ã€‚
 	 */
   	__u16		 encap_type;	/* Is this an Encapsulation socket? */
 	/*
 	 * Following member retains the infomation to create a UDP header
 	 * when the socket is uncorked.
 	 */
-	/* ±êÊ¶´ı·¢ËÍÊı¾İµÄ³¤¶È */
+	/* æ ‡è¯†å¾…å‘é€æ•°æ®çš„é•¿åº¦ */
 	__u16		 len;		/* total length of pending frames */
 };
 

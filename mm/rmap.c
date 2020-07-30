@@ -391,7 +391,7 @@ static int page_referenced_file(struct page *page, int ignore_token)
  * returns the number of ptes which referenced the page.
  */
 /**
- * Èç¹ûPG_referenced±êÖ¾»òÕßÒ³±íÏîÖÐµÄÄ³Ð©accessed±êÖ¾Î»ÖÃÎ»£¬Ôò¸Ãº¯Êý·µ»Ø1£¬·ñÔò·µ»Ø0.
+ * å¦‚æžœPG_referencedæ ‡å¿—æˆ–è€…é¡µè¡¨é¡¹ä¸­çš„æŸäº›accessedæ ‡å¿—ä½ç½®ä½ï¼Œåˆ™è¯¥å‡½æ•°è¿”å›ž1ï¼Œå¦åˆ™è¿”å›ž0.
  */
 int page_referenced(struct page *page, int is_locked, int ignore_token)
 {
@@ -404,13 +404,13 @@ int page_referenced(struct page *page, int is_locked, int ignore_token)
 		referenced++;
 
 	/**
-	 * Èç¹û±êÖ¾ÖÃÎ»ÔòÇå0.
+	 * å¦‚æžœæ ‡å¿—ç½®ä½åˆ™æ¸…0.
 	 */
 	if (TestClearPageReferenced(page))
 		referenced++;
 
 	/**
-	 * Ê¹ÓÃ·´ÏòÓ³Éä·½·¨£¬¶ÔÒýÓÃ¸ÃÒ³µÄËùÓÐÓÃ»§Ì¬Ò³±íÏîÖÐµÄaccessed±êÖ¾½øÐÐ¼ì²é²¢Çå0.
+	 * ä½¿ç”¨åå‘æ˜ å°„æ–¹æ³•ï¼Œå¯¹å¼•ç”¨è¯¥é¡µçš„æ‰€æœ‰ç”¨æˆ·æ€é¡µè¡¨é¡¹ä¸­çš„accessedæ ‡å¿—è¿›è¡Œæ£€æŸ¥å¹¶æ¸…0.
 	 */
 	if (page_mapped(page) && page->mapping) {
 		if (PageAnon(page))
@@ -509,9 +509,9 @@ void page_remove_rmap(struct page *page)
  * repeatedly from either try_to_unmap_anon or try_to_unmap_file.
  */
 /**
- * ±»try_to_unmap_anonºÍtry_to_unmap_fileÖØ¸´µ÷ÓÃ¡£ÓÃÓÚ½â³ý·´ÏòÓ³Éä¡£
- * 		page:	ÊÇÒ»¸öÖ¸ÏòÄ¿±êÒ³ÃèÊö·ûµÄÖ¸Õë¡£¸ÃÒ³½«±»½â³ýËùÓÐ·´ÏòÓ³Éä¡£
- *		vma:	Ö¸ÏòÏßÐÔÇøÃèÊö·ûµÄÖ¸Õë¡£
+ * è¢«try_to_unmap_anonå’Œtry_to_unmap_fileé‡å¤è°ƒç”¨ã€‚ç”¨äºŽè§£é™¤åå‘æ˜ å°„ã€‚
+ * 		page:	æ˜¯ä¸€ä¸ªæŒ‡å‘ç›®æ ‡é¡µæè¿°ç¬¦çš„æŒ‡é’ˆã€‚è¯¥é¡µå°†è¢«è§£é™¤æ‰€æœ‰åå‘æ˜ å°„ã€‚
+ *		vma:	æŒ‡å‘çº¿æ€§åŒºæè¿°ç¬¦çš„æŒ‡é’ˆã€‚
  */
 static int try_to_unmap_one(struct page *page, struct vm_area_struct *vma)
 {
@@ -527,11 +527,11 @@ static int try_to_unmap_one(struct page *page, struct vm_area_struct *vma)
 	if (!mm->rss)
 		goto out;
 	/**
-	 * ¼ÆËãpageÔÚvmaÖÐµÄÐéÄâµØÖ·¡£¼´´ý»ØÊÕÒ³µÄÏßÐÔµØÖ·¡£
+	 * è®¡ç®—pageåœ¨vmaä¸­çš„è™šæ‹Ÿåœ°å€ã€‚å³å¾…å›žæ”¶é¡µçš„çº¿æ€§åœ°å€ã€‚
 	 */
 	address = vma_address(page, vma);
 	/**
-	 * Èç¹ûpageÊÇÄäÃûÒ³£¬ÄÇÃ´£¬Æäanon_vmaÁ´±íÖÐ¿ÉÄÜ´æÔÚÓÐ²»°üº¬Ä¿±êÒ³µÄÏßÐÔÇø¡£´ËÊ±Ó¦¸Ã½áÊøº¯Êý¡£
+	 * å¦‚æžœpageæ˜¯åŒ¿åé¡µï¼Œé‚£ä¹ˆï¼Œå…¶anon_vmaé“¾è¡¨ä¸­å¯èƒ½å­˜åœ¨æœ‰ä¸åŒ…å«ç›®æ ‡é¡µçš„çº¿æ€§åŒºã€‚æ­¤æ—¶åº”è¯¥ç»“æŸå‡½æ•°ã€‚
 	 */
 	if (address == -EFAULT)
 		goto out;
@@ -541,12 +541,12 @@ static int try_to_unmap_one(struct page *page, struct vm_area_struct *vma)
 	 * munmap, fork, etc...
 	 */
 	/**
-	 * »ñµÃ±£»¤Ò³±íµÄ×ÔÐýËø¡£
+	 * èŽ·å¾—ä¿æŠ¤é¡µè¡¨çš„è‡ªæ—‹é”ã€‚
 	 */
 	spin_lock(&mm->page_table_lock);
 
 	/**
-	 * µ÷ÓÃpgd_offset£¬pud_offset£¬pmd_offset£¬pte_offset_mapÒÔ»ñµÃ¶ÔÓ¦Ä¿±êÒ³ÏßÐÔµØÖ·µÄÒ³±íÏîµØÖ·¡£
+	 * è°ƒç”¨pgd_offsetï¼Œpud_offsetï¼Œpmd_offsetï¼Œpte_offset_mapä»¥èŽ·å¾—å¯¹åº”ç›®æ ‡é¡µçº¿æ€§åœ°å€çš„é¡µè¡¨é¡¹åœ°å€ã€‚
 	 */
 	pgd = pgd_offset(mm, address);
 	if (!pgd_present(*pgd))
@@ -565,13 +565,13 @@ static int try_to_unmap_one(struct page *page, struct vm_area_struct *vma)
 		goto out_unmap;
 
 	/**
-	 * ÒÔÏÂÖ´ÐÐÒ»Ð©¼ì²éÀ´ÑéÖ¤Ä¿±êÒ³ÊÇ·ñ¿ÉÒÔÓÐÐ§»ØÊÕ¡£
+	 * ä»¥ä¸‹æ‰§è¡Œä¸€äº›æ£€æŸ¥æ¥éªŒè¯ç›®æ ‡é¡µæ˜¯å¦å¯ä»¥æœ‰æ•ˆå›žæ”¶ã€‚
 	 */
 
 	/**
-	 * ¼ì²éÖ¸ÏòÄ¿±êÒ³µÄÒ³±íÏî¡£
-	 *		Èç¹ûÖ¸ÏòÒ³¿òµÄÒ³±íÏîÓëCOW¹ØÁª£¬¶øvma±êÊ¶µÄÄäÃûÏßÐÔÇøÈÔÈ»ÊôÓÚÔ­Ò³¿òµÄanon_vmaÁ´±í¡£
-	 *		mremapÏµÍ³µ÷ÓÃ¿ÉÖØÐÂÓ³ÉäÏßÐÔÇø£¬²¢Í¨¹ýÖ±½ÓÐÞ¸ÄÒ³±íÏî½«Ò³ÒÆµ½ÓÃ»§Ì¬µØÖ·¿Õ¼ä¡£ÕâÖÖÌØÊâÇé¿öÏÂ£¬ÒòÎªÒ³ÃèÊö·ûµÄindex×Ö¶Î²»ÄÜÓÃÓÚÈ·¶¨Ò³µÄÊµ¼Ê´¿ÊôµØÖ·£¬ËùÒÔÃæÏò¶ÔÏóµÄ·´ÉäÓ³ÉäÒ²²»ÄÜ±»Ê¹ÓÃ¡£
+	 * æ£€æŸ¥æŒ‡å‘ç›®æ ‡é¡µçš„é¡µè¡¨é¡¹ã€‚
+	 *		å¦‚æžœæŒ‡å‘é¡µæ¡†çš„é¡µè¡¨é¡¹ä¸ŽCOWå…³è”ï¼Œè€Œvmaæ ‡è¯†çš„åŒ¿åçº¿æ€§åŒºä»ç„¶å±žäºŽåŽŸé¡µæ¡†çš„anon_vmaé“¾è¡¨ã€‚
+	 *		mremapç³»ç»Ÿè°ƒç”¨å¯é‡æ–°æ˜ å°„çº¿æ€§åŒºï¼Œå¹¶é€šè¿‡ç›´æŽ¥ä¿®æ”¹é¡µè¡¨é¡¹å°†é¡µç§»åˆ°ç”¨æˆ·æ€åœ°å€ç©ºé—´ã€‚è¿™ç§ç‰¹æ®Šæƒ…å†µä¸‹ï¼Œå› ä¸ºé¡µæè¿°ç¬¦çš„indexå­—æ®µä¸èƒ½ç”¨äºŽç¡®å®šé¡µçš„å®žé™…çº¯å±žåœ°å€ï¼Œæ‰€ä»¥é¢å‘å¯¹è±¡çš„åå°„æ˜ å°„ä¹Ÿä¸èƒ½è¢«ä½¿ç”¨ã€‚
 	 */ 
 	if (page_to_pfn(page) != pte_pfn(*pte))
 		goto out_unmap;
@@ -582,8 +582,8 @@ static int try_to_unmap_one(struct page *page, struct vm_area_struct *vma)
 	 * skipped over this mm) then we should reactivate it.
 	 */
 	/**
-	 * ÑéÖ¤ÏßÐÔÇø²»ÊÇËø¶¨»òÕß±£ÁôµÄ¡£
-	 * ¼¦Ò³±íÏîÖÐµÄ·ÃÎÊ±êÖ¾Î»ÊÇ·ñ±»Çå0¡£Èç¹ûÃ»ÓÐ£¬Ôò½«ËüÇå0£¬²¢·µ»ØSWAP_FAIL£¬¸Ã±êÖ¾Î»±íÊ¾Ò³ÔÚÊ¹ÓÃ£¬Òò¶ø²»ÄÜ±»»ØÊÕ¡£
+	 * éªŒè¯çº¿æ€§åŒºä¸æ˜¯é”å®šæˆ–è€…ä¿ç•™çš„ã€‚
+	 * é¸¡é¡µè¡¨é¡¹ä¸­çš„è®¿é—®æ ‡å¿—ä½æ˜¯å¦è¢«æ¸…0ã€‚å¦‚æžœæ²¡æœ‰ï¼Œåˆ™å°†å®ƒæ¸…0ï¼Œå¹¶è¿”å›žSWAP_FAILï¼Œè¯¥æ ‡å¿—ä½è¡¨ç¤ºé¡µåœ¨ä½¿ç”¨ï¼Œå› è€Œä¸èƒ½è¢«å›žæ”¶ã€‚
 	 */
 	if ((vma->vm_flags & (VM_LOCKED|VM_RESERVED)) ||
 			ptep_clear_flush_young(vma, address, pte)) {
@@ -607,7 +607,7 @@ static int try_to_unmap_one(struct page *page, struct vm_area_struct *vma)
 	 * ptes from being unmapped, so swapoff can make progress.
 	 */
 	/**
-	 * ÑéÖ¤Ò³ÊÇ·ñÊôÓÚ½»»»¸ßËÙ»º´æ£¬ÇÒ´ËÊ±ËüÕýÓÉget_user_pages´¦Àí¡£ÔÚÕâÖÖÇé¿öÏÂ£¬Îª±ÜÃâ¶ñÐÔ¾ºÕùÌõ¼þ£¬º¯Êý·µ»ØSWAP_FAIL¡£
+	 * éªŒè¯é¡µæ˜¯å¦å±žäºŽäº¤æ¢é«˜é€Ÿç¼“å­˜ï¼Œä¸”æ­¤æ—¶å®ƒæ­£ç”±get_user_pageså¤„ç†ã€‚åœ¨è¿™ç§æƒ…å†µä¸‹ï¼Œä¸ºé¿å…æ¶æ€§ç«žäº‰æ¡ä»¶ï¼Œå‡½æ•°è¿”å›žSWAP_FAILã€‚
 	 */
 	if (PageSwapCache(page) &&
 	    page_count(page) != page_mapcount(page) + 2) {
@@ -618,13 +618,13 @@ static int try_to_unmap_one(struct page *page, struct vm_area_struct *vma)
 	/* Nuke the page table entry. */
 	flush_cache_page(vma, address);
 	/**
-	 * Çå¿ÕÒ³±íÏî²¢Ë¢ÐÂTLB¡£
+	 * æ¸…ç©ºé¡µè¡¨é¡¹å¹¶åˆ·æ–°TLBã€‚
 	 */
 	pteval = ptep_clear_flush(vma, address, pte);
 
 	/* Move the dirty bit to the physical page now the pte is gone. */
 	/**
-	 * Ò³¿ÉÒÔ±»»ØÊÕ£¬Èç¹ûÒ³±íÏîµÄDirty±êÖ¾±»ÖÃÎ»£¬Ôò½«Ò³µÄPG_dirty±êÖ¾ÖÃÎ»¡£
+	 * é¡µå¯ä»¥è¢«å›žæ”¶ï¼Œå¦‚æžœé¡µè¡¨é¡¹çš„Dirtyæ ‡å¿—è¢«ç½®ä½ï¼Œåˆ™å°†é¡µçš„PG_dirtyæ ‡å¿—ç½®ä½ã€‚
 	 */
 	if (pte_dirty(pteval))
 		set_page_dirty(page);
@@ -643,12 +643,12 @@ static int try_to_unmap_one(struct page *page, struct vm_area_struct *vma)
 			spin_unlock(&mmlist_lock);
 		}
 		/**
-		 * ¶ÔÄäÃûÒ³À´Ëµ£¬½«»»³öÒ³±êÊ¶·û²åÈëÒ³±íÏî¡£ÒÔ±ã½«À´·ÃÎÊÊ±½«¸ÃÒ³»»Èë¡£
+		 * å¯¹åŒ¿åé¡µæ¥è¯´ï¼Œå°†æ¢å‡ºé¡µæ ‡è¯†ç¬¦æ’å…¥é¡µè¡¨é¡¹ã€‚ä»¥ä¾¿å°†æ¥è®¿é—®æ—¶å°†è¯¥é¡µæ¢å…¥ã€‚
 		 */
 		set_pte(pte, swp_entry_to_pte(entry));
 		BUG_ON(pte_file(*pte));
 		/**
-		 * Í¬Ê±µÝ¼õ´æ·ÅÔÚÄÚ´æÃèÊö·ûanon_rss×Ö¶ÎÖÐµÄÄäÃûÒ³¼ÆÊýÆ÷¡£
+		 * åŒæ—¶é€’å‡å­˜æ”¾åœ¨å†…å­˜æè¿°ç¬¦anon_rsså­—æ®µä¸­çš„åŒ¿åé¡µè®¡æ•°å™¨ã€‚
 		 */
 		mm->anon_rss--;
 	}
@@ -656,23 +656,23 @@ static int try_to_unmap_one(struct page *page, struct vm_area_struct *vma)
 	mm->rss--;
 	acct_update_integrals();
 	/**
-	 * µÝ¼õÒ³ÃèÊö·ûµÄ_mapcount£¬ÒòÎª¶ÔÓÃ»§Ì¬Ò³±íÏîÖÐÒ³¿òµÄÒýÓÃÒÑ¾­±»É¾³ý¡£
+	 * é€’å‡é¡µæè¿°ç¬¦çš„_mapcountï¼Œå› ä¸ºå¯¹ç”¨æˆ·æ€é¡µè¡¨é¡¹ä¸­é¡µæ¡†çš„å¼•ç”¨å·²ç»è¢«åˆ é™¤ã€‚
 	 */
 	page_remove_rmap(page);
 	/**
-	 * µÝ¼õ´æ·ÅÔÚÒ³ÃèÊö·û_count×Ö¶ÎÖÐµÄÒ³¿òÊ¹ÓÃ¼ÆÊýÆ÷¡£
-	 * Èç¹û¼ÆÊýÆ÷Ð¡ÓÚ0£¬»¹»á´Ó»î¶¯»òÕß·Ç»î¶¯Á´±íÖÐÉ¾³ýÒ³ÃèÊö·û£¬²¢µ÷ÓÃfree_hot_pageÊÍ·ÅÒ³¿ò¡£
+	 * é€’å‡å­˜æ”¾åœ¨é¡µæè¿°ç¬¦_countå­—æ®µä¸­çš„é¡µæ¡†ä½¿ç”¨è®¡æ•°å™¨ã€‚
+	 * å¦‚æžœè®¡æ•°å™¨å°äºŽ0ï¼Œè¿˜ä¼šä»Žæ´»åŠ¨æˆ–è€…éžæ´»åŠ¨é“¾è¡¨ä¸­åˆ é™¤é¡µæè¿°ç¬¦ï¼Œå¹¶è°ƒç”¨free_hot_pageé‡Šæ”¾é¡µæ¡†ã€‚
 	 */
 	page_cache_release(page);
 
 out_unmap:
 	/**
-	 * pte_offset_map¿ÉÄÜ½¨Á¢ÁËÁÙÊ±ÄÚºËÓ³Éä¡£ÔÚ´ËÊÍ·ÅËü¡£
+	 * pte_offset_mapå¯èƒ½å»ºç«‹äº†ä¸´æ—¶å†…æ ¸æ˜ å°„ã€‚åœ¨æ­¤é‡Šæ”¾å®ƒã€‚
 	 */
 	pte_unmap(pte);
 out_unlock:
 	/**
-	 * ÊÍ·ÅÒ³±í×ÔÐýËø¡£
+	 * é‡Šæ”¾é¡µè¡¨è‡ªæ—‹é”ã€‚
 	 */
 	spin_unlock(&mm->page_table_lock);
 out:
@@ -784,8 +784,8 @@ out_unlock:
 }
 
 /**
- * »ØÊÕÄäÃûÒ³¿òÊ±£¬PFRAÉ¨Ãèanon_vmaÁ´±íÖÐµÄËùÓÐÏßÐÔÇø£¬×ÐÏ¸¼ì²éÊÇ·ñÃ¿¸öÇøÓò¶¼´æÓÐÒ»¸öÄäÃûÒ³£¬¶ø¸ÃÒ³¶ÔÓ¦µÄÒ³¿ò¾ÍÊÇÄ¿±êÒ³¿ò¡£
- * ±¾º¯Êý½ÓÊÕÄ¿±êÒ³¿òÃèÊö·û×÷Îª²ÎÊý¡£
+ * å›žæ”¶åŒ¿åé¡µæ¡†æ—¶ï¼ŒPFRAæ‰«æanon_vmaé“¾è¡¨ä¸­çš„æ‰€æœ‰çº¿æ€§åŒºï¼Œä»”ç»†æ£€æŸ¥æ˜¯å¦æ¯ä¸ªåŒºåŸŸéƒ½å­˜æœ‰ä¸€ä¸ªåŒ¿åé¡µï¼Œè€Œè¯¥é¡µå¯¹åº”çš„é¡µæ¡†å°±æ˜¯ç›®æ ‡é¡µæ¡†ã€‚
+ * æœ¬å‡½æ•°æŽ¥æ”¶ç›®æ ‡é¡µæ¡†æè¿°ç¬¦ä½œä¸ºå‚æ•°ã€‚
  */
 static int try_to_unmap_anon(struct page *page)
 {
@@ -794,28 +794,28 @@ static int try_to_unmap_anon(struct page *page)
 	int ret = SWAP_AGAIN;
 
 	/**
-	 * »ñµÃanon_vmaÊý¾Ý½á¹¹µÄ×ÔÐýËø¡£
+	 * èŽ·å¾—anon_vmaæ•°æ®ç»“æž„çš„è‡ªæ—‹é”ã€‚
 	 */
 	anon_vma = page_lock_anon_vma(page);
 	/**
-	 * ¸ÃÒ³²»ÊÇÄäÃûÒ³£¬Æämapping×Ö¶ÎÖÐ´æ·ÅµÄ²»ÊÇanon_vmaÖ¸Õë¡£
+	 * è¯¥é¡µä¸æ˜¯åŒ¿åé¡µï¼Œå…¶mappingå­—æ®µä¸­å­˜æ”¾çš„ä¸æ˜¯anon_vmaæŒ‡é’ˆã€‚
 	 */
 	if (!anon_vma)
 		return ret;
 
 	/**
-	 * ±éÀúanon_vmaÁ´±í£¬¶ÔÁ´±íÖÐµÄÃ¿Ò»¸övmaÏßÐÔÇøÃèÊö·û£¬µ÷ÓÃtry_to_unmap_oneº¯Êý¡£
+	 * éåŽ†anon_vmaé“¾è¡¨ï¼Œå¯¹é“¾è¡¨ä¸­çš„æ¯ä¸€ä¸ªvmaçº¿æ€§åŒºæè¿°ç¬¦ï¼Œè°ƒç”¨try_to_unmap_oneå‡½æ•°ã€‚
 	 */
 	list_for_each_entry(vma, &anon_vma->head, anon_vma_node) {
 		ret = try_to_unmap_one(page, vma);
 		/**
-		 * Èç¹ûÓÉÓÚÄ³ÖÖÔ­Òò·µ»ØÖµÎªSWAP_FAIL£¬»òÕßÒ³ÃèÊö·ûµÄ_mapcount×Ö¶Î±íÃ÷ÒÑ¾­ÕÒµ½ËùÓÐÒýÓÃ¸ÃÒ³¿òµÄÒ³±íÏî£¬¾ÍÍ£Ö¹É¨Ãè¡£
+		 * å¦‚æžœç”±äºŽæŸç§åŽŸå› è¿”å›žå€¼ä¸ºSWAP_FAILï¼Œæˆ–è€…é¡µæè¿°ç¬¦çš„_mapcountå­—æ®µè¡¨æ˜Žå·²ç»æ‰¾åˆ°æ‰€æœ‰å¼•ç”¨è¯¥é¡µæ¡†çš„é¡µè¡¨é¡¹ï¼Œå°±åœæ­¢æ‰«æã€‚
 		 */
 		if (ret == SWAP_FAIL || !page_mapped(page))
 			break;
 	}
 	/**
-	 * ÊÍ·Å×ÔÐýËø¡£
+	 * é‡Šæ”¾è‡ªæ—‹é”ã€‚
 	 */
 	spin_unlock(&anon_vma->lock);
 	return ret;
@@ -831,7 +831,7 @@ static int try_to_unmap_anon(struct page *page)
  * This function is only called from try_to_unmap for object-based pages.
  */
 /**
- * ±¾º¯ÊýÓÉtry_to_unmapµ÷ÓÃ£¬Ö´ÐÐÓ³ÉäÒ³µÄ·´ÏòÓ³Éä¡£
+ * æœ¬å‡½æ•°ç”±try_to_unmapè°ƒç”¨ï¼Œæ‰§è¡Œæ˜ å°„é¡µçš„åå‘æ˜ å°„ã€‚
  */
 static int try_to_unmap_file(struct page *page)
 {
@@ -846,34 +846,34 @@ static int try_to_unmap_file(struct page *page)
 	unsigned int mapcount;
 
 	/**
-	 * Ê×ÏÈ»ñµÃµØÖ·¿Õ¼äµÄ×ÔÐýËø¡£
+	 * é¦–å…ˆèŽ·å¾—åœ°å€ç©ºé—´çš„è‡ªæ—‹é”ã€‚
 	 */
 	spin_lock(&mapping->i_mmap_lock);
 	/**
-	 * ¶ÔÓÅÏÈËÑË÷Ê÷Ö´ÐÐvma_prio_tree_foreach½øÐÐËÑË÷£¬ËÑË÷Ê÷µÄ¸ù´æ·ÅÔÚi_mmap×Ö¶Î¡£
-	 * ¶Ô·¢ÏÖµÄÃ¿Ò»¸övm_area_structÃèÊö·û£¬µ÷ÓÃtry_unmap_one£¬³¢ÊÔ¶Ô¸ÃÒ³ËùÔÚµÄÏßÐÔÇøÒ³±íÏîÇå0.
+	 * å¯¹ä¼˜å…ˆæœç´¢æ ‘æ‰§è¡Œvma_prio_tree_foreachè¿›è¡Œæœç´¢ï¼Œæœç´¢æ ‘çš„æ ¹å­˜æ”¾åœ¨i_mmapå­—æ®µã€‚
+	 * å¯¹å‘çŽ°çš„æ¯ä¸€ä¸ªvm_area_structæè¿°ç¬¦ï¼Œè°ƒç”¨try_unmap_oneï¼Œå°è¯•å¯¹è¯¥é¡µæ‰€åœ¨çš„çº¿æ€§åŒºé¡µè¡¨é¡¹æ¸…0.
 	 */
 	vma_prio_tree_foreach(vma, &iter, &mapping->i_mmap, pgoff, pgoff) {
 		ret = try_to_unmap_one(page, vma);
 		/**
-		 * Èç¹ûÒ³ÃèÊö·ûµÄ_mapcount×Ö¶Î±íÃ÷ÒýÓÃ¸ÃÒ³¿òµÄËùÓÐÒ³±íÏî¶¼ÒÑ¾­ÕÒµ½£¬»òÕß³öÏÖ´íÎó£¬¾Í½áÊøËÑË÷¹ý³Ì¡£
+		 * å¦‚æžœé¡µæè¿°ç¬¦çš„_mapcountå­—æ®µè¡¨æ˜Žå¼•ç”¨è¯¥é¡µæ¡†çš„æ‰€æœ‰é¡µè¡¨é¡¹éƒ½å·²ç»æ‰¾åˆ°ï¼Œæˆ–è€…å‡ºçŽ°é”™è¯¯ï¼Œå°±ç»“æŸæœç´¢è¿‡ç¨‹ã€‚
 		 */
 		if (ret == SWAP_FAIL || !page_mapped(page))
 			goto out;
 	}
 
 	/**
-	 * ÔËÐÐµ½ÕâÀï£¬ËµÃ÷ÉÏÃæµÄÑ­»·²¢Ã»ÓÐËÑË÷µ½ËùÓÐÒ³±íÏî¡£
-	 * Õâ¿ÉÄÜÊÇÓ³ÉäÊÇ·ÇÏßÐÔµÄ£¬ÕâÑùº¯ÊýÎÞ·¨ÇåÄ³Ð©Ò³±íÏîÇå0.ÒòÎªÒ³ÃèÊö·ûµÄindex×Ö¶Î²»ÔÙ¶ÔÓ¦ÏßÐÔÇøÖÐµÄÒ³Î»ÖÃ¡£
-	 * ÏÖÔÚ¿ªÊ¼¶ÔÎÄ¼þ·ÇÏßÐÔÓ³ÉäµÄÏßÐÔÇø½øÐÐÇî¾¡ËÑË÷¡£
+	 * è¿è¡Œåˆ°è¿™é‡Œï¼Œè¯´æ˜Žä¸Šé¢çš„å¾ªçŽ¯å¹¶æ²¡æœ‰æœç´¢åˆ°æ‰€æœ‰é¡µè¡¨é¡¹ã€‚
+	 * è¿™å¯èƒ½æ˜¯æ˜ å°„æ˜¯éžçº¿æ€§çš„ï¼Œè¿™æ ·å‡½æ•°æ— æ³•æ¸…æŸäº›é¡µè¡¨é¡¹æ¸…0.å› ä¸ºé¡µæè¿°ç¬¦çš„indexå­—æ®µä¸å†å¯¹åº”çº¿æ€§åŒºä¸­çš„é¡µä½ç½®ã€‚
+	 * çŽ°åœ¨å¼€å§‹å¯¹æ–‡ä»¶éžçº¿æ€§æ˜ å°„çš„çº¿æ€§åŒºè¿›è¡Œç©·å°½æœç´¢ã€‚
 	 *
-	 * i_mmap_nonlinearÊÇÎÄ¼þ·ÇÏßÐÔÓ³ÉäÏßÐÔÇøµÄË«ÏòÁ´±íµÄ¸ù¡£Èç¹û¸Ã¸ùÎª¿Õ£¬ËµÃ÷²»ÊÇ·ÇÏßÐÔÓ³Éä£¬´ËÊ±£¬¿ÉÄÜÊÇÆäËûÔ­Òòµ¼ÖÂ_mapcount²»Îª0£¬ÍË³ö¡£
+	 * i_mmap_nonlinearæ˜¯æ–‡ä»¶éžçº¿æ€§æ˜ å°„çº¿æ€§åŒºçš„åŒå‘é“¾è¡¨çš„æ ¹ã€‚å¦‚æžœè¯¥æ ¹ä¸ºç©ºï¼Œè¯´æ˜Žä¸æ˜¯éžçº¿æ€§æ˜ å°„ï¼Œæ­¤æ—¶ï¼Œå¯èƒ½æ˜¯å…¶ä»–åŽŸå› å¯¼è‡´_mapcountä¸ä¸º0ï¼Œé€€å‡ºã€‚
 	 */
 	if (list_empty(&mapping->i_mmap_nonlinear))
 		goto out;
 
 	/**
-	 * ±éÀú·ÇÏßÐÔÓ³ÉäÁ´±í¡£
+	 * éåŽ†éžçº¿æ€§æ˜ å°„é“¾è¡¨ã€‚
 	 */
 	list_for_each_entry(vma, &mapping->i_mmap_nonlinear,
 						shared.vm_set.list) {
@@ -888,7 +888,7 @@ static int try_to_unmap_file(struct page *page)
 	}
 
 	/**
-	 * ËùÓÐ·ÇÏßÐÔÏßÐÔÇø¶¼±»Ëø×¡£¬²»´¦Àí£¬Ö±½ÓÍË³ö¡£
+	 * æ‰€æœ‰éžçº¿æ€§çº¿æ€§åŒºéƒ½è¢«é”ä½ï¼Œä¸å¤„ç†ï¼Œç›´æŽ¥é€€å‡ºã€‚
 	 */
 	if (max_nl_size == 0) {	/* any nonlinears locked or reserved */
 		ret = SWAP_FAIL;
@@ -912,7 +912,7 @@ static int try_to_unmap_file(struct page *page)
 		max_nl_cursor = CLUSTER_SIZE;
 
 	/**
-	 * ÕâÀï¶Ô·ÇÏßÐÔÏßÐÔÇø½øÐÐÓÐÏÞÉ¨Ãè¡£
+	 * è¿™é‡Œå¯¹éžçº¿æ€§çº¿æ€§åŒºè¿›è¡Œæœ‰é™æ‰«æã€‚
 	 */
 	do {
 		list_for_each_entry(vma, &mapping->i_mmap_nonlinear,
@@ -924,7 +924,7 @@ static int try_to_unmap_file(struct page *page)
 				cursor < max_nl_cursor &&
 				cursor < vma->vm_end - vma->vm_start) {
 				/**
-				 * try_to_unmap_cluster»áÉ¨Ãè¸ÃÏßÐÔÇøÏßÐÔµØÖ·¶ÔÓ¦µÄËùÓÐÒ³±íÏî£¬²¢³¢ÊÔ½«ÆäÇå0.
+				 * try_to_unmap_clusterä¼šæ‰«æè¯¥çº¿æ€§åŒºçº¿æ€§åœ°å€å¯¹åº”çš„æ‰€æœ‰é¡µè¡¨é¡¹ï¼Œå¹¶å°è¯•å°†å…¶æ¸…0.
 				 */
 				try_to_unmap_cluster(cursor, &mapcount, vma);
 				cursor += CLUSTER_SIZE;
@@ -950,7 +950,7 @@ static int try_to_unmap_file(struct page *page)
 	}
 out:
 	/**
-	 * ÊÍ·Å×ÔÐýËø¡£
+	 * é‡Šæ”¾è‡ªæ—‹é”ã€‚
 	 */
 	spin_unlock(&mapping->i_mmap_lock);
 	return ret;
@@ -969,10 +969,10 @@ out:
  * SWAP_FAIL	- the page is unswappable
  */
 /**
- * ½ÓÊÕÒ³ÃèÊö·ûÖ¸ÕëÎª²ÎÊý£¬³¢ÊÔÇå¿ÕËùÓÐÒýÓÃ¸ÃÒ³ÃèÊö·û¶ÔÓ¦Ò³¿òµÄÒ³±íÏî¡£
- * 		Èç¹û³É¹¦Çå³ýËùÓÐ¶Ô¸ÃÒ³¿òµÄÒýÓÃ£¬º¯Êý·µ»ØSWAP_SUCCESS¡£
- *		Èç¹ûÓÐÐ©ÒýÓÃ²»ÄÜÇå³ý£¬º¯Êý·µ»ØSWAP_AGAIN¡£
- *		Èç¹û³ö´í£¬º¯Êý·µ»ØSWAP_FAIL¡£
+ * æŽ¥æ”¶é¡µæè¿°ç¬¦æŒ‡é’ˆä¸ºå‚æ•°ï¼Œå°è¯•æ¸…ç©ºæ‰€æœ‰å¼•ç”¨è¯¥é¡µæè¿°ç¬¦å¯¹åº”é¡µæ¡†çš„é¡µè¡¨é¡¹ã€‚
+ * 		å¦‚æžœæˆåŠŸæ¸…é™¤æ‰€æœ‰å¯¹è¯¥é¡µæ¡†çš„å¼•ç”¨ï¼Œå‡½æ•°è¿”å›žSWAP_SUCCESSã€‚
+ *		å¦‚æžœæœ‰äº›å¼•ç”¨ä¸èƒ½æ¸…é™¤ï¼Œå‡½æ•°è¿”å›žSWAP_AGAINã€‚
+ *		å¦‚æžœå‡ºé”™ï¼Œå‡½æ•°è¿”å›žSWAP_FAILã€‚
  */
 int try_to_unmap(struct page *page)
 {

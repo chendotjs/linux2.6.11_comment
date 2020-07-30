@@ -97,44 +97,44 @@
  *	Build xmit assembly blocks
  */
 /**
- * ¸Ã½á¹¹ÄÚ°üº¬´«ÊäICMPÏûÏ¢ËùĞèÒªµÄËùÓĞ±ØÒªÏûÏ¢¡£
+ * è¯¥ç»“æ„å†…åŒ…å«ä¼ è¾“ICMPæ¶ˆæ¯æ‰€éœ€è¦çš„æ‰€æœ‰å¿…è¦æ¶ˆæ¯ã€‚
  */
 struct icmp_bxm {
 	/**
-	 * ¾ÍÄÇĞ©ÒÔicmp_semd´«ËÍµÄICMPÏûÏ¢¶øÑÔ£¬´ú±íµÄÊÇ´¥·¢´«ÊäµÄÈë°ü¡£
-	 * ¾ÍÄÇĞ©ÒÔicmp_reply´«ËÍµÄICMP¶øÑÔ£¬´ú±íµÄÊÇÈëICMPÏûÏ¢ÇëÇó¡£
+	 * å°±é‚£äº›ä»¥icmp_semdä¼ é€çš„ICMPæ¶ˆæ¯è€Œè¨€ï¼Œä»£è¡¨çš„æ˜¯è§¦å‘ä¼ è¾“çš„å…¥åŒ…ã€‚
+	 * å°±é‚£äº›ä»¥icmp_replyä¼ é€çš„ICMPè€Œè¨€ï¼Œä»£è¡¨çš„æ˜¯å…¥ICMPæ¶ˆæ¯è¯·æ±‚ã€‚
 	 */
 	struct sk_buff *skb;
 	/**
-	 * skb->dataºÍskb->nhÖ®¼äµÄÆ«ÒÆÁ¿£¨Ò²¾ÍÊÇIP±¨Í·µÄ³ß´ç£©¡£
-	 * ÆÀ¹ÀÄÇĞ©ĞèÒªÓĞĞ§¸ºÔØµÄICMPÏûÏ¢µÄICMPÓĞĞ§¸ºÔØÄÜ·Å¶àÉÙÊı¾İ½øÈ¥Ê±£¬´ËÆ«ÒÆÁ¿¾ÍÓĞÓÃ´¦¡£
+	 * skb->dataå’Œskb->nhä¹‹é—´çš„åç§»é‡ï¼ˆä¹Ÿå°±æ˜¯IPæŠ¥å¤´çš„å°ºå¯¸ï¼‰ã€‚
+	 * è¯„ä¼°é‚£äº›éœ€è¦æœ‰æ•ˆè´Ÿè½½çš„ICMPæ¶ˆæ¯çš„ICMPæœ‰æ•ˆè´Ÿè½½èƒ½æ”¾å¤šå°‘æ•°æ®è¿›å»æ—¶ï¼Œæ­¤åç§»é‡å°±æœ‰ç”¨å¤„ã€‚
 	 */
 	int offset;
 	/**
-	 * ICMPÓĞĞ§¸ºÔØµÄ³ß´ç¡£
+	 * ICMPæœ‰æ•ˆè´Ÿè½½çš„å°ºå¯¸ã€‚
 	 */
 	int data_len;
 
 	struct {
 		/**
-		 * Òª´«ÊäµÄICMPÏûÏ¢µÄ±¨Í·¡£
+		 * è¦ä¼ è¾“çš„ICMPæ¶ˆæ¯çš„æŠ¥å¤´ã€‚
 		 */
 		struct icmphdr icmph;
 		/**
-		 * ÓÉICMP_TIMESTAMPREPLYÏûÏ¢ÀàĞÍËùÊ¹ÓÃ¡£
+		 * ç”±ICMP_TIMESTAMPREPLYæ¶ˆæ¯ç±»å‹æ‰€ä½¿ç”¨ã€‚
 		 */
 		__u32	       times[3];
 	} data;
 	/**
-	 * ICMP±¨Í·µÄ³ß´ç¡£
+	 * ICMPæŠ¥å¤´çš„å°ºå¯¸ã€‚
 	 */
 	int head_len;
 	/**
-	 * ´æ´¢ÔÚIP²ãËùÓÃµÄIPÑ¡Ïî¡£ËüµÄÖµÊÇÓÉip_options_echo³õÊ¼»¯
+	 * å­˜å‚¨åœ¨IPå±‚æ‰€ç”¨çš„IPé€‰é¡¹ã€‚å®ƒçš„å€¼æ˜¯ç”±ip_options_echoåˆå§‹åŒ–
 	 */
 	struct ip_options replyopts;
 	/**
-	 * replyoptsµÄÀ©³ä¡£ÓÉip_options_echo´æÈ¡£¨Í¨¹ıip_optionsµÄ__data×Ö¶Î£©¡£
+	 * replyoptsçš„æ‰©å……ã€‚ç”±ip_options_echoå­˜å–ï¼ˆé€šè¿‡ip_optionsçš„__dataå­—æ®µï¼‰ã€‚
 	 */
 	unsigned char  optbuf[40];
 };
@@ -216,18 +216,18 @@ struct icmp_err icmp_err_convert[] = {
 
 /* Control parameters for ECHO replies. */
 /**
- * ¸Ã±êÖ¾ÓÉicmp_echo£¨´¦ÀíÈëICMP_ECHO ICMPÏûÏ¢£©Ê¹ÓÃ£¬ÒÔ¾ö¶¨ÊÇ·ñ»Ø¸´¡£
- * ÕâÖÖ¹ıÂË»úÖÆÍ¨³£ÊÇÎªÁË°²È«Ôµ¹Ê¶øÓÉ·À»ğÇ½ÊµÊ©£¬È»¶ø£¬ICMP×ÓÏµÍ³Ò²Ìá¹©ÕâÖÖÄÜÁ¦¡£
+ * è¯¥æ ‡å¿—ç”±icmp_echoï¼ˆå¤„ç†å…¥ICMP_ECHO ICMPæ¶ˆæ¯ï¼‰ä½¿ç”¨ï¼Œä»¥å†³å®šæ˜¯å¦å›å¤ã€‚
+ * è¿™ç§è¿‡æ»¤æœºåˆ¶é€šå¸¸æ˜¯ä¸ºäº†å®‰å…¨ç¼˜æ•…è€Œç”±é˜²ç«å¢™å®æ–½ï¼Œç„¶è€Œï¼ŒICMPå­ç³»ç»Ÿä¹Ÿæä¾›è¿™ç§èƒ½åŠ›ã€‚
  */
 int sysctl_icmp_echo_ignore_all;
 /**
- * µ±¸Ã±êÖ¾Éè¶¨Ê±£¬´«¸ø¹ã²¥µØÖ·µÄICMP_ECHOÏûÏ¢»á±»ºöÂÔ¡£²Î¿¼"¶¨Ïò¹ã²¥"¡£
+ * å½“è¯¥æ ‡å¿—è®¾å®šæ—¶ï¼Œä¼ ç»™å¹¿æ’­åœ°å€çš„ICMP_ECHOæ¶ˆæ¯ä¼šè¢«å¿½ç•¥ã€‚å‚è€ƒ"å®šå‘å¹¿æ’­"ã€‚
  */
 int sysctl_icmp_echo_ignore_broadcasts;
 
 /* Control parameter - ignore bogus broadcast responses? */
 /**
- * µ±´Ë±êÖ¾ÇåµôÊ±£¬´øÓĞ¹ã²¥Ä¿µÄIPµØÖ·µÄICMP´íÎóÏûÏ¢ÀàĞÍ»á±»ºöÂÔµô¡£Icmp_unreach»á´¦Àí´Ë±êÖ¾¡£
+ * å½“æ­¤æ ‡å¿—æ¸…æ‰æ—¶ï¼Œå¸¦æœ‰å¹¿æ’­ç›®çš„IPåœ°å€çš„ICMPé”™è¯¯æ¶ˆæ¯ç±»å‹ä¼šè¢«å¿½ç•¥æ‰ã€‚Icmp_unreachä¼šå¤„ç†æ­¤æ ‡å¿—ã€‚
  */
 int sysctl_icmp_ignore_bogus_error_responses;
 
@@ -244,11 +244,11 @@ int sysctl_icmp_ignore_bogus_error_responses;
  */
 
 /**
- * ËÙÂÊÏŞÖÆµÄËÙÂÊ
+ * é€Ÿç‡é™åˆ¶çš„é€Ÿç‡
  */
 int sysctl_icmp_ratelimit = 1 * HZ;
 /**
- * Òª×öËÙÂÊÏŞÖÆµÄICMPÏûÏ¢ÀàĞÍ
+ * è¦åšé€Ÿç‡é™åˆ¶çš„ICMPæ¶ˆæ¯ç±»å‹
  */
 int sysctl_icmp_ratemask = 0x1818;
 
@@ -257,21 +257,21 @@ int sysctl_icmp_ratemask = 0x1818;
  */
 
 /**
- * ICMPÏûÏ¢ÀàĞÍÃèÊö·û¡£Æä×Ö¶ÎÖ®Ò»ÊÇÓÃÓÚ´¦ÀíÈëÏûÏ¢µÄº¯Êı¡£
+ * ICMPæ¶ˆæ¯ç±»å‹æè¿°ç¬¦ã€‚å…¶å­—æ®µä¹‹ä¸€æ˜¯ç”¨äºå¤„ç†å…¥æ¶ˆæ¯çš„å‡½æ•°ã€‚
  */
 struct icmp_control {
 	/**
-	 * ½ÓÊÕº¯Êıicmp_revºÍ"´«ÊäICMPÏûÏ¢"Ò»½ÚÖĞµÄ´«Êäº¯ÊıËùÓÃµÄË÷ÒıÖµ£¬ÓÃÓÚ¸üĞÂÊı×éÄÚÕıÈ·µÄSNMP¼ÆÊıÆ÷¡£
+	 * æ¥æ”¶å‡½æ•°icmp_revå’Œ"ä¼ è¾“ICMPæ¶ˆæ¯"ä¸€èŠ‚ä¸­çš„ä¼ è¾“å‡½æ•°æ‰€ç”¨çš„ç´¢å¼•å€¼ï¼Œç”¨äºæ›´æ–°æ•°ç»„å†…æ­£ç¡®çš„SNMPè®¡æ•°å™¨ã€‚
 	 */
 	int output_entry;	/* Field for increment on output */
 	int input_entry;	/* Field for increment on input */
 	/**
-	 * ÓÉ½ÓÊÕº¯Êıicmp_rcvÆôÓÃµÄº¯Êı£¬´¦ÀíËÍ½øÀ´µÄICMPÏûÏ¢¡£
+	 * ç”±æ¥æ”¶å‡½æ•°icmp_rcvå¯ç”¨çš„å‡½æ•°ï¼Œå¤„ç†é€è¿›æ¥çš„ICMPæ¶ˆæ¯ã€‚
 	 */
 	void (*handler)(struct sk_buff *skb);
 	/**
-	 * µ±ICMPÀàĞÍ±»·ÖÀàÎª´íÎó£¨Óë²éÑ¯Ïà·´£©Ê±£¬´Ë±êÖ¾¾Í»á±»Éè¶¨¡£
-	 * ±»·ÖÀàÎª´íÎóµÄICMPÀàĞÍ»áµÃµ½½ÏºÃµÄTOS
+	 * å½“ICMPç±»å‹è¢«åˆ†ç±»ä¸ºé”™è¯¯ï¼ˆä¸æŸ¥è¯¢ç›¸åï¼‰æ—¶ï¼Œæ­¤æ ‡å¿—å°±ä¼šè¢«è®¾å®šã€‚
+	 * è¢«åˆ†ç±»ä¸ºé”™è¯¯çš„ICMPç±»å‹ä¼šå¾—åˆ°è¾ƒå¥½çš„TOS
 	 */
 	short   error;		/* This ICMP is classed as an error message */
 };
@@ -287,7 +287,7 @@ static struct icmp_control icmp_pointers[NR_ICMP_TYPES+1];
  */
 static DEFINE_PER_CPU(struct socket *, __icmp_socket) = NULL;
 /**
- * »ñµÃµ±Ç°CPUÉÏµÄICMPÌ×½Ó×Ö
+ * è·å¾—å½“å‰CPUä¸Šçš„ICMPå¥—æ¥å­—
  */
 #define icmp_socket	__get_cpu_var(__icmp_socket)
 
@@ -333,7 +333,7 @@ static void icmp_xmit_unlock(void)
  */
 #define XRLIM_BURST_FACTOR 6
 /**
- * ICMPËÙ¶ÈÏŞÖÆ¼ÆËãº¯Êı¡£
+ * ICMPé€Ÿåº¦é™åˆ¶è®¡ç®—å‡½æ•°ã€‚
  */
 int xrlim_allow(struct dst_entry *dst, int timeout)
 {
@@ -342,17 +342,17 @@ int xrlim_allow(struct dst_entry *dst, int timeout)
 
 	now = jiffies;
 	/**
-	 * ¸üĞÂ¿ÉÓÃµÄdst->rate_tokensÁîÅÆ£¨ÒÔjiffiesÎªµ¥Î»²âÁ¿£©
+	 * æ›´æ–°å¯ç”¨çš„dst->rate_tokensä»¤ç‰Œï¼ˆä»¥jiffiesä¸ºå•ä½æµ‹é‡ï¼‰
 	 */
 	dst->rate_tokens += now - dst->rate_last;
 	dst->rate_last = now;
 	/**
-	 * È·±£ÀÛ»ıµÄÁîÅÆ²»»á¶à¹ıÔ¤¶¨µÄ×î´óÖµ£¨XRLIM_BURST_FACTOR£©
+	 * ç¡®ä¿ç´¯ç§¯çš„ä»¤ç‰Œä¸ä¼šå¤šè¿‡é¢„å®šçš„æœ€å¤§å€¼ï¼ˆXRLIM_BURST_FACTORï¼‰
 	 */
 	if (dst->rate_tokens > XRLIM_BURST_FACTOR * timeout)
 		dst->rate_tokens = XRLIM_BURST_FACTOR * timeout;
 	/**
-	 * Èç¹û¿ÉÓÃÁîÅÆ×ã¹»µÄ»°£¬¾Í¿ÉÈÃICMPÏûÏ¢´«Êä¡£
+	 * å¦‚æœå¯ç”¨ä»¤ç‰Œè¶³å¤Ÿçš„è¯ï¼Œå°±å¯è®©ICMPæ¶ˆæ¯ä¼ è¾“ã€‚
 	 */
 	if (dst->rate_tokens >= timeout) {
 		dst->rate_tokens -= timeout;
@@ -362,7 +362,7 @@ int xrlim_allow(struct dst_entry *dst, int timeout)
 }
 
 /**
- * ¶ÔICMP½øĞĞËÙÂÊÏŞÖÆ¡£
+ * å¯¹ICMPè¿›è¡Œé€Ÿç‡é™åˆ¶ã€‚
  */
 static inline int icmpv4_xrlim_allow(struct rtable *rt, int type, int code)
 {
@@ -370,29 +370,29 @@ static inline int icmpv4_xrlim_allow(struct rtable *rt, int type, int code)
 	int rc = 1;
 
 	/**
-	 * ICMPÏûÏ¢µÄÀàĞÍÊÇÄÚºËËùÎ´ÖªµÄ£¨ÕâÀàÏûÏ¢¿ÉÄÜºÜÖØÒª£©¡£
+	 * ICMPæ¶ˆæ¯çš„ç±»å‹æ˜¯å†…æ ¸æ‰€æœªçŸ¥çš„ï¼ˆè¿™ç±»æ¶ˆæ¯å¯èƒ½å¾ˆé‡è¦ï¼‰ã€‚
 	 */
 	if (type > NR_ICMP_TYPES)
 		goto out;
 
 	/* Don't limit PMTU discovery. */
 	/**
-	 * PMTUĞ­ÒéËùÓÃµÄICMP£¨RFC1191£©ÏûÏ¢£¬Ò²¾ÍÊÇÀàĞÍÎªICMP_DEST_UNREACH¶ø´úÂëÎªICMP_FRAG_NEEDED¡£
+	 * PMTUåè®®æ‰€ç”¨çš„ICMPï¼ˆRFC1191ï¼‰æ¶ˆæ¯ï¼Œä¹Ÿå°±æ˜¯ç±»å‹ä¸ºICMP_DEST_UNREACHè€Œä»£ç ä¸ºICMP_FRAG_NEEDEDã€‚
 	 */
 	if (type == ICMP_DEST_UNREACH && code == ICMP_FRAG_NEEDED)
 		goto out;
 
 	/* No rate limit on loopback */
 	/**
-	 * ICMPÊÇ´Ó»Ø»·Éè±¸´«ËÍ³öÈ¥µÄ¡£
+	 * ICMPæ˜¯ä»å›ç¯è®¾å¤‡ä¼ é€å‡ºå»çš„ã€‚
 	 */
 	if (dst->dev && (dst->dev->flags&IFF_LOOPBACK))
  		goto out;
 
 	/* Limit if icmp type is enabled in ratemask. */
 	/**
-	 * Èç¹û¸ù¾İsysctl_icmp_ratemaskÑÚÂë£¬ICMPÏûÏ¢±ØĞë×öËÙÂÊÏŞÖÆ£¬¾Í»áµ÷ÓÃxrlim_allowº¯Êı¡£
-	 * xrlim_allow»áÊ©¼Ó¼òµ¥µÄÁîÅÆÍ°Ëã·¨¡£
+	 * å¦‚æœæ ¹æ®sysctl_icmp_ratemaskæ©ç ï¼ŒICMPæ¶ˆæ¯å¿…é¡»åšé€Ÿç‡é™åˆ¶ï¼Œå°±ä¼šè°ƒç”¨xrlim_allowå‡½æ•°ã€‚
+	 * xrlim_allowä¼šæ–½åŠ ç®€å•çš„ä»¤ç‰Œæ¡¶ç®—æ³•ã€‚
 	 */
 	if ((1 << type) & sysctl_icmp_ratemask)
 		rc = xrlim_allow(dst, sysctl_icmp_ratelimit);
@@ -462,7 +462,7 @@ static void icmp_push_reply(struct icmp_bxm *icmp_param,
  *	Driving logic for building and sending ICMP messages.
  */
 /**
- * ÓÉICMPĞ­ÒéÊ¹ÓÃ£¬»Ø¸´ĞèÒª×öÏìÓ¦µÄÈëICMPÇëÇóÏûÏ¢¡£
+ * ç”±ICMPåè®®ä½¿ç”¨ï¼Œå›å¤éœ€è¦åšå“åº”çš„å…¥ICMPè¯·æ±‚æ¶ˆæ¯ã€‚
  */
 static void icmp_reply(struct icmp_bxm *icmp_param, struct sk_buff *skb)
 {
@@ -519,10 +519,10 @@ out:;
  *			MUST reply to only the first fragment.
  */
 /**
- * µ±¼ì²âµ½ÌØ¶¨Çé¿öÊ±£¬ÓÉÄÚºËÊ¹ÓÃ£¬´«ÊäICMP´íÎóÏûÏ¢¡£
- *		skb_in:		ºÍ´Ë´íÎóÏàÅäµÄÊäÈëIP°ü¡£
- *		type,code:	ICMP±¨Í·ÖĞËùÓÃµÄ"ÀàĞÍ"ºÍ"´úÂë"×Ö¶Î¡£
- *		info:		ÆäËûĞÅÏ¢£ºICMP_FRAG_NEEDEDÏûÏ¢µÄMTU¡¢ICMP_REDIRECTÏûÏ¢ËùÓÃµÄÍø¹ØµØÖ·¼°ICMP_PARAMETEPROBÏûÏ¢µÄÆ«ÒÆÁ¿¡£
+ * å½“æ£€æµ‹åˆ°ç‰¹å®šæƒ…å†µæ—¶ï¼Œç”±å†…æ ¸ä½¿ç”¨ï¼Œä¼ è¾“ICMPé”™è¯¯æ¶ˆæ¯ã€‚
+ *		skb_in:		å’Œæ­¤é”™è¯¯ç›¸é…çš„è¾“å…¥IPåŒ…ã€‚
+ *		type,code:	ICMPæŠ¥å¤´ä¸­æ‰€ç”¨çš„"ç±»å‹"å’Œ"ä»£ç "å­—æ®µã€‚
+ *		info:		å…¶ä»–ä¿¡æ¯ï¼šICMP_FRAG_NEEDEDæ¶ˆæ¯çš„MTUã€ICMP_REDIRECTæ¶ˆæ¯æ‰€ç”¨çš„ç½‘å…³åœ°å€åŠICMP_PARAMETEPROBæ¶ˆæ¯çš„åç§»é‡ã€‚
  */
 void icmp_send(struct sk_buff *skb_in, int type, int code, u32 info)
 {
@@ -545,7 +545,7 @@ void icmp_send(struct sk_buff *skb_in, int type, int code, u32 info)
 	iph = skb_in->nh.iph;
 
 	/**
-	 * IPÊı¾İ±¨Ğ¯´øICMP´íÎóÏûÏ¢¡£²»ÄÜÊ¹ÓÃ´íÎóÏûÏ¢È¥»Ø¸´´íÎóÏûÏ¢¡£
+	 * IPæ•°æ®æŠ¥æºå¸¦ICMPé”™è¯¯æ¶ˆæ¯ã€‚ä¸èƒ½ä½¿ç”¨é”™è¯¯æ¶ˆæ¯å»å›å¤é”™è¯¯æ¶ˆæ¯ã€‚
 	 */
 	if ((u8 *)iph < skb_in->head || (u8 *)(iph + 1) > skb_in->tail)
 		goto out;
@@ -554,7 +554,7 @@ void icmp_send(struct sk_buff *skb_in, int type, int code, u32 info)
 	 *	No replies to physical multicast/broadcast
 	 */
 	/**
-	 * ½ÓÊÕµÄIPÊı¾İ¶Î·â×°ÔÚ¹ã²¥Á´Â·²ãÊı¾İÖ¡ÄÚ¡£
+	 * æ¥æ”¶çš„IPæ•°æ®æ®µå°è£…åœ¨å¹¿æ’­é“¾è·¯å±‚æ•°æ®å¸§å†…ã€‚
 	 */
 	if (skb_in->pkt_type != PACKET_HOST)
 		goto out;
@@ -563,7 +563,7 @@ void icmp_send(struct sk_buff *skb_in, int type, int code, u32 info)
 	 *	Now check at the protocol level
 	 */
 	/**
-	 * ½ÓÊÕµÄIPÊı¾İ±¨Îª¹ã²¥»ò¶à²¥¡£
+	 * æ¥æ”¶çš„IPæ•°æ®æŠ¥ä¸ºå¹¿æ’­æˆ–å¤šæ’­ã€‚
 	 */
 	if (rt->rt_flags & (RTCF_BROADCAST | RTCF_MULTICAST))
 		goto out;
@@ -573,7 +573,7 @@ void icmp_send(struct sk_buff *skb_in, int type, int code, u32 info)
 	 *	mask for efficiency.
 	 */
 	/**
-	 * IPÊı¾İ±¨ÊÇÆ¬¶Î£¬¶øÇÒ²»ÊÇÔ­ÓĞ°üµÄµÚÒ»¸öÆ¬¶Î¡£ÕâÖÖÇé¿öµÄÅĞ¶ÏÊÇ¶ÁÈ¡IP±¨Í·µÄ"Æ«ÒÆÁ¿"×Ö¶Î¡£
+	 * IPæ•°æ®æŠ¥æ˜¯ç‰‡æ®µï¼Œè€Œä¸”ä¸æ˜¯åŸæœ‰åŒ…çš„ç¬¬ä¸€ä¸ªç‰‡æ®µã€‚è¿™ç§æƒ…å†µçš„åˆ¤æ–­æ˜¯è¯»å–IPæŠ¥å¤´çš„"åç§»é‡"å­—æ®µã€‚
 	 */
 	if (iph->frag_off & htons(IP_OFFSET))
 		goto out;
@@ -618,15 +618,15 @@ void icmp_send(struct sk_buff *skb_in, int type, int code, u32 info)
 	 */
 
 	/**
-	 * µ±ICMPÏûÏ¢µÄÄ¿µÄ¶ÔÏó²¢·Ç±¾µØÅäÖÃµÄIPµØÖ·Ê±£¨Ò²¾ÍÊÇRTCF_LOCAL£©£¬Ôò·ÅÈë·â×°±¨Í·ÄÚµÄÔ´IPµØÖ·µÄÑ¡Ôñ¾ÍÊÇ¸ù¾İsysctl_icmp_errors_use_inbound_ifaddrÅäÖÃ¶ø¶¨
+	 * å½“ICMPæ¶ˆæ¯çš„ç›®çš„å¯¹è±¡å¹¶éæœ¬åœ°é…ç½®çš„IPåœ°å€æ—¶ï¼ˆä¹Ÿå°±æ˜¯RTCF_LOCALï¼‰ï¼Œåˆ™æ”¾å…¥å°è£…æŠ¥å¤´å†…çš„æºIPåœ°å€çš„é€‰æ‹©å°±æ˜¯æ ¹æ®sysctl_icmp_errors_use_inbound_ifaddré…ç½®è€Œå®š
 	 */
 	saddr = iph->daddr;
 	if (!(rt->rt_flags & RTCF_LOCAL))
 		saddr = 0;
 
 	/**
-	 * TOSÊÇ´Óskb_inµÄTOS¿½±´¶øÀ´µÄ¡£
-	 * µ±ICMPÏûÏ¢Îª´íÎóÏûÏ¢Ê±£¨²Î¼û±í25.1ËùÊ¾£©£¬ÔòTOSµÄÓÅÏÈÈ¨µÄ³õ»á¾Í»áÉè³ÉIPTOS_PREC_INTERNETCONTROL
+	 * TOSæ˜¯ä»skb_inçš„TOSæ‹·è´è€Œæ¥çš„ã€‚
+	 * å½“ICMPæ¶ˆæ¯ä¸ºé”™è¯¯æ¶ˆæ¯æ—¶ï¼ˆå‚è§è¡¨25.1æ‰€ç¤ºï¼‰ï¼Œåˆ™TOSçš„ä¼˜å…ˆæƒçš„åˆä¼šå°±ä¼šè®¾æˆIPTOS_PREC_INTERNETCONTROL
 	 */
 	tos = icmp_pointers[type].error ? ((iph->tos & IPTOS_TOS_MASK) |
 					   IPTOS_PREC_INTERNETCONTROL) :
@@ -638,13 +638,13 @@ void icmp_send(struct sk_buff *skb_in, int type, int code, u32 info)
 							 .tos = RT_TOS(tos) } },
 				    .proto = IPPROTO_ICMP };
 		/**
-		 * ÒÔip_route_ouput_keyÕÒ³öÍ¨ÍùÄ¿µÄµØµÄÂ·¾¶¡£
+		 * ä»¥ip_route_ouput_keyæ‰¾å‡ºé€šå¾€ç›®çš„åœ°çš„è·¯å¾„ã€‚
 		 */
 		if (ip_route_output_key(&rt, &fl))
 		    goto out_unlock;
 	}
 	/**
-	 * IPÑ¡ÏîÊÇ´Óskb_in¿½±´³öÀ´µÄ£¬È»ºóÔÙ·´¹ıÀ´£¨Ê¹ÓÃip_options_echo£©¡£
+	 * IPé€‰é¡¹æ˜¯ä»skb_inæ‹·è´å‡ºæ¥çš„ï¼Œç„¶åå†åè¿‡æ¥ï¼ˆä½¿ç”¨ip_options_echoï¼‰ã€‚
 	 */
 	if (ip_options_echo(&icmp_param.replyopts, skb_in))
 		goto ende;
@@ -676,7 +676,7 @@ void icmp_send(struct sk_buff *skb_in, int type, int code, u32 info)
 	}
 
 	/**
-	 * ÊÜµ½´«ÊäËÙÂÊÏŞÖÆ£¬ÍË³ö¡£
+	 * å—åˆ°ä¼ è¾“é€Ÿç‡é™åˆ¶ï¼Œé€€å‡ºã€‚
 	 */
 	if (!icmpv4_xrlim_allow(rt, type, code))
 		goto ende;
@@ -695,7 +695,7 @@ void icmp_send(struct sk_buff *skb_in, int type, int code, u32 info)
 	icmp_param.head_len = sizeof(struct icmphdr);
 
 	/**
-	 * ICMPÏûÏ¢²»»áÊÜµ½ÁîÅÆËã·¨Ñ¹ÖÆÊ±£¬´«Êä×îºó»áµ÷ÓÃicmp_push_reply
+	 * ICMPæ¶ˆæ¯ä¸ä¼šå—åˆ°ä»¤ç‰Œç®—æ³•å‹åˆ¶æ—¶ï¼Œä¼ è¾“æœ€åä¼šè°ƒç”¨icmp_push_reply
 	 */
 	icmp_push_reply(&icmp_param, &ipc, rt);
 ende:
@@ -710,7 +710,7 @@ out:;
  *	Handle ICMP_DEST_UNREACH, ICMP_TIME_EXCEED, and ICMP_QUENCH.
  */
 /**
- * ´¦ÀíÄ¿µÄÖ÷»ú²»¿É´ïICMPÏûÏ¢¡£
+ * å¤„ç†ç›®çš„ä¸»æœºä¸å¯è¾¾ICMPæ¶ˆæ¯ã€‚
  */
 static void icmp_unreach(struct sk_buff *skb)
 {
@@ -744,7 +744,7 @@ static void icmp_unreach(struct sk_buff *skb)
 		case ICMP_PORT_UNREACH:
 			break;
 		/**
-		 * ·¢ËÍ°üÊ±£¬Ê¹ÓÃÁËPMTU·¢ÏÖ¹¦ÄÜ£¬ÏÖÔÚ¼ì²âµ½·ÖÆ¬ÁË£¬ĞèÒªµ÷ÕûPMTU´óĞ¡¡£
+		 * å‘é€åŒ…æ—¶ï¼Œä½¿ç”¨äº†PMTUå‘ç°åŠŸèƒ½ï¼Œç°åœ¨æ£€æµ‹åˆ°åˆ†ç‰‡äº†ï¼Œéœ€è¦è°ƒæ•´PMTUå¤§å°ã€‚
 		 */
 		case ICMP_FRAG_NEEDED:
 			if (ipv4_config.no_pmtu_disc) {
@@ -755,7 +755,7 @@ static void icmp_unreach(struct sk_buff *skb)
 					       NIPQUAD(iph->daddr)));
 			} else {
 				/**
-				 * ´¦ÀíPMTU·¢ÏÖ¡£¸üĞÂÂ·ÓÉ»º´æ¡£
+				 * å¤„ç†PMTUå‘ç°ã€‚æ›´æ–°è·¯ç”±ç¼“å­˜ã€‚
 				 */
 				info = ip_rt_frag_needed(iph,
 						     ntohs(icmph->un.frag.mtu));
@@ -763,13 +763,13 @@ static void icmp_unreach(struct sk_buff *skb)
 					goto out;
 			}
 			break;
-		case ICMP_SR_FAILED:/* ´òÓ¡ICMP_SR_FAILEDÏûÏ¢µÄ¾¯¸æĞÅÏ¢¡£ */
+		case ICMP_SR_FAILED:/* æ‰“å°ICMP_SR_FAILEDæ¶ˆæ¯çš„è­¦å‘Šä¿¡æ¯ã€‚ */
 			LIMIT_NETDEBUG(
 				printk(KERN_INFO "ICMP: %u.%u.%u.%u: Source "
 						 "Route Failed.\n",
 				       NIPQUAD(iph->daddr)));
 			break;
-		default:/* ICMP_SOURCE_QUENCHÔÚicmp_unreachÖĞ²»ĞèÒªÈÎºÎÌØ±ğ´¦Àí¡£ËùÒÔ£¬µ±´«ÊäĞ­ÒéÍ¨¹ıerr_handlerº¯Êı»ñÈ¡Í¨ÖªÊ±£¬¾ÍÓÉ´«ÊäĞ­Òé¾ö¶¨ÈçºÎ´¦Àí¡£Ä¿Ç°À´Ëµ£¬ËùÓĞ´«ÊäĞ­Òé¶¼ºöÂÔÕâÖÖICMPÏûÏ¢ÀàĞÍ¡£ */
+		default:/* ICMP_SOURCE_QUENCHåœ¨icmp_unreachä¸­ä¸éœ€è¦ä»»ä½•ç‰¹åˆ«å¤„ç†ã€‚æ‰€ä»¥ï¼Œå½“ä¼ è¾“åè®®é€šè¿‡err_handlerå‡½æ•°è·å–é€šçŸ¥æ—¶ï¼Œå°±ç”±ä¼ è¾“åè®®å†³å®šå¦‚ä½•å¤„ç†ã€‚ç›®å‰æ¥è¯´ï¼Œæ‰€æœ‰ä¼ è¾“åè®®éƒ½å¿½ç•¥è¿™ç§ICMPæ¶ˆæ¯ç±»å‹ã€‚ */
 			break;
 		}
 		if (icmph->code > NR_ICMP_UNREACH)
@@ -796,7 +796,7 @@ static void icmp_unreach(struct sk_buff *skb)
 	 */
 
 	if (!sysctl_icmp_ignore_bogus_error_responses && 
-	    inet_addr_type(iph->daddr) == RTN_BROADCAST) {/* ICMP°üµÄÄ¿µÄµØÊÇ¹ã²¥µØÖ·£¬ºöÂÔËü²¢ÇÒ´òÓ¡¾¯¸æ¡£ */
+	    inet_addr_type(iph->daddr) == RTN_BROADCAST) {/* ICMPåŒ…çš„ç›®çš„åœ°æ˜¯å¹¿æ’­åœ°å€ï¼Œå¿½ç•¥å®ƒå¹¶ä¸”æ‰“å°è­¦å‘Šã€‚ */
 		if (net_ratelimit())
 			printk(KERN_WARNING "%u.%u.%u.%u sent an invalid ICMP "
 					    "type %u, code %u "
@@ -812,9 +812,9 @@ static void icmp_unreach(struct sk_buff *skb)
 	 * avoid additional coding at protocol handlers.
 	 */
 	/**
-	 * È·±£ICMPÓĞĞ§¸ºÔØ°üÀ¨´¥·¢´ËICMPÏûÏ¢²úÉúµÄIP°üµÄÕû¸öIP±¨Í·£¬¼ÓÉÏÀ´×ÔÓÚÍ¬Ò»¸öIP°üµÄ´«ÊäµÄÓĞĞ§¸ºÔØµÄ64Î»¡£
-	 * Õâ¸öĞÅÏ¢ÊÇ±ØÒªµÄ£¬²ÅÄÜÈÃ´«ÊäĞ­ÒéÊ¶±ğ³ö±¾µØÌ×½Ó×Ö£¨Ò²¾ÍÊÇÓ¦ÓÃ³ÌĞò£©¡£
-	 * µ±¸ÃÌõ¼ş²»·ûÊ±£¬ICMPÏûÏ¢¾Í»á±»¶ªÆú¡£×¢Òâ£¬64Î»µÄÒªÇóÀ´×ÔÓÚRFC792£¬µ«ÊÇ£¬RFC1812¸Ä±äÁËÕâ¸öÒªÇó¡£
+	 * ç¡®ä¿ICMPæœ‰æ•ˆè´Ÿè½½åŒ…æ‹¬è§¦å‘æ­¤ICMPæ¶ˆæ¯äº§ç”Ÿçš„IPåŒ…çš„æ•´ä¸ªIPæŠ¥å¤´ï¼ŒåŠ ä¸Šæ¥è‡ªäºåŒä¸€ä¸ªIPåŒ…çš„ä¼ è¾“çš„æœ‰æ•ˆè´Ÿè½½çš„64ä½ã€‚
+	 * è¿™ä¸ªä¿¡æ¯æ˜¯å¿…è¦çš„ï¼Œæ‰èƒ½è®©ä¼ è¾“åè®®è¯†åˆ«å‡ºæœ¬åœ°å¥—æ¥å­—ï¼ˆä¹Ÿå°±æ˜¯åº”ç”¨ç¨‹åºï¼‰ã€‚
+	 * å½“è¯¥æ¡ä»¶ä¸ç¬¦æ—¶ï¼ŒICMPæ¶ˆæ¯å°±ä¼šè¢«ä¸¢å¼ƒã€‚æ³¨æ„ï¼Œ64ä½çš„è¦æ±‚æ¥è‡ªäºRFC792ï¼Œä½†æ˜¯ï¼ŒRFC1812æ”¹å˜äº†è¿™ä¸ªè¦æ±‚ã€‚
 	 */
 	if (!pskb_may_pull(skb, iph->ihl * 4 + 8))
 		goto out;
@@ -830,7 +830,7 @@ static void icmp_unreach(struct sk_buff *skb)
 	hash = protocol & (MAX_INET_PROTOS - 1);
 	read_lock(&raw_v4_lock);
 	/**
-	 * ÏòÔ­Ê¼Ì×½Ó×ÖÍ¨Öª´íÎó¡£
+	 * å‘åŸå§‹å¥—æ¥å­—é€šçŸ¥é”™è¯¯ã€‚
 	 */
 	if ((raw_sk = sk_head(&raw_v4_htable[hash])) != NULL) {
 		while ((raw_sk = __raw_v4_lookup(raw_sk, protocol, iph->daddr,
@@ -845,8 +845,8 @@ static void icmp_unreach(struct sk_buff *skb)
 
 	rcu_read_lock();
 	/**
-	 * Í¨¹ıerror_handlerº¯ÊıÍ¨Öª´«ÊäĞ­ÒéÓĞ¹Ø´ËICMPÏûÏ¢µÄÊÂÇé¡£
-	 * ÕıÈ·µÄ´«ÊäĞ­Òé¿ÉÀûÓÃICMPÓĞĞ§¸ºÔØÖĞIP±¨Í·µÄ"Ğ­Òé"×Ö¶ÎÊ¶±ğ³öÀ´¡£
+	 * é€šè¿‡error_handlerå‡½æ•°é€šçŸ¥ä¼ è¾“åè®®æœ‰å…³æ­¤ICMPæ¶ˆæ¯çš„äº‹æƒ…ã€‚
+	 * æ­£ç¡®çš„ä¼ è¾“åè®®å¯åˆ©ç”¨ICMPæœ‰æ•ˆè´Ÿè½½ä¸­IPæŠ¥å¤´çš„"åè®®"å­—æ®µè¯†åˆ«å‡ºæ¥ã€‚
 	 */
 	ipprot = rcu_dereference(inet_protos[hash]);
 	if (ipprot && ipprot->err_handler)
@@ -865,7 +865,7 @@ out_err:
  *	Handle ICMP_REDIRECT.
  */
 /**
- * ´¦ÀíËÍ½øÀ´µÄICMP_REDIRECTÏûÏ¢µÄº¯Êı
+ * å¤„ç†é€è¿›æ¥çš„ICMP_REDIRECTæ¶ˆæ¯çš„å‡½æ•°
  */
 static void icmp_redirect(struct sk_buff *skb)
 {
@@ -915,7 +915,7 @@ out_err:
  *	See also WRT handling of options once they are done and working.
  */
 /**
- * ´¦ÀíECHOÈë°ü¡£
+ * å¤„ç†ECHOå…¥åŒ…ã€‚
  */
 static void icmp_echo(struct sk_buff *skb)
 {
@@ -940,7 +940,7 @@ static void icmp_echo(struct sk_buff *skb)
  *		  MUST be updated at least at 15Hz.
  */
 /**
- * ÈëICMP_TIMESTAMPÏûÏ¢µÄ´¦Àíº¯Êı¡£
+ * å…¥ICMP_TIMESTAMPæ¶ˆæ¯çš„å¤„ç†å‡½æ•°ã€‚
  */
 static void icmp_timestamp(struct sk_buff *skb)
 {
@@ -1010,7 +1010,7 @@ out_err:
  * anyway...
  */
 /**
- * LINUX²»´¦ÀíICMP_ADDRESSÏûÏ¢¡£
+ * LINUXä¸å¤„ç†ICMP_ADDRESSæ¶ˆæ¯ã€‚
  */
 static void icmp_address(struct sk_buff *skb)
 {
@@ -1025,8 +1025,8 @@ static void icmp_address(struct sk_buff *skb)
  *			loudly if an inconsistency is found.
  */
 /**
- * ¶Ô±¾µØ²úÉúµÄ²éÑ¯¶øÑÔ£¨ÖÁÉÙ²»ÊÇÄÚºË¿Õ¼äÄÚµÄ²éÑ¯£©£¬ICMP_ADDRESSREPLYÏûÏ¢²»»á»Ø¸´¡£
- * ÈëÉè±¸ÉÏÓĞ¿ªÆô×ª·¢ºÍ¼ÇÂ¼»ğĞÇµØÖ·£¨ÎŞĞ§IPµØÖ·£©µÄ¹¦ÄÜÊ±£¬LINUX¾Í»áÒÔicmp_address_reply¼àÌıICMP_ADDRESSREPLY¡£
+ * å¯¹æœ¬åœ°äº§ç”Ÿçš„æŸ¥è¯¢è€Œè¨€ï¼ˆè‡³å°‘ä¸æ˜¯å†…æ ¸ç©ºé—´å†…çš„æŸ¥è¯¢ï¼‰ï¼ŒICMP_ADDRESSREPLYæ¶ˆæ¯ä¸ä¼šå›å¤ã€‚
+ * å…¥è®¾å¤‡ä¸Šæœ‰å¼€å¯è½¬å‘å’Œè®°å½•ç«æ˜Ÿåœ°å€ï¼ˆæ— æ•ˆIPåœ°å€ï¼‰çš„åŠŸèƒ½æ—¶ï¼ŒLINUXå°±ä¼šä»¥icmp_address_replyç›‘å¬ICMP_ADDRESSREPLYã€‚
  */
 static void icmp_address_reply(struct sk_buff *skb)
 {
@@ -1074,7 +1074,7 @@ static void icmp_discard(struct sk_buff *skb)
  *	Deal with incoming ICMP packets.
  */
 /**
- * ÄÚºËÖĞ´¦ÀíICMPÏûÏ¢µÄº¯Êı(²»º¬´¦ÀíICMPµÄÔ­Ê¼Ì×¿Ú)
+ * å†…æ ¸ä¸­å¤„ç†ICMPæ¶ˆæ¯çš„å‡½æ•°(ä¸å«å¤„ç†ICMPçš„åŸå§‹å¥—å£)
  */
 int icmp_rcv(struct sk_buff *skb)
 {
@@ -1084,12 +1084,12 @@ int icmp_rcv(struct sk_buff *skb)
 	ICMP_INC_STATS_BH(ICMP_MIB_INMSGS);
 
 	/**
-	 * Ê×ÏÈÑéÖ¤ÏûÏ¢Ğ£ÑéºÍ¡£
+	 * é¦–å…ˆéªŒè¯æ¶ˆæ¯æ ¡éªŒå’Œã€‚
 	 */
 	switch (skb->ip_summed) {
 	case CHECKSUM_HW:
 		/**
-		 * ¼´Ê¹½øĞĞ½ÓÊÕµÄNIC¿ÉÒÔÊ¹ÓÃÓ²¼ş¼ÆËãL4Ğ£ÑéºÍ£¬¶ø¸ÃĞ£ÑéºÍ±íÃ÷ICMPÏûÏ¢ÒÑËğ»Ù£¬icmp_rcv»¹ÊÇ»áÔÚÈí¼şÖĞÔÙ´Î²éÖ¤¸ÃĞ£ÑéºÍ¡£
+		 * å³ä½¿è¿›è¡Œæ¥æ”¶çš„NICå¯ä»¥ä½¿ç”¨ç¡¬ä»¶è®¡ç®—L4æ ¡éªŒå’Œï¼Œè€Œè¯¥æ ¡éªŒå’Œè¡¨æ˜ICMPæ¶ˆæ¯å·²æŸæ¯ï¼Œicmp_rcvè¿˜æ˜¯ä¼šåœ¨è½¯ä»¶ä¸­å†æ¬¡æŸ¥è¯è¯¥æ ¡éªŒå’Œã€‚
 		 */
 		if (!(u16)csum_fold(skb->csum))
 			break;
@@ -1128,14 +1128,14 @@ int icmp_rcv(struct sk_buff *skb)
 		 *	  discarded if to broadcast/multicast.
 		 */
 		/**
-		 * Èç¹ûÏµÍ³ÅäÖÃ³ÉÒª°ÑÈë¹ã²¥ICMP_ECHOÏûÏ¢¶ªÆúµô£¬Ôò¸ÃÀàÏûÏ¢¾Í»á±»¶ªÆú¡£
+		 * å¦‚æœç³»ç»Ÿé…ç½®æˆè¦æŠŠå…¥å¹¿æ’­ICMP_ECHOæ¶ˆæ¯ä¸¢å¼ƒæ‰ï¼Œåˆ™è¯¥ç±»æ¶ˆæ¯å°±ä¼šè¢«ä¸¢å¼ƒã€‚
 		 */
 		if (icmph->type == ICMP_ECHO &&
 		    sysctl_icmp_echo_ignore_broadcasts) {
 			goto error;
 		}
 		/**
-		 * ²¢·ÇËùÓĞICMPÏûÏ¢ÀàĞÍ¶¼¿É´«ËÍµ½¶à²¥IPµØÖ·£¬Ö»ÓĞICMP_ECHO¡¢ICMP_TIMESTAMP¡¢ICMP_ADDRESSÒÔ¼°ICMP_ADDRESSREPLY²ÅĞĞ¡£
+		 * å¹¶éæ‰€æœ‰ICMPæ¶ˆæ¯ç±»å‹éƒ½å¯ä¼ é€åˆ°å¤šæ’­IPåœ°å€ï¼Œåªæœ‰ICMP_ECHOã€ICMP_TIMESTAMPã€ICMP_ADDRESSä»¥åŠICMP_ADDRESSREPLYæ‰è¡Œã€‚
 		 */
 		if (icmph->type != ICMP_ECHO &&
 		    icmph->type != ICMP_TIMESTAMP &&
@@ -1146,11 +1146,11 @@ int icmp_rcv(struct sk_buff *skb)
 	}
 
 	/**
-	 * SNMP¼ÆÊı¡£
+	 * SNMPè®¡æ•°ã€‚
 	 */
 	ICMP_INC_STATS_BH(icmp_pointers[icmph->type].input_entry);
 	/**
-	 * »Øµ÷Ã¿ÖÖICMPÈë°ü¶ÔÓ¦µÄ»Øµ÷º¯Êı¡£²»Ö§³ÖÏûÏ¢ÀàĞÍ£¬Æä»Øµ÷º¯ÊıÊÇicmp_discard
+	 * å›è°ƒæ¯ç§ICMPå…¥åŒ…å¯¹åº”çš„å›è°ƒå‡½æ•°ã€‚ä¸æ”¯æŒæ¶ˆæ¯ç±»å‹ï¼Œå…¶å›è°ƒå‡½æ•°æ˜¯icmp_discard
 	 */
 	icmp_pointers[icmph->type].handler(skb);
 
@@ -1275,7 +1275,7 @@ static struct icmp_control icmp_pointers[NR_ICMP_TYPES + 1] = {
 };
 
 /**
- * ICMP³õÊ¼»¯º¯Êı¡£
+ * ICMPåˆå§‹åŒ–å‡½æ•°ã€‚
  */
 void __init icmp_init(struct net_proto_family *ops)
 {
@@ -1283,7 +1283,7 @@ void __init icmp_init(struct net_proto_family *ops)
 	int i;
 
 	/**
-	 * ÎªÃ¿¸öCPU´´½¨Ò»¸öÄÚºËÔ­Ê¼Ì×½Ó×Ö
+	 * ä¸ºæ¯ä¸ªCPUåˆ›å»ºä¸€ä¸ªå†…æ ¸åŸå§‹å¥—æ¥å­—
 	 */
 	for (i = 0; i < NR_CPUS; i++) {
 		int err;
@@ -1307,11 +1307,11 @@ void __init icmp_init(struct net_proto_family *ops)
 
 		inet = inet_sk(per_cpu(__icmp_socket, i)->sk);
 		/**
-		 * ÉèÖÃ³É£­1£¬±íÊ¾ÄÚºËÓ¦¸ÃÊ¹ÓÃÄ¬ÈÏµ¥²¥TTL¡£
+		 * è®¾ç½®æˆï¼1ï¼Œè¡¨ç¤ºå†…æ ¸åº”è¯¥ä½¿ç”¨é»˜è®¤å•æ’­TTLã€‚
 		 */
 		inet->uc_ttl = -1;
 		/**
-		 * ¹Ø±Õ¸ÃÌ×½Ó×ÖÉÏµÄÂ·¾¶·¢ÏÖ¹¦ÄÜ¡£
+		 * å…³é—­è¯¥å¥—æ¥å­—ä¸Šçš„è·¯å¾„å‘ç°åŠŸèƒ½ã€‚
 		 */
 		inet->pmtudisc = IP_PMTUDISC_DONT;
 
@@ -1320,7 +1320,7 @@ void __init icmp_init(struct net_proto_family *ops)
 		 * packets.
 		 */
 		/**
-		 * ICMPÌ×½Ó×Ö²¢²»ÊÇÓÃÓÚ´¦Àí½ÓÊÕ°ü£¬Òò´ËĞèÒª´ÓÄÚºËÌ×½Ó×Öhash±íÖĞÈ¡³ö¡£
+		 * ICMPå¥—æ¥å­—å¹¶ä¸æ˜¯ç”¨äºå¤„ç†æ¥æ”¶åŒ…ï¼Œå› æ­¤éœ€è¦ä»å†…æ ¸å¥—æ¥å­—hashè¡¨ä¸­å–å‡ºã€‚
 		 */
 		per_cpu(__icmp_socket, i)->sk->sk_prot->unhash(per_cpu(__icmp_socket, i)->sk);
 	}

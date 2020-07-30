@@ -5,7 +5,7 @@
  *
  * Copyright (C) 2001,2002	Simon Evans <spse@secret.org.uk>
  * Copyright (C) 2004		Gareth Bult <Gareth@Encryptec.net>
- * Copyright (C) 2004,2005	Jörn Engel <joern@wh.fh-wedel.de>
+ * Copyright (C) 2004,2005	Jrn Engel <joern@wh.fh-wedel.de>
  *
  * Licence: GPL
  */

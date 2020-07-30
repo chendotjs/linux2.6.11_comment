@@ -64,8 +64,8 @@ asmlinkage long sys_getitimer(int which, struct itimerval __user *value)
 }
 
 /**
- * ������صĶ�̬��ʱ��������û�̬������һ��ITEMER_REAL���͵ļ����ʱ����
- * ��ô�����ʱ�������û�̬���̷����źš�
+ * 进程相关的动态定时器。如果用户态进程有一个ITEMER_REAL类型的间隔定时器。
+ * 那么这个定时函数向用户态进程发送信号。
  */
 void it_real_fn(unsigned long __data)
 {

@@ -265,19 +265,19 @@ acpi_os_table_override (struct acpi_table_header *existing_table,
 }
 
 /**
- * SCIÖĞ¶Ï´¦Àíº¯Êı¡£
+ * SCIä¸­æ–­å¤„ç†å‡½æ•°ã€‚
  */
 static irqreturn_t
 acpi_irq(int irq, void *dev_id, struct pt_regs *regs)
 {
 	/**
-	 * acpi_irq_handler»á±»Êµ¼ÊÖ¸Ïòacpi_ev_sci_xrupt_handler¡£
+	 * acpi_irq_handlerä¼šè¢«å®é™…æŒ‡å‘acpi_ev_sci_xrupt_handlerã€‚
 	 */
 	return (*acpi_irq_handler)(acpi_irq_context) ? IRQ_HANDLED : IRQ_NONE;
 }
 
 /**
- * ×¢²áSCIÖĞ¶Ï´¦Àí³ÌĞò¡£
+ * æ³¨å†ŒSCIä¸­æ–­å¤„ç†ç¨‹åºã€‚
  */
 acpi_status
 acpi_os_install_interrupt_handler(u32 gsi, acpi_osd_handler handler, void *context)
@@ -291,7 +291,7 @@ acpi_os_install_interrupt_handler(u32 gsi, acpi_osd_handler handler, void *conte
 	 */
 	gsi = acpi_fadt.sci_int;
 	/**
-	 * ´ÓFADTÖĞ»ñµÃACPIÊ¹ÓÃµÄÖĞ¶ÏÏòÁ¿¡£ÔÚ´ó¶àÊıx86ÏµÍ³ÖĞ£¬SCIÖĞ¶ÏÊ¹ÓÃµÄIRQºÅÎª9¡£
+	 * ä»FADTä¸­è·å¾—ACPIä½¿ç”¨çš„ä¸­æ–­å‘é‡ã€‚åœ¨å¤§å¤šæ•°x86ç³»ç»Ÿä¸­ï¼ŒSCIä¸­æ–­ä½¿ç”¨çš„IRQå·ä¸º9ã€‚
 	 */
 	if (acpi_gsi_to_irq(gsi, &irq) < 0) {
 		printk(KERN_ERR PREFIX "SCI (ACPI GSI %d) not registered\n",
@@ -302,7 +302,7 @@ acpi_os_install_interrupt_handler(u32 gsi, acpi_osd_handler handler, void *conte
 	acpi_irq_handler = handler;
 	acpi_irq_context = context;
 	/**
-	 * ×¢²áacpi_irqÎªSCIÖĞ¶ÏÇëÇóº¯Êı¡£
+	 * æ³¨å†Œacpi_irqä¸ºSCIä¸­æ–­è¯·æ±‚å‡½æ•°ã€‚
 	 */
 	if (request_irq(irq, acpi_irq, SA_SHIRQ, "acpi", acpi_irq)) {
 		printk(KERN_ERR PREFIX "SCI (IRQ%d) allocation failed\n", irq);

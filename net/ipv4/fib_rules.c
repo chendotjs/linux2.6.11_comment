@@ -50,87 +50,87 @@
 #define FRprintk(a...)
 
 /**
- * ��ʾ�ɲ���·��ѡ����Ӧ·�ɱ��Ĺ���
+ * 表示由策略路由选择相应路由表的规则。
  */
 struct fib_rule
 {
 	/**
-	 * ����Щfib_rule�ṹ���ӵ�һ����������fib_ruleʵ����ȫ�������ڡ�
+	 * 将这些fib_rule结构链接到一个包含所有fib_rule实例的全局链表内。
 	 */
 	struct fib_rule *r_next;
 	/**
-	 * ���ü����������ü����ĵ�������fib_lookup������ֻ�ڲ���·�ɰ�ĺ����У��н��еģ��������Ϊʲô��ÿ��·�ɲ��ҳɹ���������Ҫ����fib_res_put���ݼ������ü�������
+	 * 引用计数。该引用计数的递增是在fib_lookup函数（只在策略路由版的函数中）中进行的，这解释了为什么在每次路由查找成功后总是需要调用fib_res_put（递减该引用计数）。
 	 */
 	atomic_t	r_clntref;
 	/**
-	 * ·�ɹ�������ȼ���
-	 * ������Ա����IPROUTE2����������һ������ʱ������ʹ�ùؼ���priority��preference��order�����á�
-	 * ���û����ȷ���ã��ں�Ϊ�����һ�����ȼ�����ֵ���û����ӵ����һ����������ȼ�С1
+	 * 路由规则的优先级。
+	 * 当管理员利用IPROUTE2软件包添加一个策略时，可以使用关键字priority，preference和order来配置。
+	 * 如果没有明确配置，内核为其分配一个优先级，该值比用户添加的最后一个规则的优先级小1
 	 */
 	u32		r_preference;
 	/**
-	 * ·�ɱ���ʶ����Χ��0��255��
+	 * 路由表标识，范围从0到255。
 	 */
 	unsigned char	r_table;
 	/**
-	 * ���ֶ�������ȡֵ����include/linux/rtnetlink.h�ļ��ж����rtm_typeö��ֵ��RTN_UNICAST�ȣ���
-	 * ���û�����һ������ʱ��ʹ��type�ؼ������趨���ֶΡ�����û�û����ȷ���ã�IPROUTE2�����ӹ���ʱ���ø��ֶε�ֵΪRTN_UNICAST��
+	 * 该字段允许的取值是在include/linux/rtnetlink.h文件中定义的rtm_type枚举值（RTN_UNICAST等）。
+	 * 当用户配置一条规则时，使用type关键字来设定该字段。如果用户没有明确配置，IPROUTE2在添加规则时设置该字段的值为RTN_UNICAST。
 	 */
 	unsigned char	r_action;
 	/**
-	 * Ŀ��IP��ַ��ԴIP��ַ�ĳ��ȣ���λΪ���ء����Ǳ����ڼ���r_srcmask��r_dstmask������������ֶ�δ����ʼ��������Ϊ0��
+	 * 目的IP地址与源IP地址的长度，单位为比特。它们被用于计算r_srcmask和r_dstmask。如果这两个字段未被初始化则设置为0。
 	 */
 	unsigned char	r_dst_len;
 	unsigned char	r_src_len;
 	/**
-	 * ��ʾֻ�дӸ�IP��ַ������������ɵ�Դ���緢�͵ı��Ĳ��ܱ����ܡ�
+	 * 表示只有从该IP地址和网络掩码组成的源网络发送的报文才能被接受。
 	 */
 	u32		r_src;
 	u32		r_srcmask;
 	/**
-	 * ��ʾֻ�����IP��ַ������������ɵ�Ŀ�����緢�ͱ��ġ�
+	 * 表示只能向该IP地址和网络掩码组成的目的网络发送报文。
 	 */
 	u32		r_dst;
 	u32		r_dstmask;
 	/**
-	 * ���ֶ��������û��ռ�ؼ���nat��map-to�����ã���·��NATʵ�ִ���ʹ�á����ڲ���֧��·��NAT�����Ը��ֶ�Ҳ���ٱ�ʹ�á�
+	 * 该字段是利用用户空间关键字nat和map-to来设置，在路由NAT实现代码使用。由于不再支持路由NAT，所以该字段也不再被使用。
 	 */
 	u32		r_srcmap;
 	/**
-	 * һ���־����ǰδʹ�á�
+	 * 一组标志。当前未使用。
 	 */
 	u8		r_flags;
 	/**
-	 * IPͷ�е�TOS�ֶΡ��������ֶε�ԭ���ǹ���Ķ����п��԰���һ������������������IPͷ����TOS�ֶΡ�
+	 * IP头中的TOS字段。包含该字段的原因是规则的定义中可以包含一个条件，该条件放在IP头部的TOS字段。
 	 */
 	u8		r_tos;
 #ifdef CONFIG_IP_ROUTE_FWMARK
 	/**
-	 * ���ں˱���֧��"ʹ��Netfilter MARKֵ��Ϊ·��key"����ʱ�����Ը��ݷ���ǽ��ǩ���������
-	 * ���ֶ��ǹ���Ա����һ�����Թ���ʱ����fwmark�ؼ���ָ���ı�ǩ��
+	 * 当内核编译支持"使用Netfilter MARK值作为路由key"特性时，可以根据防火墙标签来定义规则。
+	 * 该字段是管理员定义一条策略规则时利用fwmark关键字指定的标签。
 	 */
 	u32		r_fwmark;
 #endif
 	/**
-	 * r_ifname�ǲ���Ӧ�õ��豸�����ơ�
-	 * ����r_ifname���ں˿��Եõ���ص�net_deviceʵ��������ʵ����ifindex�ֶο�����r_ifindex�С�
-	 * r_ifindexֵȡ-1��ʾ��ֹ�ù���
+	 * r_ifname是策略应用的设备的名称。
+	 * 给定r_ifname，内核可以得到相关的net_device实例，将该实例的ifindex字段拷贝到r_ifindex中。
+	 * r_ifindex值取-1表示禁止该规则
 	 */
 	int		r_ifindex;
 #ifdef CONFIG_NET_CLS_ROUTE
 	/**
-	 * ����realm.
-	 * Դrealm��Ŀ��realm����8����ֵ����ΧΪ0��255��������r_tclassid�У����Ƕ�ռ��16���ء�
-	 * ������Դrealmʱ���������ڸ�16����λ��������Ŀ��realmʱ���������ڵ�16����λ
+	 * 策略realm.
+	 * 源realm和目的realm都是8比特值（范围为0到255），但在r_tclassid中，它们都占用16比特。
+	 * 当配置源realm时它被保存在高16比特位，当配置目的realm时它被保存在低16比特位
 	 */
 	__u32		r_tclassid;
 #endif
 	char		r_ifname[IFNAMSIZ];
 	/**
-	 * ��һ���������ʱ���ֶ�Ϊ0��
-	 * ������inet_rtm_delruleɾ������ʱ���ֶα�����Ϊ1��
-	 * ÿ������fib_rule_putɾ����fib_rule���ݽṹ��һ������ʱ���ݼ����ü����������ü���Ϊ0ʱ��Ҫ�ͷŸýṹ��
-	 * ����ʱ���r_deadû�����ã����ʾ������ĳ�ִ���
+	 * 当一个规则可用时该字段为0。
+	 * 当利用inet_rtm_delrule删除规则时该字段被设置为1。
+	 * 每当调用fib_rule_put删除到fib_rule数据结构的一个引用时，递减引用计数，当引用计数为0时就要释放该结构。
+	 * 但此时如果r_dead没有设置，则表示发生了某种错误
 	 */
 	int		r_dead;
 };
@@ -158,12 +158,12 @@ static struct fib_rule local_rule = {
 };
 
 /**
- * ����·���������������ȼ�˳��������С�
- * ��ʹ�û�û�������κι���fib_rulesҲ��������ȱʡ��fib_ruleʵ��:local_rule,main_rule,default_rule
+ * 策略路由链表。按照优先级顺序进行排列。
+ * 即使用户没有配置任何规则，fib_rules也包含三个缺省的fib_rule实例:local_rule,main_rule,default_rule
  */
 static struct fib_rule *fib_rules = &local_rule;
 /**
- * ���rwlock����������Ϊfib_rule���ݽṹ��fib_rulesȫ��������
+ * 这个rwlock锁保护类型为fib_rule数据结构的fib_rules全局链表。
  */
 static DEFINE_RWLOCK(fib_rules_lock);
 
@@ -312,8 +312,8 @@ int inet_rtm_newrule(struct sk_buff *skb, struct nlmsghdr* nlh, void *arg)
 
 #ifdef CONFIG_NET_CLS_ROUTE
 /**
- * ��һ��fib_rule���ݽṹ����ȡr_tclassid�ֶΡ�
- * ��Ϊfib_lookup���صĽ���ڰ���һ��ָ��ָ��ƥ���fib_ruleʵ���������ڲ���֮��ʹ��fib_rules_tclass����ȡƥ�����
+ * 从一个fib_rule数据结构内提取r_tclassid字段。
+ * 因为fib_lookup返回的结果内包含一个指针指向匹配的fib_rule实例，所以在查找之后使用fib_rules_tclass来提取匹配规则。
  */
 u32 fib_rules_tclass(struct fib_result *res)
 {
@@ -351,7 +351,7 @@ static void fib_rules_attach(struct net_device *dev)
 }
 
 /**
- * ���ں�֧�ֲ���·��ʱ��fib_lookup��
+ * 当内核支持策略路由时的fib_lookup。
  */
 int fib_lookup(const struct flowi *flp, struct fib_result *res)
 {
@@ -366,7 +366,7 @@ FRprintk("Lookup: %u.%u.%u.%u <- %u.%u.%u.%u ",
 	NIPQUAD(flp->fl4_dst), NIPQUAD(flp->fl4_src));
 	read_lock(&fib_rules_lock);
 	/**
-	 * һ����һ���ر���·�ɲ��ԣ�ֱ�����ҵ���·�ɱ���ƥ��Ĳ��Ի򵽴��������β����û���ҵ��κ�ƥ�䡣
+	 * 一个接一个地遍历路由策略，直到查找到与路由报文匹配的策略或到达策略链表尾部还没有找到任何匹配。
 	 */
 	for (r = fib_rules; r; r=r->r_next) {
 		if (((saddr^r->r_src) & r->r_srcmask) ||
@@ -380,17 +380,17 @@ FRprintk("Lookup: %u.%u.%u.%u <- %u.%u.%u.%u ",
 
 FRprintk("tb %d r %d ", r->r_table, r->r_action);
 		/**
-		 * �����ҵ�ƥ�����ʱ���������Ķ��������ڲ������͡�
+		 * 当查找到匹配策略时，接下来的动作依赖于策略类型。
 		 */
 		switch (r->r_action) {
 		/**
-		 * ���Զ���RTN_UNICAST������tb_lookup�����ң���ʵ�����ǵ���fn_hash_lookup�������ú������Է��ض��ֽ����
+		 * 策略动作RTN_UNICAST将调用tb_lookup来查找，它实际上是调用fn_hash_lookup函数，该函数可以返回多种结果。
 		 */
 		case RTN_UNICAST:
 			policy = r;
 			break;
 		/**
-		 * �ر�أ����Զ���RTN_UNREACHABLE��RTN_BLACKHOLE��RTN_PROHIBIT������һ������fib_lookup�ĵ��÷����ݸô���ֵ��������Ӧ��ICMP��Ϣ��
+		 * 特别地，策略动作RTN_UNREACHABLE，RTN_BLACKHOLE和RTN_PROHIBIT将返回一个错误，fib_lookup的调用方根据该错误值来生成相应的ICMP消息。
 		 */
 		case RTN_UNREACHABLE:
 			read_unlock(&fib_rules_lock);
@@ -407,12 +407,12 @@ FRprintk("tb %d r %d ", r->r_table, r->r_action);
 		if ((tb = fib_get_table(r->r_table)) == NULL)
 			continue;
 		/**
-		 * ���е����˵����Ҫ�ڲ���·�ɱ������������·���ˡ�
+		 * 运行到这里，说明需要在策略路由表中搜索具体的路由了。
 		 */
 		err = tb->tb_lookup(tb, flp, res);
 		if (err == 0) {
 			/**
-			 * �����ҳɹ�ʱ��res->r����ʼ��Ϊƥ����ԡ�
+			 * 当查找成功时，res->r被初始化为匹配策略。
 			 */
 			res->r = policy;
 			if (policy)
@@ -421,15 +421,15 @@ FRprintk("tb %d r %d ", r->r_table, r->r_action);
 			return 0;
 		}
 		/**
-		 * ·�ɲ���ʧ�ܡ�
+		 * 路由查找失败。
 		 */
 		if (err < 0 && err != -EAGAIN) {
 			read_unlock(&fib_rules_lock);
 			return err;
 		}
 		/**
-		 * ������ʧ��ʱ�������������Ϊ-EAGAIN��fib_lookup������ѭ���ڲ��Ҳ��ԡ�
-		 * ���ظô���ֵ��ԭ������Ϊ��fn_hash_lookup���ҵ���ƥ��·����صĶ�������ΪRTN_THROW
+		 * 当查找失败时，如果错误类型为-EAGAIN则fib_lookup继续在循环内查找策略。
+		 * 返回该错误值的原因是因为与fn_hash_lookup查找到的匹配路由相关的动作类型为RTN_THROW
 		 */
 	}
 FRprintk("FAILURE\n");
@@ -438,13 +438,13 @@ FRprintk("FAILURE\n");
 }
 
 /**
- * ���ں�֧�ֲ���·��ʱ��ѡ��ȱʡ���ء�
+ * 当内核支持策略路由时，选择缺省网关。
  */
 void fib_select_default(const struct flowi *flp, struct fib_result *res)
 {
 	/**
-	 * ��֧�ֲ���·��ʱѡ��ȱʡ·���벻֧�ֲ���·��ʱѡ��Ĺ���������ͬ��
-	 * Ψһ����������fib_select_default����ƥ����ԣ�res->r�����õ�ʹ�õ�·�ɱ���
+	 * 当支持策略路由时选择缺省路由与不支持策略路由时选择的工作机理相同。
+	 * 唯一的区别在于fib_select_default利用匹配策略（res->r）来得到使用的路由表。
 	 */
 	if (res->r && res->r->r_action == RTN_UNICAST &&
 	    FIB_RES_GW(*res) && FIB_RES_NH(*res).nh_scope == RT_SCOPE_LINK) {
@@ -537,7 +537,7 @@ int inet_dump_rules(struct sk_buff *skb, struct netlink_callback *cb)
 }
 
 /**
- * ����·�ɵĳ�ʼ����
+ * 策略路由的初始化。
  */
 void __init fib_rules_init(void)
 {

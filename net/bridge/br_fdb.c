@@ -27,12 +27,12 @@ static int fdb_insert(struct net_bridge *br, struct net_bridge_port *source,
 		      const unsigned char *addr, int is_local);
 
 /**
- * ³õÊ¼»¯ÍøÇÅ×ª·¢Êı¾İ¿â
+ * åˆå§‹åŒ–ç½‘æ¡¥è½¬å‘æ•°æ®åº“
  */
 void __init br_fdb_init(void)
 {
 	/**
-	 * ¼òµ¥µÄ´´½¨Ò»¸önet_bridge_fdb_entry¸ßËÙ»º´æ¡£
+	 * ç®€å•çš„åˆ›å»ºä¸€ä¸ªnet_bridge_fdb_entryé«˜é€Ÿç¼“å­˜ã€‚
 	 */
 	br_fdb_cache = kmem_cache_create("bridge_fdb_cache",
 					 sizeof(struct net_bridge_fdb_entry),
@@ -127,8 +127,8 @@ void br_fdb_changeaddr(struct net_bridge_port *p, const unsigned char *newaddr)
 }
 
 /**
- * É¾³ı×ª·¢Êı¾İ¿âÖĞµÄ¹ıÆÚÌõÄ¿¡£
- * ÓÉÀÏ»¯Ê±ÖÓµ÷ÓÃ¡£
+ * åˆ é™¤è½¬å‘æ•°æ®åº“ä¸­çš„è¿‡æœŸæ¡ç›®ã€‚
+ * ç”±è€åŒ–æ—¶é’Ÿè°ƒç”¨ã€‚
  */
 void br_fdb_cleanup(unsigned long _data)
 {
@@ -160,7 +160,7 @@ void br_fdb_cleanup(unsigned long _data)
 }
 
 /**
- * É¾³ı×ª·¢Êı¾İ¿âÖĞµÄÌõÄ¿¡£
+ * åˆ é™¤è½¬å‘æ•°æ®åº“ä¸­çš„æ¡ç›®ã€‚
  */
 void br_fdb_delete_by_port(struct net_bridge *br, struct net_bridge_port *p)
 {
@@ -220,7 +220,7 @@ struct net_bridge_fdb_entry *__br_fdb_get(struct net_bridge *br,
 
 /* Interface used by ATM hook that keeps a ref count */
 /**
- * ËÑË÷ÓëÖ¸¶¨µØÖ·Æ¥ÅäµÄ×ª·¢Êı¾İ¿âÌõÄ¿¡£
+ * æœç´¢ä¸æŒ‡å®šåœ°å€åŒ¹é…çš„è½¬å‘æ•°æ®åº“æ¡ç›®ã€‚
  */
 struct net_bridge_fdb_entry *br_fdb_get(struct net_bridge *br, 
 					unsigned char *addr)
@@ -230,8 +230,8 @@ struct net_bridge_fdb_entry *br_fdb_get(struct net_bridge *br,
 	rcu_read_lock();
 	fdb = __br_fdb_get(br, addr);
 	/**
-	 * µ±ËÑË÷³É¹¦Ê±£¬Ôö¼Ó×ª·¢ÌõÄ¿µÄÒıÓÃ¼ÆÊı¡£
-	 * ÕâÊÇÒòÎªÍâ²¿ÏµÍ³Í¨³£»á»º´æËÑË÷½á¹û£¬²¢ÇÒ²»ÖªµÀÍâ²¿ÏµÍ³ºÎÊ±½áÊø¶ÔÌõÄ¿µÄÒıÓÃ£¬Òò´Ë±ØĞëÔö¼ÓÒıÓÃ¼ÆÊı¡£
+	 * å½“æœç´¢æˆåŠŸæ—¶ï¼Œå¢åŠ è½¬å‘æ¡ç›®çš„å¼•ç”¨è®¡æ•°ã€‚
+	 * è¿™æ˜¯å› ä¸ºå¤–éƒ¨ç³»ç»Ÿé€šå¸¸ä¼šç¼“å­˜æœç´¢ç»“æœï¼Œå¹¶ä¸”ä¸çŸ¥é“å¤–éƒ¨ç³»ç»Ÿä½•æ—¶ç»“æŸå¯¹æ¡ç›®çš„å¼•ç”¨ï¼Œå› æ­¤å¿…é¡»å¢åŠ å¼•ç”¨è®¡æ•°ã€‚
 	 */
 	if (fdb) 
 		atomic_inc(&fdb->use_count);
@@ -248,7 +248,7 @@ static void fdb_rcu_free(struct rcu_head *head)
 
 /* Set entry up for deletion with RCU  */
 /**
- * µİ¼õ×ª·¢ÌõÄ¿µÄÒıÓÃ¼ÆÊı¡£
+ * é€’å‡è½¬å‘æ¡ç›®çš„å¼•ç”¨è®¡æ•°ã€‚
  */
 void br_fdb_put(struct net_bridge_fdb_entry *ent)
 {

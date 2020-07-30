@@ -143,7 +143,7 @@ LIST_HEAD(file_lock_list);
 EXPORT_SYMBOL(file_lock_list);
 
 /**
- * ËùÓÐ×èÈûËø¡£
+ * æ‰€æœ‰é˜»å¡žé”ã€‚
  */
 static LIST_HEAD(blocked_list);
 
@@ -701,7 +701,7 @@ EXPORT_SYMBOL(posix_locks_deadlock);
  * flock_lock_file and posix_lock_file.
  */
 /**
- * ÔÚÎÄ¼þÉÏ´´½¨Ò»¸öÎÄ¼þËø¡£
+ * åœ¨æ–‡ä»¶ä¸Šåˆ›å»ºä¸€ä¸ªæ–‡ä»¶é”ã€‚
  */
 static int flock_lock_file(struct file *filp, struct file_lock *new_fl)
 {
@@ -711,43 +711,43 @@ static int flock_lock_file(struct file *filp, struct file_lock *new_fl)
 	int found = 0;
 
 	lock_kernel();
-	for_each_lock(inode, before) {/* ±éÀúÎÄ¼þÉÏµÄËùÓÐËø */
+	for_each_lock(inode, before) {/* éåŽ†æ–‡ä»¶ä¸Šçš„æ‰€æœ‰é” */
 		struct file_lock *fl = *before;
 		if (IS_POSIX(fl))
 			break;
 		if (IS_LEASE(fl))
 			continue;
 		/**
-		 * ÒÑ¾­´æÔÚFL_FLOCKËø¡£
+		 * å·²ç»å­˜åœ¨FL_FLOCKé”ã€‚
 		 */
 		if (filp != fl->fl_file)
 			continue;
 		/**
-		 * FL_FLOCKËøµÄÀàÐÍÓëÉêÇëµÄÀàÐÍÒ»Ñù£¬Ôò·µ»Ø0.
+		 * FL_FLOCKé”çš„ç±»åž‹ä¸Žç”³è¯·çš„ç±»åž‹ä¸€æ ·ï¼Œåˆ™è¿”å›ž0.
 		 */
 		if (new_fl->fl_type == fl->fl_type)
 			goto out;
 		found = 1;
 		/**
-		 * ´ÓË÷Òý½ÚµãËøÁ´±íºÍÈ«¾ÖÎÄ¼þËøÁ´±íÖÐÉ¾³ýËø£¬»½ÐÑµÈ´ýµÄ½ø³Ì£¬²¢ÊÍ·ÅËø½á¹¹¡£
+		 * ä»Žç´¢å¼•èŠ‚ç‚¹é”é“¾è¡¨å’Œå…¨å±€æ–‡ä»¶é”é“¾è¡¨ä¸­åˆ é™¤é”ï¼Œå”¤é†’ç­‰å¾…çš„è¿›ç¨‹ï¼Œå¹¶é‡Šæ”¾é”ç»“æž„ã€‚
 		 */
 		locks_delete_lock(before);
 		break;
 	}
 	unlock_kernel();
 
-	if (new_fl->fl_type == F_UNLCK)/* ËøÒÑ¾­±»ÊÍ·Å£¬Òò´Ë½âËø²Ù×÷¿ÉÒÔÖ±½ÓÍË³öÁË¡£ */
+	if (new_fl->fl_type == F_UNLCK)/* é”å·²ç»è¢«é‡Šæ”¾ï¼Œå› æ­¤è§£é”æ“ä½œå¯ä»¥ç›´æŽ¥é€€å‡ºäº†ã€‚ */
 		return 0;
 
 	/*
 	 * If a higher-priority process was blocked on the old file lock,
 	 * give it the opportunity to lock the file.
 	 */
-	if (found)/* ÓÐFL_FLOCKËø´æÔÚ£¬Ôò¸ø¸ßÓÅÏÈ¼¶½ø³ÌÒ»¸ö»ú»á£¬Ê¹Æä¿ÉÒÔÏÈ»ñµÃËø¡£ */
+	if (found)/* æœ‰FL_FLOCKé”å­˜åœ¨ï¼Œåˆ™ç»™é«˜ä¼˜å…ˆçº§è¿›ç¨‹ä¸€ä¸ªæœºä¼šï¼Œä½¿å…¶å¯ä»¥å…ˆèŽ·å¾—é”ã€‚ */
 		cond_resched();
 
 	lock_kernel();
-	for_each_lock(inode, before) {/* ÔÙ´ÎËÑË÷Á´±í£¬ÒÔÑéÖ¤ÏÖÓÐµÄËø²¢²»ÓëÉêÇëµÄËø³åÍ»¡£ */
+	for_each_lock(inode, before) {/* å†æ¬¡æœç´¢é“¾è¡¨ï¼Œä»¥éªŒè¯çŽ°æœ‰çš„é”å¹¶ä¸ä¸Žç”³è¯·çš„é”å†²çªã€‚ */
 		struct file_lock *fl = *before;
 		if (IS_POSIX(fl))
 			break;
@@ -756,13 +756,13 @@ static int flock_lock_file(struct file *filp, struct file_lock *new_fl)
 		if (!flock_locks_conflict(new_fl, fl))
 			continue;
 		error = -EAGAIN;
-		if (new_fl->fl_flags & FL_SLEEP) {/* ·¢ÏÖ³åÍ»£¬²¢ÇÒÔÊÐí×èÈû£¬½«ÐÂËø²åÈë×èÈûÁ´±íÖÐ */
+		if (new_fl->fl_flags & FL_SLEEP) {/* å‘çŽ°å†²çªï¼Œå¹¶ä¸”å…è®¸é˜»å¡žï¼Œå°†æ–°é”æ’å…¥é˜»å¡žé“¾è¡¨ä¸­ */
 			locks_insert_block(fl, new_fl);
 		}
 		goto out;
 	}
 	/**
-	 * Ã»ÓÐ³åÍ»µÄËø£¬½«ÐÂµÄËø½á¹¹²åÈëË÷Òý½ÚµãËøÁ´±íºÍÈ«¾ÖÎÄ¼þËøÁ´±íÖÐ£¬²¢·µ»Ø0.
+	 * æ²¡æœ‰å†²çªçš„é”ï¼Œå°†æ–°çš„é”ç»“æž„æ’å…¥ç´¢å¼•èŠ‚ç‚¹é”é“¾è¡¨å’Œå…¨å±€æ–‡ä»¶é”é“¾è¡¨ä¸­ï¼Œå¹¶è¿”å›ž0.
 	 */
 	locks_insert_lock(&inode->i_flock, new_fl);
 	error = 0;
@@ -775,7 +775,7 @@ out:
 EXPORT_SYMBOL(posix_lock_file);
 
 /**
- * ²»×èÈûµÄ»ñµÃÎÄ¼þPOSIXËø
+ * ä¸é˜»å¡žçš„èŽ·å¾—æ–‡ä»¶POSIXé”
  */
 static int __posix_lock_file(struct inode *inode, struct file_lock *request)
 {
@@ -794,30 +794,30 @@ static int __posix_lock_file(struct inode *inode, struct file_lock *request)
 	new_fl2 = locks_alloc_lock();
 
 	lock_kernel();
-	if (request->fl_type != F_UNLCK) {/* ±¾´ÎÇëÇó²»ÊÇÊÍ·ÅËø£¬ÔòÓ¦µ±ÊÇÉêÇëËø */
-		for_each_lock(inode, before) {/* ±éÀúÎÄ¼þÉÏµÄËùÓÐÎÄ¼þËø */
+	if (request->fl_type != F_UNLCK) {/* æœ¬æ¬¡è¯·æ±‚ä¸æ˜¯é‡Šæ”¾é”ï¼Œåˆ™åº”å½“æ˜¯ç”³è¯·é” */
+		for_each_lock(inode, before) {/* éåŽ†æ–‡ä»¶ä¸Šçš„æ‰€æœ‰æ–‡ä»¶é” */
 			struct file_lock *fl = *before;
-			if (!IS_POSIX(fl))/* ²»ÊÇPOSIXËø£¬ºöÂÔ */
+			if (!IS_POSIX(fl))/* ä¸æ˜¯POSIXé”ï¼Œå¿½ç•¥ */
 				continue;
-			if (!posix_locks_conflict(request, fl))/* ¸ÃËøÊÇPOSIXËø£¬µ«ÊÇÓëÇëÇó²»³åÍ» */
+			if (!posix_locks_conflict(request, fl))/* è¯¥é”æ˜¯POSIXé”ï¼Œä½†æ˜¯ä¸Žè¯·æ±‚ä¸å†²çª */
 				continue;
 			error = -EAGAIN;
-			/* ´æÔÚ³åÍ»Ëø£¬µ«ÊÇ²»ÔÊÐí×èÈû£¬ÍË³ö£¬·µ»Ø´íÎóÂë¡£ */
+			/* å­˜åœ¨å†²çªé”ï¼Œä½†æ˜¯ä¸å…è®¸é˜»å¡žï¼Œé€€å‡ºï¼Œè¿”å›žé”™è¯¯ç ã€‚ */
 			if (!(request->fl_flags & FL_SLEEP))
 				goto out;
 			error = -EDEADLK;
-			/* ¼ì²éµÈ´ýPOSIXËøµÄ½ø³ÌÖ®¼äÊÇ·ñ¿ÉÄÜ´æÔÚËÀËø£¬Èç¹ûÓÐ£¬ÔòÍË³ö¡£±ÜÃâËÀËø¡£ */
+			/* æ£€æŸ¥ç­‰å¾…POSIXé”çš„è¿›ç¨‹ä¹‹é—´æ˜¯å¦å¯èƒ½å­˜åœ¨æ­»é”ï¼Œå¦‚æžœæœ‰ï¼Œåˆ™é€€å‡ºã€‚é¿å…æ­»é”ã€‚ */
 			if (posix_locks_deadlock(request, fl))
 				goto out;
 			error = -EAGAIN;
-			/* ²»ËÀËø£¬Ôò½«Ëø²åÈëµ½³åÍ»ËøºÍ×èÈûÁ´±íÖÐ */
+			/* ä¸æ­»é”ï¼Œåˆ™å°†é”æ’å…¥åˆ°å†²çªé”å’Œé˜»å¡žé“¾è¡¨ä¸­ */
 			locks_insert_block(fl, request);
 			goto out;
   		}
   	}
 
 	/* If we're just looking for a conflict, we're done. */
-	/* ÔËÐÐµ½ÕâÀï£¬ËµÃ÷²»´æÔÚ³åÍ»µÄPOSIXËø¡£ */
+	/* è¿è¡Œåˆ°è¿™é‡Œï¼Œè¯´æ˜Žä¸å­˜åœ¨å†²çªçš„POSIXé”ã€‚ */
 	error = 0;
 	if (request->fl_flags & FL_ACCESS)
 		goto out;
@@ -832,7 +832,7 @@ static int __posix_lock_file(struct inode *inode, struct file_lock *request)
 	 * 
 	 * Find the first old lock with the same owner as the new lock.
 	 */
-	/* ÏÂÃæµÄ´úÂëÊÇ´¦ÀíËøÇøÓòÖØµþµÄÇé¿ö¡£ */
+	/* ä¸‹é¢çš„ä»£ç æ˜¯å¤„ç†é”åŒºåŸŸé‡å çš„æƒ…å†µã€‚ */
 	before = &inode->i_flock;
 
 	/* First skip locks owned by other processes.  */
@@ -1477,7 +1477,7 @@ out_unlock:
  * Add a FLOCK style lock to a file.
  */
 /**
- * Ö´ÐÐÕæÕýµÄÎÄ¼þËø²Ù×÷¡£
+ * æ‰§è¡ŒçœŸæ­£çš„æ–‡ä»¶é”æ“ä½œã€‚
  */
 int flock_lock_file_wait(struct file *filp, struct file_lock *fl)
 {
@@ -1485,16 +1485,16 @@ int flock_lock_file_wait(struct file *filp, struct file_lock *fl)
 	might_sleep();
 	for (;;) {
 		/**
-		 * ÎÞ×èÈûµÄ»ñµÃÎÄ¼þËø
+		 * æ— é˜»å¡žçš„èŽ·å¾—æ–‡ä»¶é”
 		 */
 		error = flock_lock_file(filp, fl);
 		/**
-		 * ²»ÄÜÖØÊÔ£¬ÔòÍË³ö²¢·µ»Ø´íÎóÂë¡£
+		 * ä¸èƒ½é‡è¯•ï¼Œåˆ™é€€å‡ºå¹¶è¿”å›žé”™è¯¯ç ã€‚
 		 */
 		if ((error != -EAGAIN) || !(fl->fl_flags & FL_SLEEP))
 			break;
 		/**
-		 * µÈ´ýÊÍ·ÅËøµÄÏß³Ì»½ÐÑËü¡£
+		 * ç­‰å¾…é‡Šæ”¾é”çš„çº¿ç¨‹å”¤é†’å®ƒã€‚
 		 */
 		error = wait_event_interruptible(fl->fl_wait, !fl->fl_next);
 		if (!error)
@@ -1528,9 +1528,9 @@ EXPORT_SYMBOL(flock_lock_file_wait);
  *	processes read and write access respectively.
  */
 /**
- * FLOCKËø£¬¶ÔÒ»¸öÎÄ¼þÉÏÉêÇë»òÕßÊÍ·ÅÈ°¸æËø¡£
- * 		fd:Òª²Ù×÷µÄÎÄ¼þ¾ä±ú¡£
- *		cmd:²Ù×÷ÀàÐÍ£¬ÈçLOCK_NB
+ * FLOCKé”ï¼Œå¯¹ä¸€ä¸ªæ–‡ä»¶ä¸Šç”³è¯·æˆ–è€…é‡Šæ”¾åŠå‘Šé”ã€‚
+ * 		fd:è¦æ“ä½œçš„æ–‡ä»¶å¥æŸ„ã€‚
+ *		cmd:æ“ä½œç±»åž‹ï¼Œå¦‚LOCK_NB
  */
 asmlinkage long sys_flock(unsigned int fd, unsigned int cmd)
 {
@@ -1540,9 +1540,9 @@ asmlinkage long sys_flock(unsigned int fd, unsigned int cmd)
 	int error;
 
 	error = -EBADF;
-	/* ¸ù¾Ý¾ä±ú»ñµÃÎÄ¼þ¶ÔÏó */
+	/* æ ¹æ®å¥æŸ„èŽ·å¾—æ–‡ä»¶å¯¹è±¡ */
 	filp = fget(fd);
-	if (!filp)/* ÎÄ¼þ²»´æÔÚ */
+	if (!filp)/* æ–‡ä»¶ä¸å­˜åœ¨ */
 		goto out;
 
 	can_sleep = !(cmd & LOCK_NB);
@@ -1550,18 +1550,18 @@ asmlinkage long sys_flock(unsigned int fd, unsigned int cmd)
 	unlock = (cmd == LOCK_UN);
 
 	/**
-	 * ¼ì²é¶ÁÐ´È¨ÏÞ¡£
+	 * æ£€æŸ¥è¯»å†™æƒé™ã€‚
 	 */
 	if (!unlock && !(cmd & LOCK_MAND) && !(filp->f_mode & 3))
 		goto out_putf;
 
 	/**
-	 * »ñµÃÒ»¸öÐÂµÄÎÄ¼þËø¶ÔÏó²¢³õÊ¼»¯Ëü¡£
+	 * èŽ·å¾—ä¸€ä¸ªæ–°çš„æ–‡ä»¶é”å¯¹è±¡å¹¶åˆå§‹åŒ–å®ƒã€‚
 	 */
 	error = flock_make_lock(filp, &lock, cmd);
 	if (error)
 		goto out_putf;
-	if (can_sleep)/* ÔÊÐí×èÈû£¬ÉèÖÃFL_SLEEP±êÖ¾ */
+	if (can_sleep)/* å…è®¸é˜»å¡žï¼Œè®¾ç½®FL_SLEEPæ ‡å¿— */
 		lock->fl_flags |= FL_SLEEP;
 
 	error = security_file_lock(filp, cmd);
@@ -1569,17 +1569,17 @@ asmlinkage long sys_flock(unsigned int fd, unsigned int cmd)
 		goto out_free;
 
 	/**
-	 * »Øµ÷ÎÄ¼þÏµÍ³µÄflockº¯Êý¡£
+	 * å›žè°ƒæ–‡ä»¶ç³»ç»Ÿçš„flockå‡½æ•°ã€‚
 	 */
 	if (filp->f_op && filp->f_op->flock)
 		error = filp->f_op->flock(filp,
 					  (can_sleep) ? F_SETLKW : F_SETLK,
 					  lock);
-	else/* Í¨³£Çé¿öÏÂ£¬Ã»ÓÐ¶¨ÖÆµÄflock£¬¶øÊÇµ÷ÓÃ³£ÓÃµÄflock_lock_file_waitÀ´ÊµÏÖÎÄ¼þ¼ÓËø */
+	else/* é€šå¸¸æƒ…å†µä¸‹ï¼Œæ²¡æœ‰å®šåˆ¶çš„flockï¼Œè€Œæ˜¯è°ƒç”¨å¸¸ç”¨çš„flock_lock_file_waitæ¥å®žçŽ°æ–‡ä»¶åŠ é” */
 		error = flock_lock_file_wait(filp, lock);
 
  out_free:
-	if (list_empty(&lock->fl_link)) {/* ËøÃ»ÓÐ±»¼ÓÈë»î¶¯»òÕß×èÈûÁ´±í£¬ÔòÊÍ·ÅËü */
+	if (list_empty(&lock->fl_link)) {/* é”æ²¡æœ‰è¢«åŠ å…¥æ´»åŠ¨æˆ–è€…é˜»å¡žé“¾è¡¨ï¼Œåˆ™é‡Šæ”¾å®ƒ */
 		locks_free_lock(lock);
 	}
 
@@ -1651,7 +1651,7 @@ out:
  * This implements both the F_SETLK and F_SETLKW commands of fcntl().
  */
 /**
- * »ñµÃPOSIXÎÄ¼þËø
+ * èŽ·å¾—POSIXæ–‡ä»¶é”
  */
 int fcntl_setlk(struct file *filp, unsigned int cmd, struct flock __user *l)
 {
@@ -1675,29 +1675,29 @@ int fcntl_setlk(struct file *filp, unsigned int cmd, struct flock __user *l)
 	/* Don't allow mandatory locks on files that may be memory mapped
 	 * and shared.
 	 */
-	if (IS_MANDLOCK(inode) &&/* ÔÊÐí¶Ô¸ÃÎÄ¼þ½øÐÐÇ¿ÖÆ¼ÓËø */
-	    (inode->i_mode & (S_ISGID | S_IXGRP)) == S_ISGID &&/* ÐèÒªÇ¿ÖÆ¼ÓËø */
-	    mapping_writably_mapped(filp->f_mapping)) {/* ¹²ÏíÓ³Éä */
-		error = -EAGAIN;/* ÕâÖÖÇé¿öÏÂ£¬ËµÃ÷ÎÄ¼þÕýÔÚ±»ÆäËû½ø³Ì·ÃÎÊ£¬²»ÄÜÉêÇëÇ¿ÖÆËø¡£ */
+	if (IS_MANDLOCK(inode) &&/* å…è®¸å¯¹è¯¥æ–‡ä»¶è¿›è¡Œå¼ºåˆ¶åŠ é” */
+	    (inode->i_mode & (S_ISGID | S_IXGRP)) == S_ISGID &&/* éœ€è¦å¼ºåˆ¶åŠ é” */
+	    mapping_writably_mapped(filp->f_mapping)) {/* å…±äº«æ˜ å°„ */
+		error = -EAGAIN;/* è¿™ç§æƒ…å†µä¸‹ï¼Œè¯´æ˜Žæ–‡ä»¶æ­£åœ¨è¢«å…¶ä»–è¿›ç¨‹è®¿é—®ï¼Œä¸èƒ½ç”³è¯·å¼ºåˆ¶é”ã€‚ */
 		goto out;
 	}
 
-	/* ¸ù¾ÝÓÃ»§Ì¬´«ÈëµÄ²ÎÊý£¬³õÊ¼»¯Ò»¸öfile_lock½á¹¹¡£ */
+	/* æ ¹æ®ç”¨æˆ·æ€ä¼ å…¥çš„å‚æ•°ï¼Œåˆå§‹åŒ–ä¸€ä¸ªfile_lockç»“æž„ã€‚ */
 	error = flock_to_posix_lock(filp, file_lock, &flock);
 	if (error)
 		goto out;
-	if (cmd == F_SETLKW) {/* ÔÊÐí×èÈûÉêÇëËø£¬ÉèÖÃFL_SLEEP±êÖ¾ */
+	if (cmd == F_SETLKW) {/* å…è®¸é˜»å¡žç”³è¯·é”ï¼Œè®¾ç½®FL_SLEEPæ ‡å¿— */
 		file_lock->fl_flags |= FL_SLEEP;
 	}
 	
 	error = -EBADF;
 	switch (flock.l_type) {
 	case F_RDLCK:
-		if (!(filp->f_mode & FMODE_READ))/* ÉêÇë¶ÁËø£¬ÐèÒªÓÐ¶ÁÈ¨ÏÞ */
+		if (!(filp->f_mode & FMODE_READ))/* ç”³è¯·è¯»é”ï¼Œéœ€è¦æœ‰è¯»æƒé™ */
 			goto out;
 		break;
 	case F_WRLCK:
-		if (!(filp->f_mode & FMODE_WRITE))/* ÉêÇëÐ´Ëø£¬ÐèÒªÓÐÐ´È¨ÏÞ */
+		if (!(filp->f_mode & FMODE_WRITE))/* ç”³è¯·å†™é”ï¼Œéœ€è¦æœ‰å†™æƒé™ */
 			goto out;
 		break;
 	case F_UNLCK:
@@ -1711,18 +1711,18 @@ int fcntl_setlk(struct file *filp, unsigned int cmd, struct flock __user *l)
 	if (error)
 		goto out;
 
-	/* Èç¹ûÎÄ¼þÓÐ×Ô¶¨ÒåµÄlock·½·¨£¬Ôòµ÷ÓÃËü¡£Ò»°ã´ÅÅÌÎÄ¼þÏµÍ³²»»á¶¨Òå´Ë·½·¨ */
+	/* å¦‚æžœæ–‡ä»¶æœ‰è‡ªå®šä¹‰çš„lockæ–¹æ³•ï¼Œåˆ™è°ƒç”¨å®ƒã€‚ä¸€èˆ¬ç£ç›˜æ–‡ä»¶ç³»ç»Ÿä¸ä¼šå®šä¹‰æ­¤æ–¹æ³• */
 	if (filp->f_op && filp->f_op->lock != NULL) {
 		error = filp->f_op->lock(filp, cmd, file_lock);
 		goto out;
 	}
 
-	for (;;) {/* ¶à´Î³¢ÊÔ»ñÈ¡Ëø£¬ÒòÎª¿ÉÄÜ»á´æÔÚËø³åÍ» */
-		error = __posix_lock_file(inode, file_lock);/* ²»×èÈûµÄ»ñÈ¡ÎÄ¼þËø */
-		/* Ê§°ÜÁË£¬Ò²²»ÔÊÐí×èÈû£¬ÔòÍË³ö·µ»Ø´íÎóÂë */
+	for (;;) {/* å¤šæ¬¡å°è¯•èŽ·å–é”ï¼Œå› ä¸ºå¯èƒ½ä¼šå­˜åœ¨é”å†²çª */
+		error = __posix_lock_file(inode, file_lock);/* ä¸é˜»å¡žçš„èŽ·å–æ–‡ä»¶é” */
+		/* å¤±è´¥äº†ï¼Œä¹Ÿä¸å…è®¸é˜»å¡žï¼Œåˆ™é€€å‡ºè¿”å›žé”™è¯¯ç  */
 		if ((error != -EAGAIN) || (cmd == F_SETLK))
 			break;
-		/* ÔÊÐí×èÈû£¬ÔòµÈ´ýÆäËûÈÎÎñÊÍ·ÅËøºóÖØÊÔ¡£ */
+		/* å…è®¸é˜»å¡žï¼Œåˆ™ç­‰å¾…å…¶ä»–ä»»åŠ¡é‡Šæ”¾é”åŽé‡è¯•ã€‚ */
 		error = wait_event_interruptible(file_lock->fl_wait,
 				!file_lock->fl_next);
 		if (!error)

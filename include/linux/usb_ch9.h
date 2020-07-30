@@ -260,27 +260,27 @@ struct usb_interface_descriptor {
 
 /* USB_DT_ENDPOINT: Endpoint descriptor */
 /**
- * USB�˵���������
+ * USB端点描述符。
  */
 struct usb_endpoint_descriptor {
 	__u8  bLength;
 	__u8  bDescriptorType;
 
 	/**
-	 * �ض��˵��USB��ַ���������˶˵�ķ��򡣿��Խ��λ����USB_DIR_OUT��USB_DIR_IN��ʹ�ã���ȷ���˵�Ĵ��䷽��
+	 * 特定端点的USB地址。还包含了端点的方向。可以结合位掩码USB_DIR_OUT和USB_DIR_IN来使用，以确定端点的传输方向。
 	 */
 	__u8  bEndpointAddress;
 	/**
-	 * �˵�����͡����Խ������UB_ENDPOINT_XFERTYPE_MASK��ʹ�á���ȷ���Ķ˵��������USB_ENDPOINT_XFER_ISOC��USB_ENDPOINT_XFER_BULK����USB_ENDPOINT_XFER_INT��
-	 * ��Щ��ֱ��ʾ��ʱ���������ж϶˵㡣
+	 * 端点的类型。可以结合掩码UB_ENDPOINT_XFERTYPE_MASK来使用。以确定的端点的类型是USB_ENDPOINT_XFER_ISOC、USB_ENDPOINT_XFER_BULK还是USB_ENDPOINT_XFER_INT。
+	 * 这些宏分别表示等时、批量和中断端点。
 	 */
 	__u8  bmAttributes;
 	/**
-	 * �ö˵�һ�ο��Դ���������ֽ������������Է����������ڴ�ֵ�����ݵ��˵㡣
+	 * 该端点一次可以处理的最大字节数。驱动可以发送数量大于此值的数据到端点。
 	 */
 	__le16 wMaxPacketSize;
 	/**
-	 * ����˵����ж����ͣ���ֵ�Ƕ˵�ļ�����á�Ҳ���Ƕ˵���ж�������ʱ�䡣�Ժ���Ϊ��λ��
+	 * 如果端点是中断类型，该值是端点的间隔设置。也就是端点的中断请求间隔时间。以毫秒为单位。
 	 */
 	__u8  bInterval;
 

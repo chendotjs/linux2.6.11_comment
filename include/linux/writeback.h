@@ -8,11 +8,11 @@ struct backing_dev_info;
 
 extern spinlock_t inode_lock;
 /**
- * ÕıÔÚÊ¹ÓÃµÄË÷Òı½ÚµãÁ´±í¡£²»ÔàÇÒi_count²»Îª0.
+ * æ­£åœ¨ä½¿ç”¨çš„ç´¢å¼•èŠ‚ç‚¹é“¾è¡¨ã€‚ä¸è„ä¸”i_countä¸ä¸º0.
  */
 extern struct list_head inode_in_use;
 /**
- * ÓĞĞ§Î´Ê¹ÓÃµÄË÷Òı½ÚµãÁ´±í¡£²»ÔàÇÒi_countÎª0.ÓÃÓÚ´ÅÅÌ¸ßËÙ»º´æ¡£
+ * æœ‰æ•ˆæœªä½¿ç”¨çš„ç´¢å¼•èŠ‚ç‚¹é“¾è¡¨ã€‚ä¸è„ä¸”i_countä¸º0.ç”¨äºç£ç›˜é«˜é€Ÿç¼“å­˜ã€‚
  */
 extern struct list_head inode_unused;
 
@@ -40,28 +40,28 @@ enum writeback_sync_modes {
  * in a manner such that unspecified fields are set to zero.
  */
 /**
- * ÔàÒ³Ë¢ĞÂ¿ØÖÆ½á¹¹¡£
+ * è„é¡µåˆ·æ–°æ§åˆ¶ç»“æ„ã€‚
  */
 struct writeback_control {
 	/**
-	 * Èç¹û²»Îª¿Õ£¬¼´Ö¸ÏòÒ»¸öbacking_dev_info½á¹¹¡£´ËÊ±£¬Ö»ÓĞÊôÓÚ»ù±¾¿éÉè±¸µÄÔàÒ³½«»á±»Ë¢ĞÂ¡£
+	 * å¦‚æœä¸ä¸ºç©ºï¼Œå³æŒ‡å‘ä¸€ä¸ªbacking_dev_infoç»“æ„ã€‚æ­¤æ—¶ï¼Œåªæœ‰å±äºåŸºæœ¬å—è®¾å¤‡çš„è„é¡µå°†ä¼šè¢«åˆ·æ–°ã€‚
 	 */
 	struct backing_dev_info *bdi;	/* If !NULL, only write back this
 					   queue */
 	/**
-	 * Í¬²½Ä£Ê½¡£
-	 *     WB_SYNC_ALL:±íÊ¾Èç¹ûÓöµ½Ò»¸öÉÏËøµÄË÷Òı½Úµã£¬±ØĞëµÈ´ı¶ø²»ÄÜÂÔ¹ıËü¡£
-	 *     WB_SYNC_HOLD:±íÊ¾°ÑÉÏËøµÄË÷Òı½Úµã·ÅÈëÉÔºóµÄÁ´±íÖĞ¡£
-	 *     WB_SYNC_NONE:±íÊ¾¼òµ¥µÄÂÔ¹ıÉÏËøµÄË÷Òı½Úµã¡£
+	 * åŒæ­¥æ¨¡å¼ã€‚
+	 *     WB_SYNC_ALL:è¡¨ç¤ºå¦‚æœé‡åˆ°ä¸€ä¸ªä¸Šé”çš„ç´¢å¼•èŠ‚ç‚¹ï¼Œå¿…é¡»ç­‰å¾…è€Œä¸èƒ½ç•¥è¿‡å®ƒã€‚
+	 *     WB_SYNC_HOLD:è¡¨ç¤ºæŠŠä¸Šé”çš„ç´¢å¼•èŠ‚ç‚¹æ”¾å…¥ç¨åçš„é“¾è¡¨ä¸­ã€‚
+	 *     WB_SYNC_NONE:è¡¨ç¤ºç®€å•çš„ç•¥è¿‡ä¸Šé”çš„ç´¢å¼•èŠ‚ç‚¹ã€‚
 	 */
 	enum writeback_sync_modes sync_mode;
 	/**
-	 * Èç¹û²»Îª¿Õ£¬¾Í±íÊ¾Ó¦¸ÃÂÔ¹ı±ÈÖ¸¶¨Öµ»¹ĞÂµÄË÷Òı½Úµã¡£
+	 * å¦‚æœä¸ä¸ºç©ºï¼Œå°±è¡¨ç¤ºåº”è¯¥ç•¥è¿‡æ¯”æŒ‡å®šå€¼è¿˜æ–°çš„ç´¢å¼•èŠ‚ç‚¹ã€‚
 	 */
 	unsigned long *older_than_this;	/* If !NULL, only write back inodes
 					   older than this */
 	/**
-	 * µ±Ç°Ö´ĞĞÁ÷ÖĞÈÔÈ»ÒªĞ´µÄÔàÒ³ÊıÁ¿¡£
+	 * å½“å‰æ‰§è¡Œæµä¸­ä»ç„¶è¦å†™çš„è„é¡µæ•°é‡ã€‚
 	 */ 
 	long nr_to_write;		/* Write this many pages, and decrement
 					   this for each page written */
@@ -76,7 +76,7 @@ struct writeback_control {
 	loff_t end;
 
 	/**
-	 * Èç¹û±»ÉèÖÃ£¬¾Í²»ÄÜ×èÈû½ø³Ì¡£
+	 * å¦‚æœè¢«è®¾ç½®ï¼Œå°±ä¸èƒ½é˜»å¡è¿›ç¨‹ã€‚
 	 */
 	unsigned nonblocking:1;			/* Don't get stuck on request queues */
 	unsigned encountered_congestion:1;	/* An output: a queue is full */

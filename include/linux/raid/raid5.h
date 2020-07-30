@@ -124,54 +124,54 @@
  * plus raid5d if it is handling it, plus one for each active request
  * on a cached buffer.
  */
-/* RAID5ÖĞµÄÌõ´ø */
+/* RAID5ä¸­çš„æ¡å¸¦ */
 struct stripe_head {
-	/* Á´ÈëRAID5¹şÏ£±íµÄ½Úµã */
+	/* é“¾å…¥RAID5å“ˆå¸Œè¡¨çš„èŠ‚ç‚¹ */
 	struct stripe_head	*hash_next, **hash_pprev; /* hash pointers */
-	/* Á´±íRAID5Ë½ÓĞÊı¾İÃèÊö·ûµÄÁ´±í */
+	/* é“¾è¡¨RAID5ç§æœ‰æ•°æ®æè¿°ç¬¦çš„é“¾è¡¨ */
 	struct list_head	lru;			/* inactive_list or handle_list */
-	/* ËùÊôRAID5Ë½ÓĞÊı¾İ½á¹¹ */
+	/* æ‰€å±RAID5ç§æœ‰æ•°æ®ç»“æ„ */
 	struct raid5_private_data	*raid_conf;
-	/* Ìõ´ø±àºÅ£¬Êµ¼ÊÉÏÊÇÌõ´øÔÚ³ÉÔ±´ÅÅÌÉÏµÄÆğÊ¼ÉÈÇø±àºÅ */
+	/* æ¡å¸¦ç¼–å·ï¼Œå®é™…ä¸Šæ˜¯æ¡å¸¦åœ¨æˆå‘˜ç£ç›˜ä¸Šçš„èµ·å§‹æ‰‡åŒºç¼–å· */
 	sector_t		sector;			/* sector of this row */
-	/* Ğ£Ñé´ÅÅÌ±àºÅ */
+	/* æ ¡éªŒç£ç›˜ç¼–å· */
 	int			pd_idx;			/* parity disk index */
-	/* ×´Ì¬±êÖ¾ */
+	/* çŠ¶æ€æ ‡å¿— */
 	unsigned long		state;			/* state flags */
-	/* »î¶¯Ïß³ÌÇëÇóÊıÄ¿ */
+	/* æ´»åŠ¨çº¿ç¨‹è¯·æ±‚æ•°ç›® */
 	atomic_t		count;			/* nr of active thread/requests */
-	/* ±£»¤Ìõ´øµÄËø */
+	/* ä¿æŠ¤æ¡å¸¦çš„é” */
 	spinlock_t		lock;
 	struct r5dev {
-		/* ¶ÁĞ´Ìõ´øµÄÍ¨ÓÃ¿é²ãÇëÇóÃèÊö·û */
+		/* è¯»å†™æ¡å¸¦çš„é€šç”¨å—å±‚è¯·æ±‚æè¿°ç¬¦ */
 		struct bio	req;
 		/* ??? */
 		struct bio_vec	vec;
-		/* ÓÃÓÚ¶ÁĞ´µÄÒ³Ãæ»º³åÇø */
+		/* ç”¨äºè¯»å†™çš„é¡µé¢ç¼“å†²åŒº */
 		struct page	*page;
-		/* ÔÚÌõ´øÉÏµÄ¶ÁĞ´×´Ì¬ */
+		/* åœ¨æ¡å¸¦ä¸Šçš„è¯»å†™çŠ¶æ€ */
 		struct bio	*toread, *towrite, *written;
-		/* Ïà¶ÔÓÚRAIDÉè±¸µÄÆğÊ¼ÉÈÇø±àºÅ */
+		/* ç›¸å¯¹äºRAIDè®¾å¤‡çš„èµ·å§‹æ‰‡åŒºç¼–å· */
 		sector_t	sector;			/* sector of this page */
-		/* Çı¶¯×´Ì¬»ú±êÖ¾ */
+		/* é©±åŠ¨çŠ¶æ€æœºæ ‡å¿— */
 		unsigned long	flags;
 	} dev[1]; /* allocated with extra space depending of RAID geometry */
-	/* Ìõ´ø¶ÔÓ¦µÄÃ¿Ò»¸ö´ÅÅÌ */
+	/* æ¡å¸¦å¯¹åº”çš„æ¯ä¸€ä¸ªç£ç›˜ */
 };
 /* Flags */
-/* »º´æÒ³ÃæÖĞ°üº¬×îĞÂÊı¾İ */
+/* ç¼“å­˜é¡µé¢ä¸­åŒ…å«æœ€æ–°æ•°æ® */
 #define	R5_UPTODATE	0	/* page contains current data */
-/* ÄÚÇ¶Í¨ÓÃ¿é²ãÇëÇóÒÑ¾­±»Ìá½»µ½IO */
+/* å†…åµŒé€šç”¨å—å±‚è¯·æ±‚å·²ç»è¢«æäº¤åˆ°IO */
 #define	R5_LOCKED	1	/* IO has been submitted on "req" */
-/* ÔÚtowriteÁ´±íÖĞµÄbio¸²¸ÇÁËÕû¸ö»º´æÒ³Ãæ */
+/* åœ¨towriteé“¾è¡¨ä¸­çš„bioè¦†ç›–äº†æ•´ä¸ªç¼“å­˜é¡µé¢ */
 #define	R5_OVERWRITE	2	/* towrite covers whole page */
 /* and some that are internal to handle_stripe */
 #define	R5_Insync	3	/* rdev && rdev->in_sync at start */
-/* Ï£Íû¶ÔÌõ´ø½øĞĞ¶ÁĞ´ */
+/* å¸Œæœ›å¯¹æ¡å¸¦è¿›è¡Œè¯»å†™ */
 #define	R5_Wantread	4	/* want to schedule a read */
 #define	R5_Wantwrite	5
 #define	R5_Syncio	6	/* this io need to be accounted as resync io */
-/* ÁíÒ»¸öÇëÇóÒ²ÓÃÓÚÌõ´ø£¬Òò¶ø±ØĞëµÈ´ı */
+/* å¦ä¸€ä¸ªè¯·æ±‚ä¹Ÿç”¨äºæ¡å¸¦ï¼Œå› è€Œå¿…é¡»ç­‰å¾… */
 #define	R5_Overlap	7	/* There is a pending overlapping request on this block */
 
 /*
@@ -215,60 +215,60 @@ struct stripe_head {
  * HANDLE gets cleared if stripe_handle leave nothing locked.
  */
  
-/* RAID³ÉÔ±´ÅÅÌ */
+/* RAIDæˆå‘˜ç£ç›˜ */
 struct disk_info {
 	mdk_rdev_t	*rdev;
 };
 
-/* RAID5Ë½ÓĞÊı¾İ½á¹¹ */
+/* RAID5ç§æœ‰æ•°æ®ç»“æ„ */
 struct raid5_private_data {
-	/* Á´½ÓÌõ´øµÄ¹şÏ£±í£¬¼Ó¿ìÉÈÇø²éÕÒÌõ´øµÄËÙ¶È  */
+	/* é“¾æ¥æ¡å¸¦çš„å“ˆå¸Œè¡¨ï¼ŒåŠ å¿«æ‰‡åŒºæŸ¥æ‰¾æ¡å¸¦çš„é€Ÿåº¦  */
 	struct stripe_head	**stripe_hashtbl;
-	/* ËùÊôµÄMDÉè±¸ */
+	/* æ‰€å±çš„MDè®¾å¤‡ */
 	mddev_t			*mddev;
-	/* ±¸ÓÃ´ÅÅÌ£¬ËÆºõÎ´ÓÃ */
+	/* å¤‡ç”¨ç£ç›˜ï¼Œä¼¼ä¹æœªç”¨ */
 	struct disk_info	*spare;
 	/**
-	 * chunk_size	Ìõ´øÖĞÃ¿¿éµÄ³¤¶È 
-	 * level		RAID¼¶±ğ
-	 * algorithm	Éè±¸Ëã·¨
+	 * chunk_size	æ¡å¸¦ä¸­æ¯å—çš„é•¿åº¦ 
+	 * level		RAIDçº§åˆ«
+	 * algorithm	è®¾å¤‡ç®—æ³•
 	 */
 	int			chunk_size, level, algorithm;
 	/**
-	 * raid_disks	³ÉÔ±´ÅÅÌÊı
+	 * raid_disks	æˆå‘˜ç£ç›˜æ•°
 	 */
 	int			raid_disks, working_disks, failed_disks;
-	/* ×î´óÌõ´øÊıÄ¿ */
+	/* æœ€å¤§æ¡å¸¦æ•°ç›® */
 	int			max_nr_stripes;
 
-	/* ËùÓĞĞèÒª±»´¦ÀíµÄÌõ´øÁ´±í */
+	/* æ‰€æœ‰éœ€è¦è¢«å¤„ç†çš„æ¡å¸¦é“¾è¡¨ */
 	struct list_head	handle_list; /* stripes needing handling */
-	/* ËùÓĞÑÓ³Ù´¦ÀíµÄÌõ´øÁ´±í */
+	/* æ‰€æœ‰å»¶è¿Ÿå¤„ç†çš„æ¡å¸¦é“¾è¡¨ */
 	struct list_head	delayed_list; /* stripes that have plugged requests */
-	/* ÒÑ¾­µ÷¶ÈµÄÌõ´ø */
+	/* å·²ç»è°ƒåº¦çš„æ¡å¸¦ */
 	atomic_t		preread_active_stripes; /* stripes with scheduled io */
 
-	/* ¸ßËÙ»º´æµÄÃû³Æ£¬ÓÃÓÚ·ÖÅästrip_head */
+	/* é«˜é€Ÿç¼“å­˜çš„åç§°ï¼Œç”¨äºåˆ†é…strip_head */
 	char			cache_name[20];
-	/* ·ÖÅästrip_headµÄ¸ßËÙ»º´æ */
+	/* åˆ†é…strip_headçš„é«˜é€Ÿç¼“å­˜ */
 	kmem_cache_t		*slab_cache; /* for allocating stripes */
 	/*
 	 * Free stripes pool
 	 */
-	/* »î¶¯µÄÌõ´øÊı */
+	/* æ´»åŠ¨çš„æ¡å¸¦æ•° */
 	atomic_t		active_stripes;
-	/* Ã»ÓĞ±»Ê¹ÓÃµÄstrip_headÁ´±í */
+	/* æ²¡æœ‰è¢«ä½¿ç”¨çš„strip_headé“¾è¡¨ */
 	struct list_head	inactive_list;
-	/* µÈ´ıstrip_headµÄ½ø³Ì£¬µ±strip_head²»ÄÜ·ÖÅäÊ±Ê¹ÓÃ */
+	/* ç­‰å¾…strip_headçš„è¿›ç¨‹ï¼Œå½“strip_headä¸èƒ½åˆ†é…æ—¶ä½¿ç”¨ */
 	wait_queue_head_t	wait_for_stripe;
-	/* Èç¹ûÁ½´Î·ÃÎÊÖØµşµÄÉÈÇø£¬ÔòºóĞø·ÃÎÊµÄ½ø³Ì±ØĞëÔÚÕâ¸ö¶ÓÁĞÉÏµÈ´ı¡£ */
+	/* å¦‚æœä¸¤æ¬¡è®¿é—®é‡å çš„æ‰‡åŒºï¼Œåˆ™åç»­è®¿é—®çš„è¿›ç¨‹å¿…é¡»åœ¨è¿™ä¸ªé˜Ÿåˆ—ä¸Šç­‰å¾…ã€‚ */
 	wait_queue_head_t	wait_for_overlap;
 	int			inactive_blocked;	/* release of inactive stripes blocked,
 							 * waiting for 25% to be free
 							 */        
-	/* ÓÃÓÚ±£»¤Á´±íºÍ¹şÏ£±íµÄ×ÔĞıËø */							 
+	/* ç”¨äºä¿æŠ¤é“¾è¡¨å’Œå“ˆå¸Œè¡¨çš„è‡ªæ—‹é” */							 
 	spinlock_t		device_lock;
-	/* ³ÉÔ±´ÅÅÌÊı×é */
+	/* æˆå‘˜ç£ç›˜æ•°ç»„ */
 	struct disk_info	disks[0];
 };
 

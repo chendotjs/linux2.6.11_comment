@@ -35,7 +35,7 @@ static const int deadline_hash_shift = 5;
 #define list_entry_hash(ptr)	list_entry((ptr), struct deadline_rq, hash)
 #define ON_HASH(drq)		(drq)->on_hash
 
-/* ×îºóÆÚÏŞµ÷¶ÈËã·¨µÄË½ÓĞÊı¾İ */
+/* æœ€åæœŸé™è°ƒåº¦ç®—æ³•çš„ç§æœ‰æ•°æ® */
 struct deadline_data {
 	/*
 	 * run time data
@@ -44,9 +44,9 @@ struct deadline_data {
 	/*
 	 * requests (deadline_rq s) are present on both sort_list and fifo_list
 	 */
-	/* ÒÔÉÈÇøºÅ½øĞĞÅÅĞòµÄÁ½¿ÃºìºÚÊ÷£¬·Ö±ğÓÃÓÚ¶ÁºÍĞ´ */
+	/* ä»¥æ‰‡åŒºå·è¿›è¡Œæ’åºçš„ä¸¤æ£µçº¢é»‘æ ‘ï¼Œåˆ†åˆ«ç”¨äºè¯»å’Œå†™ */
 	struct rb_root sort_list[2];	
-	/* ¶ÁĞ´FIFO¶ÓÁĞ */
+	/* è¯»å†™FIFOé˜Ÿåˆ— */
 	struct list_head fifo_list[2];
 	
 	/*
@@ -55,22 +55,22 @@ struct deadline_data {
 	struct deadline_rq *next_drq[2];
 	struct list_head *dispatch;	/* driver dispatch queue */
 	struct list_head *hash;		/* request hash */
-	/* µ±Ç°Á¬ĞøÌá½»µÄÇëÇóÊıÄ¿£¬Ö»ÒªĞ¡ÓÚfifo_batch¾Í¿ÉÒÔ½øĞĞÁ¬ĞøÌá½» */
+	/* å½“å‰è¿ç»­æäº¤çš„è¯·æ±‚æ•°ç›®ï¼Œåªè¦å°äºfifo_batchå°±å¯ä»¥è¿›è¡Œè¿ç»­æäº¤ */
 	unsigned int batching;		/* number of sequential requests made */
-	/* Êµ¼ÊÎ´ÓÃ£¬Òª·Ö·¢ÇëÇóµÄ½áÊøÉÈÇø */
+	/* å®é™…æœªç”¨ï¼Œè¦åˆ†å‘è¯·æ±‚çš„ç»“æŸæ‰‡åŒº */
 	sector_t last_sector;		/* head position */
-	/* ÎªÁËÌá½»¶ÁÇëÇó¶øÔì³ÉĞ´¼¢¶öµÄ´ÎÊı£¬Èç¹û³¬¹ıwrites_starved£¬ÔòĞèÒªÌá½»Ğ´ÇëÇó */
+	/* ä¸ºäº†æäº¤è¯»è¯·æ±‚è€Œé€ æˆå†™é¥¥é¥¿çš„æ¬¡æ•°ï¼Œå¦‚æœè¶…è¿‡writes_starvedï¼Œåˆ™éœ€è¦æäº¤å†™è¯·æ±‚ */
 	unsigned int starved;		/* times reads have starved writes */
 
 	/*
 	 * settings that change how the i/o scheduler behaves
 	 */
-	/* ³¬¹ı´ËÊ±¼äÔò±ØĞëÌá½»ÇëÇó */
+	/* è¶…è¿‡æ­¤æ—¶é—´åˆ™å¿…é¡»æäº¤è¯·æ±‚ */
 	int fifo_expire[2];
 	int fifo_batch;
-	/* Ğ´¼¢¶öµÄ×î´ó´ÎÊı */
+	/* å†™é¥¥é¥¿çš„æœ€å¤§æ¬¡æ•° */
 	int writes_starved;
-	/* Ä¬ÈÏÎª1£¬±íÊ¾ÔÊĞíÏòÇ°ºÏ²¢ */
+	/* é»˜è®¤ä¸º1ï¼Œè¡¨ç¤ºå…è®¸å‘å‰åˆå¹¶ */
 	int front_merges;
 
 	mempool_t *drq_pool;
@@ -295,7 +295,7 @@ deadline_find_first_drq(struct deadline_data *dd, int data_dir)
 /*
  * add drq to rbtree and fifo
  */
-/* Ìí¼ÓÇëÇóµ½ºìºÚÊ÷ºÍFIFO¶ÓÁĞ */
+/* æ·»åŠ è¯·æ±‚åˆ°çº¢é»‘æ ‘å’ŒFIFOé˜Ÿåˆ— */
 static inline void
 deadline_add_request(struct request_queue *q, struct request *rq)
 {
@@ -304,13 +304,13 @@ deadline_add_request(struct request_queue *q, struct request *rq)
 
 	const int data_dir = rq_data_dir(drq->request);
 
-	/* Ìí¼Óµ½ºìºÚÊ÷ÖĞ */
+	/* æ·»åŠ åˆ°çº¢é»‘æ ‘ä¸­ */
 	deadline_add_drq_rb(dd, drq);
 	/*
 	 * set expire time (only used for reads) and add to fifo list
 	 */
-	drq->expires = jiffies + dd->fifo_expire[data_dir];/* ¼ÆËãÇëÇó³¬Ê±Ê±¼ä-deadline */
-	list_add_tail(&drq->fifo, &dd->fifo_list[data_dir]);/* Ìí¼Óµ½FIFO¶ÓÁĞ×îºó */
+	drq->expires = jiffies + dd->fifo_expire[data_dir];/* è®¡ç®—è¯·æ±‚è¶…æ—¶æ—¶é—´-deadline */
+	list_add_tail(&drq->fifo, &dd->fifo_list[data_dir]);/* æ·»åŠ åˆ°FIFOé˜Ÿåˆ—æœ€å */
 
 	if (rq_mergeable(rq)) {
 		deadline_add_drq_hash(dd, drq);
@@ -336,7 +336,7 @@ static void deadline_remove_request(request_queue_t *q, struct request *rq)
 	}
 }
 
-/* ÅĞ¶ÏbioÇëÇóÊÇ·ñ¿ÉÒÔºÏ²¢ */
+/* åˆ¤æ–­bioè¯·æ±‚æ˜¯å¦å¯ä»¥åˆå¹¶ */
 static int
 deadline_merge(request_queue_t *q, struct request **req, struct bio *bio)
 {
@@ -347,8 +347,8 @@ deadline_merge(request_queue_t *q, struct request **req, struct bio *bio)
 	/*
 	 * try last_merge to avoid going to hash
 	 */
-	ret = elv_try_last_merge(q, bio);/* Ê×ÏÈ³¢ÊÔÓëÉÏ´ÎºÏ²¢µÄ¿é½øĞĞºÏ²¢£¬±ÜÃâ½øĞĞhash²éÕÒ */
-	if (ret != ELEVATOR_NO_MERGE) {/* ÓëÉÏ´ÎµÄ¿é½øĞĞÁËºÏ²¢ */
+	ret = elv_try_last_merge(q, bio);/* é¦–å…ˆå°è¯•ä¸ä¸Šæ¬¡åˆå¹¶çš„å—è¿›è¡Œåˆå¹¶ï¼Œé¿å…è¿›è¡ŒhashæŸ¥æ‰¾ */
+	if (ret != ELEVATOR_NO_MERGE) {/* ä¸ä¸Šæ¬¡çš„å—è¿›è¡Œäº†åˆå¹¶ */
 		__rq = q->last_merge;
 		goto out_insert;
 	}
@@ -356,11 +356,11 @@ deadline_merge(request_queue_t *q, struct request **req, struct bio *bio)
 	/*
 	 * see if the merge hash can satisfy a back merge
 	 */
-	__rq = deadline_find_drq_hash(dd, bio->bi_sector);/* ºóÏòºÏ²¢£¬¼´½«µ±Ç°ÇëÇóºÏ²¢µ½Ä³¸öÇëÇóµÄºóÃæ */
-	if (__rq) {/* µ±Ç°ÇëÇóÔÚÄ³¸öÇëÇóµÄºóÃæ */
+	__rq = deadline_find_drq_hash(dd, bio->bi_sector);/* åå‘åˆå¹¶ï¼Œå³å°†å½“å‰è¯·æ±‚åˆå¹¶åˆ°æŸä¸ªè¯·æ±‚çš„åé¢ */
+	if (__rq) {/* å½“å‰è¯·æ±‚åœ¨æŸä¸ªè¯·æ±‚çš„åé¢ */
 		BUG_ON(__rq->sector + __rq->nr_sectors != bio->bi_sector);
 
-		if (elv_rq_merge_ok(__rq, bio)) {/* ¿ÉÒÔºÏ²¢ */
+		if (elv_rq_merge_ok(__rq, bio)) {/* å¯ä»¥åˆå¹¶ */
 			ret = ELEVATOR_BACK_MERGE;
 			goto out;
 		}
@@ -369,25 +369,25 @@ deadline_merge(request_queue_t *q, struct request **req, struct bio *bio)
 	/*
 	 * check for front merge
 	 */
-	if (dd->front_merges) {/* ËäÈ»²»ÄÜºóÏòºÏ²¢£¬µ«ÊÇËã·¨ÔÊĞíÇ°ÏòºÏ²¢ */
-		sector_t rb_key = bio->bi_sector + bio_sectors(bio);/* ¼ÆËãµ±Ç°ÇëÇóµÄ×îºóÒ»¸öÉÈÇø±àºÅ */
+	if (dd->front_merges) {/* è™½ç„¶ä¸èƒ½åå‘åˆå¹¶ï¼Œä½†æ˜¯ç®—æ³•å…è®¸å‰å‘åˆå¹¶ */
+		sector_t rb_key = bio->bi_sector + bio_sectors(bio);/* è®¡ç®—å½“å‰è¯·æ±‚çš„æœ€åä¸€ä¸ªæ‰‡åŒºç¼–å· */
 
-		/* ÔÚºìºÚÊ÷ÖĞ²éÕÒ×îºóÒ»¸öÉÈÇø±àºÅµÄÇëÇó */
+		/* åœ¨çº¢é»‘æ ‘ä¸­æŸ¥æ‰¾æœ€åä¸€ä¸ªæ‰‡åŒºç¼–å·çš„è¯·æ±‚ */
 		__rq = deadline_find_drq_rb(dd, rb_key, bio_data_dir(bio));
-		if (__rq) {/* ´æÔÚÄ³¸öÇëÇóÓëµ±Ç°ÇëÇóÏàÁ¬ */
+		if (__rq) {/* å­˜åœ¨æŸä¸ªè¯·æ±‚ä¸å½“å‰è¯·æ±‚ç›¸è¿ */
 			BUG_ON(rb_key != rq_rb_key(__rq));
 
-			if (elv_rq_merge_ok(__rq, bio)) {/* ÔÊĞíºÏ²¢£¬½øĞĞÇ°ÏòºÏ²¢ */
+			if (elv_rq_merge_ok(__rq, bio)) {/* å…è®¸åˆå¹¶ï¼Œè¿›è¡Œå‰å‘åˆå¹¶ */
 				ret = ELEVATOR_FRONT_MERGE;
 				goto out;
 			}
 		}
 	}
 
-	/* Ç°ºóÏò¶¼²»ÄÜºÏ²¢£¬ÍË³ö */
+	/* å‰åå‘éƒ½ä¸èƒ½åˆå¹¶ï¼Œé€€å‡º */
 	return ELEVATOR_NO_MERGE;
 out:
-	q->last_merge = __rq;/* ¼ÇÂ¼ÏÂ×îºóÒ»´ÎºÏ²¢µÄÇëÇó£¬ÏÂÒ»´ÎµÄÇëÇó¿ÉÄÜÒ²ÄÜÓë¸ÃÇëÇóºÏ²¢ */
+	q->last_merge = __rq;/* è®°å½•ä¸‹æœ€åä¸€æ¬¡åˆå¹¶çš„è¯·æ±‚ï¼Œä¸‹ä¸€æ¬¡çš„è¯·æ±‚å¯èƒ½ä¹Ÿèƒ½ä¸è¯¥è¯·æ±‚åˆå¹¶ */
 out_insert:
 	if (ret)
 		deadline_hot_drq_hash(dd, RQ_DATA(__rq));
@@ -516,7 +516,7 @@ static inline int deadline_check_fifo(struct deadline_data *dd, int ddir)
  * deadline_dispatch_requests selects the best request according to
  * read/write expire, fifo_batch, etc
  */
-/* ´Óµ÷¶È¶ÓÁĞÖĞÈ¡³öÒ»¸öÇëÇó¡£ */
+/* ä»è°ƒåº¦é˜Ÿåˆ—ä¸­å–å‡ºä¸€ä¸ªè¯·æ±‚ã€‚ */
 static int deadline_dispatch_requests(struct deadline_data *dd)
 {
 	const int reads = !list_empty(&dd->fifo_list[READ]);
@@ -529,20 +529,20 @@ static int deadline_dispatch_requests(struct deadline_data *dd)
 	 */
 	drq = NULL;
 
-	if (dd->next_drq[READ])/* ´ÓbatchµÄ½Ç¶È¿´£¬È·¶¨ÏÂÒ»´ÎÊÇ´¦Àí¶Á»¹ÊÇĞ´ */
+	if (dd->next_drq[READ])/* ä»batchçš„è§’åº¦çœ‹ï¼Œç¡®å®šä¸‹ä¸€æ¬¡æ˜¯å¤„ç†è¯»è¿˜æ˜¯å†™ */
 		drq = dd->next_drq[READ];
 
 	if (dd->next_drq[WRITE])
 		drq = dd->next_drq[WRITE];
 
-	if (drq) {/* µçÌİÎ´µ½¶¥£¬²¢ÇÒ¸ÃÅú´Î´¦ÀíµÄÇëÇó»¹Î´´ïµ½ÏŞÖµ */
+	if (drq) {/* ç”µæ¢¯æœªåˆ°é¡¶ï¼Œå¹¶ä¸”è¯¥æ‰¹æ¬¡å¤„ç†çš„è¯·æ±‚è¿˜æœªè¾¾åˆ°é™å€¼ */
 		/* we have a "next request" */
 		
 		if (dd->last_sector != drq->request->sector)
 			/* end the batch on a non sequential request */
 			dd->batching += dd->fifo_batch;
 		
-		if (dd->batching < dd->fifo_batch)/* ±¾Åú´ÎµÄÇëÇóÎ´µ½ÏŞ¶î£¬Ö±½Ó´¦Àí¶Á»òÕßĞ´ÇëÇó */
+		if (dd->batching < dd->fifo_batch)/* æœ¬æ‰¹æ¬¡çš„è¯·æ±‚æœªåˆ°é™é¢ï¼Œç›´æ¥å¤„ç†è¯»æˆ–è€…å†™è¯·æ±‚ */
 			/* we are still entitled to batch */
 			goto dispatch_request;
 	}
@@ -551,11 +551,11 @@ static int deadline_dispatch_requests(struct deadline_data *dd)
 	 * at this point we are not running a batch. select the appropriate
 	 * data direction (read / write)
 	 */
-	/* ÔËĞĞµ½ÕâÀï£¬ËµÃ÷µ±Ç°Åú´Î¶î¶ÈÓÃÍê£¬ÓÅÏÈ´¦Àí¶ÁÇëÇó */
+	/* è¿è¡Œåˆ°è¿™é‡Œï¼Œè¯´æ˜å½“å‰æ‰¹æ¬¡é¢åº¦ç”¨å®Œï¼Œä¼˜å…ˆå¤„ç†è¯»è¯·æ±‚ */
 	if (reads) {
 		BUG_ON(RB_EMPTY(&dd->sort_list[READ]));
 
-		/* ÓĞĞ´ÇëÇó£¬µİÔöĞ´ÇëÇó¼¢¶ö¼ÆÊıºó³¬¹ıÏŞ¶î£¬ÔòÓ¦µ±´¦ÀíĞ´ÇëÇó */
+		/* æœ‰å†™è¯·æ±‚ï¼Œé€’å¢å†™è¯·æ±‚é¥¥é¥¿è®¡æ•°åè¶…è¿‡é™é¢ï¼Œåˆ™åº”å½“å¤„ç†å†™è¯·æ±‚ */
 		if (writes && (dd->starved++ >= dd->writes_starved))
 			goto dispatch_writes;
 
@@ -569,11 +569,11 @@ static int deadline_dispatch_requests(struct deadline_data *dd)
 	 * there are either no reads or writes have been starved
 	 */
 
-	if (writes) {/* Ã»ÓĞ¶ÁÇëÇó»òÕß¶ÁÇëÇó¶î¶ÈÓÃÍê */
+	if (writes) {/* æ²¡æœ‰è¯»è¯·æ±‚æˆ–è€…è¯»è¯·æ±‚é¢åº¦ç”¨å®Œ */
 dispatch_writes:
 		BUG_ON(RB_EMPTY(&dd->sort_list[WRITE]));
 
-		dd->starved = 0;/* Çå³ı¼¢¶ö¼ÆÊı */
+		dd->starved = 0;/* æ¸…é™¤é¥¥é¥¿è®¡æ•° */
 
 		data_dir = WRITE;
 		other_dir = READ;
@@ -581,23 +581,23 @@ dispatch_writes:
 		goto dispatch_find_request;
 	}
 
-	return 0;/* ¼ÈÃ»ÓĞ¶ÁÇëÇó£¬Ò²Ã»ÓĞĞ´ÇëÇó£¬·µ»Ø0±íÊ¾ÎŞ·¨½«ÇëÇó×ªÒÆµ½·Ö·¢¶ÓÁĞ */
+	return 0;/* æ—¢æ²¡æœ‰è¯»è¯·æ±‚ï¼Œä¹Ÿæ²¡æœ‰å†™è¯·æ±‚ï¼Œè¿”å›0è¡¨ç¤ºæ— æ³•å°†è¯·æ±‚è½¬ç§»åˆ°åˆ†å‘é˜Ÿåˆ— */
 
 dispatch_find_request:
 	/*
 	 * we are not running a batch, find best request for selected data_dir
 	 */
-	if (deadline_check_fifo(dd, data_dir)) {/* ¼ì²éFIFO¶ÓÁĞÖĞÊÇ·ñÓĞ¹ıÆÚÇëÇó£¬»òÕßµçÌİÒÑ¾­µ½Í·£¬Ò²´ÓFIFO¶ÓÁĞÖĞÈ¡µÚÒ»¸öÇëÇó */
+	if (deadline_check_fifo(dd, data_dir)) {/* æ£€æŸ¥FIFOé˜Ÿåˆ—ä¸­æ˜¯å¦æœ‰è¿‡æœŸè¯·æ±‚ï¼Œæˆ–è€…ç”µæ¢¯å·²ç»åˆ°å¤´ï¼Œä¹Ÿä»FIFOé˜Ÿåˆ—ä¸­å–ç¬¬ä¸€ä¸ªè¯·æ±‚ */
 		/* An expired request exists - satisfy it */
 		dd->batching = 0;
-		drq = list_entry_fifo(dd->fifo_list[data_dir].next);/* È¡FIFO¶ÓÁĞÖĞµÚÒ»¸öÇëÇó */
+		drq = list_entry_fifo(dd->fifo_list[data_dir].next);/* å–FIFOé˜Ÿåˆ—ä¸­ç¬¬ä¸€ä¸ªè¯·æ±‚ */
 		
 	} else if (dd->next_drq[data_dir]) {
 		/*
 		 * The last req was the same dir and we have a next request in
 		 * sort order. No expired requests so continue on from here.
 		 */
-		drq = dd->next_drq[data_dir];/* ÑØµİÔö·½ÏòÕÒÏÂÒ»¸öÇëÇó */
+		drq = dd->next_drq[data_dir];/* æ²¿é€’å¢æ–¹å‘æ‰¾ä¸‹ä¸€ä¸ªè¯·æ±‚ */
 	} else {
 		/*
 		 * The last req was the other direction or we have run out of
@@ -612,8 +612,8 @@ dispatch_request:
 	/*
 	 * drq is the selected appropriate request.
 	 */
-	dd->batching++;/* µİÔöbatch¼ÆÊı */
-	deadline_move_request(dd, drq);/* ½«ÇëÇó´Ó×îºóÆÚÏŞIOµ÷¶È¶ÓÁĞÒÆµ½·Ö·¢¶ÓÁĞÖĞ */
+	dd->batching++;/* é€’å¢batchè®¡æ•° */
+	deadline_move_request(dd, drq);/* å°†è¯·æ±‚ä»æœ€åæœŸé™IOè°ƒåº¦é˜Ÿåˆ—ç§»åˆ°åˆ†å‘é˜Ÿåˆ—ä¸­ */
 
 	return 1;
 }

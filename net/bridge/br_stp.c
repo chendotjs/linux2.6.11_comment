@@ -41,7 +41,7 @@ void br_log_state(const struct net_bridge_port *p)
 
 /* called under bridge lock */
 /**
- * ¶ÔÓÚÖ¸¶¨µÄÍøÇÅÉè±¸ºÍ¶Ë¿ÚºÅ£¬·µ»ØÏà¹ØµÄnet_bridge_portÊı¾İ½á¹¹¡£
+ * å¯¹äºæŒ‡å®šçš„ç½‘æ¡¥è®¾å¤‡å’Œç«¯å£å·ï¼Œè¿”å›ç›¸å…³çš„net_bridge_portæ•°æ®ç»“æ„ã€‚
  */
 struct net_bridge_port *br_get_port(struct net_bridge *br, u16 port_no)
 {
@@ -57,7 +57,7 @@ struct net_bridge_port *br_get_port(struct net_bridge *br, u16 port_no)
 
 /* called under bridge lock */
 /**
- * ¶ÔÓÚÖ¸¶¨µÄÍøÇÅ¶Ë¿Ú£¬ºÍµ±Ç°¸ù¶Ë¿Ú£¬br_should_become_root_port±È½Ï¶Ë¿ÚºÍµ±Ç°¸ù¶Ë¿ÚµÄÓÅÏÈ¼¶ÏòÁ¿£¬Èç¹û¶Ë¿ÚÓµÓĞ¸ü¸ßÓÅÏÈ¼¶ÏòÁ¿¾Í·µ»Ø1,·ñÔò·µ»Ø0£»
+ * å¯¹äºæŒ‡å®šçš„ç½‘æ¡¥ç«¯å£ï¼Œå’Œå½“å‰æ ¹ç«¯å£ï¼Œbr_should_become_root_portæ¯”è¾ƒç«¯å£å’Œå½“å‰æ ¹ç«¯å£çš„ä¼˜å…ˆçº§å‘é‡ï¼Œå¦‚æœç«¯å£æ‹¥æœ‰æ›´é«˜ä¼˜å…ˆçº§å‘é‡å°±è¿”å›1,å¦åˆ™è¿”å›0ï¼›
  */
 static int br_should_become_root_port(const struct net_bridge_port *p, 
 				      u16 root_port)
@@ -111,7 +111,7 @@ static int br_should_become_root_port(const struct net_bridge_port *p,
 
 /* called under bridge lock */
 /**
- * ¶ÔÓÚ¸ø¶¨µÄÍøÇÅ£¬br_root_selectionÑ¡Ôñ¸ù¶Ë¿Ú¡£
+ * å¯¹äºç»™å®šçš„ç½‘æ¡¥ï¼Œbr_root_selectioné€‰æ‹©æ ¹ç«¯å£ã€‚
  */
 static void br_root_selection(struct net_bridge *br)
 {
@@ -138,29 +138,29 @@ static void br_root_selection(struct net_bridge *br)
 
 /* called under bridge lock */
 /**
- * µ±·Ç¸ùÇÅ±äÎª¸ùÇÅÊ±µ÷ÓÃ¡£
+ * å½“éæ ¹æ¡¥å˜ä¸ºæ ¹æ¡¥æ—¶è°ƒç”¨ã€‚
  */
 void br_become_root_bridge(struct net_bridge *br)
 {
 	/**
-	 * ¸üĞÂÆäËûÊ±ÖÓÎª±¾µØÅäÖÃÖµ£¬ÒòÎª¸ùÇÅµÄÊ±ÖÓÊ¹ÓÃ±¾µØÉèÖÃµÄÖµ¡£
+	 * æ›´æ–°å…¶ä»–æ—¶é’Ÿä¸ºæœ¬åœ°é…ç½®å€¼ï¼Œå› ä¸ºæ ¹æ¡¥çš„æ—¶é’Ÿä½¿ç”¨æœ¬åœ°è®¾ç½®çš„å€¼ã€‚
 	 */
 	br->max_age = br->bridge_max_age;
 	br->hello_time = br->bridge_hello_time;
 	br->forward_delay = br->bridge_forward_delay;
 	/**
-	 * Æô¶¯ÍØÆË±ä»¯ÊÂ¼ş¡£
+	 * å¯åŠ¨æ‹“æ‰‘å˜åŒ–äº‹ä»¶ã€‚
 	 */
 	br_topology_change_detection(br);
 	/**
-	 * Í£Ö¹TCNÊ±ÖÓ£¬ÒòÎªËü²»Ó¦µ±ÔÚ¸ùÇÅÉÏÔËĞĞ
+	 * åœæ­¢TCNæ—¶é’Ÿï¼Œå› ä¸ºå®ƒä¸åº”å½“åœ¨æ ¹æ¡¥ä¸Šè¿è¡Œ
 	 */
 	del_timer(&br->tcn_timer);
 
 	if (br->dev->flags & IFF_UP) {
 		br_config_bpdu_generation(br);
 		/**
-		 * ¿ªÊ¼HELLOÊ±ÖÓ£¬Õâ¸öÊ±ÖÓ½ö½öÔËĞĞÔÚ¸ùÇÅÖĞ¡£
+		 * å¼€å§‹HELLOæ—¶é’Ÿï¼Œè¿™ä¸ªæ—¶é’Ÿä»…ä»…è¿è¡Œåœ¨æ ¹æ¡¥ä¸­ã€‚
 		 */
 		mod_timer(&br->hello_timer, jiffies + br->hello_time);
 	}
@@ -168,7 +168,7 @@ void br_become_root_bridge(struct net_bridge *br)
 
 /* called under bridge lock */
 /**
- * ·¢ËÍÒ»¸öÅäÖÃBPDU¡£
+ * å‘é€ä¸€ä¸ªé…ç½®BPDUã€‚
  */
 void br_transmit_config(struct net_bridge_port *p)
 {
@@ -212,7 +212,7 @@ void br_transmit_config(struct net_bridge_port *p)
 
 /* called under bridge lock */
 /**
- * ¼ÇÂ¼BPDUµÄÓÅÏÈ¼¶ÏòÁ¿µ½¶Ë¿ÚµÄnet_bridge_portÊı¾İ½á¹¹£¬È»ºóÖØÆôÏûÏ¢ÀÏ»¯Ê±ÖÓ£»
+ * è®°å½•BPDUçš„ä¼˜å…ˆçº§å‘é‡åˆ°ç«¯å£çš„net_bridge_portæ•°æ®ç»“æ„ï¼Œç„¶åé‡å¯æ¶ˆæ¯è€åŒ–æ—¶é’Ÿï¼›
  */
 static inline void br_record_config_information(struct net_bridge_port *p, 
 						const struct br_config_bpdu *bpdu)
@@ -228,7 +228,7 @@ static inline void br_record_config_information(struct net_bridge_port *p,
 
 /* called under bridge lock */
 /**
- * ¼ÇÂ¼BPDUÖĞµÄÊ±ÖÓÅäÖÃ¡£
+ * è®°å½•BPDUä¸­çš„æ—¶é’Ÿé…ç½®ã€‚
  */
 static inline void br_record_config_timeout_values(struct net_bridge *br, 
 					    const struct br_config_bpdu *bpdu)
@@ -241,7 +241,7 @@ static inline void br_record_config_timeout_values(struct net_bridge *br,
 
 /* called under bridge lock */
 /**
- * ·¢ËÍÒ»¸öTCN BPDU¡£
+ * å‘é€ä¸€ä¸ªTCN BPDUã€‚
  */
 void br_transmit_tcn(struct net_bridge *br)
 {
@@ -250,7 +250,7 @@ void br_transmit_tcn(struct net_bridge *br)
 
 /* called under bridge lock */
 /**
- * È·¶¨Ò»¸öÖ¸¶¨µÄ¶Ë¿ÚÊÇ·ñÓ¦µ±±»¸³ÓèÖ¸ÅÉÕß½ÇÉ«¡£
+ * ç¡®å®šä¸€ä¸ªæŒ‡å®šçš„ç«¯å£æ˜¯å¦åº”å½“è¢«èµ‹äºˆæŒ‡æ´¾è€…è§’è‰²ã€‚
  */
 static int br_should_become_designated_port(const struct net_bridge_port *p)
 {
@@ -283,7 +283,7 @@ static int br_should_become_designated_port(const struct net_bridge_port *p)
 
 /* called under bridge lock */
 /**
- * ±éÀúËùÓĞÍøÇÅ¶Ë¿Ú£¬²¢ÇÒ½«Ó¦µ±ÉèÖÃ³ÉÖ¸ÅÉ½ÇÉ«µÄ¶Ë¿ÚÉèÖÃ³ÉÖ¸ÅÉ¶Ë¿Ú¡£
+ * éå†æ‰€æœ‰ç½‘æ¡¥ç«¯å£ï¼Œå¹¶ä¸”å°†åº”å½“è®¾ç½®æˆæŒ‡æ´¾è§’è‰²çš„ç«¯å£è®¾ç½®æˆæŒ‡æ´¾ç«¯å£ã€‚
  */
 static void br_designated_port_selection(struct net_bridge *br)
 {
@@ -299,7 +299,7 @@ static void br_designated_port_selection(struct net_bridge *br)
 
 /* called under bridge lock */
 /**
- * ¶ÔÓÚÖ¸¶¨µÄ¶Ë¿Ú£¬ÒÔ¼°ÔÚ¶Ë¿ÚÉÏ½ÓÊÕµ½µÄÅäÖÃBPDU£¬Èç¹ûBPDU±È¶Ë¿ÚÓÅÏÈ¼¶¸ü¸ß£¨ÓµÓĞÒ»¸ö¸ü¸ßµÄÓÅÏÈ¼¶ÏòÁ¿£©£¬Ôò·µ»Ø1,·ñÔò·µ»Ø0.
+ * å¯¹äºæŒ‡å®šçš„ç«¯å£ï¼Œä»¥åŠåœ¨ç«¯å£ä¸Šæ¥æ”¶åˆ°çš„é…ç½®BPDUï¼Œå¦‚æœBPDUæ¯”ç«¯å£ä¼˜å…ˆçº§æ›´é«˜ï¼ˆæ‹¥æœ‰ä¸€ä¸ªæ›´é«˜çš„ä¼˜å…ˆçº§å‘é‡ï¼‰ï¼Œåˆ™è¿”å›1,å¦åˆ™è¿”å›0.
  */
 static int br_supersedes_port_info(struct net_bridge_port *p, struct br_config_bpdu *bpdu)
 {
@@ -333,7 +333,7 @@ static int br_supersedes_port_info(struct net_bridge_port *p, struct br_config_b
 
 /* called under bridge lock */
 /**
- * Í£Ö¹TCNÊ±ÖÓ¡£
+ * åœæ­¢TCNæ—¶é’Ÿã€‚
  */
 static inline void br_topology_change_acknowledged(struct net_bridge *br)
 {
@@ -343,7 +343,7 @@ static inline void br_topology_change_acknowledged(struct net_bridge *br)
 
 /* called under bridge lock */
 /**
- * ¼ì²âÍØÆË±ä»¯ÊÂ¼ş£¬Çø±ğ´¦Àí¸ùÇÅºÍ·Ç¸ùÇÅ¼ì²âµ½µÄÍØÆË±ä»¯ÊÂ¼ş¡£
+ * æ£€æµ‹æ‹“æ‰‘å˜åŒ–äº‹ä»¶ï¼ŒåŒºåˆ«å¤„ç†æ ¹æ¡¥å’Œéæ ¹æ¡¥æ£€æµ‹åˆ°çš„æ‹“æ‰‘å˜åŒ–äº‹ä»¶ã€‚
  */
 void br_topology_change_detection(struct net_bridge *br)
 {
@@ -378,7 +378,7 @@ void br_config_bpdu_generation(struct net_bridge *br)
 
 /* called under bridge lock */
 /**
- * ÒÔÁíÍâÒ»¸öBPDUÓ¦´ğ½ÓÊÕµ½µÄÅäÖÃBPDUÈëÖ¡¡£ËüÊÇ¶Ôbr_transmit_configµÄÒ»¸ö¼òµ¥·â×°¡£
+ * ä»¥å¦å¤–ä¸€ä¸ªBPDUåº”ç­”æ¥æ”¶åˆ°çš„é…ç½®BPDUå…¥å¸§ã€‚å®ƒæ˜¯å¯¹br_transmit_configçš„ä¸€ä¸ªç®€å•å°è£…ã€‚
  */
 static inline void br_reply(struct net_bridge_port *p)
 {
@@ -387,14 +387,14 @@ static inline void br_reply(struct net_bridge_port *p)
 
 /* called under bridge lock */
 /**
- * ¶ÔÓÚ¸ø¶¨µÄÍøÇÅ£¬È·¶¨¸ù¶Ë¿ÚºÍÖ¸ÅÉ¶Ë¿Ú²¢·µ»ØËüÃÇµÄĞÅÏ¢¡£
- * µ±ÍøÇÅµÄÅäÖÃ·¢ÉúÁË¸Ä±äÊ±±»µ÷ÓÃ¡£
- *		br_received_config_bpdu:		ÔÚÍøÇÅ¶Ë¿ÚÉÏ½ÓÊÕµ½Ò»¸ö¸ü¸ßÓÅÏÈ¼¶µÄÅäÖÃBPDU¡£
- *		br_message_age_timer_expired:	ÍøÇÅĞÅÏ¢³¬Ê±¡£BPDUÀÏ»¯ÁË¡£
- *		br_stp_disable_port:			ÍøÇÅ¶Ë¿Ú±»½ûÖ¹ÁË¡£
- *		br_stp_change_bridge_id:		ÍøÇÅIDÖĞµÄMACµØÖ·±»¸Ä±äÁË¡£
- *		br_stp_set_bridge_priority:		µ±ÍøÇÅÓÅÏÈ¼¶±»ĞŞ¸ÄÊ±¡£
- *		br_stp_set_path_cost:			¶Ë¿ÚÈ¨ÖØÖµ±»ĞŞ¸ÄÁË¡£
+ * å¯¹äºç»™å®šçš„ç½‘æ¡¥ï¼Œç¡®å®šæ ¹ç«¯å£å’ŒæŒ‡æ´¾ç«¯å£å¹¶è¿”å›å®ƒä»¬çš„ä¿¡æ¯ã€‚
+ * å½“ç½‘æ¡¥çš„é…ç½®å‘ç”Ÿäº†æ”¹å˜æ—¶è¢«è°ƒç”¨ã€‚
+ *		br_received_config_bpdu:		åœ¨ç½‘æ¡¥ç«¯å£ä¸Šæ¥æ”¶åˆ°ä¸€ä¸ªæ›´é«˜ä¼˜å…ˆçº§çš„é…ç½®BPDUã€‚
+ *		br_message_age_timer_expired:	ç½‘æ¡¥ä¿¡æ¯è¶…æ—¶ã€‚BPDUè€åŒ–äº†ã€‚
+ *		br_stp_disable_port:			ç½‘æ¡¥ç«¯å£è¢«ç¦æ­¢äº†ã€‚
+ *		br_stp_change_bridge_id:		ç½‘æ¡¥IDä¸­çš„MACåœ°å€è¢«æ”¹å˜äº†ã€‚
+ *		br_stp_set_bridge_priority:		å½“ç½‘æ¡¥ä¼˜å…ˆçº§è¢«ä¿®æ”¹æ—¶ã€‚
+ *		br_stp_set_path_cost:			ç«¯å£æƒé‡å€¼è¢«ä¿®æ”¹äº†ã€‚
  */
 void br_configuration_update(struct net_bridge *br)
 {
@@ -404,7 +404,7 @@ void br_configuration_update(struct net_bridge *br)
 
 /* called under bridge lock */
 /**
- * ÎªÒ»¸öÍøÇÅ¶Ë¿Ú·ÖÅäÖ¸ÅÉ½ÇÉ«¡£
+ * ä¸ºä¸€ä¸ªç½‘æ¡¥ç«¯å£åˆ†é…æŒ‡æ´¾è§’è‰²ã€‚
  */
 void br_become_designated_port(struct net_bridge_port *p)
 {
@@ -420,7 +420,7 @@ void br_become_designated_port(struct net_bridge_port *p)
 
 /* called under bridge lock */
 /**
- * ½«ÍøÇÅ¶Ë¿ÚÉèÖÃÎª×èÈû×´Ì¬¡£µ±STP·¢ÏÖÒ»¸ö·¢ËÍ¶Ë¿Ú±»×èÈûÊ±µ÷ÓÃ¡£
+ * å°†ç½‘æ¡¥ç«¯å£è®¾ç½®ä¸ºé˜»å¡çŠ¶æ€ã€‚å½“STPå‘ç°ä¸€ä¸ªå‘é€ç«¯å£è¢«é˜»å¡æ—¶è°ƒç”¨ã€‚
  */
 static void br_make_blocking(struct net_bridge_port *p)
 {
@@ -438,23 +438,23 @@ static void br_make_blocking(struct net_bridge_port *p)
 
 /* called under bridge lock */
 /**
- * ½«ÍøÇÅ¶Ë¿Ú×ª»»Îª¼¤»î×´Ì¬¡£
+ * å°†ç½‘æ¡¥ç«¯å£è½¬æ¢ä¸ºæ¿€æ´»çŠ¶æ€ã€‚
  */
 static void br_make_forwarding(struct net_bridge_port *p)
 {
 	/**
-	 * Ö»ÓĞBR_STATE_BLOCKING×´Ì¬µÄ¶Ë¿Ú²ÅÄÜ×ª»»Îª¼¤»î×´Ì¬¡£
-	 * Äã²»ÄÜÎª¶Ë¿ÚÖ¸¶¨Ò»¸ö½éÓÚBR_STATE_BLOCKINGºÍBR_STATE_FORWARDINGÖ®¼äµÄÖĞ¼ä×´Ì¬£¬ÖĞ¼ä×´Ì¬Ò»¶¨Ê±ÏµÍ³Íê³ÉµÄ¡£ 
+	 * åªæœ‰BR_STATE_BLOCKINGçŠ¶æ€çš„ç«¯å£æ‰èƒ½è½¬æ¢ä¸ºæ¿€æ´»çŠ¶æ€ã€‚
+	 * ä½ ä¸èƒ½ä¸ºç«¯å£æŒ‡å®šä¸€ä¸ªä»‹äºBR_STATE_BLOCKINGå’ŒBR_STATE_FORWARDINGä¹‹é—´çš„ä¸­é—´çŠ¶æ€ï¼Œä¸­é—´çŠ¶æ€ä¸€å®šæ—¶ç³»ç»Ÿå®Œæˆçš„ã€‚ 
 	 */
 	if (p->state == BR_STATE_BLOCKING) {
 		/**
-		 * µ±STPÃ»ÓĞÔËĞĞÊ±£¬ÍøÇÅ¶Ë¿ÚÌø¹ıBR_STATE_LISTENING×´Ì¬¡£
-		 * µ±STPÃ»ÓĞÔËĞĞÊ±£¬ËùÓĞÍøÇÅ¶Ë¿Ú¶¼±»Ö¸¶¨Îª·¢ËÍ×´Ì¬¡£
-		 * Òò´Ë£¬Äã¿ÉÒÔÌø¹ıBR_STATE_LISTENING×´Ì¬¡£
+		 * å½“STPæ²¡æœ‰è¿è¡Œæ—¶ï¼Œç½‘æ¡¥ç«¯å£è·³è¿‡BR_STATE_LISTENINGçŠ¶æ€ã€‚
+		 * å½“STPæ²¡æœ‰è¿è¡Œæ—¶ï¼Œæ‰€æœ‰ç½‘æ¡¥ç«¯å£éƒ½è¢«æŒ‡å®šä¸ºå‘é€çŠ¶æ€ã€‚
+		 * å› æ­¤ï¼Œä½ å¯ä»¥è·³è¿‡BR_STATE_LISTENINGçŠ¶æ€ã€‚
 		 */
 		if (p->br->stp_enabled) {
 			/**
-			 * Ê¹ÓÃÖĞ¼ä×´Ì¬BR_STATE_LISTENING¿ÉÒÔÔÊĞíÍøÇÅÑ§Ï°Ò»Ğ©MACµØÖ·£¬²¢ÇÒ¼õÉÙfloodingÊıÁ¿¡£
+			 * ä½¿ç”¨ä¸­é—´çŠ¶æ€BR_STATE_LISTENINGå¯ä»¥å…è®¸ç½‘æ¡¥å­¦ä¹ ä¸€äº›MACåœ°å€ï¼Œå¹¶ä¸”å‡å°‘floodingæ•°é‡ã€‚
 			 */
 			p->state = BR_STATE_LISTENING;
 		} else {
@@ -462,21 +462,21 @@ static void br_make_forwarding(struct net_bridge_port *p)
 		}
 		br_log_state(p);
 		/**
-		 * Æô¶¯Ê±ÖÓ£¬ÓÉÊ±ÖÓ½«¶Ë¿Ú×´Ì¬×ª»»³É¼¤»î×´Ì¬¡£
+		 * å¯åŠ¨æ—¶é’Ÿï¼Œç”±æ—¶é’Ÿå°†ç«¯å£çŠ¶æ€è½¬æ¢æˆæ¿€æ´»çŠ¶æ€ã€‚
 		 */
 		mod_timer(&p->forward_delay_timer, jiffies + p->br->forward_delay);	}
 }
 
 /* called under bridge lock */
 /**
- * ¶ÔÓÚ¸ø¶¨µÄÍøÇÅ£¬ÎªÃ¿Ò»¸öÍøÇÅ¶Ë¿ÚÑ¡ÔñÕıÈ·µÄ¶Ë¿Ú×´Ì¬¡£
+ * å¯¹äºç»™å®šçš„ç½‘æ¡¥ï¼Œä¸ºæ¯ä¸€ä¸ªç½‘æ¡¥ç«¯å£é€‰æ‹©æ­£ç¡®çš„ç«¯å£çŠ¶æ€ã€‚
  */
 void br_port_state_selection(struct net_bridge *br)
 {
 	struct net_bridge_port *p;
 
 	list_for_each_entry(p, &br->port_list, list) {
-		if (p->state != BR_STATE_DISABLED) {/* Ïà¹ØµÄ°ó¶¨Éè±¸±»UP¡£ */
+		if (p->state != BR_STATE_DISABLED) {/* ç›¸å…³çš„ç»‘å®šè®¾å¤‡è¢«UPã€‚ */
 			if (p->port_no == br->root_port) {
 				p->config_pending = 0;
 				p->topology_change_ack = 0;
@@ -496,7 +496,7 @@ void br_port_state_selection(struct net_bridge *br)
 
 /* called under bridge lock */
 /**
- * Í¨¹ı·¢ËÍÒ»¸ö´øTCA±êÖ¾µÄÅäÖÃBPDUÀ´Ó¦´ğ½ÓÊÕµ½µÄTCN¡£
+ * é€šè¿‡å‘é€ä¸€ä¸ªå¸¦TCAæ ‡å¿—çš„é…ç½®BPDUæ¥åº”ç­”æ¥æ”¶åˆ°çš„TCNã€‚
  */
 static inline void br_topology_change_acknowledge(struct net_bridge_port *p)
 {
@@ -506,7 +506,7 @@ static inline void br_topology_change_acknowledge(struct net_bridge_port *p)
 
 /* called under bridge lock */
 /**
- * ´¦Àí½ÓÊÕµ½µÄÅäÖÃBPDU°ü¡£¿ÉÄÜÒıÆğ¸ùÇÅµÄ±ä»¯¡£
+ * å¤„ç†æ¥æ”¶åˆ°çš„é…ç½®BPDUåŒ…ã€‚å¯èƒ½å¼•èµ·æ ¹æ¡¥çš„å˜åŒ–ã€‚
  */
 void br_received_config_bpdu(struct net_bridge_port *p, struct br_config_bpdu *bpdu)
 {
@@ -545,7 +545,7 @@ void br_received_config_bpdu(struct net_bridge_port *p, struct br_config_bpdu *b
 
 /* called under bridge lock */
 /**
- * µ±ÔÚÒ»¸öÍøÇÅ¶Ë¿ÚÉÏ½ÓÊÕµ½Ò»¸öTCN BPDUÊ±µ÷ÓÃ¡£
+ * å½“åœ¨ä¸€ä¸ªç½‘æ¡¥ç«¯å£ä¸Šæ¥æ”¶åˆ°ä¸€ä¸ªTCN BPDUæ—¶è°ƒç”¨ã€‚
  */
 void br_received_tcn_bpdu(struct net_bridge_port *p)
 {

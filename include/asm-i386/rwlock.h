@@ -21,20 +21,20 @@
 #define RW_LOCK_BIAS_STR	"0x01000000"
 
 /**
- * ÔÚÃ»ÓÐÄÚºËÇÀÕ¼Ê±£¬read_lock»áµ÷µ½ÕâÀïÀ´¡£
- * ÔÚÄÇÖÖÇé¿öÏÂ£¬helperÎª__read_lock_failed
+ * åœ¨æ²¡æœ‰å†…æ ¸æŠ¢å æ—¶ï¼Œread_lockä¼šè°ƒåˆ°è¿™é‡Œæ¥ã€‚
+ * åœ¨é‚£ç§æƒ…å†µä¸‹ï¼Œhelperä¸º__read_lock_failed
  */
 #define __build_read_lock_ptr(rw, helper)   \
 	/**
-	 * ½«lock¼õ1£¬±äÏàÊÇ½«¶ÁÕßÊý¼Ó1
+	 * å°†lockå‡1ï¼Œå˜ç›¸æ˜¯å°†è¯»è€…æ•°åŠ 1
 	 */
 	asm volatile(LOCK "subl $1,(%0)\n\t" \
 			 /**
-			  * Èç¹û¼õ1ºó£¬lockÖµ>=0¡£¾ÍËµÃ÷´ËÊ±Î´Ëø£¬»òÕßÖ»ÓÐ¶ÁÕß£¬ÉêÇë¶ÁËø³É¹¦¡£
+			  * å¦‚æžœå‡1åŽï¼Œlockå€¼>=0ã€‚å°±è¯´æ˜Žæ­¤æ—¶æœªé”ï¼Œæˆ–è€…åªæœ‰è¯»è€…ï¼Œç”³è¯·è¯»é”æˆåŠŸã€‚
 			  */
 		     "jns 1f\n" \
 		     /**
-		      * ´ËÊ±ÓÐÐ´Õß£¬ÉêÇë²»³É¹¦£¬×ªµ½__read_lock_failed
+		      * æ­¤æ—¶æœ‰å†™è€…ï¼Œç”³è¯·ä¸æˆåŠŸï¼Œè½¬åˆ°__read_lock_failed
 		      */
 		     "call " helper "\n\t" \
 		     "1:\n" \

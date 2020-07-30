@@ -71,35 +71,35 @@ static void print_raid5_conf (raid5_conf_t *conf);
 
 static inline void __release_stripe(raid5_conf_t *conf, struct stripe_head *sh)
 {
-	/* Ö»ÓĞÒıÓÃ¼ÆÊı±äÎª0ºó£¬²ÅÄÜÒÆ¶¯Ìõ´ø */
+	/* åªæœ‰å¼•ç”¨è®¡æ•°å˜ä¸º0åï¼Œæ‰èƒ½ç§»åŠ¨æ¡å¸¦ */
 	if (atomic_dec_and_test(&sh->count)) {
-		if (!list_empty(&sh->lru))/* Ìõ´ø±ØÈ»Î»ÓÚÄ³¸öÁ´±íÖĞ */
+		if (!list_empty(&sh->lru))/* æ¡å¸¦å¿…ç„¶ä½äºæŸä¸ªé“¾è¡¨ä¸­ */
 			BUG();
 		if (atomic_read(&conf->active_stripes)==0)
 			BUG();
-		if (test_bit(STRIPE_HANDLE, &sh->state)) {/* ĞèÒª´¦Àí¸ÃÌõ´ø */
-			if (test_bit(STRIPE_DELAYED, &sh->state))/* ÊÓÇé¿ö½«Æä·Åµ½ÑÓ³Ù´¦ÀíÁ´±íºÍ´¦ÀíÁ´±í */
+		if (test_bit(STRIPE_HANDLE, &sh->state)) {/* éœ€è¦å¤„ç†è¯¥æ¡å¸¦ */
+			if (test_bit(STRIPE_DELAYED, &sh->state))/* è§†æƒ…å†µå°†å…¶æ”¾åˆ°å»¶è¿Ÿå¤„ç†é“¾è¡¨å’Œå¤„ç†é“¾è¡¨ */
 				list_add_tail(&sh->lru, &conf->delayed_list);
 			else
 				list_add_tail(&sh->lru, &conf->handle_list);
 			md_wakeup_thread(conf->mddev->thread);
-		} else {/* ¸ÃÌõ´øÒÑ¾­´¦ÀíÍê±Ï£¬Ôò½«Æä·Åµ½·Ç»î¶¯Á´±í */
+		} else {/* è¯¥æ¡å¸¦å·²ç»å¤„ç†å®Œæ¯•ï¼Œåˆ™å°†å…¶æ”¾åˆ°éæ´»åŠ¨é“¾è¡¨ */
 			if (test_and_clear_bit(STRIPE_PREREAD_ACTIVE, &sh->state)) {
 				atomic_dec(&conf->preread_active_stripes);
 				if (atomic_read(&conf->preread_active_stripes) < IO_THRESHOLD)
 					md_wakeup_thread(conf->mddev->thread);
 			}
-			/* Ìí¼Óµ½»î¶¯Á´±í£¬²¢¼ÆÊı */
+			/* æ·»åŠ åˆ°æ´»åŠ¨é“¾è¡¨ï¼Œå¹¶è®¡æ•° */
 			list_add_tail(&sh->lru, &conf->inactive_list);
 			atomic_dec(&conf->active_stripes);
-			/* »½ĞÑµÈ´ıÌõ´ø×ÊÔ´µÄÏß³Ì */
+			/* å”¤é†’ç­‰å¾…æ¡å¸¦èµ„æºçš„çº¿ç¨‹ */
 			if (!conf->inactive_blocked ||
 			    atomic_read(&conf->active_stripes) < (NR_STRIPES*3/4))
 				wake_up(&conf->wait_for_stripe);
 		}
 	}
 }
-/* ÊÍ·ÅÌõ´ø£¬½«Æä·ÅÈëºÏÊÊµÄÁ´±íÖĞ */
+/* é‡Šæ”¾æ¡å¸¦ï¼Œå°†å…¶æ”¾å…¥åˆé€‚çš„é“¾è¡¨ä¸­ */
 static void release_stripe(struct stripe_head *sh)
 {
 	raid5_conf_t *conf = sh->raid_conf;
@@ -238,7 +238,7 @@ static struct stripe_head *__find_stripe(raid5_conf_t *conf, sector_t sector)
 static void unplug_slaves(mddev_t *mddev);
 static void raid5_unplug_device(request_queue_t *q);
 
-/* »ñÈ¡Ìõ´ø²¢Ô¤¶Á */
+/* è·å–æ¡å¸¦å¹¶é¢„è¯» */
 static struct stripe_head *get_active_stripe(raid5_conf_t *conf, sector_t sector,
 					     int pd_idx, int noblock) 
 {
@@ -246,21 +246,21 @@ static struct stripe_head *get_active_stripe(raid5_conf_t *conf, sector_t sector
 
 	PRINTK("get_stripe, sector %llu\n", (unsigned long long)sector);
 
-	/* »ñµÃËø */
+	/* è·å¾—é” */
 	spin_lock_irq(&conf->device_lock);
 
 	do {
-		/* ÔÚ¹şÏ£±íÖĞ²é¿´Ö¸¶¨ÉÈÇøµÄÌõ´øÊÇ·ñ´æÔÚ */
+		/* åœ¨å“ˆå¸Œè¡¨ä¸­æŸ¥çœ‹æŒ‡å®šæ‰‡åŒºçš„æ¡å¸¦æ˜¯å¦å­˜åœ¨ */
 		sh = __find_stripe(conf, sector);
-		if (!sh) {/* ÔÚ¹şÏ£±íÖĞ²»´æÔÚ¶ÔÓ¦µÄÌõ´ø */
-			if (!conf->inactive_blocked)/* ÔÊĞíÔÚÌõ´ø³ØÖĞ·ÖÅäÌõ´ø£¬Ôò·ÖÅäËü */
+		if (!sh) {/* åœ¨å“ˆå¸Œè¡¨ä¸­ä¸å­˜åœ¨å¯¹åº”çš„æ¡å¸¦ */
+			if (!conf->inactive_blocked)/* å…è®¸åœ¨æ¡å¸¦æ± ä¸­åˆ†é…æ¡å¸¦ï¼Œåˆ™åˆ†é…å®ƒ */
 				sh = get_free_stripe(conf);
-			if (noblock && sh == NULL)/* ¶ÔÓÚÔ¤¶ÁÀ´Ëµ£¬¼´Ê¹Ã»ÓĞ·ÖÅäµ½Ìõ´ø£¬Ò²¿ÉÒÔÍË³öÑ­»· */
+			if (noblock && sh == NULL)/* å¯¹äºé¢„è¯»æ¥è¯´ï¼Œå³ä½¿æ²¡æœ‰åˆ†é…åˆ°æ¡å¸¦ï¼Œä¹Ÿå¯ä»¥é€€å‡ºå¾ªç¯ */
 				break;
-			if (!sh) {/* ·ÖÅä²»µ½Ìõ´øÁË */
-				/* ÉèÖÃ×èÈû±êÖ¾£¬ÕâÑùÆäËû·ÖÅäµÄ½ø³ÌÒ²»áµÈ´ı */
+			if (!sh) {/* åˆ†é…ä¸åˆ°æ¡å¸¦äº† */
+				/* è®¾ç½®é˜»å¡æ ‡å¿—ï¼Œè¿™æ ·å…¶ä»–åˆ†é…çš„è¿›ç¨‹ä¹Ÿä¼šç­‰å¾… */
 				conf->inactive_blocked = 1;
-				/* µÈ´ı¿ÉÓÃµÄÌõ´ø */
+				/* ç­‰å¾…å¯ç”¨çš„æ¡å¸¦ */
 				wait_event_lock_irq(conf->wait_for_stripe,
 						    !list_empty(&conf->inactive_list) &&
 						    (atomic_read(&conf->active_stripes) < (NR_STRIPES *3/4)
@@ -268,12 +268,12 @@ static struct stripe_head *get_active_stripe(raid5_conf_t *conf, sector_t sector
 						    conf->device_lock,
 						    unplug_slaves(conf->mddev);
 					);
-				/* ±»»½ĞÑºóÇå³ı×èÈû±êÖ¾ */
+				/* è¢«å”¤é†’åæ¸…é™¤é˜»å¡æ ‡å¿— */
 				conf->inactive_blocked = 0;
-			} else/* ·ÖÅäµ½Ìõ´øºó£¬³õÊ¼»¯Ëü */
+			} else/* åˆ†é…åˆ°æ¡å¸¦åï¼Œåˆå§‹åŒ–å®ƒ */
 				init_stripe(sh, sector, pd_idx);
-		} else {/* ÔÚ¹şÏ£±íÖĞ´æÔÚÔÚ */
-			if (atomic_read(&sh->count)) {/* »¹ÔÚÊ¹ÓÃ¹ı³ÌÖĞ£¬±ØÈ»»áÎ»ÓÚÄ³¸öÁ´±íÖĞ */
+		} else {/* åœ¨å“ˆå¸Œè¡¨ä¸­å­˜åœ¨åœ¨ */
+			if (atomic_read(&sh->count)) {/* è¿˜åœ¨ä½¿ç”¨è¿‡ç¨‹ä¸­ï¼Œå¿…ç„¶ä¼šä½äºæŸä¸ªé“¾è¡¨ä¸­ */
 				if (!list_empty(&sh->lru))
 					BUG();
 			} else {
@@ -284,7 +284,7 @@ static struct stripe_head *get_active_stripe(raid5_conf_t *conf, sector_t sector
 				list_del_init(&sh->lru);
 			}
 		}
-	} while (sh == NULL);/* Ö±µ½»ñµÃÒ»¸öÌõ´ø²ÅÍË³ö */
+	} while (sh == NULL);/* ç›´åˆ°è·å¾—ä¸€ä¸ªæ¡å¸¦æ‰é€€å‡º */
 
 	if (sh)
 		atomic_inc(&sh->count);
@@ -349,11 +349,11 @@ static void shrink_stripes(raid5_conf_t *conf)
 	conf->slab_cache = NULL;
 }
 
-/* µ±RAID³ÉÔ±´ÅÅÌÍê³ÉÇëÇóºó»Øµ÷´Ëº¯Êı */
+/* å½“RAIDæˆå‘˜ç£ç›˜å®Œæˆè¯·æ±‚åå›è°ƒæ­¤å‡½æ•° */
 static int raid5_end_read_request (struct bio * bi, unsigned int bytes_done,
 				   int error)
 {
- 	struct stripe_head *sh = bi->bi_private;/* ¸ÃÇëÇó¶ÔÓ¦µÄÌõ´øÉè±¸ */
+ 	struct stripe_head *sh = bi->bi_private;/* è¯¥è¯·æ±‚å¯¹åº”çš„æ¡å¸¦è®¾å¤‡ */
 	raid5_conf_t *conf = sh->raid_conf;
 	int disks = conf->raid_disks, i;
 	int uptodate = test_bit(BIO_UPTODATE, &bi->bi_flags);
@@ -361,19 +361,19 @@ static int raid5_end_read_request (struct bio * bi, unsigned int bytes_done,
 	if (bi->bi_size)
 		return 1;
 
-	for (i=0 ; i<disks; i++)/* ÅĞ¶Ï¸ÃÇëÇóÊÇÕë¶ÔÄÄ¸ö³ÉÔ±´ÅÅÌµÄ */
+	for (i=0 ; i<disks; i++)/* åˆ¤æ–­è¯¥è¯·æ±‚æ˜¯é’ˆå¯¹å“ªä¸ªæˆå‘˜ç£ç›˜çš„ */
 		if (bi == &sh->dev[i].req)
 			break;
 
 	PRINTK("end_read_request %llu/%d, count: %d, uptodate %d.\n", 
 		(unsigned long long)sh->sector, i, atomic_read(&sh->count), 
 		uptodate);
-	if (i == disks) {/* ÕâÖÖÇé¿ö¿ÉÄÜÊÇÊı¾İ±»ÆÆ»µÁË */
+	if (i == disks) {/* è¿™ç§æƒ…å†µå¯èƒ½æ˜¯æ•°æ®è¢«ç ´åäº† */
 		BUG();
 		return 0;
 	}
 
-	if (uptodate) {/* Êı¾İ±»³É¹¦¶Á³ö */
+	if (uptodate) {/* æ•°æ®è¢«æˆåŠŸè¯»å‡º */
 #if 0
 		struct bio *bio;
 		unsigned long flags;
@@ -401,10 +401,10 @@ static int raid5_end_read_request (struct bio * bi, unsigned int bytes_done,
 			buffer->b_end_io(buffer, 1);
 		}
 #else
-		set_bit(R5_UPTODATE, &sh->dev[i].flags);/* ÉèÖÃ³ÉÔ±´ÅÅÌµÄ¸üĞÂ±êÖ¾ */
+		set_bit(R5_UPTODATE, &sh->dev[i].flags);/* è®¾ç½®æˆå‘˜ç£ç›˜çš„æ›´æ–°æ ‡å¿— */
 #endif		
-	} else {/* Êı¾İ¶ÁÈ¡³ö´í */
-		md_error(conf->mddev, conf->disks[i].rdev);/* ÈÃ³ÉÔ±´ÅÅÌÊ§Ğ§ */
+	} else {/* æ•°æ®è¯»å–å‡ºé”™ */
+		md_error(conf->mddev, conf->disks[i].rdev);/* è®©æˆå‘˜ç£ç›˜å¤±æ•ˆ */
 		clear_bit(R5_UPTODATE, &sh->dev[i].flags);
 	}
 	rdev_dec_pending(conf->disks[i].rdev, conf->mddev);
@@ -418,7 +418,7 @@ static int raid5_end_read_request (struct bio * bi, unsigned int bytes_done,
 #endif
 	clear_bit(R5_LOCKED, &sh->dev[i].flags);
 	set_bit(STRIPE_HANDLE, &sh->state);
-	release_stripe(sh);/* ½øÈëĞÂÒ»ÂÖµÄ´¦Àí£¬½«Ìõ´øÒÆµ½ÁíÍâµÄÁ´±í */
+	release_stripe(sh);/* è¿›å…¥æ–°ä¸€è½®çš„å¤„ç†ï¼Œå°†æ¡å¸¦ç§»åˆ°å¦å¤–çš„é“¾è¡¨ */
 	return 0;
 }
 
@@ -810,7 +810,7 @@ static void compute_parity(struct stripe_head *sh, int method)
  * toread/towrite point to the first in a chain. 
  * The bi_next chain must be in order.
  */
-/* ½«BIOÌí¼Óµ½Ìõ´ø */
+/* å°†BIOæ·»åŠ åˆ°æ¡å¸¦ */
 static int add_stripe_bio(struct stripe_head *sh, struct bio *bi, int dd_idx, int forwrite)
 {
 	struct bio **bip;
@@ -823,26 +823,26 @@ static int add_stripe_bio(struct stripe_head *sh, struct bio *bi, int dd_idx, in
 
 	spin_lock(&sh->lock);
 	spin_lock_irq(&conf->device_lock);
-	if (forwrite)/* ¸ù¾İÇëÇóÀàĞÍÕÒµ½ÒªÌí¼ÓµÄÁ´±í */
+	if (forwrite)/* æ ¹æ®è¯·æ±‚ç±»å‹æ‰¾åˆ°è¦æ·»åŠ çš„é“¾è¡¨ */
 		bip = &sh->dev[dd_idx].towrite;
 	else
 		bip = &sh->dev[dd_idx].toread;
-	/* ÔÚBIOÁ´±íÖĞÕÒµ½²åÈëµÄµØ·½- */
+	/* åœ¨BIOé“¾è¡¨ä¸­æ‰¾åˆ°æ’å…¥çš„åœ°æ–¹- */
 	while (*bip && (*bip)->bi_sector < bi->bi_sector) {
 		if ((*bip)->bi_sector + ((*bip)->bi_size >> 9) > bi->bi_sector)
 			goto overlap;
 		bip = & (*bip)->bi_next;
 	}
-	/* ÓëÒÑÓĞÇëÇóÖØµş */
+	/* ä¸å·²æœ‰è¯·æ±‚é‡å  */
 	if (*bip && (*bip)->bi_sector < bi->bi_sector + ((bi->bi_size)>>9))
 		goto overlap;
 
 	if (*bip && bi->bi_next && (*bip) != bi->bi_next)
 		BUG();
-	if (*bip)/* ½«BIOÌí¼Óµ½Ìõ´øÁ´±íÖĞ */
+	if (*bip)/* å°†BIOæ·»åŠ åˆ°æ¡å¸¦é“¾è¡¨ä¸­ */
 		bi->bi_next = *bip;
 	*bip = bi;
-	/* BIOËùÔÚµÄÌõ´øÊı¼ÆÊı */
+	/* BIOæ‰€åœ¨çš„æ¡å¸¦æ•°è®¡æ•° */
 	bi->bi_phys_segments ++;
 	spin_unlock_irq(&conf->device_lock);
 	spin_unlock(&sh->lock);
@@ -851,7 +851,7 @@ static int add_stripe_bio(struct stripe_head *sh, struct bio *bi, int dd_idx, in
 		(unsigned long long)bi->bi_sector,
 		(unsigned long long)sh->sector, dd_idx);
 
-	if (forwrite) {/* Èç¹ûÊÇĞ´ÇëÇó£¬¼ì²éÊÇ·ñ¸²¸Ç±¾Ìõ´ø */
+	if (forwrite) {/* å¦‚æœæ˜¯å†™è¯·æ±‚ï¼Œæ£€æŸ¥æ˜¯å¦è¦†ç›–æœ¬æ¡å¸¦ */
 		/* check if page is covered */
 		sector_t sector = sh->dev[dd_idx].sector;
 		for (bi=sh->dev[dd_idx].towrite;
@@ -891,7 +891,7 @@ static int add_stripe_bio(struct stripe_head *sh, struct bio *bi, int dd_idx, in
  * get BH_Lock set before the stripe lock is released.
  *
  */
-/* Ìõ´ø´¦Àíº¯Êı */ 
+/* æ¡å¸¦å¤„ç†å‡½æ•° */ 
 static void handle_stripe(struct stripe_head *sh)
 {
 	raid5_conf_t *conf = sh->raid_conf;
@@ -909,15 +909,15 @@ static void handle_stripe(struct stripe_head *sh)
 		(unsigned long long)sh->sector, atomic_read(&sh->count),
 		sh->pd_idx);
 
-	spin_lock(&sh->lock);/* ¶ÔÌõ´ø½øĞĞÉÏËø */
-	/* ÓÉÓÚÕıÔÚ´¦Àí¸ÃÌõ´ø£¬Òò´Ë¿ÉÒÔÇå³ıSTRIPE_HANDLE±íÊ¾ËüÒÑ¾­±»´¦Àí */
+	spin_lock(&sh->lock);/* å¯¹æ¡å¸¦è¿›è¡Œä¸Šé” */
+	/* ç”±äºæ­£åœ¨å¤„ç†è¯¥æ¡å¸¦ï¼Œå› æ­¤å¯ä»¥æ¸…é™¤STRIPE_HANDLEè¡¨ç¤ºå®ƒå·²ç»è¢«å¤„ç† */
 	clear_bit(STRIPE_HANDLE, &sh->state);
 	clear_bit(STRIPE_DELAYED, &sh->state);
 
 	syncing = test_bit(STRIPE_SYNCING, &sh->state);
 	/* Now to look around and see what can be done */
 
-	/* ¿¼²ì¸÷¸ö³ÉÔ±´ÅÅÌµÄ×´Ì¬¡£ */
+	/* è€ƒå¯Ÿå„ä¸ªæˆå‘˜ç£ç›˜çš„çŠ¶æ€ã€‚ */
 	for (i=disks; i--; ) {
 		mdk_rdev_t *rdev;
 		dev = &sh->dev[i];
@@ -927,18 +927,18 @@ static void handle_stripe(struct stripe_head *sh)
 		PRINTK("check %d: state 0x%lx read %p write %p written %p\n",
 			i, dev->flags, dev->toread, dev->towrite, dev->written);
 		/* maybe we can reply to a read */
-		/* ¶ÁÇëÇó£¬²¢ÇÒÉè±¸ÒÑ¾­¸üĞÂ */
+		/* è¯»è¯·æ±‚ï¼Œå¹¶ä¸”è®¾å¤‡å·²ç»æ›´æ–° */
 		if (test_bit(R5_UPTODATE, &dev->flags) && dev->toread) {
 			struct bio *rbi, *rbi2;
 			PRINTK("Return read for disc %d\n", i);
 			spin_lock_irq(&conf->device_lock);
 			rbi = dev->toread;
 			dev->toread = NULL;
-			/* µ±Ç°¶ÁÇëÇóÒÑ¾­¿ÉÒÔµÃµ½Âú×ã£¬¼õÉÙÁËBIOµÄÒıÓÃ£¬ÕâÀï¿ÉÒÔ»½ĞÑµÈ´ıµÄÏß³ÌÁË */
+			/* å½“å‰è¯»è¯·æ±‚å·²ç»å¯ä»¥å¾—åˆ°æ»¡è¶³ï¼Œå‡å°‘äº†BIOçš„å¼•ç”¨ï¼Œè¿™é‡Œå¯ä»¥å”¤é†’ç­‰å¾…çš„çº¿ç¨‹äº† */
 			if (test_and_clear_bit(R5_Overlap, &dev->flags))
 				wake_up(&conf->wait_for_overlap);
 			spin_unlock_irq(&conf->device_lock);
-			/* ´¦ÀíÌõ´øÖĞµÄÃ¿Ò»¸öÉÈÇø£¬ÏòBIO¸´ÖÆÊı¾İ */
+			/* å¤„ç†æ¡å¸¦ä¸­çš„æ¯ä¸€ä¸ªæ‰‡åŒºï¼Œå‘BIOå¤åˆ¶æ•°æ® */
 			while (rbi && rbi->bi_sector < dev->sector + STRIPE_SECTORS) {
 				copy_data(0, rbi, dev->page, dev->sector);
 				rbi2 = r5_next_bio(rbi, dev->sector);
@@ -953,12 +953,12 @@ static void handle_stripe(struct stripe_head *sh)
 		}
 
 		/* now count some things */
-		/* Í³¼Æ¸÷ÖÖ±êÖ¾µÄ³ÉÔ±´ÅÅÌ */
+		/* ç»Ÿè®¡å„ç§æ ‡å¿—çš„æˆå‘˜ç£ç›˜ */
 		if (test_bit(R5_LOCKED, &dev->flags)) locked++;
 		if (test_bit(R5_UPTODATE, &dev->flags)) uptodate++;
 
 		
-		if (dev->toread) to_read++;/* Í³¼ÆÕıÔÚ½øĞĞ¶ÁĞ´µÄ´ÅÅÌ */
+		if (dev->toread) to_read++;/* ç»Ÿè®¡æ­£åœ¨è¿›è¡Œè¯»å†™çš„ç£ç›˜ */
 		if (dev->towrite) {
 			to_write++;
 			if (!test_bit(R5_OVERWRITE, &dev->flags))
@@ -978,9 +978,9 @@ static void handle_stripe(struct stripe_head *sh)
 	/* check if the array has lost two devices and, if so, some requests might
 	 * need to be failed
 	 */
-	/* ´íÎóµÄ´ÅÅÌÊıÁ¿´óÓÚ1¸ö£¬´ÅÕó²»ÄÜ¹¤×÷ÁË£¬²¢ÇÒ´ËÊ±ÓĞ¶ÁĞ´ÇëÇó */
+	/* é”™è¯¯çš„ç£ç›˜æ•°é‡å¤§äº1ä¸ªï¼Œç£é˜µä¸èƒ½å·¥ä½œäº†ï¼Œå¹¶ä¸”æ­¤æ—¶æœ‰è¯»å†™è¯·æ±‚ */
 	if (failed > 1 && to_read+to_write+written) {
-		/* ĞèÒªÏòÉÏ²ã±¨¸æ´íÎó */
+		/* éœ€è¦å‘ä¸Šå±‚æŠ¥å‘Šé”™è¯¯ */
 		spin_lock_irq(&conf->device_lock);
 		for (i=disks; i--; ) {
 			/* fail all writes first */
@@ -1035,7 +1035,7 @@ static void handle_stripe(struct stripe_head *sh)
 		}
 		spin_unlock_irq(&conf->device_lock);
 	}
-	/* ³¬¹ıÒ»¸ö´ÅÅÌËğ»µ£¬²¢ÇÒµ±Ç°ÕıÔÚ½øĞĞÍ¬²½²Ù×÷£¬Ò²ĞèÒª½áÊøÍ¬²½ */
+	/* è¶…è¿‡ä¸€ä¸ªç£ç›˜æŸåï¼Œå¹¶ä¸”å½“å‰æ­£åœ¨è¿›è¡ŒåŒæ­¥æ“ä½œï¼Œä¹Ÿéœ€è¦ç»“æŸåŒæ­¥ */
 	if (failed > 1 && syncing) {
 		md_done_sync(conf->mddev, STRIPE_SECTORS,0);
 		clear_bit(STRIPE_SYNCING, &sh->state);
@@ -1046,7 +1046,7 @@ static void handle_stripe(struct stripe_head *sh)
 	 * is safe, or on a failed drive
 	 */
 	dev = &sh->dev[sh->pd_idx];
-	/* µ±Ç°ÓĞĞ´²Ù×÷£¬²¢ÇÒÉè±¸ÊÇĞ£ÑéÉè±¸£¬Î´ÉÏËø£¬ÒÑ¸üĞÂ£¬»òÕßÖ»ÓĞÒ»¸ö´íÎó´ÅÅÌ£¬²¢ÇÒÊÇĞ£ÑéÅÌ´íÎó */
+	/* å½“å‰æœ‰å†™æ“ä½œï¼Œå¹¶ä¸”è®¾å¤‡æ˜¯æ ¡éªŒè®¾å¤‡ï¼Œæœªä¸Šé”ï¼Œå·²æ›´æ–°ï¼Œæˆ–è€…åªæœ‰ä¸€ä¸ªé”™è¯¯ç£ç›˜ï¼Œå¹¶ä¸”æ˜¯æ ¡éªŒç›˜é”™è¯¯ */
 	if ( written &&
 	     ( (test_bit(R5_Insync, &dev->flags) && !test_bit(R5_LOCKED, &dev->flags) &&
 		test_bit(R5_UPTODATE, &dev->flags))
@@ -1056,7 +1056,7 @@ static void handle_stripe(struct stripe_head *sh)
 	     * Note that if we 'wrote' to a failed drive, it will be UPTODATE, but 
 	     * never LOCKED, so we don't need to test 'failed' directly.
 	     */
-	    /* ÏòÉÏ²ã·µ»Ø½á¹û */
+	    /* å‘ä¸Šå±‚è¿”å›ç»“æœ */
 	    for (i=disks; i--; )
 		if (sh->dev[i].written) {
 		    dev = &sh->dev[i];
@@ -1086,7 +1086,7 @@ static void handle_stripe(struct stripe_head *sh)
 	 * parity, or to satisfy requests
 	 * or to load a block that is being partially written.
 	 */
-	/* ¶ÁÇëÇó£¬»òÕß·Ç¸²¸ÇĞ´ÇëÇó */
+	/* è¯»è¯·æ±‚ï¼Œæˆ–è€…éè¦†ç›–å†™è¯·æ±‚ */
 	if (to_read || non_overwrite || (syncing && (uptodate < disks))) {
 		for (i=disks; i--;) {
 			dev = &sh->dev[i];
@@ -1131,58 +1131,58 @@ static void handle_stripe(struct stripe_head *sh)
 
 	/* now to consider writing and what else, if anything should be read */
 	if (to_write) {
-		int rmw=0, rcw=0;/* rmw¶Á¸ÄĞ´ÏÂ£¬Ö´ĞĞ´ÅÅÌ²Ù×÷µÄ´ÎÊı£¬rcwÖØ¹¹Ğ´ÏÂ£¬Ö´ĞĞ´ÅÅÌ²Ù×÷µÄ´ÎÊı */
-		for (i=disks ; i--;) {/* ±éÀú´ÅÅÌ£¬È·¶¨¶ÁĞ´´ÎÊı */
+		int rmw=0, rcw=0;/* rmwè¯»æ”¹å†™ä¸‹ï¼Œæ‰§è¡Œç£ç›˜æ“ä½œçš„æ¬¡æ•°ï¼Œrcwé‡æ„å†™ä¸‹ï¼Œæ‰§è¡Œç£ç›˜æ“ä½œçš„æ¬¡æ•° */
+		for (i=disks ; i--;) {/* éå†ç£ç›˜ï¼Œç¡®å®šè¯»å†™æ¬¡æ•° */
 			/* would I have to read this buffer for read_modify_write */
 			dev = &sh->dev[i];
-			if ((dev->towrite || i == sh->pd_idx) &&/* ´ÅÅÌÓĞĞ´ÇëÇó£¬»òÕßÊÇĞ£Ñé´ÅÅÌ */
-			    (!test_bit(R5_LOCKED, &dev->flags) /* ²¢ÇÒ´ÅÅÌÎ´ÉÏËø */
+			if ((dev->towrite || i == sh->pd_idx) &&/* ç£ç›˜æœ‰å†™è¯·æ±‚ï¼Œæˆ–è€…æ˜¯æ ¡éªŒç£ç›˜ */
+			    (!test_bit(R5_LOCKED, &dev->flags) /* å¹¶ä¸”ç£ç›˜æœªä¸Šé” */
 #if 0
 || sh->bh_page[i]!=bh->b_page
 #endif
 				    ) &&
-			    !test_bit(R5_UPTODATE, &dev->flags)) {/* ´ÅÅÌÎ´¸üĞÂ */
+			    !test_bit(R5_UPTODATE, &dev->flags)) {/* ç£ç›˜æœªæ›´æ–° */
 				if (test_bit(R5_Insync, &dev->flags)
 /*				    && !(!mddev->insync && i == sh->pd_idx) */
-					)/* ¸üĞÂ¶ÁĞ´´ÎÊı */
+					)/* æ›´æ–°è¯»å†™æ¬¡æ•° */
 					rmw++;
 				else rmw += 2*disks;  /* cannot read it */
 			}
 			/* Would I have to read this buffer for reconstruct_write */
-			if (!test_bit(R5_OVERWRITE, &dev->flags) && i != sh->pd_idx &&/* ´ÅÅÌ·Ç¸²¸ÇĞ´²¢ÇÒ²»ÊÇĞ£ÑéÅÌ */
-			    (!test_bit(R5_LOCKED, &dev->flags) /* Î´ÉÏËø */
+			if (!test_bit(R5_OVERWRITE, &dev->flags) && i != sh->pd_idx &&/* ç£ç›˜éè¦†ç›–å†™å¹¶ä¸”ä¸æ˜¯æ ¡éªŒç›˜ */
+			    (!test_bit(R5_LOCKED, &dev->flags) /* æœªä¸Šé” */
 #if 0
 || sh->bh_page[i] != bh->b_page
 #endif
 				    ) &&
-			    !test_bit(R5_UPTODATE, &dev->flags)) {/* Î´¸üĞÂ */
+			    !test_bit(R5_UPTODATE, &dev->flags)) {/* æœªæ›´æ–° */
 				if (test_bit(R5_Insync, &dev->flags)) rcw++;
-				else rcw += 2*disks;/* ¸üĞÂÖØ¹¹Ğ´Çé¿öÏÂµÄ¶ÁĞ´´ÎÊı */
+				else rcw += 2*disks;/* æ›´æ–°é‡æ„å†™æƒ…å†µä¸‹çš„è¯»å†™æ¬¡æ•° */
 			}
 		}
 		PRINTK("for sector %llu, rmw=%d rcw=%d\n", 
 			(unsigned long long)sh->sector, rmw, rcw);
 		set_bit(STRIPE_HANDLE, &sh->state);
-		if (rmw < rcw && rmw > 0)/* Ó¦¸Ã²ÉÓÃ¶Á¸ÄĞ´·½Ê½ */
+		if (rmw < rcw && rmw > 0)/* åº”è¯¥é‡‡ç”¨è¯»æ”¹å†™æ–¹å¼ */
 			/* prefer read-modify-write, but need to get some data */
-			for (i=disks; i--;) {/* ±éÀúÃ¿¸ö´ÅÅÌ£¬ÉèÖÃÆä±êÖ¾£¬¿ªÊ¼¶Á¸ÄĞ´ */
+			for (i=disks; i--;) {/* éå†æ¯ä¸ªç£ç›˜ï¼Œè®¾ç½®å…¶æ ‡å¿—ï¼Œå¼€å§‹è¯»æ”¹å†™ */
 				dev = &sh->dev[i];
 				if ((dev->towrite || i == sh->pd_idx) &&
 				    !test_bit(R5_LOCKED, &dev->flags) && !test_bit(R5_UPTODATE, &dev->flags) &&
 				    test_bit(R5_Insync, &dev->flags)) {
-					if (test_bit(STRIPE_PREREAD_ACTIVE, &sh->state))/* ÒÑ¾­¼¤»îÔ¤¶ÁÁË */
+					if (test_bit(STRIPE_PREREAD_ACTIVE, &sh->state))/* å·²ç»æ¿€æ´»é¢„è¯»äº† */
 					{
 						PRINTK("Read_old block %d for r-m-w\n", i);
-						set_bit(R5_LOCKED, &dev->flags);/* Ö±½ÓÉÏËø£¬ÉèÖÃ¶Á±êÖ¾ */
+						set_bit(R5_LOCKED, &dev->flags);/* ç›´æ¥ä¸Šé”ï¼Œè®¾ç½®è¯»æ ‡å¿— */
 						set_bit(R5_Wantread, &dev->flags);
 						locked++;
 					} else {
-						set_bit(STRIPE_DELAYED, &sh->state);/* ÑÓ³Ù¶Á±êÖ¾ */
+						set_bit(STRIPE_DELAYED, &sh->state);/* å»¶è¿Ÿè¯»æ ‡å¿— */
 						set_bit(STRIPE_HANDLE, &sh->state);
 					}
 				}
 			}
-		if (rcw <= rmw && rcw > 0)/* Ó¦µ±²ÉÓÃÖØ¹¹Ğ´ */
+		if (rcw <= rmw && rcw > 0)/* åº”å½“é‡‡ç”¨é‡æ„å†™ */
 			/* want reconstruct write, but need to get some data */
 			for (i=disks; i--;) {
 				dev = &sh->dev[i];
@@ -1202,7 +1202,7 @@ static void handle_stripe(struct stripe_head *sh)
 				}
 			}
 		/* now if nothing is locked, and if we have enough data, we can start a write request */
-		if (locked == 0 && (rcw == 0 ||rmw == 0)) {/* Ã»ÓĞËø¶¨µÄ´ÅÅÌ£¬²¢ÇÒĞèÒª¶ÁµÄ´ÅÅÌÊıÁ¿Îª0£¬ËµÃ÷Êı¾İÒÑ¾­È«²¿¶ÁÈëÄÚ´æ£¬¿ªÊ¼¼ÆËãĞ£ÑéºÍ */
+		if (locked == 0 && (rcw == 0 ||rmw == 0)) {/* æ²¡æœ‰é”å®šçš„ç£ç›˜ï¼Œå¹¶ä¸”éœ€è¦è¯»çš„ç£ç›˜æ•°é‡ä¸º0ï¼Œè¯´æ˜æ•°æ®å·²ç»å…¨éƒ¨è¯»å…¥å†…å­˜ï¼Œå¼€å§‹è®¡ç®—æ ¡éªŒå’Œ */
 			PRINTK("Computing parity...\n");
 			compute_parity(sh, rcw==0 ? RECONSTRUCT_WRITE : READ_MODIFY_WRITE);
 			/* now every locked buffer is ready to be written */
@@ -1278,22 +1278,22 @@ static void handle_stripe(struct stripe_head *sh)
 		bi->bi_size = 0;
 		bi->bi_end_io(bi, bytes, 0);
 	}
-	/* ¿ªÊ¼´¦ÀíĞèÒªµ÷¶ÈµÄIO£¬ops_run_io */
+	/* å¼€å§‹å¤„ç†éœ€è¦è°ƒåº¦çš„IOï¼Œops_run_io */
 	for (i=disks; i-- ;) {
 		int rw;
 		struct bio *bi;
 		mdk_rdev_t *rdev;
-		/* ¸ù¾İ±êÖ¾È·¶¨ÊÇĞèÒªĞ´»¹ÊÇ¶Á */
+		/* æ ¹æ®æ ‡å¿—ç¡®å®šæ˜¯éœ€è¦å†™è¿˜æ˜¯è¯» */
 		if (test_and_clear_bit(R5_Wantwrite, &sh->dev[i].flags))
 			rw = 1;
 		else if (test_and_clear_bit(R5_Wantread, &sh->dev[i].flags))
 			rw = 0;
 		else
-			continue;/* ¸Ã´ÅÅÌÎŞIOĞèÇó */
+			continue;/* è¯¥ç£ç›˜æ— IOéœ€æ±‚ */
  
 		bi = &sh->dev[i].req;
  
-		bi->bi_rw = rw;/* ¸ù¾İ¶ÁĞ´±êÖ¾ÉèÖÃbi_end_io»Øµ÷ */
+		bi->bi_rw = rw;/* æ ¹æ®è¯»å†™æ ‡å¿—è®¾ç½®bi_end_ioå›è°ƒ */
 		if (rw)
 			bi->bi_end_io = raid5_end_write_request;
 		else
@@ -1301,7 +1301,7 @@ static void handle_stripe(struct stripe_head *sh)
  
 		rcu_read_lock();
 		rdev = conf->disks[i].rdev;
-		if (rdev && rdev->faulty)/* ¸Ã³ÉÔ±´ÅÅÌÒÑ¾­³öÏÖ¹ÊÕÏ£¬²»¶ÔÆä½øĞĞ²Ù×÷ */
+		if (rdev && rdev->faulty)/* è¯¥æˆå‘˜ç£ç›˜å·²ç»å‡ºç°æ•…éšœï¼Œä¸å¯¹å…¶è¿›è¡Œæ“ä½œ */
 			rdev = NULL;
 		if (rdev)
 			atomic_inc(&rdev->nr_pending);
@@ -1311,11 +1311,11 @@ static void handle_stripe(struct stripe_head *sh)
 			if (test_bit(R5_Syncio, &sh->dev[i].flags))
 				md_sync_acct(rdev->bdev, STRIPE_SECTORS);
 
-			bi->bi_bdev = rdev->bdev;/* ½«ÇëÇó¶ÔÓ¦µÄÉè±¸ĞŞ¸ÄÎª³ÉÔ±´ÅÅÌ */
+			bi->bi_bdev = rdev->bdev;/* å°†è¯·æ±‚å¯¹åº”çš„è®¾å¤‡ä¿®æ”¹ä¸ºæˆå‘˜ç£ç›˜ */
 			PRINTK("for %llu schedule op %ld on disc %d\n",
 				(unsigned long long)sh->sector, bi->bi_rw, i);
 			atomic_inc(&sh->count);
-			/* ¼ÆËãÌõ´øÔÚ´ÅÅÌÉÏµÄÆğÊ¼Î»ÖÃ */
+			/* è®¡ç®—æ¡å¸¦åœ¨ç£ç›˜ä¸Šçš„èµ·å§‹ä½ç½® */
 			bi->bi_sector = sh->sector + rdev->data_offset;
 			bi->bi_flags = 1 << BIO_UPTODATE;
 			bi->bi_vcnt = 1;	
@@ -1326,9 +1326,9 @@ static void handle_stripe(struct stripe_head *sh)
 			bi->bi_io_vec[0].bv_offset = 0;
 			bi->bi_size = STRIPE_SIZE;
 			bi->bi_next = NULL;
-			/* Ïò³ÉÔ±´ÅÅÌÌá½»ÇëÇó */
+			/* å‘æˆå‘˜ç£ç›˜æäº¤è¯·æ±‚ */
 			generic_make_request(bi);
-		} else {/* ³ÉÔ±´ÅÅÌ»µÁË */
+		} else {/* æˆå‘˜ç£ç›˜åäº† */
 			PRINTK("skip op %ld on disc %d for sector %llu\n",
 				bi->bi_rw, i, (unsigned long long)sh->sector);
 			clear_bit(R5_LOCKED, &sh->dev[i].flags);
@@ -1431,7 +1431,7 @@ static inline void raid5_plug_device(raid5_conf_t *conf)
 	spin_unlock_irq(&conf->device_lock);
 }
 
-/* ´¦ÀíÉÏ²ãÌá½»µÄÇëÇó */
+/* å¤„ç†ä¸Šå±‚æäº¤çš„è¯·æ±‚ */
 static int make_request (request_queue_t *q, struct bio * bi)
 {
 	mddev_t *mddev = q->queuedata;
@@ -1443,7 +1443,7 @@ static int make_request (request_queue_t *q, struct bio * bi)
 	sector_t logical_sector, last_sector;
 	struct stripe_head *sh;
 
-	if (bio_data_dir(bi)==WRITE) {/* ¸üĞÂ¶ÁĞ´Í³¼Æ¼ÆÊı */
+	if (bio_data_dir(bi)==WRITE) {/* æ›´æ–°è¯»å†™ç»Ÿè®¡è®¡æ•° */
 		disk_stat_inc(mddev->gendisk, writes);
 		disk_stat_add(mddev->gendisk, write_sectors, bio_sectors(bi));
 	} else {
@@ -1451,17 +1451,17 @@ static int make_request (request_queue_t *q, struct bio * bi)
 		disk_stat_add(mddev->gendisk, read_sectors, bio_sectors(bi));
 	}
 
-	/* Ìõ´ø³õÊ¼ÉÈÇøºÅ */
+	/* æ¡å¸¦åˆå§‹æ‰‡åŒºå· */
 	logical_sector = bi->bi_sector & ~((sector_t)STRIPE_SECTORS-1);
-	last_sector = bi->bi_sector + (bi->bi_size>>9);/* ÇëÇó½áÊøÉÈÇø */
+	last_sector = bi->bi_sector + (bi->bi_size>>9);/* è¯·æ±‚ç»“æŸæ‰‡åŒº */
 	bi->bi_next = NULL;
 	bi->bi_phys_segments = 1;	/* over-loaded to count active stripes */
-	if ( bio_data_dir(bi) == WRITE )/* ÔÚĞ´µÄÇé¿öÏÂ£¬µ÷ÓÃmd_write_start±ê¼ÇÍ¬²½ */
+	if ( bio_data_dir(bi) == WRITE )/* åœ¨å†™çš„æƒ…å†µä¸‹ï¼Œè°ƒç”¨md_write_startæ ‡è®°åŒæ­¥ */
 		md_write_start(mddev);
-	for (;logical_sector < last_sector; logical_sector += STRIPE_SECTORS) {/* ´¦ÀíÃ¿Ò»¸öÌõ´ø */
+	for (;logical_sector < last_sector; logical_sector += STRIPE_SECTORS) {/* å¤„ç†æ¯ä¸€ä¸ªæ¡å¸¦ */
 		DEFINE_WAIT(w);
 
-		/* ¼ÆËãÌõ´ø±àºÅ */
+		/* è®¡ç®—æ¡å¸¦ç¼–å· */
 		new_sector = raid5_compute_sector(logical_sector,
 						  raid_disks, data_disks, &dd_idx, &pd_idx, conf);
 
@@ -1471,24 +1471,24 @@ static int make_request (request_queue_t *q, struct bio * bi)
 
 	retry:
 		prepare_to_wait(&conf->wait_for_overlap, &w, TASK_UNINTERRUPTIBLE);
-		/* »ñÈ¡Ò»¸ö»î¶¯Ìõ´ø£¬Ô¤¶ÁÆäÊı¾İ */
+		/* è·å–ä¸€ä¸ªæ´»åŠ¨æ¡å¸¦ï¼Œé¢„è¯»å…¶æ•°æ® */
 		sh = get_active_stripe(conf, new_sector, pd_idx, (bi->bi_rw&RWA_MASK));
 		if (sh) {
-			if (!add_stripe_bio(sh, bi, dd_idx, (bi->bi_rw&RW_MASK))) {/* ½«bioÌí¼Óµ½Ìõ´ø */
+			if (!add_stripe_bio(sh, bi, dd_idx, (bi->bi_rw&RW_MASK))) {/* å°†bioæ·»åŠ åˆ°æ¡å¸¦ */
 				/* Add failed due to overlap.  Flush everything
 				 * and wait a while
 				 */
-				raid5_unplug_device(mddev->queue);/* ¶ÔRAID5Éè±¸½øĞĞĞ¹Á÷£¬Ê¹Æä¾¡¿ì´¦ÀíÇëÇó */
-				release_stripe(sh);/* Ìí¼ÓbioÊ§°Ü£¬ÊÍ·ÅËü */
+				raid5_unplug_device(mddev->queue);/* å¯¹RAID5è®¾å¤‡è¿›è¡Œæ³„æµï¼Œä½¿å…¶å°½å¿«å¤„ç†è¯·æ±‚ */
+				release_stripe(sh);/* æ·»åŠ bioå¤±è´¥ï¼Œé‡Šæ”¾å®ƒ */
 				schedule();
-				goto retry;/* Èç¹ûĞ¹Á÷³É¹¦£¬ÖØÊÔ½«bioÌí¼Óµ½Ìõ´ø */
+				goto retry;/* å¦‚æœæ³„æµæˆåŠŸï¼Œé‡è¯•å°†bioæ·»åŠ åˆ°æ¡å¸¦ */
 			}
 			finish_wait(&conf->wait_for_overlap, &w);
 			raid5_plug_device(conf);
-			handle_stripe(sh);/* ½«Ìõ´ø·ÅÈëºÏÊÊµÄÁ´±í£¬ÓÉÄÚºËÏß³Ì¼ÌĞø´¦Àí */
+			handle_stripe(sh);/* å°†æ¡å¸¦æ”¾å…¥åˆé€‚çš„é“¾è¡¨ï¼Œç”±å†…æ ¸çº¿ç¨‹ç»§ç»­å¤„ç† */
 			release_stripe(sh);
 
-		} else {/* ÏòÉÏ²ã·µ»Ø´íÎó */
+		} else {/* å‘ä¸Šå±‚è¿”å›é”™è¯¯ */
 			/* cannot get stripe for read-ahead, just give-up */
 			clear_bit(BIO_UPTODATE, &bi->bi_flags);
 			finish_wait(&conf->wait_for_overlap, &w);
@@ -1497,13 +1497,13 @@ static int make_request (request_queue_t *q, struct bio * bi)
 			
 	}
 	spin_lock_irq(&conf->device_lock);
-	if (--bi->bi_phys_segments == 0) {/* BIOËùÔÚµÄ»î¶¯Ìõ´øÊıÎª0£¬±íÊ¾BIOÇëÇóÒÑ¾­Íê³É£¬ÏòÉÏ²ã±¨¸æ */
+	if (--bi->bi_phys_segments == 0) {/* BIOæ‰€åœ¨çš„æ´»åŠ¨æ¡å¸¦æ•°ä¸º0ï¼Œè¡¨ç¤ºBIOè¯·æ±‚å·²ç»å®Œæˆï¼Œå‘ä¸Šå±‚æŠ¥å‘Š */
 		int bytes = bi->bi_size;
 
-		if ( bio_data_dir(bi) == WRITE )/* Èç¹ûÊÇĞ´ÇëÇó£¬µ÷ÓÃmd_write_end½áÊøÍ¬²½×´Ì¬ */
+		if ( bio_data_dir(bi) == WRITE )/* å¦‚æœæ˜¯å†™è¯·æ±‚ï¼Œè°ƒç”¨md_write_endç»“æŸåŒæ­¥çŠ¶æ€ */
 			md_write_end(mddev);
 		bi->bi_size = 0;
-		bi->bi_end_io(bi, bytes, 0);/* Ïò¿éÉè±¸²ã±¨¸æ */
+		bi->bi_end_io(bi, bytes, 0);/* å‘å—è®¾å¤‡å±‚æŠ¥å‘Š */
 	}
 	spin_unlock_irq(&conf->device_lock);
 	return 0;
@@ -1563,7 +1563,7 @@ static int sync_request (mddev_t *mddev, sector_t sector_nr, int go_faster)
  * During the scan, completed stripes are saved for us by the interrupt
  * handler, so that they will not have to wait for our next wakeup.
  */
-/* RAID5ÊØ»¤Ïß³ÌÖ÷º¯Êı */
+/* RAID5å®ˆæŠ¤çº¿ç¨‹ä¸»å‡½æ•° */
 static void raid5d (mddev_t *mddev)
 {
 	struct stripe_head *sh;
@@ -1572,13 +1572,13 @@ static void raid5d (mddev_t *mddev)
 
 	PRINTK("+++ raid5d active\n");
 
-	/* ¼ì²éÊÇ·ñÓĞÍ¬²½¹¤×÷Òª×ö */
+	/* æ£€æŸ¥æ˜¯å¦æœ‰åŒæ­¥å·¥ä½œè¦åš */
 	md_check_recovery(mddev);
 	md_handle_safemode(mddev);
 
 	handled = 0;
 	spin_lock_irq(&conf->device_lock);
-	while (1) {/* ´¦ÀíËùÓĞ¿ÉÄÜµÄÌõ´ø */
+	while (1) {/* å¤„ç†æ‰€æœ‰å¯èƒ½çš„æ¡å¸¦ */
 		struct list_head *first;
 
 		if (list_empty(&conf->handle_list) &&
@@ -1587,10 +1587,10 @@ static void raid5d (mddev_t *mddev)
 		    !list_empty(&conf->delayed_list))
 			raid5_activate_delayed(conf);
 
-		if (list_empty(&conf->handle_list))/* ´ı´¦ÀíÌõ´øÎª¿Õ£¬ÍË³ö */
+		if (list_empty(&conf->handle_list))/* å¾…å¤„ç†æ¡å¸¦ä¸ºç©ºï¼Œé€€å‡º */
 			break;
 
-		/* È¡³öÏÂÒ»¸öÌõ´ø */
+		/* å–å‡ºä¸‹ä¸€ä¸ªæ¡å¸¦ */
 		first = conf->handle_list.next;
 		sh = list_entry(first, struct stripe_head, lru);
 
@@ -1601,9 +1601,9 @@ static void raid5d (mddev_t *mddev)
 		spin_unlock_irq(&conf->device_lock);
 		
 		handled++;
-		/* ´¦ÀíÌõ´ø */
+		/* å¤„ç†æ¡å¸¦ */
 		handle_stripe(sh);
-		/* ½«Ìõ´ø·ÅÈëºÏÊÊµÄÁ´±í */
+		/* å°†æ¡å¸¦æ”¾å…¥åˆé€‚çš„é“¾è¡¨ */
 		release_stripe(sh);
 
 		spin_lock_irq(&conf->device_lock);
@@ -1612,7 +1612,7 @@ static void raid5d (mddev_t *mddev)
 
 	spin_unlock_irq(&conf->device_lock);
 
-	/* ´ÙÊ¹ËùÓĞ³ÉÔ±´ÅÅÌ´¦Àí·Ö½â¸øËüÃÇµÄÇëÇó */
+	/* ä¿ƒä½¿æ‰€æœ‰æˆå‘˜ç£ç›˜å¤„ç†åˆ†è§£ç»™å®ƒä»¬çš„è¯·æ±‚ */
 	unplug_slaves(mddev);
 
 	PRINTK("--- raid5d inactive\n");

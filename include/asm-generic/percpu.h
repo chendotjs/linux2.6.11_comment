@@ -9,18 +9,18 @@ extern unsigned long __per_cpu_offset[NR_CPUS];
 
 /* Separate out the type, so (int[3], foo) works. */
 /**
- * ¾²Ì¬·ÖÅäÒ»¸öÃ¿CPUÊı×é£¬Êı×éÃûÎªname£¬½á¹¹ÀàĞÍÎªtype
+ * é™æ€åˆ†é…ä¸€ä¸ªæ¯CPUæ•°ç»„ï¼Œæ•°ç»„åä¸ºnameï¼Œç»“æ„ç±»å‹ä¸ºtype
  */
 #define DEFINE_PER_CPU(type, name) \
     __attribute__((__section__(".data.percpu"))) __typeof__(type) per_cpu__##name
 
 /* var is in discarded region: offset to particular copy we want */
 /**
- * ÎªCPUÑ¡ÔñÒ»¸öÃ¿CPUÊı×éÔªËØ£¬CPUÓÉ²ÎÊıCPUÖ¸¶¨£¬Êı×éÃûÎªname
+ * ä¸ºCPUé€‰æ‹©ä¸€ä¸ªæ¯CPUæ•°ç»„å…ƒç´ ï¼ŒCPUç”±å‚æ•°CPUæŒ‡å®šï¼Œæ•°ç»„åä¸ºname
  */
 #define per_cpu(var, cpu) (*RELOC_HIDE(&per_cpu__##var, __per_cpu_offset[cpu]))
 /**
- * Ñ¡ÔñÃ¿CPUÊı×énameµÄ±¾µØCPUÔªËØ¡£
+ * é€‰æ‹©æ¯CPUæ•°ç»„nameçš„æœ¬åœ°CPUå…ƒç´ ã€‚
  */
 #define __get_cpu_var(var) per_cpu(var, smp_processor_id())
 

@@ -1,43 +1,43 @@
 #include <linux/highmem.h>
 
 /**
- * ½¨Á¢ÓÀ¾ÃÄÚºËÓ³Éä¡£
+ * å»ºç«‹æ°¸ä¹…å†…æ ¸æ˜ å°„ã€‚
  */
 void *kmap(struct page *page)
 {
 	/**
-	 * kmapÊÇÔÊĞíË¯ÃßµÄ£¬ÒâË¼ÊÇËµ²»ÄÜÔÚÖĞ¶ÏºÍ¿ÉÑÓ³Ùº¯ÊıÖĞµ÷ÓÃ¡£
-	 * Èç¹ûÊÔÍ¼ÔÚÖĞ¶ÏÖĞµ÷ÓÃ£¬ÄÇÃ´might_sleep»á´¥·¢Òì³£¡£
+	 * kmapæ˜¯å…è®¸ç¡çœ çš„ï¼Œæ„æ€æ˜¯è¯´ä¸èƒ½åœ¨ä¸­æ–­å’Œå¯å»¶è¿Ÿå‡½æ•°ä¸­è°ƒç”¨ã€‚
+	 * å¦‚æœè¯•å›¾åœ¨ä¸­æ–­ä¸­è°ƒç”¨ï¼Œé‚£ä¹ˆmight_sleepä¼šè§¦å‘å¼‚å¸¸ã€‚
 	 */
 	might_sleep();
 	/**
-	 * Èç¹ûÒ³¿ò²»ÊôÓÚ¸ß¶ËÄÚ´æ£¬Ôòµ÷ÓÃpage_addressÖ±½Ó·µ»ØÏßĞÔµØÖ·¡£
+	 * å¦‚æœé¡µæ¡†ä¸å±äºé«˜ç«¯å†…å­˜ï¼Œåˆ™è°ƒç”¨page_addressç›´æ¥è¿”å›çº¿æ€§åœ°å€ã€‚
 	 */
 	if (!PageHighMem(page))
 		return page_address(page);
 	/**
-	 * ·ñÔòµ÷ÓÃkmap_highÕæÕı½¨Á¢ÓÀ¾ÃÄÚºËÓ³Éä¡£
+	 * å¦åˆ™è°ƒç”¨kmap_highçœŸæ­£å»ºç«‹æ°¸ä¹…å†…æ ¸æ˜ å°„ã€‚
 	 */
 	return kmap_high(page);
 }
 
 /**
- * ³·ÏúÏÈÇ°ÓÉkmap½¨Á¢µÄÓÀ¾ÃÄÚºËÓ³Éä
+ * æ’¤é”€å…ˆå‰ç”±kmapå»ºç«‹çš„æ°¸ä¹…å†…æ ¸æ˜ å°„
  */
 void kunmap(struct page *page)
 {
 	/**
-	 * kmapºÍkunmap¶¼²»ÔÊĞíÔÚÖĞ¶ÏÖĞÊ¹ÓÃ¡£
+	 * kmapå’Œkunmapéƒ½ä¸å…è®¸åœ¨ä¸­æ–­ä¸­ä½¿ç”¨ã€‚
 	 */
 	if (in_interrupt())
 		BUG();
 	/**
-	 * Èç¹û¶ÔÓ¦Ò³¸ù±¾¾Í²»ÊÇ¸ß¶ËÄÚ´æ£¬µ±È»¾ÍÃ»ÓĞ½øĞĞÄÚºËÓ³Éä£¬Ò²¾Í²»ÓÃµ÷ÓÃ±¾º¯ÊıÁË¡£
+	 * å¦‚æœå¯¹åº”é¡µæ ¹æœ¬å°±ä¸æ˜¯é«˜ç«¯å†…å­˜ï¼Œå½“ç„¶å°±æ²¡æœ‰è¿›è¡Œå†…æ ¸æ˜ å°„ï¼Œä¹Ÿå°±ä¸ç”¨è°ƒç”¨æœ¬å‡½æ•°äº†ã€‚
 	 */
 	if (!PageHighMem(page))
 		return;
 	/**
-	 * kunmap_highÕæÕıÖ´ĞĞunmap¹ı³Ì
+	 * kunmap_highçœŸæ­£æ‰§è¡Œunmapè¿‡ç¨‹
 	 */
 	kunmap_high(page);
 }
@@ -51,8 +51,8 @@ void kunmap(struct page *page)
  * kmaps are appropriate for short, tight code paths only.
  */
 /**
- * ½¨Á¢ÁÙÊ±ÄÚºËÓ³Éä
- * typeºÍCPU¹²Í¬È·¶¨ÓÃÄÄ¸ö¹Ì¶¨Ó³ÉäµÄÏßĞÔµØÖ·Ó³ÉäÇëÇóÒ³¡£
+ * å»ºç«‹ä¸´æ—¶å†…æ ¸æ˜ å°„
+ * typeå’ŒCPUå…±åŒç¡®å®šç”¨å“ªä¸ªå›ºå®šæ˜ å°„çš„çº¿æ€§åœ°å€æ˜ å°„è¯·æ±‚é¡µã€‚
  */
 void *kmap_atomic(struct page *page, enum km_type type)
 {
@@ -62,13 +62,13 @@ void *kmap_atomic(struct page *page, enum km_type type)
 	/* even !CONFIG_PREEMPT needs this, for in_atomic in do_page_fault */
 	inc_preempt_count();
 	/**
-	 * Èç¹û±»Ó³ÉäµÄÒ³²»ÊôÓÚ¸ß¶ËÄÚ´æ£¬µ±È»ÓÃ²»×ÅÓ³Éä¡£Ö±½Ó·µ»ØÏßĞÔµØÖ·¾ÍĞĞÁË¡£
+	 * å¦‚æœè¢«æ˜ å°„çš„é¡µä¸å±äºé«˜ç«¯å†…å­˜ï¼Œå½“ç„¶ç”¨ä¸ç€æ˜ å°„ã€‚ç›´æ¥è¿”å›çº¿æ€§åœ°å€å°±è¡Œäº†ã€‚
 	 */
 	if (!PageHighMem(page))
 		return page_address(page);
 
 	/**
-	 * Í¨¹ıtypeºÍCPUÈ·¶¨ÏßĞÔµØÖ·¡£
+	 * é€šè¿‡typeå’ŒCPUç¡®å®šçº¿æ€§åœ°å€ã€‚
 	 */
 	idx = type + KM_TYPE_NR*smp_processor_id();
 	vaddr = __fix_to_virt(FIX_KMAP_BEGIN + idx);
@@ -77,11 +77,11 @@ void *kmap_atomic(struct page *page, enum km_type type)
 		BUG();
 #endif
 	/**
-	 * ½«ÏßĞÔµØÖ·ÓëÒ³±íÏî½¨Á¢Ó³Éä¡£
+	 * å°†çº¿æ€§åœ°å€ä¸é¡µè¡¨é¡¹å»ºç«‹æ˜ å°„ã€‚
 	 */
 	set_pte(kmap_pte-idx, mk_pte(page, kmap_prot));
 	/**
-	 * µ±È»£¬×îºó±ØĞëË¢ĞÂÒ»ÏÂTLB¡£È»ºó²ÅÄÜ·µ»ØÏßĞÔµØÖ·¡£
+	 * å½“ç„¶ï¼Œæœ€åå¿…é¡»åˆ·æ–°ä¸€ä¸‹TLBã€‚ç„¶åæ‰èƒ½è¿”å›çº¿æ€§åœ°å€ã€‚
 	 */
 	__flush_tlb_one(vaddr);
 
@@ -89,7 +89,7 @@ void *kmap_atomic(struct page *page, enum km_type type)
 }
 
 /**
- * ³·ÏúÄÚºËÁÙÊ±Ó³Éä
+ * æ’¤é”€å†…æ ¸ä¸´æ—¶æ˜ å°„
  */
 void kunmap_atomic(void *kvaddr, enum km_type type)
 {
@@ -111,13 +111,13 @@ void kunmap_atomic(void *kvaddr, enum km_type type)
 	 * this pte without first remap it
 	 */
 	/**
-	 * È¡ÏûÓ³Éä²¢Ë¢ĞÂTLB
+	 * å–æ¶ˆæ˜ å°„å¹¶åˆ·æ–°TLB
 	 */
 	pte_clear(kmap_pte-idx);
 	__flush_tlb_one(vaddr);
 #endif
 	/**
-	 * ÔÊĞíÇÀÕ¼£¬²¢¼ì²éµ÷¶Èµã¡£
+	 * å…è®¸æŠ¢å ï¼Œå¹¶æ£€æŸ¥è°ƒåº¦ç‚¹ã€‚
 	 */
 	dec_preempt_count();
 	preempt_check_resched();

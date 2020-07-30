@@ -108,19 +108,19 @@ extern char saved_command_line[];
 	__attribute_used__ __attribute__((__section__(".security_initcall.init"))) = fn
 
 /**
- * ¶ÔÓ¦ÓÚ__setupºÍearly_paramºê¶¨ÒåÔÚÆô¶¯Ê±Ñ¡Ïî¡£
+ * å¯¹åº”äº__setupå’Œearly_paramå®å®šä¹‰åœ¨å¯åŠ¨æ—¶é€‰é¡¹ã€‚
  */
 struct obs_kernel_param {
 	/**
-	 * Ñ¡ÏîÃû³Æ£¬Èç"netdev="
+	 * é€‰é¡¹åç§°ï¼Œå¦‚"netdev="
 	 */
 	const char *str;
 	/**
-	 * Æô¶¯Ñ¡Ïî¶ÔÓ¦µÄ´¦Àíº¯Êı¡£
+	 * å¯åŠ¨é€‰é¡¹å¯¹åº”çš„å¤„ç†å‡½æ•°ã€‚
 	 */
 	int (*setup_func)(char *);
 	/**
-	 * ÊÇ·ñÎªµÚÒ»´Î´¦ÀíµÄÑ¡Ïî¡£
+	 * æ˜¯å¦ä¸ºç¬¬ä¸€æ¬¡å¤„ç†çš„é€‰é¡¹ã€‚
 	 */
 	int early;
 };
@@ -143,9 +143,9 @@ struct obs_kernel_param {
 	__setup_param(str, unique_id, NULL, 0)
 
 /**
- * str ÊÇ¹Ø¼ü×Ö£¬fn ÊÇ¹ØÁª´¦Àíº¯Êı¡£
- * __setup Ö»ÊÇ¸æËßÄÚºËÔÚÆô¶¯Ê±ÊäÈë´®ÖĞº¬ÓĞ str Ê±£¬ÄÚºËÒªÈ¥Ö´ĞĞ fn¡£
- * str ±ØĞëÒÔ"="·û½áÊøÒÔÊ¹parse_args¸ü·½±ã½âÎö¡£½ôËæ"="ºóµÄÈÎºÎÎÄ±¾¶¼»á×÷ÎªÊäÈë´«¸øfn
+ * str æ˜¯å…³é”®å­—ï¼Œfn æ˜¯å…³è”å¤„ç†å‡½æ•°ã€‚
+ * __setup åªæ˜¯å‘Šè¯‰å†…æ ¸åœ¨å¯åŠ¨æ—¶è¾“å…¥ä¸²ä¸­å«æœ‰ str æ—¶ï¼Œå†…æ ¸è¦å»æ‰§è¡Œ fnã€‚
+ * str å¿…é¡»ä»¥"="ç¬¦ç»“æŸä»¥ä½¿parse_argsæ›´æ–¹ä¾¿è§£æã€‚ç´§éš"="åçš„ä»»ä½•æ–‡æœ¬éƒ½ä¼šä½œä¸ºè¾“å…¥ä¼ ç»™fn
  */
 #define __setup(str, fn)					\
 	__setup_param(str, fn, fn, 0)
@@ -156,8 +156,8 @@ struct obs_kernel_param {
 /* NOTE: fn is as per module_param, not __setup!  Emits warning if fn
  * returns non-zero. */
 /**
- * Óë__setup²»Í¬Ö®´¦£¬ÔÚÓÚÉèÖÃÒ»¸öÌØÊâ±ê¼Ç£¬ÒÔ±íÊ¾ËüÊÇÒ»¸öÏÈÆÚ´¦ÀíµÄÑ¡Ïî¡£
- * parse_argsµÚÒ»´Î´¦ÀíÕâĞ©±ê¼Ç¡£µÚ¶ş´Î´¦Àí__setup±ê¼Ç¡£
+ * ä¸__setupä¸åŒä¹‹å¤„ï¼Œåœ¨äºè®¾ç½®ä¸€ä¸ªç‰¹æ®Šæ ‡è®°ï¼Œä»¥è¡¨ç¤ºå®ƒæ˜¯ä¸€ä¸ªå…ˆæœŸå¤„ç†çš„é€‰é¡¹ã€‚
+ * parse_argsç¬¬ä¸€æ¬¡å¤„ç†è¿™äº›æ ‡è®°ã€‚ç¬¬äºŒæ¬¡å¤„ç†__setupæ ‡è®°ã€‚
  */
 #define early_param(str, fn)					\
 	__setup_param(str, fn, fn, 1)

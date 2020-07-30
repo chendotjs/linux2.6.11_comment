@@ -55,8 +55,8 @@ fastcall void __up(struct semaphore *sem)
 }
 
 /**
- * �������ź���ʧ��ʱ������__downʹ�̹߳���ֱ���ź������á�
- * �����ϣ������߳�����ΪTASK_UNINTERRUPTIBLE�������̷ŵ��ź����ĵȴ����С�
+ * 当申请信号量失败时，调用__down使线程挂起。直到信号量可用。
+ * 本质上，它将线程设置为TASK_UNINTERRUPTIBLE并将进程放到信号量的等待队列。
  */
 fastcall void __sched __down(struct semaphore * sem)
 {
@@ -65,37 +65,37 @@ fastcall void __sched __down(struct semaphore * sem)
 	unsigned long flags;
 
 	/**
-	 * ����״̬ΪTASK_UNINTERRUPTIBLE��
+	 * 设置状态为TASK_UNINTERRUPTIBLE。
 	 */
 	tsk->state = TASK_UNINTERRUPTIBLE;
 	/**
-	 * �ڽ����̷ŵ��ȴ�����ǰ���Ȼ����������ֹ�����жϡ�
+	 * 在将进程放到等待队列前，先获得锁，并禁止本地中断。
 	 */
 	spin_lock_irqsave(&sem->wait.lock, flags);
 	/**
-	 * �ȴ����е�__locked�汾�����ڵ��ú���ǰ�Ѿ��������������
-	 * ��ע��ӵ��ȴ������ϵ�˯�߽����ǻ���ġ�����wakeup��໽��һ�����̡�
-	 * ������Ѷ�����̣�������sleeper��count��ֵ����������ע���еĵ����������
+	 * 等待队列的__locked版本假设在调用函数前已经获得了自旋锁。
+	 * 请注意加到等待队列上的睡眠进程是互斥的。这样wakeup最多唤醒一个进程。
+	 * 如果唤醒多个进程，会扰乱sleeper和count的值。考虑下面注释中的第三种情况。
 	 */
 	add_wait_queue_exclusive_locked(&sem->wait, &wait);
 
 	/**
-	 * sleepers��__down�����ľ��衣������׼ȷ�ģ�ͬʱ���Ǹ�Ч�ġ�
-	 * �������Ǳ�ʾ�ڴ��ź�����˯�ߵ��߳�������������ʾ�Ƿ����߳����ź�������ȴ���
-	 * ��ע������count�Ĺ�ϵ��
-	 * ���ź�������ʱ����COUNT>=1��sleeper=0,��ʱ__down�������ᱻִ�С�
-	 * ���ź���������ʱ��û��˯�ߵĽ��̣���count==0,sleeper==0
-	 *     ��down�Ὣcount����Ϊ-1,�Ҵ�ʱsleeper==0�����뱾���������forѭ����
-	 *     atomic_add_negativeִ��ԭ�Ӽӣ����Ǽӵ�ֵΪ0��atomic_add_negative��ɼ��countֵ�Ƿ�Ϊ����
-	 *     ���Ϊ�����ͽ�sleeper������Ϊ1������˵���ź������ã��ͽ�sleeper����Ϊ0������ѭ���˳���
-	 * ���ź���������ʱ�����������������ڵȴ�ʱ��count==-1��sleeper==1�������ʱ��count����1����count==-2,sleeper(��ʱ)==2
-	 *     ��ʱatomic_add_negativeִ��ԭ�Ӽӣ���ʱ�ӵ�ֵ��sleeper-1��1.
-	 *     ���Ҵ�ʱ�õ�����ʱ������linux�о�����Ҫ���������ݴ浽��ʱ�����У�ֻ����ʱ�����е�ֵ���ǿɿ��ġ������Ķ��п��ܱ������̻߳����жϸı䡣
-	 *     ��sleeper-1����Ϊsem->sleepers++;һ��󣬵�atomic_add_negative���countǰ��count���ܱ��������̼���1�ˡ������Ϳ��Լ������������
-	 *     �����1��countΪ����˵���ź���Ȼ�����ã���ʱcount���ָ���-1�ˣ����ס��down�н�count��1����ʱ��������ȥ����Ϊ�̲߳�û�л���ź�������count�����1
-	 *     �����1��count��Ϊ������xie.baoyouע��Ӧ�þ���0����Ӧ������ֵ����Ҳ��sleeper������Ϊ0����������һ���̡߳�
-	 *     ��ʱcount==0,sleeper==0���������Ǵ��ġ���ʵ����ȷ�ġ���Ϊ�½��̱������ˣ��½�������ʱ��sleeper==0����sleeper-1���൱���ǽ�count��ȥ1��
-	 *     �½����ڵ���scheduleǰ����sleeper�����ó�1�ˡ�
+	 * sleepers是__down函数的精髓。它既是准确的，同时还是高效的。
+	 * 它并不是表示在此信号量上睡眠的线程数。它仅仅表示是否有线程在信号量上面等待。
+	 * 请注意它与count的关系。
+	 * 当信号量可用时，其COUNT>=1，sleeper=0,此时__down根本不会被执行。
+	 * 当信号量不可用时，没有睡眠的进程，则count==0,sleeper==0
+	 *     则down会将count设置为-1,且此时sleeper==0，进入本函数后面的for循环后，
+	 *     atomic_add_negative执行原子加，但是加的值为0，atomic_add_negative变成检查count值是否为负。
+	 *     如果为负，就将sleeper重新置为1。否则说明信号量可用，就将sleeper设置为0。并从循环退出。
+	 * 当信号量不可用时，并且有其他进程在等待时，count==-1，sleeper==1。则进入时，count被减1，即count==-2,sleeper(暂时)==2
+	 *     此时atomic_add_negative执行原子加，此时加的值是sleeper-1即1.
+	 *     并且此时用的是临时变量，linux中经常需要这样将数据存到临时变量中，只有临时变量中的值才是可靠的。其他的都有可能被其他线程或者中断改变。
+	 *     加sleeper-1是因为sem->sleepers++;一句后，到atomic_add_negative检查count前，count可能被其他进程加上1了。这样就可以检查出这种情况。
+	 *     如果加1后count为负，说明信号仍然不可用，此时count被恢复成-1了，请记住，down中将count减1，此时将它补回去。因为线程并没有获得信号量，而count多减了1
+	 *     如果加1后，count不为负，（xie.baoyou注：应该就是0，不应该是正值）。也把sleeper重新置为0。并唤醒另一个线程。
+	 *     此时count==0,sleeper==0，看起来是错的。其实是正确的。因为新进程被唤醒了，新进程醒来时，sleeper==0，加sleeper-1就相当于是将count减去1。
+	 *     新进程在调用schedule前，将sleeper又设置成1了。
 	 */
 	sem->sleepers++;
 	for (;;) {
@@ -120,12 +120,12 @@ fastcall void __sched __down(struct semaphore * sem)
 	}
 
 	/**
-	 * ��ע������ѭ���У�spin_lock_irqsave�����ʹ����������е�����ʱ��������ס�ġ�
-	 * ���Կ��Ե���remove_wait_queue��locked�汾��
+	 * 请注意上面循环中，spin_lock_irqsave和配对使用情况，运行到这里时，还是锁住的。
+	 * 所以可以调用remove_wait_queue的locked版本。
 	 */
 	remove_wait_queue_locked(&sem->wait, &wait);
 	/**
-	 * �ڻ���ź����󣬻���Ҫ���ѵȴ������ϵ���һ�����̡�ֻ������һ�����������Ƕ�����̡�
+	 * 在获得信号量后，还需要唤醒等待队列上的下一个进程。只唤醒下一个，而不会是多个进程。
 	 */
 	wake_up_locked(&sem->wait);
 	spin_unlock_irqrestore(&sem->wait.lock, flags);
@@ -133,10 +133,10 @@ fastcall void __sched __down(struct semaphore * sem)
 }
 
 /**
- * ��ͨ�������豸�����У������������жϷ������������жϡ�
- * ��˼�ǿ��Ա��ź��жϵ�down.���������ź����ϱ������Ľ��̱��źŴ�ϡ�
- * ����Ϻ����ڻ����Դǰ�����ѵĻ�����������count�ֶε�ֵ������-EINTR��
- * ���ԣ��豸������������жϷ���ֵ�����-EINTR���ͷ���IO������
+ * 它通常用在设备驱动中，而不是用在中断服务程序或者软中断。
+ * 意思是可以被信号中断的down.它允许在信号量上被阻塞的进程被信号打断。
+ * 被打断后，它在获得资源前被唤醒的话，它会增加count字段的值并返回-EINTR。
+ * 所以，设备驱动程序可以判断返回值如果是-EINTR，就放弃IO操作。
  */
 fastcall int __sched __down_interruptible(struct semaphore * sem)
 {
@@ -202,8 +202,8 @@ fastcall int __sched __down_interruptible(struct semaphore * sem)
  * but then it wouldn't work on a 386.
  */
 /**
- * ֻ���쳣���������ϵͳ���÷�����򣬲ſ��Ե���down���жϴ�������Ϳ��ӳٺ������ܵ���down����Ӧ����down_trylock��
- * ���ǵ������ǻ᲻������˯�ߡ�
+ * 只有异常处理程序和系统调用服务程序，才可以调用down。中断处理程序和可延迟函数不能调用down。而应该是down_trylock。
+ * 它们的区别是会不会引起睡眠。
  */
 fastcall int __down_trylock(struct semaphore * sem)
 {
@@ -333,7 +333,7 @@ asm(
 );
 
 /**
- * ���ں˽�ֹ��ռ�������������ʧ��ʱ�������е���������
+ * 在内核禁止抢占，并且申请读锁失败时，会运行到这里来。
  */
 asm(
 ".section .sched.text\n"
@@ -341,27 +341,27 @@ asm(
 ".globl	__read_lock_failed\n"
 "__read_lock_failed:\n\t"
 	/**
-	 * ��__build_read_lock_ptr�е�����subl��������һ��
-	 * ��Ȼ��������ʧ���ˣ�����inc����������һ��
+	 * 在__build_read_lock_ptr中调用了subl将读锁加一。
+	 * 既然读锁申请失败了，调用inc，将读锁减一。
 	 */
 	LOCK "incl	(%eax)\n"
 	/**
-	 * �ٴ����꣬�˴���nop�ǲ������ٵġ���Ϊ�����������ߡ�
+	 * 再次重申，此处的nop是不可能少的。是为避免锁死总线。
 	 */
 "1:	rep; nop\n\t"
 	/**
-	 * ѭ����ֱ��lockֵ�������
+	 * 循环，直到lock值变成正数
 	 */
 	"cmpl	$1,(%eax)\n\t"
 	"js	1b\n\t"
 	/**
-	 * lockֵ�����������0�ˣ��ټ�1�������0,dec��lock�ֻ��ɸ�����
-	 * ��ע��lockǰ׺���о���ʱ��lock��ֵ�����һ��Ʈ��������
+	 * lock值变成正数或者0了，再减1，如果是0,dec后lock又会变成负数。
+	 * 请注意lock前缀。感觉这时候lock的值就象风一样飘忽不定。
 	 */
 	LOCK "decl	(%eax)\n\t"
 	/**
-	 * dec�󣬱�ɸ����ˣ�˵������һ���߳����ڱ��߳�ǰ��ռ����д�������ǻص�__read_lock_failed
-	 * �������ret������������read_lock
+	 * dec后，变成负数了，说明另外一个线程又在本线程前抢占到了写错，还是回到__read_lock_failed
+	 * 否则调用ret，结束最外层的read_lock
 	 */
 	"js	__read_lock_failed\n\t"
 	"ret"

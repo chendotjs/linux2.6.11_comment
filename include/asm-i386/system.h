@@ -13,60 +13,60 @@ struct task_struct;	/* one of the stranger aspects of C forward declarations.. *
 extern struct task_struct * FASTCALL(__switch_to(struct task_struct *prev, struct task_struct *next));
 
 /**
- * ½ø³ÌÇĞ»»Ê±£¬ÇĞ»»ÄÚºËÌ¬¶ÑÕ»ºÍÓ²¼şÉÏÏÂÎÄ¡£
- * prev-±»Ìæ»»µÄ½ø³Ì
- * next-ĞÂ½ø³Ì
- * last-ÔÚÈÎºÎ½ø³ÌÇĞ»»ÖĞ£¬µ½Èı¸ö½ø³Ì¶ø²»ÊÇÁ½¸ö¡£¼ÙÉèÄÚºË¾ö¶¨ÔİÍ£A¶ø¼¤»îB£¬ÄÇÃ´ÔÚscheduleº¯ÊıÖĞ£¬prevÖ¸ÏòA¶ønextÖ¸ÏòB¡£
- *      µ±ÇĞ»»»ØAºó£¬¾Í±ØĞëÔİÍ£ÁíÍâÒ»¸ö½ø³ÌC¡£¶øLASTÔòÖ¸ÏòC½ø³Ì¡£
+ * è¿›ç¨‹åˆ‡æ¢æ—¶ï¼Œåˆ‡æ¢å†…æ ¸æ€å †æ ˆå’Œç¡¬ä»¶ä¸Šä¸‹æ–‡ã€‚
+ * prev-è¢«æ›¿æ¢çš„è¿›ç¨‹
+ * next-æ–°è¿›ç¨‹
+ * last-åœ¨ä»»ä½•è¿›ç¨‹åˆ‡æ¢ä¸­ï¼Œåˆ°ä¸‰ä¸ªè¿›ç¨‹è€Œä¸æ˜¯ä¸¤ä¸ªã€‚å‡è®¾å†…æ ¸å†³å®šæš‚åœAè€Œæ¿€æ´»Bï¼Œé‚£ä¹ˆåœ¨scheduleå‡½æ•°ä¸­ï¼ŒprevæŒ‡å‘Aè€ŒnextæŒ‡å‘Bã€‚
+ *      å½“åˆ‡æ¢å›Aåï¼Œå°±å¿…é¡»æš‚åœå¦å¤–ä¸€ä¸ªè¿›ç¨‹Cã€‚è€ŒLASTåˆ™æŒ‡å‘Cè¿›ç¨‹ã€‚
  */
 #define switch_to(prev,next,last) do {					\
 	unsigned long esi,edi;						\
 	/**
-	 * ÔÚÕæÕıÖ´ĞĞ»ã±à´úÂëÇ°£¬ÒÑ¾­½«prev´æÈëeax£¬next´æÈëedxÖĞÁË¡£
-	 * Ã»ÓĞ¸ã¶®gcc»ã±àÓï·¨£¬·´Õı½á¹û¾ÍÊÇÕâÑù¡£
-	 * Ó¦¸ÃÊÇ"2" (prev), "d" (next)Õâ¾äµÄ¸±×÷ÓÃ¡£
+	 * åœ¨çœŸæ­£æ‰§è¡Œæ±‡ç¼–ä»£ç å‰ï¼Œå·²ç»å°†prevå­˜å…¥eaxï¼Œnextå­˜å…¥edxä¸­äº†ã€‚
+	 * æ²¡æœ‰ææ‡‚gccæ±‡ç¼–è¯­æ³•ï¼Œåæ­£ç»“æœå°±æ˜¯è¿™æ ·ã€‚
+	 * åº”è¯¥æ˜¯"2" (prev), "d" (next)è¿™å¥çš„å‰¯ä½œç”¨ã€‚
 	 */
 
 				/**
-				 * ±£´æeflagsºÍebpµ½ÄÚºËÕ»ÖĞ¡£±ØĞë±£´æÊÇÒòÎª±àÒëÆ÷ÈÏÎªÔÚswitch_to½áÊøÇ°£¬
-				 * ËüÃÇµÄÖµÓ¦µ±±£³Ö²»±ä¡£
+				 * ä¿å­˜eflagså’Œebpåˆ°å†…æ ¸æ ˆä¸­ã€‚å¿…é¡»ä¿å­˜æ˜¯å› ä¸ºç¼–è¯‘å™¨è®¤ä¸ºåœ¨switch_toç»“æŸå‰ï¼Œ
+				 * å®ƒä»¬çš„å€¼åº”å½“ä¿æŒä¸å˜ã€‚
 				 */
 	asm volatile("pushfl\n\t"					\
 		     "pushl %%ebp\n\t"					\
 		     /**
-		      * °ÑespµÄÄÚÈİ±£´æµ½prev->thread.espÖĞ
-		      * ÕâÑù¸Ã×Ö¶ÎÖ¸ÏòprevÄÚºËÕ»µÄÕ»¶¥¡£
+		      * æŠŠespçš„å†…å®¹ä¿å­˜åˆ°prev->thread.espä¸­
+		      * è¿™æ ·è¯¥å­—æ®µæŒ‡å‘prevå†…æ ¸æ ˆçš„æ ˆé¡¶ã€‚
 		      */
 		     "movl %%esp,%0\n\t"	/* save ESP */		\
 		     /**
-		      * ½«next->thread.esp×°Èëµ½esp.
-		      * ´ËÊ±£¬ÄÚºË¿ªÊ¼ÔÚnextµÄÕ»ÉÏ½øĞĞ²Ù×÷¡£ÕâÌõÖ¸ÁîÊµ¼ÊÉÏÍê³ÉÁË´Óprevµ½nextµÄÇĞ»»¡£
-		      * ÓÉÓÚ½ø³ÌÃèÊö·ûµÄµØÖ·ºÍÄÚºËÕ»µÄµØÖ·½ô°¤×Å£¬ËùÒÔ¸Ä±äÄÚºËÕ»ÒâÎ¶×Å¸Ä±äµ±Ç°½ø³Ì¡£
+		      * å°†next->thread.espè£…å…¥åˆ°esp.
+		      * æ­¤æ—¶ï¼Œå†…æ ¸å¼€å§‹åœ¨nextçš„æ ˆä¸Šè¿›è¡Œæ“ä½œã€‚è¿™æ¡æŒ‡ä»¤å®é™…ä¸Šå®Œæˆäº†ä»prevåˆ°nextçš„åˆ‡æ¢ã€‚
+		      * ç”±äºè¿›ç¨‹æè¿°ç¬¦çš„åœ°å€å’Œå†…æ ¸æ ˆçš„åœ°å€ç´§æŒ¨ç€ï¼Œæ‰€ä»¥æ”¹å˜å†…æ ¸æ ˆæ„å‘³ç€æ”¹å˜å½“å‰è¿›ç¨‹ã€‚
 		      */
 		     "movl %5,%%esp\n\t"	/* restore ESP */	\
 		     /**
-		      * ½«±ê¼ÇÎª1fµÄµØÖ·´æÈëprev->thread.eip.
-		      * µ±±»Ìæ»»µÄ½ø³ÌÖØĞÂ»Ö¸´Ö´ĞĞÊ±£¬½ø³ÌÖ´ĞĞ±»±ê¼ÇÎª1fµÄÄÇÌõÖ¸Áî¡£
+		      * å°†æ ‡è®°ä¸º1fçš„åœ°å€å­˜å…¥prev->thread.eip.
+		      * å½“è¢«æ›¿æ¢çš„è¿›ç¨‹é‡æ–°æ¢å¤æ‰§è¡Œæ—¶ï¼Œè¿›ç¨‹æ‰§è¡Œè¢«æ ‡è®°ä¸º1fçš„é‚£æ¡æŒ‡ä»¤ã€‚
 		      */
 		     "movl $1f,%1\n\t"		/* save EIP */		\
 		     /**
-		      * ½«next->thread.eipµÄÖµ±£´æµ½nextµÄÄÚºËÕ»ÖĞ¡£
-		      * ÕâÑù£¬_switch_toµ÷ÓÃret·µ»ØÊ±£¬¾Í»áÌø×ªµ½next->thread.eipÖ´ĞĞ¡£
-		      * Õâ¸öµØÖ·Ò»°ãÇé¿öÏÂ¾Í»áÊÇ1f.
+		      * å°†next->thread.eipçš„å€¼ä¿å­˜åˆ°nextçš„å†…æ ¸æ ˆä¸­ã€‚
+		      * è¿™æ ·ï¼Œ_switch_toè°ƒç”¨retè¿”å›æ—¶ï¼Œå°±ä¼šè·³è½¬åˆ°next->thread.eipæ‰§è¡Œã€‚
+		      * è¿™ä¸ªåœ°å€ä¸€èˆ¬æƒ…å†µä¸‹å°±ä¼šæ˜¯1f.
 		      */
 		     "pushl %6\n\t"		/* restore EIP */	\
 		     /**
-		      * ×¢Òâ£¬ÕâÀï²»ÊÇÓÃcall£¬ÊÇjmp£¬ÕâÑù£¬ÉÏÒ»ÌõÓï¾äÖĞÑ¹ÈëµÄeipµØÖ·¾Í¿ÉÒÔÖ´ĞĞÁË¡£
+		      * æ³¨æ„ï¼Œè¿™é‡Œä¸æ˜¯ç”¨callï¼Œæ˜¯jmpï¼Œè¿™æ ·ï¼Œä¸Šä¸€æ¡è¯­å¥ä¸­å‹å…¥çš„eipåœ°å€å°±å¯ä»¥æ‰§è¡Œäº†ã€‚
 		      */
 		     "jmp __switch_to\n"				\
 		     /**
-		      * µ½ÕâÀï£¬½ø³ÌAÔÙ´Î»ñµÃCPU¡£Ëü´ÓÕ»ÖĞµ¯³öebpºÍeflags¡£
+		      * åˆ°è¿™é‡Œï¼Œè¿›ç¨‹Aå†æ¬¡è·å¾—CPUã€‚å®ƒä»æ ˆä¸­å¼¹å‡ºebpå’Œeflagsã€‚
 		      */
 		     "1:\t"						\
 		     "popl %%ebp\n\t"					\
 		     "popfl"						\
 		     :"=m" (prev->thread.esp),"=m" (prev->thread.eip),	\
-		     /* last±»×÷ÎªÊä³ö²ÎÊı£¬ËüµÄÖµ»áÓÉeax¸³¸øËü¡£ */
+		     /* lastè¢«ä½œä¸ºè¾“å‡ºå‚æ•°ï¼Œå®ƒçš„å€¼ä¼šç”±eaxèµ‹ç»™å®ƒã€‚ */
 		      "=a" (last),"=S" (esi),"=D" (edi)			\
 		     :"m" (next->thread.esp),"m" (next->thread.eip),	\
 		      "2" (prev), "d" (next));				\
@@ -402,11 +402,11 @@ struct alt_instr {
  */
 
 /**
- * ÊÊÓÃÓÚMPºÍUPµÄÄÚ´æÆÁÕÏ
+ * é€‚ç”¨äºMPå’ŒUPçš„å†…å­˜å±éšœ
  */
 #define mb() alternative("lock; addl $0,0(%%esp)", "mfence", X86_FEATURE_XMM2)
 /**
- * ÊÊÓÃÓÚMPºÍUPµÄ¶ÁÄÚ´æÆÁÕÏ
+ * é€‚ç”¨äºMPå’ŒUPçš„è¯»å†…å­˜å±éšœ
  */
 #define rmb() alternative("lock; addl $0,0(%%esp)", "lfence", X86_FEATURE_XMM2)
 
@@ -468,7 +468,7 @@ struct alt_instr {
 /* Actually there are no OOO store capable CPUs for now that do SSE, 
    but make it already an possibility. */
 /**
- * ÊÊÓÃÓÚMPºÍUPµÄĞ´ÄÚ´æÆÁÕÏ
+ * é€‚ç”¨äºMPå’ŒUPçš„å†™å†…å­˜å±éšœ
  */
 #define wmb() alternative("lock; addl $0,0(%%esp)", "sfence", X86_FEATURE_XMM)
 #else
@@ -477,7 +477,7 @@ struct alt_instr {
 
 #ifdef CONFIG_SMP
 /**
- * ½öÊÊÓÃÓÚMPµÄÄÚ´æÆÁÕÏ
+ * ä»…é€‚ç”¨äºMPçš„å†…å­˜å±éšœ
  */
 #define smp_mb()	mb()
 #define smp_rmb()	rmb()
@@ -497,15 +497,15 @@ struct alt_instr {
 /* interrupt control.. */
 #define local_save_flags(x)	do { typecheck(unsigned long,x); __asm__ __volatile__("pushfl ; popl %0":"=g" (x): /* no input */); } while (0)
 /**
- * »Ö¸´eflagsµÄÖµ¡£
+ * æ¢å¤eflagsçš„å€¼ã€‚
  */
 #define local_irq_restore(x) 	do { typecheck(unsigned long,x); __asm__ __volatile__("pushl %0 ; popfl": /* no output */ :"g" (x):"memory", "cc"); } while (0)
 /**
- * ½ûÓÃ±¾µØÖĞ¶Ï¡£
+ * ç¦ç”¨æœ¬åœ°ä¸­æ–­ã€‚
  */
 #define local_irq_disable() 	__asm__ __volatile__("cli": : :"memory")
 /**
- * ´ò¿ª±»¹Ø±ÕµÄÖĞ¶Ï¡£
+ * æ‰“å¼€è¢«å…³é—­çš„ä¸­æ–­ã€‚
  */
 #define local_irq_enable()	__asm__ __volatile__("sti": : :"memory")
 /* used in the idle loop; sti takes one instruction cycle to complete */
@@ -520,7 +520,7 @@ struct alt_instr {
 
 /* For spinlocks etc */
 /**
- * ±£´æeflagsµÄÖµ£¬²¢¹Ø±ÕÖĞ¶Ï¡£
+ * ä¿å­˜eflagsçš„å€¼ï¼Œå¹¶å…³é—­ä¸­æ–­ã€‚
  */
 #define local_irq_save(x)	__asm__ __volatile__("pushfl ; popl %0 ; cli":"=g" (x): /* no input */ :"memory")
 

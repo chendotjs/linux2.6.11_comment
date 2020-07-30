@@ -246,7 +246,7 @@ static void dn_unhash_sock_bh(struct sock *sk)
 	write_unlock_bh(&dn_hash_lock);
 }
 
-/* ½«ÕìÌı¶Ë¿Ú¼ÓÈëµ½¹şÏ£±í */
+/* å°†ä¾¦å¬ç«¯å£åŠ å…¥åˆ°å“ˆå¸Œè¡¨ */
 static struct hlist_head *listen_hash(struct sockaddr_dn *addr)
 {
 	int i;

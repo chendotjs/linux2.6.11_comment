@@ -55,35 +55,35 @@
  */
 #define SNAPSHOT_DISK_VERSION 1
 
-/* COWÉè±¸µÄµÚÒ»¸öchunk£¬°üº¬ÁËÍ·ĞÅÏ¢ */
+/* COWè®¾å¤‡çš„ç¬¬ä¸€ä¸ªchunkï¼ŒåŒ…å«äº†å¤´ä¿¡æ¯ */
 struct disk_header {
-	/* Ä§Êı£¬Ó¦¸ÃÎª"SnAp" */
+	/* é­”æ•°ï¼Œåº”è¯¥ä¸º"SnAp" */
 	uint32_t magic;
 
 	/*
 	 * Is this snapshot valid.  There is no way of recovering
 	 * an invalid snapshot.
 	 */
-	/* Îª1±íÊ¾¿ìÕÕÓĞĞ§ */
+	/* ä¸º1è¡¨ç¤ºå¿«ç…§æœ‰æ•ˆ */
 	uint32_t valid;
 
 	/*
 	 * Simple, incrementing version. no backward
 	 * compatibility.
 	 */
-	/* ¼òµ¥µİÔöµÄ°æ±¾ºÅ */
+	/* ç®€å•é€’å¢çš„ç‰ˆæœ¬å· */
 	uint32_t version;
 
 	/* In sectors */
-	/* Ã¿¸öchunk°üº¬µÄÉÈÇøÊı */
+	/* æ¯ä¸ªchunkåŒ…å«çš„æ‰‡åŒºæ•° */
 	uint32_t chunk_size;
 };
 
-/* COWÉè±¸ÔªÊı¾İ */
+/* COWè®¾å¤‡å…ƒæ•°æ® */
 struct disk_exception {
-	/* ÔÚÔ´Éè±¸ÉÏµÄchunk±àºÅ */
+	/* åœ¨æºè®¾å¤‡ä¸Šçš„chunkç¼–å· */
 	uint64_t old_chunk;
-	/* ÔÚCOWÉè±¸ÉÏµÄchunk±àºÅ */
+	/* åœ¨COWè®¾å¤‡ä¸Šçš„chunkç¼–å· */
 	uint64_t new_chunk;
 };
 
@@ -95,16 +95,16 @@ struct commit_callback {
 /*
  * The top level structure for a persistent exception store.
  */
-/* ÓÀ¾ÃĞÔ¿ìÕÕ */
+/* æ°¸ä¹…æ€§å¿«ç…§ */
 struct pstore {
 	struct dm_snapshot *snap;	/* up pointer to my snapshot */
-	/* °æ±¾ºÅ */
+	/* ç‰ˆæœ¬å· */
 	int version;
-	/* Èç¹ûÎª1£¬±íÊ¾¿ìÕÕÓĞĞ§ */
+	/* å¦‚æœä¸º1ï¼Œè¡¨ç¤ºå¿«ç…§æœ‰æ•ˆ */
 	int valid;
-	/* chunk´óĞ¡ */
+	/* chunkå¤§å° */
 	uint32_t chunk_size;
-	/* Ã¿¸öÇøÓòº¬ÓĞµÄÀıÍâ¸öÊı */
+	/* æ¯ä¸ªåŒºåŸŸå«æœ‰çš„ä¾‹å¤–ä¸ªæ•° */
 	uint32_t exceptions_per_area;
 
 	/*
@@ -112,32 +112,32 @@ struct pstore {
 	 * need for large chunk sizes, so it wont hurt to have a
 	 * whole chunks worth of metadata in memory at once.
 	 */
-	/* ÔÚÄÚ´æÖĞ±£´æµÄÒ»¸öchunk´óĞ¡µÄÔªÊı¾İ */
+	/* åœ¨å†…å­˜ä¸­ä¿å­˜çš„ä¸€ä¸ªchunkå¤§å°çš„å…ƒæ•°æ® */
 	void *area;
 
 	/*
 	 * Used to keep track of which metadata area the data in
 	 * 'chunk' refers to.
 	 */
-	/* area±£´æµÄÔªÊı¾İËùÊôµÄÇø */
+	/* areaä¿å­˜çš„å…ƒæ•°æ®æ‰€å±çš„åŒº */
 	uint32_t current_area;
 
 	/*
 	 * The next free chunk for an exception.
 	 */
-	/* ÓÃÓÚÀıÍâµÄÏÂÒ»¸ö¿ÕÏĞ¿é */
+	/* ç”¨äºä¾‹å¤–çš„ä¸‹ä¸€ä¸ªç©ºé—²å— */
 	uint32_t next_free;
 
 	/*
 	 * The index of next free exception in the current
 	 * metadata area.
 	 */
-	/* µ±Ç°ÇøÖĞÏÂÒ»¸ö¿ÕÏĞÀıÍâµÄË÷Òı */
+	/* å½“å‰åŒºä¸­ä¸‹ä¸€ä¸ªç©ºé—²ä¾‹å¤–çš„ç´¢å¼• */
 	uint32_t current_committed;
 
-	/* ´ı´¦ÀíµÄÀıÍâÊıÄ¿ */
+	/* å¾…å¤„ç†çš„ä¾‹å¤–æ•°ç›® */
 	atomic_t pending_count;
-	/* Îª±»Ìá½»µÄÀıÍâ½øĞĞ»Øµ÷µÄ´ÎÊı */
+	/* ä¸ºè¢«æäº¤çš„ä¾‹å¤–è¿›è¡Œå›è°ƒçš„æ¬¡æ•° */
 	uint32_t callback_count;
 	struct commit_callback *callbacks;
 };
@@ -543,13 +543,13 @@ int dm_create_persistent(struct exception_store *store, uint32_t chunk_size)
 		return r;
 
 	/* allocate the pstore */
-	ps = kmalloc(sizeof(*ps), GFP_KERNEL);/* ·ÖÅäÀıÍâ²Ö¿âÃèÊö·û */
+	ps = kmalloc(sizeof(*ps), GFP_KERNEL);/* åˆ†é…ä¾‹å¤–ä»“åº“æè¿°ç¬¦ */
 	if (!ps) {
 		r = -ENOMEM;
 		goto bad;
 	}
 
-	/* ³õÊ¼»¯ÀıÍâ²Ö¿âÃèÊö·û */
+	/* åˆå§‹åŒ–ä¾‹å¤–ä»“åº“æè¿°ç¬¦ */
 	ps->snap = store->snap;
 	ps->valid = 1;
 	ps->version = SNAPSHOT_DISK_VERSION;
@@ -600,9 +600,9 @@ int dm_create_persistent(struct exception_store *store, uint32_t chunk_size)
 /*-----------------------------------------------------------------
  * Implementation of the store for non-persistent snapshots.
  *---------------------------------------------------------------*/
-/* ·ÇÓÀ¾ÃĞÔ¿ìÕÕ */
+/* éæ°¸ä¹…æ€§å¿«ç…§ */
 struct transient_c {
-	/* COWÉè±¸ÉÏ±£´æÏÂÒ»¸öÊı¾İµÄÆğÊ¼ÉÈÇø±àºÅ */
+	/* COWè®¾å¤‡ä¸Šä¿å­˜ä¸‹ä¸€ä¸ªæ•°æ®çš„èµ·å§‹æ‰‡åŒºç¼–å· */
 	sector_t next_free;
 };
 

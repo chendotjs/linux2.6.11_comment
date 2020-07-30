@@ -43,7 +43,7 @@
  *				from being used (thanks to Leo Spiekman)
  *	Andy Walker	:	Allow to specify the NFS server in nfs_root
  *				without giving a path name
- *	Swen Thümmler	:	Allow to specify the NFS options in nfs_root
+ *	Swen Thmmler	:	Allow to specify the NFS options in nfs_root
  *				without giving a path name. Fix BOOTP request
  *				for domainname (domainname is NIS domain, not
  *				DNS domain!). Skip dummy devices for BOOTP.
@@ -364,10 +364,10 @@ int __init root_nfs_init(void)
 	 * directory (necessary for pure RARP booting).
 	 */
 	/**
-	 * root_nfs_name¶Ônfs_data½øĞĞÌî³ä£¬¶ÔÑ¡Ïî²ÎÊı½øĞĞÓï·¨·ÖÎöµÄÁ½¸öÖ÷Òªº¯ÊıÊÇroot_nfs_parseºÍroot_nfs_parse¡£
+	 * root_nfs_nameå¯¹nfs_dataè¿›è¡Œå¡«å……ï¼Œå¯¹é€‰é¡¹å‚æ•°è¿›è¡Œè¯­æ³•åˆ†æçš„ä¸¤ä¸ªä¸»è¦å‡½æ•°æ˜¯root_nfs_parseå’Œroot_nfs_parseã€‚
 	 */
 	if (root_nfs_name(nfs_root_name) < 0 ||
-	    root_nfs_addr() < 0) /* ·ÖÎöÃüÁîĞĞÖĞµÄ·şÎñÆ÷Ãû³ÆºÍIPµØÖ·¡£ */
+	    root_nfs_addr() < 0) /* åˆ†æå‘½ä»¤è¡Œä¸­çš„æœåŠ¡å™¨åç§°å’ŒIPåœ°å€ã€‚ */
 		return -1;
 
 #ifdef NFSROOT_DEBUG
@@ -383,7 +383,7 @@ int __init root_nfs_init(void)
  *  command line.
  */
 /**
- * ´ÓºËĞÄÃüÁîĞĞÏÂ»ñÈ¡NFS·şÎñÆ÷ºÍÄ¿Â¼ĞÅÏ¢
+ * ä»æ ¸å¿ƒå‘½ä»¤è¡Œä¸‹è·å–NFSæœåŠ¡å™¨å’Œç›®å½•ä¿¡æ¯
  */
 int __init nfs_root_setup(char *line)
 {
@@ -461,8 +461,8 @@ static int __init root_nfs_ports(void)
 
 	if (nfs_port < 0) {
 		/**
-		 * ¸ù¾İservaddrÖĞµÄÔ¶³Ìnfs·şÎñÆ÷µØÖ·£¬µ÷ÓÃrpcÔ¶³Ì¹ı³Ìrpc_getport_external(»úÆ÷µØÖ·£¬³ÌĞòºÅ£¬°æ±¾ºÅ£¬Ğ­Òé)¡£
-		 * ÏòÄ¿µÄ·şÎñÆ÷¶Ë¿ÚÓ³ÉäÆ÷µÄÖªÃû¶Ë¿Ú·¢³öÇëÇó£¬ÓÉ·şÎñÆ÷µÄÏàÓ¦ÊØ»¤½ø³ÌmountdºÍnfsd¶ÔÇëÇó½øĞĞ´¦Àí£¬·µ»ØËùÇëÇó³ÌĞòÊ¹ÓÃµÄ¶Ë¿ÚºÅ¡£
+		 * æ ¹æ®servaddrä¸­çš„è¿œç¨‹nfsæœåŠ¡å™¨åœ°å€ï¼Œè°ƒç”¨rpcè¿œç¨‹è¿‡ç¨‹rpc_getport_external(æœºå™¨åœ°å€ï¼Œç¨‹åºå·ï¼Œç‰ˆæœ¬å·ï¼Œåè®®)ã€‚
+		 * å‘ç›®çš„æœåŠ¡å™¨ç«¯å£æ˜ å°„å™¨çš„çŸ¥åç«¯å£å‘å‡ºè¯·æ±‚ï¼Œç”±æœåŠ¡å™¨çš„ç›¸åº”å®ˆæŠ¤è¿›ç¨‹mountdå’Œnfsdå¯¹è¯·æ±‚è¿›è¡Œå¤„ç†ï¼Œè¿”å›æ‰€è¯·æ±‚ç¨‹åºä½¿ç”¨çš„ç«¯å£å·ã€‚
 		 */
 		if ((port = root_nfs_getport(NFS_PROGRAM, nfsd_ver, proto)) < 0) {
 			printk(KERN_ERR "Root-NFS: Unable to get nfsd port "
@@ -502,7 +502,7 @@ static int __init root_nfs_get_handle(void)
 
 	set_sockaddr(&sin, servaddr, mount_port);
 	/**
-	 * µÃµ½Ô¶³ÌÎÄ¼şÏµÍ³¾ä±ú¡£
+	 * å¾—åˆ°è¿œç¨‹æ–‡ä»¶ç³»ç»Ÿå¥æŸ„ã€‚
 	 */
 	status = nfsroot_mount(&sin, nfs_path, &fh, version, protocol);
 	if (status < 0)
@@ -522,9 +522,9 @@ static int __init root_nfs_get_handle(void)
  */
 void * __init nfs_root_data(void)
 {
-	if (root_nfs_init() < 0 /* ·ÖÎö²ÎÊıÑ¡Ïî */
-	 || root_nfs_ports() < 0 /* Íê³É¶ÔnfsÔ¶³Ì·şÎñÆ÷µÄ¶Ë¿ÚÓ³ÉäÆ÷µÄËÑË÷£¬µÃµ½ÓÃÓÚÊµÏÖnfsĞ­ÒéµÄmount¶Ë¿ÚºÍnfsÎÄ¼ş²Ù×÷¶Ë¿Ú£¬·Ö±ğÖÃÓÚ±äÁ¿mount_portºÍnfs_portÖĞ¡£ */
-	 || root_nfs_get_handle() < 0) /* ¸ù¾İservaddrÖĞµÄ·şÎñÆ÷µØÖ·£¬mount_portÖĞµÄÔ¶³Ì³ÌĞòËùÓÃ¶Ë¿Ú£¬ÒÔ¼°nfs_pathÖĞ¼ÇÂ¼µÄnfsÄ¿Â¼ĞÅÏ¢¡£ÔÙµ÷ÓÃnfs_mount×Óº¯Êı£¬½«·µ»ØµÄ¸ùÎÄ¼şÏµÍ³¾ä±ú¸³Óënfs_data.root¡£ */
+	if (root_nfs_init() < 0 /* åˆ†æå‚æ•°é€‰é¡¹ */
+	 || root_nfs_ports() < 0 /* å®Œæˆå¯¹nfsè¿œç¨‹æœåŠ¡å™¨çš„ç«¯å£æ˜ å°„å™¨çš„æœç´¢ï¼Œå¾—åˆ°ç”¨äºå®ç°nfsåè®®çš„mountç«¯å£å’Œnfsæ–‡ä»¶æ“ä½œç«¯å£ï¼Œåˆ†åˆ«ç½®äºå˜é‡mount_portå’Œnfs_portä¸­ã€‚ */
+	 || root_nfs_get_handle() < 0) /* æ ¹æ®servaddrä¸­çš„æœåŠ¡å™¨åœ°å€ï¼Œmount_portä¸­çš„è¿œç¨‹ç¨‹åºæ‰€ç”¨ç«¯å£ï¼Œä»¥åŠnfs_pathä¸­è®°å½•çš„nfsç›®å½•ä¿¡æ¯ã€‚å†è°ƒç”¨nfs_mountå­å‡½æ•°ï¼Œå°†è¿”å›çš„æ ¹æ–‡ä»¶ç³»ç»Ÿå¥æŸ„èµ‹ä¸nfs_data.rootã€‚ */
 		return NULL;
 	set_sockaddr((struct sockaddr_in *) &nfs_data.addr, servaddr, nfs_port);
 	return (void*)&nfs_data;

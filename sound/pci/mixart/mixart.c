@@ -465,7 +465,7 @@ static int snd_mixart_prepare(snd_pcm_substream_t *subs)
 	mixart_t *chip = snd_pcm_substream_chip(subs);
 	mixart_stream_t *stream = (mixart_stream_t*)subs->runtime->private_data;
 
-	/* TODO de façon non bloquante, réappliquer les hw_params (rate, bits, codec) */
+	/* TODO de faon non bloquante, rappliquer les hw_params (rate, bits, codec) */
 
 	snd_printdd("snd_mixart_prepare\n");
 

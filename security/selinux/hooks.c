@@ -2969,7 +2969,7 @@ static void selinux_socket_post_create(struct socket *sock, int family,
    Need to determine whether we should perform a name_bind
    permission check between the socket and the port number. */
 /**
- * ¿ÉÓÃÓÚÏòÍâÁ¬½ÓµÄ¶Ë¿Ú·¶Î§¡£
+ * å¯ç”¨äºå‘å¤–è¿æ¥çš„ç«¯å£èŒƒå›´ã€‚
  */
 #define ip_local_port_range_0 sysctl_local_port_range[0]
 #define ip_local_port_range_1 sysctl_local_port_range[1]

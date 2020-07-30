@@ -77,15 +77,15 @@ struct in_addr {
 
 /* IP_MTU_DISCOVER values */
 /**
- * �������ڷ��Ͱ�ʱ���ڰ�ͷ������DF��־����ˣ���ʹ��MTU���֡�
+ * 从来不在发送包时，在包头中设置DF标志。因此，不使用MTU发现。
  */
 #define IP_PMTUDISC_DONT		0	/* Never send DF frames */
 /**
- * ��ÿ��·�������Ƿ�ʹ��MTU���֣�����Ĭ��ֵ��
+ * 按每条路径决定是否使用MTU发现，这是默认值。
  */
 #define IP_PMTUDISC_WANT		1	/* Use per route hints	*/
 /**
- * �����ڱ��ز����İ�ͷ������DF��־������ת���İ�������ͼ��ÿһ�η���ʱ���ҵ����ŵ�PMTU��
+ * 允许在本地产生的包头中设置DF标志（不是转发的包），试图在每一次发送时，找到最优的PMTU。
  */
 #define IP_PMTUDISC_DO			2	/* Always DF		*/
 
@@ -252,23 +252,23 @@ struct sockaddr_in {
 #ifdef __KERNEL__
 /* Some random defines to make it easier in the kernel.. */
 /**
- * ��Щ�����ڽ�IP��ַ���ٻ��ֵ�������֪������С�LOOPBACK��ʾ127.x.x.x��ַ��
+ * 这些宏用于将IP地址快速划分到众所周知的类别中。LOOPBACK表示127.x.x.x地址。
  */
 #define LOOPBACK(x)	(((x) & htonl(0xff000000)) == htonl(0x7f000000))
 /**
- * MULTICAST��ʾD���ַ��
+ * MULTICAST表示D类地址。
  */
 #define MULTICAST(x)	(((x) & htonl(0xf0000000)) == htonl(0xe0000000))
 /**
- * BADCLASS��ʾE���ַ��
+ * BADCLASS表示E类地址。
  */
 #define BADCLASS(x)	(((x) & htonl(0xf0000000)) == htonl(0xf0000000))
 /**
- * ZERONET��ʾ0.x.x.x/8��ַ���󲿷�����²��ǺϷ���ַ��
+ * ZERONET表示0.x.x.x/8地址，大部分情况下不是合法地址。
  */
 #define ZERONET(x)	(((x) & htonl(0xff000000)) == htonl(0x00000000))
 /**
- * LOCAL_MCAST��ʾD�������ڱ��ضಥ�ĵ�ַ�Ӽ���224.0.0.0/24��
+ * LOCAL_MCAST表示D类中用于本地多播的地址子集：224.0.0.0/24。
  */
 #define LOCAL_MCAST(x)	(((x) & htonl(0xFFFFFF00)) == htonl(0xE0000000))
 

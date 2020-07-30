@@ -176,7 +176,7 @@ static inline struct proc_dir_entry *proc_net_create(const char *name,
 }
 
 /**
- * ÔÚ/proc/netÄ¿Â¼ÏÂ´´½¨ÎÄ¼ş¡£
+ * åœ¨/proc/netç›®å½•ä¸‹åˆ›å»ºæ–‡ä»¶ã€‚
  */
 static inline struct proc_dir_entry *proc_net_fops_create(const char *name,
 	mode_t mode, struct file_operations *fops)
@@ -188,7 +188,7 @@ static inline struct proc_dir_entry *proc_net_fops_create(const char *name,
 }
 
 /**
- * ÔÚ/proc/netÄ¿Â¼ÏÂÉ¾³ıÎÄ¼ş¡£
+ * åœ¨/proc/netç›®å½•ä¸‹åˆ é™¤æ–‡ä»¶ã€‚
  */
 static inline void proc_net_remove(const char *name)
 {

@@ -53,7 +53,7 @@ static void __unhash_process(struct task_struct *p)
 }
 
 /**
- * ÊÍ·Å½ø³ÌÃèÊö·û¡£Èç¹û½ø³ÌÒÑ¾­ÊÇ½©ËÀ×´Ì¬£¬¾Í»á»ØÊÕËüÕ¼ÓÃµÄRAM¡£
+ * é‡Šæ”¾è¿›ç¨‹æè¿°ç¬¦ã€‚å¦‚æžœè¿›ç¨‹å·²ç»æ˜¯åƒµæ­»çŠ¶æ€ï¼Œå°±ä¼šå›žæ”¶å®ƒå ç”¨çš„RAMã€‚
  */
 void release_task(struct task_struct * p)
 {
@@ -63,34 +63,34 @@ void release_task(struct task_struct * p)
 
 repeat: 
 	/**
-	 * µÝ¼õ½ø³ÌÓµÓÐÕßµÄ½ø³Ì¸öÊý¡£
+	 * é€’å‡è¿›ç¨‹æ‹¥æœ‰è€…çš„è¿›ç¨‹ä¸ªæ•°ã€‚
 	 */
 	atomic_dec(&p->user->processes);
 	spin_lock(&p->proc_lock);
 	proc_dentry = proc_pid_unhash(p);
 	write_lock_irq(&tasklist_lock);
 	/**
-	 * Èç¹û½ø³ÌÕý±»¸ú×Ù£¬º¯Êý½«Ëü´Óµ÷ÊÔ³ÌÐòµÄptrace_childrenÁ´±íÖÐÉ¾³ý£¬²¢ÈÃ¸Ã½ø³ÌÖØÐÂÊôÓÚ³õÊ¼µÄ¸¸½ø³Ì¡£
+	 * å¦‚æžœè¿›ç¨‹æ­£è¢«è·Ÿè¸ªï¼Œå‡½æ•°å°†å®ƒä»Žè°ƒè¯•ç¨‹åºçš„ptrace_childrené“¾è¡¨ä¸­åˆ é™¤ï¼Œå¹¶è®©è¯¥è¿›ç¨‹é‡æ–°å±žäºŽåˆå§‹çš„çˆ¶è¿›ç¨‹ã€‚
 	 */
 	if (unlikely(p->ptrace))
 		__ptrace_unlink(p);
 	BUG_ON(!list_empty(&p->ptrace_list) || !list_empty(&p->ptrace_children));
 	/**
-	 * É¾³ýËùÓÐµÄ¹ÒÆðÐÅºÅ²¢ÊÍ·Å½ø³ÌµÄsignal_structÃèÊö·û¡£
-	 * Èç¹û¸ÃÃèÊö·û²»ÔÙ±»ÆäËûµÄÇáÁ¿¼¶½ø³ÌÊ¹ÓÃ£¬º¯Êý½øÒ»²½É¾³ýÕâ¸öÊý¾Ý½á¹¹¡£
-	 * Ëü»¹»áµ÷ÓÃexit_itimers£¬É¾³ýËùÓÐPOSIXÊ±¼ä¼ä¸ô¶¨Ê±Æ÷¡£
+	 * åˆ é™¤æ‰€æœ‰çš„æŒ‚èµ·ä¿¡å·å¹¶é‡Šæ”¾è¿›ç¨‹çš„signal_structæè¿°ç¬¦ã€‚
+	 * å¦‚æžœè¯¥æè¿°ç¬¦ä¸å†è¢«å…¶ä»–çš„è½»é‡çº§è¿›ç¨‹ä½¿ç”¨ï¼Œå‡½æ•°è¿›ä¸€æ­¥åˆ é™¤è¿™ä¸ªæ•°æ®ç»“æž„ã€‚
+	 * å®ƒè¿˜ä¼šè°ƒç”¨exit_itimersï¼Œåˆ é™¤æ‰€æœ‰POSIXæ—¶é—´é—´éš”å®šæ—¶å™¨ã€‚
 	 */
 	__exit_signal(p);
 	/**
-	 * É¾³ýÐÅºÅ´¦Àíº¯Êý¡£
+	 * åˆ é™¤ä¿¡å·å¤„ç†å‡½æ•°ã€‚
 	 */
 	__exit_sighand(p);
 	/**
-	 * __unhash_process½«½ø³Ì´Ó¸÷ÖÖhash±íÖÐÕª³ý¡£ËüÖ´ÐÐ:
-	 *    ±äÁ¿nr_threads¼õ1
-	 *    Á½´Îµ÷ÓÃdetach_pid£¬·Ö±ð´ÓPIDTYPE_PIDºÍPIDTYPE_TGIDÀàÐÍµÄPIDÉ¢ÁÐ±íÖÐÉ¾³ý½ø³ÌÃèÊö·û¡£
-	 *    Èç¹û½ø³ÌÊÇÏß³Ì×éµÄÁìÍ·½ø³Ì£¬ÄÇÃ´ÔÙµ÷ÓÃÁ½´Îdetach_pid£¬´ÓPIDTYPE_PGIDºÍPIDTYPE_SIDÀàÐÍµÄÉ¢ÁÐ±íÖÐÉ¾³ý½ø³ÌÃèÊö·û¡£
-	 *    ÓÃºêREMOVE_LINKS´Ó½ø³ÌÁ´±íÖÐ½â³ý½ø³ÌÃèÊö·ûµÄÁ´½Ó¡£
+	 * __unhash_processå°†è¿›ç¨‹ä»Žå„ç§hashè¡¨ä¸­æ‘˜é™¤ã€‚å®ƒæ‰§è¡Œ:
+	 *    å˜é‡nr_threadså‡1
+	 *    ä¸¤æ¬¡è°ƒç”¨detach_pidï¼Œåˆ†åˆ«ä»ŽPIDTYPE_PIDå’ŒPIDTYPE_TGIDç±»åž‹çš„PIDæ•£åˆ—è¡¨ä¸­åˆ é™¤è¿›ç¨‹æè¿°ç¬¦ã€‚
+	 *    å¦‚æžœè¿›ç¨‹æ˜¯çº¿ç¨‹ç»„çš„é¢†å¤´è¿›ç¨‹ï¼Œé‚£ä¹ˆå†è°ƒç”¨ä¸¤æ¬¡detach_pidï¼Œä»ŽPIDTYPE_PGIDå’ŒPIDTYPE_SIDç±»åž‹çš„æ•£åˆ—è¡¨ä¸­åˆ é™¤è¿›ç¨‹æè¿°ç¬¦ã€‚
+	 *    ç”¨å®REMOVE_LINKSä»Žè¿›ç¨‹é“¾è¡¨ä¸­è§£é™¤è¿›ç¨‹æè¿°ç¬¦çš„é“¾æŽ¥ã€‚
 	 */
 	__unhash_process(p);
 
@@ -102,12 +102,12 @@ repeat:
 	zap_leader = 0;
 	leader = p->group_leader;
 	/**
-	 * Èç¹û½ø³Ì²»ÊÇÏß³Ì×éµÄÁìÍ·½ø³Ì£¬ÁìÍ·½ø³Ì´¦ÓÚ½©ËÀ×´Ì¬£¬²¢ÇÒ½ø³ÌÊÇÏß³Ì×éµÄ×îºóÒ»¸ö³ÉÔ±¡£
+	 * å¦‚æžœè¿›ç¨‹ä¸æ˜¯çº¿ç¨‹ç»„çš„é¢†å¤´è¿›ç¨‹ï¼Œé¢†å¤´è¿›ç¨‹å¤„äºŽåƒµæ­»çŠ¶æ€ï¼Œå¹¶ä¸”è¿›ç¨‹æ˜¯çº¿ç¨‹ç»„çš„æœ€åŽä¸€ä¸ªæˆå‘˜ã€‚
 	 */
 	if (leader != p && thread_group_empty(leader) && leader->exit_state == EXIT_ZOMBIE) {
 		BUG_ON(leader->exit_signal == -1);
 		/**
-		 * ÏòÁìÍ·½ø³ÌµÄ¸¸½ø³Ì·¢ËÍÒ»¸öÐÅºÅ£¬Í¨ÖªËü:½ø³ÌÒÑ¾­ËÀÍö¡£
+		 * å‘é¢†å¤´è¿›ç¨‹çš„çˆ¶è¿›ç¨‹å‘é€ä¸€ä¸ªä¿¡å·ï¼Œé€šçŸ¥å®ƒ:è¿›ç¨‹å·²ç»æ­»äº¡ã€‚
 		 */
 		do_notify_parent(leader, leader->exit_signal);
 		/*
@@ -122,7 +122,7 @@ repeat:
 	}
 
 	/**
-	 * sched_exitº¯Êýµ÷Õû¸¸½ø³ÌµÄÊ±¼äÆ¬¡£
+	 * sched_exitå‡½æ•°è°ƒæ•´çˆ¶è¿›ç¨‹çš„æ—¶é—´ç‰‡ã€‚
 	 */
 	sched_exit(p);
 	write_unlock_irq(&tasklist_lock);
@@ -130,9 +130,9 @@ repeat:
 	proc_pid_flush(proc_dentry);
 	release_thread(p);
 	/**
-	 * µÝ¼õ½ø³ÌÃèÊö·ûµÄÊ¹ÓÃ¼ÆÊýÆ÷¡£Èç¹û¼ÆÊýÆ÷±ä³É0,ÔòÖÕÖ¹ËùÓÐ²ÐÁôµÄ¶Ô½ø³ÌµÄÒýÓÃ¡£
-	 *     µÝ¼õ½ø³ÌËùÓÐÕßµÄuser_structÊý¾Ý½á¹¹µÄÊ¹ÓÃ¼ÆÊýÆ÷¡£Èç¹û¼ÆÊýÎª0£¬¾ÍÊÍ·Å¸Ã½á¹¹¡£
-	 *     ÊÍ·Å½ø³ÌÃèÊö·ûÒÔ¼°thread_infoÃèÊö·ûºÍÄÚºËÌ¬¶ÑÕ»ËùÕ¼ÓÃµÄÄÚ´æÇøÓò¡£
+	 * é€’å‡è¿›ç¨‹æè¿°ç¬¦çš„ä½¿ç”¨è®¡æ•°å™¨ã€‚å¦‚æžœè®¡æ•°å™¨å˜æˆ0,åˆ™ç»ˆæ­¢æ‰€æœ‰æ®‹ç•™çš„å¯¹è¿›ç¨‹çš„å¼•ç”¨ã€‚
+	 *     é€’å‡è¿›ç¨‹æ‰€æœ‰è€…çš„user_structæ•°æ®ç»“æž„çš„ä½¿ç”¨è®¡æ•°å™¨ã€‚å¦‚æžœè®¡æ•°ä¸º0ï¼Œå°±é‡Šæ”¾è¯¥ç»“æž„ã€‚
+	 *     é‡Šæ”¾è¿›ç¨‹æè¿°ç¬¦ä»¥åŠthread_infoæè¿°ç¬¦å’Œå†…æ ¸æ€å †æ ˆæ‰€å ç”¨çš„å†…å­˜åŒºåŸŸã€‚
 	 */
 	put_task_struct(p);
 
@@ -450,8 +450,8 @@ void fastcall put_files_struct(struct files_struct *files)
 EXPORT_SYMBOL(put_files_struct);
 
 /**
- * ´Ó½ø³ÌÃèÊö·ûÖÐ·ÖÀë³öÓë´ò¿ªÎÄ¼þÏà¹ØµÄÊý¾Ý½á¹¹¡£
- * Èç¹ûÃ»ÓÐÆäËû½ø³Ì¹²Ïí¸Ã½á¹¹£¬»¹É¾³ýËùÓÐÕâÐ©Êý¾Ý½á¹¹¡£
+ * ä»Žè¿›ç¨‹æè¿°ç¬¦ä¸­åˆ†ç¦»å‡ºä¸Žæ‰“å¼€æ–‡ä»¶ç›¸å…³çš„æ•°æ®ç»“æž„ã€‚
+ * å¦‚æžœæ²¡æœ‰å…¶ä»–è¿›ç¨‹å…±äº«è¯¥ç»“æž„ï¼Œè¿˜åˆ é™¤æ‰€æœ‰è¿™äº›æ•°æ®ç»“æž„ã€‚
  */
 static inline void __exit_files(struct task_struct *tsk)
 {
@@ -492,8 +492,8 @@ void put_fs_struct(struct fs_struct *fs)
 }
 
 /**
- * ´Ó½ø³ÌÃèÊö·ûÖÐ·ÖÀë³öÓëÎÄ¼þÏµÍ³Ïà¹ØµÄÊý¾Ý½á¹¹¡£
- * Èç¹ûÃ»ÓÐÆäËû½ø³Ì¹²Ïí¸Ã½á¹¹£¬»¹É¾³ýËùÓÐÕâÐ©Êý¾Ý½á¹¹¡£
+ * ä»Žè¿›ç¨‹æè¿°ç¬¦ä¸­åˆ†ç¦»å‡ºä¸Žæ–‡ä»¶ç³»ç»Ÿç›¸å…³çš„æ•°æ®ç»“æž„ã€‚
+ * å¦‚æžœæ²¡æœ‰å…¶ä»–è¿›ç¨‹å…±äº«è¯¥ç»“æž„ï¼Œè¿˜åˆ é™¤æ‰€æœ‰è¿™äº›æ•°æ®ç»“æž„ã€‚
  */
 static inline void __exit_fs(struct task_struct *tsk)
 {
@@ -519,21 +519,21 @@ EXPORT_SYMBOL_GPL(exit_fs);
  * aren't already..
  */
 /**
- * µ±½ø³Ì½áÊøÊ±£¬exit_mmº¯ÊýÊÍ·Å½ø³ÌµÄµØÖ·¿Õ¼ä¡£
+ * å½“è¿›ç¨‹ç»“æŸæ—¶ï¼Œexit_mmå‡½æ•°é‡Šæ”¾è¿›ç¨‹çš„åœ°å€ç©ºé—´ã€‚
  */
 void exit_mm(struct task_struct * tsk)
 {
 	struct mm_struct *mm = tsk->mm;
 
 	/**
-	 * mm_releaseº¯Êý»½ÐÑÔÚvfork_doneÉÏË¯ÃßµÄ½ø³Ì¡£Ò»°ãµÄ£¬Ö»ÓÐµ±½ø³ÌÊÇÍ¨¹ývfork´´½¨µÄ£¬Õâ¸ö¶ÓÁÐÉÏ²Å»áÓÐ½ø³ÌµÈ´ý¡£
-	 * Ò»°ãµÄ£¬ÊÇ½ø³ÌµÄ¸¸½ø³ÌÔÚµÈ´ý¡£
+	 * mm_releaseå‡½æ•°å”¤é†’åœ¨vfork_doneä¸Šç¡çœ çš„è¿›ç¨‹ã€‚ä¸€èˆ¬çš„ï¼Œåªæœ‰å½“è¿›ç¨‹æ˜¯é€šè¿‡vforkåˆ›å»ºçš„ï¼Œè¿™ä¸ªé˜Ÿåˆ—ä¸Šæ‰ä¼šæœ‰è¿›ç¨‹ç­‰å¾…ã€‚
+	 * ä¸€èˆ¬çš„ï¼Œæ˜¯è¿›ç¨‹çš„çˆ¶è¿›ç¨‹åœ¨ç­‰å¾…ã€‚
 	 */
 	mm_release(tsk, mm);
 	/**
-	 * ÄÚºËÏß³ÌÎªÊ²Ã´¾Í²»¼ÌÐøºóÐø²Ù×÷£¿£¿
-	 * ÒòÎªÄÚºËÏß³ÌÃ»ÓÐ×Ô¼ºµÄÄÚ´æÃèÊö·ûºÍÏà¹ØµÄÊý¾Ý½á¹¹¡£
-	 * ¶øºóÃæµÄ²Ù×÷¶¼ÊÍ·ÅÄÚ´æÃèÊö·ûºÍÏà¹ØÊý¾Ý½á¹¹¡£
+	 * å†…æ ¸çº¿ç¨‹ä¸ºä»€ä¹ˆå°±ä¸ç»§ç»­åŽç»­æ“ä½œï¼Ÿï¼Ÿ
+	 * å› ä¸ºå†…æ ¸çº¿ç¨‹æ²¡æœ‰è‡ªå·±çš„å†…å­˜æè¿°ç¬¦å’Œç›¸å…³çš„æ•°æ®ç»“æž„ã€‚
+	 * è€ŒåŽé¢çš„æ“ä½œéƒ½é‡Šæ”¾å†…å­˜æè¿°ç¬¦å’Œç›¸å…³æ•°æ®ç»“æž„ã€‚
 	 */
 	if (!mm)
 		return;
@@ -546,7 +546,7 @@ void exit_mm(struct task_struct * tsk)
 	 */
 	down_read(&mm->mmap_sem);
 	/**
-	 * ÐèÒª×ª´¢£¬ÏÈ»ñµÃÐÅºÅÁ¿£¬Ê¹×ª´¢´®ÐÐ»¯¡£
+	 * éœ€è¦è½¬å‚¨ï¼Œå…ˆèŽ·å¾—ä¿¡å·é‡ï¼Œä½¿è½¬å‚¨ä¸²è¡ŒåŒ–ã€‚
 	 */
 	if (mm->core_waiters) {
 		up_read(&mm->mmap_sem);
@@ -559,26 +559,26 @@ void exit_mm(struct task_struct * tsk)
 		down_read(&mm->mmap_sem);
 	}
 	/**
-	 * Ôö¼ÓÄÚ´æÃèÊö·ûµÄÖ÷Ê¹ÓÃ¼ÆÊýÆ÷¡£
+	 * å¢žåŠ å†…å­˜æè¿°ç¬¦çš„ä¸»ä½¿ç”¨è®¡æ•°å™¨ã€‚
 	 */
 	atomic_inc(&mm->mm_count);
 	if (mm != tsk->active_mm) BUG();
 	/* more a memory barrier than a real lock */
 	task_lock(tsk);
 	/**
-	 * ÖØÐÂÉèÖÃ½ø³ÌÃèÊö·ûµÄmm×Ö¶Î¡£
+	 * é‡æ–°è®¾ç½®è¿›ç¨‹æè¿°ç¬¦çš„mmå­—æ®µã€‚
 	 */
 	tsk->mm = NULL;
 	up_read(&mm->mmap_sem);
 	/**
-	 * Ê¹´¦ÀíÆ÷ÅÆtlbÀÁ¶èÄ£Ê½¡£
+	 * ä½¿å¤„ç†å™¨ç‰Œtlbæ‡’æƒ°æ¨¡å¼ã€‚
 	 */
 	enter_lazy_tlb(mm, current);
 	task_unlock(tsk);
 	/**
-	 * Ç°ÃæÒÑ¾­Ôö¼ÓÊ¹ÓÃ¼ÆÊýÁË£¬ÏÖÔÚ¿ªÊ¼Í¨¹ýmmputÊÍ·Å¾Ö²¿ÃèÊö·û¡¢ÏßÐÔÇøÃèÊö·ûºÍÒ³±í¡£
-	 * µ±È»£¬ÒòÎªÊ¹ÓÃ¼ÆÊý²»»á±ä³É0£¬mmput²»»áÊÍ·ÅmmÃèÊö·ûµÄ¡£
-	 * Ëü»áÔÚfinish_task_switchÖÐÊÍ·Å¡£
+	 * å‰é¢å·²ç»å¢žåŠ ä½¿ç”¨è®¡æ•°äº†ï¼ŒçŽ°åœ¨å¼€å§‹é€šè¿‡mmputé‡Šæ”¾å±€éƒ¨æè¿°ç¬¦ã€çº¿æ€§åŒºæè¿°ç¬¦å’Œé¡µè¡¨ã€‚
+	 * å½“ç„¶ï¼Œå› ä¸ºä½¿ç”¨è®¡æ•°ä¸ä¼šå˜æˆ0ï¼Œmmputä¸ä¼šé‡Šæ”¾mmæè¿°ç¬¦çš„ã€‚
+	 * å®ƒä¼šåœ¨finish_task_switchä¸­é‡Šæ”¾ã€‚
 	 */
 	mmput(mm);
 }
@@ -723,7 +723,7 @@ static inline void forget_original_parent(struct task_struct * father,
  * to properly mourn us..
  */
 /**
- * µ±½ø³ÌÍË³öÊ±£¬Í¨ÖªÆäËûÏà¹Ø½ø³Ì
+ * å½“è¿›ç¨‹é€€å‡ºæ—¶ï¼Œé€šçŸ¥å…¶ä»–ç›¸å…³è¿›ç¨‹
  */
 static void exit_notify(struct task_struct *tsk)
 {
@@ -767,10 +767,10 @@ static void exit_notify(struct task_struct *tsk)
 
 	INIT_LIST_HEAD(&ptrace_dead);
 	/**
-	 * ¸üÐÂ¸¸½ø³ÌºÍ×Ó½ø³ÌµÄÇ×Êô¹ØÏµ
-	 * ¶Ô²»Æð£¬ÄãÃÇµÄ¸¸Ç×ËÀµôÁË£¬ÁíÍâÑ¡Ò»¸ö¼Ì¸¸°É¡£
-	 * Èç¹ûÏß³Ì×éÖÐ»¹ÓÐÔËÐÐµÄ½ø³Ì£¬¾ÍÈÃÆäÖÐ×ÓÏß³Ì×÷¸¸½ø³Ì¡£ËùÎ½£º³¤ÐÖÈç¸¸£¬ÊÇÒ²¡£
-	 * Èç¹ûÏß³Ì×éÖÐÃ»ÓÐÆäËûÐÖµÜ½ø³Ì£¬¾ÍÈÃ×Ó½ø³Ì³ÉÎªinitµÄ×Ó½ø³Ì¡£
+	 * æ›´æ–°çˆ¶è¿›ç¨‹å’Œå­è¿›ç¨‹çš„äº²å±žå…³ç³»
+	 * å¯¹ä¸èµ·ï¼Œä½ ä»¬çš„çˆ¶äº²æ­»æŽ‰äº†ï¼Œå¦å¤–é€‰ä¸€ä¸ªç»§çˆ¶å§ã€‚
+	 * å¦‚æžœçº¿ç¨‹ç»„ä¸­è¿˜æœ‰è¿è¡Œçš„è¿›ç¨‹ï¼Œå°±è®©å…¶ä¸­å­çº¿ç¨‹ä½œçˆ¶è¿›ç¨‹ã€‚æ‰€è°“ï¼šé•¿å…„å¦‚çˆ¶ï¼Œæ˜¯ä¹Ÿã€‚
+	 * å¦‚æžœçº¿ç¨‹ç»„ä¸­æ²¡æœ‰å…¶ä»–å…„å¼Ÿè¿›ç¨‹ï¼Œå°±è®©å­è¿›ç¨‹æˆä¸ºinitçš„å­è¿›ç¨‹ã€‚
 	 */
 	forget_original_parent(tsk, &ptrace_dead);
 	BUG_ON(!list_empty(&tsk->children));
@@ -824,26 +824,26 @@ static void exit_notify(struct task_struct *tsk)
 	 * only has special meaning to our real parent.
 	 */
 	/**
-	 * ¼ì²éÖÕÖ¹½ø³ÌÆä½ø³ÌÃèÊö·ûµÄexit_signal×Ö¶ÎÊÇ·ñ²»µÈÓÚ-1£¬²¢¼ì²é½ø³ÌÊÇ·ñÊÇÆäËùÊô½ø³Ì×éµÄ×îºóÒ»¸ö³ÉÔ±¡£
-	 * Ò»°ãÀ´Ëµ£¬Õý³£½ø³Ì¶¼ÓÐÕâÐ©Ìõ¼þ£¬Çë²ÎÊýcopy_processÖÐµÄ×¢ÊÍ¡£
-	 * ÕâÖÖÇé¿öÏÂ£¬¸ø¸¸½ø³Ì·¢ËÍÒ»¸öÐÅºÅ£¨Í¨³£ÊÇSIGCHLD£©£¬ÒÔÍ¨Öª¸¸½ø³ÌËÀÍö¡£
+	 * æ£€æŸ¥ç»ˆæ­¢è¿›ç¨‹å…¶è¿›ç¨‹æè¿°ç¬¦çš„exit_signalå­—æ®µæ˜¯å¦ä¸ç­‰äºŽ-1ï¼Œå¹¶æ£€æŸ¥è¿›ç¨‹æ˜¯å¦æ˜¯å…¶æ‰€å±žè¿›ç¨‹ç»„çš„æœ€åŽä¸€ä¸ªæˆå‘˜ã€‚
+	 * ä¸€èˆ¬æ¥è¯´ï¼Œæ­£å¸¸è¿›ç¨‹éƒ½æœ‰è¿™äº›æ¡ä»¶ï¼Œè¯·å‚æ•°copy_processä¸­çš„æ³¨é‡Šã€‚
+	 * è¿™ç§æƒ…å†µä¸‹ï¼Œç»™çˆ¶è¿›ç¨‹å‘é€ä¸€ä¸ªä¿¡å·ï¼ˆé€šå¸¸æ˜¯SIGCHLDï¼‰ï¼Œä»¥é€šçŸ¥çˆ¶è¿›ç¨‹æ­»äº¡ã€‚
 	 */
 	if (tsk->exit_signal != -1 && thread_group_empty(tsk)) {
 		int signal = tsk->parent == tsk->real_parent ? tsk->exit_signal : SIGCHLD;
 		do_notify_parent(tsk, signal);
 	} else if (tsk->ptrace) {
 		/**
-		 * ·ñÔòexit_signalµÈÓÚ-1»òÕßÏß³Ì×éÖÐ»¹ÓÐÆäËû½ø³Ì£¬ÄÇÃ´ÅÐ¶Ï½ø³ÌÊÇ·ñÕýÔÚ±»¸ú×Ù£¬Èç¹ûÊÇ
-		 * ¾ÍÏò¸¸½ø³Ì·¢ËÍÒ»¸öSIGCHLDÐÅºÅ¡£
+		 * å¦åˆ™exit_signalç­‰äºŽ-1æˆ–è€…çº¿ç¨‹ç»„ä¸­è¿˜æœ‰å…¶ä»–è¿›ç¨‹ï¼Œé‚£ä¹ˆåˆ¤æ–­è¿›ç¨‹æ˜¯å¦æ­£åœ¨è¢«è·Ÿè¸ªï¼Œå¦‚æžœæ˜¯
+		 * å°±å‘çˆ¶è¿›ç¨‹å‘é€ä¸€ä¸ªSIGCHLDä¿¡å·ã€‚
 		 */
 		do_notify_parent(tsk, SIGCHLD);
 	}
 
 	state = EXIT_ZOMBIE;
 	/**
-	 * exit_signalµÈÓÚ-1£¬²¢ÇÒÃ»ÓÐ±»¸ú×Ù£¨×¢£ºÕý³£µÄÏß³ÌÍË³ö£©
-	 * ¾Í½«exit_stateÉèÖÃÎªEXIT_DEAD
-	 * ·ñÔòÉèÖÃÎªEXIT_ZOMBIE
+	 * exit_signalç­‰äºŽ-1ï¼Œå¹¶ä¸”æ²¡æœ‰è¢«è·Ÿè¸ªï¼ˆæ³¨ï¼šæ­£å¸¸çš„çº¿ç¨‹é€€å‡ºï¼‰
+	 * å°±å°†exit_stateè®¾ç½®ä¸ºEXIT_DEAD
+	 * å¦åˆ™è®¾ç½®ä¸ºEXIT_ZOMBIE
 	 */
 	if (tsk->exit_signal == -1 &&
 	    (likely(tsk->ptrace == 0) ||
@@ -864,9 +864,9 @@ static void exit_notify(struct task_struct *tsk)
 		list_del_init(_p);
 		t = list_entry(_p,struct task_struct,ptrace_list);
 		/**
-		 * release_taskºó£¬½ø³ÌÃèÊö·ûµÄÊ¹ÓÃ¼ÆÊý±äÎª1£¨²»ÊÇ0£©¡£
-		 * Çë²Î¿¼copy_processµÄ´úÂë£¬¶ÔÒýÓÃ¼ÆÊýµÄ¸³Öµ¡£
-		 * Ëü´ËÊ±²»»á±»ÊÍ·Å£¬µ«ÊÇÒ²¿ì±»ÊÍ·ÅÁË¡£
+		 * release_taskåŽï¼Œè¿›ç¨‹æè¿°ç¬¦çš„ä½¿ç”¨è®¡æ•°å˜ä¸º1ï¼ˆä¸æ˜¯0ï¼‰ã€‚
+		 * è¯·å‚è€ƒcopy_processçš„ä»£ç ï¼Œå¯¹å¼•ç”¨è®¡æ•°çš„èµ‹å€¼ã€‚
+		 * å®ƒæ­¤æ—¶ä¸ä¼šè¢«é‡Šæ”¾ï¼Œä½†æ˜¯ä¹Ÿå¿«è¢«é‡Šæ”¾äº†ã€‚
 		 */
 		release_task(t);
 	}
@@ -878,15 +878,15 @@ static void exit_notify(struct task_struct *tsk)
 	/* PF_DEAD causes final put_task_struct after we schedule. */
 	preempt_disable();
 	/**
-	 * ÓÐÁËPF_DEAD±êÖ¾£¬schedule¾Í²»»áµ÷¶ÈËüÁË¡£
+	 * æœ‰äº†PF_DEADæ ‡å¿—ï¼Œscheduleå°±ä¸ä¼šè°ƒåº¦å®ƒäº†ã€‚
 	 */
 	tsk->flags |= PF_DEAD;
 }
 
 /**
- * ËùÓÐ½ø³ÌµÄÖÕÖ¹¶¼ÊÇ±¾º¯Êý´¦ÀíµÄ¡£
- * Ëü´ÓÄÚºËÊý¾Ý½á¹¹ÖÐÉ¾³ý¶ÔÖÕÖ¹½ø³ÌµÄ´ó²¿·ÖÒýÓÃ£¨×¢£º²»ÊÇÈ«²¿£¬½ø³ÌÃèÊö·û¾Í²»ÊÇ£©
- * Ëü½ÓÊÜ½ø³ÌµÄÖÕÖ¹´úÂë×÷Îª²ÎÊý¡£
+ * æ‰€æœ‰è¿›ç¨‹çš„ç»ˆæ­¢éƒ½æ˜¯æœ¬å‡½æ•°å¤„ç†çš„ã€‚
+ * å®ƒä»Žå†…æ ¸æ•°æ®ç»“æž„ä¸­åˆ é™¤å¯¹ç»ˆæ­¢è¿›ç¨‹çš„å¤§éƒ¨åˆ†å¼•ç”¨ï¼ˆæ³¨ï¼šä¸æ˜¯å…¨éƒ¨ï¼Œè¿›ç¨‹æè¿°ç¬¦å°±ä¸æ˜¯ï¼‰
+ * å®ƒæŽ¥å—è¿›ç¨‹çš„ç»ˆæ­¢ä»£ç ä½œä¸ºå‚æ•°ã€‚
  */
 fastcall NORET_TYPE void do_exit(long code)
 {
@@ -910,11 +910,11 @@ fastcall NORET_TYPE void do_exit(long code)
 	}
 
 	/**
-	 * PF_EXITING±íÊ¾½ø³ÌµÄ×´Ì¬£ºÕýÔÚ±»É¾³ý¡£
+	 * PF_EXITINGè¡¨ç¤ºè¿›ç¨‹çš„çŠ¶æ€ï¼šæ­£åœ¨è¢«åˆ é™¤ã€‚
 	 */
 	tsk->flags |= PF_EXITING;
 	/**
-	 * ´Ó¶¯Ì¬¶¨Ê±Æ÷¶ÓÁÐÖÐÉ¾³ý½ø³ÌÃèÊö·û¡£
+	 * ä»ŽåŠ¨æ€å®šæ—¶å™¨é˜Ÿåˆ—ä¸­åˆ é™¤è¿›ç¨‹æè¿°ç¬¦ã€‚
 	 */
 	del_timer_sync(&tsk->real_timer);
 
@@ -930,29 +930,29 @@ fastcall NORET_TYPE void do_exit(long code)
 		acct_process(code);
 
 	/**
-	 * exit_mm´Ó½ø³ÌÃèÊö·ûÖÐ·ÖÀë³ö·ÖÒ³Ïà¹ØµÄÃèÊö·û¡£
-	 * Èç¹ûÃ»ÓÐÆäËû½ø³Ì¹²ÏíÕâÐ©Êý¾Ý½á¹¹£¬¾ÍÉ¾³ýÕâÐ©Êý¾Ý½á¹¹¡£
+	 * exit_mmä»Žè¿›ç¨‹æè¿°ç¬¦ä¸­åˆ†ç¦»å‡ºåˆ†é¡µç›¸å…³çš„æè¿°ç¬¦ã€‚
+	 * å¦‚æžœæ²¡æœ‰å…¶ä»–è¿›ç¨‹å…±äº«è¿™äº›æ•°æ®ç»“æž„ï¼Œå°±åˆ é™¤è¿™äº›æ•°æ®ç»“æž„ã€‚
 	 */
 	exit_mm(tsk);
 
 	/**
-	 * exit_sem´Ó½ø³ÌÃèÊö·ûÖÐ·ÖÀë³öÐÅºÅÁ¿Ïà¹ØµÄÃèÊö·û
+	 * exit_semä»Žè¿›ç¨‹æè¿°ç¬¦ä¸­åˆ†ç¦»å‡ºä¿¡å·é‡ç›¸å…³çš„æè¿°ç¬¦
 	 */
 	exit_sem(tsk);
 	/**
-	 * __exit_files´Ó½ø³ÌÃèÊö·ûÖÐ·ÖÀë³öÎÄ¼þÏµÍ³Ïà¹ØµÄÃèÊö·û
+	 * __exit_filesä»Žè¿›ç¨‹æè¿°ç¬¦ä¸­åˆ†ç¦»å‡ºæ–‡ä»¶ç³»ç»Ÿç›¸å…³çš„æè¿°ç¬¦
 	 */
 	__exit_files(tsk);
 	/**
-	 * __exit_fs´Ó½ø³ÌÃèÊö·ûÖÐ·ÖÀë³ö´ò¿ªÎÄ¼þÃèÊö·ûÏà¹ØµÄÃèÊö·û
+	 * __exit_fsä»Žè¿›ç¨‹æè¿°ç¬¦ä¸­åˆ†ç¦»å‡ºæ‰“å¼€æ–‡ä»¶æè¿°ç¬¦ç›¸å…³çš„æè¿°ç¬¦
 	 */
 	__exit_fs(tsk);
 	/**
-	 * exit_namespace´Ó½ø³ÌÃèÊö·ûÖÐ·ÖÀë³öÃüÃû¿Õ¼äÏà¹ØµÄÃèÊö·û
+	 * exit_namespaceä»Žè¿›ç¨‹æè¿°ç¬¦ä¸­åˆ†ç¦»å‡ºå‘½åç©ºé—´ç›¸å…³çš„æè¿°ç¬¦
 	 */	
 	exit_namespace(tsk);
 	/**
-	 * exit_thread´Ó½ø³ÌÃèÊö·ûÖÐ·ÖÀë³öIOÈ¨ÏÞÎ»Í¼Ïà¹ØµÄÃèÊö·û
+	 * exit_threadä»Žè¿›ç¨‹æè¿°ç¬¦ä¸­åˆ†ç¦»å‡ºIOæƒé™ä½å›¾ç›¸å…³çš„æè¿°ç¬¦
 	 */		
 	exit_thread();
 	exit_keys(tsk);
@@ -961,20 +961,20 @@ fastcall NORET_TYPE void do_exit(long code)
 		disassociate_ctty(1);
 
 	/**
-	 * Èç¹ûÊµÏÖÁË±»É±ËÀ½ø³ÌµÄÖ´ÐÐÓòºÍ¿ÉÖ´ÐÐ¸ñÊ½µÄÄÚºËº¯ÊýÔÚÄÚºËÄ£¿éÖÐ
-	 * ¾ÍµÝ¼õËüÃÇµÄÖµ¡£
-	 * ×¢£ºÕâÓ¦¸ÃÊÇÎªÁË·ÀÖ¹ÒâÍâµÄÐ¶ÔØÄ£¿é¡£
+	 * å¦‚æžœå®žçŽ°äº†è¢«æ€æ­»è¿›ç¨‹çš„æ‰§è¡ŒåŸŸå’Œå¯æ‰§è¡Œæ ¼å¼çš„å†…æ ¸å‡½æ•°åœ¨å†…æ ¸æ¨¡å—ä¸­
+	 * å°±é€’å‡å®ƒä»¬çš„å€¼ã€‚
+	 * æ³¨ï¼šè¿™åº”è¯¥æ˜¯ä¸ºäº†é˜²æ­¢æ„å¤–çš„å¸è½½æ¨¡å—ã€‚
 	 */
 	module_put(tsk->thread_info->exec_domain->module);
 	if (tsk->binfmt)
 		module_put(tsk->binfmt->module);
 
 	/**
-	 * ÉèÖÃÍË³ö´úÂë
+	 * è®¾ç½®é€€å‡ºä»£ç 
 	 */
 	tsk->exit_code = code;
 	/**
-	 * exit_notifyÖ´ÐÐ±È½Ï¸´ÔÓµÄ²Ù×÷£¬¸üÐÂÁËºÜ¶àÄÚºËÊý¾Ý½á¹¹
+	 * exit_notifyæ‰§è¡Œæ¯”è¾ƒå¤æ‚çš„æ“ä½œï¼Œæ›´æ–°äº†å¾ˆå¤šå†…æ ¸æ•°æ®ç»“æž„
 	 */
 	exit_notify(tsk);
 #ifdef CONFIG_NUMA
@@ -984,18 +984,18 @@ fastcall NORET_TYPE void do_exit(long code)
 
 	BUG_ON(!(current->flags & PF_DEAD));
 	/**
-	 * ÍêÁË£¬ÈÃÆäËûÏß³ÌÔËÐÐ°É
-	 * ÒòÎªschedule»áºöÂÔ´¦ÓÚEXIT_ZOMBIE×´Ì¬µÄ½ø³Ì£¬ËùÒÔ½ø³ÌÏÖÔÚÊÇ²»»áÔÙÔËÐÐÁË¡£
+	 * å®Œäº†ï¼Œè®©å…¶ä»–çº¿ç¨‹è¿è¡Œå§
+	 * å› ä¸ºscheduleä¼šå¿½ç•¥å¤„äºŽEXIT_ZOMBIEçŠ¶æ€çš„è¿›ç¨‹ï¼Œæ‰€ä»¥è¿›ç¨‹çŽ°åœ¨æ˜¯ä¸ä¼šå†è¿è¡Œäº†ã€‚
 	 */
 	schedule();
 	/**
-	 * µ±È»£¬Ë­»¹»áÈÃËÀµôµÄ½ø³Ì¼ÌÐøÔËÐÐ£¬ËµÃ÷ÄÚºËÒ»¶¨ÊÇ´íÁË
-	 * ×¢£ºÄÑµÀschedule±»Ë­¸ÄÁË£¬Ã»ÓÐÅÐ¶ÏEXIT_ZOMBIE£¿£¿£¿
+	 * å½“ç„¶ï¼Œè°è¿˜ä¼šè®©æ­»æŽ‰çš„è¿›ç¨‹ç»§ç»­è¿è¡Œï¼Œè¯´æ˜Žå†…æ ¸ä¸€å®šæ˜¯é”™äº†
+	 * æ³¨ï¼šéš¾é“scheduleè¢«è°æ”¹äº†ï¼Œæ²¡æœ‰åˆ¤æ–­EXIT_ZOMBIEï¼Ÿï¼Ÿï¼Ÿ
 	 */
 	BUG();
 	/* Avoid "noreturn function does return".  */
 	/**
-	 * ½ö½öÎªÁË·ÀÖ¹±àÒëÆ÷±¨¾¯¸æÐÅÏ¢¶øÒÑ£¬½ö´Ë¶øÒÑ¡£
+	 * ä»…ä»…ä¸ºäº†é˜²æ­¢ç¼–è¯‘å™¨æŠ¥è­¦å‘Šä¿¡æ¯è€Œå·²ï¼Œä»…æ­¤è€Œå·²ã€‚
 	 */
 	for (;;) ;
 }
@@ -1016,8 +1016,8 @@ asmlinkage long sys_exit(int error_code)
 }
 
 /**
- * ·µ»ØPIDTYPE_TGIDÀàÐÍµÄÉ¢ÁÐ±íÖÐ£¬taskÖ¸Ê¾µÄÏÂÒ»¸öÇáÁ¿¼¶½ø³ÌµÄ½ø³ÌÃèÊö·û¡£
- * ÓÉÓÚÉ¢ÁÐÁ´±íÊÇÑ­»·µÄ£¬ÈôÓ¦ÓÃÓÚ´«Í³½ø³Ì£¬ÄÇÃ´¸Ã·µ»ØµÄÊÇ½ø³Ì±¾ÉíµÄÃèÊö·ûµØÖ·¡£
+ * è¿”å›žPIDTYPE_TGIDç±»åž‹çš„æ•£åˆ—è¡¨ä¸­ï¼ŒtaskæŒ‡ç¤ºçš„ä¸‹ä¸€ä¸ªè½»é‡çº§è¿›ç¨‹çš„è¿›ç¨‹æè¿°ç¬¦ã€‚
+ * ç”±äºŽæ•£åˆ—é“¾è¡¨æ˜¯å¾ªçŽ¯çš„ï¼Œè‹¥åº”ç”¨äºŽä¼ ç»Ÿè¿›ç¨‹ï¼Œé‚£ä¹ˆè¯¥è¿”å›žçš„æ˜¯è¿›ç¨‹æœ¬èº«çš„æè¿°ç¬¦åœ°å€ã€‚
  */
 task_t fastcall *next_thread(const task_t *p)
 {
@@ -1031,8 +1031,8 @@ EXPORT_SYMBOL(next_thread);
  * as well as by sys_exit_group (below).
  */
 /**
- * É±ËÀÊôÓÚcurrentÏß³Ì×éµÄËùÓÐ½ø³Ì.Ëü½ÓÊÜ½ø³ÌÖÕÖ¹´úÂë×÷Îª²ÎÊý.
- * Õâ¸ö²ÎÊý¿ÉÄÜÊÇÏµÍ³µ÷ÓÃexit_group()Ö¸¶¨µÄÒ»¸öÖµ,Ò²¿ÉÄÜÊÇÄÚºËÌá¹©µÄÒ»¸ö´íÎó´úºÅ.
+ * æ€æ­»å±žäºŽcurrentçº¿ç¨‹ç»„çš„æ‰€æœ‰è¿›ç¨‹.å®ƒæŽ¥å—è¿›ç¨‹ç»ˆæ­¢ä»£ç ä½œä¸ºå‚æ•°.
+ * è¿™ä¸ªå‚æ•°å¯èƒ½æ˜¯ç³»ç»Ÿè°ƒç”¨exit_group()æŒ‡å®šçš„ä¸€ä¸ªå€¼,ä¹Ÿå¯èƒ½æ˜¯å†…æ ¸æä¾›çš„ä¸€ä¸ªé”™è¯¯ä»£å·.
  */
 NORET_TYPE void
 do_group_exit(int exit_code)
@@ -1040,13 +1040,13 @@ do_group_exit(int exit_code)
 	BUG_ON(exit_code & 0x80); /* core dumps don't get here */
 
 	/**
-	 * ¼ì²é½ø³ÌµÄSIGNAL_GROUP_EXIT,Èç¹û²»Îª0,ËµÃ÷ÄÚºËÒÑ¾­¿ªÊ¼ÎªÏß³Ì×éÖ´ÐÐÍË³öµÄ¹ý³Ì.
+	 * æ£€æŸ¥è¿›ç¨‹çš„SIGNAL_GROUP_EXIT,å¦‚æžœä¸ä¸º0,è¯´æ˜Žå†…æ ¸å·²ç»å¼€å§‹ä¸ºçº¿ç¨‹ç»„æ‰§è¡Œé€€å‡ºçš„è¿‡ç¨‹.
 	 */
 	if (current->signal->flags & SIGNAL_GROUP_EXIT)
 		exit_code = current->signal->group_exit_code;
 	else if (!thread_group_empty(current)) {
 		/**
-		 * ÉèÖÃ½ø³ÌµÄSIGNAL_GROUP_EXIT±êÖ¾,²¢°ÑÖÕÖ¹´úºÅ·ÅÔÚsig->group_exit_code
+		 * è®¾ç½®è¿›ç¨‹çš„SIGNAL_GROUP_EXITæ ‡å¿—,å¹¶æŠŠç»ˆæ­¢ä»£å·æ”¾åœ¨sig->group_exit_code
 		 */
 		struct signal_struct *const sig = current->signal;
 		struct sighand_struct *const sighand = current->sighand;
@@ -1059,8 +1059,8 @@ do_group_exit(int exit_code)
 			sig->flags = SIGNAL_GROUP_EXIT;
 			sig->group_exit_code = exit_code;
 			/**
-			 * zap_other_threadsÉ±ËÀÏß³Ì×éÖÐµÄÆäËûÏß³Ì.
-			 * ËüÉ¨ÃèPIDTYPE_TGIDÀàÐÍµÄÉ¢ÁÐ±íÖÐµÄÃ¿¸öPIDÁ´±í,Ïò±íÖÐÆäËû½ø³Ì·¢ËÍSIGKILLÐÅºÅ.
+			 * zap_other_threadsæ€æ­»çº¿ç¨‹ç»„ä¸­çš„å…¶ä»–çº¿ç¨‹.
+			 * å®ƒæ‰«æPIDTYPE_TGIDç±»åž‹çš„æ•£åˆ—è¡¨ä¸­çš„æ¯ä¸ªPIDé“¾è¡¨,å‘è¡¨ä¸­å…¶ä»–è¿›ç¨‹å‘é€SIGKILLä¿¡å·.
 			 */
 			zap_other_threads(current);
 		}
@@ -1069,7 +1069,7 @@ do_group_exit(int exit_code)
 	}
 
 	/**
-	 * É±ËÀµ±Ç°½ø³Ì,´Ë¹ý³Ì²»ÔÙ·µ»Ø.
+	 * æ€æ­»å½“å‰è¿›ç¨‹,æ­¤è¿‡ç¨‹ä¸å†è¿”å›ž.
 	 */
 	do_exit(exit_code);
 	/* NOTREACHED */

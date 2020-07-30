@@ -22,7 +22,7 @@
 #define S_ISVTX  0001000
 
 /**
- * ÊÇ·ñÎª·ûºÅÁ´½Ó
+ * æ˜¯å¦ä¸ºç¬¦å·é“¾æŽ¥
  */
 #define S_ISLNK(m)	(((m) & S_IFMT) == S_IFLNK)
 #define S_ISREG(m)	(((m) & S_IFMT) == S_IFREG)

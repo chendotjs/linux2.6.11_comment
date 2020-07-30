@@ -39,13 +39,13 @@ static inline void wake(void)
 struct kcopyd_client {
 	struct list_head list;
 
-	/* ±£»¤Ò³Ãæ·ÖÅäµÄËø */
+	/* ä¿æŠ¤é¡µé¢åˆ†é…çš„é” */
 	spinlock_t lock;
-	/* ¿Í»§¶Ë¿ÕÏĞÒ³ÃæÁĞ±í */
+	/* å®¢æˆ·ç«¯ç©ºé—²é¡µé¢åˆ—è¡¨ */
 	struct page_list *pages;
-	/* ¿Í»§¶ËÓµÓĞµÄÒ³ÃæÊı */
+	/* å®¢æˆ·ç«¯æ‹¥æœ‰çš„é¡µé¢æ•° */
 	unsigned int nr_pages;
-	/* Ê£Óà¿ÕÏĞÒ³ÃæÊı */
+	/* å‰©ä½™ç©ºé—²é¡µé¢æ•° */
 	unsigned int nr_free_pages;
 };
 
@@ -158,55 +158,55 @@ static void client_free_pages(struct kcopyd_client *kc)
  * ever having to do io (which could cause a deadlock).
  *---------------------------------------------------------------*/
 struct kcopyd_job {
-	/* ËùÊôµÄkcopyd¿Í»§¶Ë */
+	/* æ‰€å±çš„kcopydå®¢æˆ·ç«¯ */
 	struct kcopyd_client *kc;
-	/* Á´½Óµ½¿Í»§¶ËÃèÊö·ûµÄÁ´±í */
+	/* é“¾æ¥åˆ°å®¢æˆ·ç«¯æè¿°ç¬¦çš„é“¾è¡¨ */
 	struct list_head list;
-	/* ÈÎÎñ±êÖ¾£¬ÈçÊÇ·ñºöÂÔ¶ÁĞ´´íÎó */
+	/* ä»»åŠ¡æ ‡å¿—ï¼Œå¦‚æ˜¯å¦å¿½ç•¥è¯»å†™é”™è¯¯ */
 	unsigned long flags;
 
 	/*
 	 * Error state of the job.
 	 */
-	int read_err;/* Èç¹û·Ç0£¬±íÊ¾·¢ÉúÁË¶ÁÈ¡´íÎó */
-	unsigned int write_err;/* Èç¹û·Ç0£¬±íÊ¾·¢ÉúÁËĞ´Èë´íÎó */
+	int read_err;/* å¦‚æœé0ï¼Œè¡¨ç¤ºå‘ç”Ÿäº†è¯»å–é”™è¯¯ */
+	unsigned int write_err;/* å¦‚æœé0ï¼Œè¡¨ç¤ºå‘ç”Ÿäº†å†™å…¥é”™è¯¯ */
 
 	/*
 	 * Either READ or WRITE
 	 */
-	int rw;/* µ±Ç°ÈÎÎñµÄIO·½Ïò£¬¶Á»òĞ´ */
+	int rw;/* å½“å‰ä»»åŠ¡çš„IOæ–¹å‘ï¼Œè¯»æˆ–å†™ */
 	struct io_region source;
 
 	/*
 	 * The destinations for the transfer.
 	 */
-	/* Ä¿±êÊıÄ¿ */
+	/* ç›®æ ‡æ•°ç›® */
 	unsigned int num_dests;
-	/* Ä¿±ê */
+	/* ç›®æ ‡ */
 	struct io_region dests[KCOPYD_MAX_REGIONS];
 
-	/* ÉÈÇøÆ«ÒÆ */
+	/* æ‰‡åŒºåç§» */
 	sector_t offset;
-	/* ´¦Àí¸ÃÈÎÎñĞèÒª·ÖÅäµÄÒ³ÃæÊı */
+	/* å¤„ç†è¯¥ä»»åŠ¡éœ€è¦åˆ†é…çš„é¡µé¢æ•° */
 	unsigned int nr_pages;
-	/* ·ÖÅä¸ø¸ÃÈÎÎñµÄÒ³ÃæÁ´±í */
+	/* åˆ†é…ç»™è¯¥ä»»åŠ¡çš„é¡µé¢é“¾è¡¨ */
 	struct page_list *pages;
 
 	/*
 	 * Set this to ensure you are notified when the job has
 	 * completed.  'context' is for callback to use.
 	 */
-	kcopyd_notify_fn fn;/* Íê³ÉÊ±µÄ»Øµ÷º¯Êı */
-	void *context;/* ´«µİ¸ø»Øµ÷º¯ÊıµÄ²ÎÊı */
+	kcopyd_notify_fn fn;/* å®Œæˆæ—¶çš„å›è°ƒå‡½æ•° */
+	void *context;/* ä¼ é€’ç»™å›è°ƒå‡½æ•°çš„å‚æ•° */
 
 	/*
 	 * These fields are only used if the job has been split
 	 * into more manageable parts.
 	 */
-	struct semaphore lock;/* µ±Ç°ÈÎÎñ±ØĞë·ÖÎª¶à¸ö×ÓÈÎÎñÊ±£¬Ê¹ÓÃµÄ»¥³âÁ¿ */
-	/* ×ÓÈÎÎñÊı */
+	struct semaphore lock;/* å½“å‰ä»»åŠ¡å¿…é¡»åˆ†ä¸ºå¤šä¸ªå­ä»»åŠ¡æ—¶ï¼Œä½¿ç”¨çš„äº’æ–¥é‡ */
+	/* å­ä»»åŠ¡æ•° */
 	atomic_t sub_jobs;
-	/* ÈÎÎñÖ´ĞĞµÄ½ø¶È */
+	/* ä»»åŠ¡æ‰§è¡Œçš„è¿›åº¦ */
 	sector_t progress;
 };
 
@@ -307,35 +307,35 @@ static int run_complete_job(struct kcopyd_job *job)
 	unsigned int write_err = job->write_err;
 	kcopyd_notify_fn fn = job->fn;
 
-	kcopyd_put_pages(job->kc, job->pages);/* ÊÍ·ÅÈÎÎñÕ¼ÓÃµÄÒ³Ãæ */
-	mempool_free(job, _job_pool);/* ½«ÈÎÎñ·Å»ØÄÚ´æ³Ø */
-	fn(read_err, write_err, context);/* µ÷ÓÃÈÎÎñÍê³É»Øµ÷ */
+	kcopyd_put_pages(job->kc, job->pages);/* é‡Šæ”¾ä»»åŠ¡å ç”¨çš„é¡µé¢ */
+	mempool_free(job, _job_pool);/* å°†ä»»åŠ¡æ”¾å›å†…å­˜æ±  */
+	fn(read_err, write_err, context);/* è°ƒç”¨ä»»åŠ¡å®Œæˆå›è°ƒ */
 	return 0;
 }
 
-/* IOÍê³ÉºóµÄ»Øµ÷º¯Êı */
+/* IOå®Œæˆåçš„å›è°ƒå‡½æ•° */
 static void complete_io(unsigned long error, void *context)
 {
 	struct kcopyd_job *job = (struct kcopyd_job *) context;
 
-	if (error) {/* ·¢ÉúÁËIO´íÎó */
-		if (job->rw == WRITE)/* ¼ÇÂ¼ÏÂ¶ÁĞ´´íÎó */
+	if (error) {/* å‘ç”Ÿäº†IOé”™è¯¯ */
+		if (job->rw == WRITE)/* è®°å½•ä¸‹è¯»å†™é”™è¯¯ */
 			job->write_err &= error;
 		else
 			job->read_err = 1;
 
-		if (!test_bit(KCOPYD_IGNORE_ERROR, &job->flags)) {/* ÉÏ²ãÒªÇó²»ÄÜºöÂÔ¶ÁĞ´´íÎó */
-			push(&_complete_jobs, job);/* ½«Ëü·Åµ½Íê³É¶ÓÁĞÖĞ */
+		if (!test_bit(KCOPYD_IGNORE_ERROR, &job->flags)) {/* ä¸Šå±‚è¦æ±‚ä¸èƒ½å¿½ç•¥è¯»å†™é”™è¯¯ */
+			push(&_complete_jobs, job);/* å°†å®ƒæ”¾åˆ°å®Œæˆé˜Ÿåˆ—ä¸­ */
 			wake();
 			return;
 		}
 	}
 
-	if (job->rw == WRITE)/* Íê³ÉĞ´ */
-		push(&_complete_jobs, job);/* ½«Æä·ÅÈëÍê³É¶ÓÁĞ */
+	if (job->rw == WRITE)/* å®Œæˆå†™ */
+		push(&_complete_jobs, job);/* å°†å…¶æ”¾å…¥å®Œæˆé˜Ÿåˆ— */
 
 	else {
-		job->rw = WRITE;/* ¸Ä±ä¶ÁĞ´·½Ïò£¬²¢½«Æä·ÅÈëIO¶ÓÁĞ */
+		job->rw = WRITE;/* æ”¹å˜è¯»å†™æ–¹å‘ï¼Œå¹¶å°†å…¶æ”¾å…¥IOé˜Ÿåˆ— */
 		push(&_io_jobs, job);
 	}
 
@@ -350,12 +350,12 @@ static int run_io_job(struct kcopyd_job *job)
 {
 	int r;
 
-	if (job->rw == READ)/* ´Ó¸´ÖÆÔ´¶ÁÈ¡Êı¾İ */
+	if (job->rw == READ)/* ä»å¤åˆ¶æºè¯»å–æ•°æ® */
 		r = dm_io_async(1, &job->source, job->rw,
 				job->pages,
 				job->offset, complete_io, job);
 
-	else/* ÏòÄ¿±êĞ´ÈëÊı¾İ */
+	else/* å‘ç›®æ ‡å†™å…¥æ•°æ® */
 		r = dm_io_async(job->num_dests, job->dests, job->rw,
 				job->pages,
 				job->offset, complete_io, job);
@@ -367,18 +367,18 @@ static int run_pages_job(struct kcopyd_job *job)
 {
 	int r;
 
-	/* ¼ÆËã¸´ÖÆÈÎÎñĞèÒªµÄÒ³ÃæÊı */
+	/* è®¡ç®—å¤åˆ¶ä»»åŠ¡éœ€è¦çš„é¡µé¢æ•° */
 	job->nr_pages = dm_div_up(job->dests[0].count + job->offset,
 				  PAGE_SIZE >> 9);
-	/* ·ÖÅäËùĞèÒªµÄÒ³Ãæ */
+	/* åˆ†é…æ‰€éœ€è¦çš„é¡µé¢ */
 	r = kcopyd_get_pages(job->kc, job->nr_pages, &job->pages);
-	if (!r) {/* ·ÖÅä³É¹¦£¬½«ÈÎÎñ·Åµ½¶ÁĞ´¶ÓÁĞ²¢·µ»Ø0 */
+	if (!r) {/* åˆ†é…æˆåŠŸï¼Œå°†ä»»åŠ¡æ”¾åˆ°è¯»å†™é˜Ÿåˆ—å¹¶è¿”å›0 */
 		/* this job is ready for io */
 		push(&_io_jobs, job);
 		return 0;
 	}
 
-	if (r == -ENOMEM)/* Ã»ÓĞÄÚ´æÁË£¬·µ»Ø1£¬ÉÔºóÔÙËµ */
+	if (r == -ENOMEM)/* æ²¡æœ‰å†…å­˜äº†ï¼Œè¿”å›1ï¼Œç¨åå†è¯´ */
 		/* can't complete now */
 		return 1;
 
@@ -394,31 +394,31 @@ static int process_jobs(struct list_head *jobs, int (*fn) (struct kcopyd_job *))
 	struct kcopyd_job *job;
 	int r, count = 0;
 
-	while ((job = pop(jobs))) {/* ´Ó¶ÓÁĞÖĞÈ¡³öÈÎÎñ */
+	while ((job = pop(jobs))) {/* ä»é˜Ÿåˆ—ä¸­å–å‡ºä»»åŠ¡ */
 
-		r = fn(job);/* µ÷ÓÃ»Øµ÷º¯Êı´¦Àí¸ÃÈÎÎñ */
+		r = fn(job);/* è°ƒç”¨å›è°ƒå‡½æ•°å¤„ç†è¯¥ä»»åŠ¡ */
 
-		if (r < 0) {/* ³öÏÖ´íÎó */
+		if (r < 0) {/* å‡ºç°é”™è¯¯ */
 			/* error this rogue job */
-			if (job->rw == WRITE)/* ¼ÇÂ¼´íÎó */
+			if (job->rw == WRITE)/* è®°å½•é”™è¯¯ */
 				job->write_err = (unsigned int) -1;
 			else
 				job->read_err = 1;
-			/* ÈÎÎñÒÑ¾­ÎŞ·¨¼ÌĞø½øĞĞ£¬½«Æä·Å»ØÍê³É¶ÓÁĞ */
+			/* ä»»åŠ¡å·²ç»æ— æ³•ç»§ç»­è¿›è¡Œï¼Œå°†å…¶æ”¾å›å®Œæˆé˜Ÿåˆ— */
 			push(&_complete_jobs, job);
 			break;
 		}
 
-		if (r > 0) {/* µ±Ç°²»ÄÜ´¦Àí£¬½ñºó¿ÉÄÜÄÜ¹»¼ÌĞø */
+		if (r > 0) {/* å½“å‰ä¸èƒ½å¤„ç†ï¼Œä»Šåå¯èƒ½èƒ½å¤Ÿç»§ç»­ */
 			/*
 			 * We couldn't service this job ATM, so
 			 * push this job back onto the list.
 			 */
-			push(jobs, job);/* ½«ÈÎÎñ·Å»Ø¶ÓÁĞÍ·²¿ */
+			push(jobs, job);/* å°†ä»»åŠ¡æ”¾å›é˜Ÿåˆ—å¤´éƒ¨ */
 			break;
 		}
 
-		count++;/* ÈÎÎñÍê³É£¬µİÔö¼ÆÊı²¢´¦ÀíÏÂÒ»¸öÈÎÎñ */
+		count++;/* ä»»åŠ¡å®Œæˆï¼Œé€’å¢è®¡æ•°å¹¶å¤„ç†ä¸‹ä¸€ä¸ªä»»åŠ¡ */
 	}
 
 	return count;
@@ -427,7 +427,7 @@ static int process_jobs(struct list_head *jobs, int (*fn) (struct kcopyd_job *))
 /*
  * kcopyd does this every time it's woken up.
  */
-/* dm¸´ÖÆÏß³ÌµÄÖ÷¹¤×÷º¯Êı */
+/* dmå¤åˆ¶çº¿ç¨‹çš„ä¸»å·¥ä½œå‡½æ•° */
 static void do_work(void *ignored)
 {
 	/*
@@ -437,11 +437,11 @@ static void do_work(void *ignored)
 	 * list.  io jobs call wake when they complete and it all
 	 * starts again.
 	 */
-	/* ÏÈ´¦ÀíÒÑ¾­Íê³ÉµÄÈÎÎñ¶ÓÁĞ£¬ÕâÑù¿ÉÒÔÊÍ·Å¸ü¶àµÄÒ³Ãæ */
+	/* å…ˆå¤„ç†å·²ç»å®Œæˆçš„ä»»åŠ¡é˜Ÿåˆ—ï¼Œè¿™æ ·å¯ä»¥é‡Šæ”¾æ›´å¤šçš„é¡µé¢ */
 	process_jobs(&_complete_jobs, run_complete_job);
-	/* ´¦ÀíµÈ´ı·ÖÅäÒ³ÃæµÄ¶ÓÁĞ */
+	/* å¤„ç†ç­‰å¾…åˆ†é…é¡µé¢çš„é˜Ÿåˆ— */
 	process_jobs(&_pages_jobs, run_pages_job);
-	/* ´¦Àí¶ÁĞ´¶ÓÁĞ */
+	/* å¤„ç†è¯»å†™é˜Ÿåˆ— */
 	process_jobs(&_io_jobs, run_io_job);
 }
 
@@ -452,8 +452,8 @@ static void do_work(void *ignored)
  */
 static void dispatch_job(struct kcopyd_job *job)
 {
-	push(&_pages_jobs, job);/* ½«ÈÎÎñ·Åµ½´ı·ÖÅäÒ³Ãæ¶ÓÁĞ */
-	wake();/* »½ĞÑ¹¤×÷¶ÓÁĞ´¦ÀíÈÎÎñ */
+	push(&_pages_jobs, job);/* å°†ä»»åŠ¡æ”¾åˆ°å¾…åˆ†é…é¡µé¢é˜Ÿåˆ— */
+	wake();/* å”¤é†’å·¥ä½œé˜Ÿåˆ—å¤„ç†ä»»åŠ¡ */
 }
 
 #define SUB_JOB_SIZE 128
@@ -535,7 +535,7 @@ static void split_job(struct kcopyd_job *job)
 		segment_complete(0, 0u, job);
 }
 
-/* ÏòkcopydÌá½»Ò»¸ö¸´ÖÆÈÎÎñ */
+/* å‘kcopydæäº¤ä¸€ä¸ªå¤åˆ¶ä»»åŠ¡ */
 int kcopyd_copy(struct kcopyd_client *kc, struct io_region *from,
 		unsigned int num_dests, struct io_region *dests,
 		unsigned int flags, kcopyd_notify_fn fn, void *context)
@@ -545,12 +545,12 @@ int kcopyd_copy(struct kcopyd_client *kc, struct io_region *from,
 	/*
 	 * Allocate a new job.
 	 */
-	job = mempool_alloc(_job_pool, GFP_NOIO);/* ´ÓÄÚ´æ³ØÖĞ·ÖÅäÈÎÎñ½á¹¹ */
+	job = mempool_alloc(_job_pool, GFP_NOIO);/* ä»å†…å­˜æ± ä¸­åˆ†é…ä»»åŠ¡ç»“æ„ */
 
 	/*
 	 * set up for the read.
 	 */
-	job->kc = kc;/* ¹¹ÔìÒ»¸öÈÎÎñ */
+	job->kc = kc;/* æ„é€ ä¸€ä¸ªä»»åŠ¡ */
 	job->flags = flags;
 	job->read_err = 0;
 	job->write_err = 0;
@@ -568,10 +568,10 @@ int kcopyd_copy(struct kcopyd_client *kc, struct io_region *from,
 	job->fn = fn;
 	job->context = context;
 
-	if (job->source.count < SUB_JOB_SIZE)/* ²»±Ø·Ö½âÎª×ÓÈÎÎñ */
-		dispatch_job(job);/* ·Ö·¢ÈÎÎñ */
+	if (job->source.count < SUB_JOB_SIZE)/* ä¸å¿…åˆ†è§£ä¸ºå­ä»»åŠ¡ */
+		dispatch_job(job);/* åˆ†å‘ä»»åŠ¡ */
 
-	else {/* ĞèÒª·Ö½âÈÎÎñ */
+	else {/* éœ€è¦åˆ†è§£ä»»åŠ¡ */
 		init_MUTEX(&job->lock);
 		job->progress = 0;
 		split_job(job);
@@ -657,7 +657,7 @@ static void kcopyd_exit(void)
 	up(&kcopyd_init_lock);
 }
 
-/* ·ÖÅäkcopyd¿Í»§¶Ë½á¹¹ */
+/* åˆ†é…kcopydå®¢æˆ·ç«¯ç»“æ„ */
 int kcopyd_client_create(unsigned int nr_pages, struct kcopyd_client **result)
 {
 	int r = 0;
@@ -696,7 +696,7 @@ int kcopyd_client_create(unsigned int nr_pages, struct kcopyd_client **result)
 	return 0;
 }
 
-/* ÊÍ·Åkcopyd¿Í»§¶Ë½á¹¹ */
+/* é‡Šæ”¾kcopydå®¢æˆ·ç«¯ç»“æ„ */
 void kcopyd_client_destroy(struct kcopyd_client *kc)
 {
 	dm_io_put(kc->nr_pages);

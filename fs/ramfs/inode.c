@@ -207,7 +207,7 @@ struct super_block *ramfs_get_sb(struct file_system_type *fs_type,
 }
 
 /**
- * ³õÊ¼¸ùÎÄ¼şÏµÍ³µÄget_sb¡£
+ * åˆå§‹æ ¹æ–‡ä»¶ç³»ç»Ÿçš„get_sbã€‚
  */
 static struct super_block *rootfs_get_sb(struct file_system_type *fs_type,
 	int flags, const char *dev_name, void *data)
@@ -240,7 +240,7 @@ module_init(init_ramfs_fs)
 module_exit(exit_ramfs_fs)
 
 /**
- * ÏòÄÚºË×¢²áÌØÊâÎÄ¼şÏµÍ³ÀàĞÍrootfs£¬ÓÃÓÚºóÆÚ¹ÒÔØ³õÊ¼¸ùÄ¿Â¼
+ * å‘å†…æ ¸æ³¨å†Œç‰¹æ®Šæ–‡ä»¶ç³»ç»Ÿç±»å‹rootfsï¼Œç”¨äºåæœŸæŒ‚è½½åˆå§‹æ ¹ç›®å½•
  */
 int __init init_rootfs(void)
 {

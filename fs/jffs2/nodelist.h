@@ -85,27 +85,27 @@
   map in core for each inode.
 */
 /**
- * flashÉÏÃ¿¸öÊı¾İÊµÌåµÄÎ»ÖÃ¡¢³¤¶È¶¼ÓÉjffs2_raw_node_refÊı¾İ½á¹¹ÃèÊö
+ * flashä¸Šæ¯ä¸ªæ•°æ®å®ä½“çš„ä½ç½®ã€é•¿åº¦éƒ½ç”±jffs2_raw_node_refæ•°æ®ç»“æ„æè¿°
  */
 struct jffs2_raw_node_ref
 {
 	/**
-	 * ½«Í¬Ò»ÎÄ¼şµÄ¶à¸öÃèÊö·ûÁ´½ÓÆğÀ´¡£ÎÄ¼şµÄµÚÒ»¸öÃèÊö·ûÓÉÎÄ¼şÃèÊö·ûµÄjffs2_inode_cacheÊı¾İ½á¹¹µÄnodesÓò±íÊ¾¡£
+	 * å°†åŒä¸€æ–‡ä»¶çš„å¤šä¸ªæè¿°ç¬¦é“¾æ¥èµ·æ¥ã€‚æ–‡ä»¶çš„ç¬¬ä¸€ä¸ªæè¿°ç¬¦ç”±æ–‡ä»¶æè¿°ç¬¦çš„jffs2_inode_cacheæ•°æ®ç»“æ„çš„nodesåŸŸè¡¨ç¤ºã€‚
 	 */
 	struct jffs2_raw_node_ref *next_in_ino; /* Points to the next raw_node_ref
 		for this inode. If this is the last, it points to the inode_cache
 		for this inode instead. The inode_cache will have NULL in the first
 		word so you know when you've got there :) */
 	/**
-	 * Ò»¸öflash²Á³ı¿éÄÚËùÓĞÊı¾İÊµÌåµÄÄÚºËÃèÊö·ûÓÉnext_physÓò×éÖ¯³ÉÒ»¸öÁ´±í£¬ÆäÊ×Î²ÔªËØ·Ö±ğÓÉ²Á³ı¿éÃèÊö·ûjffs2_eraseblockÊı¾İ½á¹¹µÄfirst_nodeºÍlast_nodeÓòÖ¸Ïò¡£
+	 * ä¸€ä¸ªflashæ“¦é™¤å—å†…æ‰€æœ‰æ•°æ®å®ä½“çš„å†…æ ¸æè¿°ç¬¦ç”±next_physåŸŸç»„ç»‡æˆä¸€ä¸ªé“¾è¡¨ï¼Œå…¶é¦–å°¾å…ƒç´ åˆ†åˆ«ç”±æ“¦é™¤å—æè¿°ç¬¦jffs2_eraseblockæ•°æ®ç»“æ„çš„first_nodeå’Œlast_nodeåŸŸæŒ‡å‘ã€‚
 	 */
 	struct jffs2_raw_node_ref *next_phys;
 	/**
-	 * ÏàÓ¦Êı¾İÊµÌåÔÚflash·ÖÇøÉÏµÄÎïÀíµØÖ·
+	 * ç›¸åº”æ•°æ®å®ä½“åœ¨flashåˆ†åŒºä¸Šçš„ç‰©ç†åœ°å€
 	 */
 	uint32_t flash_offset;
 	/**
-	 * °üÀ¨ºó¼ÌÊı¾İµÄ×Ü³¤¶È
+	 * åŒ…æ‹¬åç»§æ•°æ®çš„æ€»é•¿åº¦
 	 */
 	uint32_t __totlen; /* This may die; use ref_totlen(c, jeb, ) below */
 };
@@ -130,7 +130,7 @@ struct jffs2_raw_node_ref
    a pointer to the first physical node which is part of this inode, too.
 */
 /**
- * Ã¿¸öjffs2ÎÄ¼şµÄÃèÊö·û¡£
+ * æ¯ä¸ªjffs2æ–‡ä»¶çš„æè¿°ç¬¦ã€‚
  */
 struct jffs2_inode_cache {
 	struct jffs2_full_dirent *scan_dents; /* Used during scan to hold
@@ -138,16 +138,16 @@ struct jffs2_inode_cache {
 		NULL to mark the end of the raw_node_ref->next_in_ino
 		chain. */
 	/**
-	 * ÓÃÓÚ×éÖ¯³åÍ»µÄhashÁ´±í¡£
+	 * ç”¨äºç»„ç»‡å†²çªçš„hashé“¾è¡¨ã€‚
 	 */
 	struct jffs2_inode_cache *next;
 	struct jffs2_raw_node_ref *nodes;
 	/**
-	 * ÎÄ¼şÔÚÎÄ¼şÏµÍ³ÖĞÎ¨Ò»µÄË÷Òı½ÚµãºÅ¡£
+	 * æ–‡ä»¶åœ¨æ–‡ä»¶ç³»ç»Ÿä¸­å”¯ä¸€çš„ç´¢å¼•èŠ‚ç‚¹å·ã€‚
 	 */
 	uint32_t ino;
 	/**
-	 * ÎÄ¼şµÄÓ²Á´½Ó¸öÊı¡£ÔÚ¹ÒÔØÎÄ¼şÏµÍ³Ê±»á¼ÆËãÖ¸ÏòÃ¿¸öÎÄ¼şµÄÄ¿Â¼Ïî¸öÊı£¬È»ºó¸³Öµ¸ønlink¡£
+	 * æ–‡ä»¶çš„ç¡¬é“¾æ¥ä¸ªæ•°ã€‚åœ¨æŒ‚è½½æ–‡ä»¶ç³»ç»Ÿæ—¶ä¼šè®¡ç®—æŒ‡å‘æ¯ä¸ªæ–‡ä»¶çš„ç›®å½•é¡¹ä¸ªæ•°ï¼Œç„¶åèµ‹å€¼ç»™nlinkã€‚
 	 */
 	int nlink;
 	int state;

@@ -38,18 +38,18 @@
  */
 #define SNAPSHOT_PAGES 256
 
-/* ´ı´¦ÀíµÄÀıÍâ */
+/* å¾…å¤„ç†çš„ä¾‹å¤– */
 struct pending_exception {
-	/* ÀıÍâĞÅÏ¢ */
+	/* ä¾‹å¤–ä¿¡æ¯ */
 	struct exception e;
 
 	/*
 	 * Origin buffers waiting for this to complete are held
 	 * in a bio list
 	 */
-	/* ¿ìÕÕÔ´µÄÍ¨ÓÃ¿é²ãÇëÇó£¬ÎªÁËµÈ´ıÕâ¸öÀıÍâ¶ø±£´æÔÚÕâ¸öbioÁ´±íÖĞ */
+	/* å¿«ç…§æºçš„é€šç”¨å—å±‚è¯·æ±‚ï¼Œä¸ºäº†ç­‰å¾…è¿™ä¸ªä¾‹å¤–è€Œä¿å­˜åœ¨è¿™ä¸ªbioé“¾è¡¨ä¸­ */
 	struct bio_list origin_bios;
-	/* ¶Ô¿ìÕÕµÄÍ¨ÓÃ¿é²ãÇëÇó */
+	/* å¯¹å¿«ç…§çš„é€šç”¨å—å±‚è¯·æ±‚ */
 	struct bio_list snapshot_bios;
 
 	/*
@@ -60,14 +60,14 @@ struct pending_exception {
 	struct list_head siblings;
 
 	/* Pointer back to snapshot context */
-	/* Ö¸ÏòËùÊôµÄ¿ìÕÕ */
+	/* æŒ‡å‘æ‰€å±çš„å¿«ç…§ */
 	struct dm_snapshot *snap;
 
 	/*
 	 * 1 indicates the exception has already been sent to
 	 * kcopyd.
 	 */
-	/* Èç¹ûÎª1£¬±íÃ÷ÀıÍâÒÑ¾­±»·¢ËÍ¸ø¸´ÖÆ½ø³Ì */
+	/* å¦‚æœä¸º1ï¼Œè¡¨æ˜ä¾‹å¤–å·²ç»è¢«å‘é€ç»™å¤åˆ¶è¿›ç¨‹ */
 	int started;
 };
 
@@ -82,17 +82,17 @@ static mempool_t *pending_pool;
 /*
  * One of these per registered origin, held in the snapshot_origins hash
  */
-/* ¿ìÕÕÔ´Êı¾İ½á¹¹ */
+/* å¿«ç…§æºæ•°æ®ç»“æ„ */
 struct origin {
 	/* The origin device */
-	/* ¿ìÕÕÔ´¿éÉè±¸ÃèÊö·û */
+	/* å¿«ç…§æºå—è®¾å¤‡æè¿°ç¬¦ */
 	struct block_device *bdev;
 
-	/* Á´Èë¿ìÕÕÔ´¹şÏ£±í */
+	/* é“¾å…¥å¿«ç…§æºå“ˆå¸Œè¡¨ */
 	struct list_head hash_list;
 
 	/* List of snapshots for this origin */
-	/* ¿ìÕÕÔ´µÄ¿ìÕÕÁ´±í±íÍ· */
+	/* å¿«ç…§æºçš„å¿«ç…§é“¾è¡¨è¡¨å¤´ */
 	struct list_head snapshots;
 };
 
@@ -156,34 +156,34 @@ static void __insert_origin(struct origin *o)
  * Make a note of the snapshot and its origin so we can look it
  * up when the origin has a write on it.
  */
-/* ×¢²á¿ìÕÕ */
+/* æ³¨å†Œå¿«ç…§ */
 static int register_snapshot(struct dm_snapshot *snap)
 {
 	struct origin *o;
 	struct block_device *bdev = snap->origin->bdev;
 
-	down_write(&_origins_lock);/* »ñµÃ¿ìÕÕÔ´Ëø */
-	o = __lookup_origin(bdev);/* ÔÚÈ«¾Ö¿ìÕÕÔ´¹şÏ£±íÖĞ²éÕÒºÍ¿éÉè±¸ÃèÊö·û¶ÔÓ¦µÄ¿ìÕÕÔ´½á¹¹ */
+	down_write(&_origins_lock);/* è·å¾—å¿«ç…§æºé” */
+	o = __lookup_origin(bdev);/* åœ¨å…¨å±€å¿«ç…§æºå“ˆå¸Œè¡¨ä¸­æŸ¥æ‰¾å’Œå—è®¾å¤‡æè¿°ç¬¦å¯¹åº”çš„å¿«ç…§æºç»“æ„ */
 
-	if (!o) {/* ¿ìÕÕÔ´²»´æÔÚ */
+	if (!o) {/* å¿«ç…§æºä¸å­˜åœ¨ */
 		/* New origin */
-		o = kmalloc(sizeof(*o), GFP_KERNEL);/* ·ÖÅäÒ»¸öĞÂµÄ¿ìÕÕÔ´½á¹¹ */
-		if (!o) {/* ·ÖÅäÊ§°Ü£¬ÍË³ö */
+		o = kmalloc(sizeof(*o), GFP_KERNEL);/* åˆ†é…ä¸€ä¸ªæ–°çš„å¿«ç…§æºç»“æ„ */
+		if (!o) {/* åˆ†é…å¤±è´¥ï¼Œé€€å‡º */
 			up_write(&_origins_lock);
 			return -ENOMEM;
 		}
 
 		/* Initialise the struct */
-		INIT_LIST_HEAD(&o->snapshots);/* ½«¿ìÕÕÔ´²åÈë¹şÏ£±í */
+		INIT_LIST_HEAD(&o->snapshots);/* å°†å¿«ç…§æºæ’å…¥å“ˆå¸Œè¡¨ */
 		o->bdev = bdev;
 
 		__insert_origin(o);
 	}
 
-	/* ½«¿ìÕÕÌí¼Ó¿ìÕÕÔ´µÄÁ´±íÖĞ */
+	/* å°†å¿«ç…§æ·»åŠ å¿«ç…§æºçš„é“¾è¡¨ä¸­ */
 	list_add_tail(&snap->list, &o->snapshots);
 
-	up_write(&_origins_lock);/* ÊÍ·ÅËø */
+	up_write(&_origins_lock);/* é‡Šæ”¾é” */
 	return 0;
 }
 
@@ -386,7 +386,7 @@ static inline ulong round_up(ulong n, ulong size)
 /*
  * Construct a snapshot mapping: <origin_dev> <COW-dev> <p/n> <chunk-size>
  */
-/* ¿ìÕÕ¹¹Ôìº¯Êı */
+/* å¿«ç…§æ„é€ å‡½æ•° */
 static int snapshot_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 {
 	struct dm_snapshot *s;
@@ -398,24 +398,24 @@ static int snapshot_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	char *value;
 	int blocksize;
 
-	if (argc < 4) {/* ²ÎÊı½¡¿µĞÔ¼ì²é */
+	if (argc < 4) {/* å‚æ•°å¥åº·æ€§æ£€æŸ¥ */
 		ti->error = "dm-snapshot: requires exactly 4 arguments";
 		r = -EINVAL;
 		goto bad1;
 	}
 
-	/* ½âÎöorigºÍCOWÉè±¸ */
+	/* è§£æorigå’ŒCOWè®¾å¤‡ */
 	origin_path = argv[0];
 	cow_path = argv[1];
 	persistent = toupper(*argv[2]);
 
-	if (persistent != 'P' && persistent != 'N') {/* ½âÎö³ÖĞø»¯²ÎÊı */
+	if (persistent != 'P' && persistent != 'N') {/* è§£ææŒç»­åŒ–å‚æ•° */
 		ti->error = "Persistent flag is not P or N";
 		r = -EINVAL;
 		goto bad1;
 	}
 
-	/* ½âÎöchunk³¤¶È */
+	/* è§£æchunké•¿åº¦ */
 	chunk_size = simple_strtoul(argv[3], &value, 10);
 	if (chunk_size == 0 || value == NULL) {
 		ti->error = "Invalid chunk size";
@@ -423,7 +423,7 @@ static int snapshot_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		goto bad1;
 	}
 
-	/* ·ÖÅä¿ìÕÕÃèÊö·û */
+	/* åˆ†é…å¿«ç…§æè¿°ç¬¦ */
 	s = kmalloc(sizeof(*s), GFP_KERNEL);
 	if (s == NULL) {
 		ti->error = "Cannot allocate snapshot context private "
@@ -432,14 +432,14 @@ static int snapshot_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		goto bad1;
 	}
 
-	/* »ñµÃÔ´Éè±¸ÃèÊö·û */
+	/* è·å¾—æºè®¾å¤‡æè¿°ç¬¦ */
 	r = dm_get_device(ti, origin_path, 0, ti->len, FMODE_READ, &s->origin);
 	if (r) {
 		ti->error = "Cannot get origin device";
 		goto bad2;
 	}
 
-	/* »ñµÃCOWÉè±¸ÃèÊö·û */
+	/* è·å¾—COWè®¾å¤‡æè¿°ç¬¦ */
 	r = dm_get_device(ti, cow_path, 0, 0,
 			  FMODE_READ | FMODE_WRITE, &s->cow);
 	if (r) {
@@ -481,7 +481,7 @@ static int snapshot_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	s->table = ti->table;
 
 	/* Allocate hash table for COW data */
-	/* ³õÊ¼»¯ÀıÍâ¹şÏ£±í */
+	/* åˆå§‹åŒ–ä¾‹å¤–å“ˆå¸Œè¡¨ */
 	if (init_hash_tables(s)) {
 		ti->error = "Unable to allocate hash table space";
 		r = -ENOMEM;
@@ -494,7 +494,7 @@ static int snapshot_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	 */
 	s->store.snap = s;
 
-	/* ´´½¨ÀıÍâ²Ö¿â */
+	/* åˆ›å»ºä¾‹å¤–ä»“åº“ */
 	if (persistent == 'P')
 		r = dm_create_persistent(&s->store, chunk_size);
 	else
@@ -506,7 +506,7 @@ static int snapshot_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		goto bad4;
 	}
 
-	/* ´´½¨ÄÚºË¸´ÖÆÏß³ÌµÄ¿Í»§¶Ë */
+	/* åˆ›å»ºå†…æ ¸å¤åˆ¶çº¿ç¨‹çš„å®¢æˆ·ç«¯ */
 	r = kcopyd_client_create(SNAPSHOT_PAGES, &s->kcopyd_client);
 	if (r) {
 		ti->error = "Could not create kcopyd client";
@@ -514,7 +514,7 @@ static int snapshot_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	}
 
 	/* Add snapshot to the list of snapshots for this origin */
-	if (register_snapshot(s)) {/* ×¢²á¿ìÕÕ£¬½«Ëü¼Óµ½¿ìÕÕÔ´Éè±¸µÄÁ´±íÖĞ */
+	if (register_snapshot(s)) {/* æ³¨å†Œå¿«ç…§ï¼Œå°†å®ƒåŠ åˆ°å¿«ç…§æºè®¾å¤‡çš„é“¾è¡¨ä¸­ */
 		r = -EINVAL;
 		ti->error = "Cannot register snapshot origin";
 		goto bad6;
@@ -614,17 +614,17 @@ static struct bio *__flush_bios(struct pending_exception *pe)
 	return NULL;
 }
 
-/* µ±¸´ÖÆÊ§°Ü£¬»òÕßÀıÍâÌá½»Ê§°Ü£¬»òÕßÀıÍâÌá½»³É¹¦ºó£¬µ÷ÓÃ´Ëº¯Êı½øĞĞÉÆºó´¦Àí */
+/* å½“å¤åˆ¶å¤±è´¥ï¼Œæˆ–è€…ä¾‹å¤–æäº¤å¤±è´¥ï¼Œæˆ–è€…ä¾‹å¤–æäº¤æˆåŠŸåï¼Œè°ƒç”¨æ­¤å‡½æ•°è¿›è¡Œå–„åå¤„ç† */
 static void pending_complete(struct pending_exception *pe, int success)
 {
 	struct exception *e;
 	struct dm_snapshot *s = pe->snap;
 	struct bio *flush = NULL;
 
-	/* ³É¹¦ */
+	/* æˆåŠŸ */
 	if (success) {
-		e = alloc_exception();/* ·ÖÅäÀıÍâÃèÊö·û */
-		if (!e) {/* Èç¹ûÊ§°Ü£¬½«¿ìÕÕ±ê¼ÇÎªÊ§°Ü */
+		e = alloc_exception();/* åˆ†é…ä¾‹å¤–æè¿°ç¬¦ */
+		if (!e) {/* å¦‚æœå¤±è´¥ï¼Œå°†å¿«ç…§æ ‡è®°ä¸ºå¤±è´¥ */
 			DMWARN("Unable to allocate exception.");
 			down_write(&s->lock);
 			s->store.drop_snapshot(&s->store);
@@ -642,9 +642,9 @@ static void pending_complete(struct pending_exception *pe, int success)
 		 * in-flight exception from the list.
 		 */
 		down_write(&s->lock);
-		/* ½«ÀıÍâÌí¼Óµ½Íê³É¹şÏ£±í */
+		/* å°†ä¾‹å¤–æ·»åŠ åˆ°å®Œæˆå“ˆå¸Œè¡¨ */
 		insert_exception(&s->complete, e);
-		/* ½«ÀıÍâ´Ó¹ÒÆğ¹şÏ£±íÖĞÉ¾³ı */
+		/* å°†ä¾‹å¤–ä»æŒ‚èµ·å“ˆå¸Œè¡¨ä¸­åˆ é™¤ */
 		remove_exception(&pe->e);
 		flush = __flush_bios(pe);
 
@@ -657,7 +657,7 @@ static void pending_complete(struct pending_exception *pe, int success)
 		down_write(&s->lock);
 		if (s->valid)
 			DMERR("Error reading/writing snapshot");
-		/* Ê§°Üºó±ê¼Ç¿ìÕÕÎªÎŞĞ§ */
+		/* å¤±è´¥åæ ‡è®°å¿«ç…§ä¸ºæ— æ•ˆ */
 		s->store.drop_snapshot(&s->store);
 		s->valid = 0;
 		remove_exception(&pe->e);
@@ -676,7 +676,7 @@ static void pending_complete(struct pending_exception *pe, int success)
 		flush_bios(flush);
 }
 
-/* ÀıÍâ´¦ÀíÍê³Éºó£¬µ÷ÓÃ´Ëº¯Êı */
+/* ä¾‹å¤–å¤„ç†å®Œæˆåï¼Œè°ƒç”¨æ­¤å‡½æ•° */
 static void commit_callback(void *context, int success)
 {
 	struct pending_exception *pe = (struct pending_exception *) context;
@@ -687,18 +687,18 @@ static void commit_callback(void *context, int success)
  * Called when the copy I/O has finished.  kcopyd actually runs
  * this code so don't block.
  */
-/* µ±¸´ÖÆÍê³Éºó£¬»Øµ÷´Ëº¯Êı£¬½øĞĞ¿ìÕÕÔ´µÄ´¦Àí */
+/* å½“å¤åˆ¶å®Œæˆåï¼Œå›è°ƒæ­¤å‡½æ•°ï¼Œè¿›è¡Œå¿«ç…§æºçš„å¤„ç† */
 static void copy_callback(int read_err, unsigned int write_err, void *context)
 {
 	struct pending_exception *pe = (struct pending_exception *) context;
 	struct dm_snapshot *s = pe->snap;
 
-	if (read_err || write_err)/* ¸´ÖÆ²»³É¹¦ */
+	if (read_err || write_err)/* å¤åˆ¶ä¸æˆåŠŸ */
 		pending_complete(pe, 0);
 
 	else
 		/* Update the metadata if we are persistent */
-		/* ¸´ÖÆ³É¹¦ºó£¬Ìá½»ÀıÍâ¡£´¦ÀíÔªÊı¾İ¡£ */
+		/* å¤åˆ¶æˆåŠŸåï¼Œæäº¤ä¾‹å¤–ã€‚å¤„ç†å…ƒæ•°æ®ã€‚ */
 		s->store.commit_exception(&s->store, &pe->e, commit_callback,
 					  pe);
 }
@@ -706,7 +706,7 @@ static void copy_callback(int read_err, unsigned int write_err, void *context)
 /*
  * Dispatches the copy operation to kcopyd.
  */
-/* ½«¸´ÖÆ²Ù×÷Ìá½»¸økcopydÏß³Ì */
+/* å°†å¤åˆ¶æ“ä½œæäº¤ç»™kcopydçº¿ç¨‹ */
 static inline void start_copy(struct pending_exception *pe)
 {
 	struct dm_snapshot *s = pe->snap;
@@ -716,7 +716,7 @@ static inline void start_copy(struct pending_exception *pe)
 
 	dev_size = get_dev_size(bdev);
 
-	/* ÉèÖÃ¸´ÖÆÔ´ºÍ¸´ÖÆÄ¿µÄ */
+	/* è®¾ç½®å¤åˆ¶æºå’Œå¤åˆ¶ç›®çš„ */
 	src.bdev = bdev;
 	src.sector = chunk_to_sector(s, pe->e.old_chunk);
 	src.count = min(s->chunk_size, dev_size - src.sector);
@@ -726,7 +726,7 @@ static inline void start_copy(struct pending_exception *pe)
 	dest.count = src.count;
 
 	/* Hand over to kcopyd */
-	/* Í¨Öªkcopyd´¦Àí¸´ÖÆ¹¤×÷ */
+	/* é€šçŸ¥kcopydå¤„ç†å¤åˆ¶å·¥ä½œ */
 	kcopyd_copy(s->kcopyd_client,
 		    &src, 1, &dest, 0, copy_callback, pe);
 }
@@ -796,7 +796,7 @@ static inline void remap_exception(struct dm_snapshot *s, struct exception *e,
 		(bio->bi_sector & s->chunk_mask);
 }
 
-/* ´¦Àí¿ìÕÕ¶ÁĞ´ */
+/* å¤„ç†å¿«ç…§è¯»å†™ */
 static int snapshot_map(struct dm_target *ti, struct bio *bio,
 			union map_info *map_context)
 {
@@ -806,11 +806,11 @@ static int snapshot_map(struct dm_target *ti, struct bio *bio,
 	chunk_t chunk;
 	struct pending_exception *pe;
 
-	/* ¼ÆËãÇëÇó¶ÔÓ¦µÄchunkºÅ */
+	/* è®¡ç®—è¯·æ±‚å¯¹åº”çš„chunkå· */
 	chunk = sector_to_chunk(s, bio->bi_sector);
 
 	/* Full snapshots are not usable */
-	if (!s->valid)/* ¿ìÕÕÉè±¸²»¿ÉÓÃ */
+	if (!s->valid)/* å¿«ç…§è®¾å¤‡ä¸å¯ç”¨ */
 		return -1;
 
 	/*
@@ -818,36 +818,36 @@ static int snapshot_map(struct dm_target *ti, struct bio *bio,
 	 * flags so we should only get this if we are
 	 * writeable.
 	 */
-	if (bio_rw(bio) == WRITE) {/* Ğ´²Ù×÷ */
+	if (bio_rw(bio) == WRITE) {/* å†™æ“ä½œ */
 
 		/* FIXME: should only take write lock if we need
 		 * to copy an exception */
-		down_write(&s->lock);/* »ñÈ¡¿ìÕÕµÄËø */
+		down_write(&s->lock);/* è·å–å¿«ç…§çš„é” */
 
 		/* If the block is already remapped - use that, else remap it */
-		e = lookup_exception(&s->complete, chunk);/* ÔÚÒÑ¾­Íê³ÉµÄÀıÍâ±íÖĞËÑË÷ */
-		if (e) {/* ¸ÃÇëÇóÒÑ¾­ÔÚÍê³ÉÀıÍâ±íÖĞ */
-			/* Ö±½ÓÖØ¶¨Ïòµ½COWÉè±¸ */
+		e = lookup_exception(&s->complete, chunk);/* åœ¨å·²ç»å®Œæˆçš„ä¾‹å¤–è¡¨ä¸­æœç´¢ */
+		if (e) {/* è¯¥è¯·æ±‚å·²ç»åœ¨å®Œæˆä¾‹å¤–è¡¨ä¸­ */
+			/* ç›´æ¥é‡å®šå‘åˆ°COWè®¾å¤‡ */
 			remap_exception(s, e, bio);
 			up_write(&s->lock);
 
-		} else {/* ÇëÇóµÄchunk»¹Ã»ÓĞÍê³ÉÓ³Éä */
-			/* ÔÚ´ı´¦ÀíÀıÍâÖĞ²éÕÒ£¬Ã»ÓĞÔò´´½¨Ò»¸ö */
+		} else {/* è¯·æ±‚çš„chunkè¿˜æ²¡æœ‰å®Œæˆæ˜ å°„ */
+			/* åœ¨å¾…å¤„ç†ä¾‹å¤–ä¸­æŸ¥æ‰¾ï¼Œæ²¡æœ‰åˆ™åˆ›å»ºä¸€ä¸ª */
 			pe = __find_pending_exception(s, bio);
 
-			if (!pe) {/* Ê§°Ü£¬½«¿ìÕÕÉèÖÃÎªÎŞĞ§ */
+			if (!pe) {/* å¤±è´¥ï¼Œå°†å¿«ç…§è®¾ç½®ä¸ºæ— æ•ˆ */
 				if (s->store.drop_snapshot)
 					s->store.drop_snapshot(&s->store);
 				s->valid = 0;
 				r = -EIO;
 				up_write(&s->lock);
 			} else {
-				/* ÖØĞÂÓ³Éä£¬ÏòCOWĞ´ */
+				/* é‡æ–°æ˜ å°„ï¼Œå‘COWå†™ */
 				remap_exception(s, &pe->e, bio);
-				/* ½«BIOÌí¼Óµ½´ı´¦ÀíÀıÍâÁ´±íÖĞ */
+				/* å°†BIOæ·»åŠ åˆ°å¾…å¤„ç†ä¾‹å¤–é“¾è¡¨ä¸­ */
 				bio_list_add(&pe->snapshot_bios, bio);
 
-				if (!pe->started) {/* Èç¹û»¹Ã»ÓĞÆô¶¯£¬¾ÍÆô¶¯¸´ÖÆ¹ı³Ì */
+				if (!pe->started) {/* å¦‚æœè¿˜æ²¡æœ‰å¯åŠ¨ï¼Œå°±å¯åŠ¨å¤åˆ¶è¿‡ç¨‹ */
 					/* this is protected by snap->lock */
 					pe->started = 1;
 					up_write(&s->lock);
@@ -872,9 +872,9 @@ static int snapshot_map(struct dm_target *ti, struct bio *bio,
 		/* See if it it has been remapped */
 		e = lookup_exception(&s->complete, chunk);
 		if (e)
-			/* Ö±½ÓÖØ¶¨Ïòµ½COWÉè±¸ */
+			/* ç›´æ¥é‡å®šå‘åˆ°COWè®¾å¤‡ */
 			remap_exception(s, e, bio);
-		else/* Ö±½ÓÓÃÓ³ÉäÔ´µÄ¶ÁÍê³ÉÇëÇó */
+		else/* ç›´æ¥ç”¨æ˜ å°„æºçš„è¯»å®Œæˆè¯·æ±‚ */
 			bio->bi_bdev = s->origin->bdev;
 
 		up_read(&s->lock);
@@ -967,20 +967,20 @@ static int __origin_write(struct list_head *snapshots, struct bio *bio)
 	chunk_t chunk;
 
 	/* Do all the snapshots on this origin */
-	/* ±éÀú¿ìÕÕÔ´µÄËùÓĞ¿ìÕÕ */
+	/* éå†å¿«ç…§æºçš„æ‰€æœ‰å¿«ç…§ */
 	list_for_each_entry (snap, snapshots, list) {
 
 		/* Only deal with valid snapshots */
 		if (!snap->valid)
 			continue;
 
-		down_write(&snap->lock);/* »ñÈ¡¿ìÕÕËø */
+		down_write(&snap->lock);/* è·å–å¿«ç…§é” */
 
 		/*
 		 * Remember, different snapshots can have
 		 * different chunk sizes.
 		 */
-		/* ½«IO×ª»»Îª¿ìÕÕÖĞµÄchunk */
+		/* å°†IOè½¬æ¢ä¸ºå¿«ç…§ä¸­çš„chunk */
 		chunk = sector_to_chunk(snap, bio->bi_sector);
 
 		/*
@@ -988,13 +988,13 @@ static int __origin_write(struct list_head *snapshots, struct bio *bio)
 		 * is already remapped in this snapshot
 		 * and trigger an exception if not.
 		 */
-		/* ÔÚ¿ìÕÕµÄÀıÍâ±íÖĞ²éÕÒÊÇ·ñÒÑ¾­´æÔÚ¸Ãchunk */
+		/* åœ¨å¿«ç…§çš„ä¾‹å¤–è¡¨ä¸­æŸ¥æ‰¾æ˜¯å¦å·²ç»å­˜åœ¨è¯¥chunk */
 		e = lookup_exception(&snap->complete, chunk);
 		if (!e) {
-			/* ÔÚ¹ÒÆğµÄÀıÍâ±íÖĞ²éÕÒ */
+			/* åœ¨æŒ‚èµ·çš„ä¾‹å¤–è¡¨ä¸­æŸ¥æ‰¾ */
 			pe = __find_pending_exception(snap, bio);
-			if (!pe) {/* ²éÕÒÊ§°Ü£¬ËµÃ÷¿ìÕÕÒÑ¾­Âú */
-				/* É¾³ıÕâ¸ö¿ìÕÕ£¬²¢½«ÆäÓĞĞ§Î»ÖÃ0 */
+			if (!pe) {/* æŸ¥æ‰¾å¤±è´¥ï¼Œè¯´æ˜å¿«ç…§å·²ç»æ»¡ */
+				/* åˆ é™¤è¿™ä¸ªå¿«ç…§ï¼Œå¹¶å°†å…¶æœ‰æ•ˆä½ç½®0 */
 				snap->store.drop_snapshot(&snap->store);
 				snap->valid = 0;
 
@@ -1014,7 +1014,7 @@ static int __origin_write(struct list_head *snapshots, struct bio *bio)
 	/*
 	 * Now that we have a complete pe list we can start the copying.
 	 */
-	/* ´æÔÚÒ»¸öÍêÕûµÄÁ´±í */
+	/* å­˜åœ¨ä¸€ä¸ªå®Œæ•´çš„é“¾è¡¨ */
 	if (last) {
 		pe = last;
 		do {
@@ -1024,7 +1024,7 @@ static int __origin_write(struct list_head *snapshots, struct bio *bio)
 			if (!pe->started) {
 				pe->started = 1;
 				up_write(&pe->snap->lock);
-				/* ¿ªÊ¼¸´ÖÆ */
+				/* å¼€å§‹å¤åˆ¶ */
 				start_copy(pe);
 			} else
 				up_write(&pe->snap->lock);
@@ -1041,17 +1041,17 @@ static int __origin_write(struct list_head *snapshots, struct bio *bio)
 /*
  * Called on a write from the origin driver.
  */
-/* ¶Ô¿ìÕÕÔ´½øĞĞĞ´Ê±£¬½øĞĞÊ×Ğ´¸´ÖÆ */
+/* å¯¹å¿«ç…§æºè¿›è¡Œå†™æ—¶ï¼Œè¿›è¡Œé¦–å†™å¤åˆ¶ */
 static int do_origin(struct dm_dev *origin, struct bio *bio)
 {
 	struct origin *o;
 	int r = 1;
 
 	down_read(&_origins_lock);
-	/* ²éÕÒ¿ìÕÕÔ´Êı¾İÃèÊö·û */
+	/* æŸ¥æ‰¾å¿«ç…§æºæ•°æ®æè¿°ç¬¦ */
 	o = __lookup_origin(origin->bdev);
 	if (o)
-		/* ½«¿ìÕÕÔ´ÖĞµÄÊı¾İĞ´µ½¿ìÕÕÁ´±íµÄËùÓĞ¿ìÕÕÖĞ */
+		/* å°†å¿«ç…§æºä¸­çš„æ•°æ®å†™åˆ°å¿«ç…§é“¾è¡¨çš„æ‰€æœ‰å¿«ç…§ä¸­ */
 		r = __origin_write(&o->snapshots, bio);
 	up_read(&_origins_lock);
 
@@ -1067,18 +1067,18 @@ static int do_origin(struct dm_dev *origin, struct bio *bio)
  * The context for an origin is merely a 'struct dm_dev *'
  * pointing to the real device.
  */
-/* ¿ìÕÕÔ´¹¹Ôìº¯Êı */
+/* å¿«ç…§æºæ„é€ å‡½æ•° */
 static int origin_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 {
 	int r;
 	struct dm_dev *dev;
 
-	if (argc != 1) {/* Ö»ÓĞµÍ²ãÉè±¸Â·¾¶²ÎÊı */
+	if (argc != 1) {/* åªæœ‰ä½å±‚è®¾å¤‡è·¯å¾„å‚æ•° */
 		ti->error = "dm-origin: incorrect number of arguments";
 		return -EINVAL;
 	}
 
-	/* »ñµÃµÍ²ãÉè±¸ÃèÊö·û */
+	/* è·å¾—ä½å±‚è®¾å¤‡æè¿°ç¬¦ */
 	r = dm_get_device(ti, argv[0], 0, ti->len,
 			  dm_table_get_mode(ti->table), &dev);
 	if (r) {
@@ -1086,7 +1086,7 @@ static int origin_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		return r;
 	}
 
-	ti->private = dev;/* ½«µÍ²ãÉè±¸ÃèÊö·û±£´æÔÚprivateÓòÖĞ */
+	ti->private = dev;/* å°†ä½å±‚è®¾å¤‡æè¿°ç¬¦ä¿å­˜åœ¨privateåŸŸä¸­ */
 	return 0;
 }
 
@@ -1096,7 +1096,7 @@ static void origin_dtr(struct dm_target *ti)
 	dm_put_device(ti, dev);
 }
 
-/* ¶Ô¿ìÕÕÔ´µÄ¶ÁĞ´ */
+/* å¯¹å¿«ç…§æºçš„è¯»å†™ */
 static int origin_map(struct dm_target *ti, struct bio *bio,
 		      union map_info *map_context)
 {
@@ -1104,7 +1104,7 @@ static int origin_map(struct dm_target *ti, struct bio *bio,
 	bio->bi_bdev = dev->bdev;
 
 	/* Only tell snapshots if this is a write */
-	/* ¶Ô¶Á²Ù×÷À´Ëµ£¬Ö±½Ó·µ»Ø¼´¿É£¬·ñÔòµ÷ÓÃdo_origin½øĞĞÊ×Ğ´¸´ÖÆ */
+	/* å¯¹è¯»æ“ä½œæ¥è¯´ï¼Œç›´æ¥è¿”å›å³å¯ï¼Œå¦åˆ™è°ƒç”¨do_originè¿›è¡Œé¦–å†™å¤åˆ¶ */
 	return (bio_rw(bio) == WRITE) ? do_origin(dev, bio) : 1;
 }
 

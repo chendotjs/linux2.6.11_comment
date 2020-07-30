@@ -106,11 +106,11 @@ static int __init pcie_portdrv_init(void)
 	int retval = 0;
 
 	/**
-	 * Ê×ÏÈÔÚ/sys/bus/ÖÐ½¨Á¢pci_expressÄ¿Â¼
+	 * é¦–å…ˆåœ¨/sys/bus/ä¸­å»ºç«‹pci_expressç›®å½•
 	 */
  	pcie_port_bus_register();
 	/**
-	 * ×¢²ápcie×ÜÏßÇý¶¯¡£
+	 * æ³¨å†Œpcieæ€»çº¿é©±åŠ¨ã€‚
 	 */
 	retval = pci_module_init(&pcie_portdrv);
 	if (retval)

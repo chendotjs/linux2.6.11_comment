@@ -20,7 +20,7 @@
 #include <net/tcp.h>
 #include <net/route.h>
 
-/* connectÁ¬½ÓµÄUDP´«Êä²ãÊµÏÖ */
+/* connectè¿æ¥çš„UDPä¼ è¾“å±‚å®ç° */
 int ip4_datagram_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len)
 {
 	struct inet_sock *inet = inet_sk(sk);
@@ -31,35 +31,35 @@ int ip4_datagram_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len)
 	int err;
 
 	
-	if (addr_len < sizeof(*usin))/* ¼ì²é²ÎÊıÊÇ·ñÓĞĞ§£¬°üº¬³¤¶È¡¢µØÖ·´Ø */
+	if (addr_len < sizeof(*usin))/* æ£€æŸ¥å‚æ•°æ˜¯å¦æœ‰æ•ˆï¼ŒåŒ…å«é•¿åº¦ã€åœ°å€ç°‡ */
 	  	return -EINVAL;
 
 	if (usin->sin_family != AF_INET) 
 	  	return -EAFNOSUPPORT;
 
-	sk_dst_reset(sk);/* ´«Êä¿ØÖÆ¿é¿ÉÄÜ´«Êä¹ıÊı¾İ£¬Òò´ËĞèÒª½«Â·ÓÉ»º´æÇå³ı */
+	sk_dst_reset(sk);/* ä¼ è¾“æ§åˆ¶å—å¯èƒ½ä¼ è¾“è¿‡æ•°æ®ï¼Œå› æ­¤éœ€è¦å°†è·¯ç”±ç¼“å­˜æ¸…é™¤ */
 
 	oif = sk->sk_bound_dev_if;
 	saddr = inet->saddr;
-	if (MULTICAST(usin->sin_addr.s_addr)) {/* Ä¿µÄµØÖ·ÊÇ¶à²¥µØÖ· */
+	if (MULTICAST(usin->sin_addr.s_addr)) {/* ç›®çš„åœ°å€æ˜¯å¤šæ’­åœ°å€ */
 		if (!oif)
 			oif = inet->mc_index;
 		if (!saddr)
 			saddr = inet->mc_addr;
 	}
-	/* ²éÑ¯Êä³öÂ·ÓÉ */
+	/* æŸ¥è¯¢è¾“å‡ºè·¯ç”± */
 	err = ip_route_connect(&rt, usin->sin_addr.s_addr, saddr,
 			       RT_CONN_FLAGS(sk), oif,
 			       sk->sk_protocol,
 			       inet->sport, usin->sin_port, sk);
 	if (err)
 		return err;
-	/* Ä¿µÄµØÖ·ÊÇ¹ã²¥µØÖ·£¬¶øÌ×½Ó¿Ú²»Ö§³Ö¹ã²¥£¬Ôò·µ»Ø´íÎó */
+	/* ç›®çš„åœ°å€æ˜¯å¹¿æ’­åœ°å€ï¼Œè€Œå¥—æ¥å£ä¸æ”¯æŒå¹¿æ’­ï¼Œåˆ™è¿”å›é”™è¯¯ */
 	if ((rt->rt_flags & RTCF_BROADCAST) && !sock_flag(sk, SOCK_BROADCAST)) {
 		ip_rt_put(rt);
 		return -EACCES;
 	}
-	/* ½«²éÑ¯µÃµ½µÄÂ·ÓÉ»º´æÖĞµÄÔ´µØÖ·¡¢Ä¿µÄµØÖ·¼°Ä¿µÄ¶Ë¿Ú´«Êä¿ØÖÆ¿éÖĞ */
+	/* å°†æŸ¥è¯¢å¾—åˆ°çš„è·¯ç”±ç¼“å­˜ä¸­çš„æºåœ°å€ã€ç›®çš„åœ°å€åŠç›®çš„ç«¯å£ä¼ è¾“æ§åˆ¶å—ä¸­ */
   	if (!inet->saddr)
 	  	inet->saddr = rt->rt_src;	/* Update source address */
 	if (!inet->rcv_saddr)
@@ -69,7 +69,7 @@ int ip4_datagram_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len)
 	sk->sk_state = TCP_ESTABLISHED;
 	inet->id = jiffies;
 
-	/* »º´æÄ¿µÄÂ·ÓÉ»º´æµ½´«Êä¿ØÖÆ¿éÖĞ */
+	/* ç¼“å­˜ç›®çš„è·¯ç”±ç¼“å­˜åˆ°ä¼ è¾“æ§åˆ¶å—ä¸­ */
 	sk_dst_set(sk, &rt->u.dst);
 	return(0);
 }

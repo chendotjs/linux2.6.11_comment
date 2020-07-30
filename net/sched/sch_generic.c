@@ -90,7 +90,7 @@ void qdisc_unlock_tree(struct net_device *dev)
    NOTE: Called under dev->queue_lock with locally disabled BH.
 */
 /**
- * Ñ¡Ôñ³ö¶ÓÁĞÖĞ¿ÉÒÔ·¢ËÍµÄ°ü¡£
+ * é€‰æ‹©å‡ºé˜Ÿåˆ—ä¸­å¯ä»¥å‘é€çš„åŒ…ã€‚
  */
 int qdisc_restart(struct net_device *dev)
 {
@@ -99,15 +99,15 @@ int qdisc_restart(struct net_device *dev)
 
 	/* Dequeue packet */
 	/**
-	 * Èç¹ûÊµ¼ÊÉÏÃ»ÓĞÊı¾İÔÚµÈ´ı·¢ËÍ£¬µ÷ÓÃdequeue·½·¨»áÊ§°Ü¡£
-	 * ¼´Ê¹ÓĞµÈ´ı·¢ËÍµÄ°ü£¬µ÷ÓÃÒ²¿ÉÄÜÊ§°Ü¡£ÕâÊÇÒòÎª¶ÓÁĞ³Í·£Ëã·¨ÈÏÎª²»ÄÜÔÙ·¢ËÍÈÎºÎÊı¾İ
+	 * å¦‚æœå®é™…ä¸Šæ²¡æœ‰æ•°æ®åœ¨ç­‰å¾…å‘é€ï¼Œè°ƒç”¨dequeueæ–¹æ³•ä¼šå¤±è´¥ã€‚
+	 * å³ä½¿æœ‰ç­‰å¾…å‘é€çš„åŒ…ï¼Œè°ƒç”¨ä¹Ÿå¯èƒ½å¤±è´¥ã€‚è¿™æ˜¯å› ä¸ºé˜Ÿåˆ—æƒ©ç½šç®—æ³•è®¤ä¸ºä¸èƒ½å†å‘é€ä»»ä½•æ•°æ®
 	 */
 	if ((skb = q->dequeue(q)) != NULL) {
 		/**
-		 * ·¢ËÍÒ»¸öÖ¡ĞèÒª»ñµÃÁ½¸öËø£º
-		 *		Ò»¸öËø±£»¤¶ÓÁĞ£¨dev->queue_lock£©£¬ÕâÓÉµ÷ÓÃqdisc_restartµÄº¯Êı»ñµÃµÄ£¨dev_queue_xmit£©¡£
- 		 * 		Ò»¸öÔÚÉè±¸·¢ËÍº¯Êıhard_start_xmit(dev->xmit_lock)ÉÏµÄËø¡£Õâ¸öËøÓÉ¸Ãº¯Êı¹ÜÀí¡£
- 		 * µ±Éè±¸Çı¶¯ÒÑ¾­ÊµÏÖËüµÄ×Ô¼ºËø£¬ËüÍ¨¹ıÉèÖÃNETIF_F_LLTX±êÖ¾À´±íÃ÷ÕâÒ»µã¡£
+		 * å‘é€ä¸€ä¸ªå¸§éœ€è¦è·å¾—ä¸¤ä¸ªé”ï¼š
+		 *		ä¸€ä¸ªé”ä¿æŠ¤é˜Ÿåˆ—ï¼ˆdev->queue_lockï¼‰ï¼Œè¿™ç”±è°ƒç”¨qdisc_restartçš„å‡½æ•°è·å¾—çš„ï¼ˆdev_queue_xmitï¼‰ã€‚
+ 		 * 		ä¸€ä¸ªåœ¨è®¾å¤‡å‘é€å‡½æ•°hard_start_xmit(dev->xmit_lock)ä¸Šçš„é”ã€‚è¿™ä¸ªé”ç”±è¯¥å‡½æ•°ç®¡ç†ã€‚
+ 		 * å½“è®¾å¤‡é©±åŠ¨å·²ç»å®ç°å®ƒçš„è‡ªå·±é”ï¼Œå®ƒé€šè¿‡è®¾ç½®NETIF_F_LLTXæ ‡å¿—æ¥è¡¨æ˜è¿™ä¸€ç‚¹ã€‚
 		 */
 		unsigned nolock = (dev->features & NETIF_F_LLTX);
 		/*
@@ -119,8 +119,8 @@ int qdisc_restart(struct net_device *dev)
 		 * of lock congestion it should return -1 and the packet
 		 * will be requeued.
 		 */
-		if (!nolock) {/* Çı¶¯×Ô¼ºÃ»ÓĞÊµÏÖËø */
-			if (!spin_trylock(&dev->xmit_lock)) {/* »ñÈ¡ËøÊ§°Ü */
+		if (!nolock) {/* é©±åŠ¨è‡ªå·±æ²¡æœ‰å®ç°é” */
+			if (!spin_trylock(&dev->xmit_lock)) {/* è·å–é”å¤±è´¥ */
 			collision:
 				/* So, someone grabbed the driver. */
 				
@@ -130,7 +130,7 @@ int qdisc_restart(struct net_device *dev)
 				   packet when deadloop is detected.
 				*/
 				/**
-				 * ËÀËøÁË¡£
+				 * æ­»é”äº†ã€‚
 				 */
 				if (dev->xmit_lock_owner == smp_processor_id()) {
 					kfree_skb(skb);
@@ -139,14 +139,14 @@ int qdisc_restart(struct net_device *dev)
 					return -1;
 				}
 				/**
-				 * ·¢ËÍ³åÍ»¼ÆÊı¡£
+				 * å‘é€å†²çªè®¡æ•°ã€‚
 				 */
 				__get_cpu_var(netdev_rx_stat).cpu_collision++;
 				goto requeue;
 			}
 			/* Remember that the driver is grabbed by us. */
 			/**
-			 * »ñÈ¡Ëø³É¹¦£¬ÉèÖÃ»ñµÃËøµÄCPUºÅ¡£
+			 * è·å–é”æˆåŠŸï¼Œè®¾ç½®è·å¾—é”çš„CPUå·ã€‚
 			 */
 			dev->xmit_lock_owner = smp_processor_id();
 		}
@@ -154,31 +154,31 @@ int qdisc_restart(struct net_device *dev)
 		{
 			/* And release queue */
 			/**
-			 * ÔÚÕâÀï£¬Ò»°ãÇé¿öÏÂ£¬ÊÇÒÑ¾­»ñµÃÁËÉè±¸Ëø¡£Òò´Ë¿ÉÒÔÔİÊ±ÊÍ·Å¶ÓÁĞËø¡£
-			 * ÔÚÍË³öº¯ÊıÇ°£¬»áÔÙ´Î»ñµÃ¸ÃËø¡£²¢ÔÚdev_queue_xmitº¯ÊıÖĞÔÙ´ÎÊÍ·Å¶ÓÁĞËø¡£
+			 * åœ¨è¿™é‡Œï¼Œä¸€èˆ¬æƒ…å†µä¸‹ï¼Œæ˜¯å·²ç»è·å¾—äº†è®¾å¤‡é”ã€‚å› æ­¤å¯ä»¥æš‚æ—¶é‡Šæ”¾é˜Ÿåˆ—é”ã€‚
+			 * åœ¨é€€å‡ºå‡½æ•°å‰ï¼Œä¼šå†æ¬¡è·å¾—è¯¥é”ã€‚å¹¶åœ¨dev_queue_xmitå‡½æ•°ä¸­å†æ¬¡é‡Šæ”¾é˜Ÿåˆ—é”ã€‚
 			 */
 			spin_unlock(&dev->queue_lock);
 
 			/**
-			 * ÉÏ²ãº¯Êıqdisc_runÒÑ¾­ÅĞ¶ÏÁË¶ÓÁĞ×´Ì¬£¬ÕâÊ±ÖØĞÂ¼ì²â£¬Õâ²»ÊÇ¶àÓàµÄ¡£
-			 * µ±qdisc_runµ÷ÓÃnetif_queue_stoppedÊ±£¬Çı¶¯Ëø»¹Ã»ÓĞ±»»ñµÃ£¬µ±Ëø±»»ñµÃÊ±£¬ÁíÍâÒ»¸öCPUÒÑ¾­·¢ËÍÁËÒ»Ğ©°ü£¬Íø¿¨¿ÉÄÜÒÑ¾­Ã»ÓĞ¿Õ¼äÁË.
-			 * Òò´Ë£¬Ö®Ç°µÄnetif_queue_stopped¿ÉÄÜ»á·µ»ØFALSE£¬µ«ÊÇÏÖÔÚ·µ»ØTRUE¡£
+			 * ä¸Šå±‚å‡½æ•°qdisc_runå·²ç»åˆ¤æ–­äº†é˜Ÿåˆ—çŠ¶æ€ï¼Œè¿™æ—¶é‡æ–°æ£€æµ‹ï¼Œè¿™ä¸æ˜¯å¤šä½™çš„ã€‚
+			 * å½“qdisc_runè°ƒç”¨netif_queue_stoppedæ—¶ï¼Œé©±åŠ¨é”è¿˜æ²¡æœ‰è¢«è·å¾—ï¼Œå½“é”è¢«è·å¾—æ—¶ï¼Œå¦å¤–ä¸€ä¸ªCPUå·²ç»å‘é€äº†ä¸€äº›åŒ…ï¼Œç½‘å¡å¯èƒ½å·²ç»æ²¡æœ‰ç©ºé—´äº†.
+			 * å› æ­¤ï¼Œä¹‹å‰çš„netif_queue_stoppedå¯èƒ½ä¼šè¿”å›FALSEï¼Œä½†æ˜¯ç°åœ¨è¿”å›TRUEã€‚
 			 */
 			if (!netif_queue_stopped(dev)) {
 				int ret;
 				/**
-				 * netdev_nit±íÊ¾×¢²áµÄĞ­ÒéÊıÁ¿¡£
-				 * Èç¹ûÓĞ×¢²áµÄĞ­Òé£¬dev_queue_xmit_nit±»ÓÃÀ´·Ö·¢Ö¡µÄ¿½±´¸øÃ¿Ò»¸ö×¢²áµÄĞ­Òé¡£
+				 * netdev_nitè¡¨ç¤ºæ³¨å†Œçš„åè®®æ•°é‡ã€‚
+				 * å¦‚æœæœ‰æ³¨å†Œçš„åè®®ï¼Œdev_queue_xmit_nitè¢«ç”¨æ¥åˆ†å‘å¸§çš„æ‹·è´ç»™æ¯ä¸€ä¸ªæ³¨å†Œçš„åè®®ã€‚
 				 */
 				if (netdev_nit)
 					dev_queue_xmit_nit(skb, dev);
 
 				/**
-				 * µ÷ÓÃhard_start_xmitÔÚÍø¿¨ÉÏÊµ¼ÊµÄ·¢ËÍ°ü¡£
+				 * è°ƒç”¨hard_start_xmitåœ¨ç½‘å¡ä¸Šå®é™…çš„å‘é€åŒ…ã€‚
 				 */
 				ret = dev->hard_start_xmit(skb, dev);
 				/**
-				 * ·¢ËÍ³É¹¦£¬´ËÊ±»º³åÇø»¹Ã»ÓĞÊÍ·Å¡£
+				 * å‘é€æˆåŠŸï¼Œæ­¤æ—¶ç¼“å†²åŒºè¿˜æ²¡æœ‰é‡Šæ”¾ã€‚
 				 */
 				if (ret == NETDEV_TX_OK) { 
 					if (!nolock) {
@@ -189,7 +189,7 @@ int qdisc_restart(struct net_device *dev)
 					return -1;
 				}
 				/**
-				 * Çı¶¯ÖĞ»ñµÃËø³åÍ»ÁË¡£×ß³åÍ»Á÷³Ì¡£
+				 * é©±åŠ¨ä¸­è·å¾—é”å†²çªäº†ã€‚èµ°å†²çªæµç¨‹ã€‚
 				 */
 				if (ret == NETDEV_TX_LOCKED && nolock) {
 					spin_lock(&dev->queue_lock);
@@ -200,7 +200,7 @@ int qdisc_restart(struct net_device *dev)
 			/* NETDEV_TX_BUSY - we need to requeue */
 			/* Release the driver */
 			/**
-			 * Éè±¸±»½ûÖ¹ÁË£¬ÊÍ·ÅÁ½°ÑËø£¬ÍË³ö¡£
+			 * è®¾å¤‡è¢«ç¦æ­¢äº†ï¼Œé‡Šæ”¾ä¸¤æŠŠé”ï¼Œé€€å‡ºã€‚
 			 */
 			if (!nolock) { 
 				dev->xmit_lock_owner = -1;
@@ -221,9 +221,9 @@ int qdisc_restart(struct net_device *dev)
 		 */
 
 /**
- * ÔËĞĞµ½ÕâÀï£¬¿ÉÄÜÊÇ»ñÈ¡·¢ËÍËøÊ±³åÍ»ÁË¡£
- * Ò²¿ÉÄÜÊÇ·¢ËÍ¶ÓÁĞÔİÊ±±»½ûÖ¹ÁË¡£
- * ÖØĞÂĞÂ°ü·Å»Ø¶ÓÁĞ£¬È»ºóÖØĞÂµ÷¶È·¢ËÍ¡£
+ * è¿è¡Œåˆ°è¿™é‡Œï¼Œå¯èƒ½æ˜¯è·å–å‘é€é”æ—¶å†²çªäº†ã€‚
+ * ä¹Ÿå¯èƒ½æ˜¯å‘é€é˜Ÿåˆ—æš‚æ—¶è¢«ç¦æ­¢äº†ã€‚
+ * é‡æ–°æ–°åŒ…æ”¾å›é˜Ÿåˆ—ï¼Œç„¶åé‡æ–°è°ƒåº¦å‘é€ã€‚
  */
 requeue:
 		q->ops->requeue(skb, q);
@@ -274,8 +274,8 @@ void __netdev_watchdog_up(struct net_device *dev)
 }
 
 /**
- * µ±Éè±¸ÓÉdev_activate¼¤»îÊ±£¬ÓÉ±¾º¯ÊıÆô¶¯¿´ÃÅ¹·Ê±ÖÓ£¬ÒÔ¼àÊÓÉè±¸×´Ì¬¡£
- * ËüÈ·±£Éè±¸Õı³££¬È»ºóÖØĞÂ¿ªÊ¼ ¡£
+ * å½“è®¾å¤‡ç”±dev_activateæ¿€æ´»æ—¶ï¼Œç”±æœ¬å‡½æ•°å¯åŠ¨çœ‹é—¨ç‹—æ—¶é’Ÿï¼Œä»¥ç›‘è§†è®¾å¤‡çŠ¶æ€ã€‚
+ * å®ƒç¡®ä¿è®¾å¤‡æ­£å¸¸ï¼Œç„¶åé‡æ–°å¼€å§‹ ã€‚
  */
 static void dev_watchdog_up(struct net_device *dev)
 {

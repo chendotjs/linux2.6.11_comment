@@ -376,9 +376,9 @@ int sysfs_add_file(struct dentry * dir, const struct attribute * attr, int type)
  *	@attr:	atrribute descriptor.
  */
 /**
- * ÎªkobjectÔÚÄ¿Â¼ÖĞ´´½¨Ò»¸öÊôĞÔÎÄ¼ş¡£
- * Èç¹ûkobjectµÄÊôĞÔ±ÈÄ¬ÈÏÊôĞÔ»¹¶à£¬¿ÉÒÔµ÷ÓÃ±¾·½·¨ÔÚsysfsÖĞ´´½¨Ò»¸öÊôĞÔ¡£
- * ĞÂÊôĞÔµÄshowºÍstoreº¯ÊıÈÔÈ»µ÷ÓÃkobj_type->sysfs_ops¡£ĞèÒªÈ·±£sysfs_opsÄÜ¹»´¦ÀíÕâ¸öĞÂÔöµÄÊôĞÔ¡£
+ * ä¸ºkobjectåœ¨ç›®å½•ä¸­åˆ›å»ºä¸€ä¸ªå±æ€§æ–‡ä»¶ã€‚
+ * å¦‚æœkobjectçš„å±æ€§æ¯”é»˜è®¤å±æ€§è¿˜å¤šï¼Œå¯ä»¥è°ƒç”¨æœ¬æ–¹æ³•åœ¨sysfsä¸­åˆ›å»ºä¸€ä¸ªå±æ€§ã€‚
+ * æ–°å±æ€§çš„showå’Œstoreå‡½æ•°ä»ç„¶è°ƒç”¨kobj_type->sysfs_opsã€‚éœ€è¦ç¡®ä¿sysfs_opsèƒ½å¤Ÿå¤„ç†è¿™ä¸ªæ–°å¢çš„å±æ€§ã€‚
  */
 int sysfs_create_file(struct kobject * kobj, const struct attribute * attr)
 {
@@ -439,8 +439,8 @@ int sysfs_update_file(struct kobject * kobj, const struct attribute * attr)
  *	Hash the attribute name and kill the victim.
  */
 /**
- * ´ÓÎÄ¼şÏµÍ³ÖĞÒÆ³ıkobjectµÄÒ»¸öÊôĞÔ¡£
- * ÔÚÒÆ³ıºó£¬ÓÃ»§¿Õ¼ä¿ÉÄÜÈÔÈ»±£³ÖÁËÒ»¸ö¶Ô´ËÊôĞÔÎÄ¼şµÄÃèÊö·û¡£Òò´Ë£¬show¡¢restoreÈÔÈ»¿ÉÄÜ±»µ÷ÓÃ¡£
+ * ä»æ–‡ä»¶ç³»ç»Ÿä¸­ç§»é™¤kobjectçš„ä¸€ä¸ªå±æ€§ã€‚
+ * åœ¨ç§»é™¤åï¼Œç”¨æˆ·ç©ºé—´å¯èƒ½ä»ç„¶ä¿æŒäº†ä¸€ä¸ªå¯¹æ­¤å±æ€§æ–‡ä»¶çš„æè¿°ç¬¦ã€‚å› æ­¤ï¼Œshowã€restoreä»ç„¶å¯èƒ½è¢«è°ƒç”¨ã€‚
  */
 void sysfs_remove_file(struct kobject * kobj, const struct attribute * attr)
 {

@@ -81,7 +81,7 @@
 #include <linux/netfilter_ipv4.h>
 
 /**
- * ´æ´¢Ô­Ê¼Ì×½Ó×Ö´¦Àíº¯ÊıµÄ±í¡£
+ * å­˜å‚¨åŸå§‹å¥—æ¥å­—å¤„ç†å‡½æ•°çš„è¡¨ã€‚
  */
 struct hlist_head raw_v4_htable[RAWV4_HTABLE_SIZE];
 DEFINE_RWLOCK(raw_v4_lock);
@@ -154,7 +154,7 @@ static __inline__ int icmp_filter(struct sock *sk, struct sk_buff *skb)
  * -> It does. And not only TOS, but all IP header.
  */
 /**
- * L3²ãÏòL4²ã·Ö·¢Ô­Ê¼Êı¾İ°ü¡£
+ * L3å±‚å‘L4å±‚åˆ†å‘åŸå§‹æ•°æ®åŒ…ã€‚
  */
 void raw_v4_input(struct sk_buff *skb, struct iphdr *iph, int hash)
 {
@@ -164,7 +164,7 @@ void raw_v4_input(struct sk_buff *skb, struct iphdr *iph, int hash)
 	read_lock(&raw_v4_lock);
 	head = &raw_v4_htable[hash];
 	/**
-	 * ÕâÀïĞèÒªÔÙ´Î¼ì²éÔ­Ê¼Ì×¿ÚÁ´±íÊÇ·ñÎª¿Õ¡£
+	 * è¿™é‡Œéœ€è¦å†æ¬¡æ£€æŸ¥åŸå§‹å¥—å£é“¾è¡¨æ˜¯å¦ä¸ºç©ºã€‚
 	 */
 	if (hlist_empty(head))
 		goto out;
@@ -269,7 +269,7 @@ int raw_rcv(struct sock *sk, struct sk_buff *skb)
 }
 
 /**
- * ·¢ËÍÔ­Ê¼Ì×½Ó×Ö°ü¡£
+ * å‘é€åŸå§‹å¥—æ¥å­—åŒ…ã€‚
  */
 static int raw_send_hdrinc(struct sock *sk, void *from, int length,
 			struct rtable *rt, 
@@ -384,7 +384,7 @@ static void raw_probe_proto_opt(struct flowi *fl, struct msghdr *msg)
 }
 
 /**
- * ·¢ËÍÔ­Ê¼Ì×½Ó×Ö°ü¡£
+ * å‘é€åŸå§‹å¥—æ¥å­—åŒ…ã€‚
  */
 static int raw_sendmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *msg,
 		       size_t len)

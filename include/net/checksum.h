@@ -69,7 +69,7 @@ static inline unsigned int csum_sub(unsigned int csum, unsigned int addend)
 }
 
 /**
- * Ôö¼ÓÁËÒ»¿éÊı¾İºó¼ÆËãĞ£ÑéºÍ¡£
+ * å¢åŠ äº†ä¸€å—æ•°æ®åè®¡ç®—æ ¡éªŒå’Œã€‚
  */
 static inline unsigned int
 csum_block_add(unsigned int csum, unsigned int csum2, int offset)
@@ -80,7 +80,7 @@ csum_block_add(unsigned int csum, unsigned int csum2, int offset)
 }
 
 /**
- * ¼õÉÙÁËÒ»¿éÊı¾İºó¼ÆËãĞ£ÑéºÍ¡£
+ * å‡å°‘äº†ä¸€å—æ•°æ®åè®¡ç®—æ ¡éªŒå’Œã€‚
  */
 static inline unsigned int
 csum_block_sub(unsigned int csum, unsigned int csum2, int offset)

@@ -3,25 +3,25 @@
 
 #include <linux/raid/md.h>
 
-/* ÏßĞÔRAIDÖĞÃ¿¸ö´ÅÅÌµÄÃèÊö·û */
+/* çº¿æ€§RAIDä¸­æ¯ä¸ªç£ç›˜çš„æè¿°ç¬¦ */
 struct dev_info {
-	/* ¸Ã³ÉÔ±´ÅÅÌµÄÍ¨ÓÃÃèÊö·û */
+	/* è¯¥æˆå‘˜ç£ç›˜çš„é€šç”¨æè¿°ç¬¦ */
 	mdk_rdev_t	*rdev;
-	/* ³¤¶È */
+	/* é•¿åº¦ */
 	sector_t	size;
-	/* ÆğÊ¼ÉÈÇøºÅ */
+	/* èµ·å§‹æ‰‡åŒºå· */
 	sector_t	offset;
 };
 
 typedef struct dev_info dev_info_t;
 
-/* ÏßĞÔRAIDµÄË½ÓĞÊı¾İ½á¹¹ */
+/* çº¿æ€§RAIDçš„ç§æœ‰æ•°æ®ç»“æ„ */
 struct linear_private_data
 {
 	dev_info_t		**hash_table;
 	dev_info_t		*smallest;
 	int			nr_zones;
-	/* ³ÉÔ±´ÅÅÌÊı×é */
+	/* æˆå‘˜ç£ç›˜æ•°ç»„ */
 	dev_info_t		disks[0];
 };
 

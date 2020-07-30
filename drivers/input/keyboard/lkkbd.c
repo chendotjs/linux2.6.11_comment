@@ -62,7 +62,7 @@
  *
  * Should you need to contact me, the author, you can do so either by
  * email or by paper mail:
- * Jan-Benedict Glaw, Lilienstraße 16, 33790 Hörste (near Halle/Westf.),
+ * Jan-Benedict Glaw, Lilienstrae 16, 33790 Hrste (near Halle/Westf.),
  * Germany.
  */
 

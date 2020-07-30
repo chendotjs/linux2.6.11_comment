@@ -40,7 +40,7 @@
  * restricted to acting on a single-word quantity.
  */
 /**
- * ÉèÖÃ*addrµÄµÚnrÎ»
+ * è®¾ç½®*addrçš„ç¬¬nrä½
  */
 static inline void set_bit(int nr, volatile unsigned long * addr)
 {
@@ -78,7 +78,7 @@ static inline void __set_bit(int nr, volatile unsigned long * addr)
  * in order to ensure changes are visible on other processors.
  */
 /**
- * Çå*addrµÄµÚnrÎ»
+ * æ¸…*addrçš„ç¬¬nrä½
  */
 static inline void clear_bit(int nr, volatile unsigned long * addr)
 {
@@ -126,7 +126,7 @@ static inline void __change_bit(int nr, volatile unsigned long * addr)
  * restricted to acting on a single-word quantity.
  */
 /**
- * ×ª»»*addrµÄµÚnrÎ»£¬²¢·µ»ØËüµÄÔ­Öµ¡£
+ * è½¬æ¢*addrçš„ç¬¬nrä½ï¼Œå¹¶è¿”å›å®ƒçš„åŸå€¼ã€‚
  */
 static inline void change_bit(int nr, volatile unsigned long * addr)
 {
@@ -146,7 +146,7 @@ static inline void change_bit(int nr, volatile unsigned long * addr)
  * It also implies a memory barrier.
  */
 /**
- * ÉèÖÃ*addrµÄµÚnrÎ»£¬²¢·µ»ØËüµÄÔ­Öµ
+ * è®¾ç½®*addrçš„ç¬¬nrä½ï¼Œå¹¶è¿”å›å®ƒçš„åŸå€¼
  */
 static inline int test_and_set_bit(int nr, volatile unsigned long * addr)
 {
@@ -189,7 +189,7 @@ static inline int __test_and_set_bit(int nr, volatile unsigned long * addr)
  * It also implies a memory barrier.
  */
 /**
- * Çå*addrµÄµÚnrÎ»£¬²¢·µ»ØËüµÄÔ­Öµ
+ * æ¸…*addrçš„ç¬¬nrä½ï¼Œå¹¶è¿”å›å®ƒçš„åŸå€¼
  */
 static inline int test_and_clear_bit(int nr, volatile unsigned long * addr)
 {
@@ -243,7 +243,7 @@ static inline int __test_and_change_bit(int nr, volatile unsigned long *addr)
  * It also implies a memory barrier.
  */
 /**
- * ×ª»»*addrµÄµÚnrÎ»£¬²¢·µ»ØËüµÄÔ­Öµ
+ * è½¬æ¢*addrçš„ç¬¬nrä½ï¼Œå¹¶è¿”å›å®ƒçš„åŸå€¼
  */
 static inline int test_and_change_bit(int nr, volatile unsigned long* addr)
 {
@@ -282,7 +282,7 @@ static inline int variable_test_bit(int nr, const volatile unsigned long * addr)
 }
 
 /**
- * ·µ»Ø*addrµÄµÚnrÎ»µÄÖµ
+ * è¿”å›*addrçš„ç¬¬nrä½çš„å€¼
  */
 #define test_bit(nr,addr) \
 (__builtin_constant_p(nr) ? \

@@ -1447,45 +1447,45 @@ static int analyze_sbs(mddev_t * mddev)
 
 int mdp_major = 0;
 
-/* µ±ÓÃ»§¿Õ¼ä´ò¿ªSCSIÉè±¸Ê±µ÷ÓÃ */
+/* å½“ç”¨æˆ·ç©ºé—´æ‰“å¼€SCSIè®¾å¤‡æ—¶è°ƒç”¨ */
 static struct kobject *md_probe(dev_t dev, int *part, void *data)
 {
 	static DECLARE_MUTEX(disks_sem);
-	/* ²éÕÒ»òÕß´´½¨mddev¶ÔÏó */
+	/* æŸ¥æ‰¾æˆ–è€…åˆ›å»ºmddevå¯¹è±¡ */
 	mddev_t *mddev = mddev_find(dev);
 	struct gendisk *disk;
-	int partitioned = (MAJOR(dev) != MD_MAJOR);/* ¸ù¾İÖ÷Éè±¸ºÅÅĞ¶ÏÊÇ·ñÓĞ·ÖÇø */
+	int partitioned = (MAJOR(dev) != MD_MAJOR);/* æ ¹æ®ä¸»è®¾å¤‡å·åˆ¤æ–­æ˜¯å¦æœ‰åˆ†åŒº */
 	int shift = partitioned ? MdpMinorShift : 0;
 	int unit = MINOR(dev) >> shift;
 
-	if (!mddev)/* Ã»ÓĞÕÒµ½ÓëÉè±¸ºÅ¶ÔÓ¦µÄmddev£¬ÍË³ö */
+	if (!mddev)/* æ²¡æœ‰æ‰¾åˆ°ä¸è®¾å¤‡å·å¯¹åº”çš„mddevï¼Œé€€å‡º */
 		return NULL;
 
 	down(&disks_sem);
-	if (mddev->gendisk) {/* Èç¹ûÉè±¸ÒÑ¾­´æÔÚ£¬¾ÍÍË³ö */
+	if (mddev->gendisk) {/* å¦‚æœè®¾å¤‡å·²ç»å­˜åœ¨ï¼Œå°±é€€å‡º */
 		up(&disks_sem);
 		mddev_put(mddev);
 		return NULL;
 	}
-	disk = alloc_disk(1 << shift);/* ·ÖÅäÍ¨ÓÃ´ÅÅÌ¶ÔÏó */
+	disk = alloc_disk(1 << shift);/* åˆ†é…é€šç”¨ç£ç›˜å¯¹è±¡ */
 	if (!disk) {
 		up(&disks_sem);
 		mddev_put(mddev);
 		return NULL;
 	}
-	disk->major = MAJOR(dev);/* ÉèÖÃ´ÅÅÌÉè±¸ºÅ */
+	disk->major = MAJOR(dev);/* è®¾ç½®ç£ç›˜è®¾å¤‡å· */
 	disk->first_minor = unit << shift;
-	if (partitioned) {/* ÉèÖÃ´ÅÅÌÃû³Æ */
+	if (partitioned) {/* è®¾ç½®ç£ç›˜åç§° */
 		sprintf(disk->disk_name, "md_d%d", unit);
 		sprintf(disk->devfs_name, "md/d%d", unit);
 	} else {
 		sprintf(disk->disk_name, "md%d", unit);
 		sprintf(disk->devfs_name, "md/%d", unit);
 	}
-	disk->fops = &md_fops;/* ÉèÖÃ´ÅÅÌ²Ù×÷±í */
+	disk->fops = &md_fops;/* è®¾ç½®ç£ç›˜æ“ä½œè¡¨ */
 	disk->private_data = mddev;
 	disk->queue = mddev->queue;
-	add_disk(disk);/* ½«´ÅÅÌÌí¼Óµ½ÏµÍ³ÖĞ */
+	add_disk(disk);/* å°†ç£ç›˜æ·»åŠ åˆ°ç³»ç»Ÿä¸­ */
 	mddev->gendisk = disk;
 	up(&disks_sem);
 	return NULL;
@@ -1511,18 +1511,18 @@ static int do_md_run(mddev_t * mddev)
 	struct gendisk *disk;
 	char b[BDEVNAME_SIZE];
 
-	if (list_empty(&mddev->disks)) {/* »¹Ã»ÓĞ´ÅÅÌÉè±¸£¬ÍË³ö */
+	if (list_empty(&mddev->disks)) {/* è¿˜æ²¡æœ‰ç£ç›˜è®¾å¤‡ï¼Œé€€å‡º */
 		MD_BUG();
 		return -EINVAL;
 	}
 
-	if (mddev->pers)/* »¹Ã»ÓĞÓë¼¶±ğÉèÖÃ°ó¶¨£¬ÍË³ö */
+	if (mddev->pers)/* è¿˜æ²¡æœ‰ä¸çº§åˆ«è®¾ç½®ç»‘å®šï¼Œé€€å‡º */
 		return -EBUSY;
 
 	/*
 	 * Analyze all RAID superblock(s)
 	 */
-	if (!mddev->raid_disks && analyze_sbs(mddev)) {/* Èç¹ûÃ»ÓĞ´ÅÅÌ¾Í¶ÁÈ¡³¬¼¶¿é¼ÓÔØËü */
+	if (!mddev->raid_disks && analyze_sbs(mddev)) {/* å¦‚æœæ²¡æœ‰ç£ç›˜å°±è¯»å–è¶…çº§å—åŠ è½½å®ƒ */
 		MD_BUG();
 		return -EINVAL;
 	}
@@ -1582,7 +1582,7 @@ static int do_md_run(mddev_t * mddev)
 	}
 
 #ifdef CONFIG_KMOD
-	if (!pers[pnum])/* Èç¹ûRAID¼¶±ğÖ¸Õë»¹²»´æÔÚ£¬ËµÃ÷Ã»ÓĞ¼ÓÔØ¸ÃRAID¼¶±ğµÄÄ£¿é£¬¼ÓÔØËü */
+	if (!pers[pnum])/* å¦‚æœRAIDçº§åˆ«æŒ‡é’ˆè¿˜ä¸å­˜åœ¨ï¼Œè¯´æ˜æ²¡æœ‰åŠ è½½è¯¥RAIDçº§åˆ«çš„æ¨¡å—ï¼ŒåŠ è½½å®ƒ */
 	{
 		request_module("md-personality-%d", pnum);
 	}
@@ -1614,12 +1614,12 @@ static int do_md_run(mddev_t * mddev)
 		return -EINVAL;
 	}
 
-	mddev->pers = pers[pnum];/* ¼ÇÂ¼¸ÃRAID¼¶±ğµÄ»Øµ÷Ö¸Õë */
+	mddev->pers = pers[pnum];/* è®°å½•è¯¥RAIDçº§åˆ«çš„å›è°ƒæŒ‡é’ˆ */
 	spin_unlock(&pers_lock);
 
 	mddev->resync_max_sectors = mddev->size << 1; /* may be over-ridden by personality */
 
-	err = mddev->pers->run(mddev);/* »Øµ÷RAID¼¶±ğµÄRUNº¯ÊıÆô¶¯Éè±¸ */
+	err = mddev->pers->run(mddev);/* å›è°ƒRAIDçº§åˆ«çš„RUNå‡½æ•°å¯åŠ¨è®¾å¤‡ */
 	if (err) {
 		printk(KERN_ERR "md: pers->run() failed ...\n");
 		module_put(mddev->pers->owner);
@@ -1635,7 +1635,7 @@ static int do_md_run(mddev_t * mddev)
 	
 	set_bit(MD_RECOVERY_NEEDED, &mddev->recovery);
 	
-	if (mddev->sb_dirty)/* ½«³¬¼¶¿éĞÅÏ¢¸üĞÂµ½´ÅÅÌÉÏ */
+	if (mddev->sb_dirty)/* å°†è¶…çº§å—ä¿¡æ¯æ›´æ–°åˆ°ç£ç›˜ä¸Š */
 		md_update_sb(mddev);
 
 	set_capacity(disk, mddev->array_size<<1);
@@ -2032,20 +2032,20 @@ static int get_disk_info(mddev_t * mddev, void __user * arg)
 	return 0;
 }
 
-/* ÏòÏÖÓĞ´ÅÕóÌí¼ÓĞÂµÄ´ÅÅÌ */
+/* å‘ç°æœ‰ç£é˜µæ·»åŠ æ–°çš„ç£ç›˜ */
 static int add_new_disk(mddev_t * mddev, mdu_disk_info_t *info)
 {
 	char b[BDEVNAME_SIZE], b2[BDEVNAME_SIZE];
 	mdk_rdev_t *rdev;
 	dev_t dev = MKDEV(info->major,info->minor);
 
-	if (info->major != MAJOR(dev) || info->minor != MINOR(dev))/* Éè±¸ºÅ²»Æ¥Åä */
+	if (info->major != MAJOR(dev) || info->minor != MINOR(dev))/* è®¾å¤‡å·ä¸åŒ¹é… */
 		return -EOVERFLOW;
 
-	if (!mddev->raid_disks) {/* ĞÂ·½Ê½£¬×é×°ÕóÁĞ */
+	if (!mddev->raid_disks) {/* æ–°æ–¹å¼ï¼Œç»„è£…é˜µåˆ— */
 		int err;
 		/* expecting a device which has a superblock */
-		/* ¶ÁÈ¡³¬¼¶¿éĞÅÏ¢£¬²¢Ğ£Ñé³¬¼¶¿éÊÇ·ñÍêºÃ£¬´Ó¶øµ¼Èë´ÅÅÌ */
+		/* è¯»å–è¶…çº§å—ä¿¡æ¯ï¼Œå¹¶æ ¡éªŒè¶…çº§å—æ˜¯å¦å®Œå¥½ï¼Œä»è€Œå¯¼å…¥ç£ç›˜ */
 		rdev = md_import_device(dev, mddev->major_version, mddev->minor_version);
 		if (IS_ERR(rdev)) {
 			printk(KERN_WARNING 
@@ -2053,13 +2053,13 @@ static int add_new_disk(mddev_t * mddev, mdu_disk_info_t *info)
 				PTR_ERR(rdev));
 			return PTR_ERR(rdev);
 		}
-		if (!list_empty(&mddev->disks)) {/* ÒÑ¾­´æÔÚ´ÅÅÌÁĞ±íÁË */
+		if (!list_empty(&mddev->disks)) {/* å·²ç»å­˜åœ¨ç£ç›˜åˆ—è¡¨äº† */
 			mdk_rdev_t *rdev0 = list_entry(mddev->disks.next,
 							mdk_rdev_t, same_set);
-			/* ¶ÁÈ¡µÚÒ»¸ö´ÅÅÌµÄ³¬¼¶¿é£¬²¢Óë´ÅÅÌ³¬¼¶¿é½øĞĞ±È½Ï */
+			/* è¯»å–ç¬¬ä¸€ä¸ªç£ç›˜çš„è¶…çº§å—ï¼Œå¹¶ä¸ç£ç›˜è¶…çº§å—è¿›è¡Œæ¯”è¾ƒ */
 			int err = super_types[mddev->major_version]
 				.load_super(rdev, rdev0, mddev->minor_version);
-			if (err < 0) {/* ±È½ÏÊ±·¢ÏÖ´íÎó */
+			if (err < 0) {/* æ¯”è¾ƒæ—¶å‘ç°é”™è¯¯ */
 				printk(KERN_WARNING 
 					"md: %s has different UUID to %s\n",
 					bdevname(rdev->bdev,b), 
@@ -2068,7 +2068,7 @@ static int add_new_disk(mddev_t * mddev, mdu_disk_info_t *info)
 				return -EINVAL;
 			}
 		}
-		/* ½«´ÅÅÌÌí¼Óµ½´ÅÕóÖĞ */
+		/* å°†ç£ç›˜æ·»åŠ åˆ°ç£é˜µä¸­ */
 		err = bind_rdev_to_array(rdev, mddev);
 		if (err)
 			export_rdev(rdev);
@@ -2080,9 +2080,9 @@ static int add_new_disk(mddev_t * mddev, mdu_disk_info_t *info)
 	 * to add "hot spares".  They must already have a superblock
 	 * written
 	 */
-	if (mddev->pers) {/* ´¦Àí´ÅÅÌÈÈ²å²¦ */
+	if (mddev->pers) {/* å¤„ç†ç£ç›˜çƒ­æ’æ‹¨ */
 		int err;
-		if (!mddev->pers->hot_add_disk) {/* ²»Ö§³ÖÈÈ²å²¦ */
+		if (!mddev->pers->hot_add_disk) {/* ä¸æ”¯æŒçƒ­æ’æ‹¨ */
 			printk(KERN_WARNING 
 				"%s: personality does not support diskops!\n",
 			       mdname(mddev));
@@ -2098,7 +2098,7 @@ static int add_new_disk(mddev_t * mddev, mdu_disk_info_t *info)
 		}
 		rdev->in_sync = 0; /* just to be sure */
 		rdev->raid_disk = -1;
-		/* ½«´ÅÅÌÌí¼Óµ½´ÅÕóÖĞ */
+		/* å°†ç£ç›˜æ·»åŠ åˆ°ç£é˜µä¸­ */
 		err = bind_rdev_to_array(rdev, mddev);
 		if (err)
 			export_rdev(rdev);
@@ -2110,16 +2110,16 @@ static int add_new_disk(mddev_t * mddev, mdu_disk_info_t *info)
 	/* otherwise, add_new_disk is only allowed
 	 * for major_version==0 superblocks
 	 */
-	/* ÒÔÏÂ´úÂë´¦Àí´´½¨´ÅÕó¶ø²»ÊÇ×é×°´ÅÕóµÄÇé¿ö */
-	if (mddev->major_version != 0) {/* Ğ£Ñé°æ±¾ºÅ£¬±ØĞëÎª0 */
+	/* ä»¥ä¸‹ä»£ç å¤„ç†åˆ›å»ºç£é˜µè€Œä¸æ˜¯ç»„è£…ç£é˜µçš„æƒ…å†µ */
+	if (mddev->major_version != 0) {/* æ ¡éªŒç‰ˆæœ¬å·ï¼Œå¿…é¡»ä¸º0 */
 		printk(KERN_WARNING "%s: ADD_NEW_DISK not supported\n",
 		       mdname(mddev));
 		return -EINVAL;
 	}
 
-	if (!(info->state & (1<<MD_DISK_FAULTY))) {/* Ö»ÄÜ´¦Àí×´Ì¬Á¼ºÃµÄ´ÅÅÌ */
+	if (!(info->state & (1<<MD_DISK_FAULTY))) {/* åªèƒ½å¤„ç†çŠ¶æ€è‰¯å¥½çš„ç£ç›˜ */
 		int err;
-		/* µ¼Èë´ÅÅÌ£¬´«Èë-1¾Í²»»á´Ó´ÅÅÌÉÏ¼ÓÔØ³¬¼¶¿é */
+		/* å¯¼å…¥ç£ç›˜ï¼Œä¼ å…¥-1å°±ä¸ä¼šä»ç£ç›˜ä¸ŠåŠ è½½è¶…çº§å— */
 		rdev = md_import_device (dev, -1, 0);
 		if (IS_ERR(rdev)) {
 			printk(KERN_WARNING 
@@ -2127,7 +2127,7 @@ static int add_new_disk(mddev_t * mddev, mdu_disk_info_t *info)
 				PTR_ERR(rdev));
 			return PTR_ERR(rdev);
 		}
-		/* ¸ù¾İ´«Èë²ÎÊı³õÊ¼»¯´ÅÅÌ×Ö¶Î */
+		/* æ ¹æ®ä¼ å…¥å‚æ•°åˆå§‹åŒ–ç£ç›˜å­—æ®µ */
 		rdev->desc_nr = info->number;
 		if (info->raid_disk < mddev->raid_disks)
 			rdev->raid_disk = info->raid_disk;
@@ -2140,14 +2140,14 @@ static int add_new_disk(mddev_t * mddev, mdu_disk_info_t *info)
 		else
 			rdev->in_sync = 0;
 
-		/* ½«´ÅÅÌÌí¼Óµ½´ÅÕóÖĞ */
+		/* å°†ç£ç›˜æ·»åŠ åˆ°ç£é˜µä¸­ */
 		err = bind_rdev_to_array(rdev, mddev);
 		if (err) {
 			export_rdev(rdev);
 			return err;
 		}
 
-		/* ¸ù¾İ´ÅÅÌÉè±¸µÄ³¤¶È¼ÆËãRAID³¬¼¶¿é±£´æÔÚ¸Ã´ÅÅÌÉÏµÄÆğÊ¼ÉÈÇø±àºÅ£¬ÒÔ¼°´ÅÅÌµÄÓĞĞ§³¤¶È */
+		/* æ ¹æ®ç£ç›˜è®¾å¤‡çš„é•¿åº¦è®¡ç®—RAIDè¶…çº§å—ä¿å­˜åœ¨è¯¥ç£ç›˜ä¸Šçš„èµ·å§‹æ‰‡åŒºç¼–å·ï¼Œä»¥åŠç£ç›˜çš„æœ‰æ•ˆé•¿åº¦ */
 		if (!mddev->persistent) {
 			printk(KERN_INFO "md: nonpersistent superblock ...\n");
 			rdev->sb_offset = rdev->bdev->bd_inode->i_size >> BLOCK_SIZE_BITS;
@@ -2296,9 +2296,9 @@ abort_export:
 static int set_array_info(mddev_t * mddev, mdu_array_info_t *info)
 {
 
-	if (info->raid_disks == 0) {/* ×îĞÂµÄÊ¹ÓÃ·½Ê½£¬×é×°ÕóÁĞ */
+	if (info->raid_disks == 0) {/* æœ€æ–°çš„ä½¿ç”¨æ–¹å¼ï¼Œç»„è£…é˜µåˆ— */
 		/* just setting version number for superblock loading */
-		if (info->major_version < 0 ||/* Ö÷°æ±¾ºÅ²»ºÏ·¨ */
+		if (info->major_version < 0 ||/* ä¸»ç‰ˆæœ¬å·ä¸åˆæ³• */
 		    info->major_version >= sizeof(super_types)/sizeof(super_types[0]) ||
 		    super_types[info->major_version].name == NULL) {
 			/* maybe try to auto-load a module? */
@@ -2307,13 +2307,13 @@ static int set_array_info(mddev_t * mddev, mdu_array_info_t *info)
 				info->major_version);
 			return -EINVAL;
 		}
-		/* ¼ÇÂ¼ÏÂÖ÷°æ±¾¡¢´Î°æ±¾ºÅºÍ²¹¶¡ºÅ */
+		/* è®°å½•ä¸‹ä¸»ç‰ˆæœ¬ã€æ¬¡ç‰ˆæœ¬å·å’Œè¡¥ä¸å· */
 		mddev->major_version = info->major_version;
 		mddev->minor_version = info->minor_version;
 		mddev->patch_version = info->patch_version;
 		return 0;
 	}
-	/* ´´½¨ĞÂµÄÕóÁĞ£¬ÕâÊÇ0.90.0ÀàĞÍµÄÕóÁĞ */
+	/* åˆ›å»ºæ–°çš„é˜µåˆ—ï¼Œè¿™æ˜¯0.90.0ç±»å‹çš„é˜µåˆ— */
 	mddev->major_version = MD_MAJOR_VERSION;
 	mddev->minor_version = MD_MINOR_VERSION;
 	mddev->patch_version = MD_PATCHLEVEL_VERSION;
@@ -2469,7 +2469,7 @@ static int set_disk_faulty(mddev_t *mddev, dev_t dev)
 	return 0;
 }
 
-/* SCSIÉè±¸IOCTLÊµÏÖ */
+/* SCSIè®¾å¤‡IOCTLå®ç° */
 static int md_ioctl(struct inode *inode, struct file *file,
 			unsigned int cmd, unsigned long arg)
 {
@@ -2547,7 +2547,7 @@ static int md_ioctl(struct inode *inode, struct file *file,
 
 	switch (cmd)
 	{
-		case SET_ARRAY_INFO:/* ´´½¨SCSIÉè±¸ */
+		case SET_ARRAY_INFO:/* åˆ›å»ºSCSIè®¾å¤‡ */
 			{
 				mdu_array_info_t info;
 				if (!arg)
@@ -2556,7 +2556,7 @@ static int md_ioctl(struct inode *inode, struct file *file,
 					err = -EFAULT;
 					goto abort_unlock;
 				}
-				if (mddev->pers) {/* Éè±¸ÒÑ¾­´´½¨¹ı£¬¸üĞÂÆäĞÅÏ¢ */
+				if (mddev->pers) {/* è®¾å¤‡å·²ç»åˆ›å»ºè¿‡ï¼Œæ›´æ–°å…¶ä¿¡æ¯ */
 					err = update_array_info(mddev, &info);
 					if (err) {
 						printk(KERN_WARNING "md: couldn't update"
@@ -2579,7 +2579,7 @@ static int md_ioctl(struct inode *inode, struct file *file,
 					err = -EBUSY;
 					goto abort_unlock;
 				}
-				/* ³õ´Î´´½¨SCSIÉè±¸ */
+				/* åˆæ¬¡åˆ›å»ºSCSIè®¾å¤‡ */
 				err = set_array_info(mddev, &info);
 				if (err) {
 					printk(KERN_WARNING "md: couldn't set"
@@ -2670,7 +2670,7 @@ static int md_ioctl(struct inode *inode, struct file *file,
 			if (copy_from_user(&info, argp, sizeof(info)))
 				err = -EFAULT;
 			else
-				err = add_new_disk(mddev, &info);/* ÏòÏÖÓĞÕóÁĞÌí¼ÓĞÂµÄ´ÅÅÌ */
+				err = add_new_disk(mddev, &info);/* å‘ç°æœ‰é˜µåˆ—æ·»åŠ æ–°çš„ç£ç›˜ */
 			goto done_unlock;
 		}
 
@@ -2687,7 +2687,7 @@ static int md_ioctl(struct inode *inode, struct file *file,
 			goto done_unlock;
 
 		case RUN_ARRAY:
-			err = do_md_run (mddev);/* Ê¹´ÅÕóÔË×ªÆğÀ´ */
+			err = do_md_run (mddev);/* ä½¿ç£é˜µè¿è½¬èµ·æ¥ */
 			goto done_unlock;
 
 		default:
@@ -2712,24 +2712,24 @@ abort:
 	return err;
 }
 
-/* ÔÚ´ò¿ªSCSIÉè±¸Ê±µ÷ÓÃ */
+/* åœ¨æ‰“å¼€SCSIè®¾å¤‡æ—¶è°ƒç”¨ */
 static int md_open(struct inode *inode, struct file *file)
 {
 	/*
 	 * Succeed if we can lock the mddev, which confirms that
 	 * it isn't being stopped right now.
 	 */
-	mddev_t *mddev = inode->i_bdev->bd_disk->private_data;/* ÕÒµ½SCSIÉè±¸ */
+	mddev_t *mddev = inode->i_bdev->bd_disk->private_data;/* æ‰¾åˆ°SCSIè®¾å¤‡ */
 	int err;
 
-	if ((err = mddev_lock(mddev)))/* »ñµÃÉè±¸µÄĞÅºÅÁ¿ */
+	if ((err = mddev_lock(mddev)))/* è·å¾—è®¾å¤‡çš„ä¿¡å·é‡ */
 		goto out;
 
 	err = 0;
-	mddev_get(mddev);/* Ôö¼ÓÒıÓÃ¼ÆÊı */
-	mddev_unlock(mddev);/* ÊÍ·ÅĞÅºÅÁ¿ */
+	mddev_get(mddev);/* å¢åŠ å¼•ç”¨è®¡æ•° */
+	mddev_unlock(mddev);/* é‡Šæ”¾ä¿¡å·é‡ */
 
-	check_disk_change(inode->i_bdev);/* ¼ì²éÉè±¸½éÖÊÊÇ·ñÊ§Ğ§£¬Èç¹ûÊÇ£¬ÔòÊ¹»º´æÊ§Ğ§ */
+	check_disk_change(inode->i_bdev);/* æ£€æŸ¥è®¾å¤‡ä»‹è´¨æ˜¯å¦å¤±æ•ˆï¼Œå¦‚æœæ˜¯ï¼Œåˆ™ä½¿ç¼“å­˜å¤±æ•ˆ */
  out:
 	return err;
 }
@@ -3652,7 +3652,7 @@ static void md_geninit(void)
 		p->proc_fops = &md_seq_fops;
 }
 
-/* SCSIÄ£¿é³õÊ¼»¯ */
+/* SCSIæ¨¡å—åˆå§‹åŒ– */
 int __init md_init(void)
 {
 	int minor;
@@ -3662,16 +3662,16 @@ int __init md_init(void)
 			MD_MAJOR_VERSION, MD_MINOR_VERSION,
 			MD_PATCHLEVEL_VERSION, MAX_MD_DEVS, MD_SB_DISKS);
 
-	/* ×¢²á¿éÉè±¸ºÅ£¬Îª²»¿É·ÖÇøµÄmdÉè±¸·ÖÅäÖ÷Éè±¸ºÅ */
+	/* æ³¨å†Œå—è®¾å¤‡å·ï¼Œä¸ºä¸å¯åˆ†åŒºçš„mdè®¾å¤‡åˆ†é…ä¸»è®¾å¤‡å· */
 	if (register_blkdev(MAJOR_NR, "md"))
 		return -1;
-	/* ×¢²á¿éÉè±¸ºÅ£¬Îª¿É·ÖÇøµÄmdpÉè±¸·ÖÅäÖ÷Éè±¸ºÅ */
+	/* æ³¨å†Œå—è®¾å¤‡å·ï¼Œä¸ºå¯åˆ†åŒºçš„mdpè®¾å¤‡åˆ†é…ä¸»è®¾å¤‡å· */
 	if ((mdp_major=register_blkdev(0, "mdp"))<=0) {
 		unregister_blkdev(MAJOR_NR, "md");
 		return -1;
 	}
 	devfs_mk_dir("md");
-	/* ×¢²á¿éÉè±¸ºÅ·¶Î§ */
+	/* æ³¨å†Œå—è®¾å¤‡å·èŒƒå›´ */
 	blk_register_region(MKDEV(MAJOR_NR, 0), MAX_MD_DEVS, THIS_MODULE,
 				md_probe, NULL, NULL);
 	blk_register_region(MKDEV(mdp_major, 0), MAX_MD_DEVS<<MdpMinorShift, THIS_MODULE,
@@ -3688,12 +3688,12 @@ int __init md_init(void)
 			      "md/mdp%d", minor);
 
 
-	/* ×¢²áÖØÆô»Øµ÷£¬ÔÚÏµÍ³ÖØÆôÊ±ÄÜµÃµ½Í¨Öª */
+	/* æ³¨å†Œé‡å¯å›è°ƒï¼Œåœ¨ç³»ç»Ÿé‡å¯æ—¶èƒ½å¾—åˆ°é€šçŸ¥ */
 	register_reboot_notifier(&md_notifier);
-	/* ÔÚ/proc/sysÄ¿Â¼ÏÂÔö¼ÓÒ»¸öÄ¿Â¼ */
+	/* åœ¨/proc/sysç›®å½•ä¸‹å¢åŠ ä¸€ä¸ªç›®å½• */
 	raid_table_header = register_sysctl_table(raid_root_table, 1);
 
-	/* ´´½¨/proc/mdstat£¬ÓÃÓÚÊä³öMDÉè±¸µÄ×´Ì¬ */
+	/* åˆ›å»º/proc/mdstatï¼Œç”¨äºè¾“å‡ºMDè®¾å¤‡çš„çŠ¶æ€ */
 	md_geninit();
 	return (0);
 }

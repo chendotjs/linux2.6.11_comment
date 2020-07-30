@@ -440,7 +440,7 @@ struct inode *ext3_new_inode(handle_t *handle, struct inode * dir, int mode)
 		return ERR_PTR(-EPERM);
 
 	sb = dir->i_sb;
-	/* ·ÖÅäÒ»¸öÄÚ´æinode */
+	/* åˆ†é…ä¸€ä¸ªå†…å­˜inode */
 	inode = new_inode(sb);
 	if (!inode)
 		return ERR_PTR(-ENOMEM);
@@ -460,14 +460,14 @@ struct inode *ext3_new_inode(handle_t *handle, struct inode * dir, int mode)
 	if (group == -1)
 		goto out;
 
-	/* ±éÀúËùÓĞ¿é×é */
+	/* éå†æ‰€æœ‰å—ç»„ */
 	for (i = 0; i < sbi->s_groups_count; i++) {
-		/* ÕÒµ½¿é×éÃèÊö·û */
+		/* æ‰¾åˆ°å—ç»„æè¿°ç¬¦ */
 		gdp = ext3_get_group_desc(sb, group, &bh2);
 
 		err = -EIO;
 		brelse(bitmap_bh);
-		/* »ñµÃ¿é×éµÄinodeÎ»Í¼ */
+		/* è·å¾—å—ç»„çš„inodeä½å›¾ */
 		bitmap_bh = read_inode_bitmap(sb, group);
 		if (!bitmap_bh)
 			goto fail;
@@ -476,28 +476,28 @@ struct inode *ext3_new_inode(handle_t *handle, struct inode * dir, int mode)
 
 repeat_in_this_group:
 		/**
-		 * ²éÕÒµÚÒ»¸öÎ´ÓÃµÄ´ÅÅÌinode
+		 * æŸ¥æ‰¾ç¬¬ä¸€ä¸ªæœªç”¨çš„ç£ç›˜inode
 		 */
 		ino = ext3_find_next_zero_bit((unsigned long *)
 				bitmap_bh->b_data, EXT3_INODES_PER_GROUP(sb), ino);
-		if (ino < EXT3_INODES_PER_GROUP(sb)) {/* ÓĞĞ§µÄinode±àºÅ */
+		if (ino < EXT3_INODES_PER_GROUP(sb)) {/* æœ‰æ•ˆçš„inodeç¼–å· */
 			int credits = 0;
 
 			BUFFER_TRACE(bitmap_bh, "get_write_access");
-			/* È¡µÃĞ´È¨ÏŞ */
+			/* å–å¾—å†™æƒé™ */
 			err = ext3_journal_get_write_access_credits(handle,
 							bitmap_bh, &credits);
 			if (err)
 				goto fail;
 
-			/* ÉèÖÃÏàÓ¦µÄ¿é×éÎ»Îª1£¬±íÊ¾ÒÑ¾­Õ¼ÓÃ´Ë¿é×é */
+			/* è®¾ç½®ç›¸åº”çš„å—ç»„ä½ä¸º1ï¼Œè¡¨ç¤ºå·²ç»å ç”¨æ­¤å—ç»„ */
 			if (!ext3_set_bit_atomic(sb_bgl_lock(sbi, group),
 						ino, bitmap_bh->b_data)) {
 				/* we won it */
 				BUFFER_TRACE(bitmap_bh,
 					"call ext3_journal_dirty_metadata");
 				/**
-				 * ±ê¼Ç½ÚµãÎªÔà
+				 * æ ‡è®°èŠ‚ç‚¹ä¸ºè„
 				 */
 				err = ext3_journal_dirty_metadata(handle,
 								bitmap_bh);
@@ -537,7 +537,7 @@ got:
 
 	BUFFER_TRACE(bh2, "get_write_access");
 	/**
-	 * »ñµÃ¿é×éÃèÊö·ûµÄĞ´È¨ÏŞ
+	 * è·å¾—å—ç»„æè¿°ç¬¦çš„å†™æƒé™
 	 */
 	err = ext3_journal_get_write_access(handle, bh2);
 	if (err) goto fail;
@@ -550,7 +550,7 @@ got:
 	}
 	spin_unlock(sb_bgl_lock(sbi, group));
 	BUFFER_TRACE(bh2, "call ext3_journal_dirty_metadata");
-	/* ±ê¼Ç¿é×éÃèÊö·ûÎªÔà */
+	/* æ ‡è®°å—ç»„æè¿°ç¬¦ä¸ºè„ */
 	err = ext3_journal_dirty_metadata(handle, bh2);
 	if (err) goto fail;
 
@@ -627,7 +627,7 @@ got:
 		DQUOT_FREE_INODE(inode);
 		goto fail2;
   	}
-	/* »ñµÃinodeµÄĞ´È¨ÏŞ£¬²¢½«ÆäÖÃÎªÔà */
+	/* è·å¾—inodeçš„å†™æƒé™ï¼Œå¹¶å°†å…¶ç½®ä¸ºè„ */
 	err = ext3_mark_inode_dirty(handle, inode);
 	if (err) {
 		ext3_std_error(sb, err);
@@ -656,7 +656,7 @@ fail2:
 
 /* Verify that we are loading a valid orphan from disk */
 /**
- * ¸ù¾İinode±àºÅ£¬´Ó´ÅÅÌÉÏ½«inodeĞÅÏ¢¶ÁÈëÄÚ´æ¡£
+ * æ ¹æ®inodeç¼–å·ï¼Œä»ç£ç›˜ä¸Šå°†inodeä¿¡æ¯è¯»å…¥å†…å­˜ã€‚
  */
 struct inode *ext3_orphan_get(struct super_block *sb, unsigned long ino)
 {

@@ -13,11 +13,11 @@ struct vm_area_struct;
  */
 /* Zone modifiers in GFP_ZONEMASK (see linux/mmzone.h - low two bits) */
 /**
- * ËùÇëÇóµÄÒ³¿ò±ØĞë´¦ÓÚZONE_DMA¹ÜÀíÇø¡£µÈ¼ÛÓÚGFP_DMA
+ * æ‰€è¯·æ±‚çš„é¡µæ¡†å¿…é¡»å¤„äºZONE_DMAç®¡ç†åŒºã€‚ç­‰ä»·äºGFP_DMA
  */
 #define __GFP_DMA	0x01
 /**
- * ËùÇëÇóµÄÒ³¿ò´¦ÓÚZONE_HIGHMEM¹ÜÀíÇø
+ * æ‰€è¯·æ±‚çš„é¡µæ¡†å¤„äºZONE_HIGHMEMç®¡ç†åŒº
  */
 #define __GFP_HIGHMEM	0x02
 
@@ -33,51 +33,51 @@ struct vm_area_struct;
  * __GFP_NORETRY: The VM implementation must not retry indefinitely.
  */
 /**
- * ÔÊĞíÄÚºË¶ÔµÈ´ı¿ÕÏĞÒ³¿òµÄµ±Ç°½ø³Ì½øĞĞ×èÈû
+ * å…è®¸å†…æ ¸å¯¹ç­‰å¾…ç©ºé—²é¡µæ¡†çš„å½“å‰è¿›ç¨‹è¿›è¡Œé˜»å¡
  */
 #define __GFP_WAIT	0x10	/* Can wait and reschedule? */
 /**
- * ÔÊĞíÄÚºË·ÃÎÊ±£ÁôµÄÒ³¿ò³Ø
+ * å…è®¸å†…æ ¸è®¿é—®ä¿ç•™çš„é¡µæ¡†æ± 
  */
 #define __GFP_HIGH	0x20	/* Should access emergency pools? */
 /**
- * ÔÊĞíÄÚºËÔÚµÍ¶ËÄÚ´æÉÏÖ´ĞĞIO´«ÊäÒÔÊÍ·ÅÒ³¿ò¡£
+ * å…è®¸å†…æ ¸åœ¨ä½ç«¯å†…å­˜ä¸Šæ‰§è¡ŒIOä¼ è¾“ä»¥é‡Šæ”¾é¡µæ¡†ã€‚
  */
 #define __GFP_IO	0x40	/* Can start physical IO? */
 /**
- * Èç¹ûÇå0,Ôò²»ÔÊĞíÄÚºËÖ´ĞĞÒÀÀµÓÚÎÄ¼şÏµÍ³µÄ²Ù×÷¡£
+ * å¦‚æœæ¸…0,åˆ™ä¸å…è®¸å†…æ ¸æ‰§è¡Œä¾èµ–äºæ–‡ä»¶ç³»ç»Ÿçš„æ“ä½œã€‚
  */
 #define __GFP_FS	0x80	/* Can call down to low-level FS? */
 /**
- * ËùÇëÇóµÄÒ³¿ÉÄÜÎª"Àä"µÄ¡£¼´²»ÔÚ¸ßËÙ»º´æÖĞ¡£
+ * æ‰€è¯·æ±‚çš„é¡µå¯èƒ½ä¸º"å†·"çš„ã€‚å³ä¸åœ¨é«˜é€Ÿç¼“å­˜ä¸­ã€‚
  */
 #define __GFP_COLD	0x100	/* Cache-cold page required */
 /**
- * Ò»´ÎÄÚ´æ·ÖÅäÊ§°Ü½«²»»á²úÉú¾¯¸æĞÅÏ¢
+ * ä¸€æ¬¡å†…å­˜åˆ†é…å¤±è´¥å°†ä¸ä¼šäº§ç”Ÿè­¦å‘Šä¿¡æ¯
  */
 #define __GFP_NOWARN	0x200	/* Suppress page allocation failure warning */
 /**
- * ÄÚºËÖØÊÔÄÚ´æ·ÖÅäÖ±µ½³É¹¦¡£
+ * å†…æ ¸é‡è¯•å†…å­˜åˆ†é…ç›´åˆ°æˆåŠŸã€‚
  */
 #define __GFP_REPEAT	0x400	/* Retry the allocation.  Might fail */
 /**
- * Óë__GFP_REPEATÏàÍ¬
+ * ä¸__GFP_REPEATç›¸åŒ
  */
 #define __GFP_NOFAIL	0x800	/* Retry for ever.  Cannot fail */
 /**
- * Ò»´ÎÄÚ´æ·ÖÅäÊ§°Üºó²»ÔÙÖØÊÔ¡£
+ * ä¸€æ¬¡å†…å­˜åˆ†é…å¤±è´¥åä¸å†é‡è¯•ã€‚
  */
 #define __GFP_NORETRY	0x1000	/* Do not retry.  Might fail */
 /**
- * Slab·ÖÅäÆ÷²»ÔÊĞíÔö´óslab¸ßËÙ»º´æ¡£
+ * Slabåˆ†é…å™¨ä¸å…è®¸å¢å¤§slabé«˜é€Ÿç¼“å­˜ã€‚
  */
 #define __GFP_NO_GROW	0x2000	/* Slab internal usage */
 /**
- * ÊôÓÚÀ©Õ¹Ò³µÄÒ³¿ò¡£
+ * å±äºæ‰©å±•é¡µçš„é¡µæ¡†ã€‚
  */
 #define __GFP_COMP	0x4000	/* Add compound page metadata */
 /**
- * ÈÎºÎ·µ»ØµÄÒ³¿ò±ØĞë±»ÌîÂú0
+ * ä»»ä½•è¿”å›çš„é¡µæ¡†å¿…é¡»è¢«å¡«æ»¡0
  */
 #define __GFP_ZERO	0x8000	/* Return zeroed page on success */
 
@@ -137,7 +137,7 @@ static inline struct page *alloc_pages_node(int nid, unsigned int gfp_mask,
 #ifdef CONFIG_NUMA
 extern struct page *alloc_pages_current(unsigned gfp_mask, unsigned order);
 /**
- * ·ÖÅä2^order¸öÁ¬ĞøµÄÒ³¿ò¡£Ëü·µ»ØµÚÒ»¸öËù·ÖÅäÒ³¿òÃèÊö·ûµÄµØÖ·»òÕß·µ»ØNULL
+ * åˆ†é…2^orderä¸ªè¿ç»­çš„é¡µæ¡†ã€‚å®ƒè¿”å›ç¬¬ä¸€ä¸ªæ‰€åˆ†é…é¡µæ¡†æè¿°ç¬¦çš„åœ°å€æˆ–è€…è¿”å›NULL
  */
 static inline struct page *
 alloc_pages(unsigned int gfp_mask, unsigned int order)
@@ -151,15 +151,15 @@ extern struct page *alloc_page_vma(unsigned gfp_mask,
 			struct vm_area_struct *vma, unsigned long addr);
 #else
 /**
- * ·ÖÅä2^order¸öÁ¬ĞøµÄÒ³¿ò¡£Ëü·µ»ØµÚÒ»¸öËù·ÖÅäÒ³¿òÃèÊö·ûµÄµØÖ·»òÕß·µ»ØNULL
+ * åˆ†é…2^orderä¸ªè¿ç»­çš„é¡µæ¡†ã€‚å®ƒè¿”å›ç¬¬ä¸€ä¸ªæ‰€åˆ†é…é¡µæ¡†æè¿°ç¬¦çš„åœ°å€æˆ–è€…è¿”å›NULL
  */
 #define alloc_pages(gfp_mask, order) \
 		alloc_pages_node(numa_node_id(), gfp_mask, order)
 #define alloc_page_vma(gfp_mask, vma, addr) alloc_pages(gfp_mask, 0)
 #endif
 /**
- * ÓÃÓÚ»ñµÃÒ»¸öµ¥¶ÀÒ³¿òµÄºê
- * Ëü·µ»ØËù·ÖÅäÒ³¿òÃèÊö·ûµÄµØÖ·£¬Èç¹ûÊ§°Ü£¬Ôò·µ»ØNULL
+ * ç”¨äºè·å¾—ä¸€ä¸ªå•ç‹¬é¡µæ¡†çš„å®
+ * å®ƒè¿”å›æ‰€åˆ†é…é¡µæ¡†æè¿°ç¬¦çš„åœ°å€ï¼Œå¦‚æœå¤±è´¥ï¼Œåˆ™è¿”å›NULL
  */
 #define alloc_page(gfp_mask) alloc_pages(gfp_mask, 0)
 
@@ -167,13 +167,13 @@ extern unsigned long FASTCALL(__get_free_pages(unsigned int gfp_mask, unsigned i
 extern unsigned long FASTCALL(get_zeroed_page(unsigned int gfp_mask));
 
 /**
- * ÓÃÓÚ»ñµÃÒ»¸öµ¥¶ÀÒ³¿òµÄºê¡£
+ * ç”¨äºè·å¾—ä¸€ä¸ªå•ç‹¬é¡µæ¡†çš„å®ã€‚
  */
 #define __get_free_page(gfp_mask) \
 		__get_free_pages((gfp_mask),0)
 
 /**
- * ÓÃÓÚ»ñµÃÊÊÓÃÓÚdmaµÄÒ³¿ò¡£
+ * ç”¨äºè·å¾—é€‚ç”¨äºdmaçš„é¡µæ¡†ã€‚
  */
 #define __get_dma_pages(gfp_mask, order) \
 		__get_free_pages((gfp_mask) | GFP_DMA,(order))
@@ -184,11 +184,11 @@ extern void FASTCALL(free_hot_page(struct page *page));
 extern void FASTCALL(free_cold_page(struct page *page));
 
 /**
- * ÊÍ·ÅpageÖ¸ÏòµÄÒ³¿ò
+ * é‡Šæ”¾pageæŒ‡å‘çš„é¡µæ¡†
  */
 #define __free_page(page) __free_pages((page), 0)
 /**
- * ÊÍ·ÅÏßĞÔµØÖ·addr¶ÔÓ¦µÄÒ³¿ò¡£
+ * é‡Šæ”¾çº¿æ€§åœ°å€addrå¯¹åº”çš„é¡µæ¡†ã€‚
  */
 #define free_page(addr) free_pages((addr),0)
 

@@ -32,28 +32,28 @@ static int br_pass_frame_up_finish(struct sk_buff *skb)
 }
 
 /**
- * µ±ÍøÇÅÉè±¸´¦ÀíÖ¡Ê±£¬Èç¹ûÊý¾Ý°üµÄÄ¿±êµØÖ·ÊÇ±¾µØµØÖ·£¬»òÕßÍøÇÅÉè±¸´¦ÓÚ»ìÔÓÄ£Ê½£¬ÔòÐèÒª½«Êý¾Ý°üÉÏËÍµ½±¾»úÐ­ÒéÕ»¡£
- * ÕâÊÇbr_pass_frame_upº¯ÊýµÄÖ÷Òª×÷ÓÃ:½«Êý¾Ý°üÉÏËÍ¸ø±¾»ú¡£
+ * å½“ç½‘æ¡¥è®¾å¤‡å¤„ç†å¸§æ—¶ï¼Œå¦‚æžœæ•°æ®åŒ…çš„ç›®æ ‡åœ°å€æ˜¯æœ¬åœ°åœ°å€ï¼Œæˆ–è€…ç½‘æ¡¥è®¾å¤‡å¤„äºŽæ··æ‚æ¨¡å¼ï¼Œåˆ™éœ€è¦å°†æ•°æ®åŒ…ä¸Šé€åˆ°æœ¬æœºåè®®æ ˆã€‚
+ * è¿™æ˜¯br_pass_frame_upå‡½æ•°çš„ä¸»è¦ä½œç”¨:å°†æ•°æ®åŒ…ä¸Šé€ç»™æœ¬æœºã€‚
  */
 static void br_pass_frame_up(struct net_bridge *br, struct sk_buff *skb)
 {
 	struct net_device *indev;
 
 	/**
-	 * ÍøÇÅÉè±¸±¾»úÊÕµ½µÄ°ü¡£
+	 * ç½‘æ¡¥è®¾å¤‡æœ¬æœºæ”¶åˆ°çš„åŒ…ã€‚
 	 */
 	br->statistics.rx_packets++;
 	br->statistics.rx_bytes += skb->len;
 
 	/**
-	 * µ±°ü±»ÍøÂçÉè±¸½ÓÊÕÊ±£¬devÖ¸Ïò½ÓÊÕ°üµÄÉè±¸£¬µ±Ê±£¬ÐèÒª½«Éè±¸¸ÄÎªÍøÇÅÉè±¸ÉÏËÍµ½Ð­ÒéÕ»¡£
+	 * å½“åŒ…è¢«ç½‘ç»œè®¾å¤‡æŽ¥æ”¶æ—¶ï¼ŒdevæŒ‡å‘æŽ¥æ”¶åŒ…çš„è®¾å¤‡ï¼Œå½“æ—¶ï¼Œéœ€è¦å°†è®¾å¤‡æ”¹ä¸ºç½‘æ¡¥è®¾å¤‡ä¸Šé€åˆ°åè®®æ ˆã€‚
 	 */
 	indev = skb->dev;
 	skb->dev = br->dev;
 
 	/**
-	 * Èç¹û·À»ðÇ½ÔÊÐí±¾°ü¼ÌÐøÉÏËÍ£¬Ôòµ÷ÓÃbr_pass_frame_up_finishÏòÉÏ²ã·¢ËÍ°ü¡£
-	 * br_pass_frame_up_finish½ö½ö¼òµ¥µÄµ÷ÓÃnetif_rx
+	 * å¦‚æžœé˜²ç«å¢™å…è®¸æœ¬åŒ…ç»§ç»­ä¸Šé€ï¼Œåˆ™è°ƒç”¨br_pass_frame_up_finishå‘ä¸Šå±‚å‘é€åŒ…ã€‚
+	 * br_pass_frame_up_finishä»…ä»…ç®€å•çš„è°ƒç”¨netif_rx
 	 */
 	NF_HOOK(PF_BRIDGE, NF_BR_LOCAL_IN, skb, indev, NULL,
 			br_pass_frame_up_finish);
@@ -61,7 +61,7 @@ static void br_pass_frame_up(struct net_bridge *br, struct sk_buff *skb)
 
 /* note: already called with rcu_read_lock (preempt_disabled) */
 /**
- * ÍøÇÅ´úÂë´¦ÀíÊý¾ÝÈëÖ¡¡£
+ * ç½‘æ¡¥ä»£ç å¤„ç†æ•°æ®å…¥å¸§ã€‚
  */
 int br_handle_frame_finish(struct sk_buff *skb)
 {
@@ -72,7 +72,7 @@ int br_handle_frame_finish(struct sk_buff *skb)
 	int passedup = 0;
 
 	/**
-	 * ÍøÇÅÉè±¸(²»ÊÇÍøÇÅ¶Ë¿ÚËùÔÚµÄÉè±¸)´¦ÓÚ»ìÔÓÄ£Ê½£¬ÐèÒª¼ÌÐøÏòÉÏ²ã·¢ËÍ°ü¡£
+	 * ç½‘æ¡¥è®¾å¤‡(ä¸æ˜¯ç½‘æ¡¥ç«¯å£æ‰€åœ¨çš„è®¾å¤‡)å¤„äºŽæ··æ‚æ¨¡å¼ï¼Œéœ€è¦ç»§ç»­å‘ä¸Šå±‚å‘é€åŒ…ã€‚
 	 */
 	if (br->dev->flags & IFF_PROMISC) {
 		struct sk_buff *skb2;
@@ -85,15 +85,15 @@ int br_handle_frame_finish(struct sk_buff *skb)
 	}
 
 	/**
-	 * ¹ã²¥°ü£¬ÐèÒªÏòËùÓÐ¶Ë¿Ú×ª·¢¡£
+	 * å¹¿æ’­åŒ…ï¼Œéœ€è¦å‘æ‰€æœ‰ç«¯å£è½¬å‘ã€‚
 	 */
 	if (dest[0] & 1) {
 		/**
-		 * ½øÐÐÒ»´Îflood·¢ËÍ¡£
+		 * è¿›è¡Œä¸€æ¬¡floodå‘é€ã€‚
 		 */
 		br_flood_forward(br, skb, !passedup);
 		/**
-		 * ÐèÒª±¾»úÉÏ²ãÉÏËÍÊý¾Ý°ü¡£
+		 * éœ€è¦æœ¬æœºä¸Šå±‚ä¸Šé€æ•°æ®åŒ…ã€‚
 		 */
 		if (!passedup)
 			br_pass_frame_up(br, skb);
@@ -101,15 +101,15 @@ int br_handle_frame_finish(struct sk_buff *skb)
 	}
 
 	/**
-	 * ÔÚ×ª·¢Êý¾Ý¿âÖÐËÑË÷Ä¿±êµØÖ·¡£
+	 * åœ¨è½¬å‘æ•°æ®åº“ä¸­æœç´¢ç›®æ ‡åœ°å€ã€‚
 	 */
 	dst = __br_fdb_get(br, dest);
 	/**
-	 * Ä¿±êµØÖ·ÊÇ±¾»úµØÖ·¡£
+	 * ç›®æ ‡åœ°å€æ˜¯æœ¬æœºåœ°å€ã€‚
 	 */
 	if (dst != NULL && dst->is_local) {
 		/**
-		 * Èç¹û»¹Ã»ÓÐÉÏËÍ£¬ÔòÉÏËÍ£¬·ñÔòÉ¾³ý°ü¡£
+		 * å¦‚æžœè¿˜æ²¡æœ‰ä¸Šé€ï¼Œåˆ™ä¸Šé€ï¼Œå¦åˆ™åˆ é™¤åŒ…ã€‚
 		 */
 		if (!passedup)
 			br_pass_frame_up(br, skb);
@@ -119,7 +119,7 @@ int br_handle_frame_finish(struct sk_buff *skb)
 	}
 
 	/**
-	 * Ä¿±êµØÖ·ÔÚ×ª·¢Êý¾Ý¿âÖÐ£¬ÔòÍ¨¹ýÄ¿±ê¶Ë¿Ú×ª·¢°ü¡£
+	 * ç›®æ ‡åœ°å€åœ¨è½¬å‘æ•°æ®åº“ä¸­ï¼Œåˆ™é€šè¿‡ç›®æ ‡ç«¯å£è½¬å‘åŒ…ã€‚
 	 */
 	if (dst != NULL) {
 		br_forward(dst->dst, skb);
@@ -127,7 +127,7 @@ int br_handle_frame_finish(struct sk_buff *skb)
 	}
 
 	/**
-	 * Ä¿±êµØÖ·»¹Ã»ÓÐÔÚ×ª·¢Êý¾Ý¿âÖÐ£¬Í¨¹ýËùÓÐ¶Ë¿Ú·¢ËÍÒ»ÏÂ°ü£¬¼´flood·ç±©¡£
+	 * ç›®æ ‡åœ°å€è¿˜æ²¡æœ‰åœ¨è½¬å‘æ•°æ®åº“ä¸­ï¼Œé€šè¿‡æ‰€æœ‰ç«¯å£å‘é€ä¸€ä¸‹åŒ…ï¼Œå³floodé£Žæš´ã€‚
 	 */
 	br_flood_forward(br, skb, 0);
 
@@ -142,7 +142,7 @@ out:
  * note: already called with rcu_read_lock (preempt_disabled) 
  */
 /**
- * ÍøÇÅ´úÂë´¦ÀíÈëÖ¡
+ * ç½‘æ¡¥ä»£ç å¤„ç†å…¥å¸§
  */
 int br_handle_frame(struct net_bridge_port *p, struct sk_buff **pskb)
 {
@@ -150,59 +150,59 @@ int br_handle_frame(struct net_bridge_port *p, struct sk_buff **pskb)
 	const unsigned char *dest = eth_hdr(skb)->h_dest;
 
 	/**
-	 * ÈÎºÎÔÚ½ûÖ¹µÄ¶Ë¿ÚÉÏÊÕµ½µÄÖ¡¶¼±»¶ªÆú¡£
+	 * ä»»ä½•åœ¨ç¦æ­¢çš„ç«¯å£ä¸Šæ”¶åˆ°çš„å¸§éƒ½è¢«ä¸¢å¼ƒã€‚
 	 */
 	if (p->state == BR_STATE_DISABLED)
 		goto err;
 
 	/**
-	 * Ô´MACµØÖ·ÊÇ¶à²¥µØÖ·¡£¶ªÆú¡£
+	 * æºMACåœ°å€æ˜¯å¤šæ’­åœ°å€ã€‚ä¸¢å¼ƒã€‚
 	 */
 	if (eth_hdr(skb)->h_source[0] & 1)
 		goto err;
 
 	/**
-	 * BR_STATE_LEARNINGºÍBR_STATE_FORWARDINGÁ½ÖÖ×´Ì¬¶¼ÐèÒª½øÐÐµØÖ·Ñ§Ï°¡£
+	 * BR_STATE_LEARNINGå’ŒBR_STATE_FORWARDINGä¸¤ç§çŠ¶æ€éƒ½éœ€è¦è¿›è¡Œåœ°å€å­¦ä¹ ã€‚
 	 */
 	if (p->state == BR_STATE_LEARNING ||
 	    p->state == BR_STATE_FORWARDING)
 		br_fdb_insert(p->br, p, eth_hdr(skb)->h_source, 0);
 
-	if (p->br->stp_enabled &&/* ´ò¿ªÁËSTPÖ§³Ö */
-	    !memcmp(dest, bridge_ula, 5) &&/* Ä¿±êµØÖ·ÊÇ´Ó01:80:C2:00:00:00µ½01:80:C2:00:00:FFÄÚµÄL2²ã¹ã²¥µØÖ·£¬ËüÃÇ±»IEEE±£Áô¸ø±ê×¼Ð­Òé¡£×¼È·µÄËµ£¬µÚÒ»¸öµØÖ·01:80:C2:00:00:00±»ÓÃÓÚ802.1D STP£ºÅäÖÃBPDUºÍTCN BPDU¶¼·¢ËÍµ½Õâ¸öµØÖ·¡£ */
+	if (p->br->stp_enabled &&/* æ‰“å¼€äº†STPæ”¯æŒ */
+	    !memcmp(dest, bridge_ula, 5) &&/* ç›®æ ‡åœ°å€æ˜¯ä»Ž01:80:C2:00:00:00åˆ°01:80:C2:00:00:FFå†…çš„L2å±‚å¹¿æ’­åœ°å€ï¼Œå®ƒä»¬è¢«IEEEä¿ç•™ç»™æ ‡å‡†åè®®ã€‚å‡†ç¡®çš„è¯´ï¼Œç¬¬ä¸€ä¸ªåœ°å€01:80:C2:00:00:00è¢«ç”¨äºŽ802.1D STPï¼šé…ç½®BPDUå’ŒTCN BPDUéƒ½å‘é€åˆ°è¿™ä¸ªåœ°å€ã€‚ */
 	    !(dest[5] & 0xF0)) {
-		if (!dest[5]) {/* Ä¿±êµØÖ·ÊÇ·ñÊÇSTP¶à²¥µØÖ·¡£ */
+		if (!dest[5]) {/* ç›®æ ‡åœ°å€æ˜¯å¦æ˜¯STPå¤šæ’­åœ°å€ã€‚ */
 			NF_HOOK(PF_BRIDGE, NF_BR_LOCAL_IN, skb, skb->dev, 
-				NULL, br_stp_handle_bpdu);/* Èç¹ûnetfilter½ÓÊÜ£¬Ôòµ÷ÓÃbr_stp_handle_bpdu´¦ÀíBPDU°ü */
+				NULL, br_stp_handle_bpdu);/* å¦‚æžœnetfilteræŽ¥å—ï¼Œåˆ™è°ƒç”¨br_stp_handle_bpduå¤„ç†BPDUåŒ… */
 			return 1;
 		}
 	}
 	/**
-	 * ²»ÊÇBPDU£¬»òÕßÃ»ÓÐ¿ªÆôSTP¹¦ÄÜ¡£
+	 * ä¸æ˜¯BPDUï¼Œæˆ–è€…æ²¡æœ‰å¼€å¯STPåŠŸèƒ½ã€‚
 	 */
-	else if (p->state == BR_STATE_FORWARDING) {/* ¶Ë¿Ú´¦ÓÚ¼¤»î×´Ì¬£¬ÐèÒª´¦ÀíÖ¡×ª·¢¡£ */
+	else if (p->state == BR_STATE_FORWARDING) {/* ç«¯å£å¤„äºŽæ¿€æ´»çŠ¶æ€ï¼Œéœ€è¦å¤„ç†å¸§è½¬å‘ã€‚ */
 		/**
-		 * L2²ãµÄ·À»ðÇ½¹¦ÄÜ¡£ebt±í¿ÉÒÔ¹ýÂË²¢Ïú»ÙÈÎºÎÀàÐÍµÄÖ¡¡£
-		 * ÓÉÓÚÒ»¸öÍø¿¨¿ÉÒÔÍ¬Ê±ÅäÖÃ³ÉÍøÇÅ¶Ë¿ÚºÍIP½Ó¿Ú£¬Òò´Ë£¬ÐèÒªÈ·¶¨¸Ã°üÓ¦¸ÃÓÉÍøÇÅ»¹ÊÇÂ·ÓÉ»¹´¦Àí¡£
+		 * L2å±‚çš„é˜²ç«å¢™åŠŸèƒ½ã€‚ebtè¡¨å¯ä»¥è¿‡æ»¤å¹¶é”€æ¯ä»»ä½•ç±»åž‹çš„å¸§ã€‚
+		 * ç”±äºŽä¸€ä¸ªç½‘å¡å¯ä»¥åŒæ—¶é…ç½®æˆç½‘æ¡¥ç«¯å£å’ŒIPæŽ¥å£ï¼Œå› æ­¤ï¼Œéœ€è¦ç¡®å®šè¯¥åŒ…åº”è¯¥ç”±ç½‘æ¡¥è¿˜æ˜¯è·¯ç”±è¿˜å¤„ç†ã€‚
 		 */
 		if (br_should_route_hook) {
 			if (br_should_route_hook(pskb)) 
 				return 0;
 			/**
-			 * br_should_route_hook¿ÉÄÜÐÞ¸Äskb£¬Òò´ËÖØÐÂÉèÖÃ¾Ö²¿±äÁ¿£¬²¢ËæºóÈ·¶¨°üÀàÐÍ¡£
+			 * br_should_route_hookå¯èƒ½ä¿®æ”¹skbï¼Œå› æ­¤é‡æ–°è®¾ç½®å±€éƒ¨å˜é‡ï¼Œå¹¶éšåŽç¡®å®šåŒ…ç±»åž‹ã€‚
 			 */
 			skb = *pskb;
 			dest = eth_hdr(skb)->h_dest;
 		}
 
 		/**
-		 * °üµÄÄ¿µÄµØÖ·Óë½ÓÊÕÉè±¸µÄMACµØÖ·ÏàµÈ£¬¼´·¢¸ø±¾»úµÄ°ü¡£
+		 * åŒ…çš„ç›®çš„åœ°å€ä¸ŽæŽ¥æ”¶è®¾å¤‡çš„MACåœ°å€ç›¸ç­‰ï¼Œå³å‘ç»™æœ¬æœºçš„åŒ…ã€‚
 		 */
 		if (!memcmp(p->br->dev->dev_addr, dest, ETH_ALEN))
 			skb->pkt_type = PACKET_HOST;
 
 		/**
-		 * ÓÉbr_handle_frame_finish´¦Àí½ÓÊÕµ½µÄÖ¡¡£
+		 * ç”±br_handle_frame_finishå¤„ç†æŽ¥æ”¶åˆ°çš„å¸§ã€‚
 		 */
 		NF_HOOK(PF_BRIDGE, NF_BR_PRE_ROUTING, skb, skb->dev, NULL,
 			br_handle_frame_finish);

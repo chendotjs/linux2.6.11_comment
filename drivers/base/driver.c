@@ -24,7 +24,7 @@
  *	@attr:	driver attribute descriptor.
  */
 /**
- * ÔÚsysfsÖĞ´´½¨Çı¶¯³ÌĞòÊôĞÔÎÄ¼ş¡£
+ * åœ¨sysfsä¸­åˆ›å»ºé©±åŠ¨ç¨‹åºå±æ€§æ–‡ä»¶ã€‚
  */
 int driver_create_file(struct device_driver * drv, struct driver_attribute * attr)
 {
@@ -44,7 +44,7 @@ int driver_create_file(struct device_driver * drv, struct driver_attribute * att
  *	@attr:	driver attribute descriptor.
  */
 /**
- * ´ÓsysfsÖĞÉ¾³ıÇı¶¯³ÌĞòÊôĞÔÎÄ¼ş¡£
+ * ä»sysfsä¸­åˆ é™¤é©±åŠ¨ç¨‹åºå±æ€§æ–‡ä»¶ã€‚
  */
 void driver_remove_file(struct device_driver * drv, struct driver_attribute * attr)
 {
@@ -88,8 +88,8 @@ void put_driver(struct device_driver * drv)
  *	reference count reaches 0.
  */
 /**
- * ÍùÉè±¸Çı¶¯³ÌĞòÄ£ĞÍÖĞ²åÈëÒ»¸öĞÂµÄdevice_driver¶ÔÏó
- * ²¢×Ô¶¯ÔÚsysfsÎÄ¼şÏµÍ³ÏÂÎªÆä´´½¨Ò»¸öĞÂµÄÄ¿Â¼¡£
+ * å¾€è®¾å¤‡é©±åŠ¨ç¨‹åºæ¨¡å‹ä¸­æ’å…¥ä¸€ä¸ªæ–°çš„device_driverå¯¹è±¡
+ * å¹¶è‡ªåŠ¨åœ¨sysfsæ–‡ä»¶ç³»ç»Ÿä¸‹ä¸ºå…¶åˆ›å»ºä¸€ä¸ªæ–°çš„ç›®å½•ã€‚
  */
 int driver_register(struct device_driver * drv)
 {
@@ -113,7 +113,7 @@ int driver_register(struct device_driver * drv)
  */
 
 /**
- * ´ÓÉè±¸Çı¶¯³ÌĞòÄ£ĞÍÖĞÒÆ×ßÒ»¸ödevice_driver¶ÔÏó
+ * ä»è®¾å¤‡é©±åŠ¨ç¨‹åºæ¨¡å‹ä¸­ç§»èµ°ä¸€ä¸ªdevice_driverå¯¹è±¡
  */
 void driver_unregister(struct device_driver * drv)
 {

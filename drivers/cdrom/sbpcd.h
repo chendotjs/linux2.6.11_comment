@@ -126,7 +126,7 @@
  * other than 0 may cause problems. If you run into them, first
  * change SBP_TEAC_SPEED back to 0 and see if your drive responds
  * normally. If yes, you are "allowed" to report your case - to help
- * me with the driver, not to solve your hassle. Don´t mail if you
+ * me with the driver, not to solve your hassle. Dont mail if you
  * simply are stuck into your own "tuning" experiments, you know?
  */
 #define SBP_TEAC_SPEED 1

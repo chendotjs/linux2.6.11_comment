@@ -117,7 +117,7 @@ struct nfs_inode {
 	 * NFS file handle
 	 */
 	/**
-	 * т╤╤кNFSнд╪Ч╬Д╠З║ё
+	 * Х©°Г╚╞NFSФ√┤Д╩╤Е▐╔Ф÷└Ц─┌
 	 */
 	struct nfs_fh		fh;
 

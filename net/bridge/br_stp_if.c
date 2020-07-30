@@ -34,12 +34,12 @@ static inline port_id br_make_port_id(__u8 priority, __u16 port_no)
 void br_init_port(struct net_bridge_port *p)
 {
 	/**
-	 * ʹ�ú���br_make_port_id��ͨ���ϲ��˿ںź����ȼ�������˿�ID��
-	 * �˿�ID�г���16λ�Ĳ��֣�����10λ��BR_PORT_BITS�������ڶ˿ںţ�6λ���ڶ˿����ȼ���ע�������׼�淶��̫һ�¡�
+	 * 使用函数br_make_port_id，通过合并端口号和优先级，计算端口ID。
+	 * 端口ID中超过16位的部分，其中10位（BR_PORT_BITS）被用于端口号，6位用于端口优先级。注意这与标准规范不太一致。
 	 */
 	p->port_id = br_make_port_id(p->priority, p->port_no);
 	/**
-	 * ָ���˿ڽ�ɫΪָ�ɶ˿ڡ�
+	 * 指定端口角色为指派端口。
 	 */
 	br_become_designated_port(p);
 	p->state = BR_STATE_BLOCKING;
@@ -47,7 +47,7 @@ void br_init_port(struct net_bridge_port *p)
 	p->config_pending = 0;
 
 	/**
-	 * ��ʼ���˿�ʱ�ӡ�
+	 * 初始化端口时钟。
 	 */
 	br_stp_port_timer_init(p);
 }
@@ -92,22 +92,22 @@ void br_stp_disable_bridge(struct net_bridge *br)
 
 /* called under bridge lock */
 /**
- * �������Ŷ˿ڡ�
+ * 激活网桥端口。
  */
 void br_stp_enable_port(struct net_bridge_port *p)
 {
 	br_init_port(p);
 	/**
-	 * ѭ���������Ŷ˿ڣ�Ϊ����������ȷ��״̬��
-	 * ���ǵ�һ������û������STPʱ������������ս��������¶˿�ΪBR_STATE_FORARDING״̬��
+	 * 循环所有网桥端口，为它们设置正确的状态。
+	 * 但是当一个网桥没有运行STP时，这个函数最终仅仅设置新端口为BR_STATE_FORARDING状态。
 	 */
 	br_port_state_selection(p->br);
 }
 
 /* called under bridge lock */
 /**
- * ��ֹ���Ŷ˿ڡ�
- * �����ֹһ�����ŵ�����ŵ�Ψһ�˿�ʱ�����������ָ�����Ҫѡ���µĸ��š�
+ * 禁止网桥端口。
+ * 当你禁止一个网桥到达根桥的唯一端口时，生成树被分隔，需要选择新的根桥。
  */
 void br_stp_disable_port(struct net_bridge_port *p)
 {
@@ -138,9 +138,9 @@ void br_stp_disable_port(struct net_bridge_port *p)
 
 /* called under bridge lock */
 /**
- * �����ŵ�M���õ�ַ�ı�ʱ�����á�
- * ��������ID��M���õ�ַ�����ȼ������ֶ���ɣ����һ��������ID��ѡ����ţ�
- * ����������ֶ��е���һ�仯�����ܸı���š�
+ * 在网桥的MＡＣ地址改变时被调用。
+ * 由于网桥ID由MＡＣ地址和优先级两个字段组成，并且会根据网桥ID来选择根桥，
+ * 因此这两个字段中的任一变化都可能改变根桥。
  */
 static void br_stp_change_bridge_id(struct net_bridge *br, 
 				    const unsigned char *addr)
@@ -174,8 +174,8 @@ static const unsigned char br_mac_zero[6];
 
 /* called under bridge lock */
 /**
- * �����ڰ��豸�ϵ���͵�MAC��ַΪ����MAC��ַ
- * ���κ�һ�����Ŷ˿ڱ���������ɾ��ʱ�����ߵ��󶨵������豸�ı������ǵ�MAC��ַʱ���������������
+ * 配置在绑定设备上的最低的MAC地址为网桥MAC地址
+ * 当任何一个网桥端口被创建或者删除时，或者当绑定的网桥设备改变了它们的MAC地址时，调用这个函数。
  */
 void br_stp_recalculate_bridge_id(struct net_bridge *br)
 {
@@ -195,9 +195,9 @@ void br_stp_recalculate_bridge_id(struct net_bridge *br)
 
 /* called under bridge lock */
 /**
- * �����ŵ����ȼ��ı�ʱ�����á�
- * ��������ID��M���õ�ַ�����ȼ������ֶ���ɣ����һ��������ID��ѡ����ţ�
- * ����������ֶ��е���һ�仯�����ܸı���š�
+ * 在网桥的优先级改变时被调用。
+ * 由于网桥ID由MＡＣ地址和优先级两个字段组成，并且会根据网桥ID来选择根桥，
+ * 因此这两个字段中的任一变化都可能改变根桥。
  */
 void br_stp_set_bridge_priority(struct net_bridge *br, u16 newprio)
 {

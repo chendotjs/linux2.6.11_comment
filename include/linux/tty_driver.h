@@ -122,8 +122,8 @@
 struct tty_struct;
 
 /**
- * tty»Øµ÷º¯Êı¡£ÓÉÇı¶¯ÉèÖÃºó£¬ÓÉttyºËĞÄµ÷ÓÃ¡£
- * Ä¿Ç°£¬¸Ã½á¹¹Ëù°üº¬µÄËùÓĞº¯ÊıÖ¸ÕëÒ²°üº¬ÔÚtty_driverÖĞ¡£
+ * ttyå›è°ƒå‡½æ•°ã€‚ç”±é©±åŠ¨è®¾ç½®åï¼Œç”±ttyæ ¸å¿ƒè°ƒç”¨ã€‚
+ * ç›®å‰ï¼Œè¯¥ç»“æ„æ‰€åŒ…å«çš„æ‰€æœ‰å‡½æ•°æŒ‡é’ˆä¹ŸåŒ…å«åœ¨tty_driverä¸­ã€‚
  */
 struct tty_operations {
 	int  (*open)(struct tty_struct * tty, struct file * filp);
@@ -131,58 +131,58 @@ struct tty_operations {
 	int  (*write)(struct tty_struct * tty,
 		      const unsigned char *buf, int count);
 	/**
-	 * µ±ĞèÒªÏòÉè±¸Ğ´Èëµ¥¸ö×Ö·ûÊ±£¬µ÷ÓÃ´Ëº¯Êı¡£
-	 * Èç¹ûÃ»ÓĞÊµÏÖ´Ëº¯Êı£¬½«µ÷ÓÃwrite¡£
+	 * å½“éœ€è¦å‘è®¾å¤‡å†™å…¥å•ä¸ªå­—ç¬¦æ—¶ï¼Œè°ƒç”¨æ­¤å‡½æ•°ã€‚
+	 * å¦‚æœæ²¡æœ‰å®ç°æ­¤å‡½æ•°ï¼Œå°†è°ƒç”¨writeã€‚
 	 */
 	void (*put_char)(struct tty_struct *tty, unsigned char ch);
 	/**
-	 * ÏòÓ²¼ş·¢ËÍÊı¾İ¡£
+	 * å‘ç¡¬ä»¶å‘é€æ•°æ®ã€‚
 	 */
 	void (*flush_chars)(struct tty_struct *tty);
 	/**
-	 * ·µ»Ø»º³åÇøÖĞµÄÊ£Óà¿Õ¼ä¡£
+	 * è¿”å›ç¼“å†²åŒºä¸­çš„å‰©ä½™ç©ºé—´ã€‚
 	 */
 	int  (*write_room)(struct tty_struct *tty);
 	/**
-	 * »º³åÇøÖĞµÄ×Ö·ûÊı¡£
+	 * ç¼“å†²åŒºä¸­çš„å­—ç¬¦æ•°ã€‚
 	 */
 	int  (*chars_in_buffer)(struct tty_struct *tty);
 	/**
-	 * µ±¶ÔÉè±¸½Úµãµ÷ÓÃioctlÊ±£¬¸Ãº¯Êı±»ttyºËĞÄµ÷ÓÃ¡£
+	 * å½“å¯¹è®¾å¤‡èŠ‚ç‚¹è°ƒç”¨ioctlæ—¶ï¼Œè¯¥å‡½æ•°è¢«ttyæ ¸å¿ƒè°ƒç”¨ã€‚
 	 */
 	int  (*ioctl)(struct tty_struct *tty, struct file * file,
 		    unsigned int cmd, unsigned long arg);
 	/**
-	 * µ±Éè±¸µÄtermiosÉèÖÃ·¢Éú¸Ä±äÊ±£¬±»ttyºËĞÄµ÷ÓÃ¡£
+	 * å½“è®¾å¤‡çš„termiosè®¾ç½®å‘ç”Ÿæ”¹å˜æ—¶ï¼Œè¢«ttyæ ¸å¿ƒè°ƒç”¨ã€‚
 	 */
 	void (*set_termios)(struct tty_struct *tty, struct termios * old);
 	/**
-	 * Êı¾İ¿ØÖÆº¯Êı¡£ÓÃÀ´¿ØÖÆ²¢·ÀÖ¹ttyºËĞÄµÄÊäÈë»º³åÇøÒç³ö¡£
-	 * µ±ttyºËĞÄµÄÊäÈë»º³åÇøÂúµÄÊ±ºò£¬µ÷ÓÃthrottleº¯Êı¡£ÕâÑùÉè±¸²»ÔÙÏòºËĞÄ·¢ËÍ¸ü¶àµÄ×Ö·û¡£
+	 * æ•°æ®æ§åˆ¶å‡½æ•°ã€‚ç”¨æ¥æ§åˆ¶å¹¶é˜²æ­¢ttyæ ¸å¿ƒçš„è¾“å…¥ç¼“å†²åŒºæº¢å‡ºã€‚
+	 * å½“ttyæ ¸å¿ƒçš„è¾“å…¥ç¼“å†²åŒºæ»¡çš„æ—¶å€™ï¼Œè°ƒç”¨throttleå‡½æ•°ã€‚è¿™æ ·è®¾å¤‡ä¸å†å‘æ ¸å¿ƒå‘é€æ›´å¤šçš„å­—ç¬¦ã€‚
 	 */
 	void (*throttle)(struct tty_struct * tty);
 	void (*unthrottle)(struct tty_struct * tty);
 	void (*stop)(struct tty_struct *tty);
 	void (*start)(struct tty_struct *tty);
 	/**
-	 * ¹ÒÆğÉè±¸¡£
+	 * æŒ‚èµ·è®¾å¤‡ã€‚
 	 */
 	void (*hangup)(struct tty_struct *tty);
 	/**
-	 * ´¦ÀíRS-232¶Ë¿ÚµÄBREAKÏßÂ·×´Ì¬¡£
+	 * å¤„ç†RS-232ç«¯å£çš„BREAKçº¿è·¯çŠ¶æ€ã€‚
 	 */
 	void (*break_ctl)(struct tty_struct *tty, int state);
 	/**
-	 * Ë¢ĞÂ»º³åÇø£¬ÀïÃæµÄÊı¾İ½«±»¶ªÊ§¡£
+	 * åˆ·æ–°ç¼“å†²åŒºï¼Œé‡Œé¢çš„æ•°æ®å°†è¢«ä¸¢å¤±ã€‚
 	 */
 	void (*flush_buffer)(struct tty_struct *tty);
 	/**
-	 * ÉèÖÃÊ¹ÓÃÏßÂ·¹æ³Ì¡£Í¨³£²»ÓÉÇı¶¯Ê¹ÓÃ¡£
+	 * è®¾ç½®ä½¿ç”¨çº¿è·¯è§„ç¨‹ã€‚é€šå¸¸ä¸ç”±é©±åŠ¨ä½¿ç”¨ã€‚
 	 */
 	void (*set_ldisc)(struct tty_struct *tty);
 	void (*wait_until_sent)(struct tty_struct *tty, int timeout);
 	/**
-	 * ·¢ËÍXÀàĞÍ×Ö·ûº¯Êı¡£Òª·¢ËÍµÄ×Ö·û´æ·ÅÔÚchÖĞ¡£
+	 * å‘é€Xç±»å‹å­—ç¬¦å‡½æ•°ã€‚è¦å‘é€çš„å­—ç¬¦å­˜æ”¾åœ¨chä¸­ã€‚
 	 */
 	void (*send_xchar)(struct tty_struct *tty, char ch);
 	int (*read_proc)(char *page, char **start, off_t off,
@@ -190,7 +190,7 @@ struct tty_operations {
 	int (*write_proc)(struct file *file, const char __user *buffer,
 			  unsigned long count, void *data);
 	/**
-	 * »ñµÃ¡¢ÉèÖÃÌØ¶¨ttyÉè±¸µ±Ç°µÄÏßÂ·ÉèÖÃ¡£
+	 * è·å¾—ã€è®¾ç½®ç‰¹å®šttyè®¾å¤‡å½“å‰çš„çº¿è·¯è®¾ç½®ã€‚
 	 */
 	int (*tiocmget)(struct tty_struct *tty, struct file *file);
 	int (*tiocmset)(struct tty_struct *tty, struct file *file,
@@ -198,61 +198,61 @@ struct tty_operations {
 };
 
 /**
- * ttyÉè±¸Çı¶¯³ÌĞò¡£
+ * ttyè®¾å¤‡é©±åŠ¨ç¨‹åºã€‚
  */
 struct tty_driver {
 	/**
-	 * Ä§ÊõÖµ£¬ÎªTTY_DRIVER_MAGIC¡£
+	 * é­”æœ¯å€¼ï¼Œä¸ºTTY_DRIVER_MAGICã€‚
 	 */
 	int	magic;		/* magic number for this structure */
 	struct cdev cdev;
 	/**
-	 * Çı¶¯³ÌĞòÄ£¿éµÄËùÓĞÕß¡£
+	 * é©±åŠ¨ç¨‹åºæ¨¡å—çš„æ‰€æœ‰è€…ã€‚
 	 */
 	struct module	*owner;
 	/**
-	 * Çı¶¯³ÌĞòµÄÃû×Ö¡£ÔÚ/proc/ttyºÍsysfsÖĞÊ¹ÓÃ¡£
+	 * é©±åŠ¨ç¨‹åºçš„åå­—ã€‚åœ¨/proc/ttyå’Œsysfsä¸­ä½¿ç”¨ã€‚
 	 */
 	const char	*driver_name;
 	const char	*devfs_name;
 	/**
-	 * Çı¶¯³ÌĞò½ÚµãµÄÃû×Ö¡£
+	 * é©±åŠ¨ç¨‹åºèŠ‚ç‚¹çš„åå­—ã€‚
 	 */
 	const char	*name;
 	/**
-	 * µ±´´½¨Éè±¸Ê±£¬¿ªÊ¼Ê¹ÓÃµÄ±àºÅ¡£
+	 * å½“åˆ›å»ºè®¾å¤‡æ—¶ï¼Œå¼€å§‹ä½¿ç”¨çš„ç¼–å·ã€‚
 	 */
 	int	name_base;	/* offset of printed name */
 	/**
-	 * Çı¶¯³ÌĞòµÄÖ÷Éè±¸ºÅ¡£
+	 * é©±åŠ¨ç¨‹åºçš„ä¸»è®¾å¤‡å·ã€‚
 	 */
 	int	major;		/* major device number */
 	/**
-	 * ÆğÊ¼´ÎÉè±¸ºÅ¡£Í¨³£Óëname_baseÏàÍ¬¡£Ä¬ÈÏÎª0.
+	 * èµ·å§‹æ¬¡è®¾å¤‡å·ã€‚é€šå¸¸ä¸name_baseç›¸åŒã€‚é»˜è®¤ä¸º0.
 	 */
 	int	minor_start;	/* start of minor device number */
 	/**
-	 * ¿ÉÒÔ·ÖÅä¸øÇı¶¯³ÌĞò´ÎÉè±¸ºÅµÄ¸öÊı¡£
+	 * å¯ä»¥åˆ†é…ç»™é©±åŠ¨ç¨‹åºæ¬¡è®¾å¤‡å·çš„ä¸ªæ•°ã€‚
 	 */
 	int	minor_num;	/* number of *possible* devices */
 	int	num;		/* number of devices allocated */
 	/**
-	 * ttyÉè±¸Çı¶¯ÀàĞÍ¡£¿ÉÄÜµÄÖµÎª:TTY_DRIVER_TYPE_SYSTEM£¬TTY_DRIVER_TYPE_CONSOLEµÈ¡£
+	 * ttyè®¾å¤‡é©±åŠ¨ç±»å‹ã€‚å¯èƒ½çš„å€¼ä¸º:TTY_DRIVER_TYPE_SYSTEMï¼ŒTTY_DRIVER_TYPE_CONSOLEç­‰ã€‚
 	 */
 	short	type;		/* type of tty driver */
 	short	subtype;	/* subtype of tty driver */
 	/**
-	 * µ±±»´´½¨Ê±£¬º¬ÓĞ³õÊ¼ÖµµÄ¶Ë¿ÚÖµ¡£
+	 * å½“è¢«åˆ›å»ºæ—¶ï¼Œå«æœ‰åˆå§‹å€¼çš„ç«¯å£å€¼ã€‚
 	 */
 	struct termios init_termios; /* Initial termios */
 	int	flags;		/* tty driver flags */
 	int	refcount;	/* for loadable tty drivers */
 	/**
-	 * ¸ÃÇı¶¯³ÌĞòµÄ/procÈë¿Ú½á¹¹Ìå¡£
+	 * è¯¥é©±åŠ¨ç¨‹åºçš„/procå…¥å£ç»“æ„ä½“ã€‚
 	 */
 	struct proc_dir_entry *proc_entry; /* /proc fs entry */
 	/**
-	 * Ö¸Ïòtty´ÓÊôÉè±¸Çı¶¯³ÌĞòµÄÖ¸Õë¡£Ö»ÄÜ±»ptyÇı¶¯Ê¹ÓÃ¡£
+	 * æŒ‡å‘ttyä»å±è®¾å¤‡é©±åŠ¨ç¨‹åºçš„æŒ‡é’ˆã€‚åªèƒ½è¢«ptyé©±åŠ¨ä½¿ç”¨ã€‚
 	 */
 	struct tty_driver *other; /* only used for the PTY driver */
 
@@ -263,7 +263,7 @@ struct tty_driver {
 	struct termios **termios;
 	struct termios **termios_locked;
 	/**
-	 * ttyÇı¶¯³ÌĞòÄÚ²¿µÄ×´Ì¬¡£Ö»ÄÜ±»ptyÇı¶¯Ê¹ÓÃ¡£
+	 * ttyé©±åŠ¨ç¨‹åºå†…éƒ¨çš„çŠ¶æ€ã€‚åªèƒ½è¢«ptyé©±åŠ¨ä½¿ç”¨ã€‚
 	 */
 	void *driver_state;	/* only used for the PTY driver */
 	
@@ -272,35 +272,35 @@ struct tty_driver {
 	 * driver.	Will be replaced with struct tty_operations.
 	 */
 	/**
-	 * ´ò¿ªttyÉè±¸¡¢
+	 * æ‰“å¼€ttyè®¾å¤‡ã€
 	 */
 	int  (*open)(struct tty_struct * tty, struct file * filp);
 	/**
-	 * ¹Ø±ÕttyÉè±¸¡£
+	 * å…³é—­ttyè®¾å¤‡ã€‚
 	 */
 	void (*close)(struct tty_struct * tty, struct file * filp);
 	/**
-	 * ÏòÉè±¸Ğ´ÈëÊı¾İ¡£Èç¹ûÃ»ÓĞ¶¨Òåput_char£¬ÄÇÃ´ËùÓĞĞ´Èë¶¼Í¨¹ı´Ëº¯Êı¡£
-	 * Òò´Ë£¬Èç¹ûÊÇÓÉÓÚÃ»ÓĞ¶¨Òåput_char¶øÒıÆğµÄÎÊÌâ£¬Ôò¿ÉÄÜÊÇwriteº¯ÊıÃ»ÓĞĞ´ÈëÈÎºÎÒ»¸ö×Ö·ûÒıÆğ¡£
-	 * ÇëÈ·±£Ã¿´ÎÖÁÉÙĞ´ÈëÒ»¸ö×Ö·û¡£
+	 * å‘è®¾å¤‡å†™å…¥æ•°æ®ã€‚å¦‚æœæ²¡æœ‰å®šä¹‰put_charï¼Œé‚£ä¹ˆæ‰€æœ‰å†™å…¥éƒ½é€šè¿‡æ­¤å‡½æ•°ã€‚
+	 * å› æ­¤ï¼Œå¦‚æœæ˜¯ç”±äºæ²¡æœ‰å®šä¹‰put_charè€Œå¼•èµ·çš„é—®é¢˜ï¼Œåˆ™å¯èƒ½æ˜¯writeå‡½æ•°æ²¡æœ‰å†™å…¥ä»»ä½•ä¸€ä¸ªå­—ç¬¦å¼•èµ·ã€‚
+	 * è¯·ç¡®ä¿æ¯æ¬¡è‡³å°‘å†™å…¥ä¸€ä¸ªå­—ç¬¦ã€‚
 	 */
 	int  (*write)(struct tty_struct * tty,
 		      const unsigned char *buf, int count);
 	/**
-	 * ÏòÉè±¸Ğ´ÈëÒ»¸ö×Ö·û£¬ÀıÈç»Ø³µ»»ĞĞ·û¡£
+	 * å‘è®¾å¤‡å†™å…¥ä¸€ä¸ªå­—ç¬¦ï¼Œä¾‹å¦‚å›è½¦æ¢è¡Œç¬¦ã€‚
 	 */
 	void (*put_char)(struct tty_struct *tty, unsigned char ch);
 	/**
-	 * ÒªÇóÇı¶¯³ÌĞò½«Êı¾İ·¢ËÍ¸øÓ²¼ş¡£
+	 * è¦æ±‚é©±åŠ¨ç¨‹åºå°†æ•°æ®å‘é€ç»™ç¡¬ä»¶ã€‚
 	 */
 	void (*flush_chars)(struct tty_struct *tty);
 	/**
-	 * ·µ»Øµ±Ç°»º³åÇø¿ÉÓÃÊıÄ¿¡£
+	 * è¿”å›å½“å‰ç¼“å†²åŒºå¯ç”¨æ•°ç›®ã€‚
 	 */
 	int  (*write_room)(struct tty_struct *tty);
 	/**
-	 * Õâ¸öº¯ÊıÓÃÓÚ·µ»ØÔÚ»º³åÇøÖĞ»¹ÓĞ¶àÉÙ¸öĞèÒª´«ÊäµÄ×Ö·û¡£
-	 * Çı¶¯¿ÉÒÔ²»Ìá¹©´Ëº¯Êı¡£
+	 * è¿™ä¸ªå‡½æ•°ç”¨äºè¿”å›åœ¨ç¼“å†²åŒºä¸­è¿˜æœ‰å¤šå°‘ä¸ªéœ€è¦ä¼ è¾“çš„å­—ç¬¦ã€‚
+	 * é©±åŠ¨å¯ä»¥ä¸æä¾›æ­¤å‡½æ•°ã€‚
 	 */
 	int  (*chars_in_buffer)(struct tty_struct *tty);
 	int  (*ioctl)(struct tty_struct *tty, struct file * file,
@@ -313,7 +313,7 @@ struct tty_driver {
 	void (*hangup)(struct tty_struct *tty);
 	void (*break_ctl)(struct tty_struct *tty, int state);
 	/**
-	 * µ±ttyÇı¶¯³ÌĞòÒªË¢ĞÂÔÚÆäĞ´»º³åÇøÖĞµÄËùÓĞÊı¾İÊ±£¬µ÷ÓÃ´Ëº¯Êı¡£
+	 * å½“ttyé©±åŠ¨ç¨‹åºè¦åˆ·æ–°åœ¨å…¶å†™ç¼“å†²åŒºä¸­çš„æ‰€æœ‰æ•°æ®æ—¶ï¼Œè°ƒç”¨æ­¤å‡½æ•°ã€‚
 	 */
 	void (*flush_buffer)(struct tty_struct *tty);
 	void (*set_ldisc)(struct tty_struct *tty);
@@ -364,22 +364,22 @@ void tty_set_operations(struct tty_driver *driver, struct tty_operations *op);
  *	is only applicable to the pty driver.
  */
 /**
- * ÓÉttyºËĞÄÉèÖÃ£¬±íÊ¾Çı¶¯ÊÇ·ñÒÑ¾­±»°²×°¡£
+ * ç”±ttyæ ¸å¿ƒè®¾ç½®ï¼Œè¡¨ç¤ºé©±åŠ¨æ˜¯å¦å·²ç»è¢«å®‰è£…ã€‚
  */
 #define TTY_DRIVER_INSTALLED		0x0001
 /**
- * µ±ÉèÖÃ´Ë±êÖ¾ºó£¬»áÔÚ×îºóÒ»¸ö½ø³Ì¹Ø±ÕÉè±¸Ê±£¬ttyºËĞÄ¶Ô¶Ë¿ÚÉèÖÃ¸´Î»¡£
+ * å½“è®¾ç½®æ­¤æ ‡å¿—åï¼Œä¼šåœ¨æœ€åä¸€ä¸ªè¿›ç¨‹å…³é—­è®¾å¤‡æ—¶ï¼Œttyæ ¸å¿ƒå¯¹ç«¯å£è®¾ç½®å¤ä½ã€‚
  */
 #define TTY_DRIVER_RESET_TERMIOS	0x0002
 /**
- * ±íÊ¾ttyÇı¶¯³ÌĞòÊ¹ÓÃÆæÅ¼Ğ£Ñé»òÕßÖĞ¶Ï×Ö·ûÏß³Ì¹æ³Ì¡£
- * ÕâÊ¹µÃÏßÂ·¹æ³ÌÄÜÒÔÀíÂÛÓäµÄ·½Ê½½ÓÊÕ×Ö·û£¬ÒòÎªËü²»±Ø¼ì²é´ÓttyÇı¶¯³ÌĞòÄÇÀï½ÓÊÕµÄÃ¿Ò»¸ö×Ö·û¡£
- * Í¨³£ÉèÖÃ¸ÃÎ»¡£
+ * è¡¨ç¤ºttyé©±åŠ¨ç¨‹åºä½¿ç”¨å¥‡å¶æ ¡éªŒæˆ–è€…ä¸­æ–­å­—ç¬¦çº¿ç¨‹è§„ç¨‹ã€‚
+ * è¿™ä½¿å¾—çº¿è·¯è§„ç¨‹èƒ½ä»¥ç†è®ºæ„‰çš„æ–¹å¼æ¥æ”¶å­—ç¬¦ï¼Œå› ä¸ºå®ƒä¸å¿…æ£€æŸ¥ä»ttyé©±åŠ¨ç¨‹åºé‚£é‡Œæ¥æ”¶çš„æ¯ä¸€ä¸ªå­—ç¬¦ã€‚
+ * é€šå¸¸è®¾ç½®è¯¥ä½ã€‚
  */
 #define TTY_DRIVER_REAL_RAW		0x0004
 /**
- * ºËĞÄ²»ĞèÒªÎªttyÇı¶¯³ÌĞò´´½¨ÈÎºÎdevfsÈë¿Ú¡£
- * Õâ¶ÔÓÚĞèÒª¶¯Ì¬´´½¨ºÍÉ¾³ı´ÎÉè±¸µÄÇı¶¯³ÌĞòÀ´Ëµ·Ç³£ÓĞÓÃ¡£
+ * æ ¸å¿ƒä¸éœ€è¦ä¸ºttyé©±åŠ¨ç¨‹åºåˆ›å»ºä»»ä½•devfså…¥å£ã€‚
+ * è¿™å¯¹äºéœ€è¦åŠ¨æ€åˆ›å»ºå’Œåˆ é™¤æ¬¡è®¾å¤‡çš„é©±åŠ¨ç¨‹åºæ¥è¯´éå¸¸æœ‰ç”¨ã€‚
  */
 #define TTY_DRIVER_NO_DEVFS		0x0008
 #define TTY_DRIVER_DEVPTS_MEM		0x0010

@@ -14,16 +14,16 @@ struct pid
 {
 	/* Try to keep pid_chain in the same cacheline as nr for find_pid */
 	/**
-	 * PIDÖµ¡£
+	 * PIDå€¼ã€‚
 	 */
 	int nr;
 	/**
-	 * Á´½ÓÉ¢ÁĞ±íÖĞÏÂÒ»¸öºÍÇ°Ò»¸öÔªËØ¡£
+	 * é“¾æ¥æ•£åˆ—è¡¨ä¸­ä¸‹ä¸€ä¸ªå’Œå‰ä¸€ä¸ªå…ƒç´ ã€‚
 	 */
 	struct hlist_node pid_chain;
 	/* list of pids with the same nr, only one of them is in the hash */
 	/**
-	 * Ã¿¸öPIDµÄ½ø³ÌÁ´±íÍ·¡£
+	 * æ¯ä¸ªPIDçš„è¿›ç¨‹é“¾è¡¨å¤´ã€‚
 	 */
 	struct list_head pid_list;
 };
@@ -50,8 +50,8 @@ extern void FASTCALL(free_pidmap(int));
 extern void switch_exec_pids(struct task_struct *leader, struct task_struct *thread);
 
 /**
- * Ñ­»·×÷ÓÃÓÚÁ´±íÉÏPIDÖµµÈÓÚwhoµÄPIDÁ´±íÉÏ£¨½ø³ÌÁ´±íÉÏÃ¿¸ö½áµã±¾ÉíÒ²ÊÇÒ»¸öÁ´±í£¬°üº¬ÁËPIDÏàÍ¬µÄÏß³Ì×é£©
- * Á´±íÀàĞÍÎªtype,taskÖ¸Ïòµ±Ç°±»É¨ÃèµÄÔªËØµÄ½ø³ÌÃèÊö·û¡£
+ * å¾ªç¯ä½œç”¨äºé“¾è¡¨ä¸ŠPIDå€¼ç­‰äºwhoçš„PIDé“¾è¡¨ä¸Šï¼ˆè¿›ç¨‹é“¾è¡¨ä¸Šæ¯ä¸ªç»“ç‚¹æœ¬èº«ä¹Ÿæ˜¯ä¸€ä¸ªé“¾è¡¨ï¼ŒåŒ…å«äº†PIDç›¸åŒçš„çº¿ç¨‹ç»„ï¼‰
+ * é“¾è¡¨ç±»å‹ä¸ºtype,taskæŒ‡å‘å½“å‰è¢«æ‰«æçš„å…ƒç´ çš„è¿›ç¨‹æè¿°ç¬¦ã€‚
  */
 #define do_each_task_pid(who, type, task)				\
 	if ((task = find_task_by_pid_type(type, who))) {		\

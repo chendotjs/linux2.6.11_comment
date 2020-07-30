@@ -3,31 +3,31 @@
 #ifdef __KERNEL__
 
 /**
- * ×Ö·ûÉè±¸Çý¶¯³ÌÐòÃèÊö·û
+ * å­—ç¬¦è®¾å¤‡é©±åŠ¨ç¨‹åºæè¿°ç¬¦
  */
 struct cdev {
 	/**
-	 * ÄÚÇ¶µÄkobject
+	 * å†…åµŒçš„kobject
 	 */
 	struct kobject kobj;
 	/**
-	 * Ö¸ÏòÊµÏÖÇý¶¯³ÌÐòÄ£¿éµÄÖ¸Õë(Èç¹ûÓÐµÄ»°)
+	 * æŒ‡å‘å®žçŽ°é©±åŠ¨ç¨‹åºæ¨¡å—çš„æŒ‡é’ˆ(å¦‚æžœæœ‰çš„è¯)
 	 */
 	struct module *owner;
 	/**
-	 * Ö¸ÏòÉè±¸Çý¶¯³ÌÐòÎÄ¼þ²Ù×÷±íµÄÖ¸Õë
+	 * æŒ‡å‘è®¾å¤‡é©±åŠ¨ç¨‹åºæ–‡ä»¶æ“ä½œè¡¨çš„æŒ‡é’ˆ
 	 */
 	struct file_operations *ops;
 	/**
-	 * Óë×Ö·ûÉè±¸ÎÄ¼þ¶ÔÓ¦µÄË÷Òý½áµãÁ´±íµÄÍ·
+	 * ä¸Žå­—ç¬¦è®¾å¤‡æ–‡ä»¶å¯¹åº”çš„ç´¢å¼•ç»“ç‚¹é“¾è¡¨çš„å¤´
 	 */
 	struct list_head list;
 	/**
-	 * ¸øÉè±¸Çý¶¯³ÌÐòËù·ÖÅäµÄ³õÊ¼Ö÷Éè±¸³ÊºÍ´ÎÉè±¸ºÅ
+	 * ç»™è®¾å¤‡é©±åŠ¨ç¨‹åºæ‰€åˆ†é…çš„åˆå§‹ä¸»è®¾å¤‡å‘ˆå’Œæ¬¡è®¾å¤‡å·
 	 */
 	dev_t dev;
 	/**
-	 * ¸øÉè±¸Çý¶¯³ÌÐòËù·ÖÅäµÄÉè±¸ºÅ·¶Î§µÄ´óÐ¡
+	 * ç»™è®¾å¤‡é©±åŠ¨ç¨‹åºæ‰€åˆ†é…çš„è®¾å¤‡å·èŒƒå›´çš„å¤§å°
 	 */
 	unsigned int count;
 };

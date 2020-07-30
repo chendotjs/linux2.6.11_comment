@@ -28,13 +28,13 @@ int pcibios_last_bus = -1;
 struct pci_bus *pci_root_bus = NULL;
 struct pci_raw_ops *raw_pci_ops;
 
-/* ��PCI���ÿռ�Ļص����� */
+/* 读PCI配置空间的回调函数 */
 static int pci_read(struct pci_bus *bus, unsigned int devfn, int where, int size, u32 *value)
 {
 	return raw_pci_ops->read(0, bus->number, devfn, where, size, value);
 }
 
-/* дPCI���ÿռ�Ļص����� */
+/* 写PCI配置空间的回调函数 */
 static int pci_write(struct pci_bus *bus, unsigned int devfn, int where, int size, u32 value)
 {
 	return raw_pci_ops->write(0, bus->number, devfn, where, size, value);
@@ -123,16 +123,16 @@ void __devinit  pcibios_fixup_bus(struct pci_bus *b)
 
 
 /**
- * ɨ��������µ������豸
- * 	busnum:	�����ߵı��
+ * 扫描根总线下的所有设备
+ * 	busnum:	根总线的编号
  */
 struct pci_bus * __devinit pcibios_scan_root(int busnum)
 {
 	struct pci_bus *bus = NULL;
 
-	/* �ڸ����������б������и����� */
+	/* 在根总线链表中遍历所有根总线 */
 	while ((bus = pci_find_next_bus(bus)) != NULL) {
-		if (bus->number == busnum) {/* ������еĸ����߱���봫������ȣ�˵���Ѿ�ɨ����ø����ߣ��˳� */
+		if (bus->number == busnum) {/* 如果现有的根总线编号与传参数相等，说明已经扫描过该根总线，退出 */
 			/* Already scanned */
 			return bus;
 		}
@@ -140,21 +140,21 @@ struct pci_bus * __devinit pcibios_scan_root(int busnum)
 
 	printk("PCI: Probing PCI hardware (bus %02x)\n", busnum);
 
-	/* ���������е������豸��������pci_root_ops���������������߽�ʹ�ø����ߵĻص�������ȡ���ÿռ� */
+	/* 遍历总线中的所有设备，并传入pci_root_ops，这样所有子总线将使用根总线的回调方法读取配置空间 */
 	return pci_scan_bus(busnum, &pci_root_ops, NULL);
 }
 
 extern u8 pci_cache_line_size;
 
 /**
- * pcibios_init��������Ҫ�����ǵ���pcibios_resource_survey��
- * pcibios_resource_survey����Ҫ�����Ǽ��PCI�豸ʹ�õĴ洢����IO��Դ��
+ * pcibios_init函数的主要工作是调用pcibios_resource_survey。
+ * pcibios_resource_survey的主要工作是检查PCI设备使用的存储器及IO资源。
  */
 static int __init pcibios_init(void)
 {
 	struct cpuinfo_x86 *c = &boot_cpu_data;
 
-	/* ȷ���Ѿ���ʼ��PCI�ص� */
+	/* 确保已经初始化PCI回调 */
 	if (!raw_pci_ops) {
 		printk("PCI: System does not support PCI\n");
 		return 0;
@@ -165,18 +165,18 @@ static int __init pcibios_init(void)
 	 * and P4. It's also good for 386/486s (which actually have 16)
 	 * as quite a few PCI devices do not support smaller values.
 	 */
-	/* ����PCI�����еĳ��� */
+	/* 设置PCI缓存行的长度 */
 	pci_cache_line_size = 32 >> 2;
 	if (c->x86 >= 6 && c->x86_vendor == X86_VENDOR_AMD)
 		pci_cache_line_size = 64 >> 2;	/* K7 & K8 */
 	else if (c->x86 > 6 && c->x86_vendor == X86_VENDOR_INTEL)
 		pci_cache_line_size = 128 >> 2;	/* P4 */
 
-	/* ΪBIOS���Ѿ�����õ���Դ����ռ� */
+	/* 为BIOS中已经分配好的资源保存空间 */
 	pcibios_resource_survey();
 
 #ifdef CONFIG_PCI_BIOS
-	/* ����û�ָ��������Ҫ���й�����������㷨�������豸ö�٣�����豸������������ */
+	/* 如果用户指定参数想要进行广度优先搜索算法来进行设备枚举，则对设备进行重新排序 */
 	if ((pci_probe & PCI_BIOS_SORT) && !(pci_probe & PCI_NO_SORT))
 		pcibios_sort();
 #endif

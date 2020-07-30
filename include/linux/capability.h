@@ -75,7 +75,7 @@ typedef __u32 kernel_cap_t;
    ownership. */
 
 /**
- * ºöÂÔ¶ÔÎÄ¼şºÍ×éµÄÓµÓĞÕß½øĞĞ¸Ä±äµÄÏŞÖÆ
+ * å¿½ç•¥å¯¹æ–‡ä»¶å’Œç»„çš„æ‹¥æœ‰è€…è¿›è¡Œæ”¹å˜çš„é™åˆ¶
  */
 #define CAP_CHOWN            0
 
@@ -84,7 +84,7 @@ typedef __u32 kernel_cap_t;
    CAP_LINUX_IMMUTABLE. */
 
 /**
- * ºöÂÔÎÄ¼şµÄ·ÃÎÊĞí¿ÉÈ¨
+ * å¿½ç•¥æ–‡ä»¶çš„è®¿é—®è®¸å¯æƒ
  */
 #define CAP_DAC_OVERRIDE     1
 
@@ -93,7 +93,7 @@ typedef __u32 kernel_cap_t;
    defined. Excluding DAC access covered by CAP_LINUX_IMMUTABLE. */
 
 /**
- * ºöÂÔÎÄ¼ş/Ä¿Â¼¶ÁºÍËÑË÷µÄĞí¿ÉÈ¨
+ * å¿½ç•¥æ–‡ä»¶/ç›®å½•è¯»å’Œæœç´¢çš„è®¸å¯æƒ
  */
 #define CAP_DAC_READ_SEARCH  2
     
@@ -102,7 +102,7 @@ typedef __u32 kernel_cap_t;
    is applicable. It doesn't override MAC and DAC restrictions. */
 
 /**
- * Ò»°ãÊÇºöÂÔ¶ÔÎÄ¼şÓµÓĞÕßµÄÈ¨ÏŞ¼ì²é
+ * ä¸€èˆ¬æ˜¯å¿½ç•¥å¯¹æ–‡ä»¶æ‹¥æœ‰è€…çš„æƒé™æ£€æŸ¥
  */
 #define CAP_FOWNER           3
 
@@ -114,7 +114,7 @@ typedef __u32 kernel_cap_t;
    cleared on successful return from chown(2) (not implemented). */
 
 /**
- * ºöÂÔ¶ÔÎÄ¼şsetidºÍsetgid±êÖ¾ÉèÖÃµÄÏŞÖÆ
+ * å¿½ç•¥å¯¹æ–‡ä»¶setidå’Œsetgidæ ‡å¿—è®¾ç½®çš„é™åˆ¶
  */
 #define CAP_FSETID           4
 
@@ -127,7 +127,7 @@ typedef __u32 kernel_cap_t;
    of the process receiving the signal. */
 
 /**
- * ²úÉúĞÅºÅÊ±ÈÆ¹ıÈ¨ÏŞ¼ì²é
+ * äº§ç”Ÿä¿¡å·æ—¶ç»•è¿‡æƒé™æ£€æŸ¥
  */
 #define CAP_KILL             5
 
@@ -136,7 +136,7 @@ typedef __u32 kernel_cap_t;
 /* Allows forged gids on socket credentials passing. */
 
 /**
- * ºöÂÔ¶Ô×é½ø³Ì²Ù×÷µÄÏŞÖÆ
+ * å¿½ç•¥å¯¹ç»„è¿›ç¨‹æ“ä½œçš„é™åˆ¶
  */
 #define CAP_SETGID           6
 
@@ -144,7 +144,7 @@ typedef __u32 kernel_cap_t;
 /* Allows forged pids on socket credentials passing. */
 
 /**
- * ºöÂÔ¶ÔÓÃ»§½ø³Ì²Ù×÷µÄÏŞÖÆ
+ * å¿½ç•¥å¯¹ç”¨æˆ·è¿›ç¨‹æ“ä½œçš„é™åˆ¶
  */
 #define CAP_SETUID           7
 
@@ -157,14 +157,14 @@ typedef __u32 kernel_cap_t;
    remove any capability in your permitted set from any pid */
 
 /**
- * ÔÊĞí¶ÔÆäËû½ø³Ì½øĞĞÈ¨ÄÜ²Ù×÷
+ * å…è®¸å¯¹å…¶ä»–è¿›ç¨‹è¿›è¡Œæƒèƒ½æ“ä½œ
  */
 #define CAP_SETPCAP          8
 
 /* Allow modification of S_IMMUTABLE and S_APPEND file attributes */
 
 /**
- * ÔÊĞíĞŞ¸Ä½ö×·¼ÓºÍ²»¿É±äµÄExt2/Ext3ÎÄ¼ş
+ * å…è®¸ä¿®æ”¹ä»…è¿½åŠ å’Œä¸å¯å˜çš„Ext2/Ext3æ–‡ä»¶
  */
 #define CAP_LINUX_IMMUTABLE  9
 
@@ -172,14 +172,14 @@ typedef __u32 kernel_cap_t;
 /* Allows binding to ATM VCIs below 32 */
 
 /**
- * ÔÊĞí°ó¶¨µ½µÍÓÚ1024µÄTCP/UDPÌ×½Ó×Ö
+ * å…è®¸ç»‘å®šåˆ°ä½äº1024çš„TCP/UDPå¥—æ¥å­—
  */
 #define CAP_NET_BIND_SERVICE 10
 
 /* Allow broadcasting, listen to multicast */
 
 /**
- * ÔÊĞí¹ã²¥Óë×é²¥
+ * å…è®¸å¹¿æ’­ä¸ç»„æ’­
  */
 #define CAP_NET_BROADCAST    11
 
@@ -198,7 +198,7 @@ typedef __u32 kernel_cap_t;
 /* Allow activation of ATM control sockets */
 
 /**
- * ÔÊĞíÒ»°ãµÄÁªÍø¹ÜÀí
+ * å…è®¸ä¸€èˆ¬çš„è”ç½‘ç®¡ç†
  */
 #define CAP_NET_ADMIN        12
 
@@ -206,7 +206,7 @@ typedef __u32 kernel_cap_t;
 /* Allow use of PACKET sockets */
 
 /**
- * ÔÊĞíÊ¹ÓÃRAWºÍPACKETÌ×½Ó×Ö
+ * å…è®¸ä½¿ç”¨RAWå’ŒPACKETå¥—æ¥å­—
  */
 #define CAP_NET_RAW          13
 
@@ -215,21 +215,21 @@ typedef __u32 kernel_cap_t;
    with IPC) */
 
 /**
- * ÔÊĞíÒ³¼ÓËøºÍ¹²ÏíÄÚ´æ¶Î¼ÓËø
+ * å…è®¸é¡µåŠ é”å’Œå…±äº«å†…å­˜æ®µåŠ é”
  */
 #define CAP_IPC_LOCK         14
 
 /* Override IPC ownership checks */
 
 /**
- * Ìø¹ıIPCÓµÓĞÕß¼ì²é
+ * è·³è¿‡IPCæ‹¥æœ‰è€…æ£€æŸ¥
  */
 #define CAP_IPC_OWNER        15
 
 /* Insert and remove kernel modules - modify kernel without limit */
 /* Modify cap_bset */
 /**
- * ÔÊĞí²åÈëºÍĞ¶ÔØÄ£¿é
+ * å…è®¸æ’å…¥å’Œå¸è½½æ¨¡å—
  */
 #define CAP_SYS_MODULE       16
 
@@ -237,28 +237,28 @@ typedef __u32 kernel_cap_t;
 /* Allow sending USB messages to any device via /proc/bus/usb */
 
 /**
- * ÔÊĞíÍ¨¹ıiopermºÍiopl·ÃÎÊIO¶Ë¿Ú
+ * å…è®¸é€šè¿‡iopermå’Œioplè®¿é—®IOç«¯å£
  */
 #define CAP_SYS_RAWIO        17
 
 /* Allow use of chroot() */
 
 /**
- * ÔÊĞíÊ¹ÓÃchroot
+ * å…è®¸ä½¿ç”¨chroot
  */
 #define CAP_SYS_CHROOT       18
 
 /* Allow ptrace() of any process */
 
 /**
- * ÔÊĞí¶ÔÈÎºÎ½ø³ÌÊ¹ÓÃptrace
+ * å…è®¸å¯¹ä»»ä½•è¿›ç¨‹ä½¿ç”¨ptrace
  */
 #define CAP_SYS_PTRACE       19
 
 /* Allow configuration of process accounting */
 
 /**
- * ÔÊĞíÅäÖÃ½ø³Ì¼ÇÕÊ
+ * å…è®¸é…ç½®è¿›ç¨‹è®°å¸
  */
 #define CAP_SYS_PACCT        20
 
@@ -300,14 +300,14 @@ typedef __u32 kernel_cap_t;
 /* Allow setting encryption key on loopback filesystem */
 
 /**
- * ÔÊĞíÒ»°ãµÄÏµÍ³¹ÜÀí
+ * å…è®¸ä¸€èˆ¬çš„ç³»ç»Ÿç®¡ç†
  */
 #define CAP_SYS_ADMIN        21
 
 /* Allow use of reboot() */
 
 /**
- * ÔÊĞíÊ¹ÓÃreboot
+ * å…è®¸ä½¿ç”¨reboot
  */
 #define CAP_SYS_BOOT         22
 
@@ -319,7 +319,7 @@ typedef __u32 kernel_cap_t;
 /* Allow setting cpu affinity on other processes */
 
 /**
- * Ìø¹ıniceºÍsetpriorityÏµÍ³µ÷ÓÃµÄÈ¨ÏŞ¼ì²é£¬²¢ÔÊĞí´´½¨ÊµÊ±½ø³Ì¡£
+ * è·³è¿‡niceå’Œsetpriorityç³»ç»Ÿè°ƒç”¨çš„æƒé™æ£€æŸ¥ï¼Œå¹¶å…è®¸åˆ›å»ºå®æ—¶è¿›ç¨‹ã€‚
  */
 #define CAP_SYS_NICE         23
 
@@ -336,7 +336,7 @@ typedef __u32 kernel_cap_t;
 /* Override max number of keymaps */
 
 /**
- * ÔÊĞíÔö¼Ó×ÊÔ´ÏŞÖÆ
+ * å…è®¸å¢åŠ èµ„æºé™åˆ¶
  */
 #define CAP_SYS_RESOURCE     24
 
@@ -345,7 +345,7 @@ typedef __u32 kernel_cap_t;
 /* Allow setting the real-time clock */
 
 /**
- * ÔÊĞíÏµÍ³Ê±ÖÓºÍÊµÊ±Ê±ÖÓµÄ²Ù×÷
+ * å…è®¸ç³»ç»Ÿæ—¶é’Ÿå’Œå®æ—¶æ—¶é’Ÿçš„æ“ä½œ
  */
 #define CAP_SYS_TIME         25
 
@@ -353,31 +353,31 @@ typedef __u32 kernel_cap_t;
 /* Allow vhangup() of tty */
 
 /**
- * ÔÊĞíÅäÖÃÖÕ¶Ë²¢Ö´ĞĞvhangupÏµÍ³µ÷ÓÃ¡£
+ * å…è®¸é…ç½®ç»ˆç«¯å¹¶æ‰§è¡Œvhangupç³»ç»Ÿè°ƒç”¨ã€‚
  */
 #define CAP_SYS_TTY_CONFIG   26
 
 /* Allow the privileged aspects of mknod() */
 
 /**
- * ÔÊĞíÓĞÌØÈ¨µÄmknod²Ù×÷
+ * å…è®¸æœ‰ç‰¹æƒçš„mknodæ“ä½œ
  */
 #define CAP_MKNOD            27
 
 /* Allow taking of leases on files */
 
 /**
- * ÔÊĞí¶ÔÎÄ¼ş½øĞĞ×â½è¡£
+ * å…è®¸å¯¹æ–‡ä»¶è¿›è¡Œç§Ÿå€Ÿã€‚
  */
 #define CAP_LEASE            28
 
 /**
- * Í¨¹ıÔÚnetlinkÌ×½Ó×Ö½øĞĞĞ´Èë¶ø²úÉúÉó¼ÆÏûÏ¢
+ * é€šè¿‡åœ¨netlinkå¥—æ¥å­—è¿›è¡Œå†™å…¥è€Œäº§ç”Ÿå®¡è®¡æ¶ˆæ¯
  */
 #define CAP_AUDIT_WRITE      29
 
 /**
- * Í¨¹ınetlinkÌ×½Ó×Ö¿ØÖÆÄÚºËÉó¼Æ²Ù×÷
+ * é€šè¿‡netlinkå¥—æ¥å­—æ§åˆ¶å†…æ ¸å®¡è®¡æ“ä½œ
  */
 #define CAP_AUDIT_CONTROL    30
 

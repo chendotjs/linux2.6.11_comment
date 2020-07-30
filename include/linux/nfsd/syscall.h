@@ -30,31 +30,31 @@
  * These are the commands understood by nfsctl().
  */
 /**
- * Æô¶¯Server
+ * å¯åŠ¨Server
  */
 #define NFSCTL_SVC		0	/* This is a server process. */
 /**
- * Ôö¼ÓÒ»¸öNFS client 
+ * å¢åŠ ä¸€ä¸ªNFS client 
  */
 #define NFSCTL_ADDCLIENT	1	/* Add an NFS client. */
 /**
- * É¾³ıÒ»¸öNFS client. 
+ * åˆ é™¤ä¸€ä¸ªNFS client. 
  */
 #define NFSCTL_DELCLIENT	2	/* Remove an NFS client. */
 /**
- * Êä³öÒ»¸öÎÄ¼şÏµÍ³ 
+ * è¾“å‡ºä¸€ä¸ªæ–‡ä»¶ç³»ç»Ÿ 
  */
 #define NFSCTL_EXPORT		3	/* export a file system. */
 /** 
- * É¾³ıÒ»¸öÒÑÊä³öµÄÎÄ¼şÏµÍ³. 
+ * åˆ é™¤ä¸€ä¸ªå·²è¾“å‡ºçš„æ–‡ä»¶ç³»ç»Ÿ. 
  */
 #define NFSCTL_UNEXPORT		4	/* unexport a file system. */
 /**
- * ¸üĞÂÒ»¸ö¿Í»§µÄuid/gid 
+ * æ›´æ–°ä¸€ä¸ªå®¢æˆ·çš„uid/gid 
  */
 /*#define NFSCTL_UGIDUPDATE	5	/ * update a client's uid/gid map. DISCARDED */
 /**
- * µÃµ½Ò»¸öÎÄ¼ş¾ä±ú(mountdÊ¹ÓÃ) 
+ * å¾—åˆ°ä¸€ä¸ªæ–‡ä»¶å¥æŸ„(mountdä½¿ç”¨) 
  */
 /*#define NFSCTL_GETFH		6	/ * get an fh by ino DISCARDED */
 #define NFSCTL_GETFD		7	/* get an fh by path (used by mountd) */
@@ -105,7 +105,7 @@ struct nfsctl_fsparm {
  * This is the argument union.
  */
 /**
- * ¶ÔnfsservctlÏµÍ³µ÷ÓÃµÄ¸÷ÖÖÃüÁî£¬±¾½á¹¹±íÊ¾Ã¿ÖÖÃüÁîµÄ²ÎÊı¡£
+ * å¯¹nfsservctlç³»ç»Ÿè°ƒç”¨çš„å„ç§å‘½ä»¤ï¼Œæœ¬ç»“æ„è¡¨ç¤ºæ¯ç§å‘½ä»¤çš„å‚æ•°ã€‚
  */
 struct nfsctl_arg {
 	int			ca_version;	/* safeguard */

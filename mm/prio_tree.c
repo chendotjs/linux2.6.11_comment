@@ -95,7 +95,7 @@ void vma_prio_tree_add(struct vm_area_struct *vma, struct vm_area_struct *old)
 }
 
 /**
- * ÔÚÓÅÏÈËÑË÷Ê÷ÖĞ²åÈëvma½Úµã¡£
+ * åœ¨ä¼˜å…ˆæœç´¢æ ‘ä¸­æ’å…¥vmaèŠ‚ç‚¹ã€‚
  */
 void vma_prio_tree_insert(struct vm_area_struct *vma,
 			  struct prio_tree_root *root)
@@ -114,7 +114,7 @@ void vma_prio_tree_insert(struct vm_area_struct *vma,
 }
 
 /**
- * ÔÚÓÅÏÈËÑË÷Ê÷ÖĞÉ¾³ıvma½Úµã¡£
+ * åœ¨ä¼˜å…ˆæœç´¢æ ‘ä¸­åˆ é™¤vmaèŠ‚ç‚¹ã€‚
  */
 void vma_prio_tree_remove(struct vm_area_struct *vma,
 			  struct prio_tree_root *root)

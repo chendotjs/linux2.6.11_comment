@@ -43,23 +43,23 @@ static int pirq_penalty[16] = {
 	0, 0, 0, 0, 1000, 100000, 100000, 100000
 };
 
-/* ÖĞ¶ÏÂ·ÓÉÇı¶¯ */
+/* ä¸­æ–­è·¯ç”±é©±åŠ¨ */
 struct irq_router {
-	/* ÖĞ¶ÏÂ·ÓÉÇı¶¯µÄÃû³Æ */
+	/* ä¸­æ–­è·¯ç”±é©±åŠ¨çš„åç§° */
 	char *name;
-	/* ³§ÉÌºÍÉè±¸ID */
+	/* å‚å•†å’Œè®¾å¤‡ID */
 	u16 vendor, device;
-	/* »ñµÃPCIÉè±¸µÄÖĞ¶ÏºÅ */
+	/* è·å¾—PCIè®¾å¤‡çš„ä¸­æ–­å· */
 	int (*get)(struct pci_dev *router, struct pci_dev *dev, int pirq);
-	/* ÉèÖÃPCIÉè±¸µÄÖĞ¶ÏºÅ */
+	/* è®¾ç½®PCIè®¾å¤‡çš„ä¸­æ–­å· */
 	int (*set)(struct pci_dev *router, struct pci_dev *dev, int pirq, int new);
 };
 
-/* ÖĞ¶ÏÂ·ÓÉÇı¶¯¾ä±ú */
+/* ä¸­æ–­è·¯ç”±é©±åŠ¨å¥æŸ„ */
 struct irq_router_handler {
-	/* ³§ÉÌID */
+	/* å‚å•†ID */
 	u16 vendor;
-	/* Ì½²âº¯Êı£¬·µ»Ø1±íÊ¾ÕÒµ½PCI IRQÂ·ÓÉÆ÷£¬ÌîÈëÆäÃû×Ö¼°get,set»Øµ÷º¯Êı£¬·ñÔò·µ»Ø0 */
+	/* æ¢æµ‹å‡½æ•°ï¼Œè¿”å›1è¡¨ç¤ºæ‰¾åˆ°PCI IRQè·¯ç”±å™¨ï¼Œå¡«å…¥å…¶åå­—åŠget,setå›è°ƒå‡½æ•°ï¼Œå¦åˆ™è¿”å›0 */
 	int (*probe)(struct irq_router *r, struct pci_dev *router, u16 device);
 };
 
@@ -68,7 +68,7 @@ int (*pcibios_enable_irq)(struct pci_dev *dev) = NULL;
 /*
  *  Search 0xf0000 -- 0xfffff for the PCI IRQ Routing Table.
  */
-/* ¸ù¾İÌØÕ÷ÔÚROMÖĞ²éÕÒÖĞ¶ÏÂ·ÓÉ±í */
+/* æ ¹æ®ç‰¹å¾åœ¨ROMä¸­æŸ¥æ‰¾ä¸­æ–­è·¯ç”±è¡¨ */
 static struct irq_routing_table * __init pirq_find_routing_table(void)
 {
 	u8 *addr;
@@ -76,15 +76,15 @@ static struct irq_routing_table * __init pirq_find_routing_table(void)
 	int i;
 	u8 sum;
 
-	/* 0xF0000-0x100000Ö®¼äµÄµØÖ·ÊÇBIOS ROMÓ³ÉäÇø */
+	/* 0xF0000-0x100000ä¹‹é—´çš„åœ°å€æ˜¯BIOS ROMæ˜ å°„åŒº */
 	for(addr = (u8 *) __va(0xf0000); addr < (u8 *) __va(0x100000); addr += 16) {
 		rt = (struct irq_routing_table *) addr;
-		if (rt->signature != PIRQ_SIGNATURE ||/* ¼ì²é¸ÃµØÖ·ÊÇ·ñÎªÒ»¸öÓĞĞ§µÄÖĞ¶ÏÂ·ÓÉ±í */
+		if (rt->signature != PIRQ_SIGNATURE ||/* æ£€æŸ¥è¯¥åœ°å€æ˜¯å¦ä¸ºä¸€ä¸ªæœ‰æ•ˆçš„ä¸­æ–­è·¯ç”±è¡¨ */
 		    rt->version != PIRQ_VERSION ||
 		    rt->size % 16 ||
 		    rt->size < sizeof(struct irq_routing_table))
 			continue;
-		/* ¼ì²éĞ£ÑéºÍ */
+		/* æ£€æŸ¥æ ¡éªŒå’Œ */
 		sum = 0;
 		for(i=0; i<rt->size; i++)
 			sum += addr[i];
@@ -472,7 +472,7 @@ static int pirq_bios_set(struct pci_dev *router, struct pci_dev *dev, int pirq, 
 
 #endif
 
-/* intelÖĞ¶ÏÂ·ÓÉÆ÷Ì½²âº¯Êı */
+/* intelä¸­æ–­è·¯ç”±å™¨æ¢æµ‹å‡½æ•° */
 static __init int intel_router_probe(struct irq_router *r, struct pci_dev *router, u16 device)
 {
 	static struct pci_device_id pirq_440gx[] = {
@@ -646,7 +646,7 @@ static __init int amd_router_probe(struct irq_router *r, struct pci_dev *router,
 	return 1;
 }
 
-/* ÖĞ¶ÏÂ·ÓÉÆ÷¾ä±ú±í */
+/* ä¸­æ–­è·¯ç”±å™¨å¥æŸ„è¡¨ */
 static __initdata struct irq_router_handler pirq_routers[] = {
 	{ PCI_VENDOR_ID_INTEL, intel_router_probe },
 	{ PCI_VENDOR_ID_AL, ali_router_probe },
@@ -669,16 +669,16 @@ static struct pci_dev *pirq_router_dev;
  *	FIXME: should we have an option to say "generic for
  *	chipset" ?
  */
-/* ²éÕÒÖĞ¶ÏÂ·ÓÉÇı¶¯ */
+/* æŸ¥æ‰¾ä¸­æ–­è·¯ç”±é©±åŠ¨ */
 static void __init pirq_find_router(struct irq_router *r)
 {
 	struct irq_routing_table *rt = pirq_table;
 	struct irq_router_handler *h;
 
 #ifdef CONFIG_PCI_BIOS
-	if (!rt->signature) {/* Ç©ÃûÎª¿Õ£¬ËµÃ÷ÊÇÍ¨¹ıBIOS32µÃµ½ÖĞ¶ÏÂ·ÓÉ±í */
+	if (!rt->signature) {/* ç­¾åä¸ºç©ºï¼Œè¯´æ˜æ˜¯é€šè¿‡BIOS32å¾—åˆ°ä¸­æ–­è·¯ç”±è¡¨ */
 		printk(KERN_INFO "PCI: Using BIOS for IRQ routing\n");
-		/* Í¨¹ıBIOS32À´ÉèÖÃPCIÉè±¸µÄÖĞ¶ÏºÅ */
+		/* é€šè¿‡BIOS32æ¥è®¾ç½®PCIè®¾å¤‡çš„ä¸­æ–­å· */
 		r->set = pirq_bios_set;
 		r->name = "BIOS";
 		return;
@@ -686,28 +686,28 @@ static void __init pirq_find_router(struct irq_router *r)
 #endif
 
 	/* Default unless a driver reloads it */
-	r->name = "default";/* ÉèÖÃÇı¶¯³õÖµ */
+	r->name = "default";/* è®¾ç½®é©±åŠ¨åˆå€¼ */
 	r->get = NULL;
 	r->set = NULL;
 	
 	DBG("PCI: Attempting to find IRQ router for %04x:%04x\n",
 	    rt->rtr_vendor, rt->rtr_device);
 
-	/* ¸ù¾İÖĞ¶ÏÂ·ÓÉÆ÷µÄ×ÜÏß±àºÅºÍÉè±¸ºÅÕÒµ½PCIÉè±¸ */
+	/* æ ¹æ®ä¸­æ–­è·¯ç”±å™¨çš„æ€»çº¿ç¼–å·å’Œè®¾å¤‡å·æ‰¾åˆ°PCIè®¾å¤‡ */
 	pirq_router_dev = pci_find_slot(rt->rtr_bus, rt->rtr_devfn);
 	if (!pirq_router_dev) {
 		DBG("PCI: Interrupt router not found at %02x:%02x\n", rt->rtr_bus, rt->rtr_devfn);
 		return;
 	}
 
-	/* ÔÚËùÓĞÂ·ÓÉÇı¶¯ÖĞËÑË÷ */
+	/* åœ¨æ‰€æœ‰è·¯ç”±é©±åŠ¨ä¸­æœç´¢ */
 	for( h = pirq_routers; h->vendor; h++) {
 		/* First look for a router match */
-		/* ÓëÂ·ÓÉ±íÖĞµÄ³§ÉÌIDÆ¥Åä */
+		/* ä¸è·¯ç”±è¡¨ä¸­çš„å‚å•†IDåŒ¹é… */
 		if (rt->rtr_vendor == h->vendor && h->probe(r, pirq_router_dev, rt->rtr_device))
 			break;
 		/* Fall back to a device match */
-		/* ÓëÅäÖÃ¿Õ¼äÖĞµÄ³§ÉÌIDÆ¥Åä */
+		/* ä¸é…ç½®ç©ºé—´ä¸­çš„å‚å•†IDåŒ¹é… */
 		if (pirq_router_dev->vendor == h->vendor && h->probe(r, pirq_router_dev, pirq_router_dev->device))
 			break;
 	}
@@ -730,7 +730,7 @@ static struct irq_info *pirq_get_info(struct pci_dev *dev)
 	return NULL;
 }
 
-/* ÎªPCIÉè±¸·ÖÅäÖĞ¶ÏºÅ(Èç¹ûËüÓĞÖĞ¶ÏÒı½ÅµÄ»°) */
+/* ä¸ºPCIè®¾å¤‡åˆ†é…ä¸­æ–­å·(å¦‚æœå®ƒæœ‰ä¸­æ–­å¼•è„šçš„è¯) */
 static int pcibios_lookup_irq(struct pci_dev *dev, int assign)
 {
 	u8 pin;
@@ -743,7 +743,7 @@ static int pcibios_lookup_irq(struct pci_dev *dev, int assign)
 	char *msg = NULL;
 
 	/* Find IRQ pin */
-	/* »ñµÃÖĞ¶ÏÒı½Å±àºÅ */
+	/* è·å¾—ä¸­æ–­å¼•è„šç¼–å· */
 	pci_read_config_byte(dev, PCI_INTERRUPT_PIN, &pin);
 	if (!pin) {
 		DBG(" -> no interrupt pin\n");
@@ -753,17 +753,17 @@ static int pcibios_lookup_irq(struct pci_dev *dev, int assign)
 
 	/* Find IRQ routing entry */
 
-	if (!pirq_table)/* Ã»ÓĞ·¢ÏÖÂ·ÓÉ±í£¬ÍË³ö */
+	if (!pirq_table)/* æ²¡æœ‰å‘ç°è·¯ç”±è¡¨ï¼Œé€€å‡º */
 		return 0;
 	
 	DBG("IRQ for %s[%c]", pci_name(dev), 'A' + pin);
-	/* ÔÚÖĞ¶ÏÂ·ÓÉ±íÖĞ²éÕÒÕâ¸öPCIÉè±¸¶ÔÓ¦µÄÏî */
+	/* åœ¨ä¸­æ–­è·¯ç”±è¡¨ä¸­æŸ¥æ‰¾è¿™ä¸ªPCIè®¾å¤‡å¯¹åº”çš„é¡¹ */
 	info = pirq_get_info(dev);
 	if (!info) {
 		DBG(" -> not found in routing table\n");
 		return 0;
 	}
-	/* ÔÚÂ·ÓÉ±íÖĞ»ñµÃÒı½ÅµÄÁ´Â·ÖµºÍÔÊĞíÊ¹ÓÃµÄIRQÎ»Í¼ */
+	/* åœ¨è·¯ç”±è¡¨ä¸­è·å¾—å¼•è„šçš„é“¾è·¯å€¼å’Œå…è®¸ä½¿ç”¨çš„IRQä½å›¾ */
 	pirq = info->irq[pin].link;
 	mask = info->irq[pin].bitmap;
 	if (!pirq) {
@@ -771,7 +771,7 @@ static int pcibios_lookup_irq(struct pci_dev *dev, int assign)
 		return 0;
 	}
 	DBG(" -> PIRQ %02x, mask %04x, excl %04x", pirq, mask, pirq_table->exclusive_irqs);
-	/* ²Ù×÷ÏµÍ³²»ÔÊĞíÊ¹ÓÃ0,1,2,3Õâ¼¸¸öÖĞ¶ÏºÅ */
+	/* æ“ä½œç³»ç»Ÿä¸å…è®¸ä½¿ç”¨0,1,2,3è¿™å‡ ä¸ªä¸­æ–­å· */
 	mask &= pcibios_irq_mask;
 
 	/* Work around broken HP Pavilion Notebooks which assign USB to
@@ -784,7 +784,7 @@ static int pcibios_lookup_irq(struct pci_dev *dev, int assign)
 	}
 
 	/* same for Acer Travelmate 360, but with CB and irq 11 -> 10 */
-	/* ¶ÔAcerµçÄÔ½øĞĞÌØÊâµÄ´¦Àí */
+	/* å¯¹Acerç”µè„‘è¿›è¡Œç‰¹æ®Šçš„å¤„ç† */
 	if (acer_tm360_irqrouting && dev->irq == 11 && dev->vendor == PCI_VENDOR_ID_O2) {
 		pirq = 0x68;
 		mask = 0x400;
@@ -797,15 +797,15 @@ static int pcibios_lookup_irq(struct pci_dev *dev, int assign)
 	 * reported by the device if possible.
 	 */
 	newirq = dev->irq;
-	if (!((1 << newirq) & mask)) {/* ¾¡¿ÉÄÜÊ¹ÓÃÉè±¸ÖĞµÄirqÖµ£¬Èç¹ûµ±Ç°Öµ²»ÔÚÔÊĞíµÄ·¶Î§ÄÚ */
+	if (!((1 << newirq) & mask)) {/* å°½å¯èƒ½ä½¿ç”¨è®¾å¤‡ä¸­çš„irqå€¼ï¼Œå¦‚æœå½“å‰å€¼ä¸åœ¨å…è®¸çš„èŒƒå›´å†… */
 		if ( pci_probe & PCI_USE_PIRQ_MASK) newirq = 0;
 		else printk(KERN_WARNING "PCI: IRQ %i for device %s doesn't match PIRQ mask - try pci=usepirqmask\n", newirq, pci_name(dev));
 	}
-	if (!newirq && assign) {/* ÉÏ²ãµ÷ÓÃÕßÏ£ÍûÖ¸¶¨Ò»¸öÖĞ¶ÏºÅ */
-		for (i = 0; i < 16; i++) {/* ±éÀú16¸öÖĞ¶ÏºÅ£¬ÕÒµ½×îÊÊºÏµÄÖĞ¶Ï */
-			if (!(mask & (1 << i)))/* ²»ÄÜÊ¹ÓÃ¸ÃÖĞ¶ÏºÅ */
+	if (!newirq && assign) {/* ä¸Šå±‚è°ƒç”¨è€…å¸Œæœ›æŒ‡å®šä¸€ä¸ªä¸­æ–­å· */
+		for (i = 0; i < 16; i++) {/* éå†16ä¸ªä¸­æ–­å·ï¼Œæ‰¾åˆ°æœ€é€‚åˆçš„ä¸­æ–­ */
+			if (!(mask & (1 << i)))/* ä¸èƒ½ä½¿ç”¨è¯¥ä¸­æ–­å· */
 				continue;
-			/* ÕÒµ½Ò»¸öÔÊĞíÊ¹ÓÃµÄÖĞ¶ÏºÅ£¬ÒÔ¼°×îÓÅµÄÖĞ¶ÏºÅ */
+			/* æ‰¾åˆ°ä¸€ä¸ªå…è®¸ä½¿ç”¨çš„ä¸­æ–­å·ï¼Œä»¥åŠæœ€ä¼˜çš„ä¸­æ–­å· */
 			if (pirq_penalty[i] < pirq_penalty[newirq] && can_request_irq(i, SA_SHIRQ))
 				newirq = i;
 		}
@@ -813,16 +813,16 @@ static int pcibios_lookup_irq(struct pci_dev *dev, int assign)
 	DBG(" -> newirq=%d", newirq);
 
 	/* Check if it is hardcoded */
-	if ((pirq & 0xf0) == 0xf0) {/* Ó²Á¬½Ó£¬¼´Ö±½ÓÁ¬½Óµ½8259AÒı½ÅÉÏ£¬ÖĞ¶ÏºÅ¼´Îªºó4Î» */
+	if ((pirq & 0xf0) == 0xf0) {/* ç¡¬è¿æ¥ï¼Œå³ç›´æ¥è¿æ¥åˆ°8259Aå¼•è„šä¸Šï¼Œä¸­æ–­å·å³ä¸ºå4ä½ */
 		irq = pirq & 0xf;
 		DBG(" -> hardcoded IRQ %d\n", irq);
 		msg = "Hardcoded";
-	/* µ÷ÓÃÇı¶¯µÄgetº¯Êı£¬·¢ÏÖËüÒÑ¾­·ÖÅäÁËÖĞ¶ÏºÅ */
+	/* è°ƒç”¨é©±åŠ¨çš„getå‡½æ•°ï¼Œå‘ç°å®ƒå·²ç»åˆ†é…äº†ä¸­æ–­å· */
 	} else if ( r->get && (irq = r->get(pirq_router_dev, dev, pirq)) && \
 	((!(pci_probe & PCI_USE_PIRQ_MASK)) || ((1 << irq) & mask)) ) {
 		DBG(" -> got IRQ %d\n", irq);
 		msg = "Found";
-	/* µ÷ÓÃÇı¶¯µÄsetº¯ÊıÉèÖÃÎÒÃÇÎªËüÑ¡ÔñµÄÖĞ¶ÏºÅ */
+	/* è°ƒç”¨é©±åŠ¨çš„setå‡½æ•°è®¾ç½®æˆ‘ä»¬ä¸ºå®ƒé€‰æ‹©çš„ä¸­æ–­å· */
 	} else if (newirq && r->set && (dev->class >> 8) != PCI_CLASS_DISPLAY_VGA) {
 		DBG(" -> assigning IRQ %d", newirq);
 		if (r->set(pirq_router_dev, dev, pirq, newirq)) {
@@ -833,9 +833,9 @@ static int pcibios_lookup_irq(struct pci_dev *dev, int assign)
 		}
 	}
 
-	if (!irq) {/* Èç¹ûµ½ÏÖÔÚ¶¼»¹Ã»ÓĞ×¼±¸ºÃÖĞ¶ÏºÅ */
+	if (!irq) {/* å¦‚æœåˆ°ç°åœ¨éƒ½è¿˜æ²¡æœ‰å‡†å¤‡å¥½ä¸­æ–­å· */
 		DBG(" ... failed\n");
-		if (newirq && mask == (1 << newirq)) {/* ÕâÊÇÎ¨Ò»ÔÊĞíÊ¹ÓÃµÄÖĞ¶ÏºÅ£¬Ôò³¢ÊÔÊ¹ÓÃËü */
+		if (newirq && mask == (1 << newirq)) {/* è¿™æ˜¯å”¯ä¸€å…è®¸ä½¿ç”¨çš„ä¸­æ–­å·ï¼Œåˆ™å°è¯•ä½¿ç”¨å®ƒ */
 			msg = "Guessed";
 			irq = newirq;
 		} else
@@ -844,23 +844,23 @@ static int pcibios_lookup_irq(struct pci_dev *dev, int assign)
 	printk(KERN_INFO "PCI: %s IRQ %d for device %s\n", msg, irq, pci_name(dev));
 
 	/* Update IRQ for all devices with the same pirq value */
-	/* ±éÀúËùÓĞÉè±¸ */
+	/* éå†æ‰€æœ‰è®¾å¤‡ */
 	while ((dev2 = pci_get_device(PCI_ANY_ID, PCI_ANY_ID, dev2)) != NULL) {
-		/* ¶ÁÈ¡Éè±¸µÄÖĞ¶ÏÒı½Å */
+		/* è¯»å–è®¾å¤‡çš„ä¸­æ–­å¼•è„š */
 		pci_read_config_byte(dev2, PCI_INTERRUPT_PIN, &pin);
 		if (!pin)
 			continue;
 		pin--;
-		/* »ñµÃÉè±¸µÄÖĞ¶ÏÂ·ÓÉ */
+		/* è·å¾—è®¾å¤‡çš„ä¸­æ–­è·¯ç”± */
 		info = pirq_get_info(dev2);
 		if (!info)
 			continue;
-		/* ¸ÃÉè±¸µÄÁ´Â·ÖµÓë±¾Éè±¸ÏàÍ¬ */
+		/* è¯¥è®¾å¤‡çš„é“¾è·¯å€¼ä¸æœ¬è®¾å¤‡ç›¸åŒ */
 		if (info->irq[pin].link == pirq) {
 			/* We refuse to override the dev->irq information. Give a warning! */
 		    	if ( dev2->irq && dev2->irq != irq && \
 			(!(pci_probe & PCI_USE_PIRQ_MASK) || \
-			((1 << dev2->irq) & mask)) ) {/* ¸ÃÉè±¸µÄÖĞ¶ÏºÅÓë±¾Éè±¸²»Ò»Ñù£¬ËµÃ÷Â·ÓÉ³åÍ» */
+			((1 << dev2->irq) & mask)) ) {/* è¯¥è®¾å¤‡çš„ä¸­æ–­å·ä¸æœ¬è®¾å¤‡ä¸ä¸€æ ·ï¼Œè¯´æ˜è·¯ç”±å†²çª */
 #ifndef CONFIG_PCI_MSI
 		    		printk(KERN_INFO "IRQ routing conflict for %s, have irq %d, want irq %d\n",
 				       pci_name(dev2), dev2->irq, irq);
@@ -876,35 +876,35 @@ static int pcibios_lookup_irq(struct pci_dev *dev, int assign)
 	return 1;
 }
 
-/* ´¦ÀíISA irq */
+/* å¤„ç†ISA irq */
 static void __init pcibios_fixup_irqs(void)
 {
 	struct pci_dev *dev = NULL;
 	u8 pin;
 
 	DBG("PCI: IRQ fixup\n");
-	/* ±¾Ñ­»·Í³¼ÆÃ¿¸öISA IRQµÄÍ³¼ÆÇé¿ö£¬×÷ÎªºóĞø·ÖÅäµÄÒÀ¾İ */
+	/* æœ¬å¾ªç¯ç»Ÿè®¡æ¯ä¸ªISA IRQçš„ç»Ÿè®¡æƒ…å†µï¼Œä½œä¸ºåç»­åˆ†é…çš„ä¾æ® */
 	while ((dev = pci_get_device(PCI_ANY_ID, PCI_ANY_ID, dev)) != NULL) {
 		/*
 		 * If the BIOS has set an out of range IRQ number, just ignore it.
 		 * Also keep track of which IRQ's are already in use.
 		 */
-		if (dev->irq >= 16) {/* BIOSÖĞÉèÖÃµÄirqºÅ³¬³ö·¶Î§£¬¾ÀÕı */
+		if (dev->irq >= 16) {/* BIOSä¸­è®¾ç½®çš„irqå·è¶…å‡ºèŒƒå›´ï¼Œçº æ­£ */
 			DBG("%s: ignoring bogus IRQ %d\n", pci_name(dev), dev->irq);
 			dev->irq = 0;
 		}
 		/* If the IRQ is already assigned to a PCI device, ignore its ISA use penalty */
-		/* ¸ÃIRQÒÑ¾­±»·ÖÅä¸øPCI£¬¾ÍÈÃËü²ÎÓëµ½Õı³£µÄ·ÖÅä¹æÔòÖĞ */
+		/* è¯¥IRQå·²ç»è¢«åˆ†é…ç»™PCIï¼Œå°±è®©å®ƒå‚ä¸åˆ°æ­£å¸¸çš„åˆ†é…è§„åˆ™ä¸­ */
 		if (pirq_penalty[dev->irq] >= 100 && pirq_penalty[dev->irq] < 100000)
 			pirq_penalty[dev->irq] = 0;
-		/* ÖĞ¶ÏÊ¹ÓÃ¼ÆÊı¼Ó1 */
+		/* ä¸­æ–­ä½¿ç”¨è®¡æ•°åŠ 1 */
 		pirq_penalty[dev->irq]++;
 	}
 
 	dev = NULL;
-	/* ÎªÃ»ÓĞ·ÖÅäIRQµÄPCIÉè±¸Ö´ĞĞ·ÖÅä */
+	/* ä¸ºæ²¡æœ‰åˆ†é…IRQçš„PCIè®¾å¤‡æ‰§è¡Œåˆ†é… */
 	while ((dev = pci_get_device(PCI_ANY_ID, PCI_ANY_ID, dev)) != NULL) {
-		/* ¶ÁÈ¡¸ÃÉè±¸µÄÖĞ¶ÏÒı½Å */
+		/* è¯»å–è¯¥è®¾å¤‡çš„ä¸­æ–­å¼•è„š */
 		pci_read_config_byte(dev, PCI_INTERRUPT_PIN, &pin);
 #ifdef CONFIG_X86_IO_APIC
 		/*
@@ -948,8 +948,8 @@ static void __init pcibios_fixup_irqs(void)
 		/*
 		 * Still no IRQ? Try to lookup one...
 		 */
-		if (pin && !dev->irq)/* ËüÓĞÖĞ¶ÏÒı½Åµ«ÊÇÃ»ÓĞÖ¸¶¨irqºÅ */
-			pcibios_lookup_irq(dev, 0);/* ÎªPCIÉè±¸·ÖÅäÖĞ¶ÏºÅ */
+		if (pin && !dev->irq)/* å®ƒæœ‰ä¸­æ–­å¼•è„šä½†æ˜¯æ²¡æœ‰æŒ‡å®širqå· */
+			pcibios_lookup_irq(dev, 0);/* ä¸ºPCIè®¾å¤‡åˆ†é…ä¸­æ–­å· */
 	}
 }
 
@@ -1001,33 +1001,33 @@ static struct dmi_system_id __initdata pciirq_dmi_table[] = {
 	{ }
 };
 
-/* PCIÖĞ¶ÏÂ·ÓÉ³õÊ¼»¯ */
+/* PCIä¸­æ–­è·¯ç”±åˆå§‹åŒ– */
 static int __init pcibios_irq_init(void)
 {
 	DBG("PCI: IRQ init\n");
 
-	/* ·ÀÖ¹¶à´Î³õÊ¼»¯ */
+	/* é˜²æ­¢å¤šæ¬¡åˆå§‹åŒ– */
 	if (pcibios_enable_irq || raw_pci_ops == NULL)
 		return 0;
 
 	dmi_check_system(pciirq_dmi_table);
 
-	/* ²éÕÒÖĞ¶ÏÂ·ÓÉ±í */
+	/* æŸ¥æ‰¾ä¸­æ–­è·¯ç”±è¡¨ */
 	pirq_table = pirq_find_routing_table();
 
 #ifdef CONFIG_PCI_BIOS
 	if (!pirq_table && (pci_probe & PCI_BIOS_IRQ_SCAN))
 		pirq_table = pcibios_get_irq_routing_table();
 #endif
-	if (pirq_table) {/* ÕÒµ½ÖĞ¶ÏÂ·ÓÉ±í */
-		/* ¼ì²éÂ·ÓÉ±íÖĞµÄ²å²ÛÊÇ·ñ¶¼ÕÒµ½ÁË£¬Èç¹ûÃ»ÓĞÉ¨Ãèµ½£¬ÔòÉ¨ÃèËü */
+	if (pirq_table) {/* æ‰¾åˆ°ä¸­æ–­è·¯ç”±è¡¨ */
+		/* æ£€æŸ¥è·¯ç”±è¡¨ä¸­çš„æ’æ§½æ˜¯å¦éƒ½æ‰¾åˆ°äº†ï¼Œå¦‚æœæ²¡æœ‰æ‰«æåˆ°ï¼Œåˆ™æ‰«æå®ƒ */
 		pirq_peer_trick();
-		/* ²éÕÒ¿É±à³ÌÖĞ¶ÏÂ·ÓÉÆ÷µÄÇı¶¯£¬²¢±£´æµ½pirq_routerÖĞ */
+		/* æŸ¥æ‰¾å¯ç¼–ç¨‹ä¸­æ–­è·¯ç”±å™¨çš„é©±åŠ¨ï¼Œå¹¶ä¿å­˜åˆ°pirq_routerä¸­ */
 		pirq_find_router(&pirq_router);
-		/* ÓĞÅÅËüĞÔIRQÎ»Í¼ */
+		/* æœ‰æ’å®ƒæ€§IRQä½å›¾ */
 		if (pirq_table->exclusive_irqs) {
 			int i;
-			for (i=0; i<16; i++)/* ½«ÅÅËüĞÔIRQÎ»Í¼ÖĞÏàÓ¦µÄIRQ³Í·£Á¿¼Ó100£¬ÕâÑùÂ·ÓÉÊ±²»Ì«»áÑ¡Ôñµ½¸ÃIRQÁË */
+			for (i=0; i<16; i++)/* å°†æ’å®ƒæ€§IRQä½å›¾ä¸­ç›¸åº”çš„IRQæƒ©ç½šé‡åŠ 100ï¼Œè¿™æ ·è·¯ç”±æ—¶ä¸å¤ªä¼šé€‰æ‹©åˆ°è¯¥IRQäº† */
 				if (!(pirq_table->exclusive_irqs & (1 << i)))
 					pirq_penalty[i] += 100;
 		}
@@ -1038,7 +1038,7 @@ static int __init pcibios_irq_init(void)
 
 	pcibios_enable_irq = pirq_enable_irq;
 
-	/* ·ÖÅäISA IRQ±àºÅ */
+	/* åˆ†é…ISA IRQç¼–å· */
 	pcibios_fixup_irqs();
 	return 0;
 }

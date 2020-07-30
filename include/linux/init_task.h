@@ -67,7 +67,7 @@ extern struct group_info init_groups;
  * your own risk!. Base=0, limit=0x1fffff (=2MB)
  */
 /**
- * ³õÊ¼»¯½ø³Ì0µÄÈÎÎñÃèÊö·û¡£
+ * åˆå§‹åŒ–è¿›ç¨‹0çš„ä»»åŠ¡æè¿°ç¬¦ã€‚
  */
 #define INIT_TASK(tsk)	\
 {									\

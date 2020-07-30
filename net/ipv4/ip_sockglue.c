@@ -46,23 +46,23 @@
 #include <asm/uaccess.h>
 
 /**
- * ��־�Ƿ�����IP_PKTOPTIONSѡ���ͨ��recvmsgϵͳ���û�ȡ�йر��˵�ַ��Ϣ��
+ * 标志是否允许IP_PKTOPTIONS选项或通过recvmsg系统调用获取有关本端地址信息。
  */
 #define IP_CMSG_PKTINFO		1
 /**
- * ��־�Ƿ�����IP_PKTOPTIONSѡ���ͨ��recvmsgϵͳ���û�ȡ�йط����鲥������Ϣ��
+ * 标志是否允许IP_PKTOPTIONS选项或通过recvmsg系统调用获取有关发送组播报文信息。
  */
 #define IP_CMSG_TTL		2
 /**
- * ��־�Ƿ�����ͨ��recvmsgϵͳ���û�ȡ���ĵ�TOS
+ * 标志是否允许通过recvmsg系统调用获取报文的TOS
  */
 #define IP_CMSG_TOS		4
 /**
- * ��־�Ƿ�����ͨ��recvmsgϵͳ���û�ȡ���ݱ��ײ��е�IPѡ�
+ * 标志是否允许通过recvmsg系统调用获取数据报首部中的IP选项。
  */
 #define IP_CMSG_RECVOPTS	8
 /**
- * ������IP_CMSG_RECVOPTS����ͬ���ǻ�ȡδ����ʱ���ѡ��ͼ�¼·��ѡ���IPѡ�
+ * 类似于IP_CMSG_RECVOPTS，不同的是获取未处理时间戳选项和记录路由选项的IP选项。
  */
 #define IP_CMSG_RETOPTS		16
 

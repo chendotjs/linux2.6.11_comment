@@ -28,7 +28,7 @@
  *    Rickard E. (Rik) Faith <faith@valinux.com>
  *    Kevin E. Martin <martin@valinux.com>
  *    Gareth Hughes <gareth@valinux.com>
- *    Michel D�zer <daenzerm@student.ethz.ch>
+ *    Michel D锟zer <daenzerm@student.ethz.ch>
  */
 
 #ifndef __R128_DRV_H__

@@ -171,7 +171,7 @@ decl_subsys(devices, &ktype_device, &device_hotplug_ops);
  */
 
 /**
- * ´´½¨Ò»¸öÉè±¸ÊôĞÔÎÄ¼ş¡£
+ * åˆ›å»ºä¸€ä¸ªè®¾å¤‡å±æ€§æ–‡ä»¶ã€‚
  */
 int device_create_file(struct device * dev, struct device_attribute * attr)
 {
@@ -189,7 +189,7 @@ int device_create_file(struct device * dev, struct device_attribute * attr)
  *	@attr:	device attribute descriptor.
  */
 /**
- * É¾³ıÒ»¸öÉè±¸ÊôĞÔÎÄ¼ş¡£
+ * åˆ é™¤ä¸€ä¸ªè®¾å¤‡å±æ€§æ–‡ä»¶ã€‚
  */
 void device_remove_file(struct device * dev, struct device_attribute * attr)
 {
@@ -292,8 +292,8 @@ int device_add(struct device *dev)
  */
 
 /**
- * ÍùÉè±¸Çı¶¯³ÌĞòÄ£ĞÍÖĞ²åÈëÒ»¸öĞÂµÄÉè±¸Çı¶¯¡£
- * ²¢×Ô¶¯µÄÔÚsysfsÎÄ¼şÏµÍ³ÏÂÎªÆä´´½¨Ò»¸öĞÂµÄÄ¿Â¼
+ * å¾€è®¾å¤‡é©±åŠ¨ç¨‹åºæ¨¡å‹ä¸­æ’å…¥ä¸€ä¸ªæ–°çš„è®¾å¤‡é©±åŠ¨ã€‚
+ * å¹¶è‡ªåŠ¨çš„åœ¨sysfsæ–‡ä»¶ç³»ç»Ÿä¸‹ä¸ºå…¶åˆ›å»ºä¸€ä¸ªæ–°çš„ç›®å½•
  */
 int device_register(struct device *dev)
 {
@@ -312,7 +312,7 @@ int device_register(struct device *dev)
  */
 
 /**
- * Ôö¼ÓÉè±¸µÄÒıÓÃ¼ÆÊı
+ * å¢åŠ è®¾å¤‡çš„å¼•ç”¨è®¡æ•°
  */
 struct device * get_device(struct device * dev)
 {
@@ -325,7 +325,7 @@ struct device * get_device(struct device * dev)
  *	@dev:	device in question.
  */
 /**
- * ¼õÉÙÉè±¸µÄÒıÓÃ¼ÆÊı
+ * å‡å°‘è®¾å¤‡çš„å¼•ç”¨è®¡æ•°
  */
 void put_device(struct device * dev)
 {
@@ -381,7 +381,7 @@ void device_del(struct device * dev)
  *	stick around until the final reference to the device is dropped.
  */
 /**
- * ´ÓÉè±¸Çı¶¯³ÌĞòÄ£ĞÍÖĞÒÆ×ßÒ»¸öÉè±¸Çı¶¯¶ÔÏó¡£
+ * ä»è®¾å¤‡é©±åŠ¨ç¨‹åºæ¨¡å‹ä¸­ç§»èµ°ä¸€ä¸ªè®¾å¤‡é©±åŠ¨å¯¹è±¡ã€‚
  */
 void device_unregister(struct device * dev)
 {

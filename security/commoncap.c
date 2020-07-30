@@ -316,7 +316,7 @@ int cap_syslog (int type)
 	return 0;
 }
 /**
- * ����Ƿ����㹻�Ŀ���ҳ��ѽ������ϴ�ŵ�����ҳ���롣
+ * 检查是否有足够的空闲页框把交换区上存放的所有页换入。
  */
 int cap_vm_enough_memory(long pages)
 {

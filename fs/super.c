@@ -15,7 +15,7 @@
  *  Added kerneld support: Jacques Gelinas and Bjorn Ekwall
  *  Added change_root: Werner Almesberger & Hans Lermen, Feb '96
  *  Added options to /proc/mounts:
- *    Torbjörn Lindh (torbjorn.lindh@gopta.se), April 14, 1996.
+ *    Torbjrn Lindh (torbjorn.lindh@gopta.se), April 14, 1996.
  *  Added devfs support: Richard Gooch <rgooch@atnf.csiro.au>, 13-JAN-1998
  *  Heavily rewritten for 'one fs - one tree' dcache architecture. AV, Mar 2000
  */
@@ -379,42 +379,42 @@ void sync_filesystems(int wait)
 	struct super_block *sb;
 	static DECLARE_MUTEX(mutex);
 
-	/* Õâ¸öÐÅºÅÁ¿ÊÇ·ÀÖ¹s_need_sync_fs±»ÖØÐ´£¬µ¼ÖÂ²úÉú»îËø */
+	/* è¿™ä¸ªä¿¡å·é‡æ˜¯é˜²æ­¢s_need_sync_fsè¢«é‡å†™ï¼Œå¯¼è‡´äº§ç”Ÿæ´»é” */
 	down(&mutex);		/* Could be down_interruptible */
-	/* Õâ¸öËøÊÇ±£»¤³¬¼¶¿éÁ´±í */
+	/* è¿™ä¸ªé”æ˜¯ä¿æŠ¤è¶…çº§å—é“¾è¡¨ */
 	spin_lock(&sb_lock);
-	/* ±éÀúËùÓÐ³¬¼¶¿é */
+	/* éåŽ†æ‰€æœ‰è¶…çº§å— */
 	for (sb = sb_entry(super_blocks.next); sb != sb_entry(&super_blocks);
 			sb = sb_entry(sb->s_list.next)) {
-		/* Ã»ÓÐ¶¨Òå»ØÐ´·½·¨£¬ÂÔ¹ý */
+		/* æ²¡æœ‰å®šä¹‰å›žå†™æ–¹æ³•ï¼Œç•¥è¿‡ */
 		if (!sb->s_op->sync_fs)
 			continue;
-		/* Ö»¶ÁÄ£Ê½£¬²»ÐèÒª»ØÐ´ */
+		/* åªè¯»æ¨¡å¼ï¼Œä¸éœ€è¦å›žå†™ */
 		if (sb->s_flags & MS_RDONLY)
 			continue;
-		/* ÉèÖÃÆäÐèÒª»ØÐ´µÄ±êÖ¾ */
+		/* è®¾ç½®å…¶éœ€è¦å›žå†™çš„æ ‡å¿— */
 		sb->s_need_sync_fs = 1;
 	}
 	spin_unlock(&sb_lock);
 
 restart:
 	spin_lock(&sb_lock);
-	/* ÔÙ´Î±éÀúËùÓÐ³¬¼¶¿é */
+	/* å†æ¬¡éåŽ†æ‰€æœ‰è¶…çº§å— */
 	for (sb = sb_entry(super_blocks.next); sb != sb_entry(&super_blocks);
 			sb = sb_entry(sb->s_list.next)) {
-		/* ¸Ã³¬¼¶¿é²»ÐèÒª»ØÐ´£¬ÂÔ¹ý */
+		/* è¯¥è¶…çº§å—ä¸éœ€è¦å›žå†™ï¼Œç•¥è¿‡ */
 		if (!sb->s_need_sync_fs)
 			continue;
-		/* Çå³ý»ØÐ´±êÖ¾ */
+		/* æ¸…é™¤å›žå†™æ ‡å¿— */
 		sb->s_need_sync_fs = 0;
-		/* Ö»¶ÁÄ£Ê½£¬²»ÐèÒª»ØÐ´ */
+		/* åªè¯»æ¨¡å¼ï¼Œä¸éœ€è¦å›žå†™ */
 		if (sb->s_flags & MS_RDONLY)
 			continue;	/* hm.  Was remounted r/o meanwhile */
 		sb->s_count++;
 		spin_unlock(&sb_lock);
-		/* »ñÈ¡ÐÅºÅÁ¿£¬·ÀÖ¹»ØÐ´¹ý³ÌÖÐÎÄ¼þÏµÍ³±»Ð¶ÔØ */
+		/* èŽ·å–ä¿¡å·é‡ï¼Œé˜²æ­¢å›žå†™è¿‡ç¨‹ä¸­æ–‡ä»¶ç³»ç»Ÿè¢«å¸è½½ */
 		down_read(&sb->s_umount);
-		/* µ÷ÓÃÎÄ¼þÏµÍ³µÄ·½·¨½øÐÐ»ØÐ´ */
+		/* è°ƒç”¨æ–‡ä»¶ç³»ç»Ÿçš„æ–¹æ³•è¿›è¡Œå›žå†™ */
 		if (sb->s_root && (wait || sb->s_dirt))
 			sb->s_op->sync_fs(sb, wait);
 		drop_super(sb);
@@ -535,8 +535,8 @@ static void mark_files_ro(struct super_block *sb)
  *	Alters the mount options of a mounted file system.
  */
 /**
- * Èç¹ûdo_unmountº¯ÊýÈÏÎªÓÃ»§ÒªÐ¶ÔØÒªÎÄ¼þÏµÍ³£¬ÇÒÓÃ»§²¢²»ÒªÇóÕæÕý°ÑËüÐ¶ÔØÏÂÀ´£¬
- * ¾Í»áµ÷ÓÃdo_remount_sb£¬ËüÖØÐÂ°²×°¸ùÎÄ¼þÏµÍ³ÎªÖ»¶Á²¢ÖÕÖ¹¡£
+ * å¦‚æžœdo_unmountå‡½æ•°è®¤ä¸ºç”¨æˆ·è¦å¸è½½è¦æ–‡ä»¶ç³»ç»Ÿï¼Œä¸”ç”¨æˆ·å¹¶ä¸è¦æ±‚çœŸæ­£æŠŠå®ƒå¸è½½ä¸‹æ¥ï¼Œ
+ * å°±ä¼šè°ƒç”¨do_remount_sbï¼Œå®ƒé‡æ–°å®‰è£…æ ¹æ–‡ä»¶ç³»ç»Ÿä¸ºåªè¯»å¹¶ç»ˆæ­¢ã€‚
  */
 int do_remount_sb(struct super_block *sb, int flags, void *data, int force)
 {
@@ -606,13 +606,13 @@ void emergency_remount(void)
  */
 
 /**
- * ÓÃÓÚÎªÌØÊâÎÄ¼þÏµÍ³·ÖÅä´ÎÉè±¸ºÅ¡£
+ * ç”¨äºŽä¸ºç‰¹æ®Šæ–‡ä»¶ç³»ç»Ÿåˆ†é…æ¬¡è®¾å¤‡å·ã€‚
  */
 static struct idr unnamed_dev_idr;
 static DEFINE_SPINLOCK(unnamed_dev_lock);/* protects the above */
 
 /**
- * ³õÊ¼»¯ÌØÊâÎÄ¼þÏµÍ³µÄ³¬¼¶¡£
+ * åˆå§‹åŒ–ç‰¹æ®Šæ–‡ä»¶ç³»ç»Ÿçš„è¶…çº§ã€‚
  */
 int set_anon_super(struct super_block *s, void *data)
 {
@@ -644,7 +644,7 @@ int set_anon_super(struct super_block *s, void *data)
 EXPORT_SYMBOL(set_anon_super);
 
 /**
- * ÒÆ³ýÌØÊâÎÄ¼þÏµÍ³µÄ³¬¼¶¿é¡£
+ * ç§»é™¤ç‰¹æ®Šæ–‡ä»¶ç³»ç»Ÿçš„è¶…çº§å—ã€‚
  */
 void kill_anon_super(struct super_block *sb)
 {
@@ -695,7 +695,7 @@ static void bdev_uevent(struct block_device *bdev, enum kobject_action action)
 }
 
 /**
- * Ò»°ã´ÅÅÌÎÄ¼þµÄget_sbº¯Êý¡£
+ * ä¸€èˆ¬ç£ç›˜æ–‡ä»¶çš„get_sbå‡½æ•°ã€‚
  */
 struct super_block *get_sb_bdev(struct file_system_type *fs_type,
 	int flags, const char *dev_name, void *data,
@@ -706,7 +706,7 @@ struct super_block *get_sb_bdev(struct file_system_type *fs_type,
 	int error = 0;
 
 	/**
-	 * ´ò¿ª¿éÉè±¸¡£»ñµÃ¿éÉè±¸ÃèÊö·ûµÄÖ¸Õë¡£
+	 * æ‰“å¼€å—è®¾å¤‡ã€‚èŽ·å¾—å—è®¾å¤‡æè¿°ç¬¦çš„æŒ‡é’ˆã€‚
 	 */
 	bdev = open_bdev_excl(dev_name, flags, fs_type);
 	if (IS_ERR(bdev))
@@ -719,18 +719,18 @@ struct super_block *get_sb_bdev(struct file_system_type *fs_type,
 	 */
 	down(&bdev->bd_mount_sem);
 	/**
-	 * ËÑË÷ÎÄ¼þÏµÍ³µÄ³¬¼¶¿é¶ÔÏóÁ´±í¡£Èç¹ûÕÒµ½Ò»¸öÓë¿éÉè±¸Ïà¹ØµÄ³¬¼¶¿é£¬Ôò·µ»ØËüµÄµØÖ·£¬
-	 * ·ñÔò·ÖÅä²¢³õÊ¼»¯Ò»¸öÐÂ¶ÔÏó²¢²åÈëµ½ÎÄ¼þÏµÍ³Á´±íºÍ³¬¼¶¿éÈ«¾ÖÁ´±íÖÐ¡£
+	 * æœç´¢æ–‡ä»¶ç³»ç»Ÿçš„è¶…çº§å—å¯¹è±¡é“¾è¡¨ã€‚å¦‚æžœæ‰¾åˆ°ä¸€ä¸ªä¸Žå—è®¾å¤‡ç›¸å…³çš„è¶…çº§å—ï¼Œåˆ™è¿”å›žå®ƒçš„åœ°å€ï¼Œ
+	 * å¦åˆ™åˆ†é…å¹¶åˆå§‹åŒ–ä¸€ä¸ªæ–°å¯¹è±¡å¹¶æ’å…¥åˆ°æ–‡ä»¶ç³»ç»Ÿé“¾è¡¨å’Œè¶…çº§å—å…¨å±€é“¾è¡¨ä¸­ã€‚
 	 */
 	s = sget(fs_type, test_bdev_super, set_bdev_super, bdev);
 	up(&bdev->bd_mount_sem);
 	if (IS_ERR(s))
 		goto out;
 
-	if (s->s_root) {/* ²»ÊÇÐÂµÄ³¬¼¶¿é£¬ËµÃ÷ÎÄ¼þÏµÍ³ÒÑ¾­°²×°¡£ */
-		if ((flags ^ s->s_flags) & MS_RDONLY) {/* ÓëÒÔÇ°µÄ×°ÔØÓÐ³åÍ» */
+	if (s->s_root) {/* ä¸æ˜¯æ–°çš„è¶…çº§å—ï¼Œè¯´æ˜Žæ–‡ä»¶ç³»ç»Ÿå·²ç»å®‰è£…ã€‚ */
+		if ((flags ^ s->s_flags) & MS_RDONLY) {/* ä¸Žä»¥å‰çš„è£…è½½æœ‰å†²çª */
 			up_write(&s->s_umount);
-			deactivate_super(s);/* ¹Ø±ÕÉè±¸²¢·µ»Ø */
+			deactivate_super(s);/* å…³é—­è®¾å¤‡å¹¶è¿”å›ž */
 			s = ERR_PTR(-EBUSY);
 		}
 		goto out;
@@ -738,14 +738,14 @@ struct super_block *get_sb_bdev(struct file_system_type *fs_type,
 		char b[BDEVNAME_SIZE];
 
 		/**
-		 * ¸´ÖÆ°²×°±êÖ¾¡£¼°ÆäËûÎÄ¼þÏµÍ³Ïà¹ØµÄÖµ¡£
+		 * å¤åˆ¶å®‰è£…æ ‡å¿—ã€‚åŠå…¶ä»–æ–‡ä»¶ç³»ç»Ÿç›¸å…³çš„å€¼ã€‚
 		 */
 		s->s_flags = flags;
 		strlcpy(s->s_id, bdevname(bdev, b), sizeof(s->s_id));
 		s->s_old_blocksize = block_size(bdev);
 		sb_set_blocksize(s, s->s_old_blocksize);
 		/**
-		 * Ã¿¸öÎÄ¼þÏµÍ³´«ÈëµÄfill_super²»Ò»Ñù£¬µ÷ÓÃËüÀ´·ÃÎÊ´ÅÅÌÉÏµÄ³¬¼¶¿éÐÅÏ¢£¬²¢Ìî³ä³¬¼¶¿é¶ÔÏóµÄÆäËû×Ö¶Î¡£
+		 * æ¯ä¸ªæ–‡ä»¶ç³»ç»Ÿä¼ å…¥çš„fill_superä¸ä¸€æ ·ï¼Œè°ƒç”¨å®ƒæ¥è®¿é—®ç£ç›˜ä¸Šçš„è¶…çº§å—ä¿¡æ¯ï¼Œå¹¶å¡«å……è¶…çº§å—å¯¹è±¡çš„å…¶ä»–å­—æ®µã€‚
 		 */
 		error = fill_super(s, data, flags & MS_VERBOSE ? 1 : 0);
 		if (error) {
@@ -780,7 +780,7 @@ void kill_block_super(struct super_block *sb)
 EXPORT_SYMBOL(kill_block_super);
 
 /**
- * ÌØÊâÎÄ¼þÏµÍ³µÄget_sb·½·¨£¬Èç³õÊ¼¸ùÎÄ¼þÏµÍ³¡£
+ * ç‰¹æ®Šæ–‡ä»¶ç³»ç»Ÿçš„get_sbæ–¹æ³•ï¼Œå¦‚åˆå§‹æ ¹æ–‡ä»¶ç³»ç»Ÿã€‚
  */
 struct super_block *get_sb_nodev(struct file_system_type *fs_type,
 	int flags, void *data,
@@ -788,8 +788,8 @@ struct super_block *get_sb_nodev(struct file_system_type *fs_type,
 {
 	int error;
 	/**
-	 * ·ÖÅäÐÂµÄ³¬¼¶¿é¡£
-	 * set_anon_super»á³õÊ¼»¯ÌØÊâÎÄ¼þÏµÍ³µÄ³¬¼¶¿é¡£
+	 * åˆ†é…æ–°çš„è¶…çº§å—ã€‚
+	 * set_anon_superä¼šåˆå§‹åŒ–ç‰¹æ®Šæ–‡ä»¶ç³»ç»Ÿçš„è¶…çº§å—ã€‚
 	 */
 	struct super_block *s = sget(fs_type, NULL, set_anon_super, NULL);
 
@@ -799,8 +799,8 @@ struct super_block *get_sb_nodev(struct file_system_type *fs_type,
 	s->s_flags = flags;
 
 	/**
-	 * µ÷ÓÃfill_superÌî³ä³¬¼¶¿é¡£
-	 * ¶Ô³õÊ¼¸ùÎÄ¼þÏµÍ³À´Ëµ£¬µ÷ÓÃramfs_fill_super¡£Ëü·ÖÅäË÷Òý½Úµã¶ÔÏóºÍ¶ÔÓ¦µÄÄ¿Â¼Ïî¶ÔÏó£¬²¢Ìî³ä³¬¼¶¿é×Ö¶ÎÖµ¡£
+	 * è°ƒç”¨fill_superå¡«å……è¶…çº§å—ã€‚
+	 * å¯¹åˆå§‹æ ¹æ–‡ä»¶ç³»ç»Ÿæ¥è¯´ï¼Œè°ƒç”¨ramfs_fill_superã€‚å®ƒåˆ†é…ç´¢å¼•èŠ‚ç‚¹å¯¹è±¡å’Œå¯¹åº”çš„ç›®å½•é¡¹å¯¹è±¡ï¼Œå¹¶å¡«å……è¶…çº§å—å­—æ®µå€¼ã€‚
 	 */
 	error = fill_super(s, data, flags & MS_VERBOSE ? 1 : 0);
 	if (error) {
@@ -846,15 +846,15 @@ struct super_block *get_sb_single(struct file_system_type *fs_type,
 EXPORT_SYMBOL(get_sb_single);
 
 /**
- * ±»do_new_mountµ÷ÓÃ.
- * ²ÎÊýÓÐ:ÎÄ¼þÏµÍ³ÀàÐÍ.°²×°±êÖ¾¼°¿éÉè±¸Ãû.
- * Õâ´¦ÀíÊµ¼ÊµÄ°²×°²Ù×÷²¢·µ»ØÒ»¸öÐÂ°²×°ÎÄ¼þÏµÍ³ÃèÊö·ûµÄµØÖ·.
+ * è¢«do_new_mountè°ƒç”¨.
+ * å‚æ•°æœ‰:æ–‡ä»¶ç³»ç»Ÿç±»åž‹.å®‰è£…æ ‡å¿—åŠå—è®¾å¤‡å.
+ * è¿™å¤„ç†å®žé™…çš„å®‰è£…æ“ä½œå¹¶è¿”å›žä¸€ä¸ªæ–°å®‰è£…æ–‡ä»¶ç³»ç»Ÿæè¿°ç¬¦çš„åœ°å€.
  */
 struct vfsmount *
 do_kern_mount(const char *fstype, int flags, const char *name, void *data)
 {
 	/**
-	 * »ñµÃÎÄ¼þÏµÍ³Ãû³Æ¶ÔÓ¦µÄÎÄ¼þÏµÍ³¶ÔÏó¡£
+	 * èŽ·å¾—æ–‡ä»¶ç³»ç»Ÿåç§°å¯¹åº”çš„æ–‡ä»¶ç³»ç»Ÿå¯¹è±¡ã€‚
 	 */
 	struct file_system_type *type = get_fs_type(fstype);
 	struct super_block *sb = ERR_PTR(-ENOMEM);
@@ -863,16 +863,16 @@ do_kern_mount(const char *fstype, int flags, const char *name, void *data)
 	char *secdata = NULL;
 
 	/**
-	 * ´íÎóµÄÎÄ¼þÏµÍ³ÀàÐÍ¡£
+	 * é”™è¯¯çš„æ–‡ä»¶ç³»ç»Ÿç±»åž‹ã€‚
 	 */
 	if (!type)
 		return ERR_PTR(-ENODEV);
 
 	/**
-	 * ·ÖÅäÒ»¸öÐÂµÄÒÑ°²×°ÎÄ¼þÏµÍ³µÄÃèÊö·û
+	 * åˆ†é…ä¸€ä¸ªæ–°çš„å·²å®‰è£…æ–‡ä»¶ç³»ç»Ÿçš„æè¿°ç¬¦
 	 */
 	mnt = alloc_vfsmnt(name);
-	if (!mnt)/* ÄÚ´æ²»×ã */
+	if (!mnt)/* å†…å­˜ä¸è¶³ */
 		goto out;
 
 	if (data) {
@@ -890,8 +890,8 @@ do_kern_mount(const char *fstype, int flags, const char *name, void *data)
 	}
 
 	/**
-	 * µ÷ÓÃÎÄ¼þÏµÍ³µÄget_sb·ÖÅä²¢³õÊ¼»¯Ò»¸öÐÂµÄ³¬¼¶¿é¡£
-	 * ÀýÈçext2µÄget_sb·½·¨ÊÇext2_get_sb¡£
+	 * è°ƒç”¨æ–‡ä»¶ç³»ç»Ÿçš„get_sbåˆ†é…å¹¶åˆå§‹åŒ–ä¸€ä¸ªæ–°çš„è¶…çº§å—ã€‚
+	 * ä¾‹å¦‚ext2çš„get_sbæ–¹æ³•æ˜¯ext2_get_sbã€‚
 	 */
 	sb = type->get_sb(type, flags, name, data);
 	if (IS_ERR(sb))
@@ -901,13 +901,13 @@ do_kern_mount(const char *fstype, int flags, const char *name, void *data)
  		goto out_sb;
 	mnt->mnt_sb = sb;
 	/**
-	 * ½«´Ë×Ö¶Î³õÊ¼»¯ÎªÓëÎÄ¼þÏµÍ³¸ùÄ¿Â¼¶ÔÓ¦µÄÄ¿Â¼Ïî¶ÔÏóµÄµØÖ·¡£²¢Ôö¼ÓÆäÒýÓÃ¼ÆÊýÖµ¡£
+	 * å°†æ­¤å­—æ®µåˆå§‹åŒ–ä¸ºä¸Žæ–‡ä»¶ç³»ç»Ÿæ ¹ç›®å½•å¯¹åº”çš„ç›®å½•é¡¹å¯¹è±¡çš„åœ°å€ã€‚å¹¶å¢žåŠ å…¶å¼•ç”¨è®¡æ•°å€¼ã€‚
 	 */
 	mnt->mnt_root = dget(sb->s_root);
 	mnt->mnt_mountpoint = sb->s_root;
 	/**
-	 * ½«mnt_parentÖ¸Ïò×ÔÉí£¬±íÊ¾ËüÊÇÒ»¸ö¶ÀÁ¢µÄ¸ù¡£
-	 * ÉÏ²ãµ÷ÓÃÕß¿ÉÒÔÐÞ¸ÄËü¡£
+	 * å°†mnt_parentæŒ‡å‘è‡ªèº«ï¼Œè¡¨ç¤ºå®ƒæ˜¯ä¸€ä¸ªç‹¬ç«‹çš„æ ¹ã€‚
+	 * ä¸Šå±‚è°ƒç”¨è€…å¯ä»¥ä¿®æ”¹å®ƒã€‚
 	 */
 	mnt->mnt_parent = mnt;
 	mnt->mnt_namespace = current->namespace;
@@ -916,7 +916,7 @@ do_kern_mount(const char *fstype, int flags, const char *name, void *data)
 	return mnt;
 out_sb:
 	/**
-	 * ÊÍ·Å³¬¼¶¿éµÄ¶ÁÐ´ÐÅºÅÁ¿¡£
+	 * é‡Šæ”¾è¶…çº§å—çš„è¯»å†™ä¿¡å·é‡ã€‚
 	 */
 	up_write(&sb->s_umount);
 	deactivate_super(sb);

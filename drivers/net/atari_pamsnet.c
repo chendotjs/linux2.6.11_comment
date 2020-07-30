@@ -1,6 +1,6 @@
 /* atari_pamsnet.c     PAMsNet device driver for linux68k.
  *
- * Version:	@(#)PAMsNet.c	0.2ß	03/31/96
+ * Version:	@(#)PAMsNet.c	0.2	03/31/96
  *
  * Author:  Torsten Lang <Torsten.Lang@ap.physik.uni-giessen.de>
  *                       <Torsten.Lang@jung.de>

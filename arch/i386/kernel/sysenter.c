@@ -22,8 +22,8 @@
 extern asmlinkage void sysenter_entry(void);
 
 /**
- * ÔÚÄÚºË³õÊ¼»¯ÆÚ¼ä£¬ÏµÍ³ÖĞÃ¿¸öCPU¶¼µ÷ÓÃenable_sep_cpu¡£
- * Ëü³õÊ¼»¯Ò»Ğ©¼Ä´æÆ÷¡£
+ * åœ¨å†…æ ¸åˆå§‹åŒ–æœŸé—´ï¼Œç³»ç»Ÿä¸­æ¯ä¸ªCPUéƒ½è°ƒç”¨enable_sep_cpuã€‚
+ * å®ƒåˆå§‹åŒ–ä¸€äº›å¯„å­˜å™¨ã€‚
  */
 void enable_sep_cpu(void *info)
 {
@@ -34,15 +34,15 @@ void enable_sep_cpu(void *info)
 	tss->ss1 = __KERNEL_CS;
 	tss->esp1 = sizeof(struct tss_struct) + (unsigned long) tss;
 	/**
-	 * °ÑÄÚºË´úÂëµÄ¶ÎÑ¡Ôñ·ûĞ´ÈëMSR_IA32_SYSENTER_CS
+	 * æŠŠå†…æ ¸ä»£ç çš„æ®µé€‰æ‹©ç¬¦å†™å…¥MSR_IA32_SYSENTER_CS
 	 */
 	wrmsr(MSR_IA32_SYSENTER_CS, __KERNEL_CS, 0);
 	/**
-	 * tss->esp1ÖĞ´æ·ÅµÄÊÇ±¾µØTSSÄ©¶ËµØÖ·£¬½«ËüĞ´ÈëMSR_IA32_SYSENTER_ESP
+	 * tss->esp1ä¸­å­˜æ”¾çš„æ˜¯æœ¬åœ°TSSæœ«ç«¯åœ°å€ï¼Œå°†å®ƒå†™å…¥MSR_IA32_SYSENTER_ESP
 	 */
 	wrmsr(MSR_IA32_SYSENTER_ESP, tss->esp1, 0);
 	/**
-	 * °Ñsysenter_entryµØÖ·Ğ´Èëµ½MSR_IA32_SYSENTER_EIP
+	 * æŠŠsysenter_entryåœ°å€å†™å…¥åˆ°MSR_IA32_SYSENTER_EIP
 	 */
 	wrmsr(MSR_IA32_SYSENTER_EIP, (unsigned long) sysenter_entry, 0);
 	put_cpu();	

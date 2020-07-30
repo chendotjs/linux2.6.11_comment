@@ -2,7 +2,7 @@
 /*
  *      auerswald.c  --  Auerswald PBX/System Telephone usb driver.
  *
- *      Copyright (C) 2001  Wolfgang Mües (wolfgang@iksw-muees.de)
+ *      Copyright (C) 2001  Wolfgang M眉es (wolfgang@iksw-muees.de)
  *
  *      Very much code of this driver is borrowed from dabusb.c (Deti Fliegl)
  *      and from the USB Skeleton driver (Greg Kroah-Hartman). Thank you.
@@ -50,7 +50,7 @@ do {			\
 /*-------------------------------------------------------------------*/
 /* Version Information */
 #define DRIVER_VERSION "0.9.11"
-#define DRIVER_AUTHOR  "Wolfgang Mües <wolfgang@iksw-muees.de>"
+#define DRIVER_AUTHOR  "Wolfgang M眉es <wolfgang@iksw-muees.de>"
 #define DRIVER_DESC    "Auerswald PBX/System Telephone usb driver"
 
 /*-------------------------------------------------------------------*/

@@ -496,7 +496,7 @@ void getnstimeofday (struct timespec *tv)
 }
 
 /**
- * ¸Ãº¯ÊýÖ´ÐÐÓëdo_gettimeofdayÏà·´µÄ²Ù×÷
+ * è¯¥å‡½æ•°æ‰§è¡Œä¸Ždo_gettimeofdayç›¸åçš„æ“ä½œ
  */
 int do_settimeofday (struct timespec *tv)
 {
@@ -534,28 +534,28 @@ int do_settimeofday (struct timespec *tv)
 }
 
 /**
- * ¼ÆËã1970/01/01µ½Ä¿Ç°ÎªÖ¹×ß¹ýµÄÃëÊý¼°Ç°Ò»ÃëÄÚ×ß¹ýµÄÎ¢ÃëÊý.
+ * è®¡ç®—1970/01/01åˆ°ç›®å‰ä¸ºæ­¢èµ°è¿‡çš„ç§’æ•°åŠå‰ä¸€ç§’å†…èµ°è¿‡çš„å¾®ç§’æ•°.
  */
 void do_gettimeofday (struct timeval *tv)
 {
 	unsigned long seq, nsec, usec, sec, offset;
 	do {
 		/**
-		 * Îª¶Á»ñÈ¡Ë³ÐòËø.
+		 * ä¸ºè¯»èŽ·å–é¡ºåºé”.
 		 */
 		seq = read_seqbegin(&xtime_lock);
 		/**
-		 * µ÷ÓÃ¶¨Ê±Æ÷µÄget_offset·½·¨È·¶¨×ÔÉÏÒ»´ÎÊ±ÖÓÖÐ¶ÏÒÔÀ´Ëù×ß¹ýµÄÎ¢ÃëÊý.
+		 * è°ƒç”¨å®šæ—¶å™¨çš„get_offsetæ–¹æ³•ç¡®å®šè‡ªä¸Šä¸€æ¬¡æ—¶é’Ÿä¸­æ–­ä»¥æ¥æ‰€èµ°è¿‡çš„å¾®ç§’æ•°.
 		 */
 		offset = time_interpolator_get_offset();
 		sec = xtime.tv_sec;
 		nsec = xtime.tv_nsec;
-	} while (unlikely(read_seqretry(&xtime_lock, seq)));/* Ö±µ½Ã»ÓÐÆäËû¹ý³ÌÔÚË³ÐòËøÉÏ½ø³ÌÐ´²Ù×÷ */
+	} while (unlikely(read_seqretry(&xtime_lock, seq)));/* ç›´åˆ°æ²¡æœ‰å…¶ä»–è¿‡ç¨‹åœ¨é¡ºåºé”ä¸Šè¿›ç¨‹å†™æ“ä½œ */
 
 	usec = (nsec + offset) / 1000;
 
 	/**
-	 * ¼ì²éÎ¢Ãë×Ö¶ÎÊÇ·ñÒç³ö.
+	 * æ£€æŸ¥å¾®ç§’å­—æ®µæ˜¯å¦æº¢å‡º.
 	 */
 	while (unlikely(usec >= USEC_PER_SEC)) {
 		usec -= USEC_PER_SEC;
@@ -586,7 +586,7 @@ void getnstimeofday(struct timespec *tv)
 
 #if (BITS_PER_LONG < 64)
 /**
- * ¶ÁÈ¡jiffies_64µÄÖµ²¢·µ»Ø¸ÃÖµ¡£
+ * è¯»å–jiffies_64çš„å€¼å¹¶è¿”å›žè¯¥å€¼ã€‚
  */
 u64 get_jiffies_64(void)
 {
@@ -595,8 +595,8 @@ u64 get_jiffies_64(void)
 
 	do {
 		/**
-		 * xtime_lockÓÃÀ´±£»¤¶Ôjiffies_64µÄ¶Á·ÃÎÊ¡£Ö±µ½ËüÃ»ÓÐ±»ÆäËûÄÚºËÂ·¾¶Ð´¡£
-		 * ÕâÊÇË³ÐòËøµÄÄÚºËÖÐÉÙÓÐµÄÊ¹ÓÃµØ·½Ö®Ò»¡£
+		 * xtime_lockç”¨æ¥ä¿æŠ¤å¯¹jiffies_64çš„è¯»è®¿é—®ã€‚ç›´åˆ°å®ƒæ²¡æœ‰è¢«å…¶ä»–å†…æ ¸è·¯å¾„å†™ã€‚
+		 * è¿™æ˜¯é¡ºåºé”çš„å†…æ ¸ä¸­å°‘æœ‰çš„ä½¿ç”¨åœ°æ–¹ä¹‹ä¸€ã€‚
 		 */
 		seq = read_seqbegin(&xtime_lock);
 		ret = jiffies_64;

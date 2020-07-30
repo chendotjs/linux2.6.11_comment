@@ -37,7 +37,7 @@
 struct sock;
 
 /**
- * IP±êÖ¾ºÍÑ¡Ïî½á¹¹¡£
+ * IPæ ‡å¿—å’Œé€‰é¡¹ç»“æ„ã€‚
  */
 struct inet_skb_parm
 {
@@ -51,26 +51,26 @@ struct inet_skb_parm
 };
 
 /**
- * ´Ë½á¹¹°üº¬ÁË´«Êä°üËùĞèÒªµÄ¸÷ÖÖĞÅÏ¢¡£
+ * æ­¤ç»“æ„åŒ…å«äº†ä¼ è¾“åŒ…æ‰€éœ€è¦çš„å„ç§ä¿¡æ¯ã€‚
  */
 struct ipcm_cookie
 {
 	/**
-	 * Ä¿µÄµØIPµØÖ·
+	 * ç›®çš„åœ°IPåœ°å€
 	 */
 	u32			addr;
 	/**
-	 * ³öÉè±¸
+	 * å‡ºè®¾å¤‡
 	 */
 	int			oif;
 	/**
-	 * IPÑ¡Ïî
+	 * IPé€‰é¡¹
 	 */
 	struct ip_options	*opt;
 };
 /**
- * ÔÚÖØ×éÊ±£¬ÓÃ´Ëºê·µ»Øskb->cbÖĞµÄIPÑ¡ÏîĞÅÏ¢¡£ÓÉÓÚ´Ëinet_skb_parm×Ö¶ÎÊÇipfrag_skb_cbµÄµÚÒ»¸ö×Ö¶Î¡£
- * Òò´Ë£¬skb->cb¿ÉÒÔ°²È«µÄ×ª»¯Îªinet_skb_parm»òÕßipfrag_skb_cb
+ * åœ¨é‡ç»„æ—¶ï¼Œç”¨æ­¤å®è¿”å›skb->cbä¸­çš„IPé€‰é¡¹ä¿¡æ¯ã€‚ç”±äºæ­¤inet_skb_parmå­—æ®µæ˜¯ipfrag_skb_cbçš„ç¬¬ä¸€ä¸ªå­—æ®µã€‚
+ * å› æ­¤ï¼Œskb->cbå¯ä»¥å®‰å…¨çš„è½¬åŒ–ä¸ºinet_skb_parmæˆ–è€…ipfrag_skb_cb
  */
 #define IPCB(skb) ((struct inet_skb_parm*)((skb)->cb))
 
@@ -161,22 +161,22 @@ void ip_send_reply(struct sock *sk, struct sk_buff *skb, struct ip_reply_arg *ar
 extern int ip_finish_output(struct sk_buff *skb);
 
 /**
- * ipv4_devconf½á¹¹ÓÃÓÚ´æ´¢Ã¿¸öÉè±¸µÄÅäÖÃ£¬ipv4_config´æ´¢Ö÷»úµÄÅäÖÃ¡£
+ * ipv4_devconfç»“æ„ç”¨äºå­˜å‚¨æ¯ä¸ªè®¾å¤‡çš„é…ç½®ï¼Œipv4_configå­˜å‚¨ä¸»æœºçš„é…ç½®ã€‚
  */
 struct ipv4_config
 {
 	/**
-	 * ¸Ã²ÎÊıÒ²´æÔÚÓÚipv4_devconfig½á¹¹ÄÚ¡£
-	 * µ±ÌØ¶¨´íÎó·¢ÉúÊ±£¬´Ë²ÎÊı¿ÉÓÃÓÚ¾ö¶¨ÊÇ·ñ´òÓ¡¾¯¸æĞÅÏ¢µ½¿ØÖÆÌ¨ÉÏ¡£
-	 * ËüµÄÖµ²»»á±»Ö±½Ó¼ì²é£¬¶øÊÇÍ¨¹ıºêIN_DEV_LOG_MARTIANS£¨¿ÉÒÔ°Ñ½Ï¸ßÓÅÏÈÈ¨¸øÓèÕâ¸öÉè±¸ÊµÀı£©¡£
+	 * è¯¥å‚æ•°ä¹Ÿå­˜åœ¨äºipv4_devconfigç»“æ„å†…ã€‚
+	 * å½“ç‰¹å®šé”™è¯¯å‘ç”Ÿæ—¶ï¼Œæ­¤å‚æ•°å¯ç”¨äºå†³å®šæ˜¯å¦æ‰“å°è­¦å‘Šä¿¡æ¯åˆ°æ§åˆ¶å°ä¸Šã€‚
+	 * å®ƒçš„å€¼ä¸ä¼šè¢«ç›´æ¥æ£€æŸ¥ï¼Œè€Œæ˜¯é€šè¿‡å®IN_DEV_LOG_MARTIANSï¼ˆå¯ä»¥æŠŠè¾ƒé«˜ä¼˜å…ˆæƒç»™äºˆè¿™ä¸ªè®¾å¤‡å®ä¾‹ï¼‰ã€‚
 	 */
 	int	log_martians;
 	/**
-	 * µ±Ö÷»úµÄIPÅäÖÃÊÇÍ¨¹ıÏóDHCPÕâÀàĞ­ÒéÍê³ÉÊ±£¬¾Í»áÉèÖÃ³É1¡£
+	 * å½“ä¸»æœºçš„IPé…ç½®æ˜¯é€šè¿‡è±¡DHCPè¿™ç±»åè®®å®Œæˆæ—¶ï¼Œå°±ä¼šè®¾ç½®æˆ1ã€‚
 	 */
 	int	autoconfig;
 	/**
-	 * µ±Îª0Ê±£¬Â·¾¶MTU·¢ÏÖ¹¦ÄÜ¾Í»á¿ªÆô¡£
+	 * å½“ä¸º0æ—¶ï¼Œè·¯å¾„MTUå‘ç°åŠŸèƒ½å°±ä¼šå¼€å¯ã€‚
 	 */
 	int	no_pmtu_disc;
 };
@@ -184,18 +184,18 @@ struct ipv4_config
 extern struct ipv4_config ipv4_config;
 DECLARE_SNMP_STAT(struct ipstats_mib, ip_statistics);
 /**
- * ¸üĞÂIPÍ³¼Æ¼ÆÊı¡£
- * ÓÃÔÚÈÎÒ»ÖÖ»·¾³ÖĞ£¬ÒòÎªÆäÄÚ²¿»á¼ì²éËüÊÇ·ñÔÚÖĞ¶Ï»·¾³ÖĞ±»µ÷ÓÃ£¬È»ºó¾İÒÔ¸üĞÂÕıÈ·ÔªËØ¡£
+ * æ›´æ–°IPç»Ÿè®¡è®¡æ•°ã€‚
+ * ç”¨åœ¨ä»»ä¸€ç§ç¯å¢ƒä¸­ï¼Œå› ä¸ºå…¶å†…éƒ¨ä¼šæ£€æŸ¥å®ƒæ˜¯å¦åœ¨ä¸­æ–­ç¯å¢ƒä¸­è¢«è°ƒç”¨ï¼Œç„¶åæ®ä»¥æ›´æ–°æ­£ç¡®å…ƒç´ ã€‚
  */
 #define IP_INC_STATS(field)		SNMP_INC_STATS(ip_statistics, field)
 /**
- * ¸üĞÂIPÍ³¼Æ¼ÆÊı¡£
- * ÓÃÔÚÖĞ¶Ï»·¾³ÖĞ¡£
+ * æ›´æ–°IPç»Ÿè®¡è®¡æ•°ã€‚
+ * ç”¨åœ¨ä¸­æ–­ç¯å¢ƒä¸­ã€‚
  */
 #define IP_INC_STATS_BH(field)		SNMP_INC_STATS_BH(ip_statistics, field)
 /**
- * ¸üĞÂIPÍ³¼Æ¼ÆÊı¡£
- * ÓÃÔÚÖĞ¶Ï»·¾³Íâ¡£
+ * æ›´æ–°IPç»Ÿè®¡è®¡æ•°ã€‚
+ * ç”¨åœ¨ä¸­æ–­ç¯å¢ƒå¤–ã€‚
  */
 #define IP_INC_STATS_USER(field) 	SNMP_INC_STATS_USER(ip_statistics, field)
 DECLARE_SNMP_STAT(struct linux_mib, net_statistics);
@@ -212,7 +212,7 @@ extern int sysctl_ip_default_ttl;
 /* The function in 2.2 was invalid, producing wrong result for
  * check=0xFEFF. It was noticed by Arthur Skawina _year_ ago. --ANK(000625) */
 /**
- * ÔÚ×ª·¢°üÊ±£¬µİ¼õTTL×Ö¶Î£¬Í¬Ê±»áĞŞÕıIP²ãĞ£ÑéºÍ¡£
+ * åœ¨è½¬å‘åŒ…æ—¶ï¼Œé€’å‡TTLå­—æ®µï¼ŒåŒæ—¶ä¼šä¿®æ­£IPå±‚æ ¡éªŒå’Œã€‚
  */
 static inline
 int ip_decrease_ttl(struct iphdr *iph)
@@ -223,7 +223,7 @@ int ip_decrease_ttl(struct iphdr *iph)
 	return --iph->ttl;
 }
 /**
- * ¸ù¾İÏµÍ³ÉèÖÃ£¬Èç¹û´ò¿ªÁËPMTU·¢ÏÖ¹¦ÄÜ£¬ÒÔ¼°µ±Ç°µÄPMTUÖµ£¬È·¶¨ÊÇ·ñĞèÒª¶ÔIP½øĞĞ·ÖÆ¬¡£
+ * æ ¹æ®ç³»ç»Ÿè®¾ç½®ï¼Œå¦‚æœæ‰“å¼€äº†PMTUå‘ç°åŠŸèƒ½ï¼Œä»¥åŠå½“å‰çš„PMTUå€¼ï¼Œç¡®å®šæ˜¯å¦éœ€è¦å¯¹IPè¿›è¡Œåˆ†ç‰‡ã€‚
  */
 static inline
 int ip_dont_fragment(struct sock *sk, struct dst_entry *dst)
@@ -236,23 +236,23 @@ int ip_dont_fragment(struct sock *sk, struct dst_entry *dst)
 extern void __ip_select_ident(struct iphdr *iph, struct dst_entry *dst, int more);
 
 /**
- * ÎªIP±¨ÎÄÑ¡ÔñID¡£
+ * ä¸ºIPæŠ¥æ–‡é€‰æ‹©IDã€‚
  */
 static inline void ip_select_ident(struct iphdr *iph, struct dst_entry *dst, struct sock *sk)
 {
-	if (iph->frag_off & htons(IP_DF)) {/* ²»ÄÜ·Ö¶ÎµÄ°ü */
+	if (iph->frag_off & htons(IP_DF)) {/* ä¸èƒ½åˆ†æ®µçš„åŒ… */
 		/* This is only to work around buggy Windows95/2000
 		 * VJ compression implementations.  If the ID field
 		 * does not change, they drop every other packet in
 		 * a TCP stream using header compression.
 		 */
 		/**
-		 * ¼ä½Ó´ÓsockÊı¾İ½á¹¹ÖĞÈ¡³ö¡£ÕâÊÇÎªÁË½â¾öwindowsÏµÍ³µÄBUG¡£
+		 * é—´æ¥ä»sockæ•°æ®ç»“æ„ä¸­å–å‡ºã€‚è¿™æ˜¯ä¸ºäº†è§£å†³windowsç³»ç»Ÿçš„BUGã€‚
 		 */
 		iph->id = (sk && inet_sk(sk)->daddr) ?
 					htons(inet_sk(sk)->id++) : 0;
 	} else
-		__ip_select_ident(iph, dst, 0);/* ¶Ô¿ÉÒÔ·Ö¶ÎµÄ°ü£¬Ôò´Ó__ip_select_ident»ñµÃID */
+		__ip_select_ident(iph, dst, 0);/* å¯¹å¯ä»¥åˆ†æ®µçš„åŒ…ï¼Œåˆ™ä»__ip_select_identè·å¾—ID */
 }
 
 static inline void ip_select_ident_more(struct iphdr *iph, struct dst_entry *dst, struct sock *sk, int more)

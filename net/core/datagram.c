@@ -194,7 +194,7 @@ no_packet:
 	return NULL;
 }
 
-/* µ±UDP´«Êä¿ØÖÆ¿é½ÓÊÕ¶ÓÁĞÉÏµÄ±¨ÎÄÒÑ¾­¸´ÖÆµ½ÓÃ»§¿Õ¼äºó£¬µ÷ÓÃ´Ëº¯Êı¡£ */
+/* å½“UDPä¼ è¾“æ§åˆ¶å—æ¥æ”¶é˜Ÿåˆ—ä¸Šçš„æŠ¥æ–‡å·²ç»å¤åˆ¶åˆ°ç”¨æˆ·ç©ºé—´åï¼Œè°ƒç”¨æ­¤å‡½æ•°ã€‚ */
 void skb_free_datagram(struct sock *sk, struct sk_buff *skb)
 {
 	kfree_skb(skb);
@@ -209,57 +209,57 @@ void skb_free_datagram(struct sock *sk, struct sk_buff *skb)
  *
  *	Note: the iovec is modified during the copy.
  */
-/* ½«±¨ÎÄÖĞµÄÊı¾İ¸´ÖÆµ½ÓÃ»§¿Õ¼ä£¬²»½øĞĞĞ£ÑéºÍ¼ì²é */
+/* å°†æŠ¥æ–‡ä¸­çš„æ•°æ®å¤åˆ¶åˆ°ç”¨æˆ·ç©ºé—´ï¼Œä¸è¿›è¡Œæ ¡éªŒå’Œæ£€æŸ¥ */
 int skb_copy_datagram_iovec(const struct sk_buff *skb, int offset,
 			    struct iovec *to, int len)
 {
 	int start = skb_headlen(skb);
-	int i, copy = start - offset;/* copy³õÊ¼»¯ÎªskbµÚÒ»¸öÊı¾İÇøÖĞĞèÒª¸´ÖÆµÄ×Ö½Ú */
+	int i, copy = start - offset;/* copyåˆå§‹åŒ–ä¸ºskbç¬¬ä¸€ä¸ªæ•°æ®åŒºä¸­éœ€è¦å¤åˆ¶çš„å­—èŠ‚ */
 
 	/* Copy header. */
-	if (copy > 0) {/* ĞèÒª´ÓµÚÒ»¸öÊı¾İÇøÖĞ¸´ÖÆÊı¾İ */
-		if (copy > len)/* ±¨ÎÄÌ«³¤£¬Ö»ÄÜ¸´ÖÆ²¿·ÖÊı¾İ */
+	if (copy > 0) {/* éœ€è¦ä»ç¬¬ä¸€ä¸ªæ•°æ®åŒºä¸­å¤åˆ¶æ•°æ® */
+		if (copy > len)/* æŠ¥æ–‡å¤ªé•¿ï¼Œåªèƒ½å¤åˆ¶éƒ¨åˆ†æ•°æ® */
 			copy = len;
-		if (memcpy_toiovec(to, skb->data + offset, copy))/* ¸´ÖÆÊı¾İµ½ÓÃ»§¿Õ¼ä */
+		if (memcpy_toiovec(to, skb->data + offset, copy))/* å¤åˆ¶æ•°æ®åˆ°ç”¨æˆ·ç©ºé—´ */
 			goto fault;
-		if ((len -= copy) == 0)/* ¸´ÖÆÍêËùÓĞÊı¾İ£¬ÍË³ö */
+		if ((len -= copy) == 0)/* å¤åˆ¶å®Œæ‰€æœ‰æ•°æ®ï¼Œé€€å‡º */
 			return 0;
 		offset += copy;
 	}
 
 	/* Copy paged appendix. Hmm... why does this look so complicated? */
-	for (i = 0; i < skb_shinfo(skb)->nr_frags; i++) {/* ±éÀúS/G¶Î */
+	for (i = 0; i < skb_shinfo(skb)->nr_frags; i++) {/* éå†S/Gæ®µ */
 		int end;
 
 		BUG_TRAP(start <= offset + len);
 
-		end = start + skb_shinfo(skb)->frags[i].size;/* S/G¶ÎµÄÆğÊ¼¡¢½áÊøÎ»ÖÃ */
-		if ((copy = end - offset) > 0) {/* ĞèÒª´Óµ±Ç°¶Î¸´ÖÆÊı¾İµ½ÓÃ»§¿Õ¼ä */
+		end = start + skb_shinfo(skb)->frags[i].size;/* S/Gæ®µçš„èµ·å§‹ã€ç»“æŸä½ç½® */
+		if ((copy = end - offset) > 0) {/* éœ€è¦ä»å½“å‰æ®µå¤åˆ¶æ•°æ®åˆ°ç”¨æˆ·ç©ºé—´ */
 			int err;
 			u8  *vaddr;
 			skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
 			struct page *page = frag->page;
 
-			if (copy > len)/* Ö»ÄÜ¸´ÖÆ²¿·ÖÊı¾İµ½ÓÃ»§¿Õ¼ä */
+			if (copy > len)/* åªèƒ½å¤åˆ¶éƒ¨åˆ†æ•°æ®åˆ°ç”¨æˆ·ç©ºé—´ */
 				copy = len;
-			vaddr = kmap(page);/* Ó³Éä±¨ÎÄS/G¶Î */
-			/* ½«S/G¶ÎÖĞµÄÊı¾İ¸´ÖÆµ½ÓÃ»§¿Õ¼ä */
+			vaddr = kmap(page);/* æ˜ å°„æŠ¥æ–‡S/Gæ®µ */
+			/* å°†S/Gæ®µä¸­çš„æ•°æ®å¤åˆ¶åˆ°ç”¨æˆ·ç©ºé—´ */
 			err = memcpy_toiovec(to, vaddr + frag->page_offset +
 					     offset - start, copy);
-			kunmap(page);/* ½â³ıÓ³Éä */
+			kunmap(page);/* è§£é™¤æ˜ å°„ */
 			if (err)
 				goto fault;
-			if (!(len -= copy))/* ¸´ÖÆÍêËùÓĞÊı¾İ£¬·µ»Ø */
+			if (!(len -= copy))/* å¤åˆ¶å®Œæ‰€æœ‰æ•°æ®ï¼Œè¿”å› */
 				return 0;
 			offset += copy;
 		}
 		start = end;
 	}
 
-	if (skb_shinfo(skb)->frag_list) {/* ´Ófrag_listÖĞ¸´ÖÆÊı¾İ */
+	if (skb_shinfo(skb)->frag_list) {/* ä»frag_listä¸­å¤åˆ¶æ•°æ® */
 		struct sk_buff *list = skb_shinfo(skb)->frag_list;
 
-		for (; list; list = list->next) {/* ±éÀúËùÓĞfrag */
+		for (; list; list = list->next) {/* éå†æ‰€æœ‰frag */
 			int end;
 
 			BUG_TRAP(start <= offset + len);
@@ -268,7 +268,7 @@ int skb_copy_datagram_iovec(const struct sk_buff *skb, int offset,
 			if ((copy = end - offset) > 0) {
 				if (copy > len)
 					copy = len;
-				/* µİ¹éµ÷ÓÃ±¾º¯Êı´ÓfragÖĞ¸´ÖÆ */
+				/* é€’å½’è°ƒç”¨æœ¬å‡½æ•°ä»fragä¸­å¤åˆ¶ */
 				if (skb_copy_datagram_iovec(list,
 							    offset - start,
 							    to, copy))
@@ -392,7 +392,7 @@ fault:
  *		 -EFAULT - fault during copy. Beware, in this case iovec
  *			   can be modified!
  */
-/* ÀàËÆÓÚskb_copy_datagram_iovec£¬µ«ÊÇÒª½øĞĞĞ£ÑéºÍ¼ìÑé */
+/* ç±»ä¼¼äºskb_copy_datagram_iovecï¼Œä½†æ˜¯è¦è¿›è¡Œæ ¡éªŒå’Œæ£€éªŒ */
 int skb_copy_and_csum_datagram_iovec(const struct sk_buff *skb,
 				     int hlen, struct iovec *iov)
 {
@@ -442,31 +442,31 @@ fault:
  *	and you use a different write policy from sock_writeable()
  *	then please supply your own write_space callback.
  */
-/* »ñµÃ´«Êä¿ØÖÆ¿éÖĞµÄÊı¾İ±êÖ¾ */
+/* è·å¾—ä¼ è¾“æ§åˆ¶å—ä¸­çš„æ•°æ®æ ‡å¿— */
 unsigned int datagram_poll(struct file *file, struct socket *sock,
 			   poll_table *wait)
 {
 	struct sock *sk = sock->sk;
 	unsigned int mask;
 
-	/* ½«µ±Ç°½ø³ÌÌí¼Óµ½´«Êä¿ØÖÆ¿éµÄµÈ´ı¶ÓÁĞÖĞ */
+	/* å°†å½“å‰è¿›ç¨‹æ·»åŠ åˆ°ä¼ è¾“æ§åˆ¶å—çš„ç­‰å¾…é˜Ÿåˆ—ä¸­ */
 	poll_wait(file, sk->sk_sleep, wait);
 	mask = 0;
 
 	/* exceptional events? */
-	/* ´«Êä¿ØÖÆ¿éÓĞ´íÎó·¢Éú£¬Ôò·µ»Ø´íÎó±êÖ¾ */
+	/* ä¼ è¾“æ§åˆ¶å—æœ‰é”™è¯¯å‘ç”Ÿï¼Œåˆ™è¿”å›é”™è¯¯æ ‡å¿— */
 	if (sk->sk_err || !skb_queue_empty(&sk->sk_error_queue))
 		mask |= POLLERR;
-	if (sk->sk_shutdown == SHUTDOWN_MASK)/* Ì×½Ó¿ÚÒÑ¾­¹Ø±Õ£¬·µ»ØPOLLHUP±êÖ¾ */
+	if (sk->sk_shutdown == SHUTDOWN_MASK)/* å¥—æ¥å£å·²ç»å…³é—­ï¼Œè¿”å›POLLHUPæ ‡å¿— */
 		mask |= POLLHUP;
 
 	/* readable? */
-	if (!skb_queue_empty(&sk->sk_receive_queue) ||/* ½ÓÊÕ¶ÓÁĞÖĞ´æÔÚÊı¾İ²¢ÇÒÃ»ÓĞ¹Ø±Õ½ÓÊÕ */
+	if (!skb_queue_empty(&sk->sk_receive_queue) ||/* æ¥æ”¶é˜Ÿåˆ—ä¸­å­˜åœ¨æ•°æ®å¹¶ä¸”æ²¡æœ‰å…³é—­æ¥æ”¶ */
 	    (sk->sk_shutdown & RCV_SHUTDOWN))
 		mask |= POLLIN | POLLRDNORM;
 
 	/* Connection-based need to check for termination and startup */
-	if (connection_based(sk)) {/* Èç¹ûÊÇ»ùÓÚÁ¬½ÓµÄ±êÖ¾£¬ÔòÅĞ¶ÏÊÇ·ñÔÊĞíĞ´Êı¾İ */
+	if (connection_based(sk)) {/* å¦‚æœæ˜¯åŸºäºè¿æ¥çš„æ ‡å¿—ï¼Œåˆ™åˆ¤æ–­æ˜¯å¦å…è®¸å†™æ•°æ® */
 		if (sk->sk_state == TCP_CLOSE)
 			mask |= POLLHUP;
 		/* connection hasn't started yet? */
@@ -475,7 +475,7 @@ unsigned int datagram_poll(struct file *file, struct socket *sock,
 	}
 
 	/* writable? */
-	if (sock_writeable(sk))/* ¸ù¾İ»º´æÇøµÄÇé¿öÈ·¶¨ÊÇ·ñ¿ÉĞ´ */
+	if (sock_writeable(sk))/* æ ¹æ®ç¼“å­˜åŒºçš„æƒ…å†µç¡®å®šæ˜¯å¦å¯å†™ */
 		mask |= POLLOUT | POLLWRNORM | POLLWRBAND;
 	else
 		set_bit(SOCK_ASYNC_NOSPACE, &sk->sk_socket->flags);

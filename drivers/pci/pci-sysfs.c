@@ -477,7 +477,7 @@ void pci_remove_sysfs_dev_files(struct pci_dev *pdev)
 }
 
 /**
- * ÓësysfsÎÄ¼şÏµÍ³Ïà¹Ø£¬Ö÷Òª¹¦ÄÜÊÇ½«Ã¿Ò»¸öPCIÉè±¸¼ÓÈëµ½sysfsÎÄ¼şÏµÍ³µÄÏàÓ¦Ä¿Â¼ÖĞ¡£
+ * ä¸sysfsæ–‡ä»¶ç³»ç»Ÿç›¸å…³ï¼Œä¸»è¦åŠŸèƒ½æ˜¯å°†æ¯ä¸€ä¸ªPCIè®¾å¤‡åŠ å…¥åˆ°sysfsæ–‡ä»¶ç³»ç»Ÿçš„ç›¸åº”ç›®å½•ä¸­ã€‚
  */
 static int __init pci_sysfs_init(void)
 {

@@ -10,8 +10,8 @@
  *
  * Copyright (c) 1992 Dana L. How.
  * Copyright (c) Raimar Falke <rf13@inf.tu-dresden.de> 
- * Copyright (c) Gisle Sælensminde <gisle@ii.uib.no>
- * Copyright (C) 2001 Niels Möller.
+ * Copyright (c) Gisle Slensminde <gisle@ii.uib.no>
+ * Copyright (C) 2001 Niels Mller.
  * Copyright (c) 2002 James Morris <jmorris@intercode.com.au>
  *
  * This program is free software; you can redistribute it and/or modify

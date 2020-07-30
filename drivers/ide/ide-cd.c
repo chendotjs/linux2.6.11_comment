@@ -2239,7 +2239,7 @@ static int cdrom_read_toc(ide_drive_t *drive, struct request_sense *sense)
 		   If we get an error for the regular case, we assume
 		   a CDI without additional audio tracks. In this case
 		   the readable TOC is empty (CDI tracks are not included)
-		   and only holds the Leadout entry. Heiko Eißfeldt */
+		   and only holds the Leadout entry. Heiko Eifeldt */
 		ntracks = 0;
 		stat = cdrom_read_tocentry(drive, CDROM_LEADOUT, 1, 0,
 					   (char *)&toc->hdr,

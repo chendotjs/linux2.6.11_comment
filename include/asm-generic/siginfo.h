@@ -40,20 +40,20 @@ typedef union sigval {
 
 typedef struct siginfo {
 	/**
-	 * ĞÅºÅ±àºÅ
+	 * ä¿¡å·ç¼–å·
 	 */
 	int si_signo;
 	/**
-	 * ÒıÆğĞÅºÅ²úÉúµÄÖ¸ÁîµÄ³ö´íÂë¡£Ã»ÓĞ³ö´íÂëÔòÎª0¡£
+	 * å¼•èµ·ä¿¡å·äº§ç”Ÿçš„æŒ‡ä»¤çš„å‡ºé”™ç ã€‚æ²¡æœ‰å‡ºé”™ç åˆ™ä¸º0ã€‚
 	 */
 	int si_errno;
 	/**
-	 * ·¢ËÍÕß´úÂë¡£
+	 * å‘é€è€…ä»£ç ã€‚
 	 */
 	int si_code;
 
 	/**
-	 * ÒÀÀµÓÚĞÅºÅÀàĞÍµÄĞÅÏ¢ÁªºÏÌå¡£
+	 * ä¾èµ–äºä¿¡å·ç±»å‹çš„ä¿¡æ¯è”åˆä½“ã€‚
 	 */
 	union {
 		int _pad[SI_PAD_SIZE];
@@ -154,29 +154,29 @@ typedef struct siginfo {
  * Digital reserves positive values for kernel-generated signals.
  */
 /**
- * KILLºÍraise¡£
+ * KILLå’Œraiseã€‚
  */
 #define SI_USER		0		/* sent by kill, sigsend, raise */
 /**
- * Ò»°ãÄÚºËº¯Êı¡£
+ * ä¸€èˆ¬å†…æ ¸å‡½æ•°ã€‚
  */
 #define SI_KERNEL	0x80		/* sent by the kernel from somewhere */
 /**
- * sigqueueµ÷ÓÃ
+ * sigqueueè°ƒç”¨
  */
 #define SI_QUEUE	-1		/* sent by sigqueue */
 /**
- * ¶¨Ê±Æ÷µ½ÆÚ¡£
+ * å®šæ—¶å™¨åˆ°æœŸã€‚
  */
 #define SI_TIMER __SI_CODE(__SI_TIMER,-2) /* sent by timer expiration */
 #define SI_MESGQ __SI_CODE(__SI_MESGQ,-3) /* sent by real time mesq state change */
 /**
- * Òì²½IOÍê³É¡£
+ * å¼‚æ­¥IOå®Œæˆã€‚
  */
 #define SI_ASYNCIO	-4		/* sent by AIO completion */
 #define SI_SIGIO	-5		/* sent by queued SIGIO */
 /**
- * tkillºÍtgkill
+ * tkillå’Œtgkill
  */
 #define SI_TKILL	-6		/* sent by tkill system call */
 #define SI_DETHREAD	-7		/* sent by execve() killing subsidiary threads */
@@ -246,17 +246,17 @@ typedef struct siginfo {
 /*
  * SIGPOLL si_codes
  */
-/* ÊäÈëÊı¾İÓĞĞ§ */
+/* è¾“å…¥æ•°æ®æœ‰æ•ˆ */
 #define POLL_IN		(__SI_POLL|1)	/* data input available */
-/* Êä³ö»º³åÇøÓĞĞ§ */
+/* è¾“å‡ºç¼“å†²åŒºæœ‰æ•ˆ */
 #define POLL_OUT	(__SI_POLL|2)	/* output buffers available */
-/* ÊäÈëÏûÏ¢¿ÉÓÃ */
+/* è¾“å…¥æ¶ˆæ¯å¯ç”¨ */
 #define POLL_MSG	(__SI_POLL|3)	/* input message available */
-/* IOÒì³£ */
+/* IOå¼‚å¸¸ */
 #define POLL_ERR	(__SI_POLL|4)	/* i/o error */
-/* ¸ßÓÅÏÈ¼¶ÊäÈëÓĞĞ§ */
+/* é«˜ä¼˜å…ˆçº§è¾“å…¥æœ‰æ•ˆ */
 #define POLL_PRI	(__SI_POLL|5)	/* high priority input available */
-/* Éè±¸¹ÒÆğ»òÎÄ¼ş¹Ø±Õ£¬ÎŞ·¨¼ÌĞøĞ´ */
+/* è®¾å¤‡æŒ‚èµ·æˆ–æ–‡ä»¶å…³é—­ï¼Œæ— æ³•ç»§ç»­å†™ */
 #define POLL_HUP	(__SI_POLL|6)	/* device disconnected */
 #define NSIGPOLL	6
 

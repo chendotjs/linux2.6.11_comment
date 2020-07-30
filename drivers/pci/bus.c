@@ -100,7 +100,7 @@ void __devinit pci_bus_add_device(struct pci_dev *dev)
  * Call hotplug for each new devices.
  */
 /**
- * ½«Éè±¸²åÈëµ½È«¾ÖPCIÉè±¸ÁĞ±íÖĞ£¬²¢¼ÓÈëµ½sysfsºÍprocfsÖĞ¡£
+ * å°†è®¾å¤‡æ’å…¥åˆ°å…¨å±€PCIè®¾å¤‡åˆ—è¡¨ä¸­ï¼Œå¹¶åŠ å…¥åˆ°sysfså’Œprocfsä¸­ã€‚
  */
 void __devinit pci_bus_add_devices(struct pci_bus *bus)
 {
@@ -114,7 +114,7 @@ void __devinit pci_bus_add_devices(struct pci_bus *bus)
 		if (!list_empty(&dev->global_list))
 			continue;
 		/**
-		 * ½«µ±Ç°PCI×ÜÏßÉÏµÄËùÓĞPCIÉè±¸Ïà¹ØĞÅÏ¢¼ÓÈëµ½procºÍsysfsÎÄ¼şÏµÍ³ÖĞ¡£
+		 * å°†å½“å‰PCIæ€»çº¿ä¸Šçš„æ‰€æœ‰PCIè®¾å¤‡ç›¸å…³ä¿¡æ¯åŠ å…¥åˆ°procå’Œsysfsæ–‡ä»¶ç³»ç»Ÿä¸­ã€‚
 		 */
 		pci_bus_add_device(dev);
 	}
@@ -132,7 +132,7 @@ void __devinit pci_bus_add_devices(struct pci_bus *bus)
 			list_add_tail(&dev->subordinate->node, &dev->bus->children);
 			spin_unlock(&pci_bus_lock);
 			/**
-			 * µİ¹éµ÷ÓÃ£¬½«PCI×ÜÏßÉÏµÄËùÓĞPCI×ÓÇÅ¼ÓÈëprocºÍsysfsÎÄ¼şÏµÍ³¡£
+			 * é€’å½’è°ƒç”¨ï¼Œå°†PCIæ€»çº¿ä¸Šçš„æ‰€æœ‰PCIå­æ¡¥åŠ å…¥procå’Œsysfsæ–‡ä»¶ç³»ç»Ÿã€‚
 			 */
 			pci_bus_add_devices(dev->subordinate);
 
@@ -148,12 +148,12 @@ void pci_enable_bridges(struct pci_bus *bus)
 	list_for_each_entry(dev, &bus->devices, bus_list) {
 		if (dev->subordinate) {
 			/**
-			 * Æô¶¯µ±Ç°PCIÇÅ¡£
+			 * å¯åŠ¨å½“å‰PCIæ¡¥ã€‚
 			 */
 			pci_enable_device(dev);
 			pci_set_master(dev);
 			/**
-			 * µİ¹é´¦ÀíÏÂ¼¶ÇÅ¡£
+			 * é€’å½’å¤„ç†ä¸‹çº§æ¡¥ã€‚
 			 */
 			pci_enable_bridges(dev->subordinate);
 		}

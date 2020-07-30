@@ -18,7 +18,7 @@ struct raw_prio_tree_node {
 };
 
 /**
- * ÓÅÏÈÊ÷½Úµã
+ * ä¼˜å…ˆæ ‘èŠ‚ç‚¹
  */
 struct prio_tree_node {
 	struct prio_tree_node	*left;

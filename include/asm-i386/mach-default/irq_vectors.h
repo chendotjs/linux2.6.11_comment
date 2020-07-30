@@ -48,8 +48,8 @@
 #define INVALIDATE_TLB_VECTOR	0xfd
 #define RESCHEDULE_VECTOR	0xfc
 /**
- * ´¦ÀíÆ÷¼äÖÐ¶ÏÏòÁ¿£¬Ëü½«ÖÐ¶Ï·¢ÍùËùÓÐCPUµ«ÊÇ²»·¢Íù×Ô¼º¡£
- * send_IPI_allbutself²úÉú¡£
+ * å¤„ç†å™¨é—´ä¸­æ–­å‘é‡ï¼Œå®ƒå°†ä¸­æ–­å‘å¾€æ‰€æœ‰CPUä½†æ˜¯ä¸å‘å¾€è‡ªå·±ã€‚
+ * send_IPI_allbutselfäº§ç”Ÿã€‚
  */
 #define CALL_FUNCTION_VECTOR	0xfb
 

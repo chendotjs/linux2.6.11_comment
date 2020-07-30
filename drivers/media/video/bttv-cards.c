@@ -1016,7 +1016,7 @@ struct tvcard bttv_tvcards[] = {
 },{
 
 /* ---- card 0x34 ---------------------------------- */
-	/* David Härdeman <david@2gen.com> */
+	/* David Hrdeman <david@2gen.com> */
 	.name           = "Pinnacle PCTV Studio Pro",
 	.video_inputs   = 4,
 	.audio_inputs   = 1,
@@ -1053,7 +1053,7 @@ struct tvcard bttv_tvcards[] = {
 	.tuner_type	= TUNER_PHILIPS_PAL,
 	.has_radio	= 1,
 },{
-	/* Tim Röstermundt <rosterm@uni-muenster.de>
+	/* Tim Rstermundt <rosterm@uni-muenster.de>
 	   in de.comp.os.unix.linux.hardware:
 		options bttv card=0 pll=1 radio=1 gpiomask=0x18e0
 		audiomux=0x44c71f,0x44d71f,0,0x44d71f,0x44dfff
@@ -3110,7 +3110,7 @@ void bttv_tda9880_setnorm(struct bttv *btv, int norm)
 
 /*
  * reset/enable the MSP on some Hauppauge cards
- * Thanks to Kyösti Mälkki (kmalkki@cc.hut.fi)!
+ * Thanks to Kysti Mlkki (kmalkki@cc.hut.fi)!
  *
  * Hauppauge:  pin  5
  * Voodoo:     pin 20

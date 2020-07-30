@@ -34,7 +34,7 @@
  * saddr is address of outgoing interface.
  */
 /**
- * ��IP��ͷ��ר������Щѡ�������ʼ�������������ip_options�ṹ�������䱾�ز����İ�ʱ���ͻ��õ��˺�����
+ * 对IP报头中专属的那些选项部分做初始化（根据输入的ip_options结构）。传输本地产生的包时，就会用到此函数。
  */
 void ip_options_build(struct sk_buff * skb, struct ip_options * opt,
 			    u32 daddr, struct rtable *rt, int is_frag) 
@@ -84,11 +84,11 @@ void ip_options_build(struct sk_buff * skb, struct ip_options * opt,
  * NOTE: dopt cannot point to skb.
  */
 /**
- * ָ�������IPѡ��󣬴˺����Ϳɽ������ڻظ������ߵ�IPѡ�
- *		 �ظ�ICMP��������icmp_replay��
- *	 	 ��IP������ϲ���ICMP��Ϣ����ʱ��icmp_send��
- *		 IP�����ṩ��ͨ�ú���ip_send_reply���Իظ�IP�������
- *		 �洢��SYN�ε�ѡ���TCP��
+ * 指定入包及IP选项后，此函数就可建立用于回复传送者的IP选项。
+ *		 回复ICMP入包请求的icmp_replay。
+ *	 	 当IP入包符合产生ICMP消息需求时的icmp_send。
+ *		 IP层所提供的通用函数ip_send_reply（以回复IP入包）。
+ *		 存储入SYN段的选项的TCP。
  */
 int ip_options_echo(struct ip_options * dopt, struct sk_buff * skb) 
 {
@@ -213,10 +213,10 @@ int ip_options_echo(struct ip_options * dopt, struct sk_buff * skb)
  *	Simple and stupid 8), but the most efficient way.
  */
 /**
- * ��Ϊ��һ��Ƭ����Ψһ�̳�ԭ�а�������ѡ���Ƭ�Σ����ԣ��䱨ͷ�ĳߴ�Ӧ���ڻ���ں���Ƭ�εĳߴ硣
- * LINUX������Ƭ�ζ�������ͬ�ı�ͷ�ߴ磬�÷ֶ����̸�Ϊ����Ч��
- * �������ǿ���ԭ�б�ͷ��������ѡ�Ȼ�󣬳��˵�һ��Ƭ�����⣬����������Ƭ�ζ��Կ�ѡ�����Щ����Ҫ�ظ���ѡ�Ҳ����IPOPT_COPYû�趨��ѡ���Ȼ�����������ص�ip_options��־����ts_needaddr����
- * �������޸ĵ�һ��Ƭ�ε�IP��ͷ��ʹ����Ա�����Ƭ��ѭ�����á�
+ * 因为第一个片段是唯一继承原有包的所有选项的片段，所以，其报头的尺寸应大于或等于后续片段的尺寸。
+ * LINUX让所有片段都保持相同的报头尺寸，让分段流程更为简单有效。
+ * 其做法是拷贝原有报头及其所有选项，然后，除了第一个片段以外，对其他所有片段都以空选项覆盖那些不需要重复的选项（也就是IPOPT_COPY没设定的选项），然后清掉和其相关的ip_options标志（如ts_needaddr）。
+ * 本函数修改第一个片段的IP报头，使其可以被后续片段循环利用。
  */
 void ip_options_fragment(struct sk_buff * skb) 
 {
@@ -256,10 +256,10 @@ void ip_options_fragment(struct sk_buff * skb)
  * If opt == NULL, then skb->data should point to IP header.
  */
 /**
- * ����IP��ͷ�е�һЩѡ�Ȼ����Ӧ�Ķ�һ��ip_options�ṹ��ʵ������ʼ����
- * �������������ֵ���ú���֪����������ʲô����±����õģ�
- *		�����skb��ΪNULL��optΪNULL��
- * 		���������䣺skbΪNULL��opt�ǿա�
+ * 分析IP报头中的一些选项，然后相应的对一个ip_options结构的实例做初始化。
+ * 两个输入参数的值会让函数知道自身是在什么情况下被调用的：
+ *		入包：skb不为NULL，opt为NULL。
+ * 		包正被传输：skb为NULL，opt非空。
  */
 int ip_options_compile(struct ip_options * opt, struct sk_buff * skb)
 {
@@ -271,41 +271,41 @@ int ip_options_compile(struct ip_options * opt, struct sk_buff * skb)
 	struct rtable *rt = skb ? (struct rtable*)skb->dst : NULL;
 
 	/**
-	 * optΪ�գ�˵���������
+	 * opt为空，说明是入包。
 	 */
 	if (!opt) {
 		opt = &(IPCB(skb)->opt);
 		memset(opt, 0, sizeof(struct ip_options));
 		/**
-		 * �������ȡIPͷ��
+		 * 从入包中取IP头。
 		 */
 		iph = skb->nh.raw;
 		opt->optlen = ((struct iphdr *)iph)->ihl*4 - sizeof(struct iphdr);
 		/**
-		 * ѡ����ʼ��ַ����
+		 * 选项起始地址。。
 		 */
 		optptr = iph + sizeof(struct iphdr);
 		opt->is_data = 0;
 	} else {
 		/**
-		 * ��opt��ȡ��ѡ����ʼ��ַ�Ͱ�ͷ��
+		 * 从opt中取出选项起始地址和包头。
 		 */
 		optptr = opt->is_data ? opt->__data : (unsigned char*)&(skb->nh.iph[1]);
 		iph = optptr - sizeof(struct iphdr);
 	}
 
 	/**
-	 * ��������ѡ�
-	 *		L��ʾ��Ȼû�б������Ŀ�ĳ��ȡ�
-	 *		Optptrָ��ָ���Ѿ��������˵�ѡ���ĵ�ǰ��ַ��Optptr[1]��ѡ��ĳ��ȣ�optptr[2]��ѡ��ָ�루ѡ�ʼ�ĵط�����
-	 * 		Optlen����ʼ��Ϊ��ǰѡ��ĳ��ȡ�
-	 * 		Is_changed��־�������浱��ͷ�Ƿ��Ѿ����޸ģ�����Ҫ���¼���У��ͣ���
+	 * 遍历处理选项。
+	 *		L表示仍然没有被解析的块的长度。
+	 *		Optptr指针指向已经被解析了的选项块的当前地址。Optptr[1]是选项的长度，optptr[2]是选项指针（选项开始的地方）。
+	 * 		Optlen被初始化为当前选项的长度。
+	 * 		Is_changed标志用来保存当报头是否已经被修改（这需要重新计算校验和）。
 	 */
 	for (l = opt->optlen; l > 0; ) {
 		switch (*optptr) {
 		      case IPOPT_END:
 			/**
-			 * ��IPOPT_ENDѡ��󣬲�����������ѡ���ˣ�һ���ҵ�һ��������ѡ����������ʲôѡ���������ΪIPOPT_END��
+			 * 在IPOPT_END选项后，不能再有其他选项。因此，一旦找到一个这样的选项，不管其后是什么选项，都被覆盖为IPOPT_END。
 			 */
 			for (optptr++, l--; l>0; optptr++, l--) {
 				if (*optptr != IPOPT_END) {
@@ -315,7 +315,7 @@ int ip_options_compile(struct ip_options * opt, struct sk_buff * skb)
 			}
 			goto eol;
 			/**
-			 * IPOPT_NOOP����ռλ��ֱ���Թ���
+			 * IPOPT_NOOP用于占位，直接略过。
 			 */
 		      case IPOPT_NOOP:
 			l--;
@@ -323,11 +323,11 @@ int ip_options_compile(struct ip_options * opt, struct sk_buff * skb)
 			continue;
 		}
 		/**
-		 * ���´������ֽ�ѡ�
+		 * 以下处理多字节选项。
 		 */
 		optlen = optptr[1];
 		/**
-		 * ����ÿһ��ѡ��ĳ��Ȱ�������ǰ��������ֽڣ�type��length������������1��ʼ����������0�������lengthС��2���ߴ����Ѿ���������ѡ���ͱ�ʾһ������
+		 * 由于每一个选项的长度包含了最前面的两个字节（type和length），并且它从1开始计数（不是0），如果length小于2或者大于已经被分析的选项块就表示一个错误
 		 */
 		if (optlen<2 || optlen>l) {
 			pp_ptr = optptr;
@@ -335,20 +335,20 @@ int ip_options_compile(struct ip_options * opt, struct sk_buff * skb)
 		}
 		switch (*optptr) {
 			/**
-			 * �ϸ�Ϳ��ɵ�Դ·��ѡ�
+			 * 严格和宽松的源路由选项。
 			 */
 		      case IPOPT_SSRR:
 		      case IPOPT_LSRR:
 			/**
-			 * ���ѡ��ȣ�����type��length��С��3����ô��ѡ�����Ϊ����ѡ�
-			 * ������Ϊ��ֵ�Ѿ�������type��length��pointer�ֶΡ�
+			 * 如果选项长度（包含type和length）小于3，那么该选项将被视为错误选项。
+			 * 这是因为该值已经包含了type、length和pointer字段。
 			 */
 			if (optlen < 3) {
 				pp_ptr = optptr + 1;
 				goto error;
 			}
 			/**
-			 * ͬʱ��pointer���ܱ�4С����Ϊ��һ��3�ֽڵ�ѡ���Ѿ���type��length��pionter�ֶ�ʹ�á�
+			 * 同时，pointer不能比4小，因为第一个3字节的选项已经被type、length、pionter字段使用。
 			 */
 			if (optptr[2] < 4) {
 				pp_ptr = optptr + 2;
@@ -356,15 +356,15 @@ int ip_options_compile(struct ip_options * opt, struct sk_buff * skb)
 			}
 			/* NB: cf RFC-1812 5.2.4.1 */
 			/**
-			 * ǰ�ֵĽ������Ѿ�һ��Դ·��ѡ���ˡ�
-			 * �����ϸ�Ϳ���Դ·�ɲ���ͬʱ���棬���������������
+			 * 前现的解析中已经一个源路由选项了。
+			 * 由于严格和宽松源路由不能同时并存，因此跳到错误处理。
 			 */
 			if (opt->srr) {
 				pp_ptr = optptr;
 				goto error;
 			}
 			/**
-			 * �������skb������NULLʱ����ʾip_options_compile�������Խ���һ��������ѡ��ɱ������ɶ�����ת������
+			 * 当输入的skb参数是NULL时，表示ip_options_compile被调用以解析一个出包的选项（由本地生成而不是转发）。
 			 */
 			if (!skb) {
 				if (optptr[2] != 4 || optlen < 7 || ((optlen-3) & 3)) {
@@ -372,131 +372,131 @@ int ip_options_compile(struct ip_options * opt, struct sk_buff * skb)
 					goto error;
 				}
 				/**
-				 * ����������£����û��ռ��ṩ�ĵ�ַ�����еĵ�һ��IP��ַ��������opt->faddr��Ȼ����memmove��������������Ԫ�������ƶ�һ��λ�ã����õ�ַ��������ɾ����
-				 * �����ַ��󽫱�ip_queue_xmit����ȡ������������Щ������֪��Ŀ��IP��ַ��ʹ��opt->faddr�ļ򵥵����ӿ�����udp_sendmsg���ҵ���
+				 * 在这种情况下，由用户空间提供的地址数组中的第一个IP地址被保存在opt->faddr，然后以memmove运算把数组的其他元素往回移动一个位置，将该地址从数组中删除。
+				 * 这个地址随后将被ip_queue_xmit函数取出，这样，那些函数才知道目的IP地址。使用opt->faddr的简单的例子可以在udp_sendmsg中找到。
 				 */
 				memcpy(&opt->faddr, &optptr[3], 4);
 				if (optlen > 7)
 					memmove(&optptr[3], &optptr[7], optlen-7);
 			}
 			/**
-			 * opt->is_strictroute���������ߵ����ߣ�Դ·��ѡ���Ƿ���һ���ϸ񡢿���·�ɡ�
+			 * opt->is_strictroute被用来告诉调用者：源路由选项是否是一个严格、宽松路由。
 			 */
 			opt->is_strictroute = (optptr[0] == IPOPT_SSRR);
 			opt->srr = optptr - iph;
 			break;
 			/**
-			 * ��¼·��ѡ�
+			 * 记录路由选项。
 			 */
 		      case IPOPT_RR:
 			/**
-			 * �ظ�ѡ�����
+			 * 重复选项，错误。
 			 */
 			if (opt->rr) {
 				pp_ptr = optptr;
 				goto error;
 			}
 			/**
-			 * ���ȷǷ���
+			 * 长度非法。
 			 */
 			if (optlen < 3) {
 				pp_ptr = optptr + 1;
 				goto error;
 			}
 			/**
-			 * pointer�Ƿ���
+			 * pointer非法。
 			 */
 			if (optptr[2] < 4) {
 				pp_ptr = optptr + 2;
 				goto error;
 			}
-			/*�*
-			 * ��ǰָ��С��IPѡ���ܳ���IP��ͷ�л��пռ��¼·�ɡ� 
+			/**
+			 * 当前指针小于IP选项总长，IP报头中还有空间记录路由。 
 			 */
 			if (optptr[2] <= optlen) {
 				/**
-				 * �ռ䲻���Դ洢һ����ַ�ˡ�����
+				 * 空间不足以存储一个地址了。错误。
 				 */
 				if (optptr[2]+3 > optlen) {
 					pp_ptr = optptr + 2;
 					goto error;
 				}
 				/**
-				 * ���������
+				 * 处理入包。
 				 */
 				if (skb) {
 					/**
-					 * ����ѡԴIP��ַ��������ͷ�еĵ�ַ�б���Ȼ����±�־is_changed��ǿ�ȸ���IPУ��͡�
+					 * 把首选源IP地址拷贝到报头中的地址列表，然后更新标志is_changed来强迫更新IP校验和。
 					 */
 					memcpy(&optptr[optptr[2]-1], &rt->rt_spec_dst, 4);
 					opt->is_changed = 1;
 				}
 				/**
-				 * ������Σ���ѡ���pointer�ֶζ�����ǰ��4���ڣ�IP��ַ�ĳߴ磩��
-				 * ���˵����Ϊʲôip_forward_optionsҪ������4���ֽڣ��԰�IPд����ȷ�ĵ�ַ����Ϊip_forward_options�����rr_needaddrд��IP��ַ��
+				 * 无论如何，该选项的pointer字段都会往前移4个节（IP地址的尺寸）。
+				 * 这就说明了为什么ip_forward_options要往回走4个字节，以把IP写入正确的地址。因为ip_forward_options会根据rr_needaddr写入IP地址。
 				 */
 				optptr[2] += 4;
 				/**
-				 * �趨rr_needaddr��־����֪ͨ·����ϵͳ��������·�ɾ��ߺ󣬰�����ӿڵ�IP��ַд��IP��ͷ��
+				 * 设定rr_needaddr标志，以通知路由子系统，当做出路由决策后，把外出接口的IP地址写入IP报头。
 				 */
 				opt->rr_needaddr = 1;
 			}
 			opt->rr = optptr - iph;
 			break;
 			/**
-			 * Timestampѡ��
+			 * Timestamp选项
 			 */
 		      case IPOPT_TIMESTAMP:
 			/**
-			 * �ظ�ѡ�
+			 * 重复选项。
 			 */
 			if (opt->ts) {
 				pp_ptr = optptr;
 				goto error;
 			}
 			/**
-			 * ���ȷǷ���
+			 * 长度非法。
 			 */
 			if (optlen < 4) {
 				pp_ptr = optptr + 1;
 				goto error;
 			}
 			/**
-			 * pointer�Ƿ���
+			 * pointer非法。
 			 */
 			if (optptr[2] < 5) {
 				pp_ptr = optptr + 2;
 				goto error;
 			}
 			/**
-			 * ���ڿռ����ڱ���ʱ�����
+			 * 还在空间用于保存时间戳。
 			 */
 			if (optptr[2] <= optlen) {
 				__u32 * timeptr = NULL;
 				/**
-				 * ʣ��ռ䲻���Ա���ʱ�����
+				 * 剩余空间不足以保存时间戳。
 				 */
 				if (optptr[2]+3 > optptr[1]) {
 					pp_ptr = optptr + 2;
 					goto error;
 				}
 				/**
-				 * ����subtype�ֶ�
+				 * 处理subtype字段
 				 */
 				switch (optptr[3]&0xF) {
 				      case IPOPT_TS_TSONLY:
 					opt->ts = optptr - iph;
 					/**
-					 * ����skb��ΪNULLʱ������ѡ������ĳ�����ʱ����timeptr�Ż��ʼ����
+					 * 仅当skb不为NULL时（当该选项属于某个入包时），timeptr才会初始化。
 					 */
 					if (skb) 
 						/**
-						 * TS_ONLY��TS_TSANDADDR�����¼ʱ���.
-						 * Timeptr�ĳ�ʼֵ���ó�Ӧ��д�뵽IP��ͷ�е���ȷ�ص㡣
+						 * TS_ONLY和TS_TSANDADDR必须记录时间戳.
+						 * Timeptr的初始值设置成应该写入到IP报头中的正确地点。
 						 */
 						timeptr = (__u32*)&optptr[optptr[2]-1];
 					/**
-					 * ts_needtimeΪ1���Գ�����˵��ip_options_build����������־����ʱ���
+					 * ts_needtime为1，对出包来说，ip_options_build会根据这个标志设置时间戳
 					 */
 					opt->ts_needtime = 1;
 					optptr[2] += 4;
@@ -508,28 +508,28 @@ int ip_options_compile(struct ip_options * opt, struct sk_buff * skb)
 					}
 					opt->ts = optptr - iph;
 					/**
-					 * ����skb��ΪNULLʱ������ѡ������ĳ�����ʱ����timeptr�Ż��ʼ����
+					 * 仅当skb不为NULL时（当该选项属于某个入包时），timeptr才会初始化。
 					 */
 					if (skb) {
 						/**
-						 * д���ַ��
+						 * 写入地址。
 						 */
 						memcpy(&optptr[optptr[2]-1], &rt->rt_spec_dst, 4);
 						/**
-						 * TS_ONLY��TS_TSANDADDR�����¼ʱ���.
-						 * Timeptr�ĳ�ʼֵ���ó�Ӧ��д�뵽IP��ͷ�е���ȷ�ص㡣
+						 * TS_ONLY和TS_TSANDADDR必须记录时间戳.
+						 * Timeptr的初始值设置成应该写入到IP报头中的正确地点。
 						 */						
 						timeptr = (__u32*)&optptr[optptr[2]+3];
 					}
 					opt->ts_needaddr = 1;
 					/**
-					 * ts_needtimeΪ1���Գ�����˵��ip_options_build����������־����ʱ���
+					 * ts_needtime为1，对出包来说，ip_options_build会根据这个标志设置时间戳
 					 */
 					opt->ts_needtime = 1;
 					optptr[2] += 8;
 					break;
 					  /**
-					   * ���Ӵ���ΪIPOPT_TS_PRESPECʱ��ֻ�е���һ��Ҫ�ȶԵ�IP��ַ��ϵͳ���ص�ַʱ��ʱ����Ż�ӽ�ȥ
+					   * 当子代码为IPOPT_TS_PRESPEC时，只有当下一个要比对的IP地址是系统本地地址时，时间戳才会加进去
 					   */
 				      case IPOPT_TS_PRESPEC:
 					if (optptr[2]+7 > optptr[1]) {
@@ -541,19 +541,19 @@ int ip_options_compile(struct ip_options * opt, struct sk_buff * skb)
 						u32 addr;
 						memcpy(&addr, &optptr[optptr[2]-1], 4);
 						/** 
-						 * ����·�ɱ�����IP��ַ���Եִ�����ǵ�����ַ��
-						 * ��ˣ��������ü���ʱ�����
+						 * 根据路由表，该IP地址可以抵达，而且是单播地址。
+						 * 因此，本机不用计算时间戳。
 						 */
 						if (inet_addr_type(addr) == RTN_UNICAST)
 							break;
 						/**
-						 * �������˵������Ҫ�ڱ�������¼ʱ�����
+						 * 对入包来说，才需要在本函数记录时间戳。
 						 */
 						if (skb)
 							timeptr = (__u32*)&optptr[optptr[2]+3];
 					}
 					/**
-					 * ts_needtimeΪ1���Գ�����˵��ip_options_build����������־����ʱ���
+					 * ts_needtime为1，对出包来说，ip_options_build会根据这个标志设置时间戳
 					 */					
 					opt->ts_needtime = 1;
 					optptr[2] += 8;
@@ -566,8 +566,8 @@ int ip_options_compile(struct ip_options * opt, struct sk_buff * skb)
 					break;
 				}
 				/**
-				 * ȡ�������ڴ�������ѡ�ʱ�������д��IP��ͷ�еĲ�ͬƫ��������ǰ���Ǹ��������timeptr��ʼ����
-				 * �����ǰ�ʱ�����������ȷλ�á�������ѡ�������ts_needtime��tr_needaddrҲ�ᱻ��ʼ����
+				 * 取决于正在处理的子选项，时间戳必须写入IP报头中的不同偏移量处。前面是根据情况对timeptr初始化。
+				 * 现在是把时间戳拷贝到正确位置。根据子选项而定，ts_needtime和tr_needaddr也会被初始化。
 				 */
 				if (timeptr) {
 					struct timeval tv;
@@ -576,12 +576,12 @@ int ip_options_compile(struct ip_options * opt, struct sk_buff * skb)
 					midtime = htonl((tv.tv_sec % 86400) * 1000 + tv.tv_usec / 1000);
 					memcpy(timeptr, &midtime, sizeof(__u32));
 					/**
-					 * �������˵��timeptr��ΪNULL�����������޸ı�־���������ͻ����¼���У����ˡ�
-					 * ��Ϊ��������£���ͷ�Ѿ������˱仯��
+					 * 对入包来说，timeptr不为NULL，这里设置修改标志，这样，就会重新计算校验和了。
+					 * 因为这种情况下，报头已经发生了变化。
 					 */
 					opt->is_changed = 1;
 				}
-			} else {/* ��һ�����Ǵ���ʱ����ռ䲻������ */
+			} else {/* 这一部分是处理时间戳空间不足的溢出 */
 				unsigned overflow = optptr[3]>>4;
 				if (overflow == 15) {
 					pp_ptr = optptr + 3;
@@ -600,11 +600,11 @@ int ip_options_compile(struct ip_options * opt, struct sk_buff * skb)
 				goto error;
 			}
 			/**
-			 * Router Alertѡ�����������ֽڱ���Ϊ0.
+			 * Router Alert选项的最后两个字节必须为0.
 			 */
 			if (optptr[2] == 0 && optptr[3] == 0)
 				/**
-				 * ����router_alert��ip_forward������
+				 * 设置router_alert供ip_forward处理。
 				 */
 				opt->router_alert = optptr - iph;
 			break;
@@ -626,11 +626,11 @@ eol:
 		return 0;
 
 /**
- * ���е��ˣ�˵����ͷ���д�������
+ * 运行到此，说明报头中有错误发生。
  */
 error:
 	/**
-	 * ��������������Է�����ICMP��Ϣ��
+	 * 如果是入包，则向对方发送ICMP消息。
 	 */
 	if (skb) {
 		icmp_send(skb, ICMP_PARAMETERPROB, 0, htonl((pp_ptr-iph)<<24));
@@ -671,7 +671,7 @@ void ip_options_undo(struct ip_options * opt)
 }
 
 /**
- * �˺��������һȺѡ���ip_options_compile������Ȼ��ѽ���洢��������һ��ip_optioins�ṹ���˺���Ҳ�ɴ��ں˿ռ���û��ռ��������ѡ��
+ * 此函数会接收一群选项，用ip_options_compile解析，然后把结果存储在其分配的一个ip_optioins结构。此函数也可从内核空间或用户空间接收输入选项
  */
 int ip_options_get(struct ip_options **optp, unsigned char *data, int optlen, int user)
 {
@@ -706,8 +706,8 @@ int ip_options_get(struct ip_options **optp, unsigned char *data, int optlen, in
 }
 
 /**
- * ת��һ����ʱ����Щѡ����ܱ��뱻������
- * Ip_options_compile�����һЩѡ�Ȼ������ڴ洢���������ip_options�ṹ��һ���־����ʼ����
+ * 转发一个包时，有些选项可能必须被处理。
+ * Ip_options_compile会解析一些选项，然后对用于存储解析结果的ip_options结构的一组标志做初始化。
  */
 void ip_forward_options(struct sk_buff *skb)
 {
@@ -755,9 +755,9 @@ void ip_forward_options(struct sk_buff *skb)
 }
 
 /**
- * ��������ԴվѰ·��
- * ��IPͷ����ȡ��Ҫʹ�õ���һ����������ip_route_input�����еڶ���·�ɲ��ҡ�
- * �ڶ���·�ɲ���ʹ�ø��µĲ��ҽ������ԭ����skb->dst��
+ * 处理基于源站寻路。
+ * 从IP头部提取出要使用的下一跳，并调用ip_route_input来进行第二次路由查找。
+ * 第二次路由查找使用更新的查找结果覆盖原来的skb->dst。
  */
 int ip_options_rcv_srr(struct sk_buff *skb)
 {

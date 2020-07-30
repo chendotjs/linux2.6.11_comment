@@ -22,7 +22,7 @@
 #include <linux/namei.h>
 
 /**
- * ext2µÄfollow_linkÊµÏÖº¯Êı¡£
+ * ext2çš„follow_linkå®ç°å‡½æ•°ã€‚
  */
 static int ext2_follow_link(struct dentry *dentry, struct nameidata *nd)
 {
@@ -32,7 +32,7 @@ static int ext2_follow_link(struct dentry *dentry, struct nameidata *nd)
 }
 
 /**
- * ÆÕÍ¨·ûºÅÁ´½Ó(Á´½ÓÎÄ¼şÃû³¬¹ı60¸ö×Ö·û)µÄË÷Òı½Úµã²Ù×÷¡£
+ * æ™®é€šç¬¦å·é“¾æ¥(é“¾æ¥æ–‡ä»¶åè¶…è¿‡60ä¸ªå­—ç¬¦)çš„ç´¢å¼•èŠ‚ç‚¹æ“ä½œã€‚
  */
 struct inode_operations ext2_symlink_inode_operations = {
 	.readlink	= generic_readlink,
@@ -47,8 +47,8 @@ struct inode_operations ext2_symlink_inode_operations = {
 };
 
 /**
- * ext2µÄ·ûºÅÁ´½ÓÓĞÁ½ÖÖ£¬Ò»ÖÖÊÇ¿ìËÙ·ûºÅÁ´½Ó£¬Ò»ÖÖÊÇÆÕÍ¨·ûºÅÁ´½Ó¡£
- * ext2_fast_symlink_inode_operations´æ·ÅµÄÊÇ¿ìËÙ·ûºÅÁ´½ÓµÄË÷Òı½Úµã²Ù×÷¡£
+ * ext2çš„ç¬¦å·é“¾æ¥æœ‰ä¸¤ç§ï¼Œä¸€ç§æ˜¯å¿«é€Ÿç¬¦å·é“¾æ¥ï¼Œä¸€ç§æ˜¯æ™®é€šç¬¦å·é“¾æ¥ã€‚
+ * ext2_fast_symlink_inode_operationså­˜æ”¾çš„æ˜¯å¿«é€Ÿç¬¦å·é“¾æ¥çš„ç´¢å¼•èŠ‚ç‚¹æ“ä½œã€‚
  */
 struct inode_operations ext2_fast_symlink_inode_operations = {
 	.readlink	= generic_readlink,

@@ -260,40 +260,40 @@ static handle_t *new_handle(int nblocks)
  * Return a pointer to a newly allocated handle, or NULL on failure
  */
 /**
- * ¿ªÊ¼Ò»¸öÈÕÖ¾²Ù×÷
- * »ñµÃÔ­×Ó²Ù×÷ÃèÊö·û£¬Èç¹ûÒÑ¾­ÓĞÒ»¸ö£¬ÔòÖ±½Ó·µ»Ø¡£
- * Èç¹ûÃ»ÓĞÊÂÎñ£¬Ôò´´½¨Ò»¸ö¡£
- * nblocksÊÇÔ¤ÆÚ ÒªĞŞ¸ÄµÄ»º³åÇø¸öÊı¡£
+ * å¼€å§‹ä¸€ä¸ªæ—¥å¿—æ“ä½œ
+ * è·å¾—åŸå­æ“ä½œæè¿°ç¬¦ï¼Œå¦‚æœå·²ç»æœ‰ä¸€ä¸ªï¼Œåˆ™ç›´æ¥è¿”å›ã€‚
+ * å¦‚æœæ²¡æœ‰äº‹åŠ¡ï¼Œåˆ™åˆ›å»ºä¸€ä¸ªã€‚
+ * nblocksæ˜¯é¢„æœŸ è¦ä¿®æ”¹çš„ç¼“å†²åŒºä¸ªæ•°ã€‚
  */
 handle_t *journal_start(journal_t *journal, int nblocks)
 {
-	/* »ñµÃµ±Ç°ÈÎÎñµÄÔ­×Ó²Ù×÷ */
+	/* è·å¾—å½“å‰ä»»åŠ¡çš„åŸå­æ“ä½œ */
 	handle_t *handle = journal_current_handle();
 	int err;
 
-	/* Ã»ÓĞÈÕÖ¾Ö§³Ö£¬Ö»¶ÁÎÄ¼şÏµÍ³ */
+	/* æ²¡æœ‰æ—¥å¿—æ”¯æŒï¼Œåªè¯»æ–‡ä»¶ç³»ç»Ÿ */
 	if (!journal)
 		return ERR_PTR(-EROFS);
 
-	/* ÒÑ¾­´æÔÚÔ­×Ó²Ù×÷ÁË */
+	/* å·²ç»å­˜åœ¨åŸå­æ“ä½œäº† */
 	if (handle) {
 		J_ASSERT(handle->h_transaction->t_journal == journal);
-		/* Ìí¼ÓÔ­×Ó²Ù×÷µÄÒıÓÃ¼ÆÊı£¬È»ºó·µ»Ø */
+		/* æ·»åŠ åŸå­æ“ä½œçš„å¼•ç”¨è®¡æ•°ï¼Œç„¶åè¿”å› */
 		handle->h_ref++;
 		return handle;
 	}
 
-	/* ·ñÔò´´½¨Ò»¸öĞÂÔ­×Ó²Ù×÷ */
+	/* å¦åˆ™åˆ›å»ºä¸€ä¸ªæ–°åŸå­æ“ä½œ */
 	handle = new_handle(nblocks);
 	if (!handle)
 		return ERR_PTR(-ENOMEM);
 
-	/* ÉèÖÃµ±Ç°ÈÎÎñµÄÔ­×ÓÉÏÏÂÎÄ */
+	/* è®¾ç½®å½“å‰ä»»åŠ¡çš„åŸå­ä¸Šä¸‹æ–‡ */
 	current->journal_info = handle;
 
 	/**
-	 * ÔÚµ±Ç°ÔËĞĞµÄÊÂÎñÖĞ£¬Æô¶¯Ò»¸öĞÂÔ­×Ó²Ù×÷¡£
-	 * Èç¹ûÃ»ÓĞÔËĞĞµÄÊÂÎñ£¬»òÕßÊÂÎñ¹ı´ó£¬ÔòĞÂ´´½¨Ò»¸ö¡£
+	 * åœ¨å½“å‰è¿è¡Œçš„äº‹åŠ¡ä¸­ï¼Œå¯åŠ¨ä¸€ä¸ªæ–°åŸå­æ“ä½œã€‚
+	 * å¦‚æœæ²¡æœ‰è¿è¡Œçš„äº‹åŠ¡ï¼Œæˆ–è€…äº‹åŠ¡è¿‡å¤§ï¼Œåˆ™æ–°åˆ›å»ºä¸€ä¸ªã€‚
 	 */
 	err = start_this_handle(journal, handle);
 	if (err < 0) {
@@ -325,7 +325,7 @@ handle_t *journal_start(journal_t *journal, int nblocks)
  * return code > 0 implies normal transaction-full status.
  */
 /**
- * À©Õ¹Ô­×Ó²Ù×÷µÄ¶î¶È
+ * æ‰©å±•åŸå­æ“ä½œçš„é¢åº¦
  */
 int journal_extend(handle_t *handle, int nblocks)
 {
@@ -353,7 +353,7 @@ int journal_extend(handle_t *handle, int nblocks)
 	wanted = transaction->t_outstanding_credits + nblocks;
 
 	/**
-	 * ÉêÇëµÄ¿Õ¼ä¹ı´ó
+	 * ç”³è¯·çš„ç©ºé—´è¿‡å¤§
 	 */
 	if (wanted > journal->j_max_transaction_buffers) {
 		jbd_debug(3, "denied handle %p %d blocks: "
@@ -362,7 +362,7 @@ int journal_extend(handle_t *handle, int nblocks)
 	}
 
 	/**
-	 * Ã»ÓĞ×ã¹»¶àµÄÈÕÖ¾¿Õ¼äÁË
+	 * æ²¡æœ‰è¶³å¤Ÿå¤šçš„æ—¥å¿—ç©ºé—´äº†
 	 */
 	if (wanted > __log_space_left(journal)) {
 		jbd_debug(3, "denied handle %p %d blocks: "
@@ -370,7 +370,7 @@ int journal_extend(handle_t *handle, int nblocks)
 		goto unlock;
 	}
 
-	/* Ôö¼ÓÆä¶î¶È */
+	/* å¢åŠ å…¶é¢åº¦ */
 	handle->h_buffer_credits += nblocks;
 	transaction->t_outstanding_credits += nblocks;
 	result = 0;
@@ -587,12 +587,12 @@ repeat:
 	 * ie. locked but not dirty) or tune2fs (which may actually have
 	 * the buffer dirtied, ugh.)  */
 
-	if (buffer_dirty(bh)) {/* »º³åÇøÔà */
+	if (buffer_dirty(bh)) {/* ç¼“å†²åŒºè„ */
 		/*
 		 * First question: is this buffer already part of the current
 		 * transaction or the existing committing transaction?
 		 */
-		if (jh->b_transaction) {/* »º³åÇøÓëÊÂÎñÒÑ¾­°ó¶¨ */
+		if (jh->b_transaction) {/* ç¼“å†²åŒºä¸äº‹åŠ¡å·²ç»ç»‘å®š */
 			J_ASSERT_JH(jh,
 				jh->b_transaction == transaction || 
 				jh->b_transaction ==
@@ -600,7 +600,7 @@ repeat:
 			if (jh->b_next_transaction)
 				J_ASSERT_JH(jh, jh->b_next_transaction ==
 							transaction);
-			/* ²»ºÏÀíµÄ×´Ì¬£¬Ó¦¸ÃÓÉJBDÀ´¹ÜÀíÔà×´Ì¬ */
+			/* ä¸åˆç†çš„çŠ¶æ€ï¼Œåº”è¯¥ç”±JBDæ¥ç®¡ç†è„çŠ¶æ€ */
 			JBUFFER_TRACE(jh, "Unexpected dirty buffer");
 			jbd_unexpected_dirty_buffer(jh);
  		}
@@ -619,7 +619,7 @@ repeat:
 	 * The buffer is already part of this transaction if b_transaction or
 	 * b_next_transaction points to it
 	 */
-	if (jh->b_transaction == transaction ||/* µ±Ç°ÊÂÎñÒÑ¾­ÔÚ¹ÜÀí´Ë»º³åÇøÁË£¬ÍË³ö */
+	if (jh->b_transaction == transaction ||/* å½“å‰äº‹åŠ¡å·²ç»åœ¨ç®¡ç†æ­¤ç¼“å†²åŒºäº†ï¼Œé€€å‡º */
 	    jh->b_next_transaction == transaction)
 		goto done;
 
@@ -627,15 +627,15 @@ repeat:
 	 * If there is already a copy-out version of this buffer, then we don't
 	 * need to make another one
 	 */
-	/* ÔËĞĞµ½ÕâÀï£¬ËµÃ÷±¾ÊÂÎñÃ»ÓĞ¹ÜÀí¸Ã»º³åÇø */
-	if (jh->b_frozen_data) {/* ÒÑ¾­¸´ÖÆ¹ıÒ»·İÊı¾İ */
+	/* è¿è¡Œåˆ°è¿™é‡Œï¼Œè¯´æ˜æœ¬äº‹åŠ¡æ²¡æœ‰ç®¡ç†è¯¥ç¼“å†²åŒº */
+	if (jh->b_frozen_data) {/* å·²ç»å¤åˆ¶è¿‡ä¸€ä»½æ•°æ® */
 		JBUFFER_TRACE(jh, "has frozen data");
 		J_ASSERT_JH(jh, jh->b_next_transaction == NULL);
-		/* ½Ó×ÅÉÏÒ»¸öÈÕÖ¾½øĞĞ´¦Àí */
+		/* æ¥ç€ä¸Šä¸€ä¸ªæ—¥å¿—è¿›è¡Œå¤„ç† */
 		jh->b_next_transaction = transaction;
 
 		J_ASSERT_JH(jh, handle->h_buffer_credits > 0);
-		/* ¼õÉÙÈÕÖ¾Åä¶î */
+		/* å‡å°‘æ—¥å¿—é…é¢ */
 		handle->h_buffer_credits--;
 		if (credits)
 			(*credits)++;
@@ -644,10 +644,10 @@ repeat:
 
 	/* Is there data here we need to preserve? */
 
-	/* ÆäËûÊÂÎñÔÚ´¦Àí¸Ã»º³åÇø */
+	/* å…¶ä»–äº‹åŠ¡åœ¨å¤„ç†è¯¥ç¼“å†²åŒº */
 	if (jh->b_transaction && jh->b_transaction != transaction) {
 		JBUFFER_TRACE(jh, "owned by older transaction");
-		/* ÉÏÒ»¸öÊÂÎñ±ØÈ»ÔÚÌá½»¹ı³ÌÖĞ */
+		/* ä¸Šä¸€ä¸ªäº‹åŠ¡å¿…ç„¶åœ¨æäº¤è¿‡ç¨‹ä¸­ */
 		J_ASSERT_JH(jh, jh->b_next_transaction == NULL);
 		J_ASSERT_JH(jh, jh->b_transaction ==
 					journal->j_committing_transaction);
@@ -661,11 +661,11 @@ repeat:
 		 * journaled.  If the primary copy is already going to
 		 * disk then we cannot do copy-out here. */
 
-		/* ÉÏÒ»¸öÊÂÎñÔÚÊ¹ÓÃÖ÷»º³åÇø */
+		/* ä¸Šä¸€ä¸ªäº‹åŠ¡åœ¨ä½¿ç”¨ä¸»ç¼“å†²åŒº */
 		if (jh->b_jlist == BJ_Shadow) {
 			/**
-			 * µÈ´ıÉÏÒ»¸öÊÂÎñ½áÊø
-			 * È»ºóËü»á»½ĞÑ±¾ÊÂÎñ£¬ÒÔ¿ªÊ¼¶ÔbhµÄĞ´²Ù×÷¡£
+			 * ç­‰å¾…ä¸Šä¸€ä¸ªäº‹åŠ¡ç»“æŸ
+			 * ç„¶åå®ƒä¼šå”¤é†’æœ¬äº‹åŠ¡ï¼Œä»¥å¼€å§‹å¯¹bhçš„å†™æ“ä½œã€‚
 			 */
 			DEFINE_WAIT_BIT(wait, &bh->b_state, BH_Unshadow);
 			wait_queue_head_t *wqh;
@@ -675,7 +675,7 @@ repeat:
 			JBUFFER_TRACE(jh, "on shadow: sleep");
 			jbd_unlock_bh_state(bh);
 			/* commit wakes up all shadow buffers after IO */
-			/* µÈ´ıÉÏÒ»¸öÊÂÎñ½â³ı¶ÔÖ÷»º³åÇøµÄÒıÓÃ */
+			/* ç­‰å¾…ä¸Šä¸€ä¸ªäº‹åŠ¡è§£é™¤å¯¹ä¸»ç¼“å†²åŒºçš„å¼•ç”¨ */
 			for ( ; ; ) {
 				prepare_to_wait(wqh, &wait.wait,
 						TASK_UNINTERRUPTIBLE);
@@ -701,9 +701,9 @@ repeat:
 		 * transaction, so we HAVE to force the frozen_data copy
 		 * in that case. */
 
-		if (jh->b_jlist != BJ_Forget || force_copy) {/* ÉÏÒ»¸öÊÂÎñ³ÖÓĞ´Ë»º³åÇø */
+		if (jh->b_jlist != BJ_Forget || force_copy) {/* ä¸Šä¸€ä¸ªäº‹åŠ¡æŒæœ‰æ­¤ç¼“å†²åŒº */
 			JBUFFER_TRACE(jh, "generate frozen data");
-			if (!frozen_buffer) { /* ĞèÒª½øĞĞ¸´ÖÆ£¬Òò´ËĞèÒªÏÈ·ÖÅäÄÚ´æ */
+			if (!frozen_buffer) { /* éœ€è¦è¿›è¡Œå¤åˆ¶ï¼Œå› æ­¤éœ€è¦å…ˆåˆ†é…å†…å­˜ */
 				JBUFFER_TRACE(jh, "allocate memory for buffer");
 				jbd_unlock_bh_state(bh);
 				frozen_buffer = jbd_kmalloc(jh2bh(jh)->b_size,
@@ -719,7 +719,7 @@ repeat:
 				}
 				goto repeat;
 			}
-			/* ¼ÇÂ¼ÏÂ±¸·İÊı¾İ */
+			/* è®°å½•ä¸‹å¤‡ä»½æ•°æ® */
 			jh->b_frozen_data = frozen_buffer;
 			frozen_buffer = NULL;
 			need_copy = 1;
@@ -728,7 +728,7 @@ repeat:
 	}
 
 	J_ASSERT(handle->h_buffer_credits > 0);
-	/* ¼õÉÙ¶î¶È¼ÆÊı */
+	/* å‡å°‘é¢åº¦è®¡æ•° */
 	handle->h_buffer_credits--;
 	if (credits)
 		(*credits)++;
@@ -744,7 +744,7 @@ repeat:
 		jh->b_transaction = transaction;
 		JBUFFER_TRACE(jh, "file as BJ_Reserved");
 		spin_lock(&journal->j_list_lock);
-		/* ½«»º³åÇøÌí¼Óµ½±£ÁôÁ´±íÖĞ */
+		/* å°†ç¼“å†²åŒºæ·»åŠ åˆ°ä¿ç•™é“¾è¡¨ä¸­ */
 		__journal_file_buffer(jh, transaction, BJ_Reserved);
 		spin_unlock(&journal->j_list_lock);
 	}
@@ -760,7 +760,7 @@ done:
 		page = jh2bh(jh)->b_page;
 		offset = ((unsigned long) jh2bh(jh)->b_data) & ~PAGE_MASK;
 		source = kmap_atomic(page, KM_USER0);
-		/* ½«Ô´»º³åÇøµÄÊı¾İ¸´ÖÆ¹ıÀ´ */
+		/* å°†æºç¼“å†²åŒºçš„æ•°æ®å¤åˆ¶è¿‡æ¥ */
 		memcpy(jh->b_frozen_data, source+offset, jh2bh(jh)->b_size);
 		kunmap_atomic(source, KM_USER0);
 	}
@@ -793,19 +793,19 @@ out:
 
 /**
  * journal_get_write_access,journal_get_create_access,journal_get_undo_access
- * ÕâÈı¸öº¯Êı¶¼»ñµÃ»º³åÇøµÄĞ´È¨ÏŞ
+ * è¿™ä¸‰ä¸ªå‡½æ•°éƒ½è·å¾—ç¼“å†²åŒºçš„å†™æƒé™
  */
 int journal_get_write_access(handle_t *handle,
 			struct buffer_head *bh, int *credits)
 {
-	/* ½«»º³åÇøÓëJBD°ó¶¨ */
+	/* å°†ç¼“å†²åŒºä¸JBDç»‘å®š */
 	struct journal_head *jh = journal_add_journal_head(bh);
 	int rc;
 
 	/* We do not want to get caught playing with fields which the
 	 * log thread also manipulates.  Make sure that the buffer
 	 * completes any outstanding IO before proceeding. */
-	/* ½«»º³åÇø¼ÓÈëµ½ÊÂÎñµÄ¶ÓÁĞÖĞ */
+	/* å°†ç¼“å†²åŒºåŠ å…¥åˆ°äº‹åŠ¡çš„é˜Ÿåˆ—ä¸­ */
 	rc = do_get_write_access(handle, jh, 0, credits);
 	journal_put_journal_head(jh);
 	return rc;
@@ -832,13 +832,13 @@ int journal_get_write_access(handle_t *handle,
  * Call this if you create a new bh.
  */
 /**
- * ´´½¨ĞÂµÄ»º³åÇø£¬²¢½«Æä·Åµ½ÊÂÎñÖĞ¹ÜÀí
+ * åˆ›å»ºæ–°çš„ç¼“å†²åŒºï¼Œå¹¶å°†å…¶æ”¾åˆ°äº‹åŠ¡ä¸­ç®¡ç†
  */
 int journal_get_create_access(handle_t *handle, struct buffer_head *bh) 
 {
 	transaction_t *transaction = handle->h_transaction;
 	journal_t *journal = transaction->t_journal;
-	/* ½«»º³åÇøÓëJBD¹ØÁªÆğÀ´ */
+	/* å°†ç¼“å†²åŒºä¸JBDå…³è”èµ·æ¥ */
 	struct journal_head *jh = journal_add_journal_head(bh);
 	int err;
 
@@ -869,17 +869,17 @@ int journal_get_create_access(handle_t *handle, struct buffer_head *bh)
 	J_ASSERT_JH(jh, handle->h_buffer_credits > 0);
 	handle->h_buffer_credits--;
 
-	/* ÔÚÕâÖ®Ç°£¬»º³åÇøÃ»ÓĞÓëÈÕÖ¾¹ØÁª */
+	/* åœ¨è¿™ä¹‹å‰ï¼Œç¼“å†²åŒºæ²¡æœ‰ä¸æ—¥å¿—å…³è” */
 	if (jh->b_transaction == NULL) {
 		jh->b_transaction = transaction;
 		JBUFFER_TRACE(jh, "file as BJ_Reserved");
-		/* ½«»º³åÇø¼ÓÈëµ½ÊÂÎñµÄ±£Áô»º³åÇø */
+		/* å°†ç¼“å†²åŒºåŠ å…¥åˆ°äº‹åŠ¡çš„ä¿ç•™ç¼“å†²åŒº */
 		__journal_file_buffer(jh, transaction, BJ_Reserved);
-	/* µ±Ç°ÕıÔÚÌá½»µÄÊÂÎñ£¬Æä»º³åÇø±»ĞŞ¸Ä */
+	/* å½“å‰æ­£åœ¨æäº¤çš„äº‹åŠ¡ï¼Œå…¶ç¼“å†²åŒºè¢«ä¿®æ”¹ */
 	} else if (jh->b_transaction == journal->j_committing_transaction) {
 		JBUFFER_TRACE(jh, "set next transaction");
 		/**
-		 * ±íÃ÷µ±Ç°ÊÂÎñÏ£Íû½Ó×ÅĞŞ¸Ä´Ë»º³åÇø¡£
+		 * è¡¨æ˜å½“å‰äº‹åŠ¡å¸Œæœ›æ¥ç€ä¿®æ”¹æ­¤ç¼“å†²åŒºã€‚
 		 */
 		jh->b_next_transaction = transaction;
 	}
@@ -895,7 +895,7 @@ int journal_get_create_access(handle_t *handle, struct buffer_head *bh)
 	 */
 	JBUFFER_TRACE(jh, "cancelling revoke");
 	/**
-	 * ¸Ã»º³åÇøÃ÷ÏÔÊÇĞèÒª±»¼ÌĞøÊ¹ÓÃÁË£¬Ó¦µ±´Ó³·Ïú±íÖĞÈ¡Ïû
+	 * è¯¥ç¼“å†²åŒºæ˜æ˜¾æ˜¯éœ€è¦è¢«ç»§ç»­ä½¿ç”¨äº†ï¼Œåº”å½“ä»æ’¤é”€è¡¨ä¸­å–æ¶ˆ
 	 */
 	journal_cancel_revoke(handle, jh);
 	journal_put_journal_head(jh);
@@ -931,8 +931,8 @@ out:
  * Returns error number or 0 on success.
  */
 /**
- * »ñµÃ²»¿É»ØÍËÈ¨ÏŞ
- * Î»Í¼ÔªÊı¾İÊ±Ê¹ÓÃ£¬Ö»ÒªÎ»Í¼¿é»¹Ã»ÓĞÌá½»£¬ËüÊÍ·ÅµÄÎ»¾Í²»ÄÜ±»·ÖÅä
+ * è·å¾—ä¸å¯å›é€€æƒé™
+ * ä½å›¾å…ƒæ•°æ®æ—¶ä½¿ç”¨ï¼Œåªè¦ä½å›¾å—è¿˜æ²¡æœ‰æäº¤ï¼Œå®ƒé‡Šæ”¾çš„ä½å°±ä¸èƒ½è¢«åˆ†é…
  */
 int journal_get_undo_access(handle_t *handle, struct buffer_head *bh,
 				int *credits)
@@ -949,8 +949,8 @@ int journal_get_undo_access(handle_t *handle, struct buffer_head *bh,
 	 * atomically wrt. completion of any outstanding commits.
 	 */
 	/**
-	 * ÕâÀï´«Èë1£¬±íÊ¾ĞèÒªÇ¿ÖÆ¸´ÖÆÒ»·İÔ´Êı¾İ
-	 * ĞèÒªÔÚÔ´Êı¾İÉÏ½øĞĞ·ÖÅä£¬¶ø²»ÄÜÒÀÀµÓÚÊÂÎñÀïÃæËùÊÍ·ÅµÄ¿é
+	 * è¿™é‡Œä¼ å…¥1ï¼Œè¡¨ç¤ºéœ€è¦å¼ºåˆ¶å¤åˆ¶ä¸€ä»½æºæ•°æ®
+	 * éœ€è¦åœ¨æºæ•°æ®ä¸Šè¿›è¡Œåˆ†é…ï¼Œè€Œä¸èƒ½ä¾èµ–äºäº‹åŠ¡é‡Œé¢æ‰€é‡Šæ”¾çš„å—
 	 */
 	err = do_get_write_access(handle, jh, 1, credits);
 	if (err)
@@ -980,7 +980,7 @@ repeat:
 		jh->b_committed_data = committed_data;
 		committed_data = NULL;
 		/**
-		 * ×¢ÒâÕâÀïÃ»ÓĞÓÃkmap£¬¶øÊÇÖ±½Ó¸´ÖÆ¡£
+		 * æ³¨æ„è¿™é‡Œæ²¡æœ‰ç”¨kmapï¼Œè€Œæ˜¯ç›´æ¥å¤åˆ¶ã€‚
 		 * why?
 		 */
 		memcpy(jh->b_committed_data, bh->b_data, bh->b_size);
@@ -1009,8 +1009,8 @@ out:
  * by kswapd.
  */
 /**
- * Í¨ÖªJBD£¬ÏàÓ¦µÄ´ÅÅÌ»º³åÇøÒÑ¾­ĞŞ¸ÄÍê±Ï
- * ÕâÊÇÕë¶ÔÊı¾İ¿éÀ´ËµµÄ
+ * é€šçŸ¥JBDï¼Œç›¸åº”çš„ç£ç›˜ç¼“å†²åŒºå·²ç»ä¿®æ”¹å®Œæ¯•
+ * è¿™æ˜¯é’ˆå¯¹æ•°æ®å—æ¥è¯´çš„
  */
 int journal_dirty_data(handle_t *handle, struct buffer_head *bh)
 {
@@ -1021,7 +1021,7 @@ int journal_dirty_data(handle_t *handle, struct buffer_head *bh)
 	if (is_handle_aborted(handle))
 		return 0;
 
-	/* È¡µÃ»º³åÇø¹ØÁªµÄÈÕÖ¾ÃèÊö·û */
+	/* å–å¾—ç¼“å†²åŒºå…³è”çš„æ—¥å¿—æè¿°ç¬¦ */
 	jh = journal_add_journal_head(bh);
 	JBUFFER_TRACE(jh, "entry");
 
@@ -1054,9 +1054,9 @@ int journal_dirty_data(handle_t *handle, struct buffer_head *bh)
 	 */
 	jbd_lock_bh_state(bh);
 	spin_lock(&journal->j_list_lock);
-	if (jh->b_transaction) {/* ¿éÒÑ¾­ÓÉÄ³¸öÊÂÎñ¹ÜÀíÁË */
+	if (jh->b_transaction) {/* å—å·²ç»ç”±æŸä¸ªäº‹åŠ¡ç®¡ç†äº† */
 		JBUFFER_TRACE(jh, "has transaction");
-		if (jh->b_transaction != handle->h_transaction) {/* ²»ÊÇµ±Ç°ÊÂÎñÔÚ¹ÜÀí */
+		if (jh->b_transaction != handle->h_transaction) {/* ä¸æ˜¯å½“å‰äº‹åŠ¡åœ¨ç®¡ç† */
 			JBUFFER_TRACE(jh, "belongs to older transaction");
 			J_ASSERT_JH(jh, jh->b_transaction ==
 					journal->j_committing_transaction);
@@ -1095,8 +1095,8 @@ int journal_dirty_data(handle_t *handle, struct buffer_head *bh)
 			 * the write() data.
 			 */
 			/**
-			 * Ö»ÓĞÔÚÕâÈı¸ö¶ÓÁĞÖĞ£¬²Å±íÊ¾Ç°Ò»¸öÊÂÎñÕæÕıÁË¸Ã»º³åÇø
-			 * ·ñÔò±íÊ¾²»ÊÜÆä¹ÜÀí¡£
+			 * åªæœ‰åœ¨è¿™ä¸‰ä¸ªé˜Ÿåˆ—ä¸­ï¼Œæ‰è¡¨ç¤ºå‰ä¸€ä¸ªäº‹åŠ¡çœŸæ­£äº†è¯¥ç¼“å†²åŒº
+			 * å¦åˆ™è¡¨ç¤ºä¸å—å…¶ç®¡ç†ã€‚
 			 */
 			if (jh->b_jlist != BJ_None &&
 					jh->b_jlist != BJ_SyncData &&
@@ -1111,15 +1111,15 @@ int journal_dirty_data(handle_t *handle, struct buffer_head *bh)
 			 * again because that can cause the write-out loop in
 			 * commit to never terminate.
 			 */
-			if (buffer_dirty(bh)) {/* Èç¹ûÒÑ¾­ÎªÔà */
+			if (buffer_dirty(bh)) {/* å¦‚æœå·²ç»ä¸ºè„ */
 				get_bh(bh);
-				/* ÏÈÊÍ·ÅËø */
+				/* å…ˆé‡Šæ”¾é” */
 				spin_unlock(&journal->j_list_lock);
 				jbd_unlock_bh_state(bh);
 				need_brelse = 1;
-				/* Í¬²½ÔàÊı¾İµ½´ÅÅÌ */
+				/* åŒæ­¥è„æ•°æ®åˆ°ç£ç›˜ */
 				sync_dirty_buffer(bh);
-				/* ÖØĞÂ»ñµÃËø */
+				/* é‡æ–°è·å¾—é” */
 				jbd_lock_bh_state(bh);
 				spin_lock(&journal->j_list_lock);
 				/* The buffer may become locked again at any
@@ -1129,7 +1129,7 @@ int journal_dirty_data(handle_t *handle, struct buffer_head *bh)
 			/* journal_clean_data_list() may have got there first */
 			if (jh->b_transaction != NULL) {
 				JBUFFER_TRACE(jh, "unfile from commit");
-				/* ½«Ëü´ÓÔ­ÊÂÎñµÄÁ´±íÖĞÉ¾³ı */
+				/* å°†å®ƒä»åŸäº‹åŠ¡çš„é“¾è¡¨ä¸­åˆ é™¤ */
 				__journal_unfile_buffer(jh);
 			}
 			/* The buffer will be refiled below */
@@ -1146,13 +1146,13 @@ int journal_dirty_data(handle_t *handle, struct buffer_head *bh)
 			J_ASSERT_JH(jh, jh->b_jlist != BJ_Shadow);
 			__journal_unfile_buffer(jh);
 			JBUFFER_TRACE(jh, "file as data");
-			/* Êı¾İÔà£¬½«ÆäÁ´½Óµ½SyncDataÁ´±í£¬±íÊ¾ÊÇDataÊı¾İ */
+			/* æ•°æ®è„ï¼Œå°†å…¶é“¾æ¥åˆ°SyncDataé“¾è¡¨ï¼Œè¡¨ç¤ºæ˜¯Dataæ•°æ® */
 			__journal_file_buffer(jh, handle->h_transaction,
 						BJ_SyncData);
 		}
 	} else {
 		JBUFFER_TRACE(jh, "not on a transaction");
-		/* Ö±½Ó¼Óµ½±¾ÊÂÎñµÄSyncData */
+		/* ç›´æ¥åŠ åˆ°æœ¬äº‹åŠ¡çš„SyncData */
 		__journal_file_buffer(jh, handle->h_transaction, BJ_SyncData);
 	}
 no_journal:
@@ -1187,7 +1187,7 @@ no_journal:
  * completes its commit.
  */
 /**
- * Í¨ÖªJBD£¬ÔªÊı¾İ»º³åÇøÒÑ¾­ĞŞ¸ÄÍê³É
+ * é€šçŸ¥JBDï¼Œå…ƒæ•°æ®ç¼“å†²åŒºå·²ç»ä¿®æ”¹å®Œæˆ
  */
 int journal_dirty_metadata(handle_t *handle, struct buffer_head *bh)
 {
@@ -1210,7 +1210,7 @@ int journal_dirty_metadata(handle_t *handle, struct buffer_head *bh)
 	 * result in this test being false, so we go in and take the locks.
 	 */
 	/**
-	 * ÒÑ¾­ÔÚµ±Ç°ÊÂÎñµÄÔªÊı¾İ¶ÓÁĞÖĞÁË
+	 * å·²ç»åœ¨å½“å‰äº‹åŠ¡çš„å…ƒæ•°æ®é˜Ÿåˆ—ä¸­äº†
 	 */
 	if (jh->b_transaction == transaction && jh->b_jlist == BJ_Metadata) {
 		JBUFFER_TRACE(jh, "fastpath");
@@ -1228,15 +1228,15 @@ int journal_dirty_metadata(handle_t *handle, struct buffer_head *bh)
 	 * leave it alone for now. 
 	 */
 	/**
-	 * ¸Ã»º³åÇøÕıÔÚÌá½»ÊÂÎñÀï
+	 * è¯¥ç¼“å†²åŒºæ­£åœ¨æäº¤äº‹åŠ¡é‡Œ
 	 */
 	if (jh->b_transaction != transaction) {
 		JBUFFER_TRACE(jh, "already on other transaction");
 		J_ASSERT_JH(jh, jh->b_transaction ==
 					journal->j_committing_transaction);
 		/**
-		 * ÉÏÒ»¸öÊÂÎñ´¦ÀíÍêºó
-		 * ±¾ÊÂÎñ»á½Ó×Å´¦ÀíÔªÊı¾İ
+		 * ä¸Šä¸€ä¸ªäº‹åŠ¡å¤„ç†å®Œå
+		 * æœ¬äº‹åŠ¡ä¼šæ¥ç€å¤„ç†å…ƒæ•°æ®
 		 */
 		J_ASSERT_JH(jh, jh->b_next_transaction == transaction);
 		/* And this case is illegal: we can't reuse another
@@ -1250,8 +1250,8 @@ int journal_dirty_metadata(handle_t *handle, struct buffer_head *bh)
 	JBUFFER_TRACE(jh, "file as BJ_Metadata");
 	spin_lock(&journal->j_list_lock);
 	/**
-	 * ¿ÉÄÜ»á½«»º³åÇø´Ó±£Áô¶ÓÁĞÖĞÕª³ı
-	 * È»ºó¼Óµ½ÔªÊı¾İ¶ÓÁĞ
+	 * å¯èƒ½ä¼šå°†ç¼“å†²åŒºä»ä¿ç•™é˜Ÿåˆ—ä¸­æ‘˜é™¤
+	 * ç„¶ååŠ åˆ°å…ƒæ•°æ®é˜Ÿåˆ—
 	 */
 	__journal_file_buffer(jh, handle->h_transaction, BJ_Metadata);
 	spin_unlock(&journal->j_list_lock);
@@ -1304,10 +1304,10 @@ journal_release_buffer(handle_t *handle, struct buffer_head *bh, int credits)
  * the caller's cleanup after an abort.
  */
 /**
- * µ±Ô­×Ó²Ù×÷Ê§°ÜÊ±£¬½«ÒÑ¾­¼ÓÈëµ½¶ÓÁĞÖĞ»º³åÇøÍü¼Çµô
- * ÕâÊÇÕë¶ÔÊı¾İ¿éÀ´ËµµÄ¡£
- * ÔªÊı¾İ»º³åÇøÓ¦µ±µ÷ÓÃjournal_revoke¡£
- * ÔªÊı¾İ»º³åÇøÒ²»áµ÷ÓÃµ½ÕâÀï¡£
+ * å½“åŸå­æ“ä½œå¤±è´¥æ—¶ï¼Œå°†å·²ç»åŠ å…¥åˆ°é˜Ÿåˆ—ä¸­ç¼“å†²åŒºå¿˜è®°æ‰
+ * è¿™æ˜¯é’ˆå¯¹æ•°æ®å—æ¥è¯´çš„ã€‚
+ * å…ƒæ•°æ®ç¼“å†²åŒºåº”å½“è°ƒç”¨journal_revokeã€‚
+ * å…ƒæ•°æ®ç¼“å†²åŒºä¹Ÿä¼šè°ƒç”¨åˆ°è¿™é‡Œã€‚
  */
 int journal_forget (handle_t *handle, struct buffer_head *bh)
 {
@@ -1334,7 +1334,7 @@ int journal_forget (handle_t *handle, struct buffer_head *bh)
 	}
 
 	/**
-	 * ¸Ã»º³åÇøÊôÓÚµ±Ç°ÊÂÎñ
+	 * è¯¥ç¼“å†²åŒºå±äºå½“å‰äº‹åŠ¡
 	 */
 	if (jh->b_transaction == handle->h_transaction) {
 		J_ASSERT_JH(jh, !jh->b_frozen_data);
@@ -1347,7 +1347,7 @@ int journal_forget (handle_t *handle, struct buffer_head *bh)
 
 		JBUFFER_TRACE(jh, "belongs to current transaction: unfile");
 
-		/* ´Ó±¾ÊÂÎñµÄ¶ÓÁĞÖĞÉ¾³ı */
+		/* ä»æœ¬äº‹åŠ¡çš„é˜Ÿåˆ—ä¸­åˆ é™¤ */
 		__journal_unfile_buffer(jh);
 
 		/* 
@@ -1363,17 +1363,17 @@ int journal_forget (handle_t *handle, struct buffer_head *bh)
 		 */
 
 		/**
-		 * µ±Ç°»º³åÇøÕı´¦ÓÚcheckpoint¶ÓÁĞÖĞ
+		 * å½“å‰ç¼“å†²åŒºæ­£å¤„äºcheckpointé˜Ÿåˆ—ä¸­
 		 */
 		if (jh->b_cp_transaction) {
 			/**
-			 * ½«Æä¼ÓÈëµ½forget¶ÓÁĞ
-			 * ÕâÑùcheckpointÊ±¾Í²»»á´¦ÀíÕâ¸ö»º³åÇøÁË
+			 * å°†å…¶åŠ å…¥åˆ°forgeté˜Ÿåˆ—
+			 * è¿™æ ·checkpointæ—¶å°±ä¸ä¼šå¤„ç†è¿™ä¸ªç¼“å†²åŒºäº†
 			 */
 			__journal_file_buffer(jh, transaction, BJ_Forget);
 		} else {
 			/**
-			 * ÊÍ·ÅJBDÏà¹Ø×ÊÔ´
+			 * é‡Šæ”¾JBDç›¸å…³èµ„æº
 			 */
 			journal_remove_journal_head(bh);
 			__brelse(bh);
@@ -1384,7 +1384,7 @@ int journal_forget (handle_t *handle, struct buffer_head *bh)
 				return 0;
 			}
 		}
-	} else if (jh->b_transaction) {/* ÊôÓÚÆäËûÊÂÎñ */
+	} else if (jh->b_transaction) {/* å±äºå…¶ä»–äº‹åŠ¡ */
 		J_ASSERT_JH(jh, (jh->b_transaction == 
 				 journal->j_committing_transaction));
 		/* However, if the buffer is still owned by a prior
@@ -1393,7 +1393,7 @@ int journal_forget (handle_t *handle, struct buffer_head *bh)
 		/* ... but we CAN drop it from the new transaction if we
 		 * have also modified it since the original commit. */
 
-		if (jh->b_next_transaction) {/* Çå³ı´Ë±êÖ¾£¬±íÊ¾±¾ÊÂÎñ²»ÔÙ´¦Àí´Ë»º³åÇø */
+		if (jh->b_next_transaction) {/* æ¸…é™¤æ­¤æ ‡å¿—ï¼Œè¡¨ç¤ºæœ¬äº‹åŠ¡ä¸å†å¤„ç†æ­¤ç¼“å†²åŒº */
 			J_ASSERT(jh->b_next_transaction == transaction);
 			jh->b_next_transaction = NULL;
 		}
@@ -1423,9 +1423,9 @@ not_jbd:
  * transaction began.
  */
 /**
- * Ò»¸öÈÕÖ¾²Ù×÷µÄÔ­×Ó²Ù×÷ÒÑ¾­Íê³É¡£
- * ½«Ô­×Ó²Ù×÷ÓëÊÂÎñ¶Ï¿ªÁ¬½Ó£¬µ÷ÕûÊÂÎñµÄ¶î¶È¡£
- * Èç¹ûÔ­×Ó²Ù×÷ÊÇÍ¬²½µÄ£¬ÔòÍ¬²½µÈ´ıÊÂÎñÍê³É¡£
+ * ä¸€ä¸ªæ—¥å¿—æ“ä½œçš„åŸå­æ“ä½œå·²ç»å®Œæˆã€‚
+ * å°†åŸå­æ“ä½œä¸äº‹åŠ¡æ–­å¼€è¿æ¥ï¼Œè°ƒæ•´äº‹åŠ¡çš„é¢åº¦ã€‚
+ * å¦‚æœåŸå­æ“ä½œæ˜¯åŒæ­¥çš„ï¼Œåˆ™åŒæ­¥ç­‰å¾…äº‹åŠ¡å®Œæˆã€‚
  */
 int journal_stop(handle_t *handle)
 {
@@ -1441,7 +1441,7 @@ int journal_stop(handle_t *handle)
 	else
 		err = 0;
 
-	/* ÒıÓÃ¼ÆÊı´óÓÚ0£¬µÈ´ı×îºóÒ»¸öµ÷ÓÃÕßstop */
+	/* å¼•ç”¨è®¡æ•°å¤§äº0ï¼Œç­‰å¾…æœ€åä¸€ä¸ªè°ƒç”¨è€…stop */
 	if (--handle->h_ref > 0) {
 		jbd_debug(4, "h_ref %d -> %d\n", handle->h_ref + 1,
 			  handle->h_ref);
@@ -1484,10 +1484,10 @@ int journal_stop(handle_t *handle)
 	 * transaction is occupying too much of the log, or if the
 	 * transaction is too old now.
 	 */
-	if (handle->h_sync || /* µ±Ç°Ô­×Ó²Ù×÷ÒªÇóÍ¬²½´¦Àí */
+	if (handle->h_sync || /* å½“å‰åŸå­æ“ä½œè¦æ±‚åŒæ­¥å¤„ç† */
 			transaction->t_outstanding_credits >
-				journal->j_max_transaction_buffers || /* µ±Ç°ÊÂÎñ»º³åÇø¹ı¶à */
-	    		time_after_eq(jiffies, transaction->t_expires)) { /* ³¬Ê± */
+				journal->j_max_transaction_buffers || /* å½“å‰äº‹åŠ¡ç¼“å†²åŒºè¿‡å¤š */
+	    		time_after_eq(jiffies, transaction->t_expires)) { /* è¶…æ—¶ */
 		/* Do this even for aborted journals: an abort still
 		 * completes the commit thread, it just doesn't write
 		 * anything to disk. */
@@ -1497,7 +1497,7 @@ int journal_stop(handle_t *handle)
 		jbd_debug(2, "transaction too old, requesting commit for "
 					"handle %p\n", handle);
 		/* This is non-blocking */
-		/* »½ĞÑÈÕÖ¾Ïß³Ì£¬´¦Àí¸ÃÊÂÎñ */
+		/* å”¤é†’æ—¥å¿—çº¿ç¨‹ï¼Œå¤„ç†è¯¥äº‹åŠ¡ */
 		__log_start_commit(journal, transaction->t_tid);
 		spin_unlock(&journal->j_state_lock);
 
@@ -1506,14 +1506,14 @@ int journal_stop(handle_t *handle)
 		 * to wait for the commit to complete.  
 		 */
 		if (handle->h_sync && !(current->flags & PF_MEMALLOC))
-			/* Í¬²½µÈ´ıÈÕÖ¾Ïß³Ì½«ÊÂÎñÌá½» */
+			/* åŒæ­¥ç­‰å¾…æ—¥å¿—çº¿ç¨‹å°†äº‹åŠ¡æäº¤ */
 			err = log_wait_commit(journal, tid);
 	} else {
 		spin_unlock(&transaction->t_handle_lock);
 		spin_unlock(&journal->j_state_lock);
 	}
 
-	/* ÊÍ·ÅÔ­×Ó²Ù×÷ÃèÊö·û */
+	/* é‡Šæ”¾åŸå­æ“ä½œæè¿°ç¬¦ */
 	jbd_free_handle(handle);
 	return err;
 }
@@ -1658,7 +1658,7 @@ out:
 }
 
 /**
- * ½«»º³åÇø´Óµ±Ç°µÄÁ´±íÖĞÕª³ı¡£
+ * å°†ç¼“å†²åŒºä»å½“å‰çš„é“¾è¡¨ä¸­æ‘˜é™¤ã€‚
  */
 void journal_unfile_buffer(journal_t *journal, struct journal_head *jh)
 {
@@ -2109,7 +2109,7 @@ void __journal_file_buffer(struct journal_head *jh,
 }
 
 /**
- * ½«ÈÕÖ¾»º³åÇø¼ÓÈëµ½Ä³¸öÁ´±íÖĞ¡£
+ * å°†æ—¥å¿—ç¼“å†²åŒºåŠ å…¥åˆ°æŸä¸ªé“¾è¡¨ä¸­ã€‚
  */
 void journal_file_buffer(struct journal_head *jh,
 				transaction_t *transaction, int jlist)

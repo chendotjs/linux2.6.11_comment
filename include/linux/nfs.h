@@ -11,7 +11,7 @@
 #include <linux/string.h>
 
 /**
- * NFS�����
+ * NFS程序号
  */
 #define NFS_PROGRAM	100003
 #define NFS_PORT	2049
@@ -24,27 +24,27 @@
 #define NFS_FIFO_DEV	(-1)
 #define NFSMODE_FMT	0170000
 /**
- * NFSĿ¼�ļ�
+ * NFS目录文件
  */
 #define NFSMODE_DIR	0040000
 /**
- * NFS�ַ��ļ�
+ * NFS字符文件
  */
 #define NFSMODE_CHR	0020000
 /**
- * NFS���ļ�
+ * NFS块文件
  */
 #define NFSMODE_BLK	0060000
 /**
- * ��ͨ�ļ�
+ * 普通文件
  */
 #define NFSMODE_REG	0100000
 /**
- * �����ļ�
+ * 链接文件
  */
 #define NFSMODE_LNK	0120000
 /**
- * SOCK�ļ�
+ * SOCK文件
  */
 #define NFSMODE_SOCK	0140000
 #define NFSMODE_FIFO	0010000
@@ -61,7 +61,7 @@
  * standard, but seem to be widely used nevertheless.
  */
 /**
- * NFSϵͳ���õķ���ֵ��
+ * NFS系统调用的返回值。
  */
  enum nfs_stat {
 	NFS_OK = 0,			/* v2 v3 v4 */
@@ -141,31 +141,31 @@
 
 /* NFSv2 file types - beware, these are not the same in NFSv3 */
 /**
- * NFS�����ļ����͡�
+ * NFS基本文件类型。
  */
 enum nfs_ftype {
 	/**
-	 * ����һ���ļ���
+	 * 不是一个文件。
 	 */
 	NFNON = 0,
 	/**
-	 * һ��������ļ���
+	 * 一般的数据文件。
 	 */
 	NFREG = 1,
 	/**
-	 * ��һ��Ŀ¼�ļ���
+	 * 是一个目录文件。
 	 */
 	NFDIR = 2,
 	/**
-	 * ��һ�����豸�ļ���
+	 * 是一个块设备文件。
 	 */
 	NFBLK = 3,
 	/**
-	 * ��һ���ַ��豸�ļ���
+	 * 是一个字符设备文件。
 	 */
 	NFCHR = 4,
 	/**
-	 * ��һ���������ӡ�
+	 * 是一个符号链接。
 	 */
 	NFLNK = 5,
 	NFSOCK = 6,
@@ -179,7 +179,7 @@ enum nfs_ftype {
  */
 #define NFS_MAXFHSIZE		128
 /**
- * NFS�ļ����ɺš�����Ϊ�˱�֤���簲ȫ��
+ * NFS文件生成号。这是为了保证网络安全。
  */
 struct nfs_fh {
 	unsigned short		size;

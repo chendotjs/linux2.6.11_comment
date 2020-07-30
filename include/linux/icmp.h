@@ -65,19 +65,19 @@
 #define ICMP_EXC_FRAGTIME	1	/* Fragment Reass time exceeded	*/
 
 /**
- * ICMP±¨Í·
+ * ICMPæŠ¥å¤´
  */
 struct icmphdr {
 	/**
-	 * ICMPÏûÏ¢ÀàĞÍ¡£
+	 * ICMPæ¶ˆæ¯ç±»å‹ã€‚
 	 */
   __u8		type;
 	/**
-	 * ICMPÏûÏ¢´úÂë¡£
+	 * ICMPæ¶ˆæ¯ä»£ç ã€‚
 	 */
   __u8		code;
 	/**
-	 * Ğ£ÑéºÍ¡£
+	 * æ ¡éªŒå’Œã€‚
 	 */
   __u16		checksum;
   union {

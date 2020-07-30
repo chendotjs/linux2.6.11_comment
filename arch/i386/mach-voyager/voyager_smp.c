@@ -1035,8 +1035,8 @@ static struct call_data_struct * call_data;
  * execution on all CPU's - set up the function then broadcast a
  * function_interrupt CPI to come here on each CPU */
 /**
- * CALL_FUNCTION_VECTORÀàĞÍµÄ´¦ÀíÆ÷¼äÖĞ¶ÏµÄ´¦Àí³ÌĞò(ÏòÁ¿0xfb)¡£
- * ·¢ËÍÕßCPU½«ĞèÒªÖ´ĞĞµÄº¯Êı·ÅÔÚcall_data£¬ÖĞ¶Ï´¦Àí³ÌĞòµ÷ÓÃcall_data.
+ * CALL_FUNCTION_VECTORç±»å‹çš„å¤„ç†å™¨é—´ä¸­æ–­çš„å¤„ç†ç¨‹åº(å‘é‡0xfb)ã€‚
+ * å‘é€è€…CPUå°†éœ€è¦æ‰§è¡Œçš„å‡½æ•°æ”¾åœ¨call_dataï¼Œä¸­æ–­å¤„ç†ç¨‹åºè°ƒç”¨call_data.
  */
 static void
 smp_call_function_interrupt(void)

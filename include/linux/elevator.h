@@ -24,41 +24,41 @@ typedef void (elevator_put_req_fn) (request_queue_t *, struct request *);
 typedef int (elevator_init_fn) (request_queue_t *, elevator_t *);
 typedef void (elevator_exit_fn) (elevator_t *);
 
-/* µçÌİËã·¨µÄ»Øµ÷º¯Êı */
+/* ç”µæ¢¯ç®—æ³•çš„å›è°ƒå‡½æ•° */
 struct elevator_ops
 {
-	/* ²éÕÒ¿ÉÒÔºÍbio½øĞĞºÏ²¢µÄÇëÇó£¬·µ»ØÈçELEVATOR_NO_MERGE */
+	/* æŸ¥æ‰¾å¯ä»¥å’Œbioè¿›è¡Œåˆå¹¶çš„è¯·æ±‚ï¼Œè¿”å›å¦‚ELEVATOR_NO_MERGE */
 	elevator_merge_fn *elevator_merge_fn;
-	/* ÔÚµ÷¶ÈÆ÷ÓĞÇëÇó±»ºÏ²¢Ê±±»µ÷ÓÃ¡£ */
+	/* åœ¨è°ƒåº¦å™¨æœ‰è¯·æ±‚è¢«åˆå¹¶æ—¶è¢«è°ƒç”¨ã€‚ */
 	elevator_merged_fn *elevator_merged_fn;
-	/* ºÏ²¢ÇëÇóÊ±»Øµ÷ */
+	/* åˆå¹¶è¯·æ±‚æ—¶å›è°ƒ */
 	elevator_merge_req_fn *elevator_merge_req_fn;
 
 	elevator_next_req_fn *elevator_next_req_fn;
-	/* Íùµ÷¶ÈÆ÷ÖĞÌí¼ÓÇëÇóÊ±µ÷ÓÃ */
+	/* å¾€è°ƒåº¦å™¨ä¸­æ·»åŠ è¯·æ±‚æ—¶è°ƒç”¨ */
 	elevator_add_req_fn *elevator_add_req_fn;
 	elevator_remove_req_fn *elevator_remove_req_fn;
 	elevator_requeue_req_fn *elevator_requeue_req_fn;
 
-	/* ÅĞ¶Ï¶ÓÁĞÊÇ·ñÎª¿Õ */
+	/* åˆ¤æ–­é˜Ÿåˆ—æ˜¯å¦ä¸ºç©º */
 	elevator_queue_empty_fn *elevator_queue_empty_fn;
-	/* ÇëÇó±»Íê³ÉÊ±µ÷ÓÃ */
+	/* è¯·æ±‚è¢«å®Œæˆæ—¶è°ƒç”¨ */
 	elevator_completed_req_fn *elevator_completed_req_fn;
 
 	elevator_request_list_fn *elevator_former_req_fn;
 	elevator_request_list_fn *elevator_latter_req_fn;
 
-	/* ±»Ä³Ğ©µçÌİËã·¨ÓÃÓÚÎªÇëÇó·ÖÅä´æ´¢¿Õ¼ä */
+	/* è¢«æŸäº›ç”µæ¢¯ç®—æ³•ç”¨äºä¸ºè¯·æ±‚åˆ†é…å­˜å‚¨ç©ºé—´ */
 	elevator_set_req_fn *elevator_set_req_fn;
-	/* ±»Ä³Ğ©µçÌİËã·¨ÓÃÓÚÎªÇëÇóÊÍ·Å´æ´¢¿Õ¼ä */
+	/* è¢«æŸäº›ç”µæ¢¯ç®—æ³•ç”¨äºä¸ºè¯·æ±‚é‡Šæ”¾å­˜å‚¨ç©ºé—´ */
 	elevator_put_req_fn *elevator_put_req_fn;
 
-	/* Èç¹ûµ÷¶ÈÆ÷Ï£ÍûÔËĞĞµ±Ç°ÉÏÏÂÎÄ½«Ò»¸öĞÂµÄÇëÇóÅÅÈë¶ÓÁĞÊ±µ÷ÓÃ£¬´ËÊ±²»¹Ü¶ÓÁĞÊÇ·ñ³¬¹ıÏŞÖÆ */
+	/* å¦‚æœè°ƒåº¦å™¨å¸Œæœ›è¿è¡Œå½“å‰ä¸Šä¸‹æ–‡å°†ä¸€ä¸ªæ–°çš„è¯·æ±‚æ’å…¥é˜Ÿåˆ—æ—¶è°ƒç”¨ï¼Œæ­¤æ—¶ä¸ç®¡é˜Ÿåˆ—æ˜¯å¦è¶…è¿‡é™åˆ¶ */
 	elevator_may_queue_fn *elevator_may_queue_fn;
 
-	/* ³õÊ¼»¯º¯Êı£¬ÎªËã·¨·ÖÅäÌØ¶¨µÄÄÚ´æ */
+	/* åˆå§‹åŒ–å‡½æ•°ï¼Œä¸ºç®—æ³•åˆ†é…ç‰¹å®šçš„å†…å­˜ */
 	elevator_init_fn *elevator_init_fn;
-	/* ÊÍ·Åº¯Êı£¬ÊÍ·ÅÌØ¶¨µÄÄÚ´æ */
+	/* é‡Šæ”¾å‡½æ•°ï¼Œé‡Šæ”¾ç‰¹å®šçš„å†…å­˜ */
 	elevator_exit_fn *elevator_exit_fn;
 };
 
@@ -67,35 +67,35 @@ struct elevator_ops
 /*
  * identifies an elevator type, such as AS or deadline
  */
-/* IOµ÷¶ÈËã·¨ÃèÊö·û */
+/* IOè°ƒåº¦ç®—æ³•æè¿°ç¬¦ */
 struct elevator_type
 {
-	/* Í¨¹ı´Ë×Ö¶Î¼ÓÈëµ½µçÌİËã·¨ÀàĞÍÁ´±ídlv_listÖĞ */
+	/* é€šè¿‡æ­¤å­—æ®µåŠ å…¥åˆ°ç”µæ¢¯ç®—æ³•ç±»å‹é“¾è¡¨dlv_listä¸­ */
 	struct list_head list;
-	/* µçÌİËã·¨µÄ»Øµ÷º¯Êı */
+	/* ç”µæ¢¯ç®—æ³•çš„å›è°ƒå‡½æ•° */
 	struct elevator_ops ops;
 	struct elevator_type *elevator_type;
-	/* Çı¶¯Ä£ĞÍÊ¹ÓÃ */
+	/* é©±åŠ¨æ¨¡å‹ä½¿ç”¨ */
 	struct kobj_type *elevator_ktype;
-	/* Ëã·¨Ãû³Æ */
+	/* ç®—æ³•åç§° */
 	char elevator_name[ELV_NAME_MAX];
-	/* ËùÊôÄ£¿é */
+	/* æ‰€å±æ¨¡å— */
 	struct module *elevator_owner;
 };
 
 /*
  * each queue has an elevator_queue assoicated with it
  */
-/* ´ÅÅÌIOµ÷¶È¶ÓÁĞ */
+/* ç£ç›˜IOè°ƒåº¦é˜Ÿåˆ— */
 struct elevator_queue
 {
-	/* µ÷¶ÈÆ÷²Ù×÷»Øµ÷ */
+	/* è°ƒåº¦å™¨æ“ä½œå›è°ƒ */
 	struct elevator_ops *ops;
-	/* µ÷¶È¶ÓÁĞË½ÓĞÊı¾İ£¬Èç×îºóÆÚÏŞµ÷¶ÈËã·¨ÊÇdeadline_data */
+	/* è°ƒåº¦é˜Ÿåˆ—ç§æœ‰æ•°æ®ï¼Œå¦‚æœ€åæœŸé™è°ƒåº¦ç®—æ³•æ˜¯deadline_data */
 	void *elevator_data;
-	/* Çı¶¯Ä£ĞÍÊ¹ÓÃ */
+	/* é©±åŠ¨æ¨¡å‹ä½¿ç”¨ */
 	struct kobject kobj;
-	/* Ëã·¨ÀàĞÍ */
+	/* ç®—æ³•ç±»å‹ */
 	struct elevator_type *elevator_type;
 };
 
@@ -143,19 +143,19 @@ extern int elv_try_last_merge(request_queue_t *, struct bio *);
  * Return values from elevator merger
  */
 /**
- * elv_mergeº¯ÊıµÄ·µ»ØÖµ
- * ¸Ãº¯Êı¼ì²éĞÂµÄBIOÇëÇóÊÇ·ñ¿ÉÒÔ²¢ÈëÒÑ¾­´æÔÚµÄÇëÇóÖĞ¡£
+ * elv_mergeå‡½æ•°çš„è¿”å›å€¼
+ * è¯¥å‡½æ•°æ£€æŸ¥æ–°çš„BIOè¯·æ±‚æ˜¯å¦å¯ä»¥å¹¶å…¥å·²ç»å­˜åœ¨çš„è¯·æ±‚ä¸­ã€‚
  */
 /**
- * ÒÑ¾­´æÔÚµÄÇëÇóÖĞ²»ÄÜ°üº¬BIO½á¹¹¡£
+ * å·²ç»å­˜åœ¨çš„è¯·æ±‚ä¸­ä¸èƒ½åŒ…å«BIOç»“æ„ã€‚
  */
 #define ELEVATOR_NO_MERGE	0
 /**
- * BIO½á¹¹¿ÉÒÔ×÷ÎªÄ©Î²µÄBIO¶ø²åÈëµ½Ä³¸öÇëÇóÖĞ¡£ÕâÊ±£¬¿ÉÄÜ»¹¼ì²éÊÇ·ñÓëÏÂÒ»¸öÇëÇóºÏ²¢¡£
+ * BIOç»“æ„å¯ä»¥ä½œä¸ºæœ«å°¾çš„BIOè€Œæ’å…¥åˆ°æŸä¸ªè¯·æ±‚ä¸­ã€‚è¿™æ—¶ï¼Œå¯èƒ½è¿˜æ£€æŸ¥æ˜¯å¦ä¸ä¸‹ä¸€ä¸ªè¯·æ±‚åˆå¹¶ã€‚
  */
 #define ELEVATOR_FRONT_MERGE	1
 /**
- * BIO½á¹¹¿ÉÒÔ×÷ÎªÄ³¸öÇëÇóµÄµÚÒ»¸öBIO±»²åÈë¡£ÕâÊ±ĞèÒª¼ì²éÊÇ·ñÄÜ¹»ÓëÇ°Ò»¸öÇëÇóºÏ²¢¡£
+ * BIOç»“æ„å¯ä»¥ä½œä¸ºæŸä¸ªè¯·æ±‚çš„ç¬¬ä¸€ä¸ªBIOè¢«æ’å…¥ã€‚è¿™æ—¶éœ€è¦æ£€æŸ¥æ˜¯å¦èƒ½å¤Ÿä¸å‰ä¸€ä¸ªè¯·æ±‚åˆå¹¶ã€‚
  */
 #define ELEVATOR_BACK_MERGE	2
 

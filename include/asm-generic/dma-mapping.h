@@ -26,7 +26,7 @@ dma_supported(struct device *dev, u64 mask)
 }
 
 /**
- * ÉèÖÃÒ»¸öÉè±¸µÄDMAÑ°Ö··¶Î§¡£
+ * è®¾ç½®ä¸€ä¸ªè®¾å¤‡çš„DMAå¯»å€èŒƒå›´ã€‚
  */
 static inline int
 dma_set_mask(struct device *dev, u64 dma_mask)
@@ -55,8 +55,8 @@ dma_free_coherent(struct device *dev, size_t size, void *cpu_addr,
 }
 
 /**
- * Ó³Éäµ¥¸öÁ÷Ê½»º³åÇø¡£
- * ·µ»ØÖµÊÇ×ÜÏßµØÖ·¡£
+ * æ˜ å°„å•ä¸ªæµå¼ç¼“å†²åŒºã€‚
+ * è¿”å›å€¼æ˜¯æ€»çº¿åœ°å€ã€‚
  */
 static inline dma_addr_t
 dma_map_single(struct device *dev, void *cpu_addr, size_t size,
@@ -68,7 +68,7 @@ dma_map_single(struct device *dev, void *cpu_addr, size_t size,
 }
 
 /**
- * ½â³ıµ¥¸öDMAÁ÷Ê½Ó³Éä¡£Õâ¸öº¯Êı¿ÉÄÜ»á´¦Àí»Øµ¯»º³åÇø¡£
+ * è§£é™¤å•ä¸ªDMAæµå¼æ˜ å°„ã€‚è¿™ä¸ªå‡½æ•°å¯èƒ½ä¼šå¤„ç†å›å¼¹ç¼“å†²åŒºã€‚
  */
 static inline void
 dma_unmap_single(struct device *dev, dma_addr_t dma_addr, size_t size,
@@ -80,9 +80,9 @@ dma_unmap_single(struct device *dev, dma_addr_t dma_addr, size_t size,
 }
 
 /**
- * ½«µ¥Ò³Ó³ÉäÎªÒ»¸öÁ÷Ê½DAMÓ³Éä¡£
- * offsetºÍsizeÓÃÓÚÓ³ÉäÒ»Ò³ÖĞµÄÒ»²¿·Ö¡£
- * Èç¹û·ÖÅäµÄÒ³ÊÇ»º´æÁ÷Ë®ÏßµÄÒ»²¿·Ö£¬ÔòÓ³Éä²¿·ÖÒ³»áÒıÆğÒ»ÖÂĞÔÎÊÌâ¡£
+ * å°†å•é¡µæ˜ å°„ä¸ºä¸€ä¸ªæµå¼DAMæ˜ å°„ã€‚
+ * offsetå’Œsizeç”¨äºæ˜ å°„ä¸€é¡µä¸­çš„ä¸€éƒ¨åˆ†ã€‚
+ * å¦‚æœåˆ†é…çš„é¡µæ˜¯ç¼“å­˜æµæ°´çº¿çš„ä¸€éƒ¨åˆ†ï¼Œåˆ™æ˜ å°„éƒ¨åˆ†é¡µä¼šå¼•èµ·ä¸€è‡´æ€§é—®é¢˜ã€‚
  */
 static inline dma_addr_t
 dma_map_page(struct device *dev, struct page *page,
@@ -95,7 +95,7 @@ dma_map_page(struct device *dev, struct page *page,
 }
 
 /**
- * ½â³ıÒ»¸öµ¥Ò³DMAÓ³Éä¡£
+ * è§£é™¤ä¸€ä¸ªå•é¡µDMAæ˜ å°„ã€‚
  */
 static inline void
 dma_unmap_page(struct device *dev, dma_addr_t dma_address, size_t size,
@@ -125,8 +125,8 @@ dma_unmap_sg(struct device *dev, struct scatterlist *sg, int nhwentries,
 }
 
 /**
- * µ±Çı¶¯³ÌĞò²»¾­¹ı³·ÏúÁ÷Ê½Ó³Éä£¬¶øÏë·ÃÎÊDMA»º³åÇøÖĞµÄÄÚÈİÊ±£¬Ê¹ÓÃ±¾º¯Êı¡£
- * ÕâÑùCPU½«ÔİÊ±ÓµÓĞ¸Ã»º³åÇø¡£
+ * å½“é©±åŠ¨ç¨‹åºä¸ç»è¿‡æ’¤é”€æµå¼æ˜ å°„ï¼Œè€Œæƒ³è®¿é—®DMAç¼“å†²åŒºä¸­çš„å†…å®¹æ—¶ï¼Œä½¿ç”¨æœ¬å‡½æ•°ã€‚
+ * è¿™æ ·CPUå°†æš‚æ—¶æ‹¥æœ‰è¯¥ç¼“å†²åŒºã€‚
  */
 static inline void
 dma_sync_single_for_cpu(struct device *dev, dma_addr_t dma_handle, size_t size,
@@ -139,7 +139,7 @@ dma_sync_single_for_cpu(struct device *dev, dma_addr_t dma_handle, size_t size,
 }
 
 /**
- * ½«DMAÁ÷Ê½»º³åÇø½»»¹¸øÉè±¸¡£
+ * å°†DMAæµå¼ç¼“å†²åŒºäº¤è¿˜ç»™è®¾å¤‡ã€‚
  */
 static inline void
 dma_sync_single_for_device(struct device *dev, dma_addr_t dma_handle, size_t size,

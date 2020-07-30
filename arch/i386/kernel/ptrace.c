@@ -676,7 +676,7 @@ void send_sigtrap(struct task_struct *tsk, struct pt_regs *regs, int error_code)
  * - triggered by current->work.syscall_trace
  */
 /**
- * ±»system_callµ÷ÓÃ£¬µ÷ÊÔ½ø³ÌÓÃÓÚÊÕ¼¯¹ØÓÚcurrentµÄĞÅÏ¢¡£
+ * è¢«system_callè°ƒç”¨ï¼Œè°ƒè¯•è¿›ç¨‹ç”¨äºæ”¶é›†å…³äºcurrentçš„ä¿¡æ¯ã€‚
  */
 __attribute__((regparm(3)))
 void do_syscall_trace(struct pt_regs *regs, int entryexit)

@@ -132,17 +132,17 @@ int usb_internal_control_msg(struct usb_device *usb_dev, unsigned int pipe,
  *      the URB used, you can't cancel the request.
  */
 /**
- * ���ͺͽ���USB������Ϣ��
- *		dev:		ָ�������Ϣ�����͵�Ŀ��USB�豸��ָ�롣
- *		pipe:		�ÿ�����Ϣ�����͵�Ŀ��USB�豸���ض��˵㡣
- *		request:	������Ϣ��USB����ֵ��
- *		requesttype:	�ÿ�����Ϣ��USB��������ֵ��
- *		value:		������Ϣ��USB��Ϣֵ��
- *		index:		������Ϣ��USB��Ϣ����ֵ��
- *		data:		�����һ��OUT�˵㣬����ָ�򼴽����͵��豸�����ݵ�ָ�롣�����һ��IN�˵㣬����ָ����豸��ȡ������Ӧ�ô�ŵ�λ�õ�ָ�롣
- *		size:		data������ָ�������Ĵ�С��
- *		timeout:	��jiffiesΪ��λ��Ӧ�õȴ��ĳ�ʱʱ�䡣�����ֵ��0����һֱ�ȴ���Ϣ�Ľ�����
- * ����ɹ������ش��䵽�豸���ߴ��豸��ȡ���ֽ�����������ɹ�������һ�����Ĵ���ֵ��
+ * 发送和接收USB控制消息。
+ *		dev:		指向控制消息所发送的目标USB设备的指针。
+ *		pipe:		该控制消息所发送的目标USB设备的特定端点。
+ *		request:	控制消息的USB请求值。
+ *		requesttype:	该控制消息的USB请求类型值。
+ *		value:		控制消息的USB消息值。
+ *		index:		控制消息的USB消息索引值。
+ *		data:		如果是一个OUT端点，它是指向即将发送到设备的数据的指针。如果是一个IN端点，它是指向从设备读取的数据应该存放的位置的指针。
+ *		size:		data参数所指缓冲区的大小。
+ *		timeout:	以jiffies为单位的应该等待的超时时间。如果该值是0，则一直等待消息的结束。
+ * 如果成功，返回传输到设备或者从设备读取的字节数。如果不成功，返回一个负的错误值。
  */
 int usb_control_msg(struct usb_device *dev, unsigned int pipe, __u8 request, __u8 requesttype,
 			 __u16 value, __u16 index, void *data, __u16 size, int timeout)
@@ -195,14 +195,14 @@ int usb_control_msg(struct usb_device *dev, unsigned int pipe, __u8 request, __u
  *      the URB used, you can't cancel the request.
  */
 /**
- * ����һ������urb���������͵�ָ�����豸��Ȼ���ڷ��ص�����֮ǰ�ȴ����Ľ�����
- *		usb_dev:		ָ��������Ϣ�����͵�Ŀ��USB�豸��ָ�롣
- *		pipe:			��������Ϣ�����͵�Ŀ��USB�豸���ض��˵㡣��ֵ�ǵ���usb_sndbulkpipe����usb_rcvbulkpipe�������ġ�
- *		data:			�����һ��out�˵㣬����ָ�򼴽����͵��豸�����ݵ�ָ�롣�����һ��IN�˵㣬����ָ����豸��ȡ������Ӧ�ô�ŵ�λ�õ�ָ�롣
- *		len:			data������ָ�򻺳����Ĵ�С��
- *		actual_length:	ָ�򱣴�ʵ�ʴ����ֽ�����λ�õ�ָ�롣�����Ǵ��䵽�豸���Ǵ��豸����ȡ���ڶ˵�ķ���
- *		timeout:		��jiffiesΪ��λ��Ӧ�õȴ��ĳ�ʱʱ�䡣�����ֵΪ0���ú�����һֱ�ȴ���Ϣ�Ľ�����
- * ����ɹ�������0.���򷵻�һ�����Ĵ���ֵ��
+ * 创建一个批量urb，把它发送到指定的设备。然后在返回调用者之前等待它的结束。
+ *		usb_dev:		指向批量消息所发送的目标USB设备的指针。
+ *		pipe:			该批量消息所发送的目标USB设备的特定端点。该值是调用usb_sndbulkpipe或者usb_rcvbulkpipe来创建的。
+ *		data:			如果是一个out端点，它是指向即将发送到设备的数据的指针。如果是一个IN端点，它是指向从设备读取的数据应该存放的位置的指针。
+ *		len:			data参数所指向缓冲区的大小。
+ *		actual_length:	指向保存实际传输字节数的位置的指针。至于是传输到设备还是从设备接收取决于端点的方向。
+ *		timeout:		以jiffies为单位的应该等待的超时时间。如果该值为0，该函数将一直等待消息的结束。
+ * 如果成功，返回0.否则返回一个负的错误值。
  */
 int usb_bulk_msg(struct usb_device *usb_dev, unsigned int pipe, 
 			void *data, int len, int *actual_length, int timeout)
@@ -591,13 +591,13 @@ void usb_sg_cancel (struct usb_sg_request *io)
  * returned by the underlying usb_control_msg() call.
  */
 /**
- * ��ָ�����豸��ȡָ����USB��������
- * 		dev:		ָ����Ҫ��ȡ��������Ŀ��USB�豸��ָ�롣
- *		type:		���������͡���������USB�淶��������������:USB_DT_DEVICE��USB_DT_CONFIG...
- *		index:		Ӧ�ô��豸��ȡ���������ı�š�
- *		buf:		ָ���������������еĻ�������ָ�롣
- *		size:		buf������ָ�ڴ�Ĵ�С��
- * ����ɹ������ش��豸��ȡ���ֽ��������򷵻�һ�����Ĵ���ֵ��
+ * 从指定的设备获取指定的USB描述符。
+ * 		dev:		指向想要获取描述符的目标USB设备的指针。
+ *		type:		描述符类型。该类型有USB规范中有描述，例如:USB_DT_DEVICE，USB_DT_CONFIG...
+ *		index:		应该从设备获取的描述符的编号。
+ *		buf:		指向复制描述符到其中的缓冲区的指针。
+ *		size:		buf变量所指内存的大小。
+ * 如果成功，返回从设备读取的字节数。否则返回一个负的错误值。
  */
 int usb_get_descriptor(struct usb_device *dev, unsigned char type, unsigned char index, void *buf, int size)
 {
@@ -646,7 +646,7 @@ int usb_get_descriptor(struct usb_device *dev, unsigned char type, unsigned char
  * returned by the underlying usb_control_msg() call.
  */
 /**
- * ��USB�豸��ȡһ���ַ��������ص���UTF-16LE��ʽ���ַ���������ʹ��usb_string����ISO 8859-1��ʽ��
+ * 从USB设备获取一个字符串。返回的是UTF-16LE格式的字符串。可以使用usb_string返回ISO 8859-1格式。
  */
 int usb_get_string(struct usb_device *dev, unsigned short langid,
 		unsigned char index, void *buf, int size)

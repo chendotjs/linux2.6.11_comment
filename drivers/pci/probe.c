@@ -106,7 +106,7 @@ static struct class pcibus_class = {
 };
 
 /**
- * PCI×ÓÏµÍ³µÚÒ»¸öÖ´ĞĞµÄ³õÊ¼»¯º¯Êı¡£ÔÚsys/classÖĞ×¢²ápci_busÄ¿Â¼¡£
+ * PCIå­ç³»ç»Ÿç¬¬ä¸€ä¸ªæ‰§è¡Œçš„åˆå§‹åŒ–å‡½æ•°ã€‚åœ¨sys/classä¸­æ³¨å†Œpci_busç›®å½•ã€‚
  */
 static int __init pcibus_class_init(void)
 {
@@ -163,7 +163,7 @@ static void pci_read_bases(struct pci_dev *dev, unsigned int howmany, int rom)
 		reg = PCI_BASE_ADDRESS_0 + (pos << 2);
 		pci_read_config_dword(dev, reg, &l);
 		/**
-		 * Ê×ÏÈÏò»ùµØÖ·¼Ä´æÆ÷Ğ´ÈëÈ«1£¬È»ºóÔÙ¶ÁÈ¡Æä³¤¶È¡£
+		 * é¦–å…ˆå‘åŸºåœ°å€å¯„å­˜å™¨å†™å…¥å…¨1ï¼Œç„¶åå†è¯»å–å…¶é•¿åº¦ã€‚
 		 */
 		pci_write_config_dword(dev, reg, ~0);
 		pci_read_config_dword(dev, reg, &sz);
@@ -174,7 +174,7 @@ static void pci_read_bases(struct pci_dev *dev, unsigned int howmany, int rom)
 			l = 0;
 		if ((l & PCI_BASE_ADDRESS_SPACE) == PCI_BASE_ADDRESS_SPACE_MEMORY) {
 			/**
-			 * pci_size½«»ùµØÖ·¼Ä´æÆ÷ÖĞµÄ³¤¶È²¿·Ö×ª»»ÎªÊµ¼ÊµÄ³¤¶È¡£
+			 * pci_sizeå°†åŸºåœ°å€å¯„å­˜å™¨ä¸­çš„é•¿åº¦éƒ¨åˆ†è½¬æ¢ä¸ºå®é™…çš„é•¿åº¦ã€‚
 			 */
 			sz = pci_size(l, sz, PCI_BASE_ADDRESS_MEM_MASK);
 			if (!sz)
@@ -340,7 +340,7 @@ static struct pci_bus * __devinit pci_alloc_bus(void)
 	return b;
 }
 
-/* ´´½¨·Ç¸ù×ÜÏßÃèÊö·û */
+/* åˆ›å»ºéæ ¹æ€»çº¿æè¿°ç¬¦ */
 static struct pci_bus * __devinit
 pci_alloc_child_bus(struct pci_bus *parent, struct pci_dev *bridge, int busnr)
 {
@@ -350,11 +350,11 @@ pci_alloc_child_bus(struct pci_bus *parent, struct pci_dev *bridge, int busnr)
 	/*
 	 * Allocate a new bus, and inherit stuff from the parent..
 	 */
-	child = pci_alloc_bus();/* Îª·Ç¸ù×ÜÏß·ÖÅäpci_busÃèÊö·û */
+	child = pci_alloc_bus();/* ä¸ºéæ ¹æ€»çº¿åˆ†é…pci_busæè¿°ç¬¦ */
 	if (!child)
 		return NULL;
 
-	/* ³õÊ¼»¯ÃèÊö·û */
+	/* åˆå§‹åŒ–æè¿°ç¬¦ */
 	child->self = bridge;
 	child->parent = parent;
 	child->ops = parent->ops;
@@ -443,7 +443,7 @@ int __devinit pci_scan_bridge(struct pci_bus *bus, struct pci_dev * dev, int max
 	pci_enable_crs(dev);
 
 	/**
-	 * (buses & 0xffff00):ÇÅÒÑ¾­±»firmware±éÀú
+	 * (buses & 0xffff00):æ¡¥å·²ç»è¢«firmwareéå†
 	 */
 	if ((buses & 0xffff00) && !pcibios_assign_all_busses() && !is_cardbus) {
 		unsigned int cmax, busnr;
@@ -452,7 +452,7 @@ int __devinit pci_scan_bridge(struct pci_bus *bus, struct pci_dev * dev, int max
 		 * pass and just note the configuration.
 		 */
 		/**
-		 * Èç¹ûpass²ÎÊıÎª1£¬±íÊ¾ºöÂÔÒÑ¾­±éÀúµÄÇÅ£¬ÍË³ö¡£
+		 * å¦‚æœpasså‚æ•°ä¸º1ï¼Œè¡¨ç¤ºå¿½ç•¥å·²ç»éå†çš„æ¡¥ï¼Œé€€å‡ºã€‚
 		 */
 		if (pass)
 			return max;
@@ -469,7 +469,7 @@ int __devinit pci_scan_bridge(struct pci_bus *bus, struct pci_dev * dev, int max
 		}
 
 		/**
-		 * Îª¸ÃÇÅ·ÖÅäpci_bus½á¹¹¡£
+		 * ä¸ºè¯¥æ¡¥åˆ†é…pci_busç»“æ„ã€‚
 		 */
 		child = pci_alloc_child_bus(bus, dev, busnr);
 		if (!child)
@@ -479,23 +479,23 @@ int __devinit pci_scan_bridge(struct pci_bus *bus, struct pci_dev * dev, int max
 		child->bridge_ctl = bctl;
 
 		/**
-		 * µİ¹éµ÷ÓÃpci_scan_child_busĞÎ³ÉPCI×ÓÊ÷¡£
+		 * é€’å½’è°ƒç”¨pci_scan_child_buså½¢æˆPCIå­æ ‘ã€‚
 		 */
 		cmax = pci_scan_child_bus(child);
 		if (cmax > max)
 			max = cmax;
 		/**
-		 * ÔÚpci_scan_child_busÖĞ£¬¿ÉÄÜĞŞÕıÁËsubordinate£¬µ÷Õûmax±äÁ¿¡£
+		 * åœ¨pci_scan_child_busä¸­ï¼Œå¯èƒ½ä¿®æ­£äº†subordinateï¼Œè°ƒæ•´maxå˜é‡ã€‚
 		 */
 		if (child->subordinate > max)
 			max = child->subordinate;
-	} else {/* ÇÅÃ»ÓĞ±»Firmware±éÀú */
+	} else {/* æ¡¥æ²¡æœ‰è¢«Firmwareéå† */
 		/*
 		 * We need to assign a number to this bus which we always
 		 * do in the second pass.
 		 */
 		/**
-		 * Ê×ÏÈÅĞ¶Ïpass²ÎÊı£¬¿´ÊÇ·ñĞèÒª¼ÌĞø¡£
+		 * é¦–å…ˆåˆ¤æ–­passå‚æ•°ï¼Œçœ‹æ˜¯å¦éœ€è¦ç»§ç»­ã€‚
 		 */
 		if (!pass)
 			return max;
@@ -504,7 +504,7 @@ int __devinit pci_scan_bridge(struct pci_bus *bus, struct pci_dev * dev, int max
 		pci_write_config_word(dev, PCI_STATUS, 0xffff);
 
 		/**
-		 * ÎªÇÅ´´½¨pci_bus½á¹¹¡£
+		 * ä¸ºæ¡¥åˆ›å»ºpci_busç»“æ„ã€‚
 		 */
 		child = pci_alloc_child_bus(bus, dev, ++max);
 		buses = (buses & 0xff000000)
@@ -531,7 +531,7 @@ int __devinit pci_scan_bridge(struct pci_bus *bus, struct pci_dev * dev, int max
 
 			/* Now we can scan all subordinate buses... */
 			/**
-			 * µİ¹éµ÷ÓÃpci_scan_child_bus£¬³õÊ¼»¯¸ÃPCIÇÅ¹ÜÀíµÄPCI×ÓÊ÷¡£
+			 * é€’å½’è°ƒç”¨pci_scan_child_busï¼Œåˆå§‹åŒ–è¯¥PCIæ¡¥ç®¡ç†çš„PCIå­æ ‘ã€‚
 			 */
 			max = pci_scan_child_bus(child);
 		} else {
@@ -580,7 +580,7 @@ static void pci_read_irq(struct pci_dev *dev)
  * Returns 0 on success and -1 if unknown type of device (not normal, bridge
  * or CardBus).
  */
-/* ¶ÁÈ¡Éè±¸µÄÅäÖÃ¿Õ¼äĞÅÏ¢£¬³õÊ¼»¯¸ÃÉè±¸ */
+/* è¯»å–è®¾å¤‡çš„é…ç½®ç©ºé—´ä¿¡æ¯ï¼Œåˆå§‹åŒ–è¯¥è®¾å¤‡ */
 static int pci_setup_device(struct pci_dev * dev)
 {
 	u32 class;
@@ -589,7 +589,7 @@ static int pci_setup_device(struct pci_dev * dev)
 	sprintf(pci_name(dev), "%04x:%02x:%02x.%d", pci_domain_nr(dev->bus),
 		dev->bus->number, PCI_SLOT(dev->devfn), PCI_FUNC(dev->devfn));
 
-	/* ¶ÁÈ¡ÅäÖÃ¿Õ¼äÖĞµÄÀàĞÍÂë£¬²»Í¬ÀàĞÍÓĞ²»Í¬µÄÅäÖÃ¿Õ¼ä³¤¶È */
+	/* è¯»å–é…ç½®ç©ºé—´ä¸­çš„ç±»å‹ç ï¼Œä¸åŒç±»å‹æœ‰ä¸åŒçš„é…ç½®ç©ºé—´é•¿åº¦ */
 	pci_read_config_dword(dev, PCI_CLASS_REVISION, &class);
 	class >>= 8;				    /* upper 3 bytes */
 	dev->class = class;
@@ -606,21 +606,21 @@ static int pci_setup_device(struct pci_dev * dev)
 	class = dev->class >> 8;
 
 	/**
-	 * ¸ù¾İheader type¼Ä´æÆ÷µÄÖµ£¬ÅĞ¶Ïµ±Ç°PCIÉè±¸ÊÇPCI AgentÉè±¸¡¢PCIÇÅ»¹ÊÇCard Bus¡£
+	 * æ ¹æ®header typeå¯„å­˜å™¨çš„å€¼ï¼Œåˆ¤æ–­å½“å‰PCIè®¾å¤‡æ˜¯PCI Agentè®¾å¤‡ã€PCIæ¡¥è¿˜æ˜¯Card Busã€‚
 	 */
 	switch (dev->hdr_type) {		    /* header type */
 	case PCI_HEADER_TYPE_NORMAL:		    /* standard header */
 		if (class == PCI_CLASS_BRIDGE_PCI)
 			goto bad;
 		/**
-		 * ¶ÁÈ¡PCIÉè±¸ÅäÖÃ¿Õ¼äµÄInterrupt PinºÍInterrupt Line¼Ä´æÆ÷£¬²¢½«½á¹¹¸³Öµµ½pci_dev->pinºÍirq²ÎÊıÖĞ¡£
-		 * ×¢Òâ£¬´Ë´¦µÄirq²¢²»ÊÇrequest_irqµÄ²ÎÊı¡£Èç¹ûÊ¹ÓÃÁËIO APIC¿ØÖÆÆ÷Ê±£¬pci_enable_device»á¸Ä±äirq²ÎÊı¡£
-		 * Èç¹ûPCIeÉè±¸Ê¹ÄÜÁËMSIÖĞ¶Ï»úÖÆ£¬pci_enable_msiÒ²½«¸Ä±äirqµÄÖµ¡£
+		 * è¯»å–PCIè®¾å¤‡é…ç½®ç©ºé—´çš„Interrupt Pinå’ŒInterrupt Lineå¯„å­˜å™¨ï¼Œå¹¶å°†ç»“æ„èµ‹å€¼åˆ°pci_dev->pinå’Œirqå‚æ•°ä¸­ã€‚
+		 * æ³¨æ„ï¼Œæ­¤å¤„çš„irqå¹¶ä¸æ˜¯request_irqçš„å‚æ•°ã€‚å¦‚æœä½¿ç”¨äº†IO APICæ§åˆ¶å™¨æ—¶ï¼Œpci_enable_deviceä¼šæ”¹å˜irqå‚æ•°ã€‚
+		 * å¦‚æœPCIeè®¾å¤‡ä½¿èƒ½äº†MSIä¸­æ–­æœºåˆ¶ï¼Œpci_enable_msiä¹Ÿå°†æ”¹å˜irqçš„å€¼ã€‚
 		 */
 		pci_read_irq(dev);
 		/**
-		 * ·ÃÎÊPCIÉè±¸µÄBAR¿Õ¼äºÍROM¿Õ¼ä¡£²¢³õÊ¼»¯pci_dev->resource²ÎÊı¡£
-		 * ×¢Òâ:pci_dev->resourceÊôÓÚ´æ´¢Æ÷Óò£¬¶øPCIÉè±¸µÄBAR¼Ä´æÆ÷ÖĞ´æ·ÅµÄµØÖ·ÊôÓÚPCIÓò¡£
+		 * è®¿é—®PCIè®¾å¤‡çš„BARç©ºé—´å’ŒROMç©ºé—´ã€‚å¹¶åˆå§‹åŒ–pci_dev->resourceå‚æ•°ã€‚
+		 * æ³¨æ„:pci_dev->resourceå±äºå­˜å‚¨å™¨åŸŸï¼Œè€ŒPCIè®¾å¤‡çš„BARå¯„å­˜å™¨ä¸­å­˜æ”¾çš„åœ°å€å±äºPCIåŸŸã€‚
 		 */
 		pci_read_bases(dev, 6, PCI_ROM_ADDRESS);
 		pci_read_config_word(dev, PCI_SUBSYSTEM_VENDOR_ID, &dev->subsystem_vendor);
@@ -722,7 +722,7 @@ static void pci_release_bus_bridge_dev(struct device *dev)
  * Read the config data for a PCI device, sanity-check it
  * and fill in the dev structure...
  */
-/* É¨ÃèÌØ¶¨¹¦ÄÜºÅµÄÉè±¸ÊÇ·ñ´æÔÚ */
+/* æ‰«æç‰¹å®šåŠŸèƒ½å·çš„è®¾å¤‡æ˜¯å¦å­˜åœ¨ */
 static struct pci_dev * __devinit
 pci_scan_device(struct pci_bus *bus, int devfn)
 {
@@ -731,28 +731,28 @@ pci_scan_device(struct pci_bus *bus, int devfn)
 	u8 hdr_type;
 	int delay = 1;
 
-	/* ¶ÁÈ¡×ÜÏßÉÏ¸ø¶¨Éè±¸/¹¦ÄÜºÅµÄÅäÖÃ¿Õ¼äÖĞ³§ÉÌIDºÍÉè±¸ID */
+	/* è¯»å–æ€»çº¿ä¸Šç»™å®šè®¾å¤‡/åŠŸèƒ½å·çš„é…ç½®ç©ºé—´ä¸­å‚å•†IDå’Œè®¾å¤‡ID */
 	if (pci_bus_read_config_dword(bus, devfn, PCI_VENDOR_ID, &l))
 		return NULL;
 
 	/* some broken boards return 0 or ~0 if a slot is empty: */
-	if (l == 0xffffffff || l == 0x00000000 ||/* Ä³Ğ©Ö÷°å»á·µ»ØÈ«0»òÈ«1±íÊ¾Éè±¸²»´æÔÚ */
+	if (l == 0xffffffff || l == 0x00000000 ||/* æŸäº›ä¸»æ¿ä¼šè¿”å›å…¨0æˆ–å…¨1è¡¨ç¤ºè®¾å¤‡ä¸å­˜åœ¨ */
 	    l == 0x0000ffff || l == 0xffff0000)
 		return NULL;
 
 	/* Configuration request Retry Status */
 	/**
-	 * ¶ÁÈ¡VENDOR_IDºÍHEADER_TYPE¼Ä´æÆ÷£¬²¢¶ÔÉè±¸½øĞĞ³õÊ¼»¯¡£
+	 * è¯»å–VENDOR_IDå’ŒHEADER_TYPEå¯„å­˜å™¨ï¼Œå¹¶å¯¹è®¾å¤‡è¿›è¡Œåˆå§‹åŒ–ã€‚
 	 */
-	while (l == 0xffff0001) {/* 0xffff0001×´Ì¬±íÊ¾ÅäÖÃÖØÊÔ×´Ì¬ */
-		/* Ë¯ÃßÒ»¶¨Ê±¼äÔÙÖØÊÔ */
+	while (l == 0xffff0001) {/* 0xffff0001çŠ¶æ€è¡¨ç¤ºé…ç½®é‡è¯•çŠ¶æ€ */
+		/* ç¡çœ ä¸€å®šæ—¶é—´å†é‡è¯• */
 		msleep(delay);
 		delay *= 2;
-		/* ¶ÁÈ¡ÅäÖÃ¿Õ¼äÊ§°Ü£¬ÍË³ö */
+		/* è¯»å–é…ç½®ç©ºé—´å¤±è´¥ï¼Œé€€å‡º */
 		if (pci_bus_read_config_dword(bus, devfn, PCI_VENDOR_ID, &l))
 			return NULL;
 		/* Card hasn't responded in 60 seconds?  Must be stuck. */
-		if (delay > 60 * 1000) {/* ³¬¹ıÒ»·ÖÖÓÁËÖØÊÔÒ²Ê§°Ü£¬ÍË³ö */
+		if (delay > 60 * 1000) {/* è¶…è¿‡ä¸€åˆ†é’Ÿäº†é‡è¯•ä¹Ÿå¤±è´¥ï¼Œé€€å‡º */
 			printk(KERN_WARNING "Device %04x:%02x:%02x.%d not "
 					"responding\n", pci_domain_nr(bus),
 					bus->number, PCI_SLOT(devfn),
@@ -761,12 +761,12 @@ pci_scan_device(struct pci_bus *bus, int devfn)
 		}
 	}
 
-	/* ³§ÉÌºÍÉè±¸ID¶ÁÈ¡³É¹¦£¬ÕâÀïÔÙ¶ÁÈ¡ÅäÖÃÍ· */
+	/* å‚å•†å’Œè®¾å¤‡IDè¯»å–æˆåŠŸï¼Œè¿™é‡Œå†è¯»å–é…ç½®å¤´ */
 	if (pci_bus_read_config_byte(bus, devfn, PCI_HEADER_TYPE, &hdr_type))
 		return NULL;
 
 	/**
-	 * ·ÖÅäpci_dev²¢¶ÔÆä½øĞĞ³õÊ¼»¯¡£
+	 * åˆ†é…pci_devå¹¶å¯¹å…¶è¿›è¡Œåˆå§‹åŒ–ã€‚
 	 */
 	dev = kmalloc(sizeof(struct pci_dev), GFP_KERNEL);
 	if (!dev)
@@ -788,13 +788,13 @@ pci_scan_device(struct pci_bus *bus, int devfn)
 	   set this higher, assuming the system even supports it.  */
 	dev->dma_mask = 0xffffffff;
 	/**
-	 * pci_setup_device¶ÔÉè±¸½øĞĞÕæÕıµÄ³õÊ¼»¯¡£
+	 * pci_setup_deviceå¯¹è®¾å¤‡è¿›è¡ŒçœŸæ­£çš„åˆå§‹åŒ–ã€‚
 	 */
 	if (pci_setup_device(dev) < 0) {
 		kfree(dev);
 		return NULL;
 	}
-	/* ³õÊ¼»¯PCIÉè±¸µÄÄÚÇ¶Éè±¸ÃèÊö·û */
+	/* åˆå§‹åŒ–PCIè®¾å¤‡çš„å†…åµŒè®¾å¤‡æè¿°ç¬¦ */
 	device_initialize(&dev->dev);
 	dev->dev.release = pci_release_dev;
 	pci_dev_get(dev);
@@ -812,11 +812,11 @@ pci_scan_single_device(struct pci_bus *bus, int devfn)
 {
 	struct pci_dev *dev;
 
-	/* ¸ù¾İ¹¦ÄÜºÅ£¬É¨ÃèÉè±¸ */
+	/* æ ¹æ®åŠŸèƒ½å·ï¼Œæ‰«æè®¾å¤‡ */
 	dev = pci_scan_device(bus, devfn);
 	pci_scan_msi_device(dev);
 
-	if (!dev)/* Éè±¸²»´æÔÚ£¬ÍË³ö */
+	if (!dev)/* è®¾å¤‡ä¸å­˜åœ¨ï¼Œé€€å‡º */
 		return NULL;
 	
 	/* Fix up broken headers */
@@ -826,7 +826,7 @@ pci_scan_single_device(struct pci_bus *bus, int devfn)
 	 * Add the device to our list of discovered devices
 	 * and the bus list for fixup functions, etc.
 	 */
-	/* ½«Éè±¸Ìí¼Óµ½È«¾ÖÁ´±í£¬ÒÔ¼°×ÜÏßÉè±¸Á´±í */
+	/* å°†è®¾å¤‡æ·»åŠ åˆ°å…¨å±€é“¾è¡¨ï¼Œä»¥åŠæ€»çº¿è®¾å¤‡é“¾è¡¨ */
 	INIT_LIST_HEAD(&dev->global_list);
 	list_add_tail(&dev->bus_list, &bus->devices);
 
@@ -843,7 +843,7 @@ pci_scan_single_device(struct pci_bus *bus, int devfn)
  * will have an empty dev->global_list head.
  */
 /**
- * ÅäÖÃ×ÜÏßÉÏµÄPCIÉè±¸¡£
+ * é…ç½®æ€»çº¿ä¸Šçš„PCIè®¾å¤‡ã€‚
  */
 int __devinit pci_scan_slot(struct pci_bus *bus, int devfn)
 {
@@ -853,15 +853,15 @@ int __devinit pci_scan_slot(struct pci_bus *bus, int devfn)
 	scan_all_fns = pcibios_scan_all_fns(bus, devfn);
 
 	/**
-	 * Ã¿¸öPCIÉè±¸×î¶à¿ÉÄÜÓĞ8¸öfunction¡£
+	 * æ¯ä¸ªPCIè®¾å¤‡æœ€å¤šå¯èƒ½æœ‰8ä¸ªfunctionã€‚
 	 */
 	for (func = 0; func < 8; func++, devfn++) {
 		struct pci_dev *dev;
 
 		/**
-		 * ÅäÖÃÉè±¸¡£
-		 * pci_scan_single_deviceµ÷ÓÃpci_scan_device¶ÔPCIÉè±¸µÄÅäÖÃ¼Ä´æÆ÷½øĞĞ¶ÁĞ´²Ù×÷£¬²àÖØÓÚ¶ÔPCIÉè±¸½øĞĞÓ²¼ş²ãÃæµÄ³õÊ¼»¯²Ù×÷¡£
-		 * µ÷ÓÃpci_device_add½øĞĞÈí¼ş·½ÃæµÄ³õÊ¼»¯¡£
+		 * é…ç½®è®¾å¤‡ã€‚
+		 * pci_scan_single_deviceè°ƒç”¨pci_scan_deviceå¯¹PCIè®¾å¤‡çš„é…ç½®å¯„å­˜å™¨è¿›è¡Œè¯»å†™æ“ä½œï¼Œä¾§é‡äºå¯¹PCIè®¾å¤‡è¿›è¡Œç¡¬ä»¶å±‚é¢çš„åˆå§‹åŒ–æ“ä½œã€‚
+		 * è°ƒç”¨pci_device_addè¿›è¡Œè½¯ä»¶æ–¹é¢çš„åˆå§‹åŒ–ã€‚
 		 */
 		dev = pci_scan_single_device(bus, devfn);
 		if (dev) {
@@ -887,7 +887,7 @@ int __devinit pci_scan_slot(struct pci_bus *bus, int devfn)
 }
 
 /**
- * ¶Ôµ±Ç°×ÜÏßÉÏµÄÉè±¸½øĞĞÃ¶¾Ù¡£Ö÷ÒªÊÇ·ÖÅäPCI×ÜÏßÊ÷µÄPCI×ÜÏßºÅ£¬²¢²»³õÊ¼»¯PCIÉè±¸Ê¹ÓÃµÄBAR¿Õ¼ä¡£
+ * å¯¹å½“å‰æ€»çº¿ä¸Šçš„è®¾å¤‡è¿›è¡Œæšä¸¾ã€‚ä¸»è¦æ˜¯åˆ†é…PCIæ€»çº¿æ ‘çš„PCIæ€»çº¿å·ï¼Œå¹¶ä¸åˆå§‹åŒ–PCIè®¾å¤‡ä½¿ç”¨çš„BARç©ºé—´ã€‚
  */
 unsigned int __devinit pci_scan_child_bus(struct pci_bus *bus)
 {
@@ -898,9 +898,9 @@ unsigned int __devinit pci_scan_child_bus(struct pci_bus *bus)
 
 	/* Go find them, Rover! */
 	/**
-	 * É¨Ãèµ±Ç°PCI×ÜÏßµÄËùÓĞÉè±¸£¬Èç¹ûÉè±¸ÊÇPCI×ÜÏß£¬»áµİ¹éµ÷ÓÃ±¾º¯Êı¡£
-	 * ²¢½«Éè±¸¼ÓÈëµ½¶ÔÓ¦×ÜÏßµÄÉè±¸¶ÓÁĞÖĞ¡£
-	 * Ã¿¸öPCI×ÜÏß×î¶àÓĞ32¸öÉè±¸£¬Ã¿¸öÉè±¸×î¶àÓĞ8¸öfunction£¬Òò´ËÑ­»·0x100´Î¡£
+	 * æ‰«æå½“å‰PCIæ€»çº¿çš„æ‰€æœ‰è®¾å¤‡ï¼Œå¦‚æœè®¾å¤‡æ˜¯PCIæ€»çº¿ï¼Œä¼šé€’å½’è°ƒç”¨æœ¬å‡½æ•°ã€‚
+	 * å¹¶å°†è®¾å¤‡åŠ å…¥åˆ°å¯¹åº”æ€»çº¿çš„è®¾å¤‡é˜Ÿåˆ—ä¸­ã€‚
+	 * æ¯ä¸ªPCIæ€»çº¿æœ€å¤šæœ‰32ä¸ªè®¾å¤‡ï¼Œæ¯ä¸ªè®¾å¤‡æœ€å¤šæœ‰8ä¸ªfunctionï¼Œå› æ­¤å¾ªç¯0x100æ¬¡ã€‚
 	 */
 	for (devfn = 0; devfn < 0x100; devfn += 8)
 		pci_scan_slot(bus, devfn);
@@ -911,22 +911,22 @@ unsigned int __devinit pci_scan_child_bus(struct pci_bus *bus)
 	 */
 	DBG("Fixups for bus %02x\n", bus->number);
 	/**
-	 * pcibios_fixup_busµÄÖ÷ÒªÄ¿µÄÊÇÎªÒ»Ğ©PCIÉè±¸ÖĞµÄerrataÌá¹©work-around.
-	 * Í¬Ê±»¹»áµ÷ÓÃÒ»¸öÖØÒªµÄº¯Êıpci_read_bridge_baseº¯Êı¡£
-	 * pci_read_bridge_baseº¯Êı»á¸ù¾İ¼Ä´æ´æÆ÷µÄÖµ³õÊ¼»¯PCIËù¹ÜÀíµÄµØÖ·¿Õ¼ä¡£
+	 * pcibios_fixup_busçš„ä¸»è¦ç›®çš„æ˜¯ä¸ºä¸€äº›PCIè®¾å¤‡ä¸­çš„errataæä¾›work-around.
+	 * åŒæ—¶è¿˜ä¼šè°ƒç”¨ä¸€ä¸ªé‡è¦çš„å‡½æ•°pci_read_bridge_baseå‡½æ•°ã€‚
+	 * pci_read_bridge_baseå‡½æ•°ä¼šæ ¹æ®å¯„å­˜å­˜å™¨çš„å€¼åˆå§‹åŒ–PCIæ‰€ç®¡ç†çš„åœ°å€ç©ºé—´ã€‚
 	 */
 	pcibios_fixup_bus(bus);
 	/**
-	 * µ÷ÓÃpci_scan_bridgeº¯Êı´¦Àíµ±Ç°PCI×ÜÏßÉÏËù¹Ò½ÓµÄPCIÇÅ¡£
+	 * è°ƒç”¨pci_scan_bridgeå‡½æ•°å¤„ç†å½“å‰PCIæ€»çº¿ä¸Šæ‰€æŒ‚æ¥çš„PCIæ¡¥ã€‚
 	 */
 	for (pass=0; pass < 2; pass++)
 		list_for_each_entry(dev, &bus->devices, bus_list) {
 			if (dev->hdr_type == PCI_HEADER_TYPE_BRIDGE ||
 			    dev->hdr_type == PCI_HEADER_TYPE_CARDBUS)
 			    /**
-			     * passÎª0´¦Àí"ÒÑ¾­Íê³ÉÃ¶¾Ù"µÄPCIÇÅ¡£
-			     * passÎª1´¦Àí"ÉĞÎ´Íê³ÉÃ¶¾Ù"µÄPCIÇÅ¡£
-			     * ¶Ôx86À´Ëµ£¬BIOSÒÑ¾­Ô¤ÏÈ¶Ô×ÜÏß½øĞĞÃ¶¾Ù¡£	
+			     * passä¸º0å¤„ç†"å·²ç»å®Œæˆæšä¸¾"çš„PCIæ¡¥ã€‚
+			     * passä¸º1å¤„ç†"å°šæœªå®Œæˆæšä¸¾"çš„PCIæ¡¥ã€‚
+			     * å¯¹x86æ¥è¯´ï¼ŒBIOSå·²ç»é¢„å…ˆå¯¹æ€»çº¿è¿›è¡Œæšä¸¾ã€‚	
 			     */
 				max = pci_scan_bridge(bus, dev, max, pass);
 		}
@@ -956,14 +956,14 @@ unsigned int __devinit pci_do_scan_bus(struct pci_bus *bus)
 	return max;
 }
 
-/* É¨Ãè×ÜÏßÏÂµÄËùÓĞÉè±¸ */
+/* æ‰«ææ€»çº¿ä¸‹çš„æ‰€æœ‰è®¾å¤‡ */
 struct pci_bus * __devinit pci_scan_bus_parented(struct device *parent, int bus, struct pci_ops *ops, void *sysdata)
 {
 	int error;
 	struct pci_bus *b;
 	struct device *dev;
 
-	/* Îª¸ù×ÜÏß·ÖÅäÒ»¸öpci_busÃèÊö·û */
+	/* ä¸ºæ ¹æ€»çº¿åˆ†é…ä¸€ä¸ªpci_busæè¿°ç¬¦ */
 	b = pci_alloc_bus();
 	if (!b)
 		return NULL;
@@ -977,16 +977,16 @@ struct pci_bus * __devinit pci_scan_bus_parented(struct device *parent, int bus,
 	b->sysdata = sysdata;
 	b->ops = ops;
 
-	/* pci_find_bus²éÕÒ³É¹¦£¬ËµÃ÷Í¨¹ıÁíÍâÒ»¸öÇÅÉè±¸¿ÉÒÔµ½´ï×ÜÏß£¬ÕâÑù·ÅÆúÉ¨Ãè */
+	/* pci_find_busæŸ¥æ‰¾æˆåŠŸï¼Œè¯´æ˜é€šè¿‡å¦å¤–ä¸€ä¸ªæ¡¥è®¾å¤‡å¯ä»¥åˆ°è¾¾æ€»çº¿ï¼Œè¿™æ ·æ”¾å¼ƒæ‰«æ */
 	if (pci_find_bus(pci_domain_nr(b), bus)) {
 		/* If we already got to this bus through a different bridge, ignore it */
 		DBG("PCI: Bus %04x:%02x already known\n", pci_domain_nr(b), bus);
 		goto err_out;
 	}
-	/* ½«¸ù×ÜÏßÁ´½ÓÈëpci_root_busesÁ´±í */
+	/* å°†æ ¹æ€»çº¿é“¾æ¥å…¥pci_root_busesé“¾è¡¨ */
 	list_add_tail(&b->node, &pci_root_buses);
 
-	/* ³õÊ¼»¯Éè±¸£¬²¢×¢²áµ½ÏµÍ³¡£ */
+	/* åˆå§‹åŒ–è®¾å¤‡ï¼Œå¹¶æ³¨å†Œåˆ°ç³»ç»Ÿã€‚ */
 	memset(dev, 0, sizeof(*dev));
 	dev->parent = parent;
 	dev->release = pci_release_bus_bridge_dev;
@@ -996,32 +996,32 @@ struct pci_bus * __devinit pci_scan_bus_parented(struct device *parent, int bus,
 		goto dev_reg_err;
 	b->bridge = get_device(dev);
 
-	/* ³õÊ¼»¯ÀàÉè±¸ÃèÊö·û£¬²¢Ìí¼Óµ½ÏµÍ³ */
+	/* åˆå§‹åŒ–ç±»è®¾å¤‡æè¿°ç¬¦ï¼Œå¹¶æ·»åŠ åˆ°ç³»ç»Ÿ */
 	b->class_dev.class = &pcibus_class;
 	sprintf(b->class_dev.class_id, "%04x:%02x", pci_domain_nr(b), bus);
 	error = class_device_register(&b->class_dev);
 	if (error)
 		goto class_dev_reg_err;
-	/* ÔÚPCI×ÜÏßÄ¿Â¼ÏÂ´´½¨ÊôĞÔÎÄ¼ş */
+	/* åœ¨PCIæ€»çº¿ç›®å½•ä¸‹åˆ›å»ºå±æ€§æ–‡ä»¶ */
 	error = class_device_create_file(&b->class_dev, &class_device_attr_cpuaffinity);
 	if (error)
 		goto class_dev_create_file_err;
 
 	/* Create legacy_io and legacy_mem files for this bus */
-	/* ÔÚPCI×ÜÏßÄ¿Â¼ÏÂ´´½¨¶ş½øÖÆÊôĞÔÎÄ¼ş */
+	/* åœ¨PCIæ€»çº¿ç›®å½•ä¸‹åˆ›å»ºäºŒè¿›åˆ¶å±æ€§æ–‡ä»¶ */
 	pci_create_legacy_files(b);
 
 	error = sysfs_create_link(&b->class_dev.kobj, &b->bridge->kobj, "bridge");
 	if (error)
 		goto sys_create_link_err;
 
-	/* ³õÊ¼»¯×ÜÏßÓë´Î×ÜÏß±àºÅ */
+	/* åˆå§‹åŒ–æ€»çº¿ä¸æ¬¡æ€»çº¿ç¼–å· */
 	b->number = b->secondary = bus;
-	/* ÉèÖÃ¶Ë¿ÚºÍÄÚ´æ×ÊÔ´£¬ÒÔºó·ÖÅä×ÊÔ´Ê±Ê¹ÓÃ */
+	/* è®¾ç½®ç«¯å£å’Œå†…å­˜èµ„æºï¼Œä»¥ååˆ†é…èµ„æºæ—¶ä½¿ç”¨ */
 	b->resource[0] = &ioport_resource;
 	b->resource[1] = &iomem_resource;
 
-	/* É¨Ãè¸ù×ÜÏß */
+	/* æ‰«ææ ¹æ€»çº¿ */
 	b->subordinate = pci_scan_child_bus(b);
 
 	pci_bus_add_devices(b);

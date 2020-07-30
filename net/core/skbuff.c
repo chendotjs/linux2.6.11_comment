@@ -126,7 +126,7 @@ void skb_under_panic(struct sk_buff *skb, int sz, void *here)
  *	%GFP_ATOMIC.
  */
 /**
- * ·ÖÅäsk_buff½á¹¹¼°Æä»º³åÇø¡£
+ * åˆ†é…sk_buffç»“æ„åŠå…¶ç¼“å†²åŒºã€‚
  */
 struct sk_buff *alloc_skb(unsigned int size, int gfp_mask)
 {
@@ -135,7 +135,7 @@ struct sk_buff *alloc_skb(unsigned int size, int gfp_mask)
 
 	/* Get the HEAD */
 	/**
-	 * ´Ó»º´æÖĞ»ñÈ¡Ò»¸ösk_buff½á¹¹
+	 * ä»ç¼“å­˜ä¸­è·å–ä¸€ä¸ªsk_buffç»“æ„
 	 */
 	skb = kmem_cache_alloc(skbuff_head_cache,
 			       gfp_mask & ~__GFP_DMA);
@@ -144,24 +144,24 @@ struct sk_buff *alloc_skb(unsigned int size, int gfp_mask)
 
 	/* Get the DATA. Size must match skb_add_mtu(). */
 	/**
-	 * ·ÖÅä»º³åÇø.
-	 * ÔÚµ÷ÓÃ kmalloc Ç°£¬size ²ÎÊıÍ¨¹ı SKB_DATA_ALIGNºêÇ¿ÖÆ¶ÔÆë¡£
+	 * åˆ†é…ç¼“å†²åŒº.
+	 * åœ¨è°ƒç”¨ kmalloc å‰ï¼Œsize å‚æ•°é€šè¿‡ SKB_DATA_ALIGNå®å¼ºåˆ¶å¯¹é½ã€‚
 	 */
 	size = SKB_DATA_ALIGN(size);
 	/**
-	 * skb_shared_info ¿éÖ÷ÒªÓÃÀ´´¦Àí IP ·ÖÆ¬
+	 * skb_shared_info å—ä¸»è¦ç”¨æ¥å¤„ç† IP åˆ†ç‰‡
 	 */
 	data = kmalloc(size + sizeof(struct skb_shared_info), gfp_mask);
 	if (!data)
 		goto nodata;
 
 	/**
-	 * ³õÊ¼»¯·ÖÅäµÄ»º³åÇøÊı¾İ×Ö¶Î¡£
+	 * åˆå§‹åŒ–åˆ†é…çš„ç¼“å†²åŒºæ•°æ®å­—æ®µã€‚
 	 */
 	memset(skb, 0, offsetof(struct sk_buff, truesize));
 	skb->truesize = size + sizeof(struct sk_buff);
 	/**
-	 * ÉèÖÃ»º³åÇø½á¹¹ÒıÓÃ¼ÆÊı¡£
+	 * è®¾ç½®ç¼“å†²åŒºç»“æ„å¼•ç”¨è®¡æ•°ã€‚
 	 */
 	atomic_set(&skb->users, 1);
 	skb->head = data;
@@ -170,7 +170,7 @@ struct sk_buff *alloc_skb(unsigned int size, int gfp_mask)
 	skb->end  = data + size;
 
 	/**
-	 * Êı¾İ»º³åÇøÒıÓÃ¼ÆÊı¡£
+	 * æ•°æ®ç¼“å†²åŒºå¼•ç”¨è®¡æ•°ã€‚
 	 */
 	atomic_set(&(skb_shinfo(skb)->dataref), 1);
 	skb_shinfo(skb)->nr_frags  = 0;
@@ -295,12 +295,12 @@ void kfree_skbmem(struct sk_buff *skb)
  *	always call kfree_skb
  */
 /**
- * µ±sk_buffÒıÓÃ¼ÆÊı±äÎª0ºó£¬ÊÍ·ÅÏà¹ØµÄ¶ÔÏó¼°ÄÚ´æ¡£
+ * å½“sk_buffå¼•ç”¨è®¡æ•°å˜ä¸º0åï¼Œé‡Šæ”¾ç›¸å…³çš„å¯¹è±¡åŠå†…å­˜ã€‚
  */
 void __kfree_skb(struct sk_buff *skb)
 {
 	/**
-	 * Èç¹ûskbÈÔÈ»ÔÚÁ´±íÖĞ£¬Ôò²»ÄÜÊÍ·ÅËü£¬´Ë´¦´òÓ¡¾¯¸æĞÅÏ¢ºó¹ÒÆğ¡£
+	 * å¦‚æœskbä»ç„¶åœ¨é“¾è¡¨ä¸­ï¼Œåˆ™ä¸èƒ½é‡Šæ”¾å®ƒï¼Œæ­¤å¤„æ‰“å°è­¦å‘Šä¿¡æ¯åæŒ‚èµ·ã€‚
 	 */
 	if (skb->list) {
 	 	printk(KERN_WARNING "Warning: kfree_skb passed an skb still "
@@ -309,14 +309,14 @@ void __kfree_skb(struct sk_buff *skb)
 	}
 
 	/**
-	 * ÊÍ·Å¶ÔÂ·ÓÉ»º´æµÄÒıÓÃ¡£
+	 * é‡Šæ”¾å¯¹è·¯ç”±ç¼“å­˜çš„å¼•ç”¨ã€‚
 	 */
 	dst_release(skb->dst);
 #ifdef CONFIG_XFRM
 	secpath_put(skb->sp);
 #endif
 	/**
-	 * µ÷ÓÃdestructor»Øµ÷¹³×Ó£¬´Ë¹³×Ó¿ÉÄÜ»á´¦ÀísocketÏà¹ØµÄ²Ù×÷¡£
+	 * è°ƒç”¨destructorå›è°ƒé’©å­ï¼Œæ­¤é’©å­å¯èƒ½ä¼šå¤„ç†socketç›¸å…³çš„æ“ä½œã€‚
 	 */
 	if(skb->destructor) {
 		if (in_irq())
@@ -340,8 +340,8 @@ void __kfree_skb(struct sk_buff *skb)
 #endif
 
 	/**
-	 * ½«sk_buff½á¹¹·Å»ØÄÚ´æ»º³åÇø¡£
-	 * Èç¹û´æÔÚ·ÖÆ¬£¬·ÖÔÚkfree_skbmemÖĞÊÍ·Å·ÖÆ¬Õ¼ÓÃµÄÄÚ´æ¡£
+	 * å°†sk_buffç»“æ„æ”¾å›å†…å­˜ç¼“å†²åŒºã€‚
+	 * å¦‚æœå­˜åœ¨åˆ†ç‰‡ï¼Œåˆ†åœ¨kfree_skbmemä¸­é‡Šæ”¾åˆ†ç‰‡å ç”¨çš„å†…å­˜ã€‚
 	 */
 	kfree_skbmem(skb);
 }
@@ -360,9 +360,9 @@ void __kfree_skb(struct sk_buff *skb)
  *	%GFP_ATOMIC.
  */
 /**
- * skb_clone¿ËÂ¡»º³åÇø
- * µ±Ò»¸ö»º³åÇøĞèÒª±»²»Í¬µÄÓÃ»§¶ÀÁ¢µØ²Ù×÷£¬¶øÕâĞ©ÓÃ»§¿ÉÄÜ»áĞŞ¸Äsk_buffÖĞÄ³Ğ©±äÁ¿µÄÖµ£¨±ÈÈçhºÍnhÖµ£©Ê±µ÷ÓÃ¡£
- * ¿ËÂ¡¹ı³ÌÖ»¸´ÖÆsk_buff½á¹¹£¬Í¬Ê±ĞŞ¸Ä»º³åÇøµÄÒıÓÃ¼ÆÊıÒÔ±ÜÃâ¹²ÏíµÄÊı¾İ±»ÌáÇ°ÊÍ·Å.
+ * skb_cloneå…‹éš†ç¼“å†²åŒº
+ * å½“ä¸€ä¸ªç¼“å†²åŒºéœ€è¦è¢«ä¸åŒçš„ç”¨æˆ·ç‹¬ç«‹åœ°æ“ä½œï¼Œè€Œè¿™äº›ç”¨æˆ·å¯èƒ½ä¼šä¿®æ”¹sk_buffä¸­æŸäº›å˜é‡çš„å€¼ï¼ˆæ¯”å¦‚hå’Œnhå€¼ï¼‰æ—¶è°ƒç”¨ã€‚
+ * å…‹éš†è¿‡ç¨‹åªå¤åˆ¶sk_buffç»“æ„ï¼ŒåŒæ—¶ä¿®æ”¹ç¼“å†²åŒºçš„å¼•ç”¨è®¡æ•°ä»¥é¿å…å…±äº«çš„æ•°æ®è¢«æå‰é‡Šæ”¾.
  */
 struct sk_buff *skb_clone(struct sk_buff *skb, int gfp_mask)
 {
@@ -374,7 +374,7 @@ struct sk_buff *skb_clone(struct sk_buff *skb, int gfp_mask)
 #define C(x) n->x = skb->x
 
 	/**
-	 * ±»¿ËÂ¡µÄsk_buff²»»á·ÅÔÚÈÎºÎÁ´±íÖĞ£¬Í¬Ê±Ò²²»»áÓĞµ½socketµÄÒıÓÃ¡£
+	 * è¢«å…‹éš†çš„sk_buffä¸ä¼šæ”¾åœ¨ä»»ä½•é“¾è¡¨ä¸­ï¼ŒåŒæ—¶ä¹Ÿä¸ä¼šæœ‰åˆ°socketçš„å¼•ç”¨ã€‚
 	 */
 	n->next = n->prev = NULL;
 	n->list = NULL;
@@ -397,7 +397,7 @@ struct sk_buff *skb_clone(struct sk_buff *skb, int gfp_mask)
 	C(csum);
 	C(local_df);
 	/**
-	 * Ô­Ê¼µÄºÍ¿ËÂ¡µÄsk_buffÖĞµÄskb->clonedÖµ¶¼±»ÖÃÎª1¡£
+	 * åŸå§‹çš„å’Œå…‹éš†çš„sk_buffä¸­çš„skb->clonedå€¼éƒ½è¢«ç½®ä¸º1ã€‚
 	 */
 	n->cloned = 1;
 	C(pkt_type);
@@ -436,7 +436,7 @@ struct sk_buff *skb_clone(struct sk_buff *skb, int gfp_mask)
 #endif
 	C(truesize);
 	/**
-	 * ¿ËÂ¡°üµÄskb->usersÖµ±»ÖÃÎª1£¬ÕâÑù£¬ÔÚÊÍ·ÅÊ±£¬¿ÉÒÔÏÈÊÍ·Åsk_buff½á¹¹¡£
+	 * å…‹éš†åŒ…çš„skb->userså€¼è¢«ç½®ä¸º1ï¼Œè¿™æ ·ï¼Œåœ¨é‡Šæ”¾æ—¶ï¼Œå¯ä»¥å…ˆé‡Šæ”¾sk_buffç»“æ„ã€‚
 	 */
 	atomic_set(&n->users, 1);
 	C(head);
@@ -445,11 +445,11 @@ struct sk_buff *skb_clone(struct sk_buff *skb, int gfp_mask)
 	C(end);
 
 	/**
-	 * »º³åÇøµÄÒıÓÃ¼ÆÊı(dataref)Ôö¼Ó1£¨ÒòÎªÓĞ¶à¸ösk_buff½á¹¹Ö¸ÏòËü£©
+	 * ç¼“å†²åŒºçš„å¼•ç”¨è®¡æ•°(dataref)å¢åŠ 1ï¼ˆå› ä¸ºæœ‰å¤šä¸ªsk_buffç»“æ„æŒ‡å‘å®ƒï¼‰
 	 */
 	atomic_inc(&(skb_shinfo(skb)->dataref));
 	/**
-	 * Ô­Ê¼µÄºÍ¿ËÂ¡µÄsk_buffÖĞµÄskb->clonedÖµ¶¼±»ÖÃÎª1¡£
+	 * åŸå§‹çš„å’Œå…‹éš†çš„sk_buffä¸­çš„skb->clonedå€¼éƒ½è¢«ç½®ä¸º1ã€‚
 	 */
 	skb->cloned = 1;
 
@@ -524,11 +524,11 @@ static void copy_skb_header(struct sk_buff *new, const struct sk_buff *old)
  *	header is going to be modified. Use pskb_copy() instead.
  */
 /**
- * Èç¹ûÒ»¸ö»º³åÇø±»¿ËÂ¡ÁË£¬Õâ¸ö»º³åÇøµÄÄÚÈİ¾Í²»ÄÜ±»ĞŞ¸Ä¡£
- * Õâ¾ÍÒâÎ¶×Å£¬·ÃÎÊÊı¾İµÄº¯ÊıÃ»ÓĞ±ØÒª¼ÓËø¡£
- * Òò´Ë£¬µ±Ò»¸öº¯Êı²»½öÒªĞŞ¸Äsk_buff£¬¶øÇÒÒªĞŞ¸Ä»º³åÇøÄÚÈİÊ±£¬¾ÍĞèÒªÍ¬Ê±¸´ÖÆ»º³åÇø¡£
- * Èç¹ûËùĞŞ¸ÄµÄÊı¾İÔÚskb->startºÍskb->endÖ®¼ä£¬¿ÉÒÔÊ¹ÓÃpskb_copyÀ´¸´ÖÆÕâ²¿·ÖÊı¾İ.
- * Èç¹ûÍ¬Ê±ĞèÒªĞŞ¸Ä·ÖÆ¬ÖĞµÄÊı¾İ£¬¾Í±ØĞëÊ¹ÓÃskb_copy¡£
+ * å¦‚æœä¸€ä¸ªç¼“å†²åŒºè¢«å…‹éš†äº†ï¼Œè¿™ä¸ªç¼“å†²åŒºçš„å†…å®¹å°±ä¸èƒ½è¢«ä¿®æ”¹ã€‚
+ * è¿™å°±æ„å‘³ç€ï¼Œè®¿é—®æ•°æ®çš„å‡½æ•°æ²¡æœ‰å¿…è¦åŠ é”ã€‚
+ * å› æ­¤ï¼Œå½“ä¸€ä¸ªå‡½æ•°ä¸ä»…è¦ä¿®æ”¹sk_buffï¼Œè€Œä¸”è¦ä¿®æ”¹ç¼“å†²åŒºå†…å®¹æ—¶ï¼Œå°±éœ€è¦åŒæ—¶å¤åˆ¶ç¼“å†²åŒºã€‚
+ * å¦‚æœæ‰€ä¿®æ”¹çš„æ•°æ®åœ¨skb->startå’Œskb->endä¹‹é—´ï¼Œå¯ä»¥ä½¿ç”¨pskb_copyæ¥å¤åˆ¶è¿™éƒ¨åˆ†æ•°æ®.
+ * å¦‚æœåŒæ—¶éœ€è¦ä¿®æ”¹åˆ†ç‰‡ä¸­çš„æ•°æ®ï¼Œå°±å¿…é¡»ä½¿ç”¨skb_copyã€‚
  */
 struct sk_buff *skb_copy(const struct sk_buff *skb, int gfp_mask)
 {
@@ -569,11 +569,11 @@ struct sk_buff *skb_copy(const struct sk_buff *skb, int gfp_mask)
  *	The returned buffer has a reference count of 1.
  */
 /**
- * Èç¹ûÒ»¸ö»º³åÇø±»¿ËÂ¡ÁË£¬Õâ¸ö»º³åÇøµÄÄÚÈİ¾Í²»ÄÜ±»ĞŞ¸Ä¡£
- * Õâ¾ÍÒâÎ¶×Å£¬·ÃÎÊÊı¾İµÄº¯ÊıÃ»ÓĞ±ØÒª¼ÓËø¡£
- * Òò´Ë£¬µ±Ò»¸öº¯Êı²»½öÒªĞŞ¸Äsk_buff£¬¶øÇÒÒªĞŞ¸Ä»º³åÇøÄÚÈİÊ±£¬¾ÍĞèÒªÍ¬Ê±¸´ÖÆ»º³åÇø¡£
- * Èç¹ûËùĞŞ¸ÄµÄÊı¾İÔÚskb->startºÍskb->endÖ®¼ä£¬¿ÉÒÔÊ¹ÓÃpskb_copyÀ´¸´ÖÆÕâ²¿·ÖÊı¾İ.
- * Èç¹ûÍ¬Ê±ĞèÒªĞŞ¸Ä·ÖÆ¬ÖĞµÄÊı¾İ£¬¾Í±ØĞëÊ¹ÓÃskb_copy¡£
+ * å¦‚æœä¸€ä¸ªç¼“å†²åŒºè¢«å…‹éš†äº†ï¼Œè¿™ä¸ªç¼“å†²åŒºçš„å†…å®¹å°±ä¸èƒ½è¢«ä¿®æ”¹ã€‚
+ * è¿™å°±æ„å‘³ç€ï¼Œè®¿é—®æ•°æ®çš„å‡½æ•°æ²¡æœ‰å¿…è¦åŠ é”ã€‚
+ * å› æ­¤ï¼Œå½“ä¸€ä¸ªå‡½æ•°ä¸ä»…è¦ä¿®æ”¹sk_buffï¼Œè€Œä¸”è¦ä¿®æ”¹ç¼“å†²åŒºå†…å®¹æ—¶ï¼Œå°±éœ€è¦åŒæ—¶å¤åˆ¶ç¼“å†²åŒºã€‚
+ * å¦‚æœæ‰€ä¿®æ”¹çš„æ•°æ®åœ¨skb->startå’Œskb->endä¹‹é—´ï¼Œå¯ä»¥ä½¿ç”¨pskb_copyæ¥å¤åˆ¶è¿™éƒ¨åˆ†æ•°æ®.
+ * å¦‚æœåŒæ—¶éœ€è¦ä¿®æ”¹åˆ†ç‰‡ä¸­çš„æ•°æ®ï¼Œå°±å¿…é¡»ä½¿ç”¨skb_copyã€‚
  */
 struct sk_buff *pskb_copy(struct sk_buff *skb, int gfp_mask)
 {
@@ -1116,7 +1116,7 @@ void skb_iter_abort(const struct sk_buff *skb, struct skb_iter *i)
 
 /* Checksum skb data. */
 /**
- * ËüÊÇÒ»¸öÍ¨ÓÃµÄĞ£ÑéºÍ¼ÆËãº¯Êı£¬±»¼¸¸ö°ü×°º¯ÊıÊ¹ÓÃ£¬²¢ÇÒ»ù±¾ÉÏÊÇ±»L4Ğ­ÒéÊ¹ÓÃ¡£
+ * å®ƒæ˜¯ä¸€ä¸ªé€šç”¨çš„æ ¡éªŒå’Œè®¡ç®—å‡½æ•°ï¼Œè¢«å‡ ä¸ªåŒ…è£…å‡½æ•°ä½¿ç”¨ï¼Œå¹¶ä¸”åŸºæœ¬ä¸Šæ˜¯è¢«L4åè®®ä½¿ç”¨ã€‚
  */
 unsigned int skb_checksum(const struct sk_buff *skb, int offset,
 			  int len, unsigned int csum)
@@ -1310,7 +1310,7 @@ void skb_copy_and_csum_dev(const struct sk_buff *skb, u8 *to)
  *	returned or %NULL if the list is empty.
  */
 /**
- * ´Ó¶ÓÁĞµÄÍ·²¿È¡ÏÂÒ»¸ö»º³åÇø
+ * ä»é˜Ÿåˆ—çš„å¤´éƒ¨å–ä¸‹ä¸€ä¸ªç¼“å†²åŒº
  */
 struct sk_buff *skb_dequeue(struct sk_buff_head *list)
 {
@@ -1332,7 +1332,7 @@ struct sk_buff *skb_dequeue(struct sk_buff_head *list)
  *	returned or %NULL if the list is empty.
  */
 /**
- * ´Ó¶ÓÁĞµÄÎ²²¿È¡ÏÂÒ»¸ö»º³åÇø
+ * ä»é˜Ÿåˆ—çš„å°¾éƒ¨å–ä¸‹ä¸€ä¸ªç¼“å†²åŒº
  */
 struct sk_buff *skb_dequeue_tail(struct sk_buff_head *list)
 {
@@ -1354,7 +1354,7 @@ struct sk_buff *skb_dequeue_tail(struct sk_buff_head *list)
  *	lock and is atomic with respect to other list locking functions.
  */
 /**
- * Çå¿ÕÒ»¸ö¶ÓÁĞ¡£
+ * æ¸…ç©ºä¸€ä¸ªé˜Ÿåˆ—ã€‚
  */
 void skb_queue_purge(struct sk_buff_head *list)
 {
@@ -1375,7 +1375,7 @@ void skb_queue_purge(struct sk_buff_head *list)
  *	A buffer cannot be placed on two lists at the same time.
  */
 /**
- * °ÑÒ»¸ö»º³åÇø¼ÓÈë¶ÓÁĞµÄÍ·²¿
+ * æŠŠä¸€ä¸ªç¼“å†²åŒºåŠ å…¥é˜Ÿåˆ—çš„å¤´éƒ¨
  */
 void skb_queue_head(struct sk_buff_head *list, struct sk_buff *newsk)
 {
@@ -1398,7 +1398,7 @@ void skb_queue_head(struct sk_buff_head *list, struct sk_buff *newsk)
  *	A buffer cannot be placed on two lists at the same time.
  */
 /**
- * °ÑÒ»¸ö»º³åÇø¼ÓÈë¶ÓÁĞµÄÎ²²¿
+ * æŠŠä¸€ä¸ªç¼“å†²åŒºåŠ å…¥é˜Ÿåˆ—çš„å°¾éƒ¨
  */
 void skb_queue_tail(struct sk_buff_head *list, struct sk_buff *newsk)
 {
@@ -1563,7 +1563,7 @@ void skb_split(struct sk_buff *skb, struct sk_buff *skb1, const u32 len)
 }
 
 /**
- * ³õÊ¼»¯sk_buff»º³åÇø¡£
+ * åˆå§‹åŒ–sk_buffç¼“å†²åŒºã€‚
  */
 void __init skb_init(void)
 {

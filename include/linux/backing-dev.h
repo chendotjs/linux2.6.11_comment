@@ -15,9 +15,9 @@
  */
 enum bdi_state {
 	/**
-	 * ��pdflash��������ʱ�������ж��pdflash���ܻ�ͬʱ���С������������ڲ�ͬ��CPU�ϡ�
-	 * �����Ƕ���ҳ���м��ʱ��pdflash�߳���Ҫȷ���Ƿ�������CPU�ϵ�pdflash�߳�Ҳ�ڴ���ĳһ����ҳ��
-	 * �����Ҫͬ������ͬ����ͨ��һ��ԭ�Ӳ��ԺͶ���������backing_dev_info��BDI_pdflush��־�����ò�������ɵġ�
+	 * 当pdflash进程运行时，由于有多个pdflash可能会同时运行。并且是运行在不同的CPU上。
+	 * 当它们对脏页进行检查时，pdflash线程需要确定是否有其他CPU上的pdflash线程也在处理某一个脏页。
+	 * 这就需要同步，而同步是通过一个原子测试和对索引结点的backing_dev_info的BDI_pdflush标志的设置操作来完成的。
 	 */
 	BDI_pdflush,		/* A pdflush thread is working this device */
 	BDI_write_congested,	/* The write queue is getting full */

@@ -133,14 +133,14 @@ static void ext2_put_super (struct super_block * sb)
 }
 
 /**
- * inode¸ßËÙ»º´æ·ÖÅäÆ÷¡£
+ * inodeé«˜é€Ÿç¼“å­˜åˆ†é…å™¨ã€‚
  */
 static kmem_cache_t * ext2_inode_cachep;
 
 /**
- * alloc_inode³¬¼¶¿é·½·¨ÊµÏÖ¡£
- * Ê×ÏÈ´Óext2_inode_cachep_slab·ÖÅäÆ÷¸ßËÙ»º´æµÃµ½Ò»¸öext2_inode_infoÃèÊö·û¡£
- * È»ºó·µ»ØÔÚÕâ¸öext2_inode_infoÃèÊö·ûÖÐµÄË÷Òý½áµã¶ÔÏóµÄµØÖ·¡£
+ * alloc_inodeè¶…çº§å—æ–¹æ³•å®žçŽ°ã€‚
+ * é¦–å…ˆä»Žext2_inode_cachep_slabåˆ†é…å™¨é«˜é€Ÿç¼“å­˜å¾—åˆ°ä¸€ä¸ªext2_inode_infoæè¿°ç¬¦ã€‚
+ * ç„¶åŽè¿”å›žåœ¨è¿™ä¸ªext2_inode_infoæè¿°ç¬¦ä¸­çš„ç´¢å¼•ç»“ç‚¹å¯¹è±¡çš„åœ°å€ã€‚
  */
 static struct inode *ext2_alloc_inode(struct super_block *sb)
 {
@@ -217,7 +217,7 @@ static ssize_t ext2_quota_write(struct super_block *sb, int type, const char *da
 #endif
 
 /**
- * ext2³¬¼¶¿é·½·¨
+ * ext2è¶…çº§å—æ–¹æ³•
  */
 static struct super_operations ext2_sops = {
 	.alloc_inode	= ext2_alloc_inode,
@@ -559,7 +559,7 @@ static unsigned long descriptor_loc(struct super_block *sb,
 }
 
 /**
- * ´Óext2´ÅÅÌ·ÖÇøÖÐ¶ÁÈ¡´ÅÅÌ³¬¼¶¿é¡£
+ * ä»Žext2ç£ç›˜åˆ†åŒºä¸­è¯»å–ç£ç›˜è¶…çº§å—ã€‚
  */
 static int ext2_fill_super(struct super_block *sb, void *data, int silent)
 {
@@ -578,7 +578,7 @@ static int ext2_fill_super(struct super_block *sb, void *data, int silent)
 	__le32 features;
 
 	/**
-	 * ·ÖÅäÒ»¸öext2³¬¼¶¿éext2_sb_info£¬²¢·Åµ½³¬¼¶¿éµÄs_fs_info
+	 * åˆ†é…ä¸€ä¸ªext2è¶…çº§å—ext2_sb_infoï¼Œå¹¶æ”¾åˆ°è¶…çº§å—çš„s_fs_info
 	 */
 	sbi = kmalloc(sizeof(*sbi), GFP_KERNEL);
 	if (!sbi)
@@ -611,7 +611,7 @@ static int ext2_fill_super(struct super_block *sb, void *data, int silent)
 	}
 
 	/**
-	 * µ÷ÓÃbreadÔÚ»º³åÇøÒ³ÖÐ·ÖÅäÒ»¸ö»º³åÇøºÍ»º³åÇøÊ×²¿¡£È»ºó´Ó´ÅÅÌ¶ÁÈë³¬¼¶¿é´æ·ÅÔÚ»º³åÇø¡£
+	 * è°ƒç”¨breadåœ¨ç¼“å†²åŒºé¡µä¸­åˆ†é…ä¸€ä¸ªç¼“å†²åŒºå’Œç¼“å†²åŒºé¦–éƒ¨ã€‚ç„¶åŽä»Žç£ç›˜è¯»å…¥è¶…çº§å—å­˜æ”¾åœ¨ç¼“å†²åŒºã€‚
 	 */
 	if (!(bh = sb_bread(sb, logic_sb_block))) {
 		printk ("EXT2-fs: unable to read superblock\n");
@@ -623,7 +623,7 @@ static int ext2_fill_super(struct super_block *sb, void *data, int silent)
 	 */
 	es = (struct ext2_super_block *) (((char *)bh->b_data) + offset);
 	/**
-	 * ½«»º³åÇøÊ×²¿µØÖ·´æ·ÅÆðÀ´¡£
+	 * å°†ç¼“å†²åŒºé¦–éƒ¨åœ°å€å­˜æ”¾èµ·æ¥ã€‚
 	 */
 	sbi->s_es = es;
 	sb->s_magic = le16_to_cpu(es->s_magic);
@@ -796,7 +796,7 @@ static int ext2_fill_super(struct super_block *sb, void *data, int silent)
 	db_count = (sbi->s_groups_count + EXT2_DESC_PER_BLOCK(sb) - 1) /
 		   EXT2_DESC_PER_BLOCK(sb);
 	/**
-	 * ·ÖÅäÒ»¸öÊý×é£¬ÓÃÓÚ´æ·Å»º³åÇøÊ×²¿Ö¸Õë¡£Ã¿¸ö×éÃèÊö·ûÒ»¸ö¡£
+	 * åˆ†é…ä¸€ä¸ªæ•°ç»„ï¼Œç”¨äºŽå­˜æ”¾ç¼“å†²åŒºé¦–éƒ¨æŒ‡é’ˆã€‚æ¯ä¸ªç»„æè¿°ç¬¦ä¸€ä¸ªã€‚
 	 */
 	sbi->s_group_desc = kmalloc (db_count * sizeof (struct buffer_head *), GFP_KERNEL);
 	if (sbi->s_group_desc == NULL) {
@@ -808,7 +808,7 @@ static int ext2_fill_super(struct super_block *sb, void *data, int silent)
 	percpu_counter_init(&sbi->s_dirs_counter);
 	bgl_lock_init(&sbi->s_blockgroup_lock);
 	/**
-	 * ·ÖÅäÒ»¸ö×Ö½ÚÊý¾Ý£¬²¢½«Æä´æµ½s_debtsÖÐ£¬ÓÃÓÚ´´½¨Ë÷Òý½Úµã¡£
+	 * åˆ†é…ä¸€ä¸ªå­—èŠ‚æ•°æ®ï¼Œå¹¶å°†å…¶å­˜åˆ°s_debtsä¸­ï¼Œç”¨äºŽåˆ›å»ºç´¢å¼•èŠ‚ç‚¹ã€‚
 	 */
 	sbi->s_debts = kmalloc(sbi->s_groups_count * sizeof(*sbi->s_debts),
 			       GFP_KERNEL);
@@ -818,7 +818,7 @@ static int ext2_fill_super(struct super_block *sb, void *data, int silent)
 	}
 	memset(sbi->s_debts, 0, sbi->s_groups_count * sizeof(*sbi->s_debts));
 	/**
-	 * ÖØ¸´µ÷ÓÃ__bread·ÖÅä»º³åÇø£¬²¢´Ó´ÅÅÌ¶ÁÈë°üº¬ext2×éÃèÊö·ûµÄ¿é¡£
+	 * é‡å¤è°ƒç”¨__breadåˆ†é…ç¼“å†²åŒºï¼Œå¹¶ä»Žç£ç›˜è¯»å…¥åŒ…å«ext2ç»„æè¿°ç¬¦çš„å—ã€‚
 	 */
 	for (i = 0; i < db_count; i++) {
 		block = descriptor_loc(sb, logic_sb_block, i);
@@ -1039,15 +1039,15 @@ static int ext2_statfs (struct super_block * sb, struct kstatfs * buf)
 }
 
 /**
- * ·ÖÅä²¢³õÊ¼»¯³¬¼¶¿é¡£
+ * åˆ†é…å¹¶åˆå§‹åŒ–è¶…çº§å—ã€‚
  */
 static struct super_block *ext2_get_sb(struct file_system_type *fs_type,
 	int flags, const char *dev_name, void *data)
 {
 	/**
-	 * get_sb_bdev·ÖÅä²¢³õÊ¼»¯Ò»¸öÊÊºÏÓÚ´ÅÅÌÎÄ¼þÏµÍ³µÄ³¬¼¶¿é¡£
-	 * ext2_fill_super´Óext2´ÅÅÌ·ÖÇø¶ÁÈ¡´ÅÅÌ³¬¼¶¿é¡£
-	 * ¶ÔÌØÊâÎÄ¼þÏµÍ³À´Ëµ£¬ÓÐÒ»¸öget_sb_pseudo£¬get_sb_single¼°get_sb_nodev¡£
+	 * get_sb_bdevåˆ†é…å¹¶åˆå§‹åŒ–ä¸€ä¸ªé€‚åˆäºŽç£ç›˜æ–‡ä»¶ç³»ç»Ÿçš„è¶…çº§å—ã€‚
+	 * ext2_fill_superä»Žext2ç£ç›˜åˆ†åŒºè¯»å–ç£ç›˜è¶…çº§å—ã€‚
+	 * å¯¹ç‰¹æ®Šæ–‡ä»¶ç³»ç»Ÿæ¥è¯´ï¼Œæœ‰ä¸€ä¸ªget_sb_pseudoï¼Œget_sb_singleåŠget_sb_nodevã€‚
 	 */
 	return get_sb_bdev(fs_type, flags, dev_name, data, ext2_fill_super);
 }

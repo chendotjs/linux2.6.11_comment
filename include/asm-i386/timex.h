@@ -10,13 +10,13 @@
 #include <asm/processor.h>
 
 /**
- * 8254Ğ¾Æ¬µÄÄÚ²¿Õñµ´ÆµÂÊ
+ * 8254èŠ¯ç‰‡çš„å†…éƒ¨æŒ¯è¡é¢‘ç‡
  */
 #ifdef CONFIG_X86_ELAN
 #  define CLOCK_TICK_RATE 1189200 /* AMD Elan has different frequency! */
 #else
 /**
- * CLOCK_TICK_RATE²úÉúµÄÖµÎª1193182¡£ÕâÊÇ8254Ğ¾Æ¬µÄÄÚ²¿Õñµ´ÆµÂÊ¡£
+ * CLOCK_TICK_RATEäº§ç”Ÿçš„å€¼ä¸º1193182ã€‚è¿™æ˜¯8254èŠ¯ç‰‡çš„å†…éƒ¨æŒ¯è¡é¢‘ç‡ã€‚
  */
 #  define CLOCK_TICK_RATE 1193182 /* Underlying HZ */
 #endif

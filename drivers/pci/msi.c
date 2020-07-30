@@ -704,19 +704,19 @@ int pci_enable_msi(struct pci_dev* dev)
 	u16 control;
 
 	/**
-	 * ¼ì²éÊÇ·ñÖ§³ÖMSIÖĞ¶Ï»úÖÆ¡£
+	 * æ£€æŸ¥æ˜¯å¦æ”¯æŒMSIä¸­æ–­æœºåˆ¶ã€‚
 	 */
 	if (!pci_msi_enable || !dev)
  		return status;
 
 	/**
-	 * ³õÊ¼»¯MSI¡£
+	 * åˆå§‹åŒ–MSIã€‚
 	 */
 	if ((status = msi_init()) < 0)
 		return status;
 
 	/**
-	 * ¼ì²éÉè±¸ÊÇ·ñÖ§³ÖMSIÖĞ¶Ï¡£²»Ö§³ÖÔòÖ±½ÓÍË³ö¡£
+	 * æ£€æŸ¥è®¾å¤‡æ˜¯å¦æ”¯æŒMSIä¸­æ–­ã€‚ä¸æ”¯æŒåˆ™ç›´æ¥é€€å‡ºã€‚
 	 */
    	if (!(pos = pci_find_capability(dev, PCI_CAP_ID_MSI)))
 		return -EINVAL;

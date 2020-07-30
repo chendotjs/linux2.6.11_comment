@@ -1127,7 +1127,7 @@ retry_delete:
  * references to the shared signal_struct.
  */
 /**
- * ´Ó½ø³ÌÖĞ°şÀëµôËùÓĞposixÊ±¼ä¼ä¸ô¶¨Ê±Æ÷¡£
+ * ä»è¿›ç¨‹ä¸­å‰¥ç¦»æ‰æ‰€æœ‰posixæ—¶é—´é—´éš”å®šæ—¶å™¨ã€‚
  */
 void exit_itimers(struct signal_struct *sig)
 {

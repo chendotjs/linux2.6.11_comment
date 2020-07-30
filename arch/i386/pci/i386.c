@@ -103,7 +103,7 @@ static void __init pcibios_allocate_bus_resources(struct list_head *bus_list)
 
 	/* Depth-First Search on bus tree */
 	/**
-	 * ±éÀúpci_root_busesÊ÷ÉÏµÄËùÓĞpci_bus½á¹¹¡£
+	 * éå†pci_root_busesæ ‘ä¸Šçš„æ‰€æœ‰pci_busç»“æ„ã€‚
 	 */
 	list_for_each_entry(bus, bus_list, node) {
 		if ((dev = bus->self)) {
@@ -112,11 +112,11 @@ static void __init pcibios_allocate_bus_resources(struct list_head *bus_list)
 				if (!r->start)
 					continue;
 				/**
-				 * pci_find_parent_resource¼ì²épci_busÊ¹ÓÃµÄ×ÊÔ´¡£
+				 * pci_find_parent_resourceæ£€æŸ¥pci_busä½¿ç”¨çš„èµ„æºã€‚
 				 */
 				pr = pci_find_parent_resource(dev, r);
 				/**
-				 * pci_find_parent_resource³É¹¦Ê±£¬·µ»Øµ±Ç°PCIÇÅµÄÉÏÓÎPCIÇÅÊ¹ÓÃµÄresource²ÎÊı¡£
+				 * pci_find_parent_resourceæˆåŠŸæ—¶ï¼Œè¿”å›å½“å‰PCIæ¡¥çš„ä¸Šæ¸¸PCIæ¡¥ä½¿ç”¨çš„resourceå‚æ•°ã€‚
 				 */
 				if (!pr || request_resource(pr, r) < 0)
 					printk(KERN_ERR "PCI: Cannot allocate resource region %d of bridge %s\n", idx, pci_name(dev));
@@ -127,7 +127,7 @@ static void __init pcibios_allocate_bus_resources(struct list_head *bus_list)
 }
 
 /**
- * ÎªPCIÉè±¸·ÖÅäµØÖ·¿Õ¼ä¡£
+ * ä¸ºPCIè®¾å¤‡åˆ†é…åœ°å€ç©ºé—´ã€‚
  */
 static void __init pcibios_allocate_resources(int pass)
 {
@@ -136,7 +136,7 @@ static void __init pcibios_allocate_resources(int pass)
 	u16 command;
 	struct resource *r, *pr;
 
-	/* ±éÀú×ÜÏßÉè±¸Á´±í */
+	/* éå†æ€»çº¿è®¾å¤‡é“¾è¡¨ */
 	while ((dev = pci_get_device(PCI_ANY_ID, PCI_ANY_ID, dev)) != NULL) {
 		pci_read_config_word(dev, PCI_COMMAND, &command);
 		for(idx = 0; idx < 6; idx++) {
@@ -153,11 +153,11 @@ static void __init pcibios_allocate_resources(int pass)
 				DBG("PCI: Resource %08lx-%08lx (f=%lx, d=%d, p=%d)\n",
 				    r->start, r->end, r->flags, disabled, pass);
 				/**
-				 * »ñµÃÉÏÓÎPCIÇÅ¹ÜÀíµÄ×ÊÔ´
+				 * è·å¾—ä¸Šæ¸¸PCIæ¡¥ç®¡ç†çš„èµ„æº
 				 */
 				pr = pci_find_parent_resource(dev, r);
 				/**
-				 * µ÷ÓÃrequest_resourceÎªÉè±¸·ÖÅäµØµØÖ·¿Õ¼ä¡£
+				 * è°ƒç”¨request_resourceä¸ºè®¾å¤‡åˆ†é…åœ°åœ°å€ç©ºé—´ã€‚
 				 */
 				if (!pr || request_resource(pr, r) < 0) {
 					printk(KERN_ERR "PCI: Cannot allocate resource region %d of device %s\n", idx, pci_name(dev));
@@ -182,7 +182,7 @@ static void __init pcibios_allocate_resources(int pass)
 }
 
 /**
- * ´¦ÀíPCIÉè±¸Ê¹ÓÃµÄROM¿Õ¼äºÍPCIÉè±¸Ê¹ÓÃµÄ´æ´¢Æ÷ºÍIO×ÊÔ´¡£
+ * å¤„ç†PCIè®¾å¤‡ä½¿ç”¨çš„ROMç©ºé—´å’ŒPCIè®¾å¤‡ä½¿ç”¨çš„å­˜å‚¨å™¨å’ŒIOèµ„æºã€‚
  */
 static int __init pcibios_assign_resources(void)
 {
@@ -214,7 +214,7 @@ static int __init pcibios_assign_resources(void)
 			 */
 			if (!r->start && r->end)
 				/**
-				 * ¶ÔPCIÉè±¸Ê¹ÓÃµÄ´æ´¢Æ÷ºÍIO×ÊÔ´½øĞĞÉèÖÃ¡£
+				 * å¯¹PCIè®¾å¤‡ä½¿ç”¨çš„å­˜å‚¨å™¨å’ŒIOèµ„æºè¿›è¡Œè®¾ç½®ã€‚
 				 */
 				pci_assign_resource(dev, idx);
 		}
@@ -231,19 +231,19 @@ static int __init pcibios_assign_resources(void)
 }
 
 /**
- * ÎªBIOSÖĞÒÑ¾­·ÖÅäºÃµÄ×ÊÔ´±£´æ¿Õ¼ä
- * pci_scan_slotº¯ÊıÒÑ¾­½«pci_dev->resource²ÎÊı½øĞĞÁË»ù±¾µÄ³õÊ¼»¯£¬µ«ÊÇresource->start²ÎÊıµÄÖµ²¢²»Ò»¶¨ÓĞĞ§¡£
+ * ä¸ºBIOSä¸­å·²ç»åˆ†é…å¥½çš„èµ„æºä¿å­˜ç©ºé—´
+ * pci_scan_slotå‡½æ•°å·²ç»å°†pci_dev->resourceå‚æ•°è¿›è¡Œäº†åŸºæœ¬çš„åˆå§‹åŒ–ï¼Œä½†æ˜¯resource->startå‚æ•°çš„å€¼å¹¶ä¸ä¸€å®šæœ‰æ•ˆã€‚
  */
 void __init pcibios_resource_survey(void)
 {
 	DBG("PCI: Allocating resources\n");
 	/**
-	 * ¼ì²éÁ´±íÖĞËùÓĞPCI×ÜÏßÊ÷ÖĞµÄËùÓĞPCIÇÅÊ¹ÓÃµÄÏµÍ³×ÊÔ´¡£
+	 * æ£€æŸ¥é“¾è¡¨ä¸­æ‰€æœ‰PCIæ€»çº¿æ ‘ä¸­çš„æ‰€æœ‰PCIæ¡¥ä½¿ç”¨çš„ç³»ç»Ÿèµ„æºã€‚
 	 */
 	pcibios_allocate_bus_resources(&pci_root_buses);
 	/**
-	 * pcibios_allocate_resourcesÎªµ±Ç°PCIÉè±¸·ÖÅäµØÖ·¿Õ¼ä¡£
-	 * 0±íÊ¾¾¡Á¿ÀûÓÃbiosÖĞÒÑ¾­ÅäÖÃºÃµÄ¿Õ¼ä(Èç¹ûÃ»ÓĞ³åÍ»µÄ»°)¡£
+	 * pcibios_allocate_resourcesä¸ºå½“å‰PCIè®¾å¤‡åˆ†é…åœ°å€ç©ºé—´ã€‚
+	 * 0è¡¨ç¤ºå°½é‡åˆ©ç”¨biosä¸­å·²ç»é…ç½®å¥½çš„ç©ºé—´(å¦‚æœæ²¡æœ‰å†²çªçš„è¯)ã€‚
 	 */
 	pcibios_allocate_resources(0);
 	pcibios_allocate_resources(1);

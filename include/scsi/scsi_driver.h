@@ -7,15 +7,15 @@ struct module;
 struct scsi_cmnd;
 
 
-/* SCSIÇı¶¯ÃèÊö·û£¬ÈçSCSI´ÅÅÌÇı¶¯¡¢´ÅÅÌÇı¶¯ºÍSCSI¹âÅÌÇı¶¯ */
+/* SCSIé©±åŠ¨æè¿°ç¬¦ï¼Œå¦‚SCSIç£ç›˜é©±åŠ¨ã€ç£ç›˜é©±åŠ¨å’ŒSCSIå…‰ç›˜é©±åŠ¨ */
 struct scsi_driver {
-	/* ËùÊôÄ£¿é */
+	/* æ‰€å±æ¨¡å— */
 	struct module		*owner;
-	/* ÄÚÇ¶Éè±¸Çı¶¯ */
+	/* å†…åµŒè®¾å¤‡é©±åŠ¨ */
 	struct device_driver	gendrv;
 
 	int (*init_command)(struct scsi_cmnd *);
-	/* ÓÃÓÚÖØĞÂÉ¨ÃèµÄ»Øµ÷º¯Êı */
+	/* ç”¨äºé‡æ–°æ‰«æçš„å›è°ƒå‡½æ•° */
 	void (*rescan)(struct device *);
 	int (*issue_flush)(struct device *, sector_t *);
 };

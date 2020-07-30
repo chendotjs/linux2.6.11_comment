@@ -134,7 +134,7 @@ static int minix_remount (struct super_block * sb, int * flags, char * data)
 	return 0;
 }
 
-/* MINIXÎÄ¼şÏµÍ³³¬¼¶¿é¼ÓÔØº¯Êı */
+/* MINIXæ–‡ä»¶ç³»ç»Ÿè¶…çº§å—åŠ è½½å‡½æ•° */
 static int minix_fill_super(struct super_block *s, void *data, int silent)
 {
 	struct buffer_head *bh;
@@ -144,11 +144,11 @@ static int minix_fill_super(struct super_block *s, void *data, int silent)
 	struct inode *root_inode;
 	struct minix_sb_info *sbi;
 
-	/* ·ÖÅäÎÄ¼şÏµÍ³Ë½ÓĞÊı¾İ½á¹¹ */
+	/* åˆ†é…æ–‡ä»¶ç³»ç»Ÿç§æœ‰æ•°æ®ç»“æ„ */
 	sbi = kmalloc(sizeof(struct minix_sb_info), GFP_KERNEL);
 	if (!sbi)
 		return -ENOMEM;
-	/* ½«Æä±£´æµ½s_fs_infoÖĞ */
+	/* å°†å…¶ä¿å­˜åˆ°s_fs_infoä¸­ */
 	s->s_fs_info = sbi;
 	memset(sbi, 0, sizeof(struct minix_sb_info));
 
@@ -162,11 +162,11 @@ static int minix_fill_super(struct super_block *s, void *data, int silent)
 	if (!sb_set_blocksize(s, BLOCK_SIZE))
 		goto out_bad_hblock;
 
-	/* Í¬²½¶ÁÈ¡³¬¼¶¿éÊı¾İ£¬Æä¿éºÅÎª1 */
+	/* åŒæ­¥è¯»å–è¶…çº§å—æ•°æ®ï¼Œå…¶å—å·ä¸º1 */
 	if (!(bh = sb_bread(s, 1)))
 		goto out_bad_sb;
 
-	/* ½«³¬¼¶¿éÊı¾İÇ¿ÖÆ×ªÎªminix_super_block½á¹¹£¬²¢´ÓÖĞ¶ÁÈ¡Êı¾İ */
+	/* å°†è¶…çº§å—æ•°æ®å¼ºåˆ¶è½¬ä¸ºminix_super_blockç»“æ„ï¼Œå¹¶ä»ä¸­è¯»å–æ•°æ® */
 	ms = (struct minix_super_block *) bh->b_data;
 	sbi->s_ms = ms;
 	sbi->s_sbh = bh;
@@ -179,7 +179,7 @@ static int minix_fill_super(struct super_block *s, void *data, int silent)
 	sbi->s_log_zone_size = ms->s_log_zone_size;
 	sbi->s_max_size = ms->s_max_size;
 	s->s_magic = ms->s_magic;
-	/* ¸ù¾İÄ§ÊıÈ·¶¨MINIXÎÄ¼şÏµÍ³µÄ°æ±¾ */
+	/* æ ¹æ®é­”æ•°ç¡®å®šMINIXæ–‡ä»¶ç³»ç»Ÿçš„ç‰ˆæœ¬ */
 	if (s->s_magic == MINIX_SUPER_MAGIC) {
 		sbi->s_version = MINIX_V1;
 		sbi->s_dirsize = 16;
@@ -208,7 +208,7 @@ static int minix_fill_super(struct super_block *s, void *data, int silent)
 	/*
 	 * Allocate the buffer map to keep the superblock small.
 	 */
-	/* ·ÖÅä½á¹¹±£´æi½ÚµãºÍÂß¼­¿éÎ»Í¼»º³åÇø */
+	/* åˆ†é…ç»“æ„ä¿å­˜ièŠ‚ç‚¹å’Œé€»è¾‘å—ä½å›¾ç¼“å†²åŒº */
 	i = (sbi->s_imap_blocks + sbi->s_zmap_blocks) * sizeof(bh);
 	map = kmalloc(i, GFP_KERNEL);
 	if (!map)
@@ -218,13 +218,13 @@ static int minix_fill_super(struct super_block *s, void *data, int silent)
 	sbi->s_zmap = &map[sbi->s_imap_blocks];
 
 	block=2;
-	/* ¶ÁÈ¡i½ÚµãÎ»Í¼ */
+	/* è¯»å–ièŠ‚ç‚¹ä½å›¾ */
 	for (i=0 ; i < sbi->s_imap_blocks ; i++) {
 		if (!(sbi->s_imap[i]=sb_bread(s, block)))
 			goto out_no_bitmap;
 		block++;
 	}
-	/* ¶ÁÈ¡Âß¼­¿éÎ»Í¼ */
+	/* è¯»å–é€»è¾‘å—ä½å›¾ */
 	for (i=0 ; i < sbi->s_zmap_blocks ; i++) {
 		if (!(sbi->s_zmap[i]=sb_bread(s, block)))
 			goto out_no_bitmap;
@@ -235,14 +235,14 @@ static int minix_fill_super(struct super_block *s, void *data, int silent)
 	minix_set_bit(0,sbi->s_zmap[0]->b_data);
 
 	/* set up enough so that it can read an inode */
-	/* ÔÚ¶ÁÈ¡inodeÇ°ÉèÖÃ³¬¼¶¿é»Øµ÷ */
+	/* åœ¨è¯»å–inodeå‰è®¾ç½®è¶…çº§å—å›è°ƒ */
 	s->s_op = &minix_sops;
-	/* ¶ÁÈ¡¸ù½Úµã */
+	/* è¯»å–æ ¹èŠ‚ç‚¹ */
 	root_inode = iget(s, MINIX_ROOT_INO);
 	if (!root_inode || is_bad_inode(root_inode))
 		goto out_no_root;
 
-	/* ·ÖÅä¸ùinode */
+	/* åˆ†é…æ ¹inode */
 	s->s_root = d_alloc_root(root_inode);
 	if (!s->s_root)
 		goto out_iput;

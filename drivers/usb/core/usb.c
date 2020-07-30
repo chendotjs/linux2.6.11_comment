@@ -151,7 +151,7 @@ int usb_unbind_interface(struct device *dev)
  * takes care of that.
  */
 /**
- * ×¢²áUSBÉè±¸Çı¶¯¡£
+ * æ³¨å†ŒUSBè®¾å¤‡é©±åŠ¨ã€‚
  */
 int usb_register(struct usb_driver *new_driver)
 {
@@ -194,7 +194,7 @@ int usb_register(struct usb_driver *new_driver)
  * this * call will no longer do it for you.
  */
 /**
- * Ğ¶ÔØUSBÉè±¸Çı¶¯¡£
+ * å¸è½½USBè®¾å¤‡é©±åŠ¨ã€‚
  */
 void usb_deregister(struct usb_driver *driver)
 {

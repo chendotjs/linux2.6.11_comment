@@ -21,7 +21,7 @@ struct request_queue;
 typedef struct request_queue request_queue_t;
 struct elevator_queue;
 /**
- * IOÇëÇó¶ÓÁĞÖĞÊ¹ÓÃµÄIOµ÷¶ÈËã·¨¡£ÇëÇó¶ÓÁĞµÄelevatorÖ¸ÏòËü¡£
+ * IOè¯·æ±‚é˜Ÿåˆ—ä¸­ä½¿ç”¨çš„IOè°ƒåº¦ç®—æ³•ã€‚è¯·æ±‚é˜Ÿåˆ—çš„elevatoræŒ‡å‘å®ƒã€‚
  */
 typedef struct elevator_queue elevator_t;
 struct request_pm_state;
@@ -97,27 +97,27 @@ void copy_io_context(struct io_context **pdst, struct io_context **psrc);
 void swap_io_context(struct io_context **ioc1, struct io_context **ioc2);
 
 /**
- * ¿éÉè±¸ÇëÇóÓÃµ½µÄÄÚ´æ³Ø¹ÜÀí
+ * å—è®¾å¤‡è¯·æ±‚ç”¨åˆ°çš„å†…å­˜æ± ç®¡ç†
  */
 struct request_list {
 	/**
-	 * ¼ÇÂ¼·ÖÅä¸øREADºÍWRITEÇëÇóµÄÃèÊö·û¸öÊı¡£
+	 * è®°å½•åˆ†é…ç»™READå’ŒWRITEè¯·æ±‚çš„æè¿°ç¬¦ä¸ªæ•°ã€‚
 	 */
 	int count[2];
 	/**
-	 * ·ÖÅä¶ÁĞ´ÃèÊö·ûÊ§°ÜµÄ´ÎÊı¡£
+	 * åˆ†é…è¯»å†™æè¿°ç¬¦å¤±è´¥çš„æ¬¡æ•°ã€‚
 	 */
 	int starved[2];
 	/**
-	 * ÄÚ´æ³Ø
+	 * å†…å­˜æ± 
 	 */
 	mempool_t *rq_pool;
 	/**
-	 * µÈ´ı¶ÁĞ´ÄÚ´æµÄ¶ÓÁĞ¡£
+	 * ç­‰å¾…è¯»å†™å†…å­˜çš„é˜Ÿåˆ—ã€‚
 	 */
 	wait_queue_head_t wait[2];
 	/**
-	 * µÈ´ıÇëÇó¶ÓÁĞ±»Ë¢ĞÂÇå¿ÕµÄ½ø³ÌµÈ´ı¶ÓÁĞ¡£
+	 * ç­‰å¾…è¯·æ±‚é˜Ÿåˆ—è¢«åˆ·æ–°æ¸…ç©ºçš„è¿›ç¨‹ç­‰å¾…é˜Ÿåˆ—ã€‚
 	 */
 	wait_queue_head_t drain;
 };
@@ -128,17 +128,17 @@ struct request_list {
  * try to put the fields that are referenced together in the same cacheline
  */
 /**
- * ¿éÉè±¸ÇëÇó¡£
+ * å—è®¾å¤‡è¯·æ±‚ã€‚
  */
 struct request {
 	/**
-	 * ÓÃÓÚ°ÑÇëÇóÁ´½Óµ½ÇëÇó¶ÓÁĞÖĞ¡£
+	 * ç”¨äºæŠŠè¯·æ±‚é“¾æ¥åˆ°è¯·æ±‚é˜Ÿåˆ—ä¸­ã€‚
 	 */
 	struct list_head queuelist; /* looking for ->queue? you must _not_
 				     * access it directly, use
 				     * blkdev_dequeue_request! */
 	/**
-	 * ÇëÇó±êÖ¾
+	 * è¯·æ±‚æ ‡å¿—
 	 */
 	unsigned long flags;		/* see REQ_ bits below */
 
@@ -146,64 +146,64 @@ struct request {
 	 * hard_* are block layer internals, no driver should touch them!
 	 */
 	/**
-	 * ¿ªÊ¼ÉÈÇøºÅ¡£
+	 * å¼€å§‹æ‰‡åŒºå·ã€‚
 	 */
 	sector_t sector;		/* next sector to submit */
 	/**
-	 * Òª´«ÊäµÄÉÈÇøÊı¡£
+	 * è¦ä¼ è¾“çš„æ‰‡åŒºæ•°ã€‚
 	 */
 	unsigned long nr_sectors;	/* no. of sectors left to submit */
 	/* no. of sectors left to submit in the current segment */
 	/**
-	 * µ±Ç°bioµÄµ±Ç°¶ÎÖĞÒª´«ËÍµÄÉÈÇøÊı¡£
+	 * å½“å‰bioçš„å½“å‰æ®µä¸­è¦ä¼ é€çš„æ‰‡åŒºæ•°ã€‚
 	 */
 	unsigned int current_nr_sectors;
 
 	/**
-	 * Òª´«ËÍµÄÏÂÒ»¸öÉÈÇøºÅ¡£
-	 * ÓÃÓÚ¸ú×ÙÇı¶¯³ÌĞò»¹Î´Íê³ÉµÄÉÈÇø¡£
-	 * »¹Î´Íê³ÉµÄµÚÒ»¸öÉÈÇø±£´æÔÚhard_sectorÖĞ£¬µÈ´ı´«ÊäµÄ×ÜÊıÁ¿±£´æÔÚhard_nr_sectors£¬µ±Ç°bioÖĞÊ£ÓàµÄÉÈÇøÊıÄ¿ÔÚhard_cur_sectors¡£
-	 * ÕâĞ©³ÉÔ±Ö»ÄÜ±»¿éÉè±¸×ÓÏµÍ³Ê¹ÓÃ£¬Çı¶¯³ÌĞò²»ÄÜÊ¹ÓÃËüÃÇ¡£
+	 * è¦ä¼ é€çš„ä¸‹ä¸€ä¸ªæ‰‡åŒºå·ã€‚
+	 * ç”¨äºè·Ÿè¸ªé©±åŠ¨ç¨‹åºè¿˜æœªå®Œæˆçš„æ‰‡åŒºã€‚
+	 * è¿˜æœªå®Œæˆçš„ç¬¬ä¸€ä¸ªæ‰‡åŒºä¿å­˜åœ¨hard_sectorä¸­ï¼Œç­‰å¾…ä¼ è¾“çš„æ€»æ•°é‡ä¿å­˜åœ¨hard_nr_sectorsï¼Œå½“å‰bioä¸­å‰©ä½™çš„æ‰‡åŒºæ•°ç›®åœ¨hard_cur_sectorsã€‚
+	 * è¿™äº›æˆå‘˜åªèƒ½è¢«å—è®¾å¤‡å­ç³»ç»Ÿä½¿ç”¨ï¼Œé©±åŠ¨ç¨‹åºä¸èƒ½ä½¿ç”¨å®ƒä»¬ã€‚
 	 */
 	sector_t hard_sector;		/* next sector to complete */
 	/**
-	 * Õû¸öÇëÇóÖĞÒª´«ËÍµÄÉÈÇøÊı¡£ÓÉÍ¨ÓÃ¿é²ã¸üĞÂ¡£
+	 * æ•´ä¸ªè¯·æ±‚ä¸­è¦ä¼ é€çš„æ‰‡åŒºæ•°ã€‚ç”±é€šç”¨å—å±‚æ›´æ–°ã€‚
 	 */
 	unsigned long hard_nr_sectors;	/* no. of sectors left to complete */
 	/* no. of sectors left to complete in the current segment */
 	/**
-	 * µ±Ç°bioµÄµ±Ç°¶ÎÖĞÒª´«ËÍµÄÉÈÇøÊı¡£ÓÉÍ¨ÓÃ¿é²ã¸üĞÂ¡£
+	 * å½“å‰bioçš„å½“å‰æ®µä¸­è¦ä¼ é€çš„æ‰‡åŒºæ•°ã€‚ç”±é€šç”¨å—å±‚æ›´æ–°ã€‚
 	 */
 	unsigned int hard_cur_sectors;
 
 	/**
-	 * ÇëÇóµÄbio½á¹¹Á´±í¡£²»ÄÜÖ±½Ó¶Ô¸Ã³ÉÔ±½øĞĞ·ÃÎÊ¡£¶øÊÇÊ¹ÓÃrq_for_each_bio·ÃÎÊ¡£
+	 * è¯·æ±‚çš„bioç»“æ„é“¾è¡¨ã€‚ä¸èƒ½ç›´æ¥å¯¹è¯¥æˆå‘˜è¿›è¡Œè®¿é—®ã€‚è€Œæ˜¯ä½¿ç”¨rq_for_each_bioè®¿é—®ã€‚
 	 */
 	struct bio *bio;
 	/**
-	 * ÇëÇóÁ´±íÖĞÄ©Î²µÄbio
+	 * è¯·æ±‚é“¾è¡¨ä¸­æœ«å°¾çš„bio
 	 */
 	struct bio *biotail;
 
 	/**
-	 * Ö¸ÏòIOµ÷¶È³ÌĞòË½ÓĞÊı¾İµÄÖ¸Õë¡£
+	 * æŒ‡å‘IOè°ƒåº¦ç¨‹åºç§æœ‰æ•°æ®çš„æŒ‡é’ˆã€‚
 	 */
 	void *elevator_private;
 
 	/**
-	 * ÇëÇó×´Ì¬£¬»î¶¯»òÕßÎ´»î¶¯¡£
+	 * è¯·æ±‚çŠ¶æ€ï¼Œæ´»åŠ¨æˆ–è€…æœªæ´»åŠ¨ã€‚
 	 */
 	int rq_status;	/* should split this into a few status bits */
 	/**
-	 * ÇëÇóËùÓÃµÄ´ÅÅÌÃèÊö·û¡£
+	 * è¯·æ±‚æ‰€ç”¨çš„ç£ç›˜æè¿°ç¬¦ã€‚
 	 */
 	struct gendisk *rq_disk;
 	/**
-	 * µ±Ç°´«ËÍÖĞ·¢ÉúµÄIOÊ§°Ü´ÎÊıµÄ¼ÆÊıÆ÷¡£
+	 * å½“å‰ä¼ é€ä¸­å‘ç”Ÿçš„IOå¤±è´¥æ¬¡æ•°çš„è®¡æ•°å™¨ã€‚
 	 */
 	int errors;
 	/**
-	 * ÇëÇóµÄÆğÊ¼Ê±¼ä¡£
+	 * è¯·æ±‚çš„èµ·å§‹æ—¶é—´ã€‚
 	 */
 	unsigned long start_time;
 
@@ -211,7 +211,7 @@ struct request {
 	 * physical address coalescing is performed.
 	 */
 	/**
-	 * ±íÊ¾µ±ÏàÁÚµÄÒ³±»ºÏ²¢ºó£¬ÔÚÎïÀíÄÚ´æÖĞ±»Õâ¸öÇëÇóËùÕ¼ÓÃµÄ¶ÎµÄÊıÄ¿¡£
+	 * è¡¨ç¤ºå½“ç›¸é‚»çš„é¡µè¢«åˆå¹¶åï¼Œåœ¨ç‰©ç†å†…å­˜ä¸­è¢«è¿™ä¸ªè¯·æ±‚æ‰€å ç”¨çš„æ®µçš„æ•°ç›®ã€‚
 	 */
 	unsigned short nr_phys_segments;
 
@@ -221,40 +221,40 @@ struct request {
 	 * will actually have to deal with after DMA mapping is done.
 	 */
 	/**
-	 * ÇëÇóµÄÓ²¶ÎÊı¡£
+	 * è¯·æ±‚çš„ç¡¬æ®µæ•°ã€‚
 	 */
 	unsigned short nr_hw_segments;
 
 	/**
-	 * ÇëÇóµÄÏà¹Ø±ê¼Ç
+	 * è¯·æ±‚çš„ç›¸å…³æ ‡è®°
 	 */
 	int tag;
 	/**
-	 * Òª´«Êä»òÕßÒª½ÓÊÕÊı¾İµÄ»º³åÇøÖ¸Õë¡£¸ÃÖ¸ÕëÔÚÄÚºËĞéÄâµØÖ·ÖĞ£¬Èç¹ûÓĞĞèÒª£¬Çı¶¯³ÌĞò¿ÉÒÔÖ±½ÓÊ¹ÓÃ¡£
-	 * ËüÊÇÔÚµ±Ç°bioÖĞµ÷ÓÃbio_dataµÄ½á¹û¡£
-	 * Èç¹ûÊÇ¸ß¶ËÄÚ´æ£¬ÔòÎªNULL
+	 * è¦ä¼ è¾“æˆ–è€…è¦æ¥æ”¶æ•°æ®çš„ç¼“å†²åŒºæŒ‡é’ˆã€‚è¯¥æŒ‡é’ˆåœ¨å†…æ ¸è™šæ‹Ÿåœ°å€ä¸­ï¼Œå¦‚æœæœ‰éœ€è¦ï¼Œé©±åŠ¨ç¨‹åºå¯ä»¥ç›´æ¥ä½¿ç”¨ã€‚
+	 * å®ƒæ˜¯åœ¨å½“å‰bioä¸­è°ƒç”¨bio_dataçš„ç»“æœã€‚
+	 * å¦‚æœæ˜¯é«˜ç«¯å†…å­˜ï¼Œåˆ™ä¸ºNULL
 	 */
 	char *buffer;
 
 	/**
-	 * ÇëÇóµÄÒıÓÃ¼ÆÊı¡£
+	 * è¯·æ±‚çš„å¼•ç”¨è®¡æ•°ã€‚
 	 */
 	int ref_count;
 	/**
-	 * Ö¸Ïò°üº¬ÇëÇóµÄÇëÇó¶ÓÁĞÃèÊö·ûÖ¸Õë¡£
+	 * æŒ‡å‘åŒ…å«è¯·æ±‚çš„è¯·æ±‚é˜Ÿåˆ—æè¿°ç¬¦æŒ‡é’ˆã€‚
 	 */
 	request_queue_t *q;
 	/**
-	 * ÓÃÓÚÇëÇó¶ÓÁĞµÄÄÚ´æ³Ø¹ÜÀí¡£
+	 * ç”¨äºè¯·æ±‚é˜Ÿåˆ—çš„å†…å­˜æ± ç®¡ç†ã€‚
 	 */
 	struct request_list *rl;
 
 	/**
-	 * µÈ´ıÊı¾İ´«ËÍÖÕÖ¹µÄÍê³É±äÁ¿¡£
+	 * ç­‰å¾…æ•°æ®ä¼ é€ç»ˆæ­¢çš„å®Œæˆå˜é‡ã€‚
 	 */
 	struct completion *waiting;
 	/**
-	 * ¶ÔÓ²¼ş·¢³öÌØÊâÃüÁîµÄÇëÇóËùÊ¹ÓÃµÄÊı¾İµÄÖ¸Õë¡£
+	 * å¯¹ç¡¬ä»¶å‘å‡ºç‰¹æ®Šå‘½ä»¤çš„è¯·æ±‚æ‰€ä½¿ç”¨çš„æ•°æ®çš„æŒ‡é’ˆã€‚
 	 */
 	void *special;
 
@@ -262,34 +262,34 @@ struct request {
 	 * when request is used as a packet command carrier
 	 */
 	/**
-	 * cmdÃüÁîµÄ³¤¶È
+	 * cmdå‘½ä»¤çš„é•¿åº¦
 	 */
 	unsigned int cmd_len;
 	/**
-	 * ÓÉÇëÇó¶ÓÁĞµÄprep_rq_fn·½·¨×¼±¸ºÃµÄÔ¤ÏÈÄÚÖÃÃüÁîËùÔÚµÄ»º³åÇø¡£
+	 * ç”±è¯·æ±‚é˜Ÿåˆ—çš„prep_rq_fnæ–¹æ³•å‡†å¤‡å¥½çš„é¢„å…ˆå†…ç½®å‘½ä»¤æ‰€åœ¨çš„ç¼“å†²åŒºã€‚
 	 */
 	unsigned char cmd[BLK_MAX_CDB];
 
 	/**
-	 * data»º³åÇøµÄ³¤¶È¡£
+	 * dataç¼“å†²åŒºçš„é•¿åº¦ã€‚
 	 */
 	unsigned int data_len;
 	/**
-	 * Çı¶¯³ÌĞòÎªÁË¸ú×ÙËù´«ËÍµÄÊı¾İ¶øÊ¹ÓÃµÄÖ¸Õë¡£
+	 * é©±åŠ¨ç¨‹åºä¸ºäº†è·Ÿè¸ªæ‰€ä¼ é€çš„æ•°æ®è€Œä½¿ç”¨çš„æŒ‡é’ˆã€‚
 	 */
 	void *data;
 
 	/**
-	 * senseÖ¸ÏòµÄ»º³åÇø³¤¶È¡£
+	 * senseæŒ‡å‘çš„ç¼“å†²åŒºé•¿åº¦ã€‚
 	 */
 	unsigned int sense_len;
 	/**
-	 * senseÃüÁîµÄ»º³åÇøÖ¸Õë¡£
+	 * senseå‘½ä»¤çš„ç¼“å†²åŒºæŒ‡é’ˆã€‚
 	 */
 	void *sense;
 
 	/**
-	 * ÇëÇóµÄ³¬Ê±Ê±¼ä
+	 * è¯·æ±‚çš„è¶…æ—¶æ—¶é—´
 	 */
 	unsigned int timeout;
 
@@ -297,7 +297,7 @@ struct request {
 	 * For Power Management requests
 	 */
 	/**
-	 * Ö¸ÏòµçÔ´¹ÜÀíÃüÁîËùÊ¹ÓÃµÄÊı¾İ½á¹¹¡£
+	 * æŒ‡å‘ç”µæºç®¡ç†å‘½ä»¤æ‰€ä½¿ç”¨çš„æ•°æ®ç»“æ„ã€‚
 	 */
 	struct request_pm_state *pm;
 };
@@ -338,99 +338,99 @@ enum rq_flag_bits {
 };
 
 /**
- * Êı¾İ´«ËÍµÄ·½Ïò£¬READ(0)»òÕßWRITE(1)
+ * æ•°æ®ä¼ é€çš„æ–¹å‘ï¼ŒREAD(0)æˆ–è€…WRITE(1)
  */
 #define REQ_RW		(1 << __REQ_RW)
 /**
- * Èç¹û³ö´í£¬Ôò²»ÔÙÖØÊÔ¡£
+ * å¦‚æœå‡ºé”™ï¼Œåˆ™ä¸å†é‡è¯•ã€‚
  */
 #define REQ_FAILFAST	(1 << __REQ_FAILFAST)
 /**
- * ÇëÇóÊÇIOµ÷¶ÈµÄÆÁÕÏ¡£
+ * è¯·æ±‚æ˜¯IOè°ƒåº¦çš„å±éšœã€‚
  */
 #define REQ_SOFTBARRIER	(1 << __REQ_SOFTBARRIER)
 /**
- * ÇëÇóÊÇIOµ÷¶ÈºÍÉè±¸Çı¶¯³ÌĞòµÄÆÁÕÏ¡£
+ * è¯·æ±‚æ˜¯IOè°ƒåº¦å’Œè®¾å¤‡é©±åŠ¨ç¨‹åºçš„å±éšœã€‚
  */
 #define REQ_HARDBARRIER	(1 << __REQ_HARDBARRIER)
 /** 
- * °üº¬Ò»¸ö±ê×¼µÄ¶Á»òĞ´IOÊı¾İ´«ËÍµÄÇëÇó¡£
+ * åŒ…å«ä¸€ä¸ªæ ‡å‡†çš„è¯»æˆ–å†™IOæ•°æ®ä¼ é€çš„è¯·æ±‚ã€‚
  */
 #define REQ_CMD		(1 << __REQ_CMD)
 /**
- * ²»ÔÊĞíÓëÆäËûÇëÇóºÏ²¢¡£
+ * ä¸å…è®¸ä¸å…¶ä»–è¯·æ±‚åˆå¹¶ã€‚
  */
 #define REQ_NOMERGE	(1 << __REQ_NOMERGE)
 /**
- * ÕıÔÚ´¦ÀíµÄÇëÇó¡£
+ * æ­£åœ¨å¤„ç†çš„è¯·æ±‚ã€‚
  */
 #define REQ_STARTED	(1 << __REQ_STARTED)
 /**
- * ²»µ÷ÓÃÇëÇó¶ÓÁĞÖĞµÄprep_rq_fn·½·¨Ô¤ÏÈ×¼±¸°ÑÃüÁî·¢ËÍ¸øÓ²¼şÉè±¸¡£
+ * ä¸è°ƒç”¨è¯·æ±‚é˜Ÿåˆ—ä¸­çš„prep_rq_fnæ–¹æ³•é¢„å…ˆå‡†å¤‡æŠŠå‘½ä»¤å‘é€ç»™ç¡¬ä»¶è®¾å¤‡ã€‚
  */
 #define REQ_DONTPREP	(1 << __REQ_DONTPREP)
 /**
- * ÇëÇó±»±ê¼Ç£¬¼´Óë¸ÃÇëÇóÏà¹ØµÄÓ²¼şÉè±¸¿ÉÒÔÍ¬Ê±¹ÜÀíºÜ¶àÎ´Íê³ÉÊı¾İµÄ´«ËÍ¡£
+ * è¯·æ±‚è¢«æ ‡è®°ï¼Œå³ä¸è¯¥è¯·æ±‚ç›¸å…³çš„ç¡¬ä»¶è®¾å¤‡å¯ä»¥åŒæ—¶ç®¡ç†å¾ˆå¤šæœªå®Œæˆæ•°æ®çš„ä¼ é€ã€‚
  */
 #define REQ_QUEUED	(1 << __REQ_QUEUED)
 /**
- * ÇëÇó°üº¬·¢ËÍ¸øÓ²¼şÉè±¸µÄÖ±½ÓÃüÁî¡£
+ * è¯·æ±‚åŒ…å«å‘é€ç»™ç¡¬ä»¶è®¾å¤‡çš„ç›´æ¥å‘½ä»¤ã€‚
  */
 #define REQ_PC		(1 << __REQ_PC)
 /**
- * ÓëREQ_PCÏàÍ¬£¬µ«ÊÇ·¢ËÍµÄÃüÁî°üº¬ÔÚbio½á¹¹ÖĞ¡£
+ * ä¸REQ_PCç›¸åŒï¼Œä½†æ˜¯å‘é€çš„å‘½ä»¤åŒ…å«åœ¨bioç»“æ„ä¸­ã€‚
  */
 #define REQ_BLOCK_PC	(1 << __REQ_BLOCK_PC)
 /**
- * ÇëÇó°üº¬Ò»¸ö"sense"ÃüÁî£¬SCSIºÍATAPIÉè±¸Ê¹ÓÃ¡£
+ * è¯·æ±‚åŒ…å«ä¸€ä¸ª"sense"å‘½ä»¤ï¼ŒSCSIå’ŒATAPIè®¾å¤‡ä½¿ç”¨ã€‚
  */
 #define REQ_SENSE	(1 << __REQ_SENSE)
 /**
- * µ±ÇëÇóÖĞµÄsense»òdirectÃüÁîµÄ²Ù×÷ÓëÔ¤ÆÚµÄ²»Ò»ÖÂÊ±ÉèÖÃ
+ * å½“è¯·æ±‚ä¸­çš„senseæˆ–directå‘½ä»¤çš„æ“ä½œä¸é¢„æœŸçš„ä¸ä¸€è‡´æ—¶è®¾ç½®
  */
 #define REQ_FAILED	(1 << __REQ_FAILED)
 /**
- * IO²Ù×÷³ö´íÊ±²»²úÉúÄÚºËÏûÏ¢¡£
+ * IOæ“ä½œå‡ºé”™æ—¶ä¸äº§ç”Ÿå†…æ ¸æ¶ˆæ¯ã€‚
  */
 #define REQ_QUIET	(1 << __REQ_QUIET)
 /**
- * ÇëÇó°üº¬¶ÔÉè±¸µÄÌØÊâÃüÁî£¬ÈçÖØÉèÇı¶¯Æ÷¡£
+ * è¯·æ±‚åŒ…å«å¯¹è®¾å¤‡çš„ç‰¹æ®Šå‘½ä»¤ï¼Œå¦‚é‡è®¾é©±åŠ¨å™¨ã€‚
  */
 #define REQ_SPECIAL	(1 << __REQ_SPECIAL)
 /**
- * ÇëÇó°üº¬¶ÔIDE´ÅÅÌµÄÌØÊâÃüÁî
+ * è¯·æ±‚åŒ…å«å¯¹IDEç£ç›˜çš„ç‰¹æ®Šå‘½ä»¤
  */
 #define REQ_DRIVE_CMD	(1 << __REQ_DRIVE_CMD)
 /**
- * ÇëÇó°üº¬¶ÔIDE´ÅÅÌµÄÌØÊâÃüÁî
+ * è¯·æ±‚åŒ…å«å¯¹IDEç£ç›˜çš„ç‰¹æ®Šå‘½ä»¤
  */
 #define REQ_DRIVE_TASK	(1 << __REQ_DRIVE_TASK)
 /**
- * ÇëÇó°üº¬¶ÔIDE´ÅÅÌµÄÌØÊâÃüÁî
+ * è¯·æ±‚åŒ…å«å¯¹IDEç£ç›˜çš„ç‰¹æ®Šå‘½ä»¤
  */
 #define REQ_DRIVE_TASKFILE	(1 << __REQ_DRIVE_TASKFILE)
 /**
- * ÇëÇóÈ¡´úÎ»ÓÚÇëÇó¶ÓÁĞÇ°ÃæµÄÇëÇó¡£½ö¶ÔIDEÓĞĞ§¡£
+ * è¯·æ±‚å–ä»£ä½äºè¯·æ±‚é˜Ÿåˆ—å‰é¢çš„è¯·æ±‚ã€‚ä»…å¯¹IDEæœ‰æ•ˆã€‚
  */
 #define REQ_PREEMPT	(1 << __REQ_PREEMPT)
 /**
- * ÇëÇó°üº¬Ò»¸ö¹ÒÆğÓ²¼şÉè±¸µÄµçÔ´¹ÜÀíÃüÁî¡£
+ * è¯·æ±‚åŒ…å«ä¸€ä¸ªæŒ‚èµ·ç¡¬ä»¶è®¾å¤‡çš„ç”µæºç®¡ç†å‘½ä»¤ã€‚
  */
 #define REQ_PM_SUSPEND	(1 << __REQ_PM_SUSPEND)
 /**
- * ÇëÇó°üº¬Ò»¸ö»½ĞÑÓ²¼şÉè±¸µÄµçÔ´¹ÜÀíÃüÁî¡£
+ * è¯·æ±‚åŒ…å«ä¸€ä¸ªå”¤é†’ç¡¬ä»¶è®¾å¤‡çš„ç”µæºç®¡ç†å‘½ä»¤ã€‚
  */
 #define REQ_PM_RESUME	(1 << __REQ_PM_RESUME)
 /**
- * ÇëÇó°üº¬Ò»¸öÇĞ¶ÏÓ²¼şÉè±¸µÄµçÔ´¹ÜÀíÃüÁî¡£
+ * è¯·æ±‚åŒ…å«ä¸€ä¸ªåˆ‡æ–­ç¡¬ä»¶è®¾å¤‡çš„ç”µæºç®¡ç†å‘½ä»¤ã€‚
  */
 #define REQ_PM_SHUTDOWN	(1 << __REQ_PM_SHUTDOWN)
 /**
- * ÇëÇó°üº¬Ò»¸öÒª·¢ËÍ¸ø´ÅÅÌ¿ØÖÆÆ÷µÄ"Ë¢ĞÂ¶ÓÁĞ"ÃüÁî
+ * è¯·æ±‚åŒ…å«ä¸€ä¸ªè¦å‘é€ç»™ç£ç›˜æ§åˆ¶å™¨çš„"åˆ·æ–°é˜Ÿåˆ—"å‘½ä»¤
  */
 #define REQ_BAR_PREFLUSH	(1 << __REQ_BAR_PREFLUSH)
 /**
- * ÇëÇó°üº¬Ò»¸öÒª·¢ËÍ¸ø´ÅÅÌ¿ØÖÆÆ÷µÄ"Ë¢ĞÂ¶ÓÁĞ"ÃüÁî
+ * è¯·æ±‚åŒ…å«ä¸€ä¸ªè¦å‘é€ç»™ç£ç›˜æ§åˆ¶å™¨çš„"åˆ·æ–°é˜Ÿåˆ—"å‘½ä»¤
  */
 #define REQ_BAR_POSTFLUSH	(1 << __REQ_BAR_POSTFLUSH)
 
@@ -455,11 +455,11 @@ typedef int (merge_requests_fn) (request_queue_t *, struct request *,
 				 struct request *);
 typedef void (request_fn_proc) (request_queue_t *q);
 /**
- * µ±²»Ê¹ÓÃÇëÇó¶ÓÁĞ½øĞĞBIO´«ÊäÊ±£¬¿ÉÒÔÌá¹©Ò»¸ömake_request_fnÀàĞÍµÄº¯Êı£¬ÒÔÖ§³Ö"ÎŞ¶ÓÁĞ"Ä£Ê½µÄ²Ù×÷¡£
+ * å½“ä¸ä½¿ç”¨è¯·æ±‚é˜Ÿåˆ—è¿›è¡ŒBIOä¼ è¾“æ—¶ï¼Œå¯ä»¥æä¾›ä¸€ä¸ªmake_request_fnç±»å‹çš„å‡½æ•°ï¼Œä»¥æ”¯æŒ"æ— é˜Ÿåˆ—"æ¨¡å¼çš„æ“ä½œã€‚
  */
 typedef int (make_request_fn) (request_queue_t *q, struct bio *bio);
 /**
- * Ô¤´¦Àíº¯ÊıÔ­ĞÍ¡£ĞèÒªÍ¨¹ıblk_queue_prep_rqÉèÖÃÔ¤´¦Àíº¯Êı¡£
+ * é¢„å¤„ç†å‡½æ•°åŸå‹ã€‚éœ€è¦é€šè¿‡blk_queue_prep_rqè®¾ç½®é¢„å¤„ç†å‡½æ•°ã€‚
  */
 typedef int (prep_rq_fn) (request_queue_t *, struct request *);
 typedef void (unplug_fn) (request_queue_t *);
@@ -488,7 +488,7 @@ struct blk_queue_tag {
 };
 
 /**
- * ´ÅÅÌÇëÇó¶ÓÁĞ
+ * ç£ç›˜è¯·æ±‚é˜Ÿåˆ—
  */
 struct request_queue
 {
@@ -496,15 +496,15 @@ struct request_queue
 	 * Together with queue_head for cacheline sharing
 	 */
 	/**
-	 * ´ı´¦ÀíÇëÇóµÄÁ´±í
+	 * å¾…å¤„ç†è¯·æ±‚çš„é“¾è¡¨
 	 */
 	struct list_head	queue_head;
 	/**
-	 * ¶ÓÁĞÖĞÊ×ÏÈ¿ÉÄÜºÏ²¢µÄÇëÇóÃèÊö·û
+	 * é˜Ÿåˆ—ä¸­é¦–å…ˆå¯èƒ½åˆå¹¶çš„è¯·æ±‚æè¿°ç¬¦
 	 */
 	struct request		*last_merge;
 	/**
-	 * elevator¶ÔÏó£¬IOµ÷¶ÈËã·¨Ê¹ÓÃ
+	 * elevatorå¯¹è±¡ï¼ŒIOè°ƒåº¦ç®—æ³•ä½¿ç”¨
 	 */
 	elevator_t		*elevator;
 
@@ -512,48 +512,48 @@ struct request_queue
 	 * the queue request freelist, one for reads and one for writes
 	 */
 	/**
-	 * Îª·ÖÅäÇëÇóÃèÊö·ûËùÊ¹ÓÃµÄÊı¾İ½á¹¹¡£
+	 * ä¸ºåˆ†é…è¯·æ±‚æè¿°ç¬¦æ‰€ä½¿ç”¨çš„æ•°æ®ç»“æ„ã€‚
 	 */
 	struct request_list	rq;
 
 	/**
-	 * ÊµÏÖÇı¶¯³ÌĞòµÄ²ßÂÔÀı³ÌÈë¿ÚµãµÄ·½·¨¡£
+	 * å®ç°é©±åŠ¨ç¨‹åºçš„ç­–ç•¥ä¾‹ç¨‹å…¥å£ç‚¹çš„æ–¹æ³•ã€‚
 	 */
 	request_fn_proc		*request_fn;
 	/**
-	 * ¼ì²éÊÇ·ñ¿ÉÒÔ½«bioºÏ²¢µ½ÇëÇó¶ÓÁĞµÄ×îºóÒ»¸öÇëÇóÖĞµÄ·½·¨¡£
+	 * æ£€æŸ¥æ˜¯å¦å¯ä»¥å°†bioåˆå¹¶åˆ°è¯·æ±‚é˜Ÿåˆ—çš„æœ€åä¸€ä¸ªè¯·æ±‚ä¸­çš„æ–¹æ³•ã€‚
 	 */
 	merge_request_fn	*back_merge_fn;
 	/**
-	 * ¼ì²éÊÇ·ñ¿ÉÒÔ½«bioºÏ²¢µ½ÇëÇó¶ÓÁĞµÄµÚÒ»¸öÇëÇóÖĞµÄ·½·¨¡£
+	 * æ£€æŸ¥æ˜¯å¦å¯ä»¥å°†bioåˆå¹¶åˆ°è¯·æ±‚é˜Ÿåˆ—çš„ç¬¬ä¸€ä¸ªè¯·æ±‚ä¸­çš„æ–¹æ³•ã€‚
 	 */
 	merge_request_fn	*front_merge_fn;
 	/**
-	 * ÊÔÍ¼ºÏ²¢ÇëÇó¶ÓÁĞÖĞÁ½¸öÏàÁÚÇëÇóµÄ·½·¨
+	 * è¯•å›¾åˆå¹¶è¯·æ±‚é˜Ÿåˆ—ä¸­ä¸¤ä¸ªç›¸é‚»è¯·æ±‚çš„æ–¹æ³•
 	 */
 	merge_requests_fn	*merge_requests_fn;
 	/**
-	 * ½«ĞÂÇëÇó²åÈëÇëÇó¶ÓÁĞµÄ·½·¨
+	 * å°†æ–°è¯·æ±‚æ’å…¥è¯·æ±‚é˜Ÿåˆ—çš„æ–¹æ³•
 	 */
 	make_request_fn		*make_request_fn;
 	/**
-	 * °ÑÇëÇóÃüÁî·¢ËÍ¸øÓ²¼şÉè±¸¡£
+	 * æŠŠè¯·æ±‚å‘½ä»¤å‘é€ç»™ç¡¬ä»¶è®¾å¤‡ã€‚
 	 */
 	prep_rq_fn		*prep_rq_fn;
 	/**
-	 * È¥µô¿éÉè±¸µÄ·½·¨
+	 * å»æ‰å—è®¾å¤‡çš„æ–¹æ³•
 	 */
 	unplug_fn		*unplug_fn;
 	/**
-	 * µ±Ôö¼ÓÒ»¸öĞÂ¶ÎÊ±£¬¸Ã·½·¨·µ»Ø¿É²åÈëµ½Ä³¸öÒÑ´æÔÚbio½á¹¹µÄ×Ö½ÚÊı¡£
+	 * å½“å¢åŠ ä¸€ä¸ªæ–°æ®µæ—¶ï¼Œè¯¥æ–¹æ³•è¿”å›å¯æ’å…¥åˆ°æŸä¸ªå·²å­˜åœ¨bioç»“æ„çš„å­—èŠ‚æ•°ã€‚
 	 */
 	merge_bvec_fn		*merge_bvec_fn;
 	/**
-	 * ½«Ä³¸öÇëÇó¼ÓÈëÇëÇó¶ÓÁĞÊ±µ÷ÓÃµÄ·½·¨£¬Í¨³£Î´¶¨Òå¡£
+	 * å°†æŸä¸ªè¯·æ±‚åŠ å…¥è¯·æ±‚é˜Ÿåˆ—æ—¶è°ƒç”¨çš„æ–¹æ³•ï¼Œé€šå¸¸æœªå®šä¹‰ã€‚
 	 */
 	activity_fn		*activity_fn;
 	/**
-	 * Ë¢ĞÂÇëÇó¶ÓÁĞµÄ·½·¨£¬Í¨¹ıÁ¬Ğø´¦ÀíËùÓĞÇëÇó½«¶ÓÁĞÇå¿Õ¡£
+	 * åˆ·æ–°è¯·æ±‚é˜Ÿåˆ—çš„æ–¹æ³•ï¼Œé€šè¿‡è¿ç»­å¤„ç†æ‰€æœ‰è¯·æ±‚å°†é˜Ÿåˆ—æ¸…ç©ºã€‚
 	 */
 	issue_flush_fn		*issue_flush_fn;
 
@@ -561,19 +561,19 @@ struct request_queue
 	 * Auto-unplugging state
 	 */
 	/** 
-	 * ²åÈëÉè±¸Ê±Ê¹ÓÃµÄ×´Ì¬¶¨Ê±Æ÷¡£
+	 * æ’å…¥è®¾å¤‡æ—¶ä½¿ç”¨çš„çŠ¶æ€å®šæ—¶å™¨ã€‚
 	 */
 	struct timer_list	unplug_timer;
 	/**
-	 * Èç¹ûÇëÇó¶ÓÁĞÖĞÇëÇóÊı´óÓÚ´ËÊı£¬½«Á¢¼´È¥µôÇëÇóÉè±¸£¬Ä¬ÈÏÊÇ4
+	 * å¦‚æœè¯·æ±‚é˜Ÿåˆ—ä¸­è¯·æ±‚æ•°å¤§äºæ­¤æ•°ï¼Œå°†ç«‹å³å»æ‰è¯·æ±‚è®¾å¤‡ï¼Œé»˜è®¤æ˜¯4
 	 */
 	int			unplug_thresh;	/* After this many requests */
 	/**
-	 * È¥µôÉè±¸Ö®Ç°µÄÊ±¼äÑÓ³Ù¡£Ä¬ÈÏÊÇ3ms
+	 * å»æ‰è®¾å¤‡ä¹‹å‰çš„æ—¶é—´å»¶è¿Ÿã€‚é»˜è®¤æ˜¯3ms
 	 */
 	unsigned long		unplug_delay;	/* After this many jiffies */
 	/**
-	 * È¥µôÉè±¸Ê±Ê¹ÓÃµÄ¹¤×÷¶ÓÁĞ
+	 * å»æ‰è®¾å¤‡æ—¶ä½¿ç”¨çš„å·¥ä½œé˜Ÿåˆ—
 	 */
 	struct work_struct	unplug_work;
 
@@ -584,12 +584,12 @@ struct request_queue
 	 * ll_rw_blk doesn't touch it.
 	 */
 	/**
-	 * ¿éÉè±¸Çı¶¯³ÌĞòµÄË½ÓĞÊı¾İ¡£
+	 * å—è®¾å¤‡é©±åŠ¨ç¨‹åºçš„ç§æœ‰æ•°æ®ã€‚
 	 */
 	void			*queuedata;
 
 	/**
-	 * activity_fn·½·¨Ê¹ÓÃµÄË½ÓĞÊı¾İ¡£
+	 * activity_fnæ–¹æ³•ä½¿ç”¨çš„ç§æœ‰æ•°æ®ã€‚
 	 */
 	void			*activity_data;
 
@@ -597,11 +597,11 @@ struct request_queue
 	 * queue needs bounce pages for pages above this limit
 	 */
 	/**
-	 * ´óÓÚ¸ÃÒ³¿òºÅÊ±£¬½«Ê¹ÓÃ»Øµ¯»º³åÇø¡£
+	 * å¤§äºè¯¥é¡µæ¡†å·æ—¶ï¼Œå°†ä½¿ç”¨å›å¼¹ç¼“å†²åŒºã€‚
 	 */
 	unsigned long		bounce_pfn;
 	/**
-	 * »Øµ¯»º³åÇøµÄ·ÖÅä±êÖ¾¡£
+	 * å›å¼¹ç¼“å†²åŒºçš„åˆ†é…æ ‡å¿—ã€‚
 	 */
 	int			bounce_gfp;
 
@@ -609,7 +609,7 @@ struct request_queue
 	 * various queue flags, see QUEUE_* below
 	 */
 	/**
-	 * ÇëÇó¶ÓÁĞ×´Ì¬±êÖ¾¡£
+	 * è¯·æ±‚é˜Ÿåˆ—çŠ¶æ€æ ‡å¿—ã€‚
 	 */
 	unsigned long		queue_flags;
 
@@ -617,7 +617,7 @@ struct request_queue
 	 * protects queue structures from reentrancy
 	 */
 	/**
-	 * ÇëÇó¶ÓÁĞËøÖ¸Õë¡£
+	 * è¯·æ±‚é˜Ÿåˆ—é”æŒ‡é’ˆã€‚
 	 */
 	spinlock_t		*queue_lock;
 
@@ -625,7 +625,7 @@ struct request_queue
 	 * queue kobject
 	 */
 	/**
-	 * ÇëÇó¶ÓÁĞÄÚÇ¶kobject
+	 * è¯·æ±‚é˜Ÿåˆ—å†…åµŒkobject
 	 */
 	struct kobject kobj;
 
@@ -633,68 +633,68 @@ struct request_queue
 	 * queue settings
 	 */
 	/**
-	 * ÇëÇó¶ÓÁĞÖĞÔÊĞíµÄ×î´óÇëÇóÊı¡£
+	 * è¯·æ±‚é˜Ÿåˆ—ä¸­å…è®¸çš„æœ€å¤§è¯·æ±‚æ•°ã€‚
 	 */
 	unsigned long		nr_requests;	/* Max # of requests */
 	/**
-	 * Èç¹û´ı´¦ÀíÇëÇóÊı³¬¹ıÁË¸Ã·§Öµ£¬ÔòÈÏÎª¶ÓÁĞÊÇÓµ¼·µÄ¡£
+	 * å¦‚æœå¾…å¤„ç†è¯·æ±‚æ•°è¶…è¿‡äº†è¯¥é˜€å€¼ï¼Œåˆ™è®¤ä¸ºé˜Ÿåˆ—æ˜¯æ‹¥æŒ¤çš„ã€‚
 	 */
 	unsigned int		nr_congestion_on;
 	/**
-	 * Èç¹ûÇëÇóÊıÔÚÕâ¸ö·§ÖµÄÚ£¬Ôò¸Ã¶ÓÁĞÊÇ²»Óµ¼·µÄ¡£
+	 * å¦‚æœè¯·æ±‚æ•°åœ¨è¿™ä¸ªé˜€å€¼å†…ï¼Œåˆ™è¯¥é˜Ÿåˆ—æ˜¯ä¸æ‹¥æŒ¤çš„ã€‚
 	 */
 	unsigned int		nr_congestion_off;
 	/**
-	 * ¼´Ê¹¶ÓÁĞÒÑÂú£¬ÈÔ¿ÉÒÔÓÉÌØÊâ½ø³Ì"batcher"Ìá½»µÄ´ı´¦ÀíÇëÇóµÄ×î´óÖµ¡£Í¨³£Îª32.
+	 * å³ä½¿é˜Ÿåˆ—å·²æ»¡ï¼Œä»å¯ä»¥ç”±ç‰¹æ®Šè¿›ç¨‹"batcher"æäº¤çš„å¾…å¤„ç†è¯·æ±‚çš„æœ€å¤§å€¼ã€‚é€šå¸¸ä¸º32.
 	 */
 	unsigned int		nr_batching;
 
 	/**
-	 * µ¥¸öÇëÇóÄÜ´¦ÀíµÄ×î´óÉÈÇøÊı¡£¿Éµ÷ÕûµÄ¡£
+	 * å•ä¸ªè¯·æ±‚èƒ½å¤„ç†çš„æœ€å¤§æ‰‡åŒºæ•°ã€‚å¯è°ƒæ•´çš„ã€‚
 	 */
 	unsigned short		max_sectors;
 	/**
-	 * µ¥¸öÇëÇóÄÜ´¦ÀíµÄ×î´óÉÈÇøÊı¡£Ç¿ÖÆÔ¼Êø¡£
+	 * å•ä¸ªè¯·æ±‚èƒ½å¤„ç†çš„æœ€å¤§æ‰‡åŒºæ•°ã€‚å¼ºåˆ¶çº¦æŸã€‚
 	 */	
 	unsigned short		max_hw_sectors;
 	/**
-	 * µ¥¸öÇëÇóËùÄÜ´¦ÀíµÄ×î´óÎïÀí¶ÎÊı¡£
+	 * å•ä¸ªè¯·æ±‚æ‰€èƒ½å¤„ç†çš„æœ€å¤§ç‰©ç†æ®µæ•°ã€‚
 	 */
 	unsigned short		max_phys_segments;
 	/**
-	 * µ¥¸öÇëÇóËùÄÜ´¦ÀíµÄ×î´óÓ²¶ÎÊı¡£
+	 * å•ä¸ªè¯·æ±‚æ‰€èƒ½å¤„ç†çš„æœ€å¤§ç¡¬æ®µæ•°ã€‚
 	 */
 	unsigned short		max_hw_segments;
 	/**
-	 * ÉÈÇøÖĞÒÔ×Ö½ÚÎªµ¥Î»µÄ´óĞ¡¡£
+	 * æ‰‡åŒºä¸­ä»¥å­—èŠ‚ä¸ºå•ä½çš„å¤§å°ã€‚
 	 */
 	unsigned short		hardsect_size;
 	/**
-	 * ÎïÀí¶ÎµÄ×î´ó³¤¶È¡£ÒÔ×Ö½ÚÎªµ¥Î»¡£
+	 * ç‰©ç†æ®µçš„æœ€å¤§é•¿åº¦ã€‚ä»¥å­—èŠ‚ä¸ºå•ä½ã€‚
 	 */
 	unsigned int		max_segment_size;
 
 	/**
-	 * ¶ÎºÏ²¢µÄÄÚ´æ±ß½çÆÁ±Î×Ö??
+	 * æ®µåˆå¹¶çš„å†…å­˜è¾¹ç•Œå±è”½å­—??
 	 */
 	unsigned long		seg_boundary_mask;
 	/**
-	 * DMA»º³åÇøµÄÆğÊ¼µØÖ·ºÍ³¤¶ÈµÄ¶ÔÆëÎ»Í¼£¬Ä¬ÈÏÊÇ511.
+	 * DMAç¼“å†²åŒºçš„èµ·å§‹åœ°å€å’Œé•¿åº¦çš„å¯¹é½ä½å›¾ï¼Œé»˜è®¤æ˜¯511.
 	 */
 	unsigned int		dma_alignment;
 
 	/**
-	 * ¿ÕÏĞ¡¢Ã¦±ê¼ÇµÄÎ»Í¼¡£
+	 * ç©ºé—²ã€å¿™æ ‡è®°çš„ä½å›¾ã€‚
 	 */
 	struct blk_queue_tag	*queue_tags;
 
 	/**
-	 * ÇëÇó¶ÓÁĞµÄÒıÓÃ¼ÆÊıÆ÷¡£
+	 * è¯·æ±‚é˜Ÿåˆ—çš„å¼•ç”¨è®¡æ•°å™¨ã€‚
 	 */
 	atomic_t		refcnt;
 
 	/**
-	 * ÇëÇó¶ÓÁĞÖĞ´ı´¦ÀíÇëÇóÊı¡£
+	 * è¯·æ±‚é˜Ÿåˆ—ä¸­å¾…å¤„ç†è¯·æ±‚æ•°ã€‚
 	 */
 	unsigned int		in_flight;
 
@@ -702,16 +702,16 @@ struct request_queue
 	 * sg stuff
 	 */
 	/**
-	 * ÓÃ»§¶¨ÒåµÄÃüÁî³¬Ê±£¬½öÓÉSCSIÊ¹ÓÃ¡£
+	 * ç”¨æˆ·å®šä¹‰çš„å‘½ä»¤è¶…æ—¶ï¼Œä»…ç”±SCSIä½¿ç”¨ã€‚
 	 */
 	unsigned int		sg_timeout;
 	/**
-	 * »ù±¾Î´ÓÃ¡£
+	 * åŸºæœ¬æœªç”¨ã€‚
 	 */
 	unsigned int		sg_reserved_size;
 
 	/**
-	 * ÁÙÊ±ÑÓÊ±µÄÇëÇóÁ´±íµÄÍ·²¿£¬Ö±µ½IOµ÷ÊÔ³ÌĞò±»¶¯Ì¬È¡´ú¡£
+	 * ä¸´æ—¶å»¶æ—¶çš„è¯·æ±‚é“¾è¡¨çš„å¤´éƒ¨ï¼Œç›´åˆ°IOè°ƒè¯•ç¨‹åºè¢«åŠ¨æ€å–ä»£ã€‚
 	 */
 	struct list_head	drain_list;
 };
@@ -738,12 +738,12 @@ struct request_queue
 #define blk_queue_stopped(q)	test_bit(QUEUE_FLAG_STOPPED, &(q)->queue_flags)
 
 /**
- * ¸Ãºê¼ì²éÊÇ·ñÉèÖÃÁËÇëÇóµÄREQ_CMD±êÖ¾£¬Ò²¼´£¬ÇëÇóÊÇ·ñ°üº¬ÁËÒ»¸ö±ê×¼µÄ¶Á»òÕßĞ´²Ù×÷
+ * è¯¥å®æ£€æŸ¥æ˜¯å¦è®¾ç½®äº†è¯·æ±‚çš„REQ_CMDæ ‡å¿—ï¼Œä¹Ÿå³ï¼Œè¯·æ±‚æ˜¯å¦åŒ…å«äº†ä¸€ä¸ªæ ‡å‡†çš„è¯»æˆ–è€…å†™æ“ä½œ
  */
 #define blk_fs_request(rq)	((rq)->flags & REQ_CMD)
 #define blk_pc_request(rq)	((rq)->flags & REQ_BLOCK_PC)
 /**
- * ¼ì²âÒ»¸öÇëÇóÔÚÊ§°ÜÊ±ÊÇ·ñ²»ĞèÒªÖØÊÔ¡£
+ * æ£€æµ‹ä¸€ä¸ªè¯·æ±‚åœ¨å¤±è´¥æ—¶æ˜¯å¦ä¸éœ€è¦é‡è¯•ã€‚
  */
 #define blk_noretry_request(rq)	((rq)->flags & REQ_FAILFAST)
 #define blk_rq_started(rq)	((rq)->flags & REQ_STARTED)
@@ -756,7 +756,7 @@ struct request_queue
 	((rq)->flags & (REQ_PM_SUSPEND | REQ_PM_RESUME))
 
 /**
- * ¼ì²âÊÇ·ñ´æÔÚÆÁÕÏÇëÇó±êÖ¾¡£
+ * æ£€æµ‹æ˜¯å¦å­˜åœ¨å±éšœè¯·æ±‚æ ‡å¿—ã€‚
  */
 #define blk_barrier_rq(rq)	((rq)->flags & REQ_HARDBARRIER)
 #define blk_barrier_preflush(rq)	((rq)->flags & REQ_BAR_PREFLUSH)
@@ -764,7 +764,7 @@ struct request_queue
 
 #define list_entry_rq(ptr)	list_entry((ptr), struct request, queuelist)
 /**
- * ´ÓrequestÖĞµÃµ½´«ÊäµÄ·½Ïò¡£·µ»Ø0±íÊ¾´ÓÉè±¸¶ÁÊı¾İ£¬·Ç0±íÊ¾ÏòÉè±¸Ğ´Êı¾İ¡£
+ * ä»requestä¸­å¾—åˆ°ä¼ è¾“çš„æ–¹å‘ã€‚è¿”å›0è¡¨ç¤ºä»è®¾å¤‡è¯»æ•°æ®ï¼Œé0è¡¨ç¤ºå‘è®¾å¤‡å†™æ•°æ®ã€‚
  */
 #define rq_data_dir(rq)		((rq)->flags & 1)
 
@@ -841,7 +841,7 @@ static inline void blk_queue_bounce(request_queue_t *q, struct bio **bio)
 #endif /* CONFIG_MMU */
 
 /**
- * ±éÀúrequestÖĞËùÓĞÇëÇóµÄbio¡£
+ * éå†requestä¸­æ‰€æœ‰è¯·æ±‚çš„bioã€‚
  */
 #define rq_for_each_bio(_bio, rq)	\
 	if ((rq->bio))			\
@@ -920,7 +920,7 @@ extern void end_request(struct request *req, int uptodate);
 #define end_io_error(uptodate)	(unlikely((uptodate) <= 0))
 
 /**
- * Ò»°ãµØ£¬±¾º¯ÊıÓÃÓÚÖĞ¶Ï´¦Àíº¯Êı½«ÇëÇó´ÓÇëÇó¶ÓÁĞÖĞÉ¾³ı¡£
+ * ä¸€èˆ¬åœ°ï¼Œæœ¬å‡½æ•°ç”¨äºä¸­æ–­å¤„ç†å‡½æ•°å°†è¯·æ±‚ä»è¯·æ±‚é˜Ÿåˆ—ä¸­åˆ é™¤ã€‚
  */
 static inline void blkdev_dequeue_request(struct request *req)
 {

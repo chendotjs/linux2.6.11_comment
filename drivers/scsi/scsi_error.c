@@ -63,20 +63,20 @@ void scsi_eh_wakeup(struct Scsi_Host *shost)
  * Return value:
  *	0 on failure.
  **/
-/* Ê¹ÓÃ´íÎóµÄSCSIÃüÁî½øÈë´íÎó»Ö¸´¹ý³Ì */
+/* ä½¿ç”¨é”™è¯¯çš„SCSIå‘½ä»¤è¿›å…¥é”™è¯¯æ¢å¤è¿‡ç¨‹ */
 int scsi_eh_scmd_add(struct scsi_cmnd *scmd, int eh_flag)
 {
 	struct Scsi_Host *shost = scmd->device->host;
 	unsigned long flags;
 
-	/* Ã»ÓÐ´íÎó»Ö¸´Ïß³Ì£¬ÍË³ö */
+	/* æ²¡æœ‰é”™è¯¯æ¢å¤çº¿ç¨‹ï¼Œé€€å‡º */
 	if (shost->eh_wait == NULL)
 		return 0;
 
-	/* »ñÈ¡×ÔÐýËø²¢¹ØÖÐ¶Ï */
+	/* èŽ·å–è‡ªæ—‹é”å¹¶å…³ä¸­æ–­ */
 	spin_lock_irqsave(shost->host_lock, flags);
 
-	/* ÉèÖÃÃüÁî±êÖ¾ */
+	/* è®¾ç½®å‘½ä»¤æ ‡å¿— */
 	scsi_eh_eflags_set(scmd, eh_flag);
 	/*
 	 * FIXME: Can we stop setting owner and state.
@@ -87,15 +87,15 @@ int scsi_eh_scmd_add(struct scsi_cmnd *scmd, int eh_flag)
 	 * Set the serial_number_at_timeout to the current
 	 * serial_number
 	 */
-	/* ¼ÇÂ¼´íÎóµÄÃüÁîºÅ */
+	/* è®°å½•é”™è¯¯çš„å‘½ä»¤å· */
 	scmd->serial_number_at_timeout = scmd->serial_number;
-	/* ½«ÃüÁîÁ´½ÓÈë´íÎó»Ö¸´Á´±í£¬»Ö¸´Ïß³Ì»á¾Ý´Ë´¦Àí´íÎóÃüÁî */
+	/* å°†å‘½ä»¤é“¾æŽ¥å…¥é”™è¯¯æ¢å¤é“¾è¡¨ï¼Œæ¢å¤çº¿ç¨‹ä¼šæ®æ­¤å¤„ç†é”™è¯¯å‘½ä»¤ */
 	list_add_tail(&scmd->eh_entry, &shost->eh_cmd_q);
-	/* ÉèÖÃ´Ë±êÖ¾Î»ºó£¬ÐÂµÄSCSI½«²»»áÔÙ½øÈë¶ÓÁÐ */
+	/* è®¾ç½®æ­¤æ ‡å¿—ä½åŽï¼Œæ–°çš„SCSIå°†ä¸ä¼šå†è¿›å…¥é˜Ÿåˆ— */
 	set_bit(SHOST_RECOVERY, &shost->shost_state);
-	/* µÝÔöÊ§°Ü¼ÆÊý */
+	/* é€’å¢žå¤±è´¥è®¡æ•° */
 	shost->host_failed++;
-	/* »½ÐÑÊ§°Ü´¦ÀíÏß³Ì */
+	/* å”¤é†’å¤±è´¥å¤„ç†çº¿ç¨‹ */
 	scsi_eh_wakeup(shost);
 	spin_unlock_irqrestore(shost->host_lock, flags);
 	return 1;
@@ -483,7 +483,7 @@ static void scsi_eh_done(struct scsi_cmnd *scmd)
  * Return value:
  *    SUCCESS or FAILED or NEEDS_RETRY
  **/
-/* Ö±½ÓÏòÉè±¸·¢ËÍÃüÁî£¬ÓÃÓÚ´íÎó»Ö¸´ */
+/* ç›´æŽ¥å‘è®¾å¤‡å‘é€å‘½ä»¤ï¼Œç”¨äºŽé”™è¯¯æ¢å¤ */
 static int scsi_send_eh_cmnd(struct scsi_cmnd *scmd, int timeout)
 {
 	struct Scsi_Host *host = scmd->device->host;
@@ -511,11 +511,11 @@ static int scsi_send_eh_cmnd(struct scsi_cmnd *scmd, int timeout)
 
 	spin_lock_irqsave(scmd->device->host->host_lock, flags);
 	scsi_log_send(scmd);
-	/* ÏòÖ÷»úÊÊÅäÆ÷·¢ËÍÃüÁî */
+	/* å‘ä¸»æœºé€‚é…å™¨å‘é€å‘½ä»¤ */
 	host->hostt->queuecommand(scmd, scsi_eh_done);
 	spin_unlock_irqrestore(scmd->device->host->host_lock, flags);
 
-	/* µÈ´ýÃüÁîÍê³É */
+	/* ç­‰å¾…å‘½ä»¤å®Œæˆ */
 	down(&sem);
 	scsi_log_completion(scmd, SUCCESS);
 
@@ -525,7 +525,7 @@ static int scsi_send_eh_cmnd(struct scsi_cmnd *scmd, int timeout)
 	 * see if timeout.  if so, tell the host to forget about it.
 	 * in other words, we don't want a callback any more.
 	 */
-	if (scsi_eh_eflags_chk(scmd, SCSI_EH_REC_TIMEOUT)) {/* ÊÇÓÉÓÚ³¬Ê±Íê³ÉÃüÁîµÄ */
+	if (scsi_eh_eflags_chk(scmd, SCSI_EH_REC_TIMEOUT)) {/* æ˜¯ç”±äºŽè¶…æ—¶å®Œæˆå‘½ä»¤çš„ */
 		scsi_eh_eflags_clr(scmd,  SCSI_EH_REC_TIMEOUT);
 		scmd->owner = SCSI_OWNER_LOWLEVEL;
 
@@ -540,7 +540,7 @@ static int scsi_send_eh_cmnd(struct scsi_cmnd *scmd, int timeout)
 		 * we should treat them differently anyways.
 		 */
 		spin_lock_irqsave(scmd->device->host->host_lock, flags);
-		if (scmd->device->host->hostt->eh_abort_handler)/* ÖÕÖ¹¸ÃÃüÁîµÄÖ´ÐÐ */
+		if (scmd->device->host->hostt->eh_abort_handler)/* ç»ˆæ­¢è¯¥å‘½ä»¤çš„æ‰§è¡Œ */
 			scmd->device->host->hostt->eh_abort_handler(scmd);
 		spin_unlock_irqrestore(scmd->device->host->host_lock, flags);
 			
@@ -557,8 +557,8 @@ static int scsi_send_eh_cmnd(struct scsi_cmnd *scmd, int timeout)
 	 * now examine the actual status codes to see whether the command
 	 * actually did complete normally.
 	 */
-	if (rtn == SUCCESS) {/* ÃüÁî±»Ö÷»úÊÊÅäÆ÷ÕýÈ·µÄÍê³É */
-		/* ¼ì²é´íÎó»Ö¸´ÃüÁîµÄÍê³ÉÇé¿ö */
+	if (rtn == SUCCESS) {/* å‘½ä»¤è¢«ä¸»æœºé€‚é…å™¨æ­£ç¡®çš„å®Œæˆ */
+		/* æ£€æŸ¥é”™è¯¯æ¢å¤å‘½ä»¤çš„å®Œæˆæƒ…å†µ */
 		rtn = scsi_eh_completed_normally(scmd);
 		SCSI_LOG_ERROR_RECOVERY(3,
 			printk("%s: scsi_eh_completed_normally %x\n",
@@ -653,15 +653,15 @@ static int scsi_request_sense(struct scsi_cmnd *scmd)
  *    keep a list of pending commands for final completion, and once we
  *    are ready to leave error handling we handle completion for real.
  **/
-/* µ±´íÎó»Ö¸´ÃüÁî±»Ö´ÐÐÍê±Ïºó£¬»Øµ÷´Ëº¯Êý */
+/* å½“é”™è¯¯æ¢å¤å‘½ä»¤è¢«æ‰§è¡Œå®Œæ¯•åŽï¼Œå›žè°ƒæ­¤å‡½æ•° */
 static void scsi_eh_finish_cmd(struct scsi_cmnd *scmd,
 			       struct list_head *done_q)
 {
-	/* µÝ¼õÊ§°ÜµÄÃüÁîÊý */
+	/* é€’å‡å¤±è´¥çš„å‘½ä»¤æ•° */
 	scmd->device->host->host_failed--;
 	scmd->state = SCSI_STATE_BHQUEUE;
 
-	/* Çå³ý´íÎó»Ö¸´±êÖ¾ */
+	/* æ¸…é™¤é”™è¯¯æ¢å¤æ ‡å¿— */
 	scsi_eh_eflags_clr_all(scmd);
 
 	/*
@@ -669,7 +669,7 @@ static void scsi_eh_finish_cmd(struct scsi_cmnd *scmd,
 	 * things.
 	 */
 	scsi_setup_cmd_retry(scmd);
-	/* ½«ÃüÁî´Ó´íÎóÁ´±íÖÐÒÆµ½´íÎó»Ö¸´µÄÍê³ÉÁ´±íÖÐ */
+	/* å°†å‘½ä»¤ä»Žé”™è¯¯é“¾è¡¨ä¸­ç§»åˆ°é”™è¯¯æ¢å¤çš„å®Œæˆé“¾è¡¨ä¸­ */
 	list_move_tail(&scmd->eh_entry, done_q);
 }
 
@@ -836,7 +836,7 @@ retry_tur:
  *    no sense to try and abort the command, since as far as the shost
  *    adapter is concerned, it isn't running.
  **/
-/* Èç¹ûÔÚ½øÐÐ´íÎó»Ö¸´ºó£¬¹ÊÕÏÃüÁîÁ´±íÖÐ»¹ÓÐ¹ÊÕÏÃüÁî£¬Ôòµ÷ÓÃ±¾º¯Êý·ÅÆú¹ÊÕÏÃüÁî */
+/* å¦‚æžœåœ¨è¿›è¡Œé”™è¯¯æ¢å¤åŽï¼Œæ•…éšœå‘½ä»¤é“¾è¡¨ä¸­è¿˜æœ‰æ•…éšœå‘½ä»¤ï¼Œåˆ™è°ƒç”¨æœ¬å‡½æ•°æ”¾å¼ƒæ•…éšœå‘½ä»¤ */
 static int scsi_eh_abort_cmds(struct list_head *work_q,
 			      struct list_head *done_q)
 {
@@ -844,21 +844,21 @@ static int scsi_eh_abort_cmds(struct list_head *work_q,
 	struct scsi_cmnd *scmd;
 	int rtn;
 
-	/* ±éÀú¹ÊÕÏÃüÁîÁ´±í */
+	/* éåŽ†æ•…éšœå‘½ä»¤é“¾è¡¨ */
 	list_for_each_safe(lh, lh_sf, work_q) {
 		scmd = list_entry(lh, struct scsi_cmnd, eh_entry);
-		/* Òª·ÅÆúµÄÃüÁîÓ¦µ±ÊÇÒò³¬Ê±¶ø½øÈë´íÎó»Ö¸´µÄÃüÁî£¬¼´ËüÓ¦µ±ÉèÖÃÁËSCSI_EH_CANCEL_CMD±êÖ¾ */
+		/* è¦æ”¾å¼ƒçš„å‘½ä»¤åº”å½“æ˜¯å› è¶…æ—¶è€Œè¿›å…¥é”™è¯¯æ¢å¤çš„å‘½ä»¤ï¼Œå³å®ƒåº”å½“è®¾ç½®äº†SCSI_EH_CANCEL_CMDæ ‡å¿— */
 		if (!scsi_eh_eflags_chk(scmd, SCSI_EH_CANCEL_CMD))
 			continue;
 		SCSI_LOG_ERROR_RECOVERY(3, printk("%s: aborting cmd:"
 						  "0x%p\n", current->comm,
 						  scmd));
-		/* ÇëÇóÖ÷»úÊÊÅäÆ÷·ÅÆúÒ»¸öÕýÔÚÖ´ÐÐµÄÃüÁî¡£µ÷ÓÃÇý¶¯µÄeh_abort_hander»Øµ÷ */
+		/* è¯·æ±‚ä¸»æœºé€‚é…å™¨æ”¾å¼ƒä¸€ä¸ªæ­£åœ¨æ‰§è¡Œçš„å‘½ä»¤ã€‚è°ƒç”¨é©±åŠ¨çš„eh_abort_handerå›žè°ƒ */
 		rtn = scsi_try_to_abort_cmd(scmd);
-		if (rtn == SUCCESS) {/* ³É¹¦·ÅÆúÃüÁî */
+		if (rtn == SUCCESS) {/* æˆåŠŸæ”¾å¼ƒå‘½ä»¤ */
 			scsi_eh_eflags_clr(scmd,  SCSI_EH_CANCEL_CMD);
-			if (!scsi_device_online(scmd->device) ||/* Éè±¸ÒÑ¾­ÀëÏß */
-			    !scsi_eh_tur(scmd)) {/* ·¢ËÍÃüÁîºóÒÑ¾­¾ÍÐ÷ */
+			if (!scsi_device_online(scmd->device) ||/* è®¾å¤‡å·²ç»ç¦»çº¿ */
+			    !scsi_eh_tur(scmd)) {/* å‘é€å‘½ä»¤åŽå·²ç»å°±ç»ª */
 				scsi_eh_finish_cmd(scmd, done_q);
 			}
 				
@@ -1233,14 +1233,14 @@ static int scsi_eh_host_reset(struct list_head *work_q,
  * @done_q:	list_head for processed commands.
  *
  **/
-/* SCSIÉè±¸ÎÞ·¨»Ö¸´£¬µ÷ÓÃ´Ëº¯ÊýÊ¹ÆäÀëÏß */
+/* SCSIè®¾å¤‡æ— æ³•æ¢å¤ï¼Œè°ƒç”¨æ­¤å‡½æ•°ä½¿å…¶ç¦»çº¿ */
 static void scsi_eh_offline_sdevs(struct list_head *work_q,
 				  struct list_head *done_q)
 {
 	struct list_head *lh, *lh_sf;
 	struct scsi_cmnd *scmd;
 
-	/* ±éÀú´íÎó»Ö¸´ÃüÁîÁ´±í */
+	/* éåŽ†é”™è¯¯æ¢å¤å‘½ä»¤é“¾è¡¨ */
 	list_for_each_safe(lh, lh_sf, work_q) {
 		scmd = list_entry(lh, struct scsi_cmnd, eh_entry);
 		printk(KERN_INFO "scsi: Device offlined - not"
@@ -1250,7 +1250,7 @@ static void scsi_eh_offline_sdevs(struct list_head *work_q,
 				scmd->device->channel,
 				scmd->device->id,
 				scmd->device->lun);
-		/* ÉèÖÃËùÊôÉè±¸ÎªÀëÏß */
+		/* è®¾ç½®æ‰€å±žè®¾å¤‡ä¸ºç¦»çº¿ */
 		scsi_device_set_state(scmd->device, SDEV_OFFLINE);
 		if (scsi_eh_eflags_chk(scmd, SCSI_EH_CANCEL_CMD)) {
 			/*
@@ -1507,7 +1507,7 @@ static void scsi_eh_lock_door(struct scsi_device *sdev)
  *    When we entered the error handler, we blocked all further i/o to
  *    this device.  we need to 'reverse' this process.
  **/
-/* µ±´íÎó»Ö¸´Íê±Ïºó£¬ÖØÆôÖ÷»úÊÊÅäÆ÷µÄIO£¬»Ö¸´Õý³£²Ù×÷ */
+/* å½“é”™è¯¯æ¢å¤å®Œæ¯•åŽï¼Œé‡å¯ä¸»æœºé€‚é…å™¨çš„IOï¼Œæ¢å¤æ­£å¸¸æ“ä½œ */
 static void scsi_restart_operations(struct Scsi_Host *shost)
 {
 	struct scsi_device *sdev;
@@ -1517,9 +1517,9 @@ static void scsi_restart_operations(struct Scsi_Host *shost)
 	 * onto the head of the SCSI request queue for the device.  There
 	 * is no point trying to lock the door of an off-line device.
 	 */
-	shost_for_each_device(sdev, shost) {/* ±éÀúÖ÷»úÉè±¸ÉÏµÄËùÓÐSCSIÉè±¸ */
-		if (scsi_device_online(sdev) && sdev->locked)/* Éè±¸ÔÚÏß²¢ÇÒÉèÖÃÁËLOCK±êÖ¾ */
-			scsi_eh_lock_door(sdev);/* ×èÖ¹ÒÆ³ýÉè±¸½éÖÊ */
+	shost_for_each_device(sdev, shost) {/* éåŽ†ä¸»æœºè®¾å¤‡ä¸Šçš„æ‰€æœ‰SCSIè®¾å¤‡ */
+		if (scsi_device_online(sdev) && sdev->locked)/* è®¾å¤‡åœ¨çº¿å¹¶ä¸”è®¾ç½®äº†LOCKæ ‡å¿— */
+			scsi_eh_lock_door(sdev);/* é˜»æ­¢ç§»é™¤è®¾å¤‡ä»‹è´¨ */
 	}
 
 	/*
@@ -1530,10 +1530,10 @@ static void scsi_restart_operations(struct Scsi_Host *shost)
 	SCSI_LOG_ERROR_RECOVERY(3, printk("%s: waking up host to restart\n",
 					  __FUNCTION__));
 
-	/* Çå³ýSHOST_RECOVERY±êÖ¾£¬»Øµ½Õý³£×´Ì¬ */
+	/* æ¸…é™¤SHOST_RECOVERYæ ‡å¿—ï¼Œå›žåˆ°æ­£å¸¸çŠ¶æ€ */
 	clear_bit(SHOST_RECOVERY, &shost->shost_state);
 
-	/* »Ö¸´¹ý³ÌÖÐ£¬Èç¹ûÓÐ½ø³ÌÔÚµÈ´ý·¢ËÍÃüÁî£¬Ôò»áË¯Ãß£¬ÕâÀï»½ÐÑËüÃÇ */
+	/* æ¢å¤è¿‡ç¨‹ä¸­ï¼Œå¦‚æžœæœ‰è¿›ç¨‹åœ¨ç­‰å¾…å‘é€å‘½ä»¤ï¼Œåˆ™ä¼šç¡çœ ï¼Œè¿™é‡Œå”¤é†’å®ƒä»¬ */
 	wake_up(&shost->host_wait);
 
 	/*
@@ -1542,7 +1542,7 @@ static void scsi_restart_operations(struct Scsi_Host *shost)
 	 * now that error recovery is done, we will need to ensure that these
 	 * requests are started.
 	 */
-	/* ÔËÐÐËùÓÐÉè±¸ÉÏµÄ¶ÓÁÐ */
+	/* è¿è¡Œæ‰€æœ‰è®¾å¤‡ä¸Šçš„é˜Ÿåˆ— */
 	scsi_run_host_queues(shost);
 }
 
@@ -1553,18 +1553,18 @@ static void scsi_restart_operations(struct Scsi_Host *shost)
  *
  **/
 /**
- * ´íÎó»Ö¸´£¬µ±·ÅÆú¹ÊÕÏÃüÁîºó£¬¹ÊÕÏÃüÁîÁ´±íÖÐ»¹ÓÐ¹ÊÕÏÃüÁîÊ±µ÷ÓÃ
- * »Ö¸´Éè±¸¡£
+ * é”™è¯¯æ¢å¤ï¼Œå½“æ”¾å¼ƒæ•…éšœå‘½ä»¤åŽï¼Œæ•…éšœå‘½ä»¤é“¾è¡¨ä¸­è¿˜æœ‰æ•…éšœå‘½ä»¤æ—¶è°ƒç”¨
+ * æ¢å¤è®¾å¤‡ã€‚
  */
 static void scsi_eh_ready_devs(struct Scsi_Host *shost,
 			       struct list_head *work_q,
 			       struct list_head *done_q)
 {
-	if (!scsi_eh_stu(shost, work_q, done_q))/* ·¢ËÍÃüÁîÖØÆôÉè±¸ */
-		if (!scsi_eh_bus_device_reset(shost, work_q, done_q))/* ¸´Î»Âß¼­Éè±¸ */
-			if (!scsi_eh_bus_reset(shost, work_q, done_q))/* ¸´Î»×ÜÏßÍ¨µÀ */
-				if (!scsi_eh_host_reset(work_q, done_q))/* ¸´Î»Ö÷»úÊÊÅäÆ÷ */
-					scsi_eh_offline_sdevs(work_q, done_q);/* Ê¹SCSIÉè±¸ÀëÏß */
+	if (!scsi_eh_stu(shost, work_q, done_q))/* å‘é€å‘½ä»¤é‡å¯è®¾å¤‡ */
+		if (!scsi_eh_bus_device_reset(shost, work_q, done_q))/* å¤ä½é€»è¾‘è®¾å¤‡ */
+			if (!scsi_eh_bus_reset(shost, work_q, done_q))/* å¤ä½æ€»çº¿é€šé“ */
+				if (!scsi_eh_host_reset(work_q, done_q))/* å¤ä½ä¸»æœºé€‚é…å™¨ */
+					scsi_eh_offline_sdevs(work_q, done_q);/* ä½¿SCSIè®¾å¤‡ç¦»çº¿ */
 }
 
 /**
@@ -1577,26 +1577,26 @@ static void scsi_eh_flush_done_q(struct list_head *done_q)
 	struct list_head *lh, *lh_sf;
 	struct scsi_cmnd *scmd;
 
-	/* ±éÀúÒÑ¾­Íê³É´íÎó»Ö¸´µÄÁ´±í */
+	/* éåŽ†å·²ç»å®Œæˆé”™è¯¯æ¢å¤çš„é“¾è¡¨ */
 	list_for_each_safe(lh, lh_sf, done_q) {
 		scmd = list_entry(lh, struct scsi_cmnd, eh_entry);
-		list_del_init(lh);/* ½«ÃüÁî´ÓÁ´±íÖÐÉ¾³ý */
-		if (scsi_device_online(scmd->device) &&/* Éè±¸ÔÚÏß */
-		    !blk_noretry_request(scmd->request) &&/* ÐèÒªÖØÊÔÃüÁî */
-		    (++scmd->retries < scmd->allowed)) {/* ÖØÊÔ´ÎÊýÎ´´ïµ½ÉÏÏÞ */
+		list_del_init(lh);/* å°†å‘½ä»¤ä»Žé“¾è¡¨ä¸­åˆ é™¤ */
+		if (scsi_device_online(scmd->device) &&/* è®¾å¤‡åœ¨çº¿ */
+		    !blk_noretry_request(scmd->request) &&/* éœ€è¦é‡è¯•å‘½ä»¤ */
+		    (++scmd->retries < scmd->allowed)) {/* é‡è¯•æ¬¡æ•°æœªè¾¾åˆ°ä¸Šé™ */
 			SCSI_LOG_ERROR_RECOVERY(3, printk("%s: flush"
 							  " retry cmd: %p\n",
 							  current->comm,
 							  scmd));
-			/* ½«SCSIÃüÁîÖØÐÂÅÅÈë¶ÓÁÐ */
+			/* å°†SCSIå‘½ä»¤é‡æ–°æŽ’å…¥é˜Ÿåˆ— */
 				scsi_queue_insert(scmd, SCSI_MLQUEUE_EH_RETRY);
-		} else {/* ²»±ØÖØÊÔ */
+		} else {/* ä¸å¿…é‡è¯• */
 			if (!scmd->result)
 				scmd->result |= (DRIVER_TIMEOUT << 24);
 			SCSI_LOG_ERROR_RECOVERY(3, printk("%s: flush finish"
 							" cmd: %p\n",
 							current->comm, scmd));
-			/* ÏòÉÏ²ã·µ»Ø´íÎó */
+			/* å‘ä¸Šå±‚è¿”å›žé”™è¯¯ */
 			scsi_finish_command(scmd);
 		}
 	}
@@ -1625,25 +1625,25 @@ static void scsi_eh_flush_done_q(struct list_head *done_q)
  *    here, so when we restart the host after we return it should have an
  *    empty queue.
  **/
-/* SCSIÖÐ¼ä²ãÄ¬ÈÏµÄ´íÎó»Ö¸´º¯Êý */
+/* SCSIä¸­é—´å±‚é»˜è®¤çš„é”™è¯¯æ¢å¤å‡½æ•° */
 static void scsi_unjam_host(struct Scsi_Host *shost)
 {
 	unsigned long flags;
-	LIST_HEAD(eh_work_q);/* µÈ´ý½øÐÐ´íÎó»Ö¸´µÄÃüÁîÁ´±í */
-	LIST_HEAD(eh_done_q);/* ÒÑ¾­Íê³É´íÎó»Ö¸´µÄÃüÁîÁ´±í */
+	LIST_HEAD(eh_work_q);/* ç­‰å¾…è¿›è¡Œé”™è¯¯æ¢å¤çš„å‘½ä»¤é“¾è¡¨ */
+	LIST_HEAD(eh_done_q);/* å·²ç»å®Œæˆé”™è¯¯æ¢å¤çš„å‘½ä»¤é“¾è¡¨ */
 
 	spin_lock_irqsave(shost->host_lock, flags);
-	/* ½«ËùÓÐµÄ´íÎóÃüÁîÒÆµ½ÁÙÊ±Á´±íÖÐ */
+	/* å°†æ‰€æœ‰çš„é”™è¯¯å‘½ä»¤ç§»åˆ°ä¸´æ—¶é“¾è¡¨ä¸­ */
 	list_splice_init(&shost->eh_cmd_q, &eh_work_q);
 	spin_unlock_irqrestore(shost->host_lock, flags);
 
 	SCSI_LOG_ERROR_RECOVERY(1, scsi_eh_prt_fail_stats(shost, &eh_work_q));
 
-	if (!scsi_eh_get_sense(&eh_work_q, &eh_done_q))/* ·¢ËÍÓÃÓÚ´íÎó»Ö¸´µÄSCSIÃüÁî */
-		if (!scsi_eh_abort_cmds(&eh_work_q, &eh_done_q))/* ·ÅÆú¹ÊÕÏµÄÃüÁî */
+	if (!scsi_eh_get_sense(&eh_work_q, &eh_done_q))/* å‘é€ç”¨äºŽé”™è¯¯æ¢å¤çš„SCSIå‘½ä»¤ */
+		if (!scsi_eh_abort_cmds(&eh_work_q, &eh_done_q))/* æ”¾å¼ƒæ•…éšœçš„å‘½ä»¤ */
 			scsi_eh_ready_devs(shost, &eh_work_q, &eh_done_q);
 
-	/* ÒªÃ´ÖØÊÔ¹ÊÕÏSCSIÃüÁî£¬ÒªÃ´ÏòÉÏ²ã±¨¸æÊ§°Ü */
+	/* è¦ä¹ˆé‡è¯•æ•…éšœSCSIå‘½ä»¤ï¼Œè¦ä¹ˆå‘ä¸Šå±‚æŠ¥å‘Šå¤±è´¥ */
 	scsi_eh_flush_done_q(&eh_done_q);
 }
 
@@ -1658,7 +1658,7 @@ static void scsi_unjam_host(struct Scsi_Host *shost)
  *    event (i.e. failure).  When this takes place, we have the job of
  *    trying to unjam the bus and restarting things.
  **/
-/* SCSI´íÎó»Ö¸´Ïß³Ì */
+/* SCSIé”™è¯¯æ¢å¤çº¿ç¨‹ */
 int scsi_error_handler(void *data)
 {
 	struct Scsi_Host *shost = (struct Scsi_Host *) data;
@@ -1682,7 +1682,7 @@ int scsi_error_handler(void *data)
 	SCSI_LOG_ERROR_RECOVERY(3, printk("Wake up parent of"
 					  " scsi_eh_%d\n",shost->host_no));
 
-	/* Í¨ÖªÖ÷»úÊÊÅäÆ÷Çý¶¯£¬Ïß³ÌÒÑ¾­Æô¶¯£¬¿ÉÒÔ½øÐÐÏÂÒ»²½´¦ÀíÁË */
+	/* é€šçŸ¥ä¸»æœºé€‚é…å™¨é©±åŠ¨ï¼Œçº¿ç¨‹å·²ç»å¯åŠ¨ï¼Œå¯ä»¥è¿›è¡Œä¸‹ä¸€æ­¥å¤„ç†äº† */
 	complete(shost->eh_notify);
 
 	while (1) {
@@ -1719,10 +1719,10 @@ int scsi_error_handler(void *data)
 		 * what we need to do to get it up and online again (if we can).
 		 * If we fail, we end up taking the thing offline.
 		 */
-		if (shost->hostt->eh_strategy_handler) /* Ö÷»úÊÊÅäÆ÷¶¨ÒåÁË´íÎó»Ö¸´´¦Àí»Øµ÷ */
+		if (shost->hostt->eh_strategy_handler) /* ä¸»æœºé€‚é…å™¨å®šä¹‰äº†é”™è¯¯æ¢å¤å¤„ç†å›žè°ƒ */
 			rtn = shost->hostt->eh_strategy_handler(shost);
 		else
-			scsi_unjam_host(shost);/* Ä¬ÈÏµÄ´íÎó»Ö¸´º¯Êý */
+			scsi_unjam_host(shost);/* é»˜è®¤çš„é”™è¯¯æ¢å¤å‡½æ•° */
 
 		shost->eh_active = 0;
 

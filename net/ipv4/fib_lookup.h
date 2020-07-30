@@ -6,36 +6,36 @@
 #include <net/ip_fib.h>
 
 /**
- * ����ͬһĿ�����ε�����TOS�Ȳ�����ͬ��·�ɱ�����ͨ��fib_aliasʵ�������ֵġ�
+ * 到达同一目的网段但诸如TOS等参数不同的路由表项是通过fib_alias实例来区分的。
  */
 struct fib_alias {
 	/**
-	 * ����ͬһ��fib_node�ṹ�����������fib_aliasʵ��������һ��
+	 * 将与同一个fib_node结构相关联的所有fib_alias实例链接在一起。
 	 */
 	struct list_head	fa_list;
 	/**
-	 * ��ָ��ָ��һ��fib_infoʵ������ʵ���洢����δ������·����ƥ�䱨�ĵ���Ϣ��
+	 * 该指针指向一个fib_info实例，该实例存储着如何处理与该路由相匹配报文的信息。
 	 */
 	struct fib_info		*fa_info;
 	/**
-	 * ·�ɵķ������ͣ�TOS������λ�ֶΡ�
-	 * ��ֵΪ��ʱ��ʾ��û������TOS��������·�ɲ���ʱ�κ�ֵ������ƥ�䡣
+	 * 路由的服务类型（TOS）比特位字段。
+	 * 该值为零时表示还没有配置TOS，所以在路由查找时任何值都可以匹配。
 	 */
 	u8			fa_tos;
 	/**
-	 * ·�����͡�
+	 * 路由类型。
 	 */
 	u8			fa_type;
 	/**
-	 * ·�ɵ�scope��IPv4·�ɴ�����ʹ�õ���Ҫscope��
-	 *		RT_SCOPE_NOWHERE:		�Ƿ�scope���������溬����·���ͨ���κεط���������Ͼ���ζ��û�е���Ŀ�ĵص�·�ɡ�
-	 *		RT_SCOPE_HOST:			������Χ�ڵ�·�ɡ�scopeΪRT_SCOPE_HOST��·��������ӣ�Ϊ���ؽӿ�����IP��ַʱ�Զ�������·�ɱ��
-	 *		RT_SCOPE_LINK:			Ϊ���ؽӿ����õ�ַʱ��������Ŀ�ĵ�Ϊ���������ַ�����������붨�壩�������㲥��ַ��·�ɱ����scope����RT_SCOPE_LINK��
-	 *		RT_SCOPE_UNIVERSE:		��scope���������е�ͨ��Զ�̷�ֱ��Ŀ�ĵص�·�ɱ��Ҳ������Ҫһ����һ�����ص�·�����
+	 * 路由的scope。IPv4路由代码中使用的主要scope：
+	 *		RT_SCOPE_NOWHERE:		非法scope。它的字面含义是路由项不通往任何地方，这基本上就意味着没有到达目的地的路由。
+	 *		RT_SCOPE_HOST:			本机范围内的路由。scope为RT_SCOPE_HOST的路由项的例子：为本地接口配置IP地址时自动创建的路由表项。
+	 *		RT_SCOPE_LINK:			为本地接口配置地址时，派生的目的地为本地网络地址（由网络掩码定义）和子网广播地址的路由表项的scope就是RT_SCOPE_LINK。
+	 *		RT_SCOPE_UNIVERSE:		该scope被用于所有的通往远程非直连目的地的路由表项（也就是需要一个下一跳网关的路由项）。
 	 */
 	u8			fa_scope;
 	/**
-	 * һЩ��־�ı���λͼ��ֻʹ����һ����־:FA_S_ACCESSED��
+	 * 一些标志的比特位图。只使用了一个标志:FA_S_ACCESSED。
 	 */
 	u8			fa_state;
 };

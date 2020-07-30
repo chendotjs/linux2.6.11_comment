@@ -341,7 +341,7 @@ setup_enternow_pci(struct IsdnCard *card)
 		cs->hw.njet.isac = cs->hw.njet.base + 0xC0; // Fenster zum AMD
 
 		/* Reset an */
-		cs->hw.njet.ctrl_reg = 0x07;  // geändert von 0xff
+		cs->hw.njet.ctrl_reg = 0x07;  // gendert von 0xff
 		OutByte(cs->hw.njet.base + NETJET_CTRL, cs->hw.njet.ctrl_reg);
 		/* 20 ms Pause */
 		mdelay(20);

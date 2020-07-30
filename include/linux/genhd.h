@@ -75,28 +75,28 @@ struct partition {
 } __attribute__((packed));
 
 /**
- * ±íÊ¾´ÅÅÌÖÐµÄ·ÖÇø¡£
+ * è¡¨ç¤ºç£ç›˜ä¸­çš„åˆ†åŒºã€‚
  */
 struct hd_struct {
 	/**
-	 * ·ÖÇøµÄÆðÊ¼ÉÈÇø¡£
+	 * åˆ†åŒºçš„èµ·å§‹æ‰‡åŒºã€‚
 	 */
 	sector_t start_sect;
 	/**
-	 * ·ÖÇøµÄÉÈÇøÊý¡£
+	 * åˆ†åŒºçš„æ‰‡åŒºæ•°ã€‚
 	 */
 	sector_t nr_sects;
 	/**
-	 * ÄÚÇ¶µÄkobject
+	 * å†…åµŒçš„kobject
 	 */
 	struct kobject kobj;
 	/**
-	 * ¶Ô·ÖÇø·¢³öµÄ¶Á²Ù×÷´ÎÊý¡¢¶ÁÈ¡µÄÉÈÇøÊý¡¢Ð´²Ù×÷´ÎÊý¡¢Ð´½ø·ÖÇøµÄÉÈÇøÊý¡£
+	 * å¯¹åˆ†åŒºå‘å‡ºçš„è¯»æ“ä½œæ¬¡æ•°ã€è¯»å–çš„æ‰‡åŒºæ•°ã€å†™æ“ä½œæ¬¡æ•°ã€å†™è¿›åˆ†åŒºçš„æ‰‡åŒºæ•°ã€‚
 	 */
 	unsigned reads, read_sectors, writes, write_sectors;
 	/**
-	 * policy:Èç¹û·ÖÇøÖ»¶Á£¬ÔòÎª1£¬·ñÔòÎª0.
-	 * partno:´ÅÅÌÖÐ·ÖÇøµÄÏà¶ÔË÷Òý¡£
+	 * policy:å¦‚æžœåˆ†åŒºåªè¯»ï¼Œåˆ™ä¸º1ï¼Œå¦åˆ™ä¸º0.
+	 * partno:ç£ç›˜ä¸­åˆ†åŒºçš„ç›¸å¯¹ç´¢å¼•ã€‚
 	 */
 	int policy, partno;
 };
@@ -117,62 +117,62 @@ struct disk_stats {
 };
 
 /**
- * ±íÊ¾Ò»¸ö¶ÀÁ¢µÄ´ÅÅÌÉè±¸¡£Ò²ÓÃÓÚ±íÊ¾Ò»¸ö·ÖÇø¡£
+ * è¡¨ç¤ºä¸€ä¸ªç‹¬ç«‹çš„ç£ç›˜è®¾å¤‡ã€‚ä¹Ÿç”¨äºŽè¡¨ç¤ºä¸€ä¸ªåˆ†åŒºã€‚
  */
 struct gendisk {
 	/**
-	 * ÕâÐ©×Ö¶ÎÓÃÓÚÃèÊöÉè±¸ºÅ¡£Ò»¸öÇý¶¯Æ÷ÖÁÉÙÊ¹ÓÃÒ»¸ö´ÎÉè±¸ºÅ¡£
-	 * Èç¹ûÇý¶¯Æ÷¿É±»·ÖÇø£¬½«ÎªÃ¿¸ö¿ÉÄÜµÄ·ÖÇø¶¼·ÖÅäÒ»¸ö´ÎÉè±¸ºÅ¡£
-	 * minorsÍ¨³£È¡ÖµÎª16£¬ÕâÑùÒ»¸ö´ÅÅÌ¿ÉÒÔ°üº¬15¸ö·ÖÇø¡£Ä³Ð©Çý¶¯³ÌÐòÔÊÐí¶à´ï64¸ö·ÖÇø¡£
+	 * è¿™äº›å­—æ®µç”¨äºŽæè¿°è®¾å¤‡å·ã€‚ä¸€ä¸ªé©±åŠ¨å™¨è‡³å°‘ä½¿ç”¨ä¸€ä¸ªæ¬¡è®¾å¤‡å·ã€‚
+	 * å¦‚æžœé©±åŠ¨å™¨å¯è¢«åˆ†åŒºï¼Œå°†ä¸ºæ¯ä¸ªå¯èƒ½çš„åˆ†åŒºéƒ½åˆ†é…ä¸€ä¸ªæ¬¡è®¾å¤‡å·ã€‚
+	 * minorsé€šå¸¸å–å€¼ä¸º16ï¼Œè¿™æ ·ä¸€ä¸ªç£ç›˜å¯ä»¥åŒ…å«15ä¸ªåˆ†åŒºã€‚æŸäº›é©±åŠ¨ç¨‹åºå…è®¸å¤šè¾¾64ä¸ªåˆ†åŒºã€‚
 	 */
 	int major;			/* major number of driver */
-	/* µÚÒ»¸ö´ÎÉè±¸ºÅ */
+	/* ç¬¬ä¸€ä¸ªæ¬¡è®¾å¤‡å· */
 	int first_minor;
-	/* ´ÎÉè±¸ºÅÊýÄ¿ */
+	/* æ¬¡è®¾å¤‡å·æ•°ç›® */
 	int minors;                     /* maximum number of minors, =1 for
                                          * disks that can't be partitioned. */
 	/**
-	 * ´ÅÅÌÉè±¸µÄÃû×Ö£¬½«ÏÔÊ¾ÔÚsysfsÖÐ¡£
+	 * ç£ç›˜è®¾å¤‡çš„åå­—ï¼Œå°†æ˜¾ç¤ºåœ¨sysfsä¸­ã€‚
 	 */
 	char disk_name[32];		/* name of major driver */
-	/* ´ÅÅÌ°üº¬µÄ·ÖÇø */
+	/* ç£ç›˜åŒ…å«çš„åˆ†åŒº */
 	struct hd_struct **part;	/* [indexed by minor] */
 	/**
-	 * ´ÅÅÌ²Ù×÷»Øµ÷º¯Êý¡£
+	 * ç£ç›˜æ“ä½œå›žè°ƒå‡½æ•°ã€‚
 	 */
 	struct block_device_operations *fops;
 	/**
-	 * ÄÚºËÊ¹ÓÃ¸Ã½á¹¹ÎªÉè±¸¹ÜÀíIOÇëÇó¡£
+	 * å†…æ ¸ä½¿ç”¨è¯¥ç»“æž„ä¸ºè®¾å¤‡ç®¡ç†IOè¯·æ±‚ã€‚
 	 */
 	struct request_queue *queue;
 	/**
-	 * ¿éÉè±¸Çý¶¯³ÌÐò¿ÉÄÜÊ¹ÓÃ¸Ã³ÉÔ±±£´æÖ¸ÏòÆäÄÚ²¿Êý¾ÝµÄÖ¸Õë¡£
+	 * å—è®¾å¤‡é©±åŠ¨ç¨‹åºå¯èƒ½ä½¿ç”¨è¯¥æˆå‘˜ä¿å­˜æŒ‡å‘å…¶å†…éƒ¨æ•°æ®çš„æŒ‡é’ˆã€‚
 	 */
 	void *private_data;
 	/**
-	 * ÒÔ512×Ö½ÚÎªÒ»¸öÉÈÇøÊ±£¬¸ÃÇý¶¯Æ÷¿É°üº¬µÄÉÈÇøÊý¡£
-	 * ¿ÉÒÔÊÇ64Î»³¤¶È£¬Çý¶¯³ÌÐò²»ÄÜÖ±½ÓÉèÖÃ¸Ã³ÉÔ±£¬¶øÒª½«ÉÈÇøÊý´«µÝ¸øset_capacity¡£
+	 * ä»¥512å­—èŠ‚ä¸ºä¸€ä¸ªæ‰‡åŒºæ—¶ï¼Œè¯¥é©±åŠ¨å™¨å¯åŒ…å«çš„æ‰‡åŒºæ•°ã€‚
+	 * å¯ä»¥æ˜¯64ä½é•¿åº¦ï¼Œé©±åŠ¨ç¨‹åºä¸èƒ½ç›´æŽ¥è®¾ç½®è¯¥æˆå‘˜ï¼Œè€Œè¦å°†æ‰‡åŒºæ•°ä¼ é€’ç»™set_capacityã€‚
 	 */
 	sector_t capacity;
 
 	/**
-	 * ÓÃÀ´ÃèÊöÇý¶¯Æ÷×´Ì¬µÄ±êÖ¾(ºÜÉÙÊ¹ÓÃ)¡£
-	 * Èç¹ûÓÃ»§Éè±¸°üº¬ÁË¿ÉÒÆ¶¯½éÖÊ£¬½«ÉèÖÃGENHD_FL_REMOVABLE¡£
-	 * CD£­ROMÉè±¸±»ÉèÖÃÎªGENHD_FL_CD¡£
-	 * Èç¹û²»ÏëÔÚprocÖÐÏÔÊ¾·ÖÇøÐÅÏ¢£¬Ôò¿ÉÒÔÉèÖÃGENHD_FL_SUPPRESS_PARTITION_INFO¡£
+	 * ç”¨æ¥æè¿°é©±åŠ¨å™¨çŠ¶æ€çš„æ ‡å¿—(å¾ˆå°‘ä½¿ç”¨)ã€‚
+	 * å¦‚æžœç”¨æˆ·è®¾å¤‡åŒ…å«äº†å¯ç§»åŠ¨ä»‹è´¨ï¼Œå°†è®¾ç½®GENHD_FL_REMOVABLEã€‚
+	 * CDï¼ROMè®¾å¤‡è¢«è®¾ç½®ä¸ºGENHD_FL_CDã€‚
+	 * å¦‚æžœä¸æƒ³åœ¨procä¸­æ˜¾ç¤ºåˆ†åŒºä¿¡æ¯ï¼Œåˆ™å¯ä»¥è®¾ç½®GENHD_FL_SUPPRESS_PARTITION_INFOã€‚
 	 */
 	int flags;
 	char devfs_name[64];		/* devfs crap */
 	int number;			/* more of the same */
-	/* ¶ÔÓÚSCSI´ÅÅÌ£¬Ö¸ÏòµÄÊÇ¶ÔÓ¦SCSIÉè±¸ÃèÊö·ûµÄÄÚÇ¶Í¨ÓÃÉè±¸¡£ */
+	/* å¯¹äºŽSCSIç£ç›˜ï¼ŒæŒ‡å‘çš„æ˜¯å¯¹åº”SCSIè®¾å¤‡æè¿°ç¬¦çš„å†…åµŒé€šç”¨è®¾å¤‡ã€‚ */
 	struct device *driverfs_dev;
 	struct kobject kobj;
 
-	/* °ïÖúÄÚºËÉú³ÉËæ»úÊý */
+	/* å¸®åŠ©å†…æ ¸ç”Ÿæˆéšæœºæ•° */
 	struct timer_rand_state *random;
 	int policy;
 
-	/* Ð´Èë´ÅÅÌµÄÉÈÇø¼ÆÊýÆ÷£¬½öÓÃÓÚRAID */
+	/* å†™å…¥ç£ç›˜çš„æ‰‡åŒºè®¡æ•°å™¨ï¼Œä»…ç”¨äºŽRAID */
 	atomic_t sync_io;		/* RAID */
 	unsigned long stamp, stamp_idle;
 	int in_flight;

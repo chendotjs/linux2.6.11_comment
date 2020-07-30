@@ -519,7 +519,7 @@ void scsi_log_completion(struct scsi_cmnd *cmd, int disposition)
  *
  * Notes:
  */
-/* ½«SCSIÃüÁîÃèÊö·û·Ö¸øµÍ²ãÇý¶¯ */
+/* å°†SCSIå‘½ä»¤æè¿°ç¬¦åˆ†ç»™ä½Žå±‚é©±åŠ¨ */
 int scsi_dispatch_cmd(struct scsi_cmnd *cmd)
 {
 	struct Scsi_Host *host = cmd->device->host;
@@ -528,11 +528,11 @@ int scsi_dispatch_cmd(struct scsi_cmnd *cmd)
 	int rtn = 0;
 
 	/* check if the device is still usable */
-	if (unlikely(cmd->device->sdev_state == SDEV_DEL)) {/* Éè±¸ÊÇ·ñ¿ÉÓÃ */
+	if (unlikely(cmd->device->sdev_state == SDEV_DEL)) {/* è®¾å¤‡æ˜¯å¦å¯ç”¨ */
 		/* in SDEV_DEL we error all commands. DID_NO_CONNECT
 		 * returns an immediate error upwards, and signals
 		 * that the device is no longer present */
-		/* ·µ»Ø´íÎó²¢Í¨ÖªÉÏ²ã½«Æä½áÊø */
+		/* è¿”å›žé”™è¯¯å¹¶é€šçŸ¥ä¸Šå±‚å°†å…¶ç»“æŸ */
 		cmd->result = DID_NO_CONNECT << 16;
 		scsi_done(cmd);
 		/* return 0 (because the command has been processed) */
@@ -540,14 +540,14 @@ int scsi_dispatch_cmd(struct scsi_cmnd *cmd)
 	}
 
 	/* Check to see if the scsi lld put this device into state SDEV_BLOCK. */
-	if (unlikely(cmd->device->sdev_state == SDEV_BLOCK)) {/* Çý¶¯ÒÑ¾­×èÈûÁËÉè±¸ */
+	if (unlikely(cmd->device->sdev_state == SDEV_BLOCK)) {/* é©±åŠ¨å·²ç»é˜»å¡žäº†è®¾å¤‡ */
 		/* 
 		 * in SDEV_BLOCK, the command is just put back on the device
 		 * queue.  The suspend state has already blocked the queue so
 		 * future requests should not occur until the device 
 		 * transitions out of the suspend state.
 		 */
-		scsi_queue_insert(cmd, SCSI_MLQUEUE_DEVICE_BUSY);/* ½«ÃüÁî·Å»ØÉè±¸¶ÓÁÐ */
+		scsi_queue_insert(cmd, SCSI_MLQUEUE_DEVICE_BUSY);/* å°†å‘½ä»¤æ”¾å›žè®¾å¤‡é˜Ÿåˆ— */
 
 		SCSI_LOG_MLQUEUE(3, printk("queuecommand : device blocked \n"));
 
@@ -560,7 +560,7 @@ int scsi_dispatch_cmd(struct scsi_cmnd *cmd)
 
 	/* Assign a unique nonzero serial_number. */
 	/* XXX(hch): this is racy */
-	if (++serial_number == 0)/* ¼ÆËã¸ÃÃüÁîµÄ±àºÅ */
+	if (++serial_number == 0)/* è®¡ç®—è¯¥å‘½ä»¤çš„ç¼–å· */
 		serial_number = 1;
 	cmd->serial_number = serial_number;
 	cmd->pid = scsi_pid++;
@@ -568,7 +568,7 @@ int scsi_dispatch_cmd(struct scsi_cmnd *cmd)
 	/* 
 	 * If SCSI-2 or lower, store the LUN value in cmnd.
 	 */
-	if (cmd->device->scsi_level <= SCSI_2) {/* ¶ÔÓÚSCSI-2¼°ÒÔÏÂµÄÉè±¸£¬¼ÆËãLUNÖµ */
+	if (cmd->device->scsi_level <= SCSI_2) {/* å¯¹äºŽSCSI-2åŠä»¥ä¸‹çš„è®¾å¤‡ï¼Œè®¡ç®—LUNå€¼ */
 		cmd->cmnd[1] = (cmd->cmnd[1] & 0x1f) |
 			       (cmd->device->lun << 5 & 0xe0);
 	}
@@ -579,7 +579,7 @@ int scsi_dispatch_cmd(struct scsi_cmnd *cmd)
 	 */
 	timeout = host->last_reset + MIN_RESET_DELAY;
 
-	if (host->resetting && time_before(jiffies, timeout)) {/* Èç¹ûÖ÷»ú¸´Î»ºó£¬Ã»ÓÐ³¬¹ý2ÃëµÄÊ±¼ä */
+	if (host->resetting && time_before(jiffies, timeout)) {/* å¦‚æžœä¸»æœºå¤ä½åŽï¼Œæ²¡æœ‰è¶…è¿‡2ç§’çš„æ—¶é—´ */
 		int ticks_remaining = timeout - jiffies;
 		/*
 		 * NOTE: This may be executed from within an interrupt
@@ -590,14 +590,14 @@ int scsi_dispatch_cmd(struct scsi_cmnd *cmd)
 		 * interrupt handler (assuming there is one irq-level per
 		 * host).
 		 */
-		while (--ticks_remaining >= 0)/* ÕâÀïÑÓ³ÙÊ±¼äºó£¬Çå³ý±êÖ¾ */
+		while (--ticks_remaining >= 0)/* è¿™é‡Œå»¶è¿Ÿæ—¶é—´åŽï¼Œæ¸…é™¤æ ‡å¿— */
 			mdelay(1 + 999 / HZ);
 		host->resetting = 0;
 	}
 
 	scsi_add_timer(cmd, cmd->timeout_per_command, scsi_times_out);
 
-	scsi_log_send(cmd);/* ´òÓ¡ÈÕÖ¾ÐÅÏ¢ */
+	scsi_log_send(cmd);/* æ‰“å°æ—¥å¿—ä¿¡æ¯ */
 
 	/*
 	 * We will use a queued command if possible, otherwise we will
@@ -611,25 +611,25 @@ int scsi_dispatch_cmd(struct scsi_cmnd *cmd)
 	 * Before we queue this command, check if the command
 	 * length exceeds what the host adapter can handle.
 	 */
-	if (CDB_SIZE(cmd) > cmd->device->host->max_cmd_len) {/* ÃüÁî³¬¹ýÁËÖ÷»úÊÊÅäÆ÷¿ÉÒÔ´¦ÀíµÄ×î´ó³¤¶È */
+	if (CDB_SIZE(cmd) > cmd->device->host->max_cmd_len) {/* å‘½ä»¤è¶…è¿‡äº†ä¸»æœºé€‚é…å™¨å¯ä»¥å¤„ç†çš„æœ€å¤§é•¿åº¦ */
 		SCSI_LOG_MLQUEUE(3,
 				printk("queuecommand : command too long.\n"));
 		cmd->result = (DID_ABORT << 16);
 
-		scsi_done(cmd)/* ÉèÖÃ´íÎóÂëºóÍ¨ÖªÉÏ²ã */
+		scsi_done(cmd)/* è®¾ç½®é”™è¯¯ç åŽé€šçŸ¥ä¸Šå±‚ */
 		goto out;
 	}
 
-	spin_lock_irqsave(host->host_lock, flags);/* »ñÈ¡Ö÷»úËø */
-	if (unlikely(test_bit(SHOST_CANCEL, &host->shost_state))) {/* ÆäËûµØ·½ÒÑ¾­½«Ö÷»úÊÊÅäÆ÷ÉèÖÃÎªÉ¾³ý×´Ì¬ÁË */
+	spin_lock_irqsave(host->host_lock, flags);/* èŽ·å–ä¸»æœºé” */
+	if (unlikely(test_bit(SHOST_CANCEL, &host->shost_state))) {/* å…¶ä»–åœ°æ–¹å·²ç»å°†ä¸»æœºé€‚é…å™¨è®¾ç½®ä¸ºåˆ é™¤çŠ¶æ€äº† */
 		cmd->result = (DID_NO_CONNECT << 16);
-		scsi_done(cmd);/* Í¨ÖªÉÏ²ã */
+		scsi_done(cmd);/* é€šçŸ¥ä¸Šå±‚ */
 	} else {
-		/* µ÷ÓÃÖ÷»úÊÊÅäÆ÷µÄ»Øµ÷º¯Êý½«ÃüÁîÅÅÈëµÍ²ãÇý¶¯ */
+		/* è°ƒç”¨ä¸»æœºé€‚é…å™¨çš„å›žè°ƒå‡½æ•°å°†å‘½ä»¤æŽ’å…¥ä½Žå±‚é©±åŠ¨ */
 		rtn = host->hostt->queuecommand(cmd, scsi_done);
 	}
 	spin_unlock_irqrestore(host->host_lock, flags);
-	if (rtn) {/* Èç¹ûµ×²ãÇý¶¯Ê§°Ü£¬Ôò½«ÃüÁîÖØÐÂÅÅÈë¶ÓÁÐ */
+	if (rtn) {/* å¦‚æžœåº•å±‚é©±åŠ¨å¤±è´¥ï¼Œåˆ™å°†å‘½ä»¤é‡æ–°æŽ’å…¥é˜Ÿåˆ— */
 		scsi_queue_insert(cmd,
 				(rtn == SCSI_MLQUEUE_DEVICE_BUSY) ?
 				 rtn : SCSI_MLQUEUE_HOST_BUSY);
@@ -732,7 +732,7 @@ static DEFINE_PER_CPU(struct list_head, scsi_done_q);
  *
  * This function is interrupt context safe.
  */
-/* µ±ÖÐ¶Ï´¦Àíº¯Êý·¢ÏÖÄ³¸öSCSIÃüÁîÍê³ÉÊ±£¬µ÷ÓÃ´Ëº¯ÊýÍ¨Öª¿éÉè±¸²ã */
+/* å½“ä¸­æ–­å¤„ç†å‡½æ•°å‘çŽ°æŸä¸ªSCSIå‘½ä»¤å®Œæˆæ—¶ï¼Œè°ƒç”¨æ­¤å‡½æ•°é€šçŸ¥å—è®¾å¤‡å±‚ */
 void scsi_done(struct scsi_cmnd *cmd)
 {
 	/*
@@ -743,14 +743,14 @@ void scsi_done(struct scsi_cmnd *cmd)
 	 * that function could really be.  It might be on another processor,
 	 * etc, etc.
 	 */
-	if (!scsi_delete_timer(cmd))/* É¾³ý´íÎó¶¨Ê±Æ÷ */
+	if (!scsi_delete_timer(cmd))/* åˆ é™¤é”™è¯¯å®šæ—¶å™¨ */
 		return;
 	__scsi_done(cmd);
 }
 
 /* Private entry to scsi_done() to complete a command when the timer
  * isn't running --- used by scsi_times_out */
-/* µ±ÖÐ¶Ï´¦Àíº¯Êý·¢ÏÖÄ³¸öSCSIÃüÁîÍê³ÉÊ±£¬µ÷ÓÃ´Ëº¯ÊýÍ¨Öª¿éÉè±¸²ã */
+/* å½“ä¸­æ–­å¤„ç†å‡½æ•°å‘çŽ°æŸä¸ªSCSIå‘½ä»¤å®Œæˆæ—¶ï¼Œè°ƒç”¨æ­¤å‡½æ•°é€šçŸ¥å—è®¾å¤‡å±‚ */
 void __scsi_done(struct scsi_cmnd *cmd)
 {
 	unsigned long flags;
@@ -769,9 +769,9 @@ void __scsi_done(struct scsi_cmnd *cmd)
 	 * and need no spinlock.
 	 */
 	local_irq_save(flags);
-	/* ½«SCSIÃüÁîÌí¼Óµ½±¾CPUµÄÍê³É¶ÓÁÐÖÐ */
+	/* å°†SCSIå‘½ä»¤æ·»åŠ åˆ°æœ¬CPUçš„å®Œæˆé˜Ÿåˆ—ä¸­ */
 	list_add_tail(&cmd->eh_entry, &__get_cpu_var(scsi_done_q));
-	raise_softirq_irqoff(SCSI_SOFTIRQ);/* ´¥·¢ÈíÖÐ¶Ï */
+	raise_softirq_irqoff(SCSI_SOFTIRQ);/* è§¦å‘è½¯ä¸­æ–­ */
 	local_irq_restore(flags);
 }
 
@@ -789,32 +789,32 @@ static void scsi_softirq(struct softirq_action *h)
 	int disposition;
 	LIST_HEAD(local_q);
 
-	/* ¹ØÖÐ¶ÏÇé¿öÏÂ½«Íê³É¶ÓÁÐÖÐµÄÊý¾ÝÒÆ¶¯µ½ÁÙÊ±Á´±íÖÐ */
+	/* å…³ä¸­æ–­æƒ…å†µä¸‹å°†å®Œæˆé˜Ÿåˆ—ä¸­çš„æ•°æ®ç§»åŠ¨åˆ°ä¸´æ—¶é“¾è¡¨ä¸­ */
 	local_irq_disable();
 	list_splice_init(&__get_cpu_var(scsi_done_q), &local_q);
 	local_irq_enable();
 
-	while (!list_empty(&local_q)) {/* ´¦ÀíÁÙÊ±Á´±íÖÐµÄËùÓÐÃüÁî */
+	while (!list_empty(&local_q)) {/* å¤„ç†ä¸´æ—¶é“¾è¡¨ä¸­çš„æ‰€æœ‰å‘½ä»¤ */
 		struct scsi_cmnd *cmd = list_entry(local_q.next,
 						   struct scsi_cmnd, eh_entry);
-		list_del_init(&cmd->eh_entry);/* Õª³ý¶ÓÍ·ÖÐµÄÃüÁî */
+		list_del_init(&cmd->eh_entry);/* æ‘˜é™¤é˜Ÿå¤´ä¸­çš„å‘½ä»¤ */
 
-		/* ¸ù¾ÝÃüÁîµÄ´¦Àí½á¹û£¬¾ö¶¨ÏÂÒ»²½µÄ´¦Àí·½Ê½ */
+		/* æ ¹æ®å‘½ä»¤çš„å¤„ç†ç»“æžœï¼Œå†³å®šä¸‹ä¸€æ­¥çš„å¤„ç†æ–¹å¼ */
 		disposition = scsi_decide_disposition(cmd);
-		scsi_log_completion(cmd, disposition);/* ¼ÇÂ¼µ÷ÊÔÈÕÖ¾ */
+		scsi_log_completion(cmd, disposition);/* è®°å½•è°ƒè¯•æ—¥å¿— */
 		switch (disposition) {
 		case SUCCESS:
-			scsi_finish_command(cmd);/* ½áÊøÃüÁî */
+			scsi_finish_command(cmd);/* ç»“æŸå‘½ä»¤ */
 			break;
 		case NEEDS_RETRY:
-			scsi_retry_command(cmd);/* Á¢¼´ÖØÊÔÃüÁî */
+			scsi_retry_command(cmd);/* ç«‹å³é‡è¯•å‘½ä»¤ */
 			break;
 		case ADD_TO_MLQUEUE:
-			scsi_queue_insert(cmd, SCSI_MLQUEUE_DEVICE_BUSY);/* ÑÓÊ±ÖØÊÔÃüÁî */
+			scsi_queue_insert(cmd, SCSI_MLQUEUE_DEVICE_BUSY);/* å»¶æ—¶é‡è¯•å‘½ä»¤ */
 			break;
 		default:
-			if (!scsi_eh_scmd_add(cmd, 0))/* ½øÈëÖ÷»ú´íÎó´¦ÀíÁ÷³Ì */
-				scsi_finish_command(cmd);/* ²»ÄÜ½øÐÐ´íÎó´¦Àí£¬Ç¿ÖÆ½áÊøÕâ¸öSCSIÃüÁî */
+			if (!scsi_eh_scmd_add(cmd, 0))/* è¿›å…¥ä¸»æœºé”™è¯¯å¤„ç†æµç¨‹ */
+				scsi_finish_command(cmd);/* ä¸èƒ½è¿›è¡Œé”™è¯¯å¤„ç†ï¼Œå¼ºåˆ¶ç»“æŸè¿™ä¸ªSCSIå‘½ä»¤ */
 		}
 	}
 }
@@ -852,14 +852,14 @@ int scsi_retry_command(struct scsi_cmnd *cmd)
  *              request, waking processes that are waiting on results,
  *              etc.
  */
-/* ²»¹ÜÃüÁîÊÇ·ñ³É¹¦Íê³É£¬±¾º¯Êý¶¼½áÊøÕâ¸öSCSIÃüÁî */
+/* ä¸ç®¡å‘½ä»¤æ˜¯å¦æˆåŠŸå®Œæˆï¼Œæœ¬å‡½æ•°éƒ½ç»“æŸè¿™ä¸ªSCSIå‘½ä»¤ */
 void scsi_finish_command(struct scsi_cmnd *cmd)
 {
 	struct scsi_device *sdev = cmd->device;
 	struct Scsi_Host *shost = sdev->host;
 	struct scsi_request *sreq;
 
-	/* µÝ¼õ´«¸øÖ÷»úÊÊÅäÆ÷¡¢Ä¿±ê½Úµã¡¢SCSIÉè±¸µÄÃüÁîÊý£¬Èç¹ûÐèÒª»¹»½ÐÑÖ÷»úÊÊÅäÆ÷µÄ´íÎó»Ö¸´Ïß³Ì */
+	/* é€’å‡ä¼ ç»™ä¸»æœºé€‚é…å™¨ã€ç›®æ ‡èŠ‚ç‚¹ã€SCSIè®¾å¤‡çš„å‘½ä»¤æ•°ï¼Œå¦‚æžœéœ€è¦è¿˜å”¤é†’ä¸»æœºé€‚é…å™¨çš„é”™è¯¯æ¢å¤çº¿ç¨‹ */
 	scsi_device_unbusy(sdev);
 
         /*
@@ -870,7 +870,7 @@ void scsi_finish_command(struct scsi_cmnd *cmd)
 	 *
 	 * XXX(hch): What about locking?
          */
-     /* ×èÈû¼ÆÊý²»Îª0£¬ÔòÉÏ²ã²»ÄÜ·¢ËÍÃüÁî¸øÇý¶¯¡£ÕâÀï½«ÆäÇå0£¬±íÊ¾SCSI²ã¿ÉÒÔÏÂ·¢ÃüÁîÁË */
+     /* é˜»å¡žè®¡æ•°ä¸ä¸º0ï¼Œåˆ™ä¸Šå±‚ä¸èƒ½å‘é€å‘½ä»¤ç»™é©±åŠ¨ã€‚è¿™é‡Œå°†å…¶æ¸…0ï¼Œè¡¨ç¤ºSCSIå±‚å¯ä»¥ä¸‹å‘å‘½ä»¤äº† */
         shost->host_blocked = 0;
         sdev->device_blocked = 0;
 
@@ -878,7 +878,7 @@ void scsi_finish_command(struct scsi_cmnd *cmd)
 	 * If we have valid sense information, then some kind of recovery
 	 * must have taken place.  Make a note of this.
 	 */
-	if (SCSI_SENSE_VALID(cmd))/* ÓÐÐ§µÄ¸Ð²âÐÅÏ¢£¬±íÊ¾Ä³Ð©»Ö¸´¹ý³ÌÕýÔÚ½øÐÐ£¬¼ÇÂ¼ÏÂÕâ¸ö±êÖ¾ */
+	if (SCSI_SENSE_VALID(cmd))/* æœ‰æ•ˆçš„æ„Ÿæµ‹ä¿¡æ¯ï¼Œè¡¨ç¤ºæŸäº›æ¢å¤è¿‡ç¨‹æ­£åœ¨è¿›è¡Œï¼Œè®°å½•ä¸‹è¿™ä¸ªæ ‡å¿— */
 		cmd->result |= (DRIVER_SENSE << 24);
 
 	SCSI_LOG_MLCOMPLETE(4, printk("Notifying upper driver of completion "
@@ -1258,32 +1258,32 @@ MODULE_LICENSE("GPL");
 module_param(scsi_logging_level, int, S_IRUGO|S_IWUSR);
 MODULE_PARM_DESC(scsi_logging_level, "a bit mask of logging levels");
 
-/* SCSI×ÓÏµÍ³³õÊ¼»¯ */
+/* SCSIå­ç³»ç»Ÿåˆå§‹åŒ– */
 static int __init init_scsi(void)
 {
 	int error, i;
 
-	/* ³õÊ¼»¯´æ´¢³Ø */
+	/* åˆå§‹åŒ–å­˜å‚¨æ±  */
 	error = scsi_init_queue();
 	if (error)
 		return error;
-	/* ³õÊ¼»¯procÏµÍ³ÖÐÓëSCSIÓÐ¹ØµÄÄ¿Â¼Ïî */
+	/* åˆå§‹åŒ–procç³»ç»Ÿä¸­ä¸ŽSCSIæœ‰å…³çš„ç›®å½•é¡¹ */
 	error = scsi_init_procfs();
 	if (error)
 		goto cleanup_queue;
-	/* ÉèÖÃSCSI¶¯Ì¬Éè±¸ÐÅÏ¢ÁÐ±í */
+	/* è®¾ç½®SCSIåŠ¨æ€è®¾å¤‡ä¿¡æ¯åˆ—è¡¨ */
 	error = scsi_init_devinfo();
 	if (error)
 		goto cleanup_procfs;
-	/* ×¢²áshost_classÀà */
+	/* æ³¨å†Œshost_classç±» */
 	error = scsi_init_hosts();
 	if (error)
 		goto cleanup_devlist;
-	/* ×¢²áSCSIÏµÍ³¿ØÖÆ±í */
+	/* æ³¨å†ŒSCSIç³»ç»ŸæŽ§åˆ¶è¡¨ */
 	error = scsi_init_sysctl();
 	if (error)
 		goto cleanup_hosts;
-	/* ×¢²áSCSI×ÜÏßÀàÐÍ¼°sdev_classÀà */
+	/* æ³¨å†ŒSCSIæ€»çº¿ç±»åž‹åŠsdev_classç±» */
 	error = scsi_sysfs_register();
 	if (error)
 		goto cleanup_sysctl;

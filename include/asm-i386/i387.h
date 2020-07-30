@@ -27,8 +27,8 @@ extern void restore_fpu( struct task_struct *tsk );
 
 extern void kernel_fpu_begin(void);
 /**
- * µ±ÄÚºËÌ¬Ê¹ÓÃÍêFPUºó£¬µ÷ÓÃ´Ëº¯Êı¡£±¾ÖÊÉÏ¾ÍÊÇ½«ÇÀÕ¼´ò¿ª¡£
- * ÔÚkernel_fpu_beginÖĞ£¬µ÷ÓÃÁË½ûÖ¹ÇÀÕ¼º¯Êı¡£ÔÚ´Ë»Ö¸´ÇÀÕ¼±êÖ¾¡£
+ * å½“å†…æ ¸æ€ä½¿ç”¨å®ŒFPUåï¼Œè°ƒç”¨æ­¤å‡½æ•°ã€‚æœ¬è´¨ä¸Šå°±æ˜¯å°†æŠ¢å æ‰“å¼€ã€‚
+ * åœ¨kernel_fpu_beginä¸­ï¼Œè°ƒç”¨äº†ç¦æ­¢æŠ¢å å‡½æ•°ã€‚åœ¨æ­¤æ¢å¤æŠ¢å æ ‡å¿—ã€‚
  */
 #define kernel_fpu_end() do { stts(); preempt_enable(); } while(0)
 
@@ -36,18 +36,18 @@ extern void kernel_fpu_begin(void);
  * These must be called with preempt disabled
  */
 /**
- * °ÑFPU¼Ä´æÆ÷µÄÄÚÈİ×ª´¢µ½prev½ø³ÌÃèÊö·ûÖĞ¡£È»ºóÖØĞÂ³õÊ¼»¯FPU.
+ * æŠŠFPUå¯„å­˜å™¨çš„å†…å®¹è½¬å‚¨åˆ°prevè¿›ç¨‹æè¿°ç¬¦ä¸­ã€‚ç„¶åé‡æ–°åˆå§‹åŒ–FPU.
  */
 static inline void __save_init_fpu( struct task_struct *tsk )
 {
 	/**
-	 * Èç¹ûCPUÊ¹ÓÃSSE¡¢SSE2À©Õ¹£¬Ôòµ÷ÓÃfxsave
-	 * Ëü³ıÁË±£´æFPUÍâ£¬²»±£´æSSE¡¢SSE2¼Ä´æÆ÷µÄÄÚÈİ¡£
+	 * å¦‚æœCPUä½¿ç”¨SSEã€SSE2æ‰©å±•ï¼Œåˆ™è°ƒç”¨fxsave
+	 * å®ƒé™¤äº†ä¿å­˜FPUå¤–ï¼Œä¸ä¿å­˜SSEã€SSE2å¯„å­˜å™¨çš„å†…å®¹ã€‚
 	 */
 	if ( cpu_has_fxsr ) {
 		asm volatile( "fxsave %0 ; fnclex"
 			      : "=m" (tsk->thread.i387.fxsave) );
-	} else {/* ·ñÔò£¬Ö»±£´æFPU¼Ä´æÆ÷ÄÚÈİ */
+	} else {/* å¦åˆ™ï¼Œåªä¿å­˜FPUå¯„å­˜å™¨å†…å®¹ */
 		asm volatile( "fnsave %0 ; fwait"
 			      : "=m" (tsk->thread.i387.fsave) );
 	}
@@ -55,12 +55,12 @@ static inline void __save_init_fpu( struct task_struct *tsk )
 }
 
 /**
- * ÔÚÈ·±£¹ØÇÀÕ¼µÄÇé¿öÏÂ£¬±£´æFPU¡¢MMX¡¢SSE¡¢SSE2Ïà¹ØÓ²¼ş¼Ä´æÆ÷ÉÏÏÂÎÄ¡£
+ * åœ¨ç¡®ä¿å…³æŠ¢å çš„æƒ…å†µä¸‹ï¼Œä¿å­˜FPUã€MMXã€SSEã€SSE2ç›¸å…³ç¡¬ä»¶å¯„å­˜å™¨ä¸Šä¸‹æ–‡ã€‚
  */
 #define __unlazy_fpu( tsk ) do { \
 	/**
-	 * Èç¹ûTS_USEDFPU±êÖ¾±»ÉèÖÃ£¬ËµÃ÷ÔÚ½ø³ÌµÄ±¾´ÎÖ´ĞĞÖĞ£¬Ê¹ÓÃÁËÏà¹ØµÄ¼Ä´æÆ÷¡£
-	 * µ÷ÓÃsave_init_fpu±£´æÏà¹ØÓ²¼şÉÏÏÂÎÄ¡£
+	 * å¦‚æœTS_USEDFPUæ ‡å¿—è¢«è®¾ç½®ï¼Œè¯´æ˜åœ¨è¿›ç¨‹çš„æœ¬æ¬¡æ‰§è¡Œä¸­ï¼Œä½¿ç”¨äº†ç›¸å…³çš„å¯„å­˜å™¨ã€‚
+	 * è°ƒç”¨save_init_fpuä¿å­˜ç›¸å…³ç¡¬ä»¶ä¸Šä¸‹æ–‡ã€‚
 	 */
 	if ((tsk)->thread_info->status & TS_USEDFPU) \
 		save_init_fpu( tsk ); \
@@ -80,21 +80,21 @@ do {								\
  * These disable preemption on their own and are safe
  */
 /**
- * ½«µ±Ç°½ø³ÌµÄFPU¡¢MMX¡¢XMM¼Ä´æÆ÷±£´æµ½thread.i387ÖĞ
+ * å°†å½“å‰è¿›ç¨‹çš„FPUã€MMXã€XMMå¯„å­˜å™¨ä¿å­˜åˆ°thread.i387ä¸­
  */
 static inline void save_init_fpu( struct task_struct *tsk )
 {
 	/**
-	 * ¼ÈÈ»ÊÇ×¼±¸±£´æÓ²¼şÉÏÏÂÎÄ£¬µ±È»²»ÄÜ±»ÇÀÕ¼£¬²»È»±£´æ»¹ÓĞÊ²Ã´ÒâÒåÄØ¡£
-	 * ËäÈ»ÔÚscheduleÖĞÒÑ¾­½ûÖ¹ÇÀÕ¼ÁË£¬²»¹ıÔÚÆäËûµØ·½»¹ÓĞµ÷ÓÃ±¾º¯ÊıµÄµØ·½¡£
+	 * æ—¢ç„¶æ˜¯å‡†å¤‡ä¿å­˜ç¡¬ä»¶ä¸Šä¸‹æ–‡ï¼Œå½“ç„¶ä¸èƒ½è¢«æŠ¢å ï¼Œä¸ç„¶ä¿å­˜è¿˜æœ‰ä»€ä¹ˆæ„ä¹‰å‘¢ã€‚
+	 * è™½ç„¶åœ¨scheduleä¸­å·²ç»ç¦æ­¢æŠ¢å äº†ï¼Œä¸è¿‡åœ¨å…¶ä»–åœ°æ–¹è¿˜æœ‰è°ƒç”¨æœ¬å‡½æ•°çš„åœ°æ–¹ã€‚
 	 */
 	preempt_disable();
 	/**
-	 * ÕæÕı½«Ó²¼şÉÏÏÂÎÄ±£´æÆğÀ´¡£
+	 * çœŸæ­£å°†ç¡¬ä»¶ä¸Šä¸‹æ–‡ä¿å­˜èµ·æ¥ã€‚
 	 */
 	__save_init_fpu(tsk);
 	/**
-	 * Ê¹ÓÃsettsÉèÖÃcroµÄTS±êÖ¾¡£
+	 * ä½¿ç”¨settsè®¾ç½®croçš„TSæ ‡å¿—ã€‚
 	 */
 	stts();
 	preempt_enable();

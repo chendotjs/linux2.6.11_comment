@@ -61,7 +61,7 @@ struct pci_dev;
 #define pci_dac_dma_supported(pci_dev, mask)	(1)
 
 /**
- * ½¨Á¢Ò»¸öDACÓ³Éä¡£²»ĞèÒªÊÍ·ÅDACÓ³Éä¡£
+ * å»ºç«‹ä¸€ä¸ªDACæ˜ å°„ã€‚ä¸éœ€è¦é‡Šæ”¾DACæ˜ å°„ã€‚
  */
 static inline dma64_addr_t
 pci_dac_page_to_dma(struct pci_dev *pdev, struct page *page, unsigned long offset, int direction)

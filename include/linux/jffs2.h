@@ -90,22 +90,22 @@ typedef struct {
 } __attribute__((packed)) jint16_t;
 
 /**
- * jffs2_raw_direntºÍjffs2_raw_inodeÊı¾İÊµÌåµÄ¡°Í·¡±
+ * jffs2_raw_direntå’Œjffs2_raw_inodeæ•°æ®å®ä½“çš„â€œå¤´â€
  */
 struct jffs2_unknown_node
 {
 	/* All start like this */
 	jint16_t magic;
 	/**
-	 * Êı¾İ½áµãµÄ¾ßÌåÀàĞÍJFFS_NODETYPE_DIRENT»òÕßJFFS2_NODETYPE_INODE
+	 * æ•°æ®ç»“ç‚¹çš„å…·ä½“ç±»å‹JFFS_NODETYPE_DIRENTæˆ–è€…JFFS2_NODETYPE_INODE
 	 */
 	jint16_t nodetype;
 	/**
-	 * ºó¼ÌÊı¾İµÄÕû¸öÊı¾İÊµÌåµÄ×Ü³¤¶È
+	 * åç»§æ•°æ®çš„æ•´ä¸ªæ•°æ®å®ä½“çš„æ€»é•¿åº¦
 	 */
 	jint32_t totlen; /* So we can skip over nodes we don't grok */
 	/**
-	 * Í·²¿ÖĞÆäËüÓòµÄCRCĞ£ÑéÖµ
+	 * å¤´éƒ¨ä¸­å…¶å®ƒåŸŸçš„CRCæ ¡éªŒå€¼
 	 */
 	jint32_t hdr_crc;
 } __attribute__((packed));

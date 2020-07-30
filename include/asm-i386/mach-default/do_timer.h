@@ -16,14 +16,14 @@
 static inline void do_timer_interrupt_hook(struct pt_regs *regs)
 {
 	/**
-	 * do_timerÔö¼Ójiffies_64µÄÖµ¡£ÒòÎª´ËÊ±ÒÑ¾­±£³ÖÁËxtime_lockËø
-	 * ËùÒÔ¿ÉÒÔÖ±½ÓÔö¼Ó¡£
-	 * ËüÍ¬Ê±µ÷ÓÃupdate_times¸üĞÂÏµÍ³ÈÕÆÚºÍÊ±¼ä¡£²¢¼ÆËãÏµÍ³¸ºÔØ¡£
+	 * do_timerå¢åŠ jiffies_64çš„å€¼ã€‚å› ä¸ºæ­¤æ—¶å·²ç»ä¿æŒäº†xtime_locké”
+	 * æ‰€ä»¥å¯ä»¥ç›´æ¥å¢åŠ ã€‚
+	 * å®ƒåŒæ—¶è°ƒç”¨update_timesæ›´æ–°ç³»ç»Ÿæ—¥æœŸå’Œæ—¶é—´ã€‚å¹¶è®¡ç®—ç³»ç»Ÿè´Ÿè½½ã€‚
 	 */
 	do_timer(regs);
 #ifndef CONFIG_SMP
 	/**
-	 * update_process_timesº¯ÊıÎª±¾µØCPUÖ´ĞĞ¼¸¸öÓë¶¨Ê±Ïà¹ØµÄ¼ÆÊı²Ù×÷¡£
+	 * update_process_timeså‡½æ•°ä¸ºæœ¬åœ°CPUæ‰§è¡Œå‡ ä¸ªä¸å®šæ—¶ç›¸å…³çš„è®¡æ•°æ“ä½œã€‚
 	 */
 	update_process_times(user_mode(regs));
 #endif
@@ -34,7 +34,7 @@ static inline void do_timer_interrupt_hook(struct pt_regs *regs)
  */
 #ifndef CONFIG_X86_LOCAL_APIC
 	/**
-	 * profile_tickÓëÄÚºË¼à¹ÜÏà¹Ø¡£
+	 * profile_tickä¸å†…æ ¸ç›‘ç®¡ç›¸å…³ã€‚
 	 */
 	profile_tick(CPU_PROFILING, regs);
 #else

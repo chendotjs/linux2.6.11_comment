@@ -28,12 +28,12 @@
 
 enum lw_bits {
 	/**
-	 * µ±Õâ¸ö±êÖ¾±»ÉèÖÃÊ±£¬linkwatch_event±»µ÷¶ÈÖ´ĞĞ£¬´Ë±êÖ¾ÓÉlinkwatch_event×Ô¼ºÇå³ı¡£
+	 * å½“è¿™ä¸ªæ ‡å¿—è¢«è®¾ç½®æ—¶ï¼Œlinkwatch_eventè¢«è°ƒåº¦æ‰§è¡Œï¼Œæ­¤æ ‡å¿—ç”±linkwatch_eventè‡ªå·±æ¸…é™¤ã€‚
 	 */
 	LW_RUNNING = 0,
 	/**
-	 * ÓÉÓÚlweventlist Í¨³£ÓĞ²»Ö¹Ò»¸öµÄÔªËØ£¬´úÂëÓÅ»¯¾²Ì¬·ÖÅäµÄ lw_event Êı¾İ½á¹¹²¢×ÜÊÇÓÃËü×÷ÎªµÚÒ»¸öÔªËØ¡£½öµ±ÄÚºËĞèÒªÃ÷ÁË²»Ö¹Ò»¸öµÄÎ´¾öÊÂ¼ş(ÊÂ¼şÔÚ²»Ö¹Ò»¸öÉè±¸)£¬ÎªËü·ÖÅä¶îÍâµÄlw_event½á¹¹£»·ñÔò£¬Ëü¼òµ¥µÄÖØÓÃÍ¬Ò»¸ö½á¹¹¡£
-	 * ´Ë±êÖ¾±íÊ¾µÚÒ»¸öÔªËØÊÇ·ñ¿ÉÓÃ¡£
+	 * ç”±äºlweventlist é€šå¸¸æœ‰ä¸æ­¢ä¸€ä¸ªçš„å…ƒç´ ï¼Œä»£ç ä¼˜åŒ–é™æ€åˆ†é…çš„ lw_event æ•°æ®ç»“æ„å¹¶æ€»æ˜¯ç”¨å®ƒä½œä¸ºç¬¬ä¸€ä¸ªå…ƒç´ ã€‚ä»…å½“å†…æ ¸éœ€è¦æ˜äº†ä¸æ­¢ä¸€ä¸ªçš„æœªå†³äº‹ä»¶(äº‹ä»¶åœ¨ä¸æ­¢ä¸€ä¸ªè®¾å¤‡)ï¼Œä¸ºå®ƒåˆ†é…é¢å¤–çš„lw_eventç»“æ„ï¼›å¦åˆ™ï¼Œå®ƒç®€å•çš„é‡ç”¨åŒä¸€ä¸ªç»“æ„ã€‚
+	 * æ­¤æ ‡å¿—è¡¨ç¤ºç¬¬ä¸€ä¸ªå…ƒç´ æ˜¯å¦å¯ç”¨ã€‚
 	 */
 	LW_SE_USED
 };
@@ -45,25 +45,25 @@ static void linkwatch_event(void *dummy);
 static DECLARE_WORK(linkwatch_work, linkwatch_event, NULL);
 
 /**
- * Á¬½Ó×´Ì¬¸Ä±äÊÂ¼şÁĞ±í¡£
+ * è¿æ¥çŠ¶æ€æ”¹å˜äº‹ä»¶åˆ—è¡¨ã€‚
  */
 static LIST_HEAD(lweventlist);
 /**
- * ±£»¤lweventlistÁ´±íµÄËø¡£
+ * ä¿æŠ¤lweventlisté“¾è¡¨çš„é”ã€‚
  */
 static DEFINE_SPINLOCK(lweventlist_lock);
 
 /**
- * ÍøÂçÉè±¸Á¬½Ó×´Ì¬¸Ä±äÊÂ¼ş¡£
- * lw_event½á¹¹²¢²»°üÀ¨ÈÎºÎÇø·ÖĞÅºÅ´«µİµÄ¼ì²âÓë¶ªÊ§µÄ²ÎÊı.
+ * ç½‘ç»œè®¾å¤‡è¿æ¥çŠ¶æ€æ”¹å˜äº‹ä»¶ã€‚
+ * lw_eventç»“æ„å¹¶ä¸åŒ…æ‹¬ä»»ä½•åŒºåˆ†ä¿¡å·ä¼ é€’çš„æ£€æµ‹ä¸ä¸¢å¤±çš„å‚æ•°.
  */
 struct lw_event {
 	/**
-	 * ½«½á¹¹Á¬½Óµ½Î´¾öÁ¬½Ó×´Ì¬¸Ä±äÊÂ¼şÈ«¾Ö¶ÓÁĞµÄ×Ö¶Îlweventlist
+	 * å°†ç»“æ„è¿æ¥åˆ°æœªå†³è¿æ¥çŠ¶æ€æ”¹å˜äº‹ä»¶å…¨å±€é˜Ÿåˆ—çš„å­—æ®µlweventlist
 	 */
 	struct list_head list;
 	/**
-	 * ¹ØÁªµ½net_device½á¹¹µÄÖ¸Õë
+	 * å…³è”åˆ°net_deviceç»“æ„çš„æŒ‡é’ˆ
 	 */
 	struct net_device *dev;
 };
@@ -95,14 +95,14 @@ void linkwatch_run_queue(void)
 		 * so new events can be accepted
 		 */
 		/**
-		 * Çå³ıdev->stateµÄ__LINK_STATE_LINKWATCH_PENDING±êÖ¾Î»
+		 * æ¸…é™¤dev->stateçš„__LINK_STATE_LINKWATCH_PENDINGæ ‡å¿—ä½
 		 */
 		clear_bit(__LINK_STATE_LINKWATCH_PENDING, &dev->state);
 
 		if (dev->flags & IFF_UP) {
 			/**
-			 * ·¢ËÍNETDEV_CHANGEÍ¨Öª¸ønetdev_chainÍ¨ÖªÁ´¡£
-			 * ·¢ËÍRTM_NEWLINKÍ¨Öª¸øRTMGRP_LINK RTnetlink×é¡£
+			 * å‘é€NETDEV_CHANGEé€šçŸ¥ç»™netdev_chainé€šçŸ¥é“¾ã€‚
+			 * å‘é€RTM_NEWLINKé€šçŸ¥ç»™RTMGRP_LINK RTnetlinkç»„ã€‚
 			 */
 			netdev_state_change(dev);
 		}
@@ -112,7 +112,7 @@ void linkwatch_run_queue(void)
 }       
 
 /**
- * ´¦Àílweventlist(°üº¬linkwatch_run_queue)ÖĞµÄÔªËØ£¬ÕâĞ©ÔªËØ°üº¬Î´¾öµÄÁ¬½Ó×´Ì¬¸Ä±äÊÂ¼ş¡£
+ * å¤„ç†lweventlist(åŒ…å«linkwatch_run_queue)ä¸­çš„å…ƒç´ ï¼Œè¿™äº›å…ƒç´ åŒ…å«æœªå†³çš„è¿æ¥çŠ¶æ€æ”¹å˜äº‹ä»¶ã€‚
  */
 static void linkwatch_event(void *dummy)
 {

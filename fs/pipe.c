@@ -108,20 +108,20 @@ static void anon_pipe_buf_unmap(struct pipe_inode_info *info, struct pipe_buffer
 }
 
 /**
- * anon_pipe_buf_opsÓÉpipe_buffer¶ÔÏóµÄopsÖ¸Ïò
+ * anon_pipe_buf_opsç”±pipe_bufferå¯¹è±¡çš„opsæŒ‡å‘
  */
 static struct pipe_buf_operations anon_pipe_buf_ops = {
 	.can_merge = 1,
 	/**
-	 * ÔÚ·ÃÎÊ»º³åÇøÊı¾İÖ®Ç°µ÷ÓÃ¡£ËüÖ»ÔÚ¹ÜÀí»º³åÇøÔÚ¸ß¶ËÄÚ´æÊ±¶Ô¹ÜÀí»º³åÇøÒ³¿òµ÷ÓÃkmap
+	 * åœ¨è®¿é—®ç¼“å†²åŒºæ•°æ®ä¹‹å‰è°ƒç”¨ã€‚å®ƒåªåœ¨ç®¡ç†ç¼“å†²åŒºåœ¨é«˜ç«¯å†…å­˜æ—¶å¯¹ç®¡ç†ç¼“å†²åŒºé¡µæ¡†è°ƒç”¨kmap
 	 */
 	.map = anon_pipe_buf_map,
 	/**
-	 * Óëmap¶ÔÓ¦,¶Ô¹ÜÀí»º³åÇøÒ³¿òµ÷ÓÃkunmap
+	 * ä¸mapå¯¹åº”,å¯¹ç®¡ç†ç¼“å†²åŒºé¡µæ¡†è°ƒç”¨kunmap
 	 */
 	.unmap = anon_pipe_buf_unmap,
 	/**
-	 * µ±ÊÍ·Å¹ÜÀí»º³åÇøÊ±µ÷ÓÃ£¬¸Ã·½·¨ÊµÏÖÁËÒ»¸öµ¥Ò³ÄÚ´æ¸ßËÙ»º´æ¡£
+	 * å½“é‡Šæ”¾ç®¡ç†ç¼“å†²åŒºæ—¶è°ƒç”¨ï¼Œè¯¥æ–¹æ³•å®ç°äº†ä¸€ä¸ªå•é¡µå†…å­˜é«˜é€Ÿç¼“å­˜ã€‚
 	 */
 	.release = anon_pipe_buf_release,
 };
@@ -366,8 +366,8 @@ pipe_write(struct file *filp, const char __user *buf,
 }
 
 /**
- * µ±FIFOÖ»Ğ´Ê±,ÆäÎÄ¼ş²Ù×÷±íµÄf_op×Ö¶ÎµÄ¶Á·½·¨
- * Òò´ËÊ±ÎÄ¼şÖ»Ğ´,ËùÒÔ¶Á·½·¨Ö»ÊÇ¼òµ¥µÄ·µ»ØÒ»¸ö´íÎó
+ * å½“FIFOåªå†™æ—¶,å…¶æ–‡ä»¶æ“ä½œè¡¨çš„f_opå­—æ®µçš„è¯»æ–¹æ³•
+ * å› æ­¤æ—¶æ–‡ä»¶åªå†™,æ‰€ä»¥è¯»æ–¹æ³•åªæ˜¯ç®€å•çš„è¿”å›ä¸€ä¸ªé”™è¯¯
  */
 static ssize_t
 bad_pipe_r(struct file *filp, char __user *buf, size_t count, loff_t *ppos)
@@ -376,8 +376,8 @@ bad_pipe_r(struct file *filp, char __user *buf, size_t count, loff_t *ppos)
 }
 
 /**
- * µ±FIFOÖ»¶ÁÊ±,ÆäÎÄ¼ş²Ù×÷±íµÄf_op×Ö¶ÎµÄĞ´·½·¨
- * Òò´ËÊ±ÎÄ¼şÖ»¶Á,ËùÒÔĞ´·½·¨Ö»ÊÇ¼òµ¥µÄ·µ»ØÒ»¸ö´íÎó
+ * å½“FIFOåªè¯»æ—¶,å…¶æ–‡ä»¶æ“ä½œè¡¨çš„f_opå­—æ®µçš„å†™æ–¹æ³•
+ * å› æ­¤æ—¶æ–‡ä»¶åªè¯»,æ‰€ä»¥å†™æ–¹æ³•åªæ˜¯ç®€å•çš„è¿”å›ä¸€ä¸ªé”™è¯¯
  */
 static ssize_t
 bad_pipe_w(struct file *filp, const char __user *buf, size_t count, loff_t *ppos)
@@ -701,7 +701,7 @@ static struct dentry_operations pipefs_dentry_operations = {
 static struct inode * get_pipe_inode(void)
 {
 	/**
-	 * ÔÚpipe_fsÎÄ¼şÏµÍ³ÖĞ·ÖÅäÒ»¸öĞÂµÄË÷Òı½áµã¡£
+	 * åœ¨pipe_fsæ–‡ä»¶ç³»ç»Ÿä¸­åˆ†é…ä¸€ä¸ªæ–°çš„ç´¢å¼•ç»“ç‚¹ã€‚
 	 */
 	struct inode *inode = new_inode(pipe_mnt->mnt_sb);
 
@@ -709,12 +709,12 @@ static struct inode * get_pipe_inode(void)
 		goto fail_inode;
 
 	/**
-	 * pipe_new·ÖÅäpipe_inode_infoÊı¾İ½á¹¹£¬²¢°ÑËüµÄµØÖ·´æ·ÅÔÚË÷Òı½ÚµãµÄi_pipe×Ö¶Î¡£
+	 * pipe_newåˆ†é…pipe_inode_infoæ•°æ®ç»“æ„ï¼Œå¹¶æŠŠå®ƒçš„åœ°å€å­˜æ”¾åœ¨ç´¢å¼•èŠ‚ç‚¹çš„i_pipeå­—æ®µã€‚
 	 */
 	if(!pipe_new(inode))
 		goto fail_iput;
 	/**
-	 * ³õÊ¼»¯inode->r_counterºÍw_counterÎª1¡£
+	 * åˆå§‹åŒ–inode->r_counterå’Œw_counterä¸º1ã€‚
 	 */
 	PIPE_READERS(*inode) = PIPE_WRITERS(*inode) = 1;
 	inode->i_fop = &rdwr_pipe_fops;
@@ -740,7 +740,7 @@ fail_inode:
 }
 
 /**
- * ´´½¨ĞÂµÄ¹ÜµÀ
+ * åˆ›å»ºæ–°çš„ç®¡é“
  */
 int do_pipe(int *fd)
 {
@@ -763,16 +763,16 @@ int do_pipe(int *fd)
 		goto close_f1;
 
 	/**
-	 * get_pipe_inodeÎªpipefsÎÄ¼şÏµÍ³ÖĞµÄ¹ÜµÀ·ÖÅäÒ»¸öË÷Òı½Úµã¶ÔÏó²¢¶ÔÆä½øĞĞ³õÊ¼»¯¡£
-	 * Ëü»á¿¼ÂÇÒ»Ğ©×ÊÔ´ÏŞÖÆ£¬ËùÒÔ²»Ò»¶¨ÄÜ¹»·ÖÅä³É¹¦¡£
+	 * get_pipe_inodeä¸ºpipefsæ–‡ä»¶ç³»ç»Ÿä¸­çš„ç®¡é“åˆ†é…ä¸€ä¸ªç´¢å¼•èŠ‚ç‚¹å¯¹è±¡å¹¶å¯¹å…¶è¿›è¡Œåˆå§‹åŒ–ã€‚
+	 * å®ƒä¼šè€ƒè™‘ä¸€äº›èµ„æºé™åˆ¶ï¼Œæ‰€ä»¥ä¸ä¸€å®šèƒ½å¤Ÿåˆ†é…æˆåŠŸã€‚
 	 */
 	inode = get_pipe_inode();
 	if (!inode)
 		goto close_f12;
 
 	/**
-	 * Îª¶ÁºÍĞ´·ÖÅäÎÄ¼ş¶ÔÏóºÍÎÄ¼şÃèÊö·û¡£´æ·Åµ½i,jÖĞ
-	 * ²¢½«f1,f2ÉèÎªÖ»¶ÁºÍÖ»Ğ´¡£
+	 * ä¸ºè¯»å’Œå†™åˆ†é…æ–‡ä»¶å¯¹è±¡å’Œæ–‡ä»¶æè¿°ç¬¦ã€‚å­˜æ”¾åˆ°i,jä¸­
+	 * å¹¶å°†f1,f2è®¾ä¸ºåªè¯»å’Œåªå†™ã€‚
 	 */
 	error = get_unused_fd();
 	if (error < 0)
@@ -790,8 +790,8 @@ int do_pipe(int *fd)
 	this.len = strlen(name);
 	this.hash = inode->i_ino; /* will go */
 	/**
-	 * ·ÖÅäÒ»¸öÄ¿Â¼Ïî¶ÔÏó£¬²¢Ê¹ÓÃËü°ÑÁ½¸öÎÄ¼ş¶ÔÏóºÍË÷Òı½Úµã¶ÔÏóÁ¬½ÓÔÚÒ»Æğ¡£
-	 * È»ºó°ÑĞÂµÄË÷Òı½Úµã²åÈëµ½pipefsÌØÊâÎÄ¼şÏµÍ³ÖĞ¡£
+	 * åˆ†é…ä¸€ä¸ªç›®å½•é¡¹å¯¹è±¡ï¼Œå¹¶ä½¿ç”¨å®ƒæŠŠä¸¤ä¸ªæ–‡ä»¶å¯¹è±¡å’Œç´¢å¼•èŠ‚ç‚¹å¯¹è±¡è¿æ¥åœ¨ä¸€èµ·ã€‚
+	 * ç„¶åæŠŠæ–°çš„ç´¢å¼•èŠ‚ç‚¹æ’å…¥åˆ°pipefsç‰¹æ®Šæ–‡ä»¶ç³»ç»Ÿä¸­ã€‚
 	 */
 	dentry = d_alloc(pipe_mnt->mnt_sb->s_root, &this);
 	if (!dentry)
@@ -818,7 +818,7 @@ int do_pipe(int *fd)
 	fd_install(i, f1);
 	fd_install(j, f2);
 	/**
-	 * ÏòÓÃ»§·µ»ØÎÄ¼şÃèÊö·û½øĞĞ¶ÁĞ´¡£
+	 * å‘ç”¨æˆ·è¿”å›æ–‡ä»¶æè¿°ç¬¦è¿›è¡Œè¯»å†™ã€‚
 	 */
 	fd[0] = i;
 	fd[1] = j;

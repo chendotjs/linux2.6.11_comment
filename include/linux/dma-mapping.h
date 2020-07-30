@@ -7,23 +7,23 @@
 /* These definitions mirror those in pci.h, so they can be used
  * interchangeably with their PCI_ counterparts */
 /**
- * ��ʽӳ�����������ķ���
+ * 流式映射数据流动的方向。
  */
 enum dma_data_direction {
 	/**
-	 * ˫�����������ݡ���һЩ��ϵ�ṹ�У��������͵���ʽӳ��Ӱ�����ܡ�
+	 * 双向流动的数据。在一些体系结构中，这种类型的流式映射影响性能。
 	 */
 	DMA_BIDIRECTIONAL = 0,
 	/**
-	 * ���ݱ����͵��豸��
+	 * 数据被发送到设备。
 	 */
 	DMA_TO_DEVICE = 1,
 	/**
-	 * ���ݴ��豸���͵�CPU��
+	 * 数据从设备发送到CPU。
 	 */
 	DMA_FROM_DEVICE = 2,
 	/**
-	 * ���ڵ���Ŀ�ġ����ʹ�������˸÷��ŵĻ��������������ں˴���
+	 * 用于调试目的。如果使用设置了该符号的缓冲区，将导致内核错误。
 	 */
 	DMA_NONE = 3,
 };

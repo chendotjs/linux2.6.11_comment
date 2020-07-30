@@ -50,9 +50,9 @@ static int should_release_swap_token(struct mm_struct *mm)
  * the token before is no longer thrashing.
  */
 /**
- * ¾ö¶¨ÊÇ·ñ½«½»»»±ê¼Ç¸³¸øµ±Ç°½ø³Ì¡£ÔÚÖ÷È±Ò³Ê±µ÷ÓÃ:
- *		µ±filemap_nopageº¯Êý·¢ÏÖÇëÇóÒ³²»ÔÚÒ³¸ßËÙ»º´æÖÐÊ±¡£
- *		µ±do_swap_pageº¯Êý´Ó½»»»Çø¶ÁÈëÒ»¸öÐÂÒ³Ê±¡£
+ * å†³å®šæ˜¯å¦å°†äº¤æ¢æ ‡è®°èµ‹ç»™å½“å‰è¿›ç¨‹ã€‚åœ¨ä¸»ç¼ºé¡µæ—¶è°ƒç”¨:
+ *		å½“filemap_nopageå‡½æ•°å‘çŽ°è¯·æ±‚é¡µä¸åœ¨é¡µé«˜é€Ÿç¼“å­˜ä¸­æ—¶ã€‚
+ *		å½“do_swap_pageå‡½æ•°ä»Žäº¤æ¢åŒºè¯»å…¥ä¸€ä¸ªæ–°é¡µæ—¶ã€‚
  */
 void grab_swap_token(void)
 {
@@ -61,7 +61,7 @@ void grab_swap_token(void)
 
 	/* We have the token. Let others know we still need it. */
 	/**
-	 * ÒÑ¾­ÓÐ½»»»±ê¼ÇÁË£¬½ö½öÉèÖÃÖ÷È±Ò³±ê¼Ç¾ÍÐÐÁË¡£
+	 * å·²ç»æœ‰äº¤æ¢æ ‡è®°äº†ï¼Œä»…ä»…è®¾ç½®ä¸»ç¼ºé¡µæ ‡è®°å°±è¡Œäº†ã€‚
 	 */
 	if (has_swap_token(current->mm)) {
 		current->mm->recent_pagein = 1;
@@ -69,7 +69,7 @@ void grab_swap_token(void)
 	}
 
 	/**
-	 * ×Ô´ÓÉÏ´ÎÉèÖÃ½»»»±ê¼ÇÒÔÀ´£¬ÒÑ¾­¹ýÁËÁ½Ãë¡£
+	 * è‡ªä»Žä¸Šæ¬¡è®¾ç½®äº¤æ¢æ ‡è®°ä»¥æ¥ï¼Œå·²ç»è¿‡äº†ä¸¤ç§’ã€‚
 	 */
 	if (time_after(jiffies, swap_token_check)) {
 
@@ -79,7 +79,7 @@ void grab_swap_token(void)
 
 		/* ... or if we recently held the token. */
 		/**
-		 * ÉÏ´Îµ÷ÓÃºó£¬µ±Ç°ÓµÓÐ½»»»±ê¼ÇµÄ½ø³Ì×î½üÃ»ÓÐÔÙ»ñµÃ±ê¼Ç¡£
+		 * ä¸Šæ¬¡è°ƒç”¨åŽï¼Œå½“å‰æ‹¥æœ‰äº¤æ¢æ ‡è®°çš„è¿›ç¨‹æœ€è¿‘æ²¡æœ‰å†èŽ·å¾—æ ‡è®°ã€‚
 		 */
 		if (time_before(jiffies, current->mm->swap_token_time))
 			return;

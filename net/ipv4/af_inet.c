@@ -129,7 +129,7 @@ static DEFINE_SPINLOCK(inetsw_lock);
 
 /* New destruction routine */
 
-/* ÔÚÌ×½Ó¿Ú±»ÊÍ·ÅÊ±£¬½øĞĞÒ»Ğ©ÇåÀí¹¤×÷ */
+/* åœ¨å¥—æ¥å£è¢«é‡Šæ”¾æ—¶ï¼Œè¿›è¡Œä¸€äº›æ¸…ç†å·¥ä½œ */
 void inet_sock_destruct(struct sock *sk)
 {
 	struct inet_sock *inet = inet_sk(sk);
@@ -192,7 +192,7 @@ static int inet_autobind(struct sock *sk)
 /*
  *	Move a socket into listening state.
  */
-/* ½«Ò»¸ösocket×ªÈëlisten×´Ì¬ */
+/* å°†ä¸€ä¸ªsocketè½¬å…¥listençŠ¶æ€ */
 int inet_listen(struct socket *sock, int backlog)
 {
 	struct sock *sk = sock->sk;
@@ -202,12 +202,12 @@ int inet_listen(struct socket *sock, int backlog)
 	lock_sock(sk);
 
 	err = -EINVAL;
-	/* ¼ì²âÏµÍ³µ÷ÓÃµÄ×´Ì¬ºÍÀàĞÍ£¬Èç¹û²»ºÏ·¨ÔòÍË³ö */
+	/* æ£€æµ‹ç³»ç»Ÿè°ƒç”¨çš„çŠ¶æ€å’Œç±»å‹ï¼Œå¦‚æœä¸åˆæ³•åˆ™é€€å‡º */
 	if (sock->state != SS_UNCONNECTED || sock->type != SOCK_STREAM)
 		goto out;
 
 	old_state = sk->sk_state;
-	/* Èç¹û¼È²»ÊÇTCPF_CLOSEÒ²²»ÊÇTCPF_LISTEN×´Ì¬£¬Ò²ÍË³ö */
+	/* å¦‚æœæ—¢ä¸æ˜¯TCPF_CLOSEä¹Ÿä¸æ˜¯TCPF_LISTENçŠ¶æ€ï¼Œä¹Ÿé€€å‡º */
 	if (!((1 << old_state) & (TCPF_CLOSE | TCPF_LISTEN)))
 		goto out;
 
@@ -215,11 +215,11 @@ int inet_listen(struct socket *sock, int backlog)
 	 * we can only allow the backlog to be adjusted.
 	 */
 	if (old_state != TCP_LISTEN) {
-		err = tcp_listen_start(sk);/* ¿ªÊ¼ÕìÌı */
+		err = tcp_listen_start(sk);/* å¼€å§‹ä¾¦å¬ */
 		if (err)
 			goto out;
 	}
-	/* ÉèÖÃ´«Êä¿ØÖÆ¿éµÄÁ¬½Ó¶ÓÁĞ³¤¶ÈÉÏÏŞ */
+	/* è®¾ç½®ä¼ è¾“æ§åˆ¶å—çš„è¿æ¥é˜Ÿåˆ—é•¿åº¦ä¸Šé™ */
 	sk->sk_max_ack_backlog = backlog;
 	err = 0;
 
@@ -232,9 +232,9 @@ out:
  *	Create an inet socket.
  */
 /**
- * ´´½¨Ò»¸öIPV4µÄsocket
- *		sock:		ÒÑ¾­´´½¨µÄÌ×½Ó¿Ú
- *		protocol:	Ì×½Ó¿ÚµÄĞ­ÒéºÅ
+ * åˆ›å»ºä¸€ä¸ªIPV4çš„socket
+ *		sock:		å·²ç»åˆ›å»ºçš„å¥—æ¥å£
+ *		protocol:	å¥—æ¥å£çš„åè®®å·
  */
 static int inet_create(struct socket *sock, int protocol)
 {
@@ -247,16 +247,16 @@ static int inet_create(struct socket *sock, int protocol)
 	char answer_no_check;
 	int err;
 
-	sock->state = SS_UNCONNECTED;/* ³õÊ¼»¯Ì×½Ó¿Ú×´Ì¬ */
+	sock->state = SS_UNCONNECTED;/* åˆå§‹åŒ–å¥—æ¥å£çŠ¶æ€ */
 
 	/* Look for the requested type/protocol pair. */
 	answer = NULL;
 	rcu_read_lock();
-	list_for_each_rcu(p, &inetsw[sock->type]) {/* ¸ù¾İÌ×½Ó¿ÚÀàĞÍ±éÀúIPV4Á´±í  */
+	list_for_each_rcu(p, &inetsw[sock->type]) {/* æ ¹æ®å¥—æ¥å£ç±»å‹éå†IPV4é“¾è¡¨  */
 		answer = list_entry(p, struct inet_protosw, list);
 
 		/* Check the non-wild match. */
-		if (protocol == answer->protocol) {/* ±È½Ï´«Êä²ãĞ­Òé */
+		if (protocol == answer->protocol) {/* æ¯”è¾ƒä¼ è¾“å±‚åè®® */
 			if (protocol != IPPROTO_IP)
 				break;
 		} else {
@@ -272,17 +272,17 @@ static int inet_create(struct socket *sock, int protocol)
 	}
 
 	err = -ESOCKTNOSUPPORT;
-	if (!answer)/* ÕÒ²»µ½¶ÔÓ¦µÄ´«Êä²ãĞ­Òé */
+	if (!answer)/* æ‰¾ä¸åˆ°å¯¹åº”çš„ä¼ è¾“å±‚åè®® */
 		goto out_rcu_unlock;
 	err = -EPERM;
-	/* ´´½¨¸ÃÀàĞÍµÄÌ×½Ó¿ÚĞèÒªÌØ¶¨ÄÜÁ¦£¬¶øµ±Ç°½ø³ÌÃ»ÓĞÕâÖÖÄÜÁ¦£¬ÔòÍË³ö */
+	/* åˆ›å»ºè¯¥ç±»å‹çš„å¥—æ¥å£éœ€è¦ç‰¹å®šèƒ½åŠ›ï¼Œè€Œå½“å‰è¿›ç¨‹æ²¡æœ‰è¿™ç§èƒ½åŠ›ï¼Œåˆ™é€€å‡º */
 	if (answer->capability > 0 && !capable(answer->capability))
 		goto out_rcu_unlock;
 	err = -EPROTONOSUPPORT;
 	if (!protocol)
 		goto out_rcu_unlock;
 
-	/* ÉèÖÃÌ×½Ó¿Ú²ãµÄ½Ó¿Ú */
+	/* è®¾ç½®å¥—æ¥å£å±‚çš„æ¥å£ */
 	sock->ops = answer->ops;
 	answer_prot = answer->prot;
 	answer_no_check = answer->no_check;
@@ -292,7 +292,7 @@ static int inet_create(struct socket *sock, int protocol)
 	BUG_TRAP(answer_prot->slab != NULL);
 
 	err = -ENOBUFS;
-	/* ¸ù¾İĞ­Òé×åµÈ²ÎÊı·ÖÅä´«Êä¿ØÖÆ¿é¡£ */
+	/* æ ¹æ®åè®®æ—ç­‰å‚æ•°åˆ†é…ä¼ è¾“æ§åˆ¶å—ã€‚ */
 	sk = sk_alloc(PF_INET, GFP_KERNEL,
 		      answer_prot->slab_obj_size,
 		      answer_prot->slab);
@@ -301,36 +301,36 @@ static int inet_create(struct socket *sock, int protocol)
 
 	err = 0;
 	sk->sk_prot = answer_prot;
-	/* ÉèÖÃÊÇ·ñĞèÒªĞ£ÑéºÍ */
+	/* è®¾ç½®æ˜¯å¦éœ€è¦æ ¡éªŒå’Œ */
 	sk->sk_no_check = answer_no_check;
-	/* ÊÇ·ñ¿ÉÒÔÖØÓÃµØÖ·ºÍ¶Ë¿Ú */
+	/* æ˜¯å¦å¯ä»¥é‡ç”¨åœ°å€å’Œç«¯å£ */
 	if (INET_PROTOSW_REUSE & answer_flags)
 		sk->sk_reuse = 1;
 
 	inet = inet_sk(sk);
 
-	if (SOCK_RAW == sock->type) {/* ÊÇÔ­Ê¼Ì×½Ó¿Ú */
-		inet->num = protocol;/* ÉèÖÃ±¾µØ¶Ë¿ÚÎªĞ­ÒéºÅ */
-		if (IPPROTO_RAW == protocol)/* Èç¹ûÊÇRAWĞ­Òé£¬ÔòĞèÒª×Ô¼º¹¹½¨IPÊ×²¿ */
+	if (SOCK_RAW == sock->type) {/* æ˜¯åŸå§‹å¥—æ¥å£ */
+		inet->num = protocol;/* è®¾ç½®æœ¬åœ°ç«¯å£ä¸ºåè®®å· */
+		if (IPPROTO_RAW == protocol)/* å¦‚æœæ˜¯RAWåè®®ï¼Œåˆ™éœ€è¦è‡ªå·±æ„å»ºIPé¦–éƒ¨ */
 			inet->hdrincl = 1;
 	}
 
-	if (ipv4_config.no_pmtu_disc)/* ÊÇ·ñÖ§³ÖPMTU */
+	if (ipv4_config.no_pmtu_disc)/* æ˜¯å¦æ”¯æŒPMTU */
 		inet->pmtudisc = IP_PMTUDISC_DONT;
 	else
 		inet->pmtudisc = IP_PMTUDISC_WANT;
 
 	inet->id = 0;
 
-	sock_init_data(sock, sk);/* ³õÊ¼»¯´«Êä¿ØÖÆ¿é */
+	sock_init_data(sock, sk);/* åˆå§‹åŒ–ä¼ è¾“æ§åˆ¶å— */
 	sk_set_owner(sk, sk->sk_prot->owner);
 
-	/* ÔÚÌ×½Ó¿Ú±»ÊÍ·ÅÊ±£¬½øĞĞÒ»Ğ©ÇåÀí¹¤×÷¡£ */
+	/* åœ¨å¥—æ¥å£è¢«é‡Šæ”¾æ—¶ï¼Œè¿›è¡Œä¸€äº›æ¸…ç†å·¥ä½œã€‚ */
 	sk->sk_destruct	   = inet_sock_destruct;
-	/* ÉèÖÃĞ­Òé×åºÍĞ­ÒéºÅ */
+	/* è®¾ç½®åè®®æ—å’Œåè®®å· */
 	sk->sk_family	   = PF_INET;
 	sk->sk_protocol	   = protocol;
-	/* ÉèÖÃºó±¸¶ÓÁĞ½ÓÊÕº¯Êı¡£ */
+	/* è®¾ç½®åå¤‡é˜Ÿåˆ—æ¥æ”¶å‡½æ•°ã€‚ */
 	sk->sk_backlog_rcv = sk->sk_prot->backlog_rcv;
 
 	inet->uc_ttl	= -1;
@@ -343,18 +343,18 @@ static int inet_create(struct socket *sock, int protocol)
 	atomic_inc(&inet_sock_nr);
 #endif
 
-	if (inet->num) {/* Èç¹ûÉèÖÃÁË±¾µØ¶Ë¿ÚºÅ */
+	if (inet->num) {/* å¦‚æœè®¾ç½®äº†æœ¬åœ°ç«¯å£å· */
 		/* It assumes that any protocol which allows
 		 * the user to assign a number at socket
 		 * creation time automatically
 		 * shares.
 		 */
-		inet->sport = htons(inet->num);/* ÉèÖÃÍøÂçĞòµÄ±¾µØ¶Ë¿ÚºÅ */
+		inet->sport = htons(inet->num);/* è®¾ç½®ç½‘ç»œåºçš„æœ¬åœ°ç«¯å£å· */
 		/* Add to protocol hash chains. */
-		sk->sk_prot->hash(sk);/* ½«´«Êä¿ØÖÆ¿é¼ÓÈëµ½¾²ÁĞ±íÖĞ */
+		sk->sk_prot->hash(sk);/* å°†ä¼ è¾“æ§åˆ¶å—åŠ å…¥åˆ°é™åˆ—è¡¨ä¸­ */
 	}
 
-	if (sk->sk_prot->init) {/* µ÷ÓÃ´«Êä²ãµÄ³õÊ¼»¯»Øµ÷£¬¶ÔTCPÀ´Ëµ£¬¾ÍÊÇtcp_v4_init_sock¡£UDPÃ»ÓĞÉèÖÃ»Øµ÷ */
+	if (sk->sk_prot->init) {/* è°ƒç”¨ä¼ è¾“å±‚çš„åˆå§‹åŒ–å›è°ƒï¼Œå¯¹TCPæ¥è¯´ï¼Œå°±æ˜¯tcp_v4_init_sockã€‚UDPæ²¡æœ‰è®¾ç½®å›è°ƒ */
 		err = sk->sk_prot->init(sk);
 		if (err)
 			sk_common_release(sk);
@@ -373,7 +373,7 @@ out_rcu_unlock:
  *	should refer to it.
  */
 /**
- * ¹Ø±ÕÌ×½Ó¿ÚÊ±µÄ»Øµ÷
+ * å…³é—­å¥—æ¥å£æ—¶çš„å›è°ƒ
  */
 int inet_release(struct socket *sock)
 {
@@ -383,7 +383,7 @@ int inet_release(struct socket *sock)
 		long timeout;
 
 		/* Applications forget to leave groups before exiting */
-		ip_mc_drop_socket(sk);/* Àë¿ª¼ÓÈëµÄ×é²¥×é */
+		ip_mc_drop_socket(sk);/* ç¦»å¼€åŠ å…¥çš„ç»„æ’­ç»„ */
 
 		/* If linger is set, we don't return until the close
 		 * is complete.  Otherwise we return immediately. The
@@ -393,24 +393,24 @@ int inet_release(struct socket *sock)
 		 * linger..
 		 */
 		timeout = 0;
-		if (sock_flag(sk, SOCK_LINGER) &&/* ÉèÖÃÁËLINGERÑ¡Ïî */
-		    !(current->flags & PF_EXITING))/* µ±Ç°½ø³ÌÃ»ÓĞ´¦ÓÚÍË³ö¹ı³ÌÖĞ */
-			timeout = sk->sk_lingertime;/* »ñÈ¡ÑÓÊ±¹Ø±ÕµÄÊ±¼ä */
+		if (sock_flag(sk, SOCK_LINGER) &&/* è®¾ç½®äº†LINGERé€‰é¡¹ */
+		    !(current->flags & PF_EXITING))/* å½“å‰è¿›ç¨‹æ²¡æœ‰å¤„äºé€€å‡ºè¿‡ç¨‹ä¸­ */
+			timeout = sk->sk_lingertime;/* è·å–å»¶æ—¶å…³é—­çš„æ—¶é—´ */
 		sock->sk = NULL;
-		sk->sk_prot->close(sk, timeout);/* µ÷ÓÃ´«Êä²ãµÄÑÓÊ±¹Ø±Õ½Ó¿Ú */
+		sk->sk_prot->close(sk, timeout);/* è°ƒç”¨ä¼ è¾“å±‚çš„å»¶æ—¶å…³é—­æ¥å£ */
 	}
 	return 0;
 }
 
 /* It is off by default, see below. */
 /**
- * ·Ç0Ê±£¬Ó¦ÓÃ³ÌĞò¾ÍÓĞ¿ÉÄÜ°ó¶¨ÖÁ·Ç±¾µØÖ·Ö÷»úµØÖ·¡£
- * ÀıÈç£¬ÕâÑù¿ÉÒÔÈÃÌ×½Ó×Ö°ó¶¨µ½Ò»¸öµØÖ·£¨¼´Ê¹ÓëÖ®¹ØÁªµÄ½Ó¿Ú¹ØµôÁË£©¡£
+ * é0æ—¶ï¼Œåº”ç”¨ç¨‹åºå°±æœ‰å¯èƒ½ç»‘å®šè‡³éæœ¬åœ°å€ä¸»æœºåœ°å€ã€‚
+ * ä¾‹å¦‚ï¼Œè¿™æ ·å¯ä»¥è®©å¥—æ¥å­—ç»‘å®šåˆ°ä¸€ä¸ªåœ°å€ï¼ˆå³ä½¿ä¸ä¹‹å…³è”çš„æ¥å£å…³æ‰äº†ï¼‰ã€‚
  */
 int sysctl_ip_nonlocal_bind;
 
 /**
- * IPV4µÄbind»Øµ÷
+ * IPV4çš„bindå›è°ƒ
  */
 int inet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
 {
@@ -422,16 +422,16 @@ int inet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
 	int err;
 
 	/* If the socket has its own bind function then use it. (RAW) */
-	if (sk->sk_prot->bind) {/* Èç¹û´«Êä²ã½Ó¿ÚÉÏÊµÏÖÁËbindµ÷ÓÃ£¬Ôò»Øµ÷Ëü¡£Ä¿Ç°Ö»ÓĞSOCK_RAWÀàĞÍµÄ´«Êä²ãÊµÏÖÁË¸Ã½Ó¿Úraw_bind */
+	if (sk->sk_prot->bind) {/* å¦‚æœä¼ è¾“å±‚æ¥å£ä¸Šå®ç°äº†bindè°ƒç”¨ï¼Œåˆ™å›è°ƒå®ƒã€‚ç›®å‰åªæœ‰SOCK_RAWç±»å‹çš„ä¼ è¾“å±‚å®ç°äº†è¯¥æ¥å£raw_bind */
 		err = sk->sk_prot->bind(sk, uaddr, addr_len);
 		goto out;
 	}
 	err = -EINVAL;
-	if (addr_len < sizeof(struct sockaddr_in))/* ²ÎÊıºÏ·¨ĞÔ¼ì²é */
+	if (addr_len < sizeof(struct sockaddr_in))/* å‚æ•°åˆæ³•æ€§æ£€æŸ¥ */
 		goto out;
 
 	/**
-	 * È·¶¨Ò»¸öL3µØÖ·ÊÇÒ»¸öµ¥²¥¡¢¹ã²¥ºÍ¶à²¥µØÖ·¡£
+	 * ç¡®å®šä¸€ä¸ªL3åœ°å€æ˜¯ä¸€ä¸ªå•æ’­ã€å¹¿æ’­å’Œå¤šæ’­åœ°å€ã€‚
 	 */	
 	chk_addr_ret = inet_addr_type(addr->sin_addr.s_addr);
 
@@ -443,9 +443,9 @@ int inet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
 	 *  is temporarily down)
 	 */
 	err = -EADDRNOTAVAIL;
-	if (!sysctl_ip_nonlocal_bind &&/* ±ØĞë°ó¶¨µ½±¾µØ½Ó¿ÚµÄµØÖ· */
+	if (!sysctl_ip_nonlocal_bind &&/* å¿…é¡»ç»‘å®šåˆ°æœ¬åœ°æ¥å£çš„åœ°å€ */
 	    !inet->freebind &&
-	    addr->sin_addr.s_addr != INADDR_ANY &&/* °ó¶¨µØÖ·²»ºÏ·¨ */
+	    addr->sin_addr.s_addr != INADDR_ANY &&/* ç»‘å®šåœ°å€ä¸åˆæ³• */
 	    chk_addr_ret != RTN_LOCAL &&
 	    chk_addr_ret != RTN_MULTICAST &&
 	    chk_addr_ret != RTN_BROADCAST)
@@ -453,7 +453,7 @@ int inet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
 
 	snum = ntohs(addr->sin_port);
 	err = -EACCES;
-	/* Èç¹ûÖ¸¶¨ÁË¶Ë¿ÚºÅ£¬²¢ÇÒĞ¡ÓÚ1024£¬ÔòĞèÒª¼ì²éÓ¦ÓÃ³ÌĞòÊÇ·ñÓĞÏàÓ¦µÄÈ¨ÏŞ */
+	/* å¦‚æœæŒ‡å®šäº†ç«¯å£å·ï¼Œå¹¶ä¸”å°äº1024ï¼Œåˆ™éœ€è¦æ£€æŸ¥åº”ç”¨ç¨‹åºæ˜¯å¦æœ‰ç›¸åº”çš„æƒé™ */
 	if (snum && snum < PROT_SOCK && !capable(CAP_NET_BIND_SERVICE))
 		goto out;
 
@@ -464,41 +464,41 @@ int inet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
 	 *      would be illegal to use them (multicast/broadcast) in
 	 *      which case the sending device address is used.
 	 */
-	lock_sock(sk);/* ¶ÔÌ×½Ó¿Ú½øĞĞ¼ÓËø£¬ÒòÎªºóÃæÒª¶ÔÆä×´Ì¬½øĞĞÅĞ¶Ï */
+	lock_sock(sk);/* å¯¹å¥—æ¥å£è¿›è¡ŒåŠ é”ï¼Œå› ä¸ºåé¢è¦å¯¹å…¶çŠ¶æ€è¿›è¡Œåˆ¤æ–­ */
 
 	/* Check these errors (active socket, double bind). */
 	err = -EINVAL;
 	/**
-	 * Èç¹û×´Ì¬²»ÎªCLOSE£¬±íÊ¾Ì×½Ó¿ÚÒÑ¾­´¦ÓÚ»î¶¯×´Ì¬£¬²»ÄÜÔÙ°ó¶¨
-	 * »òÕßÒÑ¾­Ö¸¶¨ÁË±¾µØ¶Ë¿ÚºÅ£¬Ò²²»ÄÜÔÙ°ó¶¨
+	 * å¦‚æœçŠ¶æ€ä¸ä¸ºCLOSEï¼Œè¡¨ç¤ºå¥—æ¥å£å·²ç»å¤„äºæ´»åŠ¨çŠ¶æ€ï¼Œä¸èƒ½å†ç»‘å®š
+	 * æˆ–è€…å·²ç»æŒ‡å®šäº†æœ¬åœ°ç«¯å£å·ï¼Œä¹Ÿä¸èƒ½å†ç»‘å®š
 	 */
 	if (sk->sk_state != TCP_CLOSE || inet->num)
 		goto out_release_sock;
 
-	/* ÉèÖÃµØÖ·µ½´«Êä¿ØÖÆ¿éÖĞ */
+	/* è®¾ç½®åœ°å€åˆ°ä¼ è¾“æ§åˆ¶å—ä¸­ */
 	inet->rcv_saddr = inet->saddr = addr->sin_addr.s_addr;
-	/* Èç¹ûÊÇ¹ã²¥»òÕß¶à²¥µØÖ·£¬ÔòÔ´µØÖ·Ê¹ÓÃÉè±¸µØÖ·¡£ */
+	/* å¦‚æœæ˜¯å¹¿æ’­æˆ–è€…å¤šæ’­åœ°å€ï¼Œåˆ™æºåœ°å€ä½¿ç”¨è®¾å¤‡åœ°å€ã€‚ */
 	if (chk_addr_ret == RTN_MULTICAST || chk_addr_ret == RTN_BROADCAST)
 		inet->saddr = 0;  /* Use device */
 
 	/* Make sure we are allowed to bind here. */
-	/* µ÷ÓÃ´«Êä²ãµÄget_portÀ´½øĞĞµØÖ·°ó¶¨¡£Èçtcp_v4_get_port»òudp_v4_get_port */
+	/* è°ƒç”¨ä¼ è¾“å±‚çš„get_portæ¥è¿›è¡Œåœ°å€ç»‘å®šã€‚å¦‚tcp_v4_get_portæˆ–udp_v4_get_port */
 	if (sk->sk_prot->get_port(sk, snum)) {
 		inet->saddr = inet->rcv_saddr = 0;
 		err = -EADDRINUSE;
 		goto out_release_sock;
 	}
 
-	/* ÉèÖÃ±êÖ¾£¬±íÊ¾ÒÑ¾­°ó¶¨ÁË±¾µØµØÖ·ºÍ¶Ë¿Ú */
+	/* è®¾ç½®æ ‡å¿—ï¼Œè¡¨ç¤ºå·²ç»ç»‘å®šäº†æœ¬åœ°åœ°å€å’Œç«¯å£ */
 	if (inet->rcv_saddr)
 		sk->sk_userlocks |= SOCK_BINDADDR_LOCK;
 	if (snum)
 		sk->sk_userlocks |= SOCK_BINDPORT_LOCK;
 	inet->sport = htons(inet->num);
-	/* »¹Ã»ÓĞÁ¬½Óµ½¶Ô·½£¬Çå³ıÔ¶¶ËµØÖ·ºÍ¶Ë¿Ú */
+	/* è¿˜æ²¡æœ‰è¿æ¥åˆ°å¯¹æ–¹ï¼Œæ¸…é™¤è¿œç«¯åœ°å€å’Œç«¯å£ */
 	inet->daddr = 0;
 	inet->dport = 0;
-	/* Çå³ıÂ·ÓÉ»º´æ */
+	/* æ¸…é™¤è·¯ç”±ç¼“å­˜ */
 	sk_dst_reset(sk);
 	err = 0;
 out_release_sock:
@@ -507,18 +507,18 @@ out:
 	return err;
 }
 
-/* UDP connectÏµÍ³µ÷ÓÃÊµÏÖ */
+/* UDP connectç³»ç»Ÿè°ƒç”¨å®ç° */
 int inet_dgram_connect(struct socket *sock, struct sockaddr * uaddr,
 		       int addr_len, int flags)
 {
 	struct sock *sk = sock->sk;
 
-	if (uaddr->sa_family == AF_UNSPEC)/* µØÖ·´ØÎŞĞ§£¬½«Á¬½Ó¶Ï¿ª */
+	if (uaddr->sa_family == AF_UNSPEC)/* åœ°å€ç°‡æ— æ•ˆï¼Œå°†è¿æ¥æ–­å¼€ */
 		return sk->sk_prot->disconnect(sk, flags);
 
-	if (!inet_sk(sk)->num && inet_autobind(sk))/* Èç¹ûÃ»ÓĞÉèÖÃ¶Ë¿ÚºÅ£¬Ôò¶¯Ì¬°ó¶¨¶Ë¿Ú */
+	if (!inet_sk(sk)->num && inet_autobind(sk))/* å¦‚æœæ²¡æœ‰è®¾ç½®ç«¯å£å·ï¼Œåˆ™åŠ¨æ€ç»‘å®šç«¯å£ */
 		return -EAGAIN;
-	/* µ÷ÓÃ´«Êä²ã»Øµ÷ip4_datagram_connect */
+	/* è°ƒç”¨ä¼ è¾“å±‚å›è°ƒip4_datagram_connect */
 	return sk->sk_prot->connect(sk, (struct sockaddr *)uaddr, addr_len);
 }
 
@@ -549,7 +549,7 @@ static long inet_wait_for_connect(struct sock *sk, long timeo)
  *	Connect to a remote host. There is regrettably still a little
  *	TCP 'magic' in here.
  */
-/* connectÏµÍ³µ÷ÓÃµÄÌ×½Ó¿Ú²ãÊµÏÖ */
+/* connectç³»ç»Ÿè°ƒç”¨çš„å¥—æ¥å£å±‚å®ç° */
 int inet_stream_connect(struct socket *sock, struct sockaddr *uaddr,
 			int addr_len, int flags)
 {
@@ -557,9 +557,9 @@ int inet_stream_connect(struct socket *sock, struct sockaddr *uaddr,
 	int err;
 	long timeo;
 
-	lock_sock(sk);/* »ñÈ¡Ì×½Ó¿ÚµÄËø */
+	lock_sock(sk);/* è·å–å¥—æ¥å£çš„é” */
 
-	if (uaddr->sa_family == AF_UNSPEC) {/* Î´Ö¸¶¨µØÖ·ÀàĞÍ£¬´íÎó */
+	if (uaddr->sa_family == AF_UNSPEC) {/* æœªæŒ‡å®šåœ°å€ç±»å‹ï¼Œé”™è¯¯ */
 		err = sk->sk_prot->disconnect(sk, flags);
 		sock->state = err ? SS_DISCONNECTING : SS_UNCONNECTED;
 		goto out;
@@ -576,33 +576,33 @@ int inet_stream_connect(struct socket *sock, struct sockaddr *uaddr,
 		err = -EALREADY;
 		/* Fall out of switch with err, set for this state */
 		break;
-	case SS_UNCONNECTED:/* Ö»ÓĞ´Ë×´Ì¬²ÅÄÜµ÷ÓÃconnect */
+	case SS_UNCONNECTED:/* åªæœ‰æ­¤çŠ¶æ€æ‰èƒ½è°ƒç”¨connect */
 		err = -EISCONN;
-		if (sk->sk_state != TCP_CLOSE)/* Èç¹û²»ÊÇTCP_CLOSE×´Ì¬£¬ËµÃ÷ÒÑ¾­Á¬½ÓÁË */
+		if (sk->sk_state != TCP_CLOSE)/* å¦‚æœä¸æ˜¯TCP_CLOSEçŠ¶æ€ï¼Œè¯´æ˜å·²ç»è¿æ¥äº† */
 			goto out;
 
-		/* µ÷ÓÃ´«Êä²ã½Ó¿Útcp_connect½øĞĞÁ¬½Ó²Ù×÷£¬¼´·¢ËÍSYN¶Î */
+		/* è°ƒç”¨ä¼ è¾“å±‚æ¥å£tcp_connectè¿›è¡Œè¿æ¥æ“ä½œï¼Œå³å‘é€SYNæ®µ */
 		err = sk->sk_prot->connect(sk, uaddr, addr_len);
 		if (err < 0)
 			goto out;
 
-		/* ·¢ËÍSYN¶Îºó£¬ÉèÖÃ×´Ì¬ÎªSS_CONNECTING */
+		/* å‘é€SYNæ®µåï¼Œè®¾ç½®çŠ¶æ€ä¸ºSS_CONNECTING */
   		sock->state = SS_CONNECTING;
 
 		/* Just entered SS_CONNECTING state; the only
 		 * difference is that return value in non-blocking
 		 * case is EINPROGRESS, rather than EALREADY.
 		 */
-		err = -EINPROGRESS;/* Èç¹ûÊÇÒÔ·Ç×èÈû·½Ê½½øĞĞÁ¬½Ó£¬ÔòÄ¬ÈÏµÄ·µ»ØÖµÎªEINPROGRESS£¬±íÊ¾ÕıÔÚÁ¬½Ó */
+		err = -EINPROGRESS;/* å¦‚æœæ˜¯ä»¥éé˜»å¡æ–¹å¼è¿›è¡Œè¿æ¥ï¼Œåˆ™é»˜è®¤çš„è¿”å›å€¼ä¸ºEINPROGRESSï¼Œè¡¨ç¤ºæ­£åœ¨è¿æ¥ */
 		break;
 	}
 
-	/* »ñÈ¡Á¬½Ó³¬Ê±Ê±¼ä£¬Èç¹ûÖ¸¶¨·Ç×èÈû·½Ê½£¬Ôò²»µÈ´ıÖ±½Ó·µ»Ø */
+	/* è·å–è¿æ¥è¶…æ—¶æ—¶é—´ï¼Œå¦‚æœæŒ‡å®šéé˜»å¡æ–¹å¼ï¼Œåˆ™ä¸ç­‰å¾…ç›´æ¥è¿”å› */
 	timeo = sock_sndtimeo(sk, flags & O_NONBLOCK);
 
-	if ((1 << sk->sk_state) & (TCPF_SYN_SENT | TCPF_SYN_RECV)) {/* ·¢ËÍÍêSYNºó£¬Á¬½Ó×´Ì¬Ò»°ãÎªÕâÁ½ÖÖ×´Ì¬£¬µ«ÊÇÈç¹ûÁ¬½Ó½¨Á¢·Ç³£¿ì£¬Ôò¿ÉÄÜÔ½¹ıÕâÁ½ÖÖ×´Ì¬ */
+	if ((1 << sk->sk_state) & (TCPF_SYN_SENT | TCPF_SYN_RECV)) {/* å‘é€å®ŒSYNåï¼Œè¿æ¥çŠ¶æ€ä¸€èˆ¬ä¸ºè¿™ä¸¤ç§çŠ¶æ€ï¼Œä½†æ˜¯å¦‚æœè¿æ¥å»ºç«‹éå¸¸å¿«ï¼Œåˆ™å¯èƒ½è¶Šè¿‡è¿™ä¸¤ç§çŠ¶æ€ */
 		/* Error code is set above */
-		if (!timeo || !inet_wait_for_connect(sk, timeo))/* µÈ´ıÁ¬½ÓÍê³É»ò³¬Ê± */
+		if (!timeo || !inet_wait_for_connect(sk, timeo))/* ç­‰å¾…è¿æ¥å®Œæˆæˆ–è¶…æ—¶ */
 			goto out;
 
 		err = sock_intr_errno(timeo);
@@ -613,7 +613,7 @@ int inet_stream_connect(struct socket *sock, struct sockaddr *uaddr,
 	/* Connection was closed by RST, timeout, ICMP error
 	 * or another process disconnected us.
 	 */
-	if (sk->sk_state == TCP_CLOSE)/* ÔËĞĞµ½ÕâÀïËµÃ÷Á¬½Ó½¨Á¢Ê§°Ü */
+	if (sk->sk_state == TCP_CLOSE)/* è¿è¡Œåˆ°è¿™é‡Œè¯´æ˜è¿æ¥å»ºç«‹å¤±è´¥ */
 		goto sock_error;
 
 	/* sk->sk_err may be not zero now, if RECVERR was ordered by user
@@ -621,7 +621,7 @@ int inet_stream_connect(struct socket *sock, struct sockaddr *uaddr,
 	 * Hence, it is handled normally after connect() return successfully.
 	 */
 
-	sock->state = SS_CONNECTED;/* Á¬½Ó½¨Á¢³É¹¦£¬ÉèÖÃÎªÒÑ¾­Á¬½Ó×´Ì¬ */
+	sock->state = SS_CONNECTED;/* è¿æ¥å»ºç«‹æˆåŠŸï¼Œè®¾ç½®ä¸ºå·²ç»è¿æ¥çŠ¶æ€ */
 	err = 0;
 out:
 	release_sock(sk);
@@ -638,15 +638,15 @@ sock_error:
 /*
  *	Accept a pending connection. The TCP layer now gives BSD semantics.
  */
-/* acceptÏµÍ³µ÷ÓÃÔÚÌ×½Ó¿Ú²ãµÄÊµÏÖ */
+/* acceptç³»ç»Ÿè°ƒç”¨åœ¨å¥—æ¥å£å±‚çš„å®ç° */
 int inet_accept(struct socket *sock, struct socket *newsock, int flags)
 {
-	struct sock *sk1 = sock->sk;/* ¸ù¾İÌ×¿Ú»ñµÃ´«Êä²ã¿ØÖÆ¿é */
+	struct sock *sk1 = sock->sk;/* æ ¹æ®å¥—å£è·å¾—ä¼ è¾“å±‚æ§åˆ¶å— */
 	int err = -EINVAL;
-	/* µ÷ÓÃ´«Êä²ãµÄº¯Êıinet_csk_accept»ñµÃÒÑ¾­Íê³ÉµÄÁ¬½ÓµÄ´«Êä¿ØÖÆ¿é£¬¼´×Ó´«Êä¿ØÖÆ¿é */
+	/* è°ƒç”¨ä¼ è¾“å±‚çš„å‡½æ•°inet_csk_acceptè·å¾—å·²ç»å®Œæˆçš„è¿æ¥çš„ä¼ è¾“æ§åˆ¶å—ï¼Œå³å­ä¼ è¾“æ§åˆ¶å— */
 	struct sock *sk2 = sk1->sk_prot->accept(sk1, flags, &err);
 
-	if (!sk2)/* Ê§°Ü·µ»Ø */
+	if (!sk2)/* å¤±è´¥è¿”å› */
 		goto do_err;
 
 	lock_sock(sk2);
@@ -654,10 +654,10 @@ int inet_accept(struct socket *sock, struct socket *newsock, int flags)
 	BUG_TRAP((1 << sk2->sk_state) &
 		 (TCPF_ESTABLISHED | TCPF_CLOSE_WAIT | TCPF_CLOSE));
 
-	/* ½«×Ó´«Êä¿ØÖÆ¿éÓë´«Êä¿ØÖÆ¿é¹ØÁªÆğÀ´ */
+	/* å°†å­ä¼ è¾“æ§åˆ¶å—ä¸ä¼ è¾“æ§åˆ¶å—å…³è”èµ·æ¥ */
 	sock_graft(sk2, newsock);
 
-	/* ÉèÖÃÌ×½Ó¿ÚµÄ×´Ì¬ */
+	/* è®¾ç½®å¥—æ¥å£çš„çŠ¶æ€ */
 	newsock->state = SS_CONNECTED;
 	err = 0;
 	release_sock(sk2);
@@ -670,7 +670,7 @@ do_err:
  *	This does both peername and sockname.
  */
 /**
- * »ñÈ¡±¾¶Ë»òÕß¶Ô¶ËµÄµØÖ·ºÍ¶Ë¿Ú
+ * è·å–æœ¬ç«¯æˆ–è€…å¯¹ç«¯çš„åœ°å€å’Œç«¯å£
  */
 int inet_getname(struct socket *sock, struct sockaddr *uaddr,
 			int *uaddr_len, int peer)
@@ -679,15 +679,15 @@ int inet_getname(struct socket *sock, struct sockaddr *uaddr,
 	struct inet_sock *inet	= inet_sk(sk);
 	struct sockaddr_in *sin	= (struct sockaddr_in *)uaddr;
 
-	sin->sin_family = AF_INET;/* µØÖ·×å */
-	if (peer) {/* »ñÈ¡¶Ô¶ËµØÖ·ºÍ¶Ë¿Ú */
+	sin->sin_family = AF_INET;/* åœ°å€æ— */
+	if (peer) {/* è·å–å¯¹ç«¯åœ°å€å’Œç«¯å£ */
 		if (!inet->dport ||
-		    (((1 << sk->sk_state) & (TCPF_CLOSE | TCPF_SYN_SENT)) &&/* Î´Á¬½Ó×´Ì¬£¬²»ÄÜ»ñÈ¡¶Ô¶ËĞÅÏ¢ */
+		    (((1 << sk->sk_state) & (TCPF_CLOSE | TCPF_SYN_SENT)) &&/* æœªè¿æ¥çŠ¶æ€ï¼Œä¸èƒ½è·å–å¯¹ç«¯ä¿¡æ¯ */
 		     peer == 1))
 			return -ENOTCONN;
 		sin->sin_port = inet->dport;
 		sin->sin_addr.s_addr = inet->daddr;
-	} else {/* »ñÈ¡±¾¶ËµØÖ· */
+	} else {/* è·å–æœ¬ç«¯åœ°å€ */
 		__u32 addr = inet->rcv_saddr;
 		if (!addr)
 			addr = inet->saddr;
@@ -726,7 +726,7 @@ static ssize_t inet_sendpage(struct socket *sock, struct page *page, int offset,
 }
 
 /**
- * IPV4Ğ­ÒéµÄshuwdownÊµÏÖ
+ * IPV4åè®®çš„shuwdownå®ç°
  */
 int inet_shutdown(struct socket *sock, int how)
 {
@@ -736,11 +736,11 @@ int inet_shutdown(struct socket *sock, int how)
 	/* This should really check to make sure
 	 * the socket is a TCP socket. (WHY AC...)
 	 */
-	/* ±ãÓÚÎ»²Ù×÷ */
+	/* ä¾¿äºä½æ“ä½œ */
 	how++; /* maps 0->1 has the advantage of making bit 1 rcvs and
 		       1->2 bit 2 snds.
 		       2->3 */
-	if ((how & ~SHUTDOWN_MASK) || !how)	/* MAXINT->0 *//* ²ÎÊıÓĞĞ§ĞÔĞ£Ñé */
+	if ((how & ~SHUTDOWN_MASK) || !how)	/* MAXINT->0 *//* å‚æ•°æœ‰æ•ˆæ€§æ ¡éªŒ */
 		return -EINVAL;
 
 	lock_sock(sk);
@@ -759,7 +759,7 @@ int inet_shutdown(struct socket *sock, int how)
 		   POLLHUP, even on eg. unconnected UDP sockets -- RR */
 	default:
 		sk->sk_shutdown |= how;
-		if (sk->sk_prot->shutdown)/* Õı³£×´Ì¬ÏÂµ÷ÓÃ´«Êä²ãµÄshutdown */
+		if (sk->sk_prot->shutdown)/* æ­£å¸¸çŠ¶æ€ä¸‹è°ƒç”¨ä¼ è¾“å±‚çš„shutdown */
 			sk->sk_prot->shutdown(sk, how);
 		break;
 
@@ -768,18 +768,18 @@ int inet_shutdown(struct socket *sock, int how)
 	 * but we have no choice until close() is repaired at VFS level.
 	 */
 	case TCP_LISTEN:
-		if (!(how & RCV_SHUTDOWN))/* ÔÚlisten×´Ì¬ÏÂ¹Ø±Õ¶ÁÁ¬½Ó£¬Ôò¶Ï¿ªÁ¬½Ó£¬·ñÔòÍË³ö */
+		if (!(how & RCV_SHUTDOWN))/* åœ¨listençŠ¶æ€ä¸‹å…³é—­è¯»è¿æ¥ï¼Œåˆ™æ–­å¼€è¿æ¥ï¼Œå¦åˆ™é€€å‡º */
 			break;
 		/* Fall through */
-	case TCP_SYN_SENT:/* ÕıÔÚ½¨Á¢Á¬½ÓµÄ¹ı³ÌÖĞ */
-		/* Ö±½Ó¶Ï¿ªÁ¬½Ó */
+	case TCP_SYN_SENT:/* æ­£åœ¨å»ºç«‹è¿æ¥çš„è¿‡ç¨‹ä¸­ */
+		/* ç›´æ¥æ–­å¼€è¿æ¥ */
 		err = sk->sk_prot->disconnect(sk, O_NONBLOCK);
 		sock->state = err ? SS_DISCONNECTING : SS_UNCONNECTED;
 		break;
 	}
 
 	/* Wake up anyone sleeping in poll. */
-	sk->sk_state_change(sk);/* »½ĞÑ´«Êä¿ØÖÆ¿éÉÏµÄµÈ´ı½ø³Ì */
+	sk->sk_state_change(sk);/* å”¤é†’ä¼ è¾“æ§åˆ¶å—ä¸Šçš„ç­‰å¾…è¿›ç¨‹ */
 	release_sock(sk);
 	return err;
 }
@@ -795,7 +795,7 @@ int inet_shutdown(struct socket *sock, int how)
  */
 
 /**
- * IPV4µÄÌ×½Ó¿ÚÎÄ¼şioctlÊµÏÖ¡£
+ * IPV4çš„å¥—æ¥å£æ–‡ä»¶ioctlå®ç°ã€‚
  */
 int inet_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
 {
@@ -803,18 +803,18 @@ int inet_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
 	int err = 0;
 
 	switch (cmd) {
-		case SIOCGSTAMP:/* »ñÈ¡×î½ü½ÓÊÕµ½µÄ·Ö×éµÄÊ±¼ä´Á */
+		case SIOCGSTAMP:/* è·å–æœ€è¿‘æ¥æ”¶åˆ°çš„åˆ†ç»„çš„æ—¶é—´æˆ³ */
 			err = sock_get_timestamp(sk, (struct timeval __user *)arg);
 			break;
 		case SIOCADDRT:
 		case SIOCDELRT:
 		case SIOCRTMSG:
-			err = ip_rt_ioctl(cmd, (void __user *)arg);/* Ìí¼Ó»òÕßÉ¾³ıÂ·ÓÉ */
+			err = ip_rt_ioctl(cmd, (void __user *)arg);/* æ·»åŠ æˆ–è€…åˆ é™¤è·¯ç”± */
 			break;
 		case SIOCDARP:
 		case SIOCGARP:
 		case SIOCSARP:
-			err = arp_ioctl(cmd, (void __user *)arg);/* ´´½¨¡¢ĞŞ¸Ä¡¢É¾³ı¡¢»ñÈ¡ARP±íÏî¡£ */
+			err = arp_ioctl(cmd, (void __user *)arg);/* åˆ›å»ºã€ä¿®æ”¹ã€åˆ é™¤ã€è·å–ARPè¡¨é¡¹ã€‚ */
 			break;
 		case SIOCGIFADDR:
 		case SIOCSIFADDR:
@@ -827,9 +827,9 @@ int inet_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
 		case SIOCSIFPFLAGS:
 		case SIOCGIFPFLAGS:
 		case SIOCSIFFLAGS:
-			err = devinet_ioctl(cmd, (void __user *)arg);/* ¶ÔÉè±¸½Ó¿ÚµÄioctl£¬ÈçÉèÖÃÆäµØÖ·µÈµÈ */
+			err = devinet_ioctl(cmd, (void __user *)arg);/* å¯¹è®¾å¤‡æ¥å£çš„ioctlï¼Œå¦‚è®¾ç½®å…¶åœ°å€ç­‰ç­‰ */
 			break;
-		default:/* Ä¬ÈÏÇé¿öÏÂ£¬µ÷ÓÃÌ×½Ó¿ÚµÄÍøÂç´«Êä²ãioctl½Ó¿ÚÀ´´¦Àí */
+		default:/* é»˜è®¤æƒ…å†µä¸‹ï¼Œè°ƒç”¨å¥—æ¥å£çš„ç½‘ç»œä¼ è¾“å±‚ioctlæ¥å£æ¥å¤„ç† */
 			if (!sk->sk_prot->ioctl ||
 			    (err = sk->sk_prot->ioctl(sk, cmd, arg)) ==
 			    					-ENOIOCTLCMD)
@@ -1054,7 +1054,7 @@ static int __init init_ipv4_mibs(void)
 	net_statistics[0] = alloc_percpu(struct linux_mib);
 	net_statistics[1] = alloc_percpu(struct linux_mib);
 	/**
-	 * ·ÖÅäIPĞ­ÒéÍ³¼ÆÏòÁ¿¡£
+	 * åˆ†é…IPåè®®ç»Ÿè®¡å‘é‡ã€‚
 	 */
 	ip_statistics[0] = alloc_percpu(struct ipstats_mib);
 	ip_statistics[1] = alloc_percpu(struct ipstats_mib);

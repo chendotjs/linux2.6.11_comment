@@ -48,11 +48,11 @@
 #include <net/ipip.h>
 #include <linux/igmp.h>
 /**
- * ËùÓĞºÍÄÚºË×¢²áµÄL4Ğ­ÒéµÄinet_protocol½á¹¹¶¼»á²åÈëµ½Ò»ÕÅÃûÎªinet_protosµÄ±íÄÚ
+ * æ‰€æœ‰å’Œå†…æ ¸æ³¨å†Œçš„L4åè®®çš„inet_protocolç»“æ„éƒ½ä¼šæ’å…¥åˆ°ä¸€å¼ åä¸ºinet_protosçš„è¡¨å†…
  */
 struct net_protocol *inet_protos[MAX_INET_PROTOS];
 /**
- * ¶ÁĞ´´æÈ¡inet_protos±í£¨Èçinet_add_protocolºÍinet_del_protocol£©ÊÇÓÃinet_proto_lockÆ¬ĞıËøÀ´´®ĞĞ»¯´¦Àí¡£
+ * è¯»å†™å­˜å–inet_protosè¡¨ï¼ˆå¦‚inet_add_protocolå’Œinet_del_protocolï¼‰æ˜¯ç”¨inet_proto_lockç‰‡æ—‹é”æ¥ä¸²è¡ŒåŒ–å¤„ç†ã€‚
  */
 static DEFINE_SPINLOCK(inet_proto_lock);
 
@@ -60,7 +60,7 @@ static DEFINE_SPINLOCK(inet_proto_lock);
  *	Add a protocol handler to the hash tables
  */
 /**
- * IPV4»ù´¡ÉÏµÄL4Ğ­Òé×¢²á¡£
+ * IPV4åŸºç¡€ä¸Šçš„L4åè®®æ³¨å†Œã€‚
  */
 int inet_add_protocol(struct net_protocol *prot, unsigned char protocol)
 {

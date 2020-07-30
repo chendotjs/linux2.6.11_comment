@@ -60,7 +60,7 @@ static int raid0_issue_flush(request_queue_t *q, struct gendisk *disk,
 	return ret;
 }
 
-/* ÎªRAID0´´½¨Ìõ´ø */
+/* ä¸ºRAID0åˆ›å»ºæ¡å¸¦ */
 static int create_strip_zones (mddev_t *mddev)
 {
 	int i, c, j;
@@ -78,12 +78,12 @@ static int create_strip_zones (mddev_t *mddev)
 	 */
 	conf->nr_strip_zones = 0;
 
- 	/* Í³¼ÆÌõ´øÇøÓòÊıÄ¿ */
-	ITERATE_RDEV(mddev,rdev1,tmp1) {/* ±éÀúËùÓĞ´ÅÅÌ */
+ 	/* ç»Ÿè®¡æ¡å¸¦åŒºåŸŸæ•°ç›® */
+	ITERATE_RDEV(mddev,rdev1,tmp1) {/* éå†æ‰€æœ‰ç£ç›˜ */
 		printk("raid0: looking at %s\n",
 			bdevname(rdev1->bdev,b));
 		c = 0;
-		ITERATE_RDEV(mddev,rdev2,tmp2) {/* ´¦Àíµ±Ç°´ÅÅÌÒÔÇ°µÄËùÓĞ´ÅÅÌ */
+		ITERATE_RDEV(mddev,rdev2,tmp2) {/* å¤„ç†å½“å‰ç£ç›˜ä»¥å‰çš„æ‰€æœ‰ç£ç›˜ */
 			printk("raid0:   comparing %s(%llu)",
 			       bdevname(rdev1->bdev,b),
 			       (unsigned long long)rdev1->size);
@@ -94,19 +94,19 @@ static int create_strip_zones (mddev_t *mddev)
 				printk("raid0:   END\n");
 				break;
 			}
-			if (rdev2->size == rdev1->size)/* µ±Ç°´ÅÅÌÓëÒÔÇ°Ä³¸ö´ÅÅÌ³¤¶ÈÏàÍ¬ */
+			if (rdev2->size == rdev1->size)/* å½“å‰ç£ç›˜ä¸ä»¥å‰æŸä¸ªç£ç›˜é•¿åº¦ç›¸åŒ */
 			{
 				/*
 				 * Not unique, don't count it as a new
 				 * group
 				 */
 				printk("raid0:   EQUAL\n");
-				c = 1;/* ±íÊ¾³¤¶ÈÏàÍ¬£¬²»ÓÃÔö¼ÓÌõ´øÊıÄ¿ */
+				c = 1;/* è¡¨ç¤ºé•¿åº¦ç›¸åŒï¼Œä¸ç”¨å¢åŠ æ¡å¸¦æ•°ç›® */
 				break;
 			}
 			printk("raid0:   NOT EQUAL\n");
 		}
-		if (!c) {/* ÓëÆäËû´ÅÅÌ³¤¶È²»ÏàµÈ£¬ĞèÒªÔö¼ÓÌõ´øÊıÁ¿ */
+		if (!c) {/* ä¸å…¶ä»–ç£ç›˜é•¿åº¦ä¸ç›¸ç­‰ï¼Œéœ€è¦å¢åŠ æ¡å¸¦æ•°é‡ */
 			printk("raid0:   ==> UNIQUE\n");
 			conf->nr_strip_zones++;
 			printk("raid0: %d zones\n", conf->nr_strip_zones);
@@ -114,12 +114,12 @@ static int create_strip_zones (mddev_t *mddev)
 	}
 	printk("raid0: FINAL %d zones\n", conf->nr_strip_zones);
 
-	/* ¸ù¾İÌõ´øÊıÁ¿£¬·ÖÅä Ìõ´øÊı×é */
+	/* æ ¹æ®æ¡å¸¦æ•°é‡ï¼Œåˆ†é… æ¡å¸¦æ•°ç»„ */
 	conf->strip_zone = kmalloc(sizeof(struct strip_zone)*
 				conf->nr_strip_zones, GFP_KERNEL);
-	if (!conf->strip_zone)/* ÄÚ´æ·ÖÅäÊ§°Ü£¬ÍË³ö */
+	if (!conf->strip_zone)/* å†…å­˜åˆ†é…å¤±è´¥ï¼Œé€€å‡º */
 		return 1;
-	/* ·ÖÅäÉè±¸Ö¸ÕëÊı×é */
+	/* åˆ†é…è®¾å¤‡æŒ‡é’ˆæ•°ç»„ */
 	conf->devlist = kmalloc(sizeof(mdk_rdev_t*)*
 				conf->nr_strip_zones*mddev->raid_disks,
 				GFP_KERNEL);
@@ -135,18 +135,18 @@ static int create_strip_zones (mddev_t *mddev)
 	 * there is a proper alignment of slots to devices and find them all
 	 */
 	zone = &conf->strip_zone[0];
-	/* ÒÔÏÂÊÇ´¦ÀíµÚÒ»¸öÌõ´ø */
-	cnt = 0;/* Ìõ´øÇøÓò°üº¬µÄ´ÅÅÌÊı */
-	smallest = NULL;/* ³¤¶È×îĞ¡µÄ´ÅÅÌ£¬ËüÊÇµÚÒ»¸öÌõ´øµÄ½áÊøÉÈÇø */
+	/* ä»¥ä¸‹æ˜¯å¤„ç†ç¬¬ä¸€ä¸ªæ¡å¸¦ */
+	cnt = 0;/* æ¡å¸¦åŒºåŸŸåŒ…å«çš„ç£ç›˜æ•° */
+	smallest = NULL;/* é•¿åº¦æœ€å°çš„ç£ç›˜ï¼Œå®ƒæ˜¯ç¬¬ä¸€ä¸ªæ¡å¸¦çš„ç»“æŸæ‰‡åŒº */
 	zone->dev = conf->devlist;
 	ITERATE_RDEV(mddev, rdev1, tmp1) {
 		int j = rdev1->raid_disk;
 
-		if (j < 0 || j >= mddev->raid_disks) {/* Âß¼­´íÎó */
+		if (j < 0 || j >= mddev->raid_disks) {/* é€»è¾‘é”™è¯¯ */
 			printk("raid0: bad disk number %d - aborting!\n", j);
 			goto abort;
 		}
-		if (zone->dev[j]) {/* ÒÑ¾­ÊôÓÚÆäËûÌõ´øÁË???? */
+		if (zone->dev[j]) {/* å·²ç»å±äºå…¶ä»–æ¡å¸¦äº†???? */
 			printk("raid0: multiple devices for %d - aborting!\n",
 				j);
 			goto abort;
@@ -164,16 +164,16 @@ static int create_strip_zones (mddev_t *mddev)
 		    mddev->queue->max_sectors > (PAGE_SIZE>>9))
 			blk_queue_max_sectors(mddev->queue, PAGE_SIZE>>9);
 
-		if (!smallest || (rdev1->size <smallest->size))/* ¼ÇÂ¼×îĞ¡µÄ´ÅÅÌ */
+		if (!smallest || (rdev1->size <smallest->size))/* è®°å½•æœ€å°çš„ç£ç›˜ */
 			smallest = rdev1;
 		cnt++;
 	}
-	if (cnt != mddev->raid_disks) {/* Âß¼­¼ì²é£¬Ò»°ã²»»áÒì³£ */
+	if (cnt != mddev->raid_disks) {/* é€»è¾‘æ£€æŸ¥ï¼Œä¸€èˆ¬ä¸ä¼šå¼‚å¸¸ */
 		printk("raid0: too few disks (%d of %d) - aborting!\n",
 			cnt, mddev->raid_disks);
 		goto abort;
 	}
-	/* ÏÂÃæ´¦ÀíÆäËûÌõ´ø */
+	/* ä¸‹é¢å¤„ç†å…¶ä»–æ¡å¸¦ */
 	zone->nb_dev = cnt;
 	zone->size = smallest->size * cnt;
 	zone->zone_offset = 0;
@@ -182,7 +182,7 @@ static int create_strip_zones (mddev_t *mddev)
 	curr_zone_offset = zone->size;
 
 	/* now do the other zones */
-	for (i = 1; i < conf->nr_strip_zones; i++)/* Ñ­»·´¦ÀíÓàÏÂµÄÌõ´ø */
+	for (i = 1; i < conf->nr_strip_zones; i++)/* å¾ªç¯å¤„ç†ä½™ä¸‹çš„æ¡å¸¦ */
 	{
 		zone = conf->strip_zone + i;
 		zone->dev = conf->strip_zone[i-1].dev + mddev->raid_disks;
@@ -192,16 +192,16 @@ static int create_strip_zones (mddev_t *mddev)
 		smallest = NULL;
 		c = 0;
 
-		for (j=0; j<cnt; j++) {/* ±éÀúËùÓĞ´ÅÅÌ */
+		for (j=0; j<cnt; j++) {/* éå†æ‰€æœ‰ç£ç›˜ */
 			char b[BDEVNAME_SIZE];
 			rdev = conf->strip_zone[0].dev[j];
 			printk("raid0: checking %s ...", bdevname(rdev->bdev,b));
-			if (rdev->size > current_offset)/* ¸Ã´ÅÅÌÊôÓÚµ±Ç°Ìõ´ø */
+			if (rdev->size > current_offset)/* è¯¥ç£ç›˜å±äºå½“å‰æ¡å¸¦ */
 			{
 				printk(" contained as device %d\n", c);
 				zone->dev[c] = rdev;
 				c++;
-				if (!smallest || (rdev->size <smallest->size)) {/* ¼ÇÏÂ±¾ÂÖ´¦ÀíµÄ×îĞ¡´ÅÅÌ */
+				if (!smallest || (rdev->size <smallest->size)) {/* è®°ä¸‹æœ¬è½®å¤„ç†çš„æœ€å°ç£ç›˜ */
 					smallest = rdev;
 					printk("  (%llu) is smallest!.\n", 
 						(unsigned long long)rdev->size);

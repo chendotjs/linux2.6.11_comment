@@ -8,8 +8,8 @@
  * Development of this code was funded by Astaro AG, http://www.astaro.com/
  *
  * based on ipt_limit.c by:
- * Jérôme de Vivie	<devivie@info.enserb.u-bordeaux.fr>
- * Hervé Eychenne	<eychenne@info.enserb.u-bordeaux.fr>
+ * Jrme de Vivie	<devivie@info.enserb.u-bordeaux.fr>
+ * Herv Eychenne	<eychenne@info.enserb.u-bordeaux.fr>
  * Rusty Russell	<rusty@rustcorp.com.au>
  *
  * The general idea is to create a hash table for every dstip and have a

@@ -59,10 +59,10 @@ int get_blkdev_list(char *p)
 #endif
 
 /**
- * ×¢²á¿éÉè±¸Çı¶¯³ÌĞò¡£Îª¿éÉè±¸Ô¤¶©Ò»¸öÖ÷Éè±¸ºÅ¡£²¢ÔÚ/proc/devicesÌØÊâÎÄ¼şÖĞ²úÉúÒ»¸öĞÂÌõÄ¿¡£
- *		major:		Ö÷Éè±¸ºÅ¡£Èç¹û´«Èë0£¬Ôò·ÖÅäÒ»¸öĞÂµÄÖ÷Éè±¸ºÅ¡£²¢×÷Îª·µ»ØÖµ¡£
- *		name:		Çı¶¯Ãû³Æ¡£
- * ·µ»ØÖµÎªÕıÊı£¬±íÊ¾·ÖÅäµÄÖ÷Éè±¸ºÅ¡£¸ºÊı±íÊ¾´íÎó¡£
+ * æ³¨å†Œå—è®¾å¤‡é©±åŠ¨ç¨‹åºã€‚ä¸ºå—è®¾å¤‡é¢„è®¢ä¸€ä¸ªä¸»è®¾å¤‡å·ã€‚å¹¶åœ¨/proc/devicesç‰¹æ®Šæ–‡ä»¶ä¸­äº§ç”Ÿä¸€ä¸ªæ–°æ¡ç›®ã€‚
+ *		major:		ä¸»è®¾å¤‡å·ã€‚å¦‚æœä¼ å…¥0ï¼Œåˆ™åˆ†é…ä¸€ä¸ªæ–°çš„ä¸»è®¾å¤‡å·ã€‚å¹¶ä½œä¸ºè¿”å›å€¼ã€‚
+ *		name:		é©±åŠ¨åç§°ã€‚
+ * è¿”å›å€¼ä¸ºæ­£æ•°ï¼Œè¡¨ç¤ºåˆ†é…çš„ä¸»è®¾å¤‡å·ã€‚è´Ÿæ•°è¡¨ç¤ºé”™è¯¯ã€‚
  */
 int register_blkdev(unsigned int major, const char *name)
 {
@@ -122,7 +122,7 @@ EXPORT_SYMBOL(register_blkdev);
 
 /* todo: make void - error printk here */
 /**
- * ×¢Ïú¿éÉè±¸Çı¶¯³ÌĞò¡£
+ * æ³¨é”€å—è®¾å¤‡é©±åŠ¨ç¨‹åºã€‚
  */
 int unregister_blkdev(unsigned int major, const char *name)
 {
@@ -150,7 +150,7 @@ int unregister_blkdev(unsigned int major, const char *name)
 EXPORT_SYMBOL(unregister_blkdev);
 
 /**
- * kobj_map½¨Á¢Éè±¸Çı¶¯³ÌĞòºÍÉè±¸µÄÖ÷Éè±¸ºÅ£¨¼°Ïà¹Ø·¶Î§ÄÚµÄ´ÎÉè±¸ºÅ£©Ö®¼äµÄÁª½Ó¡£
+ * kobj_mapå»ºç«‹è®¾å¤‡é©±åŠ¨ç¨‹åºå’Œè®¾å¤‡çš„ä¸»è®¾å¤‡å·ï¼ˆåŠç›¸å…³èŒƒå›´å†…çš„æ¬¡è®¾å¤‡å·ï¼‰ä¹‹é—´çš„è”æ¥ã€‚
  */
 static struct kobj_map *bdev_map;
 
@@ -198,26 +198,26 @@ static int exact_lock(dev_t dev, void *data)
  * with the kernel.
  */
 /**
- * ×¢²áºÍ¼¤»î´ÅÅÌ
+ * æ³¨å†Œå’Œæ¿€æ´»ç£ç›˜
  */
 void add_disk(struct gendisk *disk)
 {
 	/**
-	 * ÉèÖÃGENHD_FL_UP±êÖ¾¡£
+	 * è®¾ç½®GENHD_FL_UPæ ‡å¿—ã€‚
 	 */
 	disk->flags |= GENHD_FL_UP;
 	/**
-	 * ½¨Á¢Éè±¸Çı¶¯³ÌĞòºÍÉè±¸µÄÖ÷Éè±¸ºÅÖ®¼äµÄÁ¬½Ó¡£
+	 * å»ºç«‹è®¾å¤‡é©±åŠ¨ç¨‹åºå’Œè®¾å¤‡çš„ä¸»è®¾å¤‡å·ä¹‹é—´çš„è¿æ¥ã€‚
 	 */
 	blk_register_region(MKDEV(disk->major, disk->first_minor),
 			    disk->minors, NULL, exact_match, exact_lock, disk);
 	/**
-	 * ×¢²áÉè±¸Çı¶¯³ÌĞòÄ£ĞÍµÄgendiskµÄkobject½á¹¹£¬Ëü×÷ÎªÉè±¸Çı¶¯³ÌĞòµÄÒ»¸öĞÂÉè±¸¡£
-	 * ²¢É¨Ãè´ÅÅÌÖĞµÄ·ÖÇø±í£¬¶ÔÃ¿¸ö·ÖÇø£¬³õÊ¼»¯Æähd_structÃèÊö·û¡£Í¬Ê±×¢²áÉè±¸Çı¶¯³ÌĞòÄ£ĞÍÖĞµÄ·ÖÇø¡£
+	 * æ³¨å†Œè®¾å¤‡é©±åŠ¨ç¨‹åºæ¨¡å‹çš„gendiskçš„kobjectç»“æ„ï¼Œå®ƒä½œä¸ºè®¾å¤‡é©±åŠ¨ç¨‹åºçš„ä¸€ä¸ªæ–°è®¾å¤‡ã€‚
+	 * å¹¶æ‰«æç£ç›˜ä¸­çš„åˆ†åŒºè¡¨ï¼Œå¯¹æ¯ä¸ªåˆ†åŒºï¼Œåˆå§‹åŒ–å…¶hd_structæè¿°ç¬¦ã€‚åŒæ—¶æ³¨å†Œè®¾å¤‡é©±åŠ¨ç¨‹åºæ¨¡å‹ä¸­çš„åˆ†åŒºã€‚
 	 */
 	register_disk(disk);
 	/**
-	 * ×¢²áÇëÇó¶ÓÁĞÃèÊö·ûÖĞÄÚÇ¶µÄkobject½á¹¹¡£
+	 * æ³¨å†Œè¯·æ±‚é˜Ÿåˆ—æè¿°ç¬¦ä¸­å†…åµŒçš„kobjectç»“æ„ã€‚
 	 */
 	blk_register_queue(disk);
 }
@@ -595,22 +595,22 @@ struct seq_operations diskstats_op = {
 };
 
 /**
- * ·ÖÅä²¢³õÊ¼»¯Ò»¸öĞÂµÄgendisk(´ÅÅÌ)¶ÔÏó
- * Èç¹ûĞÂ´ÅÅÌ±»·ÖÇø£¬ÄÇËü»¹»á·ÖÅä²¢³õÊ¼»¯Ò»¸öÊÊµ±µÄhd_structÊı×é
+ * åˆ†é…å¹¶åˆå§‹åŒ–ä¸€ä¸ªæ–°çš„gendisk(ç£ç›˜)å¯¹è±¡
+ * å¦‚æœæ–°ç£ç›˜è¢«åˆ†åŒºï¼Œé‚£å®ƒè¿˜ä¼šåˆ†é…å¹¶åˆå§‹åŒ–ä¸€ä¸ªé€‚å½“çš„hd_structæ•°ç»„
  */
 struct gendisk *alloc_disk(int minors)
 {
-	/* ·ÖÅä´ÅÅÌÃèÊö·û¿Õ¼ä */
+	/* åˆ†é…ç£ç›˜æè¿°ç¬¦ç©ºé—´ */
 	struct gendisk *disk = kmalloc(sizeof(struct gendisk), GFP_KERNEL);
 	if (disk) {
 		memset(disk, 0, sizeof(struct gendisk));
-		if (!init_disk_stats(disk)) {/* ·ÖÅäÃ¿CPUµÄÍ³¼ÆÊı¾İ */
+		if (!init_disk_stats(disk)) {/* åˆ†é…æ¯CPUçš„ç»Ÿè®¡æ•°æ® */
 			kfree(disk);
 			return NULL;
 		}
-		if (minors > 1) {/* ·ÖÇøÊı´óÓÚ1£¬±íÊ¾ÓĞÂß¼­·ÖÇø */
+		if (minors > 1) {/* åˆ†åŒºæ•°å¤§äº1ï¼Œè¡¨ç¤ºæœ‰é€»è¾‘åˆ†åŒº */
 			int size = (minors - 1) * sizeof(struct hd_struct *);
-			/* ÎªÂß¼­·ÖÇø·ÖÅäÃèÊö·û */
+			/* ä¸ºé€»è¾‘åˆ†åŒºåˆ†é…æè¿°ç¬¦ */
 			disk->part = kmalloc(size, GFP_KERNEL);
 			if (!disk->part) {
 				kfree(disk);
@@ -619,10 +619,10 @@ struct gendisk *alloc_disk(int minors)
 			memset(disk->part, 0, size);
 		}
 		disk->minors = minors;
-		/* ´¦ÀísysÎÄ¼şÏµÍ³ */
+		/* å¤„ç†sysæ–‡ä»¶ç³»ç»Ÿ */
 		kobj_set_kset_s(disk,block_subsys);
 		kobject_init(&disk->kobj);
-		/* Ëæ»úÊıìØ´¦Àí */
+		/* éšæœºæ•°ç†µå¤„ç† */
 		rand_initialize_disk(disk);
 	}
 	return disk;
@@ -631,7 +631,7 @@ struct gendisk *alloc_disk(int minors)
 EXPORT_SYMBOL(alloc_disk);
 
 /**
- * Ôö¼Ó´ÅÅÌÉè±¸µÄÒıÓÃ¼ÆÊı¡£
+ * å¢åŠ ç£ç›˜è®¾å¤‡çš„å¼•ç”¨è®¡æ•°ã€‚
  */
 struct kobject *get_disk(struct gendisk *disk)
 {

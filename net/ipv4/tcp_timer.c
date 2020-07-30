@@ -23,21 +23,21 @@
 #include <linux/module.h>
 #include <net/tcp.h>
 
-/* TCP½¨Á¢Á¬½ÓÊ±£¬×î¶à³¢ÊÔ·¢ËÍSYNÁ¬½ÓÇëÇóµÄ´ÎÊı¡£²»Ó¦´óÓÚ255.Ä¬ÈÏÎª5£¬´óÔ¼180s */
+/* TCPå»ºç«‹è¿æ¥æ—¶ï¼Œæœ€å¤šå°è¯•å‘é€SYNè¿æ¥è¯·æ±‚çš„æ¬¡æ•°ã€‚ä¸åº”å¤§äº255.é»˜è®¤ä¸º5ï¼Œå¤§çº¦180s */
 int sysctl_tcp_syn_retries = TCP_SYN_RETRIES; 
-/* ±»¶¯Á¬½Ó¶ËÔÚ·ÅÆúÁ¬½Ó³¢ÊÔÇ°×î¶à·¢ËÍ¶àÉÙ¸öSYN+ACK¶Î¡£²»Ó¦¸Ã´óÓÚ255. */
+/* è¢«åŠ¨è¿æ¥ç«¯åœ¨æ”¾å¼ƒè¿æ¥å°è¯•å‰æœ€å¤šå‘é€å¤šå°‘ä¸ªSYN+ACKæ®µã€‚ä¸åº”è¯¥å¤§äº255. */
 int sysctl_tcp_synack_retries = TCP_SYNACK_RETRIES; 
-/* ´Ó×îºóÒ»´ÎÊı¾İ½»»»µ½·¢ËÍ±£»îÌ½²â°üµÄÊ±¼ä¼ä¸ô£¬Ä¬ÈÏÎª2h */
+/* ä»æœ€åä¸€æ¬¡æ•°æ®äº¤æ¢åˆ°å‘é€ä¿æ´»æ¢æµ‹åŒ…çš„æ—¶é—´é—´éš”ï¼Œé»˜è®¤ä¸º2h */
 int sysctl_tcp_keepalive_time = TCP_KEEPALIVE_TIME;
-/* Ì½²â´ÎÊı£¬¾­¹ıÒ»¶¨´ÎÊıºóÈÏÎªÁ¬½ÓÒÑ¾­¶Ï¿ª */
+/* æ¢æµ‹æ¬¡æ•°ï¼Œç»è¿‡ä¸€å®šæ¬¡æ•°åè®¤ä¸ºè¿æ¥å·²ç»æ–­å¼€ */
 int sysctl_tcp_keepalive_probes = TCP_KEEPALIVE_PROBES;
-/* TCP±£»îÌ½²âÏûÏ¢µÄ·¢ËÍ¼ä¸ô£¬Ä¬ÈÏÎª75s,¶Ï¿ªÊ±¼äÔ¼Îª11min */
+/* TCPä¿æ´»æ¢æµ‹æ¶ˆæ¯çš„å‘é€é—´éš”ï¼Œé»˜è®¤ä¸º75s,æ–­å¼€æ—¶é—´çº¦ä¸º11min */
 int sysctl_tcp_keepalive_intvl = TCP_KEEPALIVE_INTVL;
-/* µ±ÖØ´«´ÎÊı³¬¹ı´ËÖµÊ±£¬¿ÉÄÜÓöµ½ºÚ¶´¡£Òò´ËÇå³ı»º´æÔÚ´«Êä¿ØÖÆ¿éÖĞµÄÂ·ÓÉ»º´æÏî£¬ÔÚÏÂ´ÎÖØ´«Ê±½øĞĞÂ·ÓÉÑ¡Ôñ£¬´óÔ¼3s-8min */
+/* å½“é‡ä¼ æ¬¡æ•°è¶…è¿‡æ­¤å€¼æ—¶ï¼Œå¯èƒ½é‡åˆ°é»‘æ´ã€‚å› æ­¤æ¸…é™¤ç¼“å­˜åœ¨ä¼ è¾“æ§åˆ¶å—ä¸­çš„è·¯ç”±ç¼“å­˜é¡¹ï¼Œåœ¨ä¸‹æ¬¡é‡ä¼ æ—¶è¿›è¡Œè·¯ç”±é€‰æ‹©ï¼Œå¤§çº¦3s-8min */
 int sysctl_tcp_retries1 = TCP_RETR1;
-/* ³ÖĞø¶¨Ê±Æ÷ÖÜÆÚĞÔ·¢ËÍTCP¶Î»ò³¬Ê±ÖØ´«Ê±£¬ÔÚÈ·¶¨¶Ï¿ªÁ¬½ÓÖ®Ç°ÖØÊÔµÄ´ÎÊı¡£Ä¬ÈÏÎª15´Î£¬Ô¼13-30·ÖÖÓ£¬¸ÃÖµ±ØĞë´óÓÚ100s */
+/* æŒç»­å®šæ—¶å™¨å‘¨æœŸæ€§å‘é€TCPæ®µæˆ–è¶…æ—¶é‡ä¼ æ—¶ï¼Œåœ¨ç¡®å®šæ–­å¼€è¿æ¥ä¹‹å‰é‡è¯•çš„æ¬¡æ•°ã€‚é»˜è®¤ä¸º15æ¬¡ï¼Œçº¦13-30åˆ†é’Ÿï¼Œè¯¥å€¼å¿…é¡»å¤§äº100s */
 int sysctl_tcp_retries2 = TCP_RETR2;
-/* ÔÚÈ·ÈÏÁ¬½ÓÒì³££¬²¢¹Ø±Õ±¾¶ËTCPÖ®Ç°£¬×î¶àÖØÊÔµÄ´ÎÊı¡£Ä¬ÈÏÖµÎª7±íÊ¾50s-16min¡£ */
+/* åœ¨ç¡®è®¤è¿æ¥å¼‚å¸¸ï¼Œå¹¶å…³é—­æœ¬ç«¯TCPä¹‹å‰ï¼Œæœ€å¤šé‡è¯•çš„æ¬¡æ•°ã€‚é»˜è®¤å€¼ä¸º7è¡¨ç¤º50s-16minã€‚ */
 int sysctl_tcp_orphan_retries;
 
 static void tcp_write_timer(unsigned long);
@@ -53,7 +53,7 @@ const char tcp_timer_bug_msg[] = KERN_DEBUG "tcpbug: unknown timer value\n";
  * We may wish use just one timer maintaining a list of expire jiffies 
  * to optimize.
  */
-/* ³õÊ¼»¯´«Êä¿ØÖÆ¿éÖĞµÄ¶¨Ê±Æ÷ */
+/* åˆå§‹åŒ–ä¼ è¾“æ§åˆ¶å—ä¸­çš„å®šæ—¶å™¨ */
 void tcp_init_xmit_timers(struct sock *sk)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
@@ -160,18 +160,18 @@ static int tcp_orphan_retries(struct sock *sk, int alive)
 }
 
 /* A write timeout has occurred. Process the after effects. */
-/* ÖØ´«·¢Éúºó£¬¼ì²âµ±Ç°×ÊÔ´Ê¹ÓÃÇé¿ö */
+/* é‡ä¼ å‘ç”Ÿåï¼Œæ£€æµ‹å½“å‰èµ„æºä½¿ç”¨æƒ…å†µ */
 static int tcp_write_timeout(struct sock *sk)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
 	int retry_until;
 
-	if ((1 << sk->sk_state) & (TCPF_SYN_SENT | TCPF_SYN_RECV)) {/* Á¬½Ó½×¶Î */
-		if (tp->retransmits)/* ¼ì²âÊ¹ÓÃµÄÂ·ÓÉ»º´æÏî */
+	if ((1 << sk->sk_state) & (TCPF_SYN_SENT | TCPF_SYN_RECV)) {/* è¿æ¥é˜¶æ®µ */
+		if (tp->retransmits)/* æ£€æµ‹ä½¿ç”¨çš„è·¯ç”±ç¼“å­˜é¡¹ */
 			dst_negative_advice(&sk->sk_dst_cache);
 		retry_until = tp->syn_retries ? : sysctl_tcp_syn_retries;
 	} else {
-		if (tp->retransmits >= sysctl_tcp_retries1) {/* ÖØ´«´ÎÊı³¬¹ı3´Î£¬ÔòĞèÒª½øĞĞºÚ¶´¼ì²â */
+		if (tp->retransmits >= sysctl_tcp_retries1) {/* é‡ä¼ æ¬¡æ•°è¶…è¿‡3æ¬¡ï¼Œåˆ™éœ€è¦è¿›è¡Œé»‘æ´æ£€æµ‹ */
 			/* NOTE. draft-ietf-tcpimpl-pmtud-01.txt requires pmtu black
 			   hole detection. :-(
 
@@ -196,18 +196,18 @@ static int tcp_write_timeout(struct sock *sk)
 		}
 
 		retry_until = sysctl_tcp_retries2;
-		if (sock_flag(sk, SOCK_DEAD)) {/* Ì×½Ó¿ÚÒÑ¾­¶Ï¿ª²¢¼´½«¹Ø±Õ */
+		if (sock_flag(sk, SOCK_DEAD)) {/* å¥—æ¥å£å·²ç»æ–­å¼€å¹¶å³å°†å…³é—­ */
 			int alive = (tp->rto < TCP_RTO_MAX);
  
 			retry_until = tcp_orphan_retries(sk, alive);
 
-			/* ¹Â¶ùÌ×½Ó¿ÚÊıÁ¿´ïµ½×î´óÖµ£¬»òÕßµ±Ç°ÒÑ¾­Ê¹ÓÃµÄÄÚ´æ´ïµ½Ó²ĞÔÏŞÖÆÊ±£¬ĞèÒªÁ¢¼´¹Ø±ÕÌ×½Ó¿Ú */
+			/* å­¤å„¿å¥—æ¥å£æ•°é‡è¾¾åˆ°æœ€å¤§å€¼ï¼Œæˆ–è€…å½“å‰å·²ç»ä½¿ç”¨çš„å†…å­˜è¾¾åˆ°ç¡¬æ€§é™åˆ¶æ—¶ï¼Œéœ€è¦ç«‹å³å…³é—­å¥—æ¥å£ */
 			if (tcp_out_of_resources(sk, alive || tp->retransmits < retry_until))
 				return 1;
 		}
 	}
 
-	if (tp->retransmits >= retry_until) {/* ´ïµ½ÖØ´«ÉÏÏŞ£¬±ØĞë¹Ø±ÕÌ×½Ó¿Ú²¢±¨¸æÏàÓ¦´íÎó */
+	if (tp->retransmits >= retry_until) {/* è¾¾åˆ°é‡ä¼ ä¸Šé™ï¼Œå¿…é¡»å…³é—­å¥—æ¥å£å¹¶æŠ¥å‘Šç›¸åº”é”™è¯¯ */
 		/* Has it gone just too far? */
 		tcp_write_err(sk);
 		return 1;
@@ -215,51 +215,51 @@ static int tcp_write_timeout(struct sock *sk)
 	return 0;
 }
 
-/* ÑÓÊ±È·ÈÏ¶¨Ê±Æ÷º¯Êı */
+/* å»¶æ—¶ç¡®è®¤å®šæ—¶å™¨å‡½æ•° */
 static void tcp_delack_timer(unsigned long data)
 {
 	struct sock *sk = (struct sock*)data;
 	struct tcp_sock *tp = tcp_sk(sk);
 
 	bh_lock_sock(sk);
-	if (sock_owned_by_user(sk)) {/* ´«Êä¿ØÖÆ¿éÒÑ¾­±»ÓÃ»§½ø³ÌËø¶¨£¬Ôò´ËÊ±²»ÄÜ×÷´¦Àí */
+	if (sock_owned_by_user(sk)) {/* ä¼ è¾“æ§åˆ¶å—å·²ç»è¢«ç”¨æˆ·è¿›ç¨‹é”å®šï¼Œåˆ™æ­¤æ—¶ä¸èƒ½ä½œå¤„ç† */
 		/* Try again later. */
-		/* ±ê¼Çack±»×èÈû */
+		/* æ ‡è®°ackè¢«é˜»å¡ */
 		tp->ack.blocked = 1;
 		NET_INC_STATS_BH(LINUX_MIB_DELAYEDACKLOCKED);
-		/* ÖØĞÂÉèÖÃ¶¨Ê±Æ÷³¬Ê±Ê±¼ä */
+		/* é‡æ–°è®¾ç½®å®šæ—¶å™¨è¶…æ—¶æ—¶é—´ */
 		sk_reset_timer(sk, &tp->delack_timer, jiffies + TCP_DELACK_MIN);
 		goto out_unlock;
 	}
 
 	sk_stream_mem_reclaim(sk);/* ?? */
 
-	/* Á¬½ÓÒÑ¾­¹Ø±Õ£¬»òÕßÃ»ÓĞÆô¶¯ÑÓÊ±·¢ËÍACK¶¨Ê±Æ÷£¬ÔòÍË³ö */
+	/* è¿æ¥å·²ç»å…³é—­ï¼Œæˆ–è€…æ²¡æœ‰å¯åŠ¨å»¶æ—¶å‘é€ACKå®šæ—¶å™¨ï¼Œåˆ™é€€å‡º */
 	if (sk->sk_state == TCP_CLOSE || !(tp->ack.pending & TCP_ACK_TIMER))
 		goto out;
 
-	if (time_after(tp->ack.timeout, jiffies)) {/* ³¬Ê±Ê±¼äÎ´µ½£¬¸´Î»¶¨Ê±Æ÷²¢ÍË³ö */
+	if (time_after(tp->ack.timeout, jiffies)) {/* è¶…æ—¶æ—¶é—´æœªåˆ°ï¼Œå¤ä½å®šæ—¶å™¨å¹¶é€€å‡º */
 		sk_reset_timer(sk, &tp->delack_timer, tp->ack.timeout);
 		goto out;
 	}
-	/* È¥µôTCP_ACK_TIMER */
+	/* å»æ‰TCP_ACK_TIMER */
 	tp->ack.pending &= ~TCP_ACK_TIMER;
 
-	if (skb_queue_len(&tp->ucopy.prequeue)) {/* prequeue¶ÓÁĞ²»Îª¿Õ */
+	if (skb_queue_len(&tp->ucopy.prequeue)) {/* prequeueé˜Ÿåˆ—ä¸ä¸ºç©º */
 		struct sk_buff *skb;
 
 		NET_ADD_STATS_BH(LINUX_MIB_TCPSCHEDULERFAILED, 
 				 skb_queue_len(&tp->ucopy.prequeue));
 
-		/* Í¨¹ısk_backlog_rcv´¦Àí¶ÓÁĞÖĞµÄSKB */
+		/* é€šè¿‡sk_backlog_rcvå¤„ç†é˜Ÿåˆ—ä¸­çš„SKB */
 		while ((skb = __skb_dequeue(&tp->ucopy.prequeue)) != NULL)
 			sk->sk_backlog_rcv(sk, skb);
 
 		tp->ucopy.memory = 0;
 	}
 
-	if (tcp_ack_scheduled(tp)) {/* ĞèÒª·¢ËÍACK */
-		if (!tp->ack.pingpong) {/* ÔÚ·¢ËÍACKÇ°ÏÈÀë¿ªpingpongÄ£Ê½£¬²¢ÖØĞÂÉè¶¨ÑÓÊ±È·ÈÏ¹ÀËãÖµ¡£ */
+	if (tcp_ack_scheduled(tp)) {/* éœ€è¦å‘é€ACK */
+		if (!tp->ack.pingpong) {/* åœ¨å‘é€ACKå‰å…ˆç¦»å¼€pingpongæ¨¡å¼ï¼Œå¹¶é‡æ–°è®¾å®šå»¶æ—¶ç¡®è®¤ä¼°ç®—å€¼ã€‚ */
 			/* Delayed ACK missed: inflate ATO. */
 			tp->ack.ato = min(tp->ack.ato << 1, tp->rto);
 		} else {
@@ -269,7 +269,7 @@ static void tcp_delack_timer(unsigned long data)
 			tp->ack.pingpong = 0;
 			tp->ack.ato = TCP_ATO_MIN;
 		}
-		/* ·¢ËÍACK */
+		/* å‘é€ACK */
 		tcp_send_ack(sk);
 		NET_INC_STATS_BH(LINUX_MIB_DELAYEDACKS);
 	}
@@ -283,14 +283,14 @@ out_unlock:
 	sock_put(sk);
 }
 
-/* ³ÖĞø¶¨Ê±Æ÷£¬µ±¶Ô¶ËÍ¨¸æ½ÓÊÕ´°¿ÚÎª0£¬×èÖ¹TCP¼ÌĞø·¢ËÍÊı¾İÊ±Éè¶¨ */
+/* æŒç»­å®šæ—¶å™¨ï¼Œå½“å¯¹ç«¯é€šå‘Šæ¥æ”¶çª—å£ä¸º0ï¼Œé˜»æ­¢TCPç»§ç»­å‘é€æ•°æ®æ—¶è®¾å®š */
 static void tcp_probe_timer(struct sock *sk)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
 	int max_probes;
 
 	/**
-	 * ÓĞ·¢ËÍ³öÈ¥µ«ÊÇÎ´±»È·ÈÏµÄ¶Î£¬»òÕß·¢ËÍ¶ÓÁĞ»¹ÓĞ´ı·¢ËÍµÄ¶Î£¬Ôò²»ÓÃ·¢ËÍÌ½²â¶Î¡£
+	 * æœ‰å‘é€å‡ºå»ä½†æ˜¯æœªè¢«ç¡®è®¤çš„æ®µï¼Œæˆ–è€…å‘é€é˜Ÿåˆ—è¿˜æœ‰å¾…å‘é€çš„æ®µï¼Œåˆ™ä¸ç”¨å‘é€æ¢æµ‹æ®µã€‚
 	 */
 	if (tp->packets_out || !sk->sk_send_head) {
 		tp->probes_out = 0;
@@ -312,42 +312,42 @@ static void tcp_probe_timer(struct sock *sk)
 	 * with RFCs, only probe timer combines both retransmission timeout
 	 * and probe timeout in one bottle.				--ANK
 	 */
-	max_probes = sysctl_tcp_retries2;/* ¶Ï¿ªÁ¬½ÓÇ°£¬³ÖĞø¶¨Ê±Æ÷·¢ËÍTCP¶ÎµÄÊıÄ¿ÉÏÏŞ */
+	max_probes = sysctl_tcp_retries2;/* æ–­å¼€è¿æ¥å‰ï¼ŒæŒç»­å®šæ—¶å™¨å‘é€TCPæ®µçš„æ•°ç›®ä¸Šé™ */
 
-	if (sock_flag(sk, SOCK_DEAD)) {/* Á¬½ÓÒÑ¾­¶Ï¿ª£¬Ì×½Ó¿Ú¼´½«¹Ø±Õ */
+	if (sock_flag(sk, SOCK_DEAD)) {/* è¿æ¥å·²ç»æ–­å¼€ï¼Œå¥—æ¥å£å³å°†å…³é—­ */
 		int alive = ((tp->rto<<tp->backoff) < TCP_RTO_MAX);
 
- 		/* ¹Ø±ÕÁ¬½ÓÇ°£¬ÖØÊÔ´ÎÊı¡£ */
+ 		/* å…³é—­è¿æ¥å‰ï¼Œé‡è¯•æ¬¡æ•°ã€‚ */
 		max_probes = tcp_orphan_retries(sk, alive);
 
-		/* ÊÍ·Å×ÊÔ´£¬Èç¹ûÌ×½Ó¿ÚÔÚÊÍ·Å¹ı³ÌÖĞ±»¹Ø±Õ£¬¾Í²»±Ø·¢ËÍÌ½²â¶ÎÁË¡£ */
+		/* é‡Šæ”¾èµ„æºï¼Œå¦‚æœå¥—æ¥å£åœ¨é‡Šæ”¾è¿‡ç¨‹ä¸­è¢«å…³é—­ï¼Œå°±ä¸å¿…å‘é€æ¢æµ‹æ®µäº†ã€‚ */
 		if (tcp_out_of_resources(sk, alive || tp->probes_out <= max_probes))
 			return;
 	}
 
-	if (tp->probes_out > max_probes) {/* Èç¹û·¢ËÍµÄÌ½²â¶ÎÊıÄ¿´ïµ½ÉÏÏŞ£¬Ôò·¢ËÍ´íÎó±¨¸æ²¢¹Ø±Õ½Ó¿Ú */
+	if (tp->probes_out > max_probes) {/* å¦‚æœå‘é€çš„æ¢æµ‹æ®µæ•°ç›®è¾¾åˆ°ä¸Šé™ï¼Œåˆ™å‘é€é”™è¯¯æŠ¥å‘Šå¹¶å…³é—­æ¥å£ */
 		tcp_write_err(sk);
 	} else {
 		/* Only send another probe if we didn't close things up. */
-		tcp_send_probe0(sk);/* ·¢ËÍÌ½²â¶Î */
+		tcp_send_probe0(sk);/* å‘é€æ¢æµ‹æ®µ */
 	}
 }
 
 /*
  *	The TCP retransmit timer.
  */
-/* ÖØ´«¶¨Ê±Æ÷ */
+/* é‡ä¼ å®šæ—¶å™¨ */
 static void tcp_retransmit_timer(struct sock *sk)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
 
-	if (!tp->packets_out)/* ËùÓĞ·¢ËÍµÄ¶Î¶¼µÃµ½ÁËÈ·ÈÏ£¬ÎŞĞèÒªÖØ´«´¦Àí */
+	if (!tp->packets_out)/* æ‰€æœ‰å‘é€çš„æ®µéƒ½å¾—åˆ°äº†ç¡®è®¤ï¼Œæ— éœ€è¦é‡ä¼ å¤„ç† */
 		goto out;
 
 	BUG_TRAP(!skb_queue_empty(&sk->sk_write_queue));
 
-	if (!tp->snd_wnd && !sock_flag(sk, SOCK_DEAD) &&/* ·¢ËÍ´°¿ÚÒÑ¾­¹Ø±Õ£¬Ì×¿ÚÃ»ÓĞ¹Ø±Õ */
-	    !((1 << sk->sk_state) & (TCPF_SYN_SENT | TCPF_SYN_RECV))) {/* TCP²»ÊÇÁ¬½Ó¹ı³Ì */
+	if (!tp->snd_wnd && !sock_flag(sk, SOCK_DEAD) &&/* å‘é€çª—å£å·²ç»å…³é—­ï¼Œå¥—å£æ²¡æœ‰å…³é—­ */
+	    !((1 << sk->sk_state) & (TCPF_SYN_SENT | TCPF_SYN_RECV))) {/* TCPä¸æ˜¯è¿æ¥è¿‡ç¨‹ */
 		/* Receiver dastardly shrinks window. Our retransmits
 		 * become zero probes, but we should not timeout this
 		 * connection. If the socket is an orphan, time it out,
@@ -361,30 +361,30 @@ static void tcp_retransmit_timer(struct sock *sk)
 			       inet->num, tp->snd_una, tp->snd_nxt);
 		}
 #endif
-		/* ³¬¹ı120sÃ»ÓĞÊÕµ½°üÁË */
+		/* è¶…è¿‡120sæ²¡æœ‰æ”¶åˆ°åŒ…äº† */
 		if (tcp_time_stamp - tp->rcv_tstamp > TCP_RTO_MAX) {
-			/* ±¨¸æ´íÎó²¢¹Ø±ÕÌ×¿Ú²¢·µ»Ø */
+			/* æŠ¥å‘Šé”™è¯¯å¹¶å…³é—­å¥—å£å¹¶è¿”å› */
 			tcp_write_err(sk);
 			goto out;
 		}
-		/* ½øÈëÓµÈû¿ØÖÆµÄLOSS×´Ì¬ */
+		/* è¿›å…¥æ‹¥å¡æ§åˆ¶çš„LOSSçŠ¶æ€ */
 		tcp_enter_loss(sk, 0);
-		/* ÖØĞÂ´«ËÍÖØ´«¶ÓÁĞÖĞµÚÒ»¸ö¶Î */
+		/* é‡æ–°ä¼ é€é‡ä¼ é˜Ÿåˆ—ä¸­ç¬¬ä¸€ä¸ªæ®µ */
 		tcp_retransmit_skb(sk, skb_peek(&sk->sk_write_queue));
-		/* ÓÉÓÚ·¢ÉúÁËÖØ´«£¬Òò´ËĞèÒª¸üĞÂÂ·ÓÉ»º´æ£¬½«ÆäÇå³ı¡£ */
+		/* ç”±äºå‘ç”Ÿäº†é‡ä¼ ï¼Œå› æ­¤éœ€è¦æ›´æ–°è·¯ç”±ç¼“å­˜ï¼Œå°†å…¶æ¸…é™¤ã€‚ */
 		__sk_dst_reset(sk);
 		goto out_reset_timer;
 	}
 
 	/**
-	 * ÖØ´«·¢Éú£¬¼ì²âµ±Ç°µÄ×ÊÔ´Ê¹ÓÃÇé¿öºÍÖØ´«µÄ´ÎÊı¡£
-	 * Èç¹ûÖØ´«´ÎÊı´ïµ½ÉÏÏŞ£¬ÔòĞèÒª±¨¸æ´íÎó²¢Ç¿ĞĞ¹Ø±ÕÌ×½Ó¿Ú¡£
-	 * Èç¹ûÖ»ÊÇÊ¹ÓÃ×ÊÔ´´ïµ½Ê¹ÓÃÉÏÏŞ£¬Ôò²»½øĞĞÖØ´«¡£
+	 * é‡ä¼ å‘ç”Ÿï¼Œæ£€æµ‹å½“å‰çš„èµ„æºä½¿ç”¨æƒ…å†µå’Œé‡ä¼ çš„æ¬¡æ•°ã€‚
+	 * å¦‚æœé‡ä¼ æ¬¡æ•°è¾¾åˆ°ä¸Šé™ï¼Œåˆ™éœ€è¦æŠ¥å‘Šé”™è¯¯å¹¶å¼ºè¡Œå…³é—­å¥—æ¥å£ã€‚
+	 * å¦‚æœåªæ˜¯ä½¿ç”¨èµ„æºè¾¾åˆ°ä½¿ç”¨ä¸Šé™ï¼Œåˆ™ä¸è¿›è¡Œé‡ä¼ ã€‚
 	 */
 	if (tcp_write_timeout(sk))
 		goto out;
 
-	if (tp->retransmits == 0) {/* ÖØ´«´ÎÊıÎª0£¬ËµÃ÷¸Õ½øÈëÖØ´«½×¶Î£¬¸ù¾İÓµÈû×´Ì¬½øĞĞÊı¾İÍ³¼Æ */
+	if (tp->retransmits == 0) {/* é‡ä¼ æ¬¡æ•°ä¸º0ï¼Œè¯´æ˜åˆšè¿›å…¥é‡ä¼ é˜¶æ®µï¼Œæ ¹æ®æ‹¥å¡çŠ¶æ€è¿›è¡Œæ•°æ®ç»Ÿè®¡ */
 		if (tp->ca_state == TCP_CA_Disorder || tp->ca_state == TCP_CA_Recovery) {
 			if (tp->rx_opt.sack_ok) {
 				if (tp->ca_state == TCP_CA_Recovery)
@@ -404,13 +404,13 @@ static void tcp_retransmit_timer(struct sock *sk)
 		}
 	}
 
-	if (tcp_use_frto(sk)) {/* ÆôÓÃÁËFRTO */
+	if (tcp_use_frto(sk)) {/* å¯ç”¨äº†FRTO */
 		tcp_enter_frto(sk);
 	} else {
-		tcp_enter_loss(sk, 0);/* ½øÈë³£¹æµÄRTOÂıÆô¶¯ÖØ´«»Ö¸´ */
+		tcp_enter_loss(sk, 0);/* è¿›å…¥å¸¸è§„çš„RTOæ…¢å¯åŠ¨é‡ä¼ æ¢å¤ */
 	}
 
-	/* Èç¹û·¢ËÍÖØ´«¶ÓÁĞÉÏµÚÒ»¸öSKBÊ§°Ü£¬Ôò¸´Î»ÖØ´«¶¨Ê±Æ÷£¬µÈ´ıÏÂ´ÎÖØ´« */
+	/* å¦‚æœå‘é€é‡ä¼ é˜Ÿåˆ—ä¸Šç¬¬ä¸€ä¸ªSKBå¤±è´¥ï¼Œåˆ™å¤ä½é‡ä¼ å®šæ—¶å™¨ï¼Œç­‰å¾…ä¸‹æ¬¡é‡ä¼  */
 	if (tcp_retransmit_skb(sk, skb_peek(&sk->sk_write_queue)) > 0) {
 		/* Retransmission failed because of local congestion,
 		 * do not backoff.
@@ -437,12 +437,12 @@ static void tcp_retransmit_timer(struct sock *sk)
 	 * implemented ftp to mars will work nicely. We will have to fix
 	 * the 120 second clamps though!
 	 */
-	/* ·¢ËÍ³É¹¦ºó£¬µİÔöÖ¸ÊıÍË±ÜËã·¨Ö¸ÊıºÍÀÛ¼ÆÖØ´«´ÎÊı */
+	/* å‘é€æˆåŠŸåï¼Œé€’å¢æŒ‡æ•°é€€é¿ç®—æ³•æŒ‡æ•°å’Œç´¯è®¡é‡ä¼ æ¬¡æ•° */
 	tp->backoff++;
 	tp->retransmits++;
 
 out_reset_timer:
-	/* Íê³ÉÖØ´«ºó£¬ÖØÉè³¬Ê±Ê±¼ä£¬È»ºó¸´Î»ÖØ´«¶¨Ê±Æ÷¡£ */
+	/* å®Œæˆé‡ä¼ åï¼Œé‡è®¾è¶…æ—¶æ—¶é—´ï¼Œç„¶åå¤ä½é‡ä¼ å®šæ—¶å™¨ã€‚ */
 	tp->rto = min(tp->rto << 1, TCP_RTO_MAX);
 	tcp_reset_xmit_timer(sk, TCP_TIME_RETRANS, tp->rto);
 	if (tp->retransmits > sysctl_tcp_retries1)
@@ -451,7 +451,7 @@ out_reset_timer:
 out:;
 }
 
-/* TCPÖØ´«¶¨Ê±Æ÷£¬ÔÚ·¢ËÍÊı¾İÊ±Éè¶¨¡£Æä³¬Ê±Ê±¼äÊÇ¶¯Ì¬¼ÆËãµÄ£¬È¡¾öÓÚÍù·µÊ±¼ä¼°ÖØ´«´ÎÊı */
+/* TCPé‡ä¼ å®šæ—¶å™¨ï¼Œåœ¨å‘é€æ•°æ®æ—¶è®¾å®šã€‚å…¶è¶…æ—¶æ—¶é—´æ˜¯åŠ¨æ€è®¡ç®—çš„ï¼Œå–å†³äºå¾€è¿”æ—¶é—´åŠé‡ä¼ æ¬¡æ•° */
 static void tcp_write_timer(unsigned long data)
 {
 	struct sock *sk = (struct sock*)data;
@@ -459,33 +459,33 @@ static void tcp_write_timer(unsigned long data)
 	int event;
 
 	bh_lock_sock(sk);
-	if (sock_owned_by_user(sk)) {/* ¿ØÖÆ¿é±»ÓÃ»§Ì¬³ÌĞòËø¶¨ */
+	if (sock_owned_by_user(sk)) {/* æ§åˆ¶å—è¢«ç”¨æˆ·æ€ç¨‹åºé”å®š */
 		/* Try again later */
-		/* ÖØĞÂÉèÖÃ¶¨Ê±Æ÷³¬Ê±Ê±¼ä */
+		/* é‡æ–°è®¾ç½®å®šæ—¶å™¨è¶…æ—¶æ—¶é—´ */
 		sk_reset_timer(sk, &tp->retransmit_timer, jiffies + (HZ / 20));
 		goto out_unlock;
 	}
 
-	/* Èç¹ûTCP×´Ì¬ÒÑ¾­¹Ø±Õ£¬»òÕßÃ»ÓĞ¹ÒÆğµÄÊÂ¼ş£¬Ôò·µ»Ø */
+	/* å¦‚æœTCPçŠ¶æ€å·²ç»å…³é—­ï¼Œæˆ–è€…æ²¡æœ‰æŒ‚èµ·çš„äº‹ä»¶ï¼Œåˆ™è¿”å› */
 	if (sk->sk_state == TCP_CLOSE || !tp->pending)
 		goto out;
 
-	/* Èç¹û»¹Ã»ÓĞµ½´ï³¬Ê±Ê±¼ä£¬ÔòÎŞĞè´¦Àí */
+	/* å¦‚æœè¿˜æ²¡æœ‰åˆ°è¾¾è¶…æ—¶æ—¶é—´ï¼Œåˆ™æ— éœ€å¤„ç† */
 	if (time_after(tp->timeout, jiffies)) {
-		/* ÖØĞÂÉèÖÃ¶¨Ê±Æ÷µÄÏÂ´Î³¬Ê±Ê±¼ä */
+		/* é‡æ–°è®¾ç½®å®šæ—¶å™¨çš„ä¸‹æ¬¡è¶…æ—¶æ—¶é—´ */
 		sk_reset_timer(sk, &tp->retransmit_timer, tp->timeout);
 		goto out;
 	}
 
-	/* ÖØ´«¶¨Ê±Æ÷ºÍ³ÖĞø¶¨Ê±Æ÷¶¼ÊÇÊ¹ÓÃ±¾¶¨Ê±Æ÷£¬Òò´Ë¸ù¾İ¹ÒÆğÊÂ¼şÅĞ¶Ïµ½µ×ÊÇºÎÊÂ¼ş */
+	/* é‡ä¼ å®šæ—¶å™¨å’ŒæŒç»­å®šæ—¶å™¨éƒ½æ˜¯ä½¿ç”¨æœ¬å®šæ—¶å™¨ï¼Œå› æ­¤æ ¹æ®æŒ‚èµ·äº‹ä»¶åˆ¤æ–­åˆ°åº•æ˜¯ä½•äº‹ä»¶ */
 	event = tp->pending;
 	tp->pending = 0;
 
 	switch (event) {
-	case TCP_TIME_RETRANS:/* ÖØ´«ÊÂ¼ş */
+	case TCP_TIME_RETRANS:/* é‡ä¼ äº‹ä»¶ */
 		tcp_retransmit_timer(sk);
 		break;
-	case TCP_TIME_PROBE0:/* ³ÖĞøÊÂ¼ş */
+	case TCP_TIME_PROBE0:/* æŒç»­äº‹ä»¶ */
 		tcp_probe_timer(sk);
 		break;
 	}
@@ -501,20 +501,20 @@ out_unlock:
 /*
  *	Timer for listening sockets
  */
-/* Á¬½Ó¶¨Ê±Æ÷´¦Àíº¯Êı */
+/* è¿æ¥å®šæ—¶å™¨å¤„ç†å‡½æ•° */
 static void tcp_synack_timer(struct sock *sk)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
 	struct tcp_listen_opt *lopt = tp->listen_opt;
-	/* ÖØ·¢syn+ack´ÎÊı */
+	/* é‡å‘syn+ackæ¬¡æ•° */
 	int max_retries = tp->syn_retries ? : sysctl_tcp_synack_retries;
-	/* Èç¹û¹şÏ£±íÖĞÄêÇáÁ¬½Ó¶à£¬ÔòÖØÊÔ´ÎÊıÒ²Ô½¶à£¬·ñÔò»á¼õÉÙÖØÊÔ·§Öµ */
+	/* å¦‚æœå“ˆå¸Œè¡¨ä¸­å¹´è½»è¿æ¥å¤šï¼Œåˆ™é‡è¯•æ¬¡æ•°ä¹Ÿè¶Šå¤šï¼Œå¦åˆ™ä¼šå‡å°‘é‡è¯•é˜€å€¼ */
 	int thresh = max_retries;
 	unsigned long now = jiffies;
 	struct open_request **reqp, *req;
 	int i, budget;
 
-	/* Èç¹ûÁ¬½ÓÇëÇó¿éµÄÉ¢ÁĞ±í»¹Ã»ÓĞ½¨Á¢£¬»òÕß»¹Ã»ÓĞ´¦ÓÚÁ¬½Ó¹ı³ÌÖĞµÄÇëÇó¿é£¬ÔòÖ±½Ó·µ»Ø */
+	/* å¦‚æœè¿æ¥è¯·æ±‚å—çš„æ•£åˆ—è¡¨è¿˜æ²¡æœ‰å»ºç«‹ï¼Œæˆ–è€…è¿˜æ²¡æœ‰å¤„äºè¿æ¥è¿‡ç¨‹ä¸­çš„è¯·æ±‚å—ï¼Œåˆ™ç›´æ¥è¿”å› */
 	if (lopt == NULL || lopt->qlen == 0)
 		return;
 
@@ -535,10 +535,10 @@ static void tcp_synack_timer(struct sock *sk)
 	 * embrions; and abort old ones without pity, if old
 	 * ones are about to clog our table.
 	 */
-	if (lopt->qlen>>(lopt->max_qlen_log-1)) {/* Á¬½ÓÇëÇóÊıÒÑ¾­³¬¹ıÁË×î´ó°ëÁ¬½ÓÊıµÄÒ»°ë£¬Ôòµ÷Õû·§Öµ */
+	if (lopt->qlen>>(lopt->max_qlen_log-1)) {/* è¿æ¥è¯·æ±‚æ•°å·²ç»è¶…è¿‡äº†æœ€å¤§åŠè¿æ¥æ•°çš„ä¸€åŠï¼Œåˆ™è°ƒæ•´é˜€å€¼ */
 		int young = (lopt->qlen_young<<1);
 
-		while (thresh > 2) {/* ·§Öµ±ØĞë´óÓÚ1 */
+		while (thresh > 2) {/* é˜€å€¼å¿…é¡»å¤§äº1 */
 			if (lopt->qlen < young)
 				break;
 			thresh--;
@@ -546,25 +546,25 @@ static void tcp_synack_timer(struct sock *sk)
 		}
 	}
 
-	if (tp->defer_accept)/* ÑÓ³ÙÓ¦´ğµÄÇé¿öÏÂ£¬ÖØÊÔ´ÎÊı²»Ò»Ñù */
+	if (tp->defer_accept)/* å»¶è¿Ÿåº”ç­”çš„æƒ…å†µä¸‹ï¼Œé‡è¯•æ¬¡æ•°ä¸ä¸€æ · */
 		max_retries = tp->defer_accept;
 
-	/* ¼ÆËãÒª¼ì²âµÄ°ëÁ¬½Ó¶ÓÁĞ¸öÊı£¬µÃµ½Ô¤¼ÆÖµ¡£ÓÉÓÚ°ëÁ¬½Ó¶ÓÁĞ½Ï¶à£¬²»¿ÉÄÜÈ«²¿¼ì²â */
+	/* è®¡ç®—è¦æ£€æµ‹çš„åŠè¿æ¥é˜Ÿåˆ—ä¸ªæ•°ï¼Œå¾—åˆ°é¢„è®¡å€¼ã€‚ç”±äºåŠè¿æ¥é˜Ÿåˆ—è¾ƒå¤šï¼Œä¸å¯èƒ½å…¨éƒ¨æ£€æµ‹ */
 	budget = 2*(TCP_SYNQ_HSIZE/(TCP_TIMEOUT_INIT/TCP_SYNQ_INTERVAL));
-	i = lopt->clock_hand;/* ´ÓÉÏ´Î¼ì²â¹ıµÄÁ´±í¿ªÊ¼¼ì²â°ëÁ¬½Ó¶ÓÁĞ */
+	i = lopt->clock_hand;/* ä»ä¸Šæ¬¡æ£€æµ‹è¿‡çš„é“¾è¡¨å¼€å§‹æ£€æµ‹åŠè¿æ¥é˜Ÿåˆ— */
 
 	do {
 		reqp=&lopt->syn_table[i];
-		while ((req = *reqp) != NULL) {/* ±éÀú¹şÏ£Í°ÖĞµÄ°ëÁ¬½Ó */
-			if (time_after_eq(now, req->expires)) {/* µ±Ç°ÇëÇó¿éÒÑ¾­³¬Ê± */
-				if ((req->retrans < thresh ||/* ¸ÃÇëÇó¿éÖØÊÔ´ÎÊı»¹Ã»ÓĞ³¬¹ı·§Öµ  */
-				     (req->acked && req->retrans < max_retries))/* ÒÑ¾­½ÓÊÕµ½ackĞÅºÅ£¬ÓÉÓÚÆäËûÔ­ÒòÔì³ÉÎ´Á¬½Ó */
+		while ((req = *reqp) != NULL) {/* éå†å“ˆå¸Œæ¡¶ä¸­çš„åŠè¿æ¥ */
+			if (time_after_eq(now, req->expires)) {/* å½“å‰è¯·æ±‚å—å·²ç»è¶…æ—¶ */
+				if ((req->retrans < thresh ||/* è¯¥è¯·æ±‚å—é‡è¯•æ¬¡æ•°è¿˜æ²¡æœ‰è¶…è¿‡é˜€å€¼  */
+				     (req->acked && req->retrans < max_retries))/* å·²ç»æ¥æ”¶åˆ°ackä¿¡å·ï¼Œç”±äºå…¶ä»–åŸå› é€ æˆæœªè¿æ¥ */
 				    && !req->class->rtx_syn_ack(sk, req, NULL)) {
 					unsigned long timeo;
 
 					if (req->retrans++ == 0)
 						lopt->qlen_young--;
-					/* ¼ÆËãÖØ´«³¬Ê±Öµ */
+					/* è®¡ç®—é‡ä¼ è¶…æ—¶å€¼ */
 					timeo = min((TCP_TIMEOUT_INIT << req->retrans),
 						    TCP_RTO_MAX);
 					req->expires = now + timeo;
@@ -573,7 +573,7 @@ static void tcp_synack_timer(struct sock *sk)
 				}
 
 				/* Drop this request */
-				/* ÖØ´«´ÎÊı³¬¹ıÖ¸¶¨Öµ£¬È¡Ïû¸ÃÁ¬½ÓÇëÇó£¬²¢½«Ëü´ÓÁ¬½ÓÇëÇóÉ¢ÁĞ±íÖĞÉ¾³ı */
+				/* é‡ä¼ æ¬¡æ•°è¶…è¿‡æŒ‡å®šå€¼ï¼Œå–æ¶ˆè¯¥è¿æ¥è¯·æ±‚ï¼Œå¹¶å°†å®ƒä»è¿æ¥è¯·æ±‚æ•£åˆ—è¡¨ä¸­åˆ é™¤ */
 				write_lock(&tp->syn_wait_lock);
 				*reqp = req->dl_next;
 				write_unlock(&tp->syn_wait_lock);
@@ -586,14 +586,14 @@ static void tcp_synack_timer(struct sock *sk)
 			reqp = &req->dl_next;
 		}
 
-		/* È¡ÏÂÒ»¸öÍ°½øĞĞ´¦Àí */
+		/* å–ä¸‹ä¸€ä¸ªæ¡¶è¿›è¡Œå¤„ç† */
 		i = (i+1)&(TCP_SYNQ_HSIZE-1);
 
 	} while (--budget > 0);
 
 	lopt->clock_hand = i;
 
-	if (lopt->qlen)/* Èç¹ûÇëÇóÉ¢ÁĞ±íÖĞ»¹ÓĞÎ´Íê³ÉÁ¬½ÓµÄÇëÇó¿é£¬ÔòÔÙ´ÎÆô¶¯¶¨Ê±Æ÷ */
+	if (lopt->qlen)/* å¦‚æœè¯·æ±‚æ•£åˆ—è¡¨ä¸­è¿˜æœ‰æœªå®Œæˆè¿æ¥çš„è¯·æ±‚å—ï¼Œåˆ™å†æ¬¡å¯åŠ¨å®šæ—¶å™¨ */
 		tcp_reset_keepalive_timer(sk, TCP_SYNQ_INTERVAL);
 }
 
@@ -620,7 +620,7 @@ void tcp_set_keepalive(struct sock *sk, int val)
 
 
 /**
- * Á¬½Ó½¨Á¢¶¨Ê±Æ÷¡¢±£»î¶¨Ê±Æ÷¡¢FIN_WAIT_2¶¨Ê±Æ÷µÄ´¦Àíº¯Êı¡£
+ * è¿æ¥å»ºç«‹å®šæ—¶å™¨ã€ä¿æ´»å®šæ—¶å™¨ã€FIN_WAIT_2å®šæ—¶å™¨çš„å¤„ç†å‡½æ•°ã€‚
  */
 static void tcp_keepalive_timer (unsigned long data)
 {
@@ -630,54 +630,54 @@ static void tcp_keepalive_timer (unsigned long data)
 
 	/* Only process if socket is not in use. */
 	bh_lock_sock(sk);
-	if (sock_owned_by_user(sk)) {/* Ëø±»ÓÃ»§½ø³Ì»ñµÃ */
+	if (sock_owned_by_user(sk)) {/* é”è¢«ç”¨æˆ·è¿›ç¨‹è·å¾— */
 		/* Try again later. */ 
-		tcp_reset_keepalive_timer (sk, HZ/20);/* ÖØÖÃ¶¨Ê±Æ÷£¬²¢ÍË³ö */
+		tcp_reset_keepalive_timer (sk, HZ/20);/* é‡ç½®å®šæ—¶å™¨ï¼Œå¹¶é€€å‡º */
 		goto out;
 	}
 
-	if (sk->sk_state == TCP_LISTEN) {/* LISTEN×´Ì¬£¬±íÊ¾Á¬½Ó¶¨Ê±Æ÷ */
-		tcp_synack_timer(sk);/* Á¬½Ó¶¨Ê±Æ÷ */
+	if (sk->sk_state == TCP_LISTEN) {/* LISTENçŠ¶æ€ï¼Œè¡¨ç¤ºè¿æ¥å®šæ—¶å™¨ */
+		tcp_synack_timer(sk);/* è¿æ¥å®šæ—¶å™¨ */
 		goto out;
 	}
 
-	/* ´¦ÀíFIN_WAIT_2¶¨Ê±Æ÷ */
+	/* å¤„ç†FIN_WAIT_2å®šæ—¶å™¨ */
 	if (sk->sk_state == TCP_FIN_WAIT2 && sock_flag(sk, SOCK_DEAD)) {
-		if (tp->linger2 >= 0) {/* ±£³ÖÔÚFIN_WAIT_2×´Ì¬µÄÊ±¼ä´óÓÚµÈÓÚ0 */
+		if (tp->linger2 >= 0) {/* ä¿æŒåœ¨FIN_WAIT_2çŠ¶æ€çš„æ—¶é—´å¤§äºç­‰äº0 */
 			int tmo = tcp_fin_time(tp) - TCP_TIMEWAIT_LEN;
 
-			if (tmo > 0) {/* ¶¨Ê±Æ÷Ê£ÓàÊ±¼ä´óÓÚ0 */
+			if (tmo > 0) {/* å®šæ—¶å™¨å‰©ä½™æ—¶é—´å¤§äº0 */
 				tcp_time_wait(sk, TCP_FIN_WAIT2, tmo);
 				goto out;
 			}
 		}
-		/* ¸ø¶Ô¶Ë·¢ËÍrstºó¹Ø±ÕÌ×¿Ú */
+		/* ç»™å¯¹ç«¯å‘é€rståå…³é—­å¥—å£ */
 		tcp_send_active_reset(sk, GFP_ATOMIC);
 		goto death;
 	}
 
-	/* Èç¹ûÎ´´ò¿ª±£»î¹¦ÄÜ£¬»òÕßÁ¬½ÓÒÑ¾­¹Ø±Õ£¬ÔòÍË³ö */
+	/* å¦‚æœæœªæ‰“å¼€ä¿æ´»åŠŸèƒ½ï¼Œæˆ–è€…è¿æ¥å·²ç»å…³é—­ï¼Œåˆ™é€€å‡º */
 	if (!sock_flag(sk, SOCK_KEEPOPEN) || sk->sk_state == TCP_CLOSE)
 		goto out;
 
-	elapsed = keepalive_time_when(tp);/* ¼ÆËã³¬Ê±Ê±¼ä */
+	elapsed = keepalive_time_when(tp);/* è®¡ç®—è¶…æ—¶æ—¶é—´ */
 
 	/* It is alive without keepalive 8) */
-	if (tp->packets_out || sk->sk_send_head)/* Èç¹ûÓĞÒÑÊä³öÎ´È·ÈÏµÄ¶Î£¬»òÕß·¢ËÍ¶ÓÁĞÖĞ»¹´æÔÚÎ´·¢ËÍµÄ¶Î£¬Ôò²»ÓÃ×÷´¦Àí */
+	if (tp->packets_out || sk->sk_send_head)/* å¦‚æœæœ‰å·²è¾“å‡ºæœªç¡®è®¤çš„æ®µï¼Œæˆ–è€…å‘é€é˜Ÿåˆ—ä¸­è¿˜å­˜åœ¨æœªå‘é€çš„æ®µï¼Œåˆ™ä¸ç”¨ä½œå¤„ç† */
 		goto resched;
 
-	elapsed = tcp_time_stamp - tp->rcv_tstamp;/* ³ÖĞø¿ÕÏĞÊ±¼ä */
+	elapsed = tcp_time_stamp - tp->rcv_tstamp;/* æŒç»­ç©ºé—²æ—¶é—´ */
 
-	if (elapsed >= keepalive_time_when(tp)) {/* ³ÖĞø¿ÕÏĞÊ±¼ä³¬¹ıÔÊĞíÊ±¼ä */
-		if ((!tp->keepalive_probes && tp->probes_out >= sysctl_tcp_keepalive_probes) ||/* Î´ÉèÖÃ±£»îÌ½²â´ÎÊı²¢ÇÒÒÑ·¢ËÍ±£»îÌ½²â¶ÎÊı³¬¹ıÁËÄ¬ÈÏÊı */
-		     (tp->keepalive_probes && tp->probes_out >= tp->keepalive_probes)) {/* ÒÑ¾­ÉèÖÃÁË±£»îÌ½²â´ÎÊı£¬²¢ÇÒÒÑ·¢ËÍ´ÎÊıÒÑ¾­³¬¹ıÁËÉèÖÃµÄ´ÎÊı */
-			/* ¸ø¶Ô·½·¢ËÍrst¶Î */
+	if (elapsed >= keepalive_time_when(tp)) {/* æŒç»­ç©ºé—²æ—¶é—´è¶…è¿‡å…è®¸æ—¶é—´ */
+		if ((!tp->keepalive_probes && tp->probes_out >= sysctl_tcp_keepalive_probes) ||/* æœªè®¾ç½®ä¿æ´»æ¢æµ‹æ¬¡æ•°å¹¶ä¸”å·²å‘é€ä¿æ´»æ¢æµ‹æ®µæ•°è¶…è¿‡äº†é»˜è®¤æ•° */
+		     (tp->keepalive_probes && tp->probes_out >= tp->keepalive_probes)) {/* å·²ç»è®¾ç½®äº†ä¿æ´»æ¢æµ‹æ¬¡æ•°ï¼Œå¹¶ä¸”å·²å‘é€æ¬¡æ•°å·²ç»è¶…è¿‡äº†è®¾ç½®çš„æ¬¡æ•° */
+			/* ç»™å¯¹æ–¹å‘é€rstæ®µ */
 			tcp_send_active_reset(sk, GFP_ATOMIC);
-			/* ¹Ø±ÕÏàÓ¦µÄ´«Êä¿ØÖÆ¿é */
+			/* å…³é—­ç›¸åº”çš„ä¼ è¾“æ§åˆ¶å— */
 			tcp_write_err(sk);
 			goto out;
 		}
-		if (tcp_write_wakeup(sk) <= 0) {/* Êä³ö±£»î¶Î(³ÖĞøÌ½²â¶Î)£¬²¢¼ÆËãÏÂ´Î±£»î¶¨Ê±Æ÷µÄÊ±¼ä */
+		if (tcp_write_wakeup(sk) <= 0) {/* è¾“å‡ºä¿æ´»æ®µ(æŒç»­æ¢æµ‹æ®µ)ï¼Œå¹¶è®¡ç®—ä¸‹æ¬¡ä¿æ´»å®šæ—¶å™¨çš„æ—¶é—´ */
 			tp->probes_out++;
 			elapsed = keepalive_intvl_when(tp);
 		} else {
@@ -686,16 +686,16 @@ static void tcp_keepalive_timer (unsigned long data)
 			 */
 			elapsed = TCP_RESOURCE_PROBE_INTERVAL;
 		}
-	} else {/* ³ÖĞø¿ÕÏĞÊ±¼ä»¹Î´´ïµ½ÔÊĞíµÄ³ÖĞø¿ÕÏĞÊ±¼ä£¬ÔòÖØĞÂ¼ÆËãÏÂ´Î¼¤»î±£»î¶¨Ê±Æ÷µÄÊ±¼ä */
+	} else {/* æŒç»­ç©ºé—²æ—¶é—´è¿˜æœªè¾¾åˆ°å…è®¸çš„æŒç»­ç©ºé—²æ—¶é—´ï¼Œåˆ™é‡æ–°è®¡ç®—ä¸‹æ¬¡æ¿€æ´»ä¿æ´»å®šæ—¶å™¨çš„æ—¶é—´ */
 		/* It is tp->rcv_tstamp + keepalive_time_when(tp) */
 		elapsed = keepalive_time_when(tp) - elapsed;
 	}
 
 	TCP_CHECK_TIMER(sk);
-	sk_stream_mem_reclaim(sk);/* »ØÊÕ»º´æ?? */
+	sk_stream_mem_reclaim(sk);/* å›æ”¶ç¼“å­˜?? */
 
 resched:
-	/* ÖØĞÂÉèÖÃ±£»î¶¨Ê±Æ÷ÏÂ´Î³¬Ê±Ê±¼ä */
+	/* é‡æ–°è®¾ç½®ä¿æ´»å®šæ—¶å™¨ä¸‹æ¬¡è¶…æ—¶æ—¶é—´ */
 	tcp_reset_keepalive_timer (sk, elapsed);
 	goto out;
 

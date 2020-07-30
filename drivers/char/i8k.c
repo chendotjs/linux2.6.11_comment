@@ -423,14 +423,14 @@ static int i8k_get_info(char *buffer, char **start, off_t fpos, int length)
     int n, fn_key, cpu_temp, ac_power;
     int left_fan, right_fan, left_speed, right_speed;
 
-    cpu_temp     = i8k_get_cpu_temp();			/* 11100 탎 */
-    left_fan     = i8k_get_fan_status(I8K_FAN_LEFT);	/*   580 탎 */
-    right_fan    = i8k_get_fan_status(I8K_FAN_RIGHT);	/*   580 탎 */
-    left_speed   = i8k_get_fan_speed(I8K_FAN_LEFT);	/*   580 탎 */
-    right_speed  = i8k_get_fan_speed(I8K_FAN_RIGHT);	/*   580 탎 */
-    fn_key       = i8k_get_fn_status();			/*   750 탎 */
+    cpu_temp     = i8k_get_cpu_temp();			/* 11100 s */
+    left_fan     = i8k_get_fan_status(I8K_FAN_LEFT);	/*   580 s */
+    right_fan    = i8k_get_fan_status(I8K_FAN_RIGHT);	/*   580 s */
+    left_speed   = i8k_get_fan_speed(I8K_FAN_LEFT);	/*   580 s */
+    right_speed  = i8k_get_fan_speed(I8K_FAN_RIGHT);	/*   580 s */
+    fn_key       = i8k_get_fn_status();			/*   750 s */
     if (power_status) {
-	ac_power = i8k_get_power_status();		/* 14700 탎 */
+	ac_power = i8k_get_power_status();		/* 14700 s */
     } else {
 	ac_power = -1;
     }

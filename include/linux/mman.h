@@ -45,8 +45,8 @@ static inline void vm_unacct_memory(long pages)
  * Combine the mmap "prot" argument into "vm_flags" used internally.
  */
 /**
- * 只有在flags中设置了PROT_READ，PROT_WRITE，PROT_EXEC
- * calc_vm_prot_bits才在vm_flags中设置VM_READ，VM_WRITE，VM_EXEC标志
+ * 鍙湁鍦╢lags涓缃簡PROT_READ锛孭ROT_WRITE锛孭ROT_EXEC
+ * calc_vm_prot_bits鎵嶅湪vm_flags涓缃甐M_READ锛孷M_WRITE锛孷M_EXEC鏍囧織
  */
 static inline unsigned long
 calc_vm_prot_bits(unsigned long prot)
@@ -60,8 +60,8 @@ calc_vm_prot_bits(unsigned long prot)
  * Combine the mmap "flags" argument into "vm_flags" used internally.
  */
 /**
- * 只有在flags中设置了MAP_GROWSDOWN，MAP_DENYWRITE，MAP_EXECUTABLE，MAP_LOCKED
- * calc_vm_flag_bits才在vm_flags中设置VM_GROWSDOWN，VM_DENYWRITE，VM_EXECUTABLE，VM_LOCKED标志
+ * 鍙湁鍦╢lags涓缃簡MAP_GROWSDOWN锛孧AP_DENYWRITE锛孧AP_EXECUTABLE锛孧AP_LOCKED
+ * calc_vm_flag_bits鎵嶅湪vm_flags涓缃甐M_GROWSDOWN锛孷M_DENYWRITE锛孷M_EXECUTABLE锛孷M_LOCKED鏍囧織
  */
 static inline unsigned long
 calc_vm_flag_bits(unsigned long flags)

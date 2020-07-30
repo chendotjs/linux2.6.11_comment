@@ -94,7 +94,7 @@ EXPORT_SYMBOL(scsi_remove_host);
  * Return value: 
  * 	0 on success / != 0 for error
  **/
-/* ½«Ö÷»úÊÊÅäÆ÷Ìí¼Óµ½ÏµÍ³ÖĞ */
+/* å°†ä¸»æœºé€‚é…å™¨æ·»åŠ åˆ°ç³»ç»Ÿä¸­ */
 int scsi_add_host(struct Scsi_Host *shost, struct device *dev)
 {
 	struct scsi_host_template *sht = shost->hostt;
@@ -103,18 +103,18 @@ int scsi_add_host(struct Scsi_Host *shost, struct device *dev)
 	printk(KERN_INFO "scsi%d : %s\n", shost->host_no,
 			sht->info ? sht->info(shost) : sht->name);
 
-	/* ¶ÓÁĞÉî¶È²»ÄÜÎŞÏŞÖÆ£¬±ØĞëÎª´óÓÚ0µÄÖµ */
+	/* é˜Ÿåˆ—æ·±åº¦ä¸èƒ½æ— é™åˆ¶ï¼Œå¿…é¡»ä¸ºå¤§äº0çš„å€¼ */
 	if (!shost->can_queue) {
 		printk(KERN_ERR "%s: can_queue = 0 no longer supported\n",
 				sht->name);
 		goto out;
 	}
 
-	/* ÉèÖÃ¸¸Éè±¸ */
+	/* è®¾ç½®çˆ¶è®¾å¤‡ */
 	if (!shost->shost_gendev.parent)
 		shost->shost_gendev.parent = dev ? dev : &platform_bus;
 
-	/* ½«ÄÚÇ¶Éè±¸Ìí¼Óµ½ÏµÍ³ÖĞ */
+	/* å°†å†…åµŒè®¾å¤‡æ·»åŠ åˆ°ç³»ç»Ÿä¸­ */
 	error = device_add(&shost->shost_gendev);
 	if (error)
 		goto out;
@@ -133,7 +133,7 @@ int scsi_add_host(struct Scsi_Host *shost, struct device *dev)
 					 GFP_KERNEL)) == NULL)
 		goto out_del_classdev;
 
-	/* ½«Ö÷»úÊÊÅäÆ÷Ìí¼Óµ½×ÓÏµÍ³ */
+	/* å°†ä¸»æœºé€‚é…å™¨æ·»åŠ åˆ°å­ç³»ç»Ÿ */
 	error = scsi_sysfs_add_host(shost);
 	if (error)
 		goto out_destroy_host;
@@ -192,15 +192,15 @@ static void scsi_host_dev_release(struct device *dev)
  * Return value:
  * 	Pointer to a new Scsi_Host
  **/
-/* ·ÖÅäÒ»¸öÖ÷»úÊÊÅäÆ÷ÃèÊö·û²¢½øĞĞ»ù±¾µÄ³õÊ¼»¯ */
+/* åˆ†é…ä¸€ä¸ªä¸»æœºé€‚é…å™¨æè¿°ç¬¦å¹¶è¿›è¡ŒåŸºæœ¬çš„åˆå§‹åŒ– */
 struct Scsi_Host *scsi_host_alloc(struct scsi_host_template *sht, int privsize)
 {
 	struct Scsi_Host *shost;
 	int gfp_mask = GFP_KERNEL, rval;
 	DECLARE_COMPLETION(complete);
 
-	if (sht->unchecked_isa_dma && privsize)/* ÀÏÊ½Éè±¸Ö»Ö§³ÖDMAµØÖ· */
-		gfp_mask |= __GFP_DMA;/* Ôö¼Ó´Ë±êÖ¾±íÊ¾´ÓDMAÇøÓò·ÖÅä */
+	if (sht->unchecked_isa_dma && privsize)/* è€å¼è®¾å¤‡åªæ”¯æŒDMAåœ°å€ */
+		gfp_mask |= __GFP_DMA;/* å¢åŠ æ­¤æ ‡å¿—è¡¨ç¤ºä»DMAåŒºåŸŸåˆ†é… */
 
         /* Check to see if this host has any error handling facilities */
         if (!sht->eh_strategy_handler && !sht->eh_abort_handler &&
@@ -214,7 +214,7 @@ struct Scsi_Host *scsi_host_alloc(struct scsi_host_template *sht, int privsize)
 		dump_stack();
         }
 
-	/* ·ÖÅäÃèÊö·û */
+	/* åˆ†é…æè¿°ç¬¦ */
 	shost = kmalloc(sizeof(struct Scsi_Host) + privsize, gfp_mask);
 	if (!shost)
 		return NULL;
@@ -229,12 +229,12 @@ struct Scsi_Host *scsi_host_alloc(struct scsi_host_template *sht, int privsize)
 
 	init_MUTEX(&shost->scan_mutex);
 
-	/* Ö÷»úÊÊÅäÆ÷È«¾Ö±àºÅ */
+	/* ä¸»æœºé€‚é…å™¨å…¨å±€ç¼–å· */
 	shost->host_no = scsi_host_next_hn++; /* XXX(hch): still racy */
 	shost->dma_channel = 0xff;
 
 	/* These three are default values which can be overridden */
-	/* Ä¬ÈÏÖµ£¬Çı¶¯ÖĞ¿ÉÄÜ¸ÄĞ´ */
+	/* é»˜è®¤å€¼ï¼Œé©±åŠ¨ä¸­å¯èƒ½æ”¹å†™ */
 	shost->max_channel = 0;
 	shost->max_id = 8;
 	shost->max_lun = 8;
@@ -283,13 +283,13 @@ struct Scsi_Host *scsi_host_alloc(struct scsi_host_template *sht, int privsize)
 	if (rval)
 		goto fail_kfree;
 
-	/* ³õÊ¼»¯ÄÚÇ¶Í¨ÓÃÉè±¸ */
+	/* åˆå§‹åŒ–å†…åµŒé€šç”¨è®¾å¤‡ */
 	device_initialize(&shost->shost_gendev);
 	snprintf(shost->shost_gendev.bus_id, BUS_ID_SIZE, "host%d",
 		shost->host_no);
 	shost->shost_gendev.release = scsi_host_dev_release;
 
-	/* ³õÊ¼»¯ÄÚÇ¶ÀàÉè±¸ */
+	/* åˆå§‹åŒ–å†…åµŒç±»è®¾å¤‡ */
 	class_device_initialize(&shost->shost_classdev);
 	shost->shost_classdev.dev = &shost->shost_gendev;
 	shost->shost_classdev.class = &shost_class;
@@ -297,14 +297,14 @@ struct Scsi_Host *scsi_host_alloc(struct scsi_host_template *sht, int privsize)
 		  shost->host_no);
 
 	shost->eh_notify = &complete;
-	/* ´´½¨²¢ÔËĞĞ´íÎó»Ö¸´Ïß³Ì */
+	/* åˆ›å»ºå¹¶è¿è¡Œé”™è¯¯æ¢å¤çº¿ç¨‹ */
 	rval = kernel_thread(scsi_error_handler, shost, 0);
 	if (rval < 0)
 		goto fail_destroy_freelist;
 	wait_for_completion(&complete);
 	shost->eh_notify = NULL;
 
-	/* ÔÚprocÖĞÎªÖ÷»úÊÊÅäÆ÷Ìí¼ÓÒ»¸öÄ¿Â¼ */
+	/* åœ¨procä¸­ä¸ºä¸»æœºé€‚é…å™¨æ·»åŠ ä¸€ä¸ªç›®å½• */
 	scsi_proc_hostdir_add(shost->hostt);
 	return shost;
 

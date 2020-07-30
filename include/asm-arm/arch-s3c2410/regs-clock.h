@@ -11,7 +11,7 @@
  *
  *  Changelog:
  *    18-Aug-2004 Ben Dooks      Added 2440 definitions
- *    08-Aug-2004 Herbert Pötzl  Added CLKCON definitions
+ *    08-Aug-2004 Herbert Ptzl  Added CLKCON definitions
  *    19-06-2003  Ben Dooks      Created file
  *    12-03-2004  Ben Dooks      Updated include protection
  *    29-Sep-2004 Ben Dooks	 Fixed usage for assembly inclusion

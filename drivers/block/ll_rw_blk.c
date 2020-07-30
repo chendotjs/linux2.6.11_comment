@@ -176,7 +176,7 @@ EXPORT_SYMBOL(blk_queue_activity_fn);
  *
  */
 /**
- * ÉèÖÃÔ¤´¦Àíº¯Êı¡£
+ * è®¾ç½®é¢„å¤„ç†å‡½æ•°ã€‚
  */
 void blk_queue_prep_rq(request_queue_t *q, prep_rq_fn *pfn)
 {
@@ -283,7 +283,7 @@ EXPORT_SYMBOL(blk_queue_make_request);
  *
  **/
 /**
- * ÉèÖÃÆÁÕÏÇëÇó±êÖ¾¡£
+ * è®¾ç½®å±éšœè¯·æ±‚æ ‡å¿—ã€‚
  */
 void blk_queue_ordered(request_queue_t *q, int flag)
 {
@@ -325,13 +325,13 @@ EXPORT_SYMBOL(blk_queue_issue_flush_fn);
  *    the block layer sets this to the highest numbered "low" memory page.
  **/
 /**
- * ¸æËßÄÚºËÇı¶¯³ÌĞòÖ´ĞĞDMAËùÊ¹ÓÃµÄ×î¸ßÎïÀíÄÚ´æ¡£
- * Èç¹ûÒ»¸öÇëÇó°üº¬ÁË³¬Ô½½çÏŞµÄÄÚ´æÒıÓÃ£¬½«Ê¹ÓÃ»Øµ¯»º³åÇø¡£
- * ¿ÉÒÔ°ÑÈÎºÎ¿ÉĞĞµÄÎïÀíµØÖ·×÷Îª²ÎÊı£¬»òÕßÊ¹ÓÃÈçÏÂÔ¤¶¨ÒåµÄ²ÎÊı¡£
- *		BLK_BOUNCE_HIGH:		¶Ô¸ß¶ËÄÚ´æÒ³Ê¹ÓÃ»Øµ¯»º³åÇø¡£
- *		BLK_BOUNCE_ISA:			Çı¶¯³ÌĞòÖ»ÄÜÔÚ16MBµÄISAÇøÖ´ĞĞDMA¡£
- *		BLK_BOUNCE_ANY:			¿ÉÒÔÔÚÈÎºÎµØÖ·Ö´ĞĞDMA¡£
- * Ä¬ÈÏÖµÊÇBLK_BOUNCE_HIGH¡£
+ * å‘Šè¯‰å†…æ ¸é©±åŠ¨ç¨‹åºæ‰§è¡ŒDMAæ‰€ä½¿ç”¨çš„æœ€é«˜ç‰©ç†å†…å­˜ã€‚
+ * å¦‚æœä¸€ä¸ªè¯·æ±‚åŒ…å«äº†è¶…è¶Šç•Œé™çš„å†…å­˜å¼•ç”¨ï¼Œå°†ä½¿ç”¨å›å¼¹ç¼“å†²åŒºã€‚
+ * å¯ä»¥æŠŠä»»ä½•å¯è¡Œçš„ç‰©ç†åœ°å€ä½œä¸ºå‚æ•°ï¼Œæˆ–è€…ä½¿ç”¨å¦‚ä¸‹é¢„å®šä¹‰çš„å‚æ•°ã€‚
+ *		BLK_BOUNCE_HIGH:		å¯¹é«˜ç«¯å†…å­˜é¡µä½¿ç”¨å›å¼¹ç¼“å†²åŒºã€‚
+ *		BLK_BOUNCE_ISA:			é©±åŠ¨ç¨‹åºåªèƒ½åœ¨16MBçš„ISAåŒºæ‰§è¡ŒDMAã€‚
+ *		BLK_BOUNCE_ANY:			å¯ä»¥åœ¨ä»»ä½•åœ°å€æ‰§è¡ŒDMAã€‚
+ * é»˜è®¤å€¼æ˜¯BLK_BOUNCE_HIGHã€‚
  */
 void blk_queue_bounce_limit(request_queue_t *q, u64 dma_addr)
 {
@@ -364,7 +364,7 @@ EXPORT_SYMBOL(blk_queue_bounce_limit);
  *    received requests.
  **/
 /**
- * ÒÔÉÈÇøÎªµ¥Î»ÉèÖÃÇëÇóµÄ×î´óÖµ¡£Ä¬ÈÏÖµÊÇ255¡£
+ * ä»¥æ‰‡åŒºä¸ºå•ä½è®¾ç½®è¯·æ±‚çš„æœ€å¤§å€¼ã€‚é»˜è®¤å€¼æ˜¯255ã€‚
  */
 void blk_queue_max_sectors(request_queue_t *q, unsigned short max_sectors)
 {
@@ -389,7 +389,7 @@ EXPORT_SYMBOL(blk_queue_max_sectors);
  *    scatter list the driver could handle.
  **/
 /**
- * ¿ØÖÆÔÚÒ»¸öÇëÇóÖĞ°üº¬¶àÉÙ¸öÎïÀí¶Î(ÔÚÏµÍ³ÄÚ´æÖĞµÄ·ÇÁ¬ĞøÇø³ÉÔ±)¡£
+ * æ§åˆ¶åœ¨ä¸€ä¸ªè¯·æ±‚ä¸­åŒ…å«å¤šå°‘ä¸ªç‰©ç†æ®µ(åœ¨ç³»ç»Ÿå†…å­˜ä¸­çš„éè¿ç»­åŒºæˆå‘˜)ã€‚
  */
 void blk_queue_max_phys_segments(request_queue_t *q, unsigned short max_segments)
 {
@@ -415,7 +415,7 @@ EXPORT_SYMBOL(blk_queue_max_phys_segments);
  *    to the device.
  **/
 /**
- * ÉèÖÃÇı¶¯³ÌĞò¿ÉÒÔ´¦ÀíµÄ¶ÎµÄ×î´óÖµ¡£
+ * è®¾ç½®é©±åŠ¨ç¨‹åºå¯ä»¥å¤„ç†çš„æ®µçš„æœ€å¤§å€¼ã€‚
  */
 void blk_queue_max_hw_segments(request_queue_t *q, unsigned short max_segments)
 {
@@ -462,7 +462,7 @@ EXPORT_SYMBOL(blk_queue_max_segment_size);
  *   of 512 covers most hardware.
  **/
 /**
- * ¸æËßÄÚºËÉè±¸Ó²¼şµÄÉÈÇø´óĞ¡¡£ËùÓĞÓÉÄÚºËÉú³ÉµÄÇëÇó¶¼ÊÇ¸Ã´óĞ¡µÄÕûÊı±¶¡£²¢ÇÒ×öµ½ÁË±ß½ç¶ÔÆë¡£
+ * å‘Šè¯‰å†…æ ¸è®¾å¤‡ç¡¬ä»¶çš„æ‰‡åŒºå¤§å°ã€‚æ‰€æœ‰ç”±å†…æ ¸ç”Ÿæˆçš„è¯·æ±‚éƒ½æ˜¯è¯¥å¤§å°çš„æ•´æ•°å€ã€‚å¹¶ä¸”åšåˆ°äº†è¾¹ç•Œå¯¹é½ã€‚
  */
 void blk_queue_hardsect_size(request_queue_t *q, unsigned short size)
 {
@@ -501,8 +501,8 @@ EXPORT_SYMBOL(blk_queue_stack_limits);
  * @mask:  the memory boundary mask
  **/
 /**
- * Ò»Ğ©Éè±¸ÎŞ·¨´¦ÀíÄÇĞ©¿çÔ½ÌØ¶¨´óĞ¡ÄÚ´æ±ß½çµÄÇëÇó¡£´Ëº¯Êı¸æËßÄÚ´æÉè±¸µÄÌØ¶¨±ß½ç¡£
- * Èç¹ûÉè±¸²»ÄÜ´¦Àí¿çÔ½4MB±ß½çµÄÇëÇó£¬ÔòmaskµÄÖµÎª0x3fffff¡£Ä¬ÈÏµÄmaskÊÇ0xffffffff¡£
+ * ä¸€äº›è®¾å¤‡æ— æ³•å¤„ç†é‚£äº›è·¨è¶Šç‰¹å®šå¤§å°å†…å­˜è¾¹ç•Œçš„è¯·æ±‚ã€‚æ­¤å‡½æ•°å‘Šè¯‰å†…å­˜è®¾å¤‡çš„ç‰¹å®šè¾¹ç•Œã€‚
+ * å¦‚æœè®¾å¤‡ä¸èƒ½å¤„ç†è·¨è¶Š4MBè¾¹ç•Œçš„è¯·æ±‚ï¼Œåˆ™maskçš„å€¼ä¸º0x3fffffã€‚é»˜è®¤çš„maskæ˜¯0xffffffffã€‚
  */
 void blk_queue_segment_boundary(request_queue_t *q, unsigned long mask)
 {
@@ -527,7 +527,7 @@ EXPORT_SYMBOL(blk_queue_segment_boundary);
  *
  **/
 /**
- * ¸æËßÄÚºËÉè±¸ÔÚÊ¹ÓÃDMA´«ÊäÊ±µÄÄÚ´æ¶ÔÆëÏŞÖÆ¡£Ä¬ÈÏmaskÊÇ0x1ff£¬ÕâÑù£¬ËùÓĞµÄÇëÇó¶¼ÊÇ512×Ö½Ú¶ÔÆë¡£
+ * å‘Šè¯‰å†…æ ¸è®¾å¤‡åœ¨ä½¿ç”¨DMAä¼ è¾“æ—¶çš„å†…å­˜å¯¹é½é™åˆ¶ã€‚é»˜è®¤maskæ˜¯0x1ffï¼Œè¿™æ ·ï¼Œæ‰€æœ‰çš„è¯·æ±‚éƒ½æ˜¯512å­—èŠ‚å¯¹é½ã€‚
  */
 void blk_queue_dma_alignment(request_queue_t *q, int mask)
 {
@@ -549,7 +549,7 @@ EXPORT_SYMBOL(blk_queue_dma_alignment);
  *    no locks need be held.
  **/
 /**
- * Í¨¹ı±ê¼ÇÕÒµ½ËùÊôµÄÇëÇó¡£
+ * é€šè¿‡æ ‡è®°æ‰¾åˆ°æ‰€å±çš„è¯·æ±‚ã€‚
  */
 struct request *blk_queue_find_tag(request_queue_t *q, int tag)
 {
@@ -657,7 +657,7 @@ fail:
  * @depth:  the maximum queue depth supported
  **/
 /**
- * Í¨ÖªÄÚºËÉè±¸Ö§³Ö±ê¼ÇÃüÁî¶ÓÁĞ¡£
+ * é€šçŸ¥å†…æ ¸è®¾å¤‡æ”¯æŒæ ‡è®°å‘½ä»¤é˜Ÿåˆ—ã€‚
  */
 int blk_queue_init_tags(request_queue_t *q, int depth,
 			struct blk_queue_tag *tags)
@@ -707,7 +707,7 @@ EXPORT_SYMBOL(blk_queue_init_tags);
  *    Must be called with the queue lock held.
  **/
 /**
- * ÖØĞÂÉèÖÃÉè±¸Ö§³ÖµÄ±ê¼ÇÊıÁ¿¡£
+ * é‡æ–°è®¾ç½®è®¾å¤‡æ”¯æŒçš„æ ‡è®°æ•°é‡ã€‚
  */
 int blk_queue_resize_tags(request_queue_t *q, int new_depth)
 {
@@ -763,7 +763,7 @@ EXPORT_SYMBOL(blk_queue_resize_tags);
  *   queue lock must be held.
  **/
 /**
- * µ±Ò»¸öÇëÇóµÄËùÓĞÊı¾İ´«ÊäÍê±Ïºó£¬Çı¶¯³ÌĞòÊ¹ÓÃ±¾º¯ÊıÊÍ·ÅËùÓÃµÄ±ê¼Ç¡£
+ * å½“ä¸€ä¸ªè¯·æ±‚çš„æ‰€æœ‰æ•°æ®ä¼ è¾“å®Œæ¯•åï¼Œé©±åŠ¨ç¨‹åºä½¿ç”¨æœ¬å‡½æ•°é‡Šæ”¾æ‰€ç”¨çš„æ ‡è®°ã€‚
  */
 void blk_queue_end_tag(request_queue_t *q, struct request *rq)
 {
@@ -812,7 +812,7 @@ EXPORT_SYMBOL(blk_queue_end_tag);
  *   queue lock must be held.
  **/
 /**
- * ½«Ò»¸ö±ê¼ÇÓëÒ»¸öÇëÇóÏà¹ØÁª¡£
+ * å°†ä¸€ä¸ªæ ‡è®°ä¸ä¸€ä¸ªè¯·æ±‚ç›¸å…³è”ã€‚
  */
 int blk_queue_start_tag(request_queue_t *q, struct request *rq)
 {
@@ -861,7 +861,7 @@ EXPORT_SYMBOL(blk_queue_start_tag);
  *   queue lock must be held.
  **/
 /**
- * ½«ËùÓĞÎ´Ö´ĞĞµÄ±ê¼Ç·µ»Ø¸ø»º³åÇø£¬²¢ÇÒ°ÑÏàÓ¦µÄÇëÇó·¢»¹¸øÇëÇó¶ÓÁĞ¡£
+ * å°†æ‰€æœ‰æœªæ‰§è¡Œçš„æ ‡è®°è¿”å›ç»™ç¼“å†²åŒºï¼Œå¹¶ä¸”æŠŠç›¸åº”çš„è¯·æ±‚å‘è¿˜ç»™è¯·æ±‚é˜Ÿåˆ—ã€‚
  */
 void blk_queue_invalidate_tags(request_queue_t *q)
 {
@@ -1047,8 +1047,8 @@ EXPORT_SYMBOL(blk_hw_contig_segment);
  * must make sure sg can hold rq->nr_phys_segments entries
  */
 /**
- * ¸Ã¸¨Öúº¯Êı·µ»ØÒ»¸ö¿ÉÒÔÁ¢¼´±»ÓÃÀ´Æô¶¯Êı¾İ´«ËÍµÄ·ÖÉ¢-¾Û¼¯Á´±í¡£
- * ¿ÉÒÔ½«·µ»ØµÄ·ÖÉ¢±ísg´«µİ¸ødma_map_sg¡£
+ * è¯¥è¾…åŠ©å‡½æ•°è¿”å›ä¸€ä¸ªå¯ä»¥ç«‹å³è¢«ç”¨æ¥å¯åŠ¨æ•°æ®ä¼ é€çš„åˆ†æ•£-èšé›†é“¾è¡¨ã€‚
+ * å¯ä»¥å°†è¿”å›çš„åˆ†æ•£è¡¨sgä¼ é€’ç»™dma_map_sgã€‚
  */
 int blk_rq_map_sg(request_queue_t *q, struct request *rq, struct scatterlist *sg)
 {
@@ -1269,8 +1269,8 @@ static int ll_merge_requests_fn(request_queue_t *q, struct request *req,
  * with the queue lock held.
  */
 /**
- * ²åÈëÒ»¸ö¿éÉè±¸-½«Æä²åÈëµ½Ä³¸ö¿éÉè±¸Çı¶¯³ÌĞò´¦ÀíµÄÇëÇó¶ÓÁĞÖĞ¡£
- * Æä²ÎÊıÊÇÒ»¸öÇëÇó¶ÓÁĞÃèÊö·ûµÄµØÖ·¡£
+ * æ’å…¥ä¸€ä¸ªå—è®¾å¤‡-å°†å…¶æ’å…¥åˆ°æŸä¸ªå—è®¾å¤‡é©±åŠ¨ç¨‹åºå¤„ç†çš„è¯·æ±‚é˜Ÿåˆ—ä¸­ã€‚
+ * å…¶å‚æ•°æ˜¯ä¸€ä¸ªè¯·æ±‚é˜Ÿåˆ—æè¿°ç¬¦çš„åœ°å€ã€‚
  */
 void blk_plug_device(request_queue_t *q)
 {
@@ -1283,8 +1283,8 @@ void blk_plug_device(request_queue_t *q)
 	if (test_bit(QUEUE_FLAG_STOPPED, &q->queue_flags))
 		return;
 	/**
-	 * ÉèÖÃqueue_flags×Ö¶ÎÖĞµÄQUEUE_FLAG_PLUGGED.
-	 * È»ºóÖØÆôunplug_timer×Ö¶ÎÖĞµÄÄÚÇ¶¶¯Ì¬¶¨Ê±Æ÷¡£
+	 * è®¾ç½®queue_flagså­—æ®µä¸­çš„QUEUE_FLAG_PLUGGED.
+	 * ç„¶åé‡å¯unplug_timerå­—æ®µä¸­çš„å†…åµŒåŠ¨æ€å®šæ—¶å™¨ã€‚
 	 */
 	if (!test_and_set_bit(QUEUE_FLAG_PLUGGED, &q->queue_flags))
 		mod_timer(&q->unplug_timer, jiffies + q->unplug_delay);
@@ -1297,20 +1297,20 @@ EXPORT_SYMBOL(blk_plug_device);
  * queue lock held and interrupts disabled.
  */
 /**
- * Õª³ıÒ»¸öÇëÇó¶ÓÁĞ¡£
+ * æ‘˜é™¤ä¸€ä¸ªè¯·æ±‚é˜Ÿåˆ—ã€‚
  */
 int blk_remove_plug(request_queue_t *q)
 {
 	WARN_ON(!irqs_disabled());
 
 	/**
-	 * Çå³ıQUEUE_FLAG_PLUGGED±êÖ¾¡£
+	 * æ¸…é™¤QUEUE_FLAG_PLUGGEDæ ‡å¿—ã€‚
 	 */ 
 	if (!test_and_clear_bit(QUEUE_FLAG_PLUGGED, &q->queue_flags))
 		return 0;
 
 	/**
-	 * Çå³ıunplug_timer¶¯Ì¬¶¨Ê±Æ÷µÄÖ´ĞĞ¡£
+	 * æ¸…é™¤unplug_timeråŠ¨æ€å®šæ—¶å™¨çš„æ‰§è¡Œã€‚
 	 */
 	del_timer(&q->unplug_timer);
 	return 1;
@@ -1322,18 +1322,18 @@ EXPORT_SYMBOL(blk_remove_plug);
  * remove the plug and let it rip..
  */
 /**
- * ²¦³ö¿éÉè±¸µÄ¸¨Öúº¯Êı
+ * æ‹¨å‡ºå—è®¾å¤‡çš„è¾…åŠ©å‡½æ•°
  */
 void __generic_unplug_device(request_queue_t *q)
 {
 	/**
-	 * Ê×ÏÈ¼ì²â¿éÉè±¸ÊÇ·ñÈÔÈ»»îÔ¾
+	 * é¦–å…ˆæ£€æµ‹å—è®¾å¤‡æ˜¯å¦ä»ç„¶æ´»è·ƒ
 	 */
 	if (test_bit(QUEUE_FLAG_STOPPED, &q->queue_flags))
 		return;
 
 	/**
-	 * ÕæÕıµÄÒÆ³ö¿éÉè±¸
+	 * çœŸæ­£çš„ç§»å‡ºå—è®¾å¤‡
 	 */
 	if (!blk_remove_plug(q))
 		return;
@@ -1342,7 +1342,7 @@ void __generic_unplug_device(request_queue_t *q)
 	 * was plugged, fire request_fn if queue has stuff to do
 	 */
 	/**
-	 * Ö´ĞĞrequest_fnÀ´´¦ÀíÇëÇó¶ÓÁĞµÄÏÂÒ»¸öÇëÇó
+	 * æ‰§è¡Œrequest_fnæ¥å¤„ç†è¯·æ±‚é˜Ÿåˆ—çš„ä¸‹ä¸€ä¸ªè¯·æ±‚
 	 */
 	if (elv_next_request(q))
 		q->request_fn(q);
@@ -1361,7 +1361,7 @@ EXPORT_SYMBOL(__generic_unplug_device);
  *   transfers started.
  **/
 /**
- * ²¦³ö¿éÉè±¸
+ * æ‹¨å‡ºå—è®¾å¤‡
  */
 void generic_unplug_device(request_queue_t *q)
 {
@@ -1384,30 +1384,30 @@ static void blk_backing_dev_unplug(struct backing_dev_info *bdi,
 }
 
 /**
- * ÇëÇó¶ÓÁĞµÄunplug_workÊµÏÖº¯Êı¡£
+ * è¯·æ±‚é˜Ÿåˆ—çš„unplug_workå®ç°å‡½æ•°ã€‚
  */
 static void blk_unplug_work(void *data)
 {
 	request_queue_t *q = data;
 
 	/**
-	 * Í¨³£unplug_fnº¯ÊıÊÇÓÉgeneric_unplug_deviceº¯ÊıÊµÏÖµÄ¡£ËüµÄ¹¦ÄÜÊÇ²¦³ö¿éÉè±¸
+	 * é€šå¸¸unplug_fnå‡½æ•°æ˜¯ç”±generic_unplug_deviceå‡½æ•°å®ç°çš„ã€‚å®ƒçš„åŠŸèƒ½æ˜¯æ‹¨å‡ºå—è®¾å¤‡
 	 */
 	q->unplug_fn(q);
 }
 
 /**
- * µ±blk_unplug_timeoutº¯Êı¼¤»îµÄ¶¯Ì¬¶¨Ê±Æ÷µÄÊ±¼äÓÃÍêºó£¬¾Í»áÖ´ĞĞ±¾º¯Êı¡£
+ * å½“blk_unplug_timeoutå‡½æ•°æ¿€æ´»çš„åŠ¨æ€å®šæ—¶å™¨çš„æ—¶é—´ç”¨å®Œåï¼Œå°±ä¼šæ‰§è¡Œæœ¬å‡½æ•°ã€‚
  */
 static void blk_unplug_timeout(unsigned long data)
 {
 	request_queue_t *q = (request_queue_t *)data;
 
 	/**
-	 * kblockdÖ´ĞĞblk_unplug_workº¯Êı£¬Õâ¸öº¯Êı´æ·ÅÔÚq->unplug_workÖĞ¡£
-	 * ¸Ãº¯Êı»áµ÷ÓÃÇëÇó¶ÓÁĞÖĞµÄq->unplug_fn·½·¨£¬Í¨³£¸Ã·½·¨ÊÇÓÉgeneric_unplug_deviceº¯ÊıÊµÏÖµÄ¡£
-	 * generic_unplug_deviceº¯ÊıµÄ¹¦ÄÜÊÇ²¦³ö¿éÉè±¸£ºÊ×ÏÈ¼ì²éÇëÇó¶ÓÁĞÊÇ·ñÈÔÈ»»îÔ¾¡£
-	 * È»ºó£¬µ÷ÓÃblk_remove_plugº¯Êı¡£×îºó£¬Ö´ĞĞ²ßÂÔÀı³Ìrequest_fnÀ´¿ªÊ¼´¦ÀíÇëÇó¶ÓÁĞÖĞµÄÏÂÒ»¸öÇëÇó¡£
+	 * kblockdæ‰§è¡Œblk_unplug_workå‡½æ•°ï¼Œè¿™ä¸ªå‡½æ•°å­˜æ”¾åœ¨q->unplug_workä¸­ã€‚
+	 * è¯¥å‡½æ•°ä¼šè°ƒç”¨è¯·æ±‚é˜Ÿåˆ—ä¸­çš„q->unplug_fnæ–¹æ³•ï¼Œé€šå¸¸è¯¥æ–¹æ³•æ˜¯ç”±generic_unplug_deviceå‡½æ•°å®ç°çš„ã€‚
+	 * generic_unplug_deviceå‡½æ•°çš„åŠŸèƒ½æ˜¯æ‹¨å‡ºå—è®¾å¤‡ï¼šé¦–å…ˆæ£€æŸ¥è¯·æ±‚é˜Ÿåˆ—æ˜¯å¦ä»ç„¶æ´»è·ƒã€‚
+	 * ç„¶åï¼Œè°ƒç”¨blk_remove_plugå‡½æ•°ã€‚æœ€åï¼Œæ‰§è¡Œç­–ç•¥ä¾‹ç¨‹request_fnæ¥å¼€å§‹å¤„ç†è¯·æ±‚é˜Ÿåˆ—ä¸­çš„ä¸‹ä¸€ä¸ªè¯·æ±‚ã€‚
 	 */
 	kblockd_schedule_work(&q->unplug_work);
 }
@@ -1422,7 +1422,7 @@ static void blk_unplug_timeout(unsigned long data)
  *   entered. Also see blk_stop_queue(). Queue lock must be held.
  **/
 /**
- * ÖØĞÂÔÊĞí¿éÉè±¸²ãÏòIO¶ÓÁĞÖĞ¼ÓÈëÇëÇó¡£
+ * é‡æ–°å…è®¸å—è®¾å¤‡å±‚å‘IOé˜Ÿåˆ—ä¸­åŠ å…¥è¯·æ±‚ã€‚
  */
 void blk_start_queue(request_queue_t *q)
 {
@@ -1458,7 +1458,7 @@ EXPORT_SYMBOL(blk_start_queue);
  *   blk_start_queue() to restart queue operations. Queue lock must be held.
  **/
 /**
- * Èç¹ûÇı¶¯³ÌĞò²»ÄÜÔÙ´¦Àí¸ü¶àÃüÁî£¬Ôòµ÷ÓÃ´Ëº¯ÊıÍ¨Öª¿éÉè±¸²ã¡£
+ * å¦‚æœé©±åŠ¨ç¨‹åºä¸èƒ½å†å¤„ç†æ›´å¤šå‘½ä»¤ï¼Œåˆ™è°ƒç”¨æ­¤å‡½æ•°é€šçŸ¥å—è®¾å¤‡å±‚ã€‚
  */
 void blk_stop_queue(request_queue_t *q)
 {
@@ -1519,7 +1519,7 @@ EXPORT_SYMBOL(blk_run_queue);
  *     outstanding requests first...
  **/
 /**
- * °Ñ¿éÉè±¸ÇëÇó¶ÓÁĞ·µ»Ø¸øÏµÍ³¡£
+ * æŠŠå—è®¾å¤‡è¯·æ±‚é˜Ÿåˆ—è¿”å›ç»™ç³»ç»Ÿã€‚
  */
 void blk_cleanup_queue(request_queue_t * q)
 {
@@ -1615,11 +1615,11 @@ EXPORT_SYMBOL(blk_alloc_queue);
  *    when the block device is deactivated (such as at module unload).
  **/
 /**
- * ·ÖÅäÒ»¸öÇëÇó¶ÓÁĞÃèÊö·û£¬²¢½«ÆäÖĞĞí¶à×Ö¶Î³õÊ¼»¯ÎªÈ±Ê¡Öµ¡£
- * Ëü½ÓÊÕµÄ²ÎÊıÎªÉè±¸ÃèÊö·ûµÄ×ÔĞıËøµÄµØÖ·£¨foo.gd->rq->queue_lock£©
- * ºÍÉè±¸Çı¶¯³ÌĞòµÄ²ßÂÔÀı³Ì£¨foo.gd->rq->request_fn£©
- * ¸Ãº¯ÊıÒ²³õÊ¼»¯foo.gd->rq->elevator£¬²¢Ç¿ÖÆÇı¶¯³ÌĞòÊ¹ÓÃÈ±Ê¡µÄIOµ÷¶ÈËã·¨¡£
- * Èç¹ûÇı¶¯³ÌĞòÏëÓÃÆäËûµ÷¶ÈËã·¨£¬¿ÉÒÔÉÔºò¸²¸Çelevator×Ö¶Î¡£
+ * åˆ†é…ä¸€ä¸ªè¯·æ±‚é˜Ÿåˆ—æè¿°ç¬¦ï¼Œå¹¶å°†å…¶ä¸­è®¸å¤šå­—æ®µåˆå§‹åŒ–ä¸ºç¼ºçœå€¼ã€‚
+ * å®ƒæ¥æ”¶çš„å‚æ•°ä¸ºè®¾å¤‡æè¿°ç¬¦çš„è‡ªæ—‹é”çš„åœ°å€ï¼ˆfoo.gd->rq->queue_lockï¼‰
+ * å’Œè®¾å¤‡é©±åŠ¨ç¨‹åºçš„ç­–ç•¥ä¾‹ç¨‹ï¼ˆfoo.gd->rq->request_fnï¼‰
+ * è¯¥å‡½æ•°ä¹Ÿåˆå§‹åŒ–foo.gd->rq->elevatorï¼Œå¹¶å¼ºåˆ¶é©±åŠ¨ç¨‹åºä½¿ç”¨ç¼ºçœçš„IOè°ƒåº¦ç®—æ³•ã€‚
+ * å¦‚æœé©±åŠ¨ç¨‹åºæƒ³ç”¨å…¶ä»–è°ƒåº¦ç®—æ³•ï¼Œå¯ä»¥ç¨å€™è¦†ç›–elevatorå­—æ®µã€‚
  */
 request_queue_t *blk_init_queue(request_fn_proc *rfn, spinlock_t *lock)
 {
@@ -1917,8 +1917,8 @@ static struct request *get_request_wait(request_queue_t *q, int rw)
 }
 
 /**
- * ÊÔÍ¼´ÓÒ»¸öÌØ¶¨ÇëÇó¶ÓÁĞµÄÄÚ´æ³ØÖĞ»ñµÃ¿ÕÏĞµÄÃèÊö·û¡£
- * Èç¹ûÄÚ´æÇø²»×ã²¢ÇÒÄÚ´æ³ØÒÑ¾­ÓÃÍê£¬Ôò¹ÒÆğµ±Ç°½ø³Ì»òÕß·µ»ØNULL
+ * è¯•å›¾ä»ä¸€ä¸ªç‰¹å®šè¯·æ±‚é˜Ÿåˆ—çš„å†…å­˜æ± ä¸­è·å¾—ç©ºé—²çš„æè¿°ç¬¦ã€‚
+ * å¦‚æœå†…å­˜åŒºä¸è¶³å¹¶ä¸”å†…å­˜æ± å·²ç»ç”¨å®Œï¼Œåˆ™æŒ‚èµ·å½“å‰è¿›ç¨‹æˆ–è€…è¿”å›NULL
  */
 struct request *blk_get_request(request_queue_t *q, int rw, int gfp_mask)
 {
@@ -2248,12 +2248,12 @@ void drive_stat_acct(struct request *rq, int nr_sectors, int new_io)
  * queue lock is held and interrupts disabled, as we muck with the
  * request queue list.
  */
-/* ½«ioÇëÇóÌí¼Óµ½¶ÓÁĞÖĞ */
+/* å°†ioè¯·æ±‚æ·»åŠ åˆ°é˜Ÿåˆ—ä¸­ */
 static inline void add_request(request_queue_t * q, struct request * req)
 {
 	drive_stat_acct(req, req->nr_sectors, 1);
 
-	if (q->activity_fn)/* µ÷ÓÃÇëÇó¶ÓÁĞµÄ»Øµ÷£¬±íÊ¾ÓĞÒ»¸öĞÂÇëÇó¼ÓÈë£¬Ò»°ãÎ´¶¨Òå */
+	if (q->activity_fn)/* è°ƒç”¨è¯·æ±‚é˜Ÿåˆ—çš„å›è°ƒï¼Œè¡¨ç¤ºæœ‰ä¸€ä¸ªæ–°è¯·æ±‚åŠ å…¥ï¼Œä¸€èˆ¬æœªå®šä¹‰ */
 		q->activity_fn(q->activity_data, rq_data_dir(req));
 
 	/*
@@ -2324,7 +2324,7 @@ void __blk_put_request(request_queue_t *q, struct request *req)
 }
 
 /**
- * ÊÍ·ÅÇëÇóÃèÊö·û£¬Èç¹ûÒıÓÃ¼ÆÊıÆ÷Îª0£¬ÔòÊÍ·Åµ½ÄÚ´æ³Ø¡£
+ * é‡Šæ”¾è¯·æ±‚æè¿°ç¬¦ï¼Œå¦‚æœå¼•ç”¨è®¡æ•°å™¨ä¸º0ï¼Œåˆ™é‡Šæ”¾åˆ°å†…å­˜æ± ã€‚
  */
 void blk_put_request(struct request *req)
 {
@@ -2354,7 +2354,7 @@ EXPORT_SYMBOL(blk_put_request);
  * returned.
  */
 /**
- * ¹ÒÆğµ±Ç°½ø³Ì£¬Ö±µ½ËùÓĞÇëÇó¶ÓÁĞ¶¼±äÎª²»ÓµÈû»ò³¬Ê±ÒÑµ½
+ * æŒ‚èµ·å½“å‰è¿›ç¨‹ï¼Œç›´åˆ°æ‰€æœ‰è¯·æ±‚é˜Ÿåˆ—éƒ½å˜ä¸ºä¸æ‹¥å¡æˆ–è¶…æ—¶å·²åˆ°
  */
 long blk_congestion_wait(int rw, long timeout)
 {
@@ -2479,7 +2479,7 @@ void __blk_attempt_remerge(request_queue_t *q, struct request *rq)
 EXPORT_SYMBOL(__blk_attempt_remerge);
 
 /**
- * Í¨ÓÃ¿é²ãµ÷ÓÃ´Ëº¯Êı£¬»ñµÃIOµ÷¶È²ãµÄ·şÎñ¡£
+ * é€šç”¨å—å±‚è°ƒç”¨æ­¤å‡½æ•°ï¼Œè·å¾—IOè°ƒåº¦å±‚çš„æœåŠ¡ã€‚
  */
 static int __make_request(request_queue_t *q, struct bio *bio)
 {
@@ -2499,14 +2499,14 @@ static int __make_request(request_queue_t *q, struct bio *bio)
 	 * ISA dma in theory)
 	 */
 	/**
-	 * Èç¹ûÓĞ±ØÒª£¬½¨Á¢Ò»¸ö»Øµ¯»º³åÇø¡£Èç¹û»Øµ¯»º³åÇø±»½¨Á¢£¬ºóĞø½«¶Ô¸Ã»º³åÇø¶ø²»ÊÇ¶ÔÔ­bio½á¹¹½øĞĞ²Ù×÷¡£
+	 * å¦‚æœæœ‰å¿…è¦ï¼Œå»ºç«‹ä¸€ä¸ªå›å¼¹ç¼“å†²åŒºã€‚å¦‚æœå›å¼¹ç¼“å†²åŒºè¢«å»ºç«‹ï¼Œåç»­å°†å¯¹è¯¥ç¼“å†²åŒºè€Œä¸æ˜¯å¯¹åŸbioç»“æ„è¿›è¡Œæ“ä½œã€‚
 	 */
 	blk_queue_bounce(q, &bio);
 
 	spin_lock_prefetch(q->queue_lock);
 
 	barrier = bio_barrier(bio);
-	/* ÆÁÕÏÇëÇó£¬µ«ÊÇ¶ÓÁĞ²»Ö§³ÖÆÁÕÏ£¬ÍË³ö */
+	/* å±éšœè¯·æ±‚ï¼Œä½†æ˜¯é˜Ÿåˆ—ä¸æ”¯æŒå±éšœï¼Œé€€å‡º */
 	if (barrier && !(q->queue_flags & (1 << QUEUE_FLAG_ORDERED))) {
 		err = -EOPNOTSUPP;
 		goto end_io;
@@ -2516,11 +2516,11 @@ again:
 	spin_lock_irq(q->queue_lock);
 
 	/**
-	 * ¼ì²éÇëÇó¶ÓÁĞÖĞÊÇ·ñ´æÔÚ´ı´¦ÀíÇëÇó¡£
+	 * æ£€æŸ¥è¯·æ±‚é˜Ÿåˆ—ä¸­æ˜¯å¦å­˜åœ¨å¾…å¤„ç†è¯·æ±‚ã€‚
 	 */
 	if (elv_queue_empty(q)) {
 		/**
-		 * Ã»ÓĞ´ı´¦ÀíÇëÇó£¬Ôòµ÷ÓÃblk_plug_device²åÈëÇëÇó¶ÓÁĞ¡£
+		 * æ²¡æœ‰å¾…å¤„ç†è¯·æ±‚ï¼Œåˆ™è°ƒç”¨blk_plug_deviceæ’å…¥è¯·æ±‚é˜Ÿåˆ—ã€‚
 		 */
 		blk_plug_device(q);
 		goto get_rq;
@@ -2529,44 +2529,44 @@ again:
 		goto get_rq;
 
 	/**
-	 * ÇëÇó¶ÓÁĞÖĞ°üº¬´ı´¦ÀíÇëÇó¡£µ÷ÓÃelv_merge¼ì²éĞÂbio½á¹¹ÊÇ·ñ¿ÉÒÔ²¢ÈëÒÑÓĞÇëÇóÖĞ¡£
+	 * è¯·æ±‚é˜Ÿåˆ—ä¸­åŒ…å«å¾…å¤„ç†è¯·æ±‚ã€‚è°ƒç”¨elv_mergeæ£€æŸ¥æ–°bioç»“æ„æ˜¯å¦å¯ä»¥å¹¶å…¥å·²æœ‰è¯·æ±‚ä¸­ã€‚
 	 */
 	el_ret = elv_merge(q, &req, bio);
 	switch (el_ret) {
-		case ELEVATOR_BACK_MERGE:/* ¿ÉÒÔÌí¼Óµ½Ä³¸öbioÄ©Î² */
+		case ELEVATOR_BACK_MERGE:/* å¯ä»¥æ·»åŠ åˆ°æŸä¸ªbioæœ«å°¾ */
 			BUG_ON(!rq_mergeable(req));
 
 			/**
-			 * ¼ì²éÊÇ·ñ¿ÉÒÔ½«ÇëÇóºÏ²¢µ½bioµÄÄ©Î²¡£
+			 * æ£€æŸ¥æ˜¯å¦å¯ä»¥å°†è¯·æ±‚åˆå¹¶åˆ°bioçš„æœ«å°¾ã€‚
 			 */
 			if (!q->back_merge_fn(q, req, bio))
 				break;
 
 			/**
-			 * ½«¸ÃÇëÇóºÏ²¢µ½bioµÄÄ©Î²¡£
+			 * å°†è¯¥è¯·æ±‚åˆå¹¶åˆ°bioçš„æœ«å°¾ã€‚
 			 */
 			req->biotail->bi_next = bio;
 			req->biotail = bio;
 			req->nr_sectors = req->hard_nr_sectors += nr_sectors;
 			drive_stat_acct(req, nr_sectors, 0);
 			/**
-			 * ¼ì²éÊÇ·ñ¿ÉÒÔÓëºóÃæµÄÇëÇóºÏ²¢¡£
+			 * æ£€æŸ¥æ˜¯å¦å¯ä»¥ä¸åé¢çš„è¯·æ±‚åˆå¹¶ã€‚
 			 */
 			if (!attempt_back_merge(q, req))
 				elv_merged_request(q, req);
 			goto out;
 
-		case ELEVATOR_FRONT_MERGE:/* ¿ÉÒÔ²åµ½Ä³¸öÇëÇóµÄÇ°Ãæ */
+		case ELEVATOR_FRONT_MERGE:/* å¯ä»¥æ’åˆ°æŸä¸ªè¯·æ±‚çš„å‰é¢ */
 			BUG_ON(!rq_mergeable(req));
 
 			/**
-			 * ¼ì²éÊÇ·ñ¿ÉÒÔºÏ²¢µ½¸ÃbioµÄÇ°Ãæ
+			 * æ£€æŸ¥æ˜¯å¦å¯ä»¥åˆå¹¶åˆ°è¯¥bioçš„å‰é¢
 			 */
 			if (!q->front_merge_fn(q, req, bio))
 				break;
 
 			/**
-			 * ºÏ²¢µ½¸ÃbioµÄÇ°Ãæ
+			 * åˆå¹¶åˆ°è¯¥bioçš„å‰é¢
 			 */
 			bio->bi_next = req->bio;
 			req->bio = bio;
@@ -2583,7 +2583,7 @@ again:
 			req->nr_sectors = req->hard_nr_sectors += nr_sectors;
 			drive_stat_acct(req, nr_sectors, 0);
 			/**
-			 * ¼ì²éÊÇ·ñ¿ÉÒÔÓëÉÏÃæµÄbio½øĞĞ½øÒ»²½µÄºÏ²¢¡£
+			 * æ£€æŸ¥æ˜¯å¦å¯ä»¥ä¸ä¸Šé¢çš„bioè¿›è¡Œè¿›ä¸€æ­¥çš„åˆå¹¶ã€‚
 			 */
 			if (!attempt_front_merge(q, req))
 				elv_merged_request(q, req);
@@ -2592,7 +2592,7 @@ again:
 		/*
 		 * elevator says don't/can't merge. get new request
 		 */
-		case ELEVATOR_NO_MERGE:/* Î´ºÏ²¢£¬×ªµ½get_rq½«ÇëÇó²åÈë¡£ */
+		case ELEVATOR_NO_MERGE:/* æœªåˆå¹¶ï¼Œè½¬åˆ°get_rqå°†è¯·æ±‚æ’å…¥ã€‚ */
 			break;
 
 		default:
@@ -2606,16 +2606,16 @@ again:
 	 * a free slot.
 	 */
 /**
- * ĞèÒª½«ÇëÇó²åÈëµ½ÏÖÓĞ¶ÓÁĞ¡£
+ * éœ€è¦å°†è¯·æ±‚æ’å…¥åˆ°ç°æœ‰é˜Ÿåˆ—ã€‚
  */
 get_rq:
-	if (freereq) {/* ÓĞ¿ÉÓÃÃèÊö·û */
+	if (freereq) {/* æœ‰å¯ç”¨æè¿°ç¬¦ */
 		req = freereq;
 		freereq = NULL;
 	} else {
 		spin_unlock_irq(q->queue_lock);
 		/**
-		 * ·ÖÅäÒ»¸öĞÂÇëÇó
+		 * åˆ†é…ä¸€ä¸ªæ–°è¯·æ±‚
 		 */
 		if ((freereq = get_request(q, rw, GFP_ATOMIC)) == NULL) {
 			/*
@@ -2626,7 +2626,7 @@ get_rq:
 				goto end_io;
 
 			/**
-			 * ²»ÄÜÖ±½Ó·ÖÅäÒ»¸öÇëÇó£¬ÄÇÃ´µÈ´ıÄÚ´æ¿ÉÓÃ£¬²¢·ÖÅäÒ»¸öÇëÇóÃèÊö¶ÌĞÅ³¬ÈË ¡£
+			 * ä¸èƒ½ç›´æ¥åˆ†é…ä¸€ä¸ªè¯·æ±‚ï¼Œé‚£ä¹ˆç­‰å¾…å†…å­˜å¯ç”¨ï¼Œå¹¶åˆ†é…ä¸€ä¸ªè¯·æ±‚æè¿°çŸ­ä¿¡è¶…äºº ã€‚
 			 */
 			freereq = get_request_wait(q, rw);
 		}
@@ -2634,7 +2634,7 @@ get_rq:
 	}
 
 	/**
-	 * Ò»´Î±ê×¼µÄ¶Á»òĞ´²Ù×÷±êÖ¾
+	 * ä¸€æ¬¡æ ‡å‡†çš„è¯»æˆ–å†™æ“ä½œæ ‡å¿—
 	 */
 	req->flags |= REQ_CMD;
 
@@ -2642,7 +2642,7 @@ get_rq:
 	 * inherit FAILFAST from bio (for read-ahead, and explicit FAILFAST)
 	 */
 	/**
-	 * ÊÇÒ»´ÎÔ¤¶Á¡£Èç¹ûÊ§°Ü¾ÍÖ±½Ó·µ»Ø²»ÓÃÖØÊÔ¡£
+	 * æ˜¯ä¸€æ¬¡é¢„è¯»ã€‚å¦‚æœå¤±è´¥å°±ç›´æ¥è¿”å›ä¸ç”¨é‡è¯•ã€‚
 	 */
 	if (bio_rw_ahead(bio) || bio_failfast(bio))
 		req->flags |= REQ_FAILFAST;
@@ -2654,7 +2654,7 @@ get_rq:
 		req->flags |= (REQ_HARDBARRIER | REQ_NOMERGE);
 
 	/**
-	 * ³õÊ¼»¯ÇëÇóÃèÊö·ûÖĞµÄ×Ö¶Î¡£
+	 * åˆå§‹åŒ–è¯·æ±‚æè¿°ç¬¦ä¸­çš„å­—æ®µã€‚
 	 */
 	req->errors = 0;
 	req->hard_sector = req->sector = sector;
@@ -2669,13 +2669,13 @@ get_rq:
 	req->start_time = jiffies;
 
 	/**
-	 * ½«bio²åÈëÇëÇóÁ´±í¡£
+	 * å°†bioæ’å…¥è¯·æ±‚é“¾è¡¨ã€‚
 	 */
 	add_request(q, req);
 out:
-	if (freereq)/* ÁÙÊ±ÉêÇëÁËÃèÊö·û£¬µ«ÊÇÓÉÓÚµ±Ç°ÇëÇó±»ºÏ²¢¶ø²»ĞèÒª¸ÃÃèÊö·û£¬ÊÍ·ÅËü */
+	if (freereq)/* ä¸´æ—¶ç”³è¯·äº†æè¿°ç¬¦ï¼Œä½†æ˜¯ç”±äºå½“å‰è¯·æ±‚è¢«åˆå¹¶è€Œä¸éœ€è¦è¯¥æè¿°ç¬¦ï¼Œé‡Šæ”¾å®ƒ */
 		__blk_put_request(q, freereq);
-	if (bio_sync(bio))/* Èç¹ûÉèÖÃÁËBIO_RW_SYNC£¬Ôòµ÷ÓÃ__generic_unplug_deviceÕª³ı¿éÉè±¸ */
+	if (bio_sync(bio))/* å¦‚æœè®¾ç½®äº†BIO_RW_SYNCï¼Œåˆ™è°ƒç”¨__generic_unplug_deviceæ‘˜é™¤å—è®¾å¤‡ */
 		__generic_unplug_device(q);
 
 	spin_unlock_irq(q->queue_lock);
@@ -2694,16 +2694,16 @@ static inline void blk_partition_remap(struct bio *bio)
 	struct block_device *bdev = bio->bi_bdev;
 
 	/**
-	 * ¼ì²éÒ»¸ö¿éÉè±¸ÊÇ·ñÖ¸µÄÊÇÒ»¸ö´ÅÅÌ·ÖÇø£¨bio->bi_bdev!=bdev->bd_contains£©
+	 * æ£€æŸ¥ä¸€ä¸ªå—è®¾å¤‡æ˜¯å¦æŒ‡çš„æ˜¯ä¸€ä¸ªç£ç›˜åˆ†åŒºï¼ˆbio->bi_bdev!=bdev->bd_containsï¼‰
 	 */
 	if (bdev != bdev->bd_contains) {
 		/**
-		 * »ñµÃ·ÖÇøµÄhd_structÃèÊö·û
+		 * è·å¾—åˆ†åŒºçš„hd_structæè¿°ç¬¦
 		 */
 		struct hd_struct *p = bdev->bd_part;
 
 		/**
-		 * ¸üĞÂ¼ÆÊıÖµ
+		 * æ›´æ–°è®¡æ•°å€¼
 		 */
 		switch (bio->bi_rw) {
 		case READ:
@@ -2716,12 +2716,12 @@ static inline void blk_partition_remap(struct bio *bio)
 			break;
 		}
 		/**
-		 * µ÷Õûbi_sector£¬°ÑÏà¶ÔÓÚ·ÖÇøµÄÆğÊ¼ÉÈÇøºÅ×ª±äÎªÏà¶ÔÓÚÕû¸ö´ÅÅÌµÄÉÈÇøºÅ¡£
+		 * è°ƒæ•´bi_sectorï¼ŒæŠŠç›¸å¯¹äºåˆ†åŒºçš„èµ·å§‹æ‰‡åŒºå·è½¬å˜ä¸ºç›¸å¯¹äºæ•´ä¸ªç£ç›˜çš„æ‰‡åŒºå·ã€‚
 		 */
 		bio->bi_sector += p->start_sect;
 		/**
-		 * ½«bio->bi_bdevÉèÖÃÎªÕû¸ö´ÅÅÌµÄ¿éÉè±¸ÃèÊö·û
-		 * ÕâÑù£¬ÏÂ´Î¾Í²»»áÔÙ´Îµ÷ÕûÉÏÃæµÄÖµÁË
+		 * å°†bio->bi_bdevè®¾ç½®ä¸ºæ•´ä¸ªç£ç›˜çš„å—è®¾å¤‡æè¿°ç¬¦
+		 * è¿™æ ·ï¼Œä¸‹æ¬¡å°±ä¸ä¼šå†æ¬¡è°ƒæ•´ä¸Šé¢çš„å€¼äº†
 		 */
 		bio->bi_bdev = bdev->bd_contains;
 	}
@@ -2793,8 +2793,8 @@ void blk_wait_queue_drained(request_queue_t *q, int wait_dispatch)
  * block waiting for the io scheduler being started again.
  */
 /**
- * ¼ì²éµ±Ç°ÕıÔÚÊ¹ÓÃµÄIOµ÷¶È³ÌĞòÊÇ·ñ¿ÉÒÔ±»¶¯Ì¬È¡´ú¡£
- * Èç¹û¿ÉÒÔ£¬ÔòÈÃµ±Ç°½ø³ÌË¯ÃßÖ±µ½Æô¶¯Ò»¸öĞÂµÄIOµ÷¶È³ÌĞò¡£
+ * æ£€æŸ¥å½“å‰æ­£åœ¨ä½¿ç”¨çš„IOè°ƒåº¦ç¨‹åºæ˜¯å¦å¯ä»¥è¢«åŠ¨æ€å–ä»£ã€‚
+ * å¦‚æœå¯ä»¥ï¼Œåˆ™è®©å½“å‰è¿›ç¨‹ç¡çœ ç›´åˆ°å¯åŠ¨ä¸€ä¸ªæ–°çš„IOè°ƒåº¦ç¨‹åºã€‚
  */
 static inline void block_wait_queue_running(request_queue_t *q)
 {
@@ -2856,7 +2856,7 @@ static void handle_bad_sector(struct bio *bio)
  * should NOT be depended on after the call to generic_make_request.
  */
 /**
- * Í¨ÓÃ¿é²ãµÄÈë¿Úµã¡£
+ * é€šç”¨å—å±‚çš„å…¥å£ç‚¹ã€‚
  */
 void generic_make_request(struct bio *bio)
 {
@@ -2867,14 +2867,14 @@ void generic_make_request(struct bio *bio)
 	might_sleep();
 	/* Test device or partition size, when known. */
 	/**
-	 * ¼ÆËã¿éÉè±¸µÄ×î´óÉÈÇøÊı¡£
+	 * è®¡ç®—å—è®¾å¤‡çš„æœ€å¤§æ‰‡åŒºæ•°ã€‚
 	 */
 	maxsector = bio->bi_bdev->bd_inode->i_size >> 9;
 	if (maxsector) {
 		sector_t sector = bio->bi_sector;
 
 		/**
-		 * ÇëÇóµÄÆğÊ¼ÉÈÇøºÅ´óÓÚ×î´óÃ¤Çø£¬»òÕßÉÈÇøºÅÒç³ö¡£
+		 * è¯·æ±‚çš„èµ·å§‹æ‰‡åŒºå·å¤§äºæœ€å¤§ç›²åŒºï¼Œæˆ–è€…æ‰‡åŒºå·æº¢å‡ºã€‚
 		 */
 		if (maxsector < nr_sectors || maxsector - nr_sectors < sector) {
 			/*
@@ -2882,7 +2882,7 @@ void generic_make_request(struct bio *bio)
 			 * without checking the size of the device, e.g., when
 			 * mounting a device.
 			 */
-			handle_bad_sector(bio);/* ´òÓ¡Ê§°ÜĞÅÏ¢£¬²¢½áÊø±¾´ÎÇëÇó */
+			handle_bad_sector(bio);/* æ‰“å°å¤±è´¥ä¿¡æ¯ï¼Œå¹¶ç»“æŸæœ¬æ¬¡è¯·æ±‚ */
 			goto end_io;
 		}
 	}
@@ -2898,9 +2898,9 @@ void generic_make_request(struct bio *bio)
 	do {
 		char b[BDEVNAME_SIZE];
 
-		/* »ñÈ¡Óë¿éÉè±¸Ïà¹ØµÄÇëÇó¶ÓÁĞ¡£ */
+		/* è·å–ä¸å—è®¾å¤‡ç›¸å…³çš„è¯·æ±‚é˜Ÿåˆ—ã€‚ */
 		q = bdev_get_queue(bio->bi_bdev);
-		if (!q) {/* Èç¹ûÎª¿Õ£¬ËµÃ÷Óöµ½Òì³£Çé¿ö */
+		if (!q) {/* å¦‚æœä¸ºç©ºï¼Œè¯´æ˜é‡åˆ°å¼‚å¸¸æƒ…å†µ */
 			printk(KERN_ERR
 			       "generic_make_request: Trying to access "
 				"nonexistent block-device %s (%Lu)\n",
@@ -2911,7 +2911,7 @@ end_io:
 			break;
 		}
 
-		/* ÇëÇóµÄÉÈÇøÊıÁ¿Ì«´ó£¬´íÎó */
+		/* è¯·æ±‚çš„æ‰‡åŒºæ•°é‡å¤ªå¤§ï¼Œé”™è¯¯ */
 		if (unlikely(bio_sectors(bio) > q->max_hw_sectors)) {
 			printk("bio too big device %s (%u > %u)\n", 
 				bdevname(bio->bi_bdev, b),
@@ -2923,7 +2923,7 @@ end_io:
 		if (test_bit(QUEUE_FLAG_DEAD, &q->queue_flags))
 			goto end_io;
 
-		/* µÈ´ıIOµ÷¶È¾ÍĞ÷¡£ */
+		/* ç­‰å¾…IOè°ƒåº¦å°±ç»ªã€‚ */
 		block_wait_queue_running(q);
 
 		/*
@@ -2931,16 +2931,16 @@ end_io:
 		 * of partition p to block n+start(p) of the disk.
 		 */
 		/**
-		 * Èç¹ûÊÇ·ÖÇø£¬Ôò½«·ÖÇøµÄÉÈÇøÎ»ÖÃ×ª»»³ÉÉè±¸µÄÉÈÇøÎ»ÖÃ¡£²¢¶Ô·ÖÇø½øĞĞÒ»Ğ©¼ÆÊı¡£
+		 * å¦‚æœæ˜¯åˆ†åŒºï¼Œåˆ™å°†åˆ†åŒºçš„æ‰‡åŒºä½ç½®è½¬æ¢æˆè®¾å¤‡çš„æ‰‡åŒºä½ç½®ã€‚å¹¶å¯¹åˆ†åŒºè¿›è¡Œä¸€äº›è®¡æ•°ã€‚
 		 */
 		blk_partition_remap(bio);
 
 		/**
-		 * ÇëBIOÇëÇó´«µİ¸øIOµ÷¶È²ã¡£
-		 * ³£¼û¿éÉè±¸µÄ»Øµ÷º¯ÊıÊÇ__make_request
+		 * è¯·BIOè¯·æ±‚ä¼ é€’ç»™IOè°ƒåº¦å±‚ã€‚
+		 * å¸¸è§å—è®¾å¤‡çš„å›è°ƒå‡½æ•°æ˜¯__make_request
 		 */
 		ret = q->make_request_fn(q, bio);
-	} while (ret);/* Èç¹ûret²»Õâ0£¬±íÊ¾bioÒÑ¾­±»ĞŞ¸Ä£¬ĞèÒª½«ÇëÇóÌá½»¸øÁíÍâµÄÉè±¸£¬Ö÷Òª´¦ÀíÕ»Ê½¿éÉè±¸ */
+	} while (ret);/* å¦‚æœretä¸è¿™0ï¼Œè¡¨ç¤ºbioå·²ç»è¢«ä¿®æ”¹ï¼Œéœ€è¦å°†è¯·æ±‚æäº¤ç»™å¦å¤–çš„è®¾å¤‡ï¼Œä¸»è¦å¤„ç†æ ˆå¼å—è®¾å¤‡ */
 }
 
 EXPORT_SYMBOL(generic_make_request);
@@ -2955,15 +2955,15 @@ EXPORT_SYMBOL(generic_make_request);
  * interfaces, @bio must be presetup and ready for I/O.
  *
  */
-/* ÉÏ²ãÏòÍ¨ÓÃ¿é²ãÌá½»ÇëÇóµÄ½Ó¿Úº¯Êı */
+/* ä¸Šå±‚å‘é€šç”¨å—å±‚æäº¤è¯·æ±‚çš„æ¥å£å‡½æ•° */
 void submit_bio(int rw, struct bio *bio)
 {
 	int count = bio_sectors(bio);
 
 	BIO_BUG_ON(!bio->bi_size);
 	BIO_BUG_ON(!bio->bi_io_vec);
-	bio->bi_rw = rw;/* ¼ÇÂ¼¶ÁĞ´·½Ê½ */
-	if (rw & WRITE)/* Í³¼Æ¶ÁĞ´ÊıÁ¿ */
+	bio->bi_rw = rw;/* è®°å½•è¯»å†™æ–¹å¼ */
+	if (rw & WRITE)/* ç»Ÿè®¡è¯»å†™æ•°é‡ */
 		mod_page_state(pgpgout, count);
 	else
 		mod_page_state(pgpgin, count);
@@ -2977,7 +2977,7 @@ void submit_bio(int rw, struct bio *bio)
 			bdevname(bio->bi_bdev,b));
 	}
 
-	/* Ö´ĞĞÕæÕıµÄ¹¤×÷ */
+	/* æ‰§è¡ŒçœŸæ­£çš„å·¥ä½œ */
 	generic_make_request(bio);
 }
 
@@ -3083,25 +3083,25 @@ static int __end_that_request_first(struct request *req, int uptodate,
 
 	total_bytes = bio_nbytes = 0;
 	/**
-	 * É¨ÃèÇëÇóÖĞµÄBIO½á¹¹¼°Ã¿¸öBIO×Ö¶Î¡£
+	 * æ‰«æè¯·æ±‚ä¸­çš„BIOç»“æ„åŠæ¯ä¸ªBIOå­—æ®µã€‚
 	 */
 	while ((bio = req->bio) != NULL) {
 		int nbytes;
 
-		if (nr_bytes >= bio->bi_size) {/* ¸ÃbioÒÑ¾­È«²¿Íê³É */
+		if (nr_bytes >= bio->bi_size) {/* è¯¥bioå·²ç»å…¨éƒ¨å®Œæˆ */
 			/**
-			 * ĞŞ¸ÄBIO×Ö¶Î£¬Ê¹ÆäÖ¸ÏòÇëÇóÖĞÃ¿Ò»¸öÎ´Íê³ÉµÄBIO×Ö¶Î¡£
+			 * ä¿®æ”¹BIOå­—æ®µï¼Œä½¿å…¶æŒ‡å‘è¯·æ±‚ä¸­æ¯ä¸€ä¸ªæœªå®Œæˆçš„BIOå­—æ®µã€‚
 			 */
 			req->bio = bio->bi_next;
 			nbytes = bio->bi_size;
-			/* ½«bio´ÓÁ´±íÖĞÈ¡³ö */
+			/* å°†bioä»é“¾è¡¨ä¸­å–å‡º */
 			bio_endio(bio, nbytes, error);
 			next_idx = 0;
 			bio_nbytes = 0;
-		} else {/* bio»¹Ã»ÓĞÍê³É */
+		} else {/* bioè¿˜æ²¡æœ‰å®Œæˆ */
 			int idx = bio->bi_idx + next_idx;
 
-			if (unlikely(bio->bi_idx >= bio->bi_vcnt)) {/* ÎªÖÖÇé¿öÓ¦µ±ÊÇ³öÏÖÁËÂß¼­´íÎó */
+			if (unlikely(bio->bi_idx >= bio->bi_vcnt)) {/* ä¸ºç§æƒ…å†µåº”å½“æ˜¯å‡ºç°äº†é€»è¾‘é”™è¯¯ */
 				blk_dump_rq_flags(req, "__end_that");
 				printk("%s: bio idx %d >= vcnt %d\n",
 						__FUNCTION__,
@@ -3115,7 +3115,7 @@ static int __end_that_request_first(struct request *req, int uptodate,
 			/*
 			 * not a complete bvec done
 			 */
-			if (unlikely(nbytes > nr_bytes)) {/* µ±Ç°bioµÄµ±Ç°¶Î»¹Ã»ÓĞÍê³É */
+			if (unlikely(nbytes > nr_bytes)) {/* å½“å‰bioçš„å½“å‰æ®µè¿˜æ²¡æœ‰å®Œæˆ */
 				bio_nbytes += nr_bytes;
 				total_bytes += nr_bytes;
 				break;
@@ -3135,7 +3135,7 @@ static int __end_that_request_first(struct request *req, int uptodate,
 			/*
 			 * end more in this run, or just return 'not-done'
 			 */
-			if (unlikely(nr_bytes <= 0))/* ±¾´Î´¦ÀíÍêËùÓĞ½ÓÊÕµ½µÄ×Ö½Ú£¬ÍË³ö */
+			if (unlikely(nr_bytes <= 0))/* æœ¬æ¬¡å¤„ç†å®Œæ‰€æœ‰æ¥æ”¶åˆ°çš„å­—èŠ‚ï¼Œé€€å‡º */
 				break;
 		}
 	}
@@ -3144,7 +3144,7 @@ static int __end_that_request_first(struct request *req, int uptodate,
 	 * completely done
 	 */
 	/**
-	 * Êı¾İÒÑ¾­´«ËÍÍê£¬·µ»Ø0
+	 * æ•°æ®å·²ç»ä¼ é€å®Œï¼Œè¿”å›0
 	 */
 	if (!req->bio)
 		return 0;
@@ -3152,17 +3152,17 @@ static int __end_that_request_first(struct request *req, int uptodate,
 	/*
 	 * if the request wasn't completed, update state
 	 */
-	if (bio_nbytes) {/* µ±Ç°bio»¹Ã»ÓĞÍê³É */
+	if (bio_nbytes) {/* å½“å‰bioè¿˜æ²¡æœ‰å®Œæˆ */
 		/**
-		 * ÔÚÒÑ¾­Íê³ÉÊı¾İ´«ËÍµÄBIO½á¹¹ÉÏµ÷ÓÃbio_endioº¯Êı¡£
+		 * åœ¨å·²ç»å®Œæˆæ•°æ®ä¼ é€çš„BIOç»“æ„ä¸Šè°ƒç”¨bio_endioå‡½æ•°ã€‚
 		 */
 		bio_endio(bio, bio_nbytes, error);
 		/**
-		 * ĞŞ¸ÄÎ´Íê³ÉBIO½á¹¹µÄbi_idx×Ö¶Î£¬Ê¹ÆäÖ¸ÏòµÚÒ»¸öÎ´Íê³ÉµÄ¶Î¡£
+		 * ä¿®æ”¹æœªå®ŒæˆBIOç»“æ„çš„bi_idxå­—æ®µï¼Œä½¿å…¶æŒ‡å‘ç¬¬ä¸€ä¸ªæœªå®Œæˆçš„æ®µã€‚
 		 */
 		bio->bi_idx += next_idx;
 		/**
-		 * ĞŞ¸ÄÎ´Íê³É¶ÎµÄbv_offsetºÍbv_lenÁ½¸ö×Ö¶Î£¬Ê¹ÆäÖ¸ÏòÈÔĞè´«µİµÄÊı¾İ¡£
+		 * ä¿®æ”¹æœªå®Œæˆæ®µçš„bv_offsetå’Œbv_lenä¸¤ä¸ªå­—æ®µï¼Œä½¿å…¶æŒ‡å‘ä»éœ€ä¼ é€’çš„æ•°æ®ã€‚
 		 */
 		bio_iovec(bio)->bv_offset += nr_bytes;
 		bio_iovec(bio)->bv_len -= nr_bytes;
@@ -3171,7 +3171,7 @@ static int __end_that_request_first(struct request *req, int uptodate,
 	blk_recalc_rq_sectors(req, total_bytes >> 9);
 	blk_recalc_rq_segments(req);
 	/**
-	 * Êı¾İ»¹Ã»ÓĞ´«ËÍÍê£¬·µ»Ø1¡£
+	 * æ•°æ®è¿˜æ²¡æœ‰ä¼ é€å®Œï¼Œè¿”å›1ã€‚
 	 */
 	return 1;
 }
@@ -3191,17 +3191,17 @@ static int __end_that_request_first(struct request *req, int uptodate,
  *     1 - still buffers pending for this request
  **/
 /**
- * end_that_request_firstÓÃÓÚ¿éÉè±¸Çı¶¯µÄÖĞ¶Ï´¦Àí³ÌĞò¡£µ±Éè±¸Íê³ÉÒ»¸öIOÇëÇóµÄ²¿·Ö»òÕßÈ«²¿ÉÈÇøÊ±£¬µ÷ÓÃ´Ëº¯ÊıÍ¨Öª¿éÉè±¸×ÓÏµÍ³¡£
- * nr_sectors£ºDMA´«ËÍµÄÉÈÇøÊı
- * uptodate£º´«ËÍ³É¹¦µÄ±êÖ¾
+ * end_that_request_firstç”¨äºå—è®¾å¤‡é©±åŠ¨çš„ä¸­æ–­å¤„ç†ç¨‹åºã€‚å½“è®¾å¤‡å®Œæˆä¸€ä¸ªIOè¯·æ±‚çš„éƒ¨åˆ†æˆ–è€…å…¨éƒ¨æ‰‡åŒºæ—¶ï¼Œè°ƒç”¨æ­¤å‡½æ•°é€šçŸ¥å—è®¾å¤‡å­ç³»ç»Ÿã€‚
+ * nr_sectorsï¼šDMAä¼ é€çš„æ‰‡åŒºæ•°
+ * uptodateï¼šä¼ é€æˆåŠŸçš„æ ‡å¿—
  */
 int end_that_request_first(struct request *req, int uptodate, int nr_sectors)
 {
 	/**
-	 * ĞŞ¸Äbio×Ö¶ÎÊ¹ÆäÖ¸ÏòÇëÇóÖĞµÄµÚÒ»¸öÎ´Íê³ÉµÄbio½á¹¹¡£
-	 * ĞŞ¸ÄÎ´Íê³Ébio½á¹¹µÄbi_idx×Ö¶Î£¬Ê¹ÆäÖ¸ÏòµÚÒ»¸öÎ´Íê³ÉµÄ¶Î¡£
-	 * ĞŞ¸ÄÎ´Íê³É¶ÎµÄbv_offsetºÍbv_len×Ö¶ÎÊ¹ÆäÖ¸ÏòÈÔĞè´«ËÍµÄÊı¾İ¡£
-	 * Í¬Ê±ÔÚÃ¿¸öÍê³É´«ËÍµÄbio½á¹¹ÉÏµ÷ÓÃbio_endioº¯Êı¡£
+	 * ä¿®æ”¹bioå­—æ®µä½¿å…¶æŒ‡å‘è¯·æ±‚ä¸­çš„ç¬¬ä¸€ä¸ªæœªå®Œæˆçš„bioç»“æ„ã€‚
+	 * ä¿®æ”¹æœªå®Œæˆbioç»“æ„çš„bi_idxå­—æ®µï¼Œä½¿å…¶æŒ‡å‘ç¬¬ä¸€ä¸ªæœªå®Œæˆçš„æ®µã€‚
+	 * ä¿®æ”¹æœªå®Œæˆæ®µçš„bv_offsetå’Œbv_lenå­—æ®µä½¿å…¶æŒ‡å‘ä»éœ€ä¼ é€çš„æ•°æ®ã€‚
+	 * åŒæ—¶åœ¨æ¯ä¸ªå®Œæˆä¼ é€çš„bioç»“æ„ä¸Šè°ƒç”¨bio_endioå‡½æ•°ã€‚
 	 */
 	return __end_that_request_first(req, uptodate, nr_sectors << 9);
 }
@@ -3224,7 +3224,7 @@ EXPORT_SYMBOL(end_that_request_first);
  *     1 - still buffers pending for this request
  **/
 /**
- * Óëend_that_request_firstÏàËÆ£¬²»¹ı²ÎÊıÊÇ×Ö½ÚÊı¶ø²»ÊÇÉÈÇøÊı
+ * ä¸end_that_request_firstç›¸ä¼¼ï¼Œä¸è¿‡å‚æ•°æ˜¯å­—èŠ‚æ•°è€Œä¸æ˜¯æ‰‡åŒºæ•°
  */
 int end_that_request_chunk(struct request *req, int uptodate, int nr_bytes)
 {
@@ -3237,9 +3237,9 @@ EXPORT_SYMBOL(end_that_request_chunk);
  * queue lock must be held
  */
 /**
- * ¸üĞÂÒ»Ğ©´ÅÅÌÊ¹ÓÃ¼ÆÊı¡£°ÑÇëÇóÃèÊö·û´ÓIOµ÷ÓÃ³ÌĞòrq->elevatorµÄµ÷¶È¶ÓÁĞÖĞÉ¾³ı¡£
- * »½ĞÑµÈ´ıÇëÇóÃèÊö·ûÍê³ÉµÄÈÎºÎ½ø³Ì£¬²¢ÊÍ·ÅÉ¾³ıµÄÄÇ¸öÃèÊö·û¡£
- * µ±Ò»¸öÍêÕûµÄÇëÇóÍê³ÉÊ±»Øµ÷
+ * æ›´æ–°ä¸€äº›ç£ç›˜ä½¿ç”¨è®¡æ•°ã€‚æŠŠè¯·æ±‚æè¿°ç¬¦ä»IOè°ƒç”¨ç¨‹åºrq->elevatorçš„è°ƒåº¦é˜Ÿåˆ—ä¸­åˆ é™¤ã€‚
+ * å”¤é†’ç­‰å¾…è¯·æ±‚æè¿°ç¬¦å®Œæˆçš„ä»»ä½•è¿›ç¨‹ï¼Œå¹¶é‡Šæ”¾åˆ é™¤çš„é‚£ä¸ªæè¿°ç¬¦ã€‚
+ * å½“ä¸€ä¸ªå®Œæ•´çš„è¯·æ±‚å®Œæˆæ—¶å›è°ƒ
  */
 void end_that_request_last(struct request *req)
 {

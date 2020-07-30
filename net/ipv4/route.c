@@ -110,7 +110,7 @@
 
 static int ip_rt_min_delay		= 2 * HZ;
 /**
- * Ò»µ©µİ½»ÁËÒ»¸öflushÇëÇó£¬ÔÚip_rt_max_delayÃëÖ®ÄÚ¿Ï¶¨½øĞĞÒ»´Îflush£¬Õâ¸ö²ÎÊıÈ±Ê¡ÖµÎª10Ãë¡£
+ * ä¸€æ—¦é€’äº¤äº†ä¸€ä¸ªflushè¯·æ±‚ï¼Œåœ¨ip_rt_max_delayç§’ä¹‹å†…è‚¯å®šè¿›è¡Œä¸€æ¬¡flushï¼Œè¿™ä¸ªå‚æ•°ç¼ºçœå€¼ä¸º10ç§’ã€‚
  */
 static int ip_rt_max_delay		= 10 * HZ;
 static int ip_rt_max_size;
@@ -118,15 +118,15 @@ static int ip_rt_gc_timeout		= RT_GC_TIMEOUT;
 static int ip_rt_gc_interval		= 60 * HZ;
 static int ip_rt_gc_min_interval	= HZ / 2;
 /**
- * Èç¹ûÄ¿µÄµØ³ÖĞøºöÂÔICMPÖØ¶¨ÏòÏûÏ¢£¬ÄÚºË¾Í³ÖĞø·¢ËÍICMPÖØ¶¨ÏòÏûÏ¢¸øËüÖ±µ½·¢ËÍÊıÄ¿µ½´ïip_rt_redirect_number
+ * å¦‚æœç›®çš„åœ°æŒç»­å¿½ç•¥ICMPé‡å®šå‘æ¶ˆæ¯ï¼Œå†…æ ¸å°±æŒç»­å‘é€ICMPé‡å®šå‘æ¶ˆæ¯ç»™å®ƒç›´åˆ°å‘é€æ•°ç›®åˆ°è¾¾ip_rt_redirect_number
  */
 static int ip_rt_redirect_number	= 9;
 /**
- * Ö¸Êı»ØÍËËã·¨µÄ³õÊ¼ÑÓ³ÙÊ±¼äÎªip_rt_redirect_load£¬Ã¿·¢ËÍÒ»¸öÏûÏ¢¾Í·­±¶¼ä¸ôÊ±¼ä¡£
+ * æŒ‡æ•°å›é€€ç®—æ³•çš„åˆå§‹å»¶è¿Ÿæ—¶é—´ä¸ºip_rt_redirect_loadï¼Œæ¯å‘é€ä¸€ä¸ªæ¶ˆæ¯å°±ç¿»å€é—´éš”æ—¶é—´ã€‚
  */
 static int ip_rt_redirect_load		= HZ / 50;
 /**
- * µ±·¢ËÍµÄICMPÖØ¶¨ÏòÊıÄ¿´ïµ½ip_rt_redirect_numberÊ±£¬ÄÚºËÍ£Ö¹·¢ËÍ£¬Ö±µ½ip_rt_redirect_silenceÃë¹ıºó»¹Ã»ÓĞÊäÈë±¨ÎÄÄÜ¹»´¥·¢ÄÚºËÉú³ÉICMPÖØ¶¨ÏòÏûÏ¢¡£
+ * å½“å‘é€çš„ICMPé‡å®šå‘æ•°ç›®è¾¾åˆ°ip_rt_redirect_numberæ—¶ï¼Œå†…æ ¸åœæ­¢å‘é€ï¼Œç›´åˆ°ip_rt_redirect_silenceç§’è¿‡åè¿˜æ²¡æœ‰è¾“å…¥æŠ¥æ–‡èƒ½å¤Ÿè§¦å‘å†…æ ¸ç”ŸæˆICMPé‡å®šå‘æ¶ˆæ¯ã€‚
  */
 static int ip_rt_redirect_silence	= ((HZ / 50) << (9 + 1));
 static int ip_rt_error_cost		= HZ;
@@ -143,7 +143,7 @@ static unsigned long rt_deadline;
 static struct timer_list rt_flush_timer;
 static struct timer_list rt_periodic_timer;
 /**
- * ÖÜÆÚĞÔ¶¨Ê±Æ÷£¬Ë¢ĞÂDST»º´æ¡£
+ * å‘¨æœŸæ€§å®šæ—¶å™¨ï¼Œåˆ·æ–°DSTç¼“å­˜ã€‚
  */
 static struct timer_list rt_secret_timer;
 
@@ -161,7 +161,7 @@ static void		 ip_rt_update_pmtu(struct dst_entry *dst, u32 mtu);
 static int rt_garbage_collect(void);
 
 /**
- * IPV4ÓëÂ·ÓÉ×ÓÏµÍ³Ö®¼äµÄ½Ó¿Ú¡£
+ * IPV4ä¸è·¯ç”±å­ç³»ç»Ÿä¹‹é—´çš„æ¥å£ã€‚
  */
 static struct dst_ops ipv4_dst_ops = {
 	.family =		AF_INET,
@@ -219,11 +219,11 @@ struct rt_hash_bucket {
 
 static struct rt_hash_bucket 	*rt_hash_table;
 /**
- * Â·ÓÉ»º´æÈİÁ¿£¬ÒÀÀµÓÚÖ÷»ú¿ÉÓÃµÄÎïÀíÄÚ´æµÄ´óĞ¡
+ * è·¯ç”±ç¼“å­˜å®¹é‡ï¼Œä¾èµ–äºä¸»æœºå¯ç”¨çš„ç‰©ç†å†…å­˜çš„å¤§å°
  */
 static unsigned			rt_hash_mask;
 /**
- * Â·ÓÉ»º´æÈİÁ¿£¬2µÄ¶ÔÊıÖµ¡£
+ * è·¯ç”±ç¼“å­˜å®¹é‡ï¼Œ2çš„å¯¹æ•°å€¼ã€‚
  */
 static int			rt_hash_log;
 static unsigned int		rt_hash_rnd;
@@ -493,8 +493,8 @@ static __inline__ int rt_valuable(struct rtable *rth)
 }
 
 /**
- * ÅĞ¶ÏÒ»¸ö¸ø¶¨µÄdst_entryÊµÀıÊÇ·ñ·ûºÏÉ¾³ıÌõ¼ş
- *		tmo1,tmo2:		±íÊ¾ºòÑ¡ÕßÔÚ·ûºÏÉ¾³ıÌõ¼şÖ®Ç°±ØĞëÔÚ»º´æÖĞËù´¦µÄ×î¶ÌÊ±¼ä¡£tmo2ÓÃÓÚÄÇĞ©±»ÈÏÎªÌØ±ğºÃµÄÓ¦µ±±»É¾³ıµÄºòÑ¡Ïî
+ * åˆ¤æ–­ä¸€ä¸ªç»™å®šçš„dst_entryå®ä¾‹æ˜¯å¦ç¬¦åˆåˆ é™¤æ¡ä»¶
+ *		tmo1,tmo2:		è¡¨ç¤ºå€™é€‰è€…åœ¨ç¬¦åˆåˆ é™¤æ¡ä»¶ä¹‹å‰å¿…é¡»åœ¨ç¼“å­˜ä¸­æ‰€å¤„çš„æœ€çŸ­æ—¶é—´ã€‚tmo2ç”¨äºé‚£äº›è¢«è®¤ä¸ºç‰¹åˆ«å¥½çš„åº”å½“è¢«åˆ é™¤çš„å€™é€‰é¡¹
  */
 static int rt_may_expire(struct rtable *rth, unsigned long tmo1, unsigned long tmo2)
 {
@@ -528,19 +528,19 @@ static inline u32 rt_score(struct rtable *rt)
 	u32 score = jiffies - rt->u.dst.lastuse;
 
 	/**
-	 * ¸ù¾İÂ·ÓÉ×îºóÊ¹ÓÃÊ±¼ä£¬½«ÆäÖµ´æÈëscoreµÄµÍ30Î»¡£
+	 * æ ¹æ®è·¯ç”±æœ€åä½¿ç”¨æ—¶é—´ï¼Œå°†å…¶å€¼å­˜å…¥scoreçš„ä½30ä½ã€‚
 	 */
 	score = ~score & ~(3<<30);
 
 	/**
-	 * ÖØ¶¨ÏòÂ·ÓÉ¡¢Õı±»ÓÃ»§¿Õ¼äÃüÁî¼à¿ØµÄ¡¢»òÕßÓÉÓÚ¹ıÆÚ½«±»µ÷¶ÈµÄÂ·ÓÉ¡£
-	 * ÕâĞ©Â·ÓÉ¾¡Á¿²»ÒªÉ¾³ı£¬ÉèÖÃÆäµÚ32Î»¡£
+	 * é‡å®šå‘è·¯ç”±ã€æ­£è¢«ç”¨æˆ·ç©ºé—´å‘½ä»¤ç›‘æ§çš„ã€æˆ–è€…ç”±äºè¿‡æœŸå°†è¢«è°ƒåº¦çš„è·¯ç”±ã€‚
+	 * è¿™äº›è·¯ç”±å°½é‡ä¸è¦åˆ é™¤ï¼Œè®¾ç½®å…¶ç¬¬32ä½ã€‚
 	 */
 	if (rt_valuable(rt))
 		score |= (1<<31);
 
 	/**
-	 * ³öÂ·ÓÉ¡¢·Ç¹ã²¥Â·ÓÉ¡¢¶à²¥Â·ÓÉ¡¢±¾µØµØÖ·Â·ÓÉ£¬ÕâĞ©Â·ÓÉ²»ÈİÒ×Éú³É£¬ÉèÖÃÆäµÚ31Î»¡£
+	 * å‡ºè·¯ç”±ã€éå¹¿æ’­è·¯ç”±ã€å¤šæ’­è·¯ç”±ã€æœ¬åœ°åœ°å€è·¯ç”±ï¼Œè¿™äº›è·¯ç”±ä¸å®¹æ˜“ç”Ÿæˆï¼Œè®¾ç½®å…¶ç¬¬31ä½ã€‚
 	 */
 	if (!rt->fl.iif ||
 	    !(rt->rt_flags & (RTCF_BROADCAST|RTCF_MULTICAST|RTCF_LOCAL)))
@@ -551,14 +551,14 @@ static inline u32 rt_score(struct rtable *rt)
 
 /* This runs via a timer and thus is always in BH context. */
 /**
- * Òì²½ÇåÀíDST»º´æ¡£
- * Ã¿µ±rt_check_expire±»¼¤»îÊ±£¬ËüÖ»É¨ÃèÒ»²¿·Ö»º´æ¡£
+ * å¼‚æ­¥æ¸…ç†DSTç¼“å­˜ã€‚
+ * æ¯å½“rt_check_expireè¢«æ¿€æ´»æ—¶ï¼Œå®ƒåªæ‰«æä¸€éƒ¨åˆ†ç¼“å­˜ã€‚
  */
 static void rt_check_expire(unsigned long dummy)
 {
 	static int rover;
 	/**
-	 * ±£³ÖÒ»¸ö¾²Ì¬±äÁ¿£¨rover£©À´¼Ç×¡Ç°Ò»´Îº¯Êı¼¤»îÊ±É¨Ãèµ½µÄ×îºóÒ»¸öÍ°£¬Ã¿µ±¸Ãº¯Êı¼¤»îÊ±¾Í´ÓÏÂÒ»¸öÍ°¿ªÊ¼É¨Ãè¡£
+	 * ä¿æŒä¸€ä¸ªé™æ€å˜é‡ï¼ˆroverï¼‰æ¥è®°ä½å‰ä¸€æ¬¡å‡½æ•°æ¿€æ´»æ—¶æ‰«æåˆ°çš„æœ€åä¸€ä¸ªæ¡¶ï¼Œæ¯å½“è¯¥å‡½æ•°æ¿€æ´»æ—¶å°±ä»ä¸‹ä¸€ä¸ªæ¡¶å¼€å§‹æ‰«æã€‚
 	 */
 	int i = rover, t;
 	struct rtable *rth, **rthp;
@@ -576,7 +576,7 @@ static void rt_check_expire(unsigned long dummy)
 			if (rth->u.dst.expires) {
 				/* Entry is expired even if it is in use */
 				/**
-				 * ±íÏîÃ»ÓĞ¹ıÆÚ¡£¼õĞ¡tmo£¬Ôö¼ÓÏÂÒ»¸ö±íÏî±»É¾³ıµÄ»úÂÊ¡£
+				 * è¡¨é¡¹æ²¡æœ‰è¿‡æœŸã€‚å‡å°tmoï¼Œå¢åŠ ä¸‹ä¸€ä¸ªè¡¨é¡¹è¢«åˆ é™¤çš„æœºç‡ã€‚
 				 */
 				if (time_before_eq(now, rth->u.dst.expires)) {
 					tmo >>= 1;
@@ -585,7 +585,7 @@ static void rt_check_expire(unsigned long dummy)
 				}
 			} else if (!rt_may_expire(rth, tmo, ip_rt_gc_timeout)) {
 			    /**
-			     * ¼õĞ¡tmoµÄÖµ£¬ÕâÑù£¬ÏÂÒ»¸öDSTÏî½«¸üÈİÒ×±»Ñ¡ÖĞ¡£
+			     * å‡å°tmoçš„å€¼ï¼Œè¿™æ ·ï¼Œä¸‹ä¸€ä¸ªDSTé¡¹å°†æ›´å®¹æ˜“è¢«é€‰ä¸­ã€‚
 			     */
 				tmo >>= 1;
 				rthp = &rth->u.rt_next;
@@ -595,7 +595,7 @@ static void rt_check_expire(unsigned long dummy)
 			/* Cleanup aged off entries. */
 			*rthp = rth->u.rt_next;
 			/**
-			 * Èç¹û»º´æÄÚ±íÏîµÄÊ±¼äÒÑ¾­¹ıÆÚ£¬»òÕßÍ¨¹ırt_may_expireÅĞ¶Ï³ö·ûºÏÉ¾³ıÌõ¼ş£¬Ôòµ÷ÓÃrt_freeÉ¾³ıÕâĞ©±íÏî¡£
+			 * å¦‚æœç¼“å­˜å†…è¡¨é¡¹çš„æ—¶é—´å·²ç»è¿‡æœŸï¼Œæˆ–è€…é€šè¿‡rt_may_expireåˆ¤æ–­å‡ºç¬¦åˆåˆ é™¤æ¡ä»¶ï¼Œåˆ™è°ƒç”¨rt_freeåˆ é™¤è¿™äº›è¡¨é¡¹ã€‚
 			 */
 			rt_free(rth);
 		}
@@ -603,7 +603,7 @@ static void rt_check_expire(unsigned long dummy)
 
 		/* Fallback loop breaker. */
 		/**
-		 * µ±rt_check_expireÍê³ÉÉ¨ÃèÕûÕÅ¹şÏ£±í»òÒÑ¾­ÔËĞĞÖÁÉÙÒ»¸öjiffiesÊ±£¬¾ÍÖØĞÂÆô¶¯¸Ã¶¨Ê±Æ÷£¬º¯Êı·µ»Ø¡£
+		 * å½“rt_check_expireå®Œæˆæ‰«ææ•´å¼ å“ˆå¸Œè¡¨æˆ–å·²ç»è¿è¡Œè‡³å°‘ä¸€ä¸ªjiffiesæ—¶ï¼Œå°±é‡æ–°å¯åŠ¨è¯¥å®šæ—¶å™¨ï¼Œå‡½æ•°è¿”å›ã€‚
 		 */
 		if (time_after(jiffies, now))
 			break;
@@ -616,8 +616,8 @@ static void rt_check_expire(unsigned long dummy)
  * in the case of a forced flush event.
  */
 /**
- * Ë¢ĞÂÂ·ÓÉ»º´æ¡£²¢²»±»Ö±½Óµ÷ÓÃ¡£
- * Ò»°ãÓÉrt_cache_flushº¯Êıµ÷ÓÃ¡£
+ * åˆ·æ–°è·¯ç”±ç¼“å­˜ã€‚å¹¶ä¸è¢«ç›´æ¥è°ƒç”¨ã€‚
+ * ä¸€èˆ¬ç”±rt_cache_flushå‡½æ•°è°ƒç”¨ã€‚
  */
 static void rt_run_flush(unsigned long dummy)
 {
@@ -642,16 +642,16 @@ static void rt_run_flush(unsigned long dummy)
 	}
 }
 /**
- * ÔÚrt_cache_flush½Ó¿ÚÖĞ£¬Ê¹ÓÃÕâ¸öspinËø±£»¤¶Ôrt_deadlineÈ«¾Ö±äÁ¿ºÍrt_flush_timer¶¨Ê±Æ÷µÄ²Ù×÷¡£
+ * åœ¨rt_cache_flushæ¥å£ä¸­ï¼Œä½¿ç”¨è¿™ä¸ªspiné”ä¿æŠ¤å¯¹rt_deadlineå…¨å±€å˜é‡å’Œrt_flush_timerå®šæ—¶å™¨çš„æ“ä½œã€‚
  */
 static DEFINE_SPINLOCK(rt_flush_lock);
 
 /**
- * ÔÚÒ»¸ö¸ø¶¨µÄÊ±¼ä¶Î£¨ÓÉÊäÈë²ÎÊıÖ¸¶¨£©ºó£¬µ÷¶ÈÒ»´ÎÂ·ÓÉ»º´æµÄflush¡£
- * delayµÄÈ¡Öµ£º
- *		Ğ¡ÓÚ0:		»º´æÔÚÄÚºË²ÎÊıip_rt_min_delayÖ¸¶¨µÄÊ±¼äºó±»flush£¬¸Ã²ÎÊı¿ÉÒÔÍ¨¹ı/procÀ´µ÷Õû
- *		0:			»º´æÁ¢¼´±»flush¡£
- *		´óÓÚ0:		»º´æÔÚÖ¸¶¨µÄÊ±¼äºó±»flush¡£
+ * åœ¨ä¸€ä¸ªç»™å®šçš„æ—¶é—´æ®µï¼ˆç”±è¾“å…¥å‚æ•°æŒ‡å®šï¼‰åï¼Œè°ƒåº¦ä¸€æ¬¡è·¯ç”±ç¼“å­˜çš„flushã€‚
+ * delayçš„å–å€¼ï¼š
+ *		å°äº0:		ç¼“å­˜åœ¨å†…æ ¸å‚æ•°ip_rt_min_delayæŒ‡å®šçš„æ—¶é—´åè¢«flushï¼Œè¯¥å‚æ•°å¯ä»¥é€šè¿‡/procæ¥è°ƒæ•´
+ *		0:			ç¼“å­˜ç«‹å³è¢«flushã€‚
+ *		å¤§äº0:		ç¼“å­˜åœ¨æŒ‡å®šçš„æ—¶é—´åè¢«flushã€‚
  */
 void rt_cache_flush(int delay)
 {
@@ -664,7 +664,7 @@ void rt_cache_flush(int delay)
 	spin_lock_bh(&rt_flush_lock);
 
 	/**
-	 * ÖØÆô¶¨Ê±Æ÷¡£Õâ¸öĞÂÇëÇó²»ÄÜÈÃ¶¨Ê±Æ÷³ÙÓÚip_rt_max_delayÃëÖ®ºó²Å¹ıÆÚ¡£
+	 * é‡å¯å®šæ—¶å™¨ã€‚è¿™ä¸ªæ–°è¯·æ±‚ä¸èƒ½è®©å®šæ—¶å™¨è¿Ÿäºip_rt_max_delayç§’ä¹‹åæ‰è¿‡æœŸã€‚
 	 */
 	if (del_timer(&rt_flush_timer) && delay > 0 && rt_deadline) {
 		long tmo = (long)(rt_deadline - now);
@@ -684,7 +684,7 @@ void rt_cache_flush(int delay)
 	}
 
 	/**
-	 * ÕâÀï²»ÓÃÅĞ¶Ï<0£¬Ö»ĞèÒªÅĞ¶Ï==0¾ÍĞĞÁË¡£ÕâÖÖÇé¿öÏÂ£¬Á¢¼´Ë¢ĞÂ»º´æ¡£
+	 * è¿™é‡Œä¸ç”¨åˆ¤æ–­<0ï¼Œåªéœ€è¦åˆ¤æ–­==0å°±è¡Œäº†ã€‚è¿™ç§æƒ…å†µä¸‹ï¼Œç«‹å³åˆ·æ–°ç¼“å­˜ã€‚
 	 */
 	if (delay <= 0) {
 		spin_unlock_bh(&rt_flush_lock);
@@ -700,7 +700,7 @@ void rt_cache_flush(int delay)
 }
 
 /**
- * ÖÜÆÚĞÔµÄË¢ĞÂDST»º´æ¡£
+ * å‘¨æœŸæ€§çš„åˆ·æ–°DSTç¼“å­˜ã€‚
  */
 static void rt_secret_rebuild(unsigned long dummy)
 {
@@ -724,9 +724,9 @@ static void rt_secret_rebuild(unsigned long dummy)
  */
 
 /**
- * IPV4µÄDST»º´æ»ØÊÕº¯Êı¡£ÓÉDST×ÓÏµÍ³ÔÚÒÔÏÂÁ½ÖÖÇé¿öÏÂµ÷ÓÃgc£º
- *		µ±Ìí¼ÓÒ»¸öĞÂ±íÏîµ½Â·ÓÉ»º´æÖĞµ«·¢ÏÖÄÚ´æ²»¹»Ê±¡£
- *		µ±Ìí¼ÓÒ»¸öĞÂ±íÏîµ½Â·ÓÉ»º´æÖĞ£¬µ«±íÏî×ÜÊı½«³¬¹ıÃÅÏŞÖµgc_threshÊ±¡£·ÖÅä±íÏîµÄdst_allocº¯ÊıÍ¨¹ıÏŞÖÆ»º´æÈİÁ¿ÎªÒ»¸ö¹Ì¶¨ÖµÀ´´¥·¢Ò»¸öÇåÀí£¬ÒÔ¼õÉÙÕ¼ÓÃµÄÄÚ´æ¡£
+ * IPV4çš„DSTç¼“å­˜å›æ”¶å‡½æ•°ã€‚ç”±DSTå­ç³»ç»Ÿåœ¨ä»¥ä¸‹ä¸¤ç§æƒ…å†µä¸‹è°ƒç”¨gcï¼š
+ *		å½“æ·»åŠ ä¸€ä¸ªæ–°è¡¨é¡¹åˆ°è·¯ç”±ç¼“å­˜ä¸­ä½†å‘ç°å†…å­˜ä¸å¤Ÿæ—¶ã€‚
+ *		å½“æ·»åŠ ä¸€ä¸ªæ–°è¡¨é¡¹åˆ°è·¯ç”±ç¼“å­˜ä¸­ï¼Œä½†è¡¨é¡¹æ€»æ•°å°†è¶…è¿‡é—¨é™å€¼gc_threshæ—¶ã€‚åˆ†é…è¡¨é¡¹çš„dst_allocå‡½æ•°é€šè¿‡é™åˆ¶ç¼“å­˜å®¹é‡ä¸ºä¸€ä¸ªå›ºå®šå€¼æ¥è§¦å‘ä¸€ä¸ªæ¸…ç†ï¼Œä»¥å‡å°‘å ç”¨çš„å†…å­˜ã€‚
  */
 static int rt_garbage_collect(void)
 {
@@ -746,8 +746,8 @@ static int rt_garbage_collect(void)
 	RT_CACHE_STAT_INC(gc_total);
 
 	/**
-	 * rt_garbage_collect³ÌĞòËù×öµÄÀ¬»ø»ØÊÕĞèÒª»¨·Ñ´óÁ¿µÄCPUÊ±¼ä¡£Òò´Ë£¬Èç¹û¸Ã³ÌĞòÉÏ´Î±»µ÷ÓÃµÄÊ±¼äÓëÏÖÔÚµÄ¼ä¸ôĞ¡ÓÚip_rt_gc_min_intervalÃë£¬Ôò²»×öÈÎºÎÊÂ¶øÁ¢¼´·µ»Ø¡£
-	 * ³ı·Ç»º´æÄÚµÄ±íÏîÊıÄ¿ÒÑ¾­´ïµ½×î´óÖµip_rt_max_size£¬ÕâÊ±ÒªÇóÁ¢¿ÌÖ´ĞĞ¡£
+	 * rt_garbage_collectç¨‹åºæ‰€åšçš„åƒåœ¾å›æ”¶éœ€è¦èŠ±è´¹å¤§é‡çš„CPUæ—¶é—´ã€‚å› æ­¤ï¼Œå¦‚æœè¯¥ç¨‹åºä¸Šæ¬¡è¢«è°ƒç”¨çš„æ—¶é—´ä¸ç°åœ¨çš„é—´éš”å°äºip_rt_gc_min_intervalç§’ï¼Œåˆ™ä¸åšä»»ä½•äº‹è€Œç«‹å³è¿”å›ã€‚
+	 * é™¤éç¼“å­˜å†…çš„è¡¨é¡¹æ•°ç›®å·²ç»è¾¾åˆ°æœ€å¤§å€¼ip_rt_max_sizeï¼Œè¿™æ—¶è¦æ±‚ç«‹åˆ»æ‰§è¡Œã€‚
 	 */
 	if (now - last_gc < ip_rt_gc_min_interval &&
 	    atomic_read(&ipv4_dst_ops.entries) < ip_rt_max_size) {
@@ -757,13 +757,13 @@ static int rt_garbage_collect(void)
 
 	/* Calculate number of entries, which we want to expire now. */
 	/**
-	 * Ê×ÏÈ¼ÆËã¿ÉÄÜÉ¾³ıµÄ»º´æ±íÏîÊıÄ¿£¨goal£©¡£
+	 * é¦–å…ˆè®¡ç®—å¯èƒ½åˆ é™¤çš„ç¼“å­˜è¡¨é¡¹æ•°ç›®ï¼ˆgoalï¼‰ã€‚
 	 */
 	goal = atomic_read(&ipv4_dst_ops.entries) -
-		(ip_rt_gc_elasticity << rt_hash_log);/* ³¬¹ıip_rt_gc_elasticity*(2^rt_hash_log)Ê±£¬ÆäÈ±Ê¡ÖµÎª¹şÏ£±íµÄ´óĞ¡³ËÒÔ8£¬ÈÏÎª»º´æÓĞ±ä´óµÄ·çÏÕ */
-	if (goal <= 0) {/* »º´æÓĞ±ä´óµÄ·çÏÕ£¬ÉèÖÃ¸üÎª¼¤½øµÄ²ßÂÔ */
+		(ip_rt_gc_elasticity << rt_hash_log);/* è¶…è¿‡ip_rt_gc_elasticity*(2^rt_hash_log)æ—¶ï¼Œå…¶ç¼ºçœå€¼ä¸ºå“ˆå¸Œè¡¨çš„å¤§å°ä¹˜ä»¥8ï¼Œè®¤ä¸ºç¼“å­˜æœ‰å˜å¤§çš„é£é™© */
+	if (goal <= 0) {/* ç¼“å­˜æœ‰å˜å¤§çš„é£é™©ï¼Œè®¾ç½®æ›´ä¸ºæ¿€è¿›çš„ç­–ç•¥ */
 		if (equilibrium < ipv4_dst_ops.gc_thresh)
-			equilibrium = ipv4_dst_ops.gc_thresh;/* ±£Áôgc_thresh¸ö»º´æÏî¡£ */
+			equilibrium = ipv4_dst_ops.gc_thresh;/* ä¿ç•™gc_threshä¸ªç¼“å­˜é¡¹ã€‚ */
 		goal = atomic_read(&ipv4_dst_ops.entries) - equilibrium;
 		if (goal > 0) {
 			equilibrium += min_t(unsigned int, goal / 2, rt_hash_mask + 1);
@@ -773,9 +773,9 @@ static int rt_garbage_collect(void)
 		/* We are in dangerous area. Try to reduce cache really
 		 * aggressively.
 		 */
-		goal = max_t(unsigned int, goal / 2, rt_hash_mask + 1);/* ¹şÏ£±íµÄ´óĞ¡Îªrt_hash_mask+1£¬»ò2^rt_hash_log */
+		goal = max_t(unsigned int, goal / 2, rt_hash_mask + 1);/* å“ˆå¸Œè¡¨çš„å¤§å°ä¸ºrt_hash_mask+1ï¼Œæˆ–2^rt_hash_log */
 		/**
-		 * ¼ÆËã³öÒ»µ©goal¸ö±íÏî±»É¾³ı£¬»¹Ê£ÓàµÄ±íÏîÊıÄ¿£¬Õâ¸öÊıÄ¿±»±£´æµ½equilibriumÖĞ¡£
+		 * è®¡ç®—å‡ºä¸€æ—¦goalä¸ªè¡¨é¡¹è¢«åˆ é™¤ï¼Œè¿˜å‰©ä½™çš„è¡¨é¡¹æ•°ç›®ï¼Œè¿™ä¸ªæ•°ç›®è¢«ä¿å­˜åˆ°equilibriumä¸­ã€‚
 		 */
 		equilibrium = atomic_read(&ipv4_dst_ops.entries) - goal;
 	}
@@ -789,15 +789,15 @@ static int rt_garbage_collect(void)
 	}
 
 	/**
-	 * ±éÀú¹şÏ£±í£¬³¢ÊÔÊ¹×î·ûºÏÌõ¼şµÄ±íÏî¹ıÆÚ¡£
+	 * éå†å“ˆå¸Œè¡¨ï¼Œå°è¯•ä½¿æœ€ç¬¦åˆæ¡ä»¶çš„è¡¨é¡¹è¿‡æœŸã€‚
 	 */
 	do {
 		int i, k;
 
 		/**
-		 * ¹şÏ£±íµÄ±éÀú²¢²»ÊÇ¼òµ¥µØ´ÓµÚÒ»¸öÍ°¿ªÊ¼µ½×îºóÒ»¸öÍ°¡£
-		 * rt_garbage_collectÀûÓÃÒ»¸ö¾²Ì¬±äÁ¿roverÀ´¼Ç×¡Ç°Ò»´Îº¯Êı¼¤»îÊ±É¨Ãèµ½µÄ×îºóÒ»¸öÍ°¡£
-		 * ÕâÊÇÒòÎª²»Ò»¶¨±ØĞëÍêÕûµØÉ¨ÃèÒ»±é¸Ã¹şÏ£±í¡£Í¨¹ı¼Ç×¡ÉÏ´ÎÉ¨ÃèµÄ¹şÏ£Í°£¬³ÌĞò¾Í¿ÉÒÔ¹«Æ½¶Ô´ıËùÓĞµÄÍ°£¬¶ø²»×ÜÊÇ´ÓµÚÒ»¸öÍ°¿ªÊ¼À´Ñ¡ÔñÊÜº¦Õß¡£
+		 * å“ˆå¸Œè¡¨çš„éå†å¹¶ä¸æ˜¯ç®€å•åœ°ä»ç¬¬ä¸€ä¸ªæ¡¶å¼€å§‹åˆ°æœ€åä¸€ä¸ªæ¡¶ã€‚
+		 * rt_garbage_collectåˆ©ç”¨ä¸€ä¸ªé™æ€å˜é‡roveræ¥è®°ä½å‰ä¸€æ¬¡å‡½æ•°æ¿€æ´»æ—¶æ‰«æåˆ°çš„æœ€åä¸€ä¸ªæ¡¶ã€‚
+		 * è¿™æ˜¯å› ä¸ºä¸ä¸€å®šå¿…é¡»å®Œæ•´åœ°æ‰«æä¸€éè¯¥å“ˆå¸Œè¡¨ã€‚é€šè¿‡è®°ä½ä¸Šæ¬¡æ‰«æçš„å“ˆå¸Œæ¡¶ï¼Œç¨‹åºå°±å¯ä»¥å…¬å¹³å¯¹å¾…æ‰€æœ‰çš„æ¡¶ï¼Œè€Œä¸æ€»æ˜¯ä»ç¬¬ä¸€ä¸ªæ¡¶å¼€å§‹æ¥é€‰æ‹©å—å®³è€…ã€‚
 		 */
 		for (i = rt_hash_mask, k = rover; i >= 0; i--) {
 			unsigned long tmo = expire;
@@ -807,11 +807,11 @@ static int rt_garbage_collect(void)
 			spin_lock_bh(&rt_hash_table[k].lock);
 			while ((rth = *rthp) != NULL) {
 				/**
-				 * ÀûÓÃrt_may_expire¼ì²éËüÃÇÊÇ·ñ·ûºÏ¹ıÆÚÌõ¼ş¡£
+				 * åˆ©ç”¨rt_may_expireæ£€æŸ¥å®ƒä»¬æ˜¯å¦ç¬¦åˆè¿‡æœŸæ¡ä»¶ã€‚
 				 */
 				if (!rt_may_expire(rth, tmo, expire)) {
 					/**
-					 * µ±É¨ÃèÒ»¸öÍ°µÄÔªËØÊ±£¬Ã¿µ±Ò»¸öÔªËØ²»·ûºÏÉ¾³ıÌõ¼ş£¬Ôò½µµÍ£¨¼õ°ë£©µÚÒ»¸öÊ±¼äÃÅÏŞÖµ¡£
+					 * å½“æ‰«æä¸€ä¸ªæ¡¶çš„å…ƒç´ æ—¶ï¼Œæ¯å½“ä¸€ä¸ªå…ƒç´ ä¸ç¬¦åˆåˆ é™¤æ¡ä»¶ï¼Œåˆ™é™ä½ï¼ˆå‡åŠï¼‰ç¬¬ä¸€ä¸ªæ—¶é—´é—¨é™å€¼ã€‚
 					 */
 					tmo >>= 1;
 					rthp = &rth->u.rt_next;
@@ -819,19 +819,19 @@ static int rt_garbage_collect(void)
 				}
 				*rthp = rth->u.rt_next;
 				/**
-				 * ½«·ûºÏÉ¾³ıÌõ¼şµÄ±íÏîµ÷ÓÃrt_freeÖ±½ÓÉ¾³ı
+				 * å°†ç¬¦åˆåˆ é™¤æ¡ä»¶çš„è¡¨é¡¹è°ƒç”¨rt_freeç›´æ¥åˆ é™¤
 				 */
 				rt_free(rth);
 				goal--;
 			}
 			spin_unlock_bh(&rt_hash_table[k].lock);
 			/**
-			 * µ±É¨Ãèµ½Ã¿¸öÍ°Á´±íµÄÄ©Î²Ê±£¬º¯Êı½«ÔÙ´Î¼ì²é±»É¾³ı±íÏîµÄÊıÄ¿ÊÇ·ñÎªº¯Êı¿ªÊ¼Ê±ÉèÖÃµÄÊıÄ¿goal¡£
+			 * å½“æ‰«æåˆ°æ¯ä¸ªæ¡¶é“¾è¡¨çš„æœ«å°¾æ—¶ï¼Œå‡½æ•°å°†å†æ¬¡æ£€æŸ¥è¢«åˆ é™¤è¡¨é¡¹çš„æ•°ç›®æ˜¯å¦ä¸ºå‡½æ•°å¼€å§‹æ—¶è®¾ç½®çš„æ•°ç›®goalã€‚
 			 */
 			if (goal <= 0)
 				break;
 			/**
-			 * ¼ÌĞøÉ¨ÃèÏÂÒ»¸öÍ°¡£¸Ã¹ı³ÌÒ»Ö±¼ÌĞøÖ±µ½Íê³ÉÕûÕÅ±íµÄÉ¨Ãè¡£
+			 * ç»§ç»­æ‰«æä¸‹ä¸€ä¸ªæ¡¶ã€‚è¯¥è¿‡ç¨‹ä¸€ç›´ç»§ç»­ç›´åˆ°å®Œæˆæ•´å¼ è¡¨çš„æ‰«æã€‚
 			 */
 		}
 		rover = k;
@@ -854,7 +854,7 @@ static int rt_garbage_collect(void)
 			break;
 
 		/**
-		 * ÓÃ¸üÎª¼¤½øµÄÅĞ¶Ï±ê×¼À´ÖØĞÂÉ¨Ãè¹şÏ£±í¡£
+		 * ç”¨æ›´ä¸ºæ¿€è¿›çš„åˆ¤æ–­æ ‡å‡†æ¥é‡æ–°æ‰«æå“ˆå¸Œè¡¨ã€‚
 		 */
 		expire >>= 1;
 #if RT_CACHE_DEBUG >= 2
@@ -865,7 +865,7 @@ static int rt_garbage_collect(void)
 		if (atomic_read(&ipv4_dst_ops.entries) < ip_rt_max_size)
 			goto out;
 	/**
-	 * Èç¹û³ÌĞòÊÇÔÚÈíÖĞ¶ÏÉÏÏÂÎÄÖĞ±»µ÷ÓÃ£¬»òÕßÇ°Ò»´ÎÉ¨Ãè»¨·ÑµÄÊ±¼ä³¬¹ıÒ»¸öjiffies£¨ÔÚx86Æ½Ì¨ÉÏ¼´Îª1/1000Ãë£©£¬ÔòÈÏÎª±¾´ÎÖØĞÂÉ¨Ãè¹şÏ£±í½«»¨·ÑÌ«¶àµÄÊ±¼ä£¬Òò¶øÌø¹ı²»×ö¡£
+	 * å¦‚æœç¨‹åºæ˜¯åœ¨è½¯ä¸­æ–­ä¸Šä¸‹æ–‡ä¸­è¢«è°ƒç”¨ï¼Œæˆ–è€…å‰ä¸€æ¬¡æ‰«æèŠ±è´¹çš„æ—¶é—´è¶…è¿‡ä¸€ä¸ªjiffiesï¼ˆåœ¨x86å¹³å°ä¸Šå³ä¸º1/1000ç§’ï¼‰ï¼Œåˆ™è®¤ä¸ºæœ¬æ¬¡é‡æ–°æ‰«æå“ˆå¸Œè¡¨å°†èŠ±è´¹å¤ªå¤šçš„æ—¶é—´ï¼Œå› è€Œè·³è¿‡ä¸åšã€‚
 	 */
 	} while (!in_softirq() && time_before_eq(jiffies, now));
 
@@ -896,7 +896,7 @@ static inline int compare_keys(struct flowi *fl1, struct flowi *fl2)
 }
 
 /**
- * ½«Â·ÓÉ»º´æ±íÏî²åÈëµ½»º´æ±í¹şÏ£Í°µÄÁ´±íÊ×²¿¡£
+ * å°†è·¯ç”±ç¼“å­˜è¡¨é¡¹æ’å…¥åˆ°ç¼“å­˜è¡¨å“ˆå¸Œæ¡¶çš„é“¾è¡¨é¦–éƒ¨ã€‚
  */
 static int rt_intern_hash(unsigned hash, struct rtable *rt, struct rtable **rp)
 {
@@ -918,11 +918,11 @@ restart:
 
 	spin_lock_bh(&rt_hash_table[hash].lock);
 	/**
-	 * Í¨¹ıÒ»¸ö¼òµ¥µÄ»º´æ²éÕÒÀ´È·¶¨ĞÂÂ·ÓÉ±íÏîÊÇ·ñÒÑ¾­´æÔÚ¡£
-	 * ËäÈ»Õâ¸öº¯ÊıÊÇÔÚ»º´æ²éÕÒÊ§°Üºó±»µ÷ÓÃ£¬µ«¸ÃÂ·ÓÉÏî¿ÉÄÜÍ¬Ê±ÒÑ¾­±»ÁíÒ»¸öCPUÌí¼Óµ½»º´æÄÚ¡£
+	 * é€šè¿‡ä¸€ä¸ªç®€å•çš„ç¼“å­˜æŸ¥æ‰¾æ¥ç¡®å®šæ–°è·¯ç”±è¡¨é¡¹æ˜¯å¦å·²ç»å­˜åœ¨ã€‚
+	 * è™½ç„¶è¿™ä¸ªå‡½æ•°æ˜¯åœ¨ç¼“å­˜æŸ¥æ‰¾å¤±è´¥åè¢«è°ƒç”¨ï¼Œä½†è¯¥è·¯ç”±é¡¹å¯èƒ½åŒæ—¶å·²ç»è¢«å¦ä¸€ä¸ªCPUæ·»åŠ åˆ°ç¼“å­˜å†…ã€‚
 	 */
 	while ((rth = *rthp) != NULL) {
-		if (compare_keys(&rth->fl, &rt->fl)) {/* ²éÕÒ³É¹¦ */
+		if (compare_keys(&rth->fl, &rt->fl)) {/* æŸ¥æ‰¾æˆåŠŸ */
 			/* Put it first */
 			*rthp = rth->u.rt_next;
 			/*
@@ -931,7 +931,7 @@ restart:
 			 * the insertion at the start of the hash chain.
 			 */
 			/**
-			 * Ô­À´µÄ»º´æÂ·ÓÉ±íÏî±»ÒÆ¶¯µ½¹şÏ£Í°Á´±íµÄÊ×²¿
+			 * åŸæ¥çš„ç¼“å­˜è·¯ç”±è¡¨é¡¹è¢«ç§»åŠ¨åˆ°å“ˆå¸Œæ¡¶é“¾è¡¨çš„é¦–éƒ¨
 			 */
 			rcu_assign_pointer(rth->u.rt_next,
 					   rt_hash_table[hash].chain);
@@ -952,13 +952,13 @@ restart:
 		}
 
 		/**
-		 * Èç¹ûÒıÓÃ¼ÆÊıÎª0£¬ÄÇÃ´Õâ¸ö»º´æ¿ÉÒÔ±»»ØÊÕ¡£
+		 * å¦‚æœå¼•ç”¨è®¡æ•°ä¸º0ï¼Œé‚£ä¹ˆè¿™ä¸ªç¼“å­˜å¯ä»¥è¢«å›æ”¶ã€‚
 		 */
 		if (!atomic_read(&rth->u.dst.__refcnt)) {
 			u32 score = rt_score(rth);
 
 			/**
-			 * ±È½ÏÂ·ÓÉ»º´æµÄ¼ÛÖµ£¬¾¡Á¿Ñ¡Ôñ¼ÛÖµµÍµÄ»º´æ±»É¾³ı¡£
+			 * æ¯”è¾ƒè·¯ç”±ç¼“å­˜çš„ä»·å€¼ï¼Œå°½é‡é€‰æ‹©ä»·å€¼ä½çš„ç¼“å­˜è¢«åˆ é™¤ã€‚
 			 */
 			if (score <= min_score) {
 				cand = rth;
@@ -980,7 +980,7 @@ restart:
 		 * only 2 entries per bucket. We will see.
 		 */
 		/**
-		 * ÓĞ¿ÉÒÔ»ØÊÕµÄ»º´æ£¬²¢ÇÒÍ°ÄÚµÄÔªËØ´óÓÚip_rt_gc_elasticity£¬ÔòÊÍ·Å¸Ã»º´æ¡£
+		 * æœ‰å¯ä»¥å›æ”¶çš„ç¼“å­˜ï¼Œå¹¶ä¸”æ¡¶å†…çš„å…ƒç´ å¤§äºip_rt_gc_elasticityï¼Œåˆ™é‡Šæ”¾è¯¥ç¼“å­˜ã€‚
 		 */
 		if (chain_length > ip_rt_gc_elasticity) {
 			*candp = cand->u.rt_next;
@@ -992,11 +992,11 @@ restart:
 	   route or unicast forwarding path.
 	 */
 	/**
-	 * ¶Ô³öÂ·ÓÉ»òÕß·ÇÖ±´ïÂ·ÓÉ£¬½øĞĞÁÚ¾Ó°ó¶¨¡£
+	 * å¯¹å‡ºè·¯ç”±æˆ–è€…éç›´è¾¾è·¯ç”±ï¼Œè¿›è¡Œé‚»å±…ç»‘å®šã€‚
 	 */
 	if (rt->rt_type == RTN_UNICAST || rt->fl.iif == 0) {
 		/**
-		 * ½«Â·ÓÉ»º´æ°ó¶¨µ½ÁÚ¾Ó¡£
+		 * å°†è·¯ç”±ç¼“å­˜ç»‘å®šåˆ°é‚»å±…ã€‚
 		 */
 		int err = arp_bind_neighbour(&rt->u.dst);
 		if (err) {
@@ -1012,27 +1012,27 @@ restart:
 			   it is most likely it holds some neighbour records.
 			 */
 			/**
-			 * ÓÉÓÚÄÚ´æµÄÔ­Òò£¬µ¼ÖÂÁÚ¾Ó°ó¶¨Ê§°Ü£¬Ôòµ÷ÓÃrt_garbage_collectÀ´Ç¿ĞĞ½øĞĞÒ»´ÎÀ¬»ø»ØÊÕ²Ù×÷
+			 * ç”±äºå†…å­˜çš„åŸå› ï¼Œå¯¼è‡´é‚»å±…ç»‘å®šå¤±è´¥ï¼Œåˆ™è°ƒç”¨rt_garbage_collectæ¥å¼ºè¡Œè¿›è¡Œä¸€æ¬¡åƒåœ¾å›æ”¶æ“ä½œ
 			 */
 			if (attempts-- > 0) {
 				int saved_elasticity = ip_rt_gc_elasticity;
 				int saved_int = ip_rt_gc_min_interval;
 				/**
-				 * ½µµÍip_rt_gc_elasticityºÍip_rt_gc_min_intervalÃÅÏŞÖµ
+				 * é™ä½ip_rt_gc_elasticityå’Œip_rt_gc_min_intervalé—¨é™å€¼
 				 */
 				ip_rt_gc_elasticity	= 1;
 				ip_rt_gc_min_interval	= 0;
 				/**
-				 * µ÷ÓÃrt_garbage_collectÀ´Íê³É»ØÊÕ¡£
+				 * è°ƒç”¨rt_garbage_collectæ¥å®Œæˆå›æ”¶ã€‚
 				 */
 				rt_garbage_collect();
 				/**
-				 * »Ö¸´ÃÅÏŞÖµ¡£
+				 * æ¢å¤é—¨é™å€¼ã€‚
 				 */
 				ip_rt_gc_min_interval	= saved_int;
 				ip_rt_gc_elasticity	= saved_elasticity;
 				/**
-				 * Ö»½øĞĞÒ»´Î»ØÊÕ£¬Çë×¢Òâattempts×î´óÖµÎª1.Èç¹ûÊÇÔÚÖĞ¶ÏÉÏÏÂÎÄ£¬¸ù±¾²»½øĞĞ»ØÊÕ¡£
+				 * åªè¿›è¡Œä¸€æ¬¡å›æ”¶ï¼Œè¯·æ³¨æ„attemptsæœ€å¤§å€¼ä¸º1.å¦‚æœæ˜¯åœ¨ä¸­æ–­ä¸Šä¸‹æ–‡ï¼Œæ ¹æœ¬ä¸è¿›è¡Œå›æ”¶ã€‚
 				 */
 				goto restart;
 			}
@@ -1045,7 +1045,7 @@ restart:
 	}
 
 	/**
-	 * ½«Õâ¸öĞÂÂ·ÓÉÏîÌí¼Óµ½»º´æÄÚ¡£
+	 * å°†è¿™ä¸ªæ–°è·¯ç”±é¡¹æ·»åŠ åˆ°ç¼“å­˜å†…ã€‚
 	 */
 	rt->u.rt_next = rt_hash_table[hash].chain;
 #if RT_CACHE_DEBUG >= 2
@@ -1089,7 +1089,7 @@ void rt_bind_peer(struct rtable *rt, int create)
  * But broken packet identifier may be better than no packet at all.
  */
 /**
- * µ±Ã»ÓĞ³¤Ğ§IP¶ËµãÊ±(Ò»°ãÊÇ¸ººÉ¹ıÖØ£¬ÎŞ·¨·ÖÅäinet_peer½á¹¹)£¬¸ù¾İÈ«¾Ö±äÁ¿Éú³É±¨ÎÄID¡£
+ * å½“æ²¡æœ‰é•¿æ•ˆIPç«¯ç‚¹æ—¶(ä¸€èˆ¬æ˜¯è´Ÿè·è¿‡é‡ï¼Œæ— æ³•åˆ†é…inet_peerç»“æ„)ï¼Œæ ¹æ®å…¨å±€å˜é‡ç”ŸæˆæŠ¥æ–‡IDã€‚
  */
 static void ip_select_fb_ident(struct iphdr *iph)
 {
@@ -1105,7 +1105,7 @@ static void ip_select_fb_ident(struct iphdr *iph)
 }
 
 /**
- * Ñ¡ÔñÒ»¸öIP°üµÄID¡£
+ * é€‰æ‹©ä¸€ä¸ªIPåŒ…çš„IDã€‚
  */
 void __ip_select_ident(struct iphdr *iph, struct dst_entry *dst, int more)
 {
@@ -1113,8 +1113,8 @@ void __ip_select_ident(struct iphdr *iph, struct dst_entry *dst, int more)
 
 	if (rt) {
 		/**
-		 * Èç¹ûinet_peer½á¹¹ÉĞÎ´ÔÚÂ·ÓÉ»º´æÏîÄ¿rtÖĞ×öºÃ³õÊ¼»¯£¬ÓÉrt_bind_peer»áÏÈÑ°ÕÒºÍ¸Ã¶ËµãÏàÆ¥ÅäµÄinet_peer½á¹¹
-		 * È»ºó£¬Èç¹û²»´æÔÚ£¬´Ëº¯Êı¾Í»áÊÔ×Å½¨Á¢£¨ÒòÎª¸ørt_bind_peerµÄ×îºóÒ»¸öÊäÈë²ÎÊıÊÇÉèÎª1£©
+		 * å¦‚æœinet_peerç»“æ„å°šæœªåœ¨è·¯ç”±ç¼“å­˜é¡¹ç›®rtä¸­åšå¥½åˆå§‹åŒ–ï¼Œç”±rt_bind_peerä¼šå…ˆå¯»æ‰¾å’Œè¯¥ç«¯ç‚¹ç›¸åŒ¹é…çš„inet_peerç»“æ„
+		 * ç„¶åï¼Œå¦‚æœä¸å­˜åœ¨ï¼Œæ­¤å‡½æ•°å°±ä¼šè¯•ç€å»ºç«‹ï¼ˆå› ä¸ºç»™rt_bind_peerçš„æœ€åä¸€ä¸ªè¾“å…¥å‚æ•°æ˜¯è®¾ä¸º1ï¼‰
 		 */
 		if (rt->peer == NULL)
 			rt_bind_peer(rt, 1);
@@ -1123,9 +1123,9 @@ void __ip_select_ident(struct iphdr *iph, struct dst_entry *dst, int more)
 		   so that we need not to grab a lock to dereference it.
 		 */
 		/**
-		 * ÕâÖÖ½¨Á¢µÄ³¢ÊÔ»áÔÚ¸ºÔØ¹ıÖØ¶øºÄ¾¡ÄÚ´æµÄÏµÍ³ÉÏÊ§°Ü£¨ÎŞ·¨·ÖÅäĞÂµÄinet_peer½á¹¹£©
+		 * è¿™ç§å»ºç«‹çš„å°è¯•ä¼šåœ¨è´Ÿè½½è¿‡é‡è€Œè€—å°½å†…å­˜çš„ç³»ç»Ÿä¸Šå¤±è´¥ï¼ˆæ— æ³•åˆ†é…æ–°çš„inet_peerç»“æ„ï¼‰
 		 */
-		if (rt->peer) {/* ÓĞ³¤Ğ§¶ËµãIPĞÅÏ¢£¬´ÓÖĞ·ÖÅäÒ»¸öID¡£ */
+		if (rt->peer) {/* æœ‰é•¿æ•ˆç«¯ç‚¹IPä¿¡æ¯ï¼Œä»ä¸­åˆ†é…ä¸€ä¸ªIDã€‚ */
 			iph->id = htons(inet_getid(rt->peer, more));
 			return;
 		}
@@ -1133,7 +1133,7 @@ void __ip_select_ident(struct iphdr *iph, struct dst_entry *dst, int more)
 		printk(KERN_DEBUG "rt_bind_peer(0) @%p\n", NET_CALLER(iph));
 
 	/**
-	 * Ã»ÓĞ¶ÔÓ¦µÄ³¤Ğ§IP¶Ëµã£¬Ôòµ÷ÓÃip_select_fb_ident»ñµÃID¡£
+	 * æ²¡æœ‰å¯¹åº”çš„é•¿æ•ˆIPç«¯ç‚¹ï¼Œåˆ™è°ƒç”¨ip_select_fb_identè·å¾—IDã€‚
 	 */
 	ip_select_fb_ident(iph);
 }
@@ -1327,7 +1327,7 @@ static struct dst_entry *ipv4_negative_advice(struct dst_entry *dst)
  * and "frag. need" (breaks PMTU discovery) in icmp.c.
  */
 /**
- * egressÖØ¶¨ÏòÏûÏ¢´¦Àí¡£
+ * egressé‡å®šå‘æ¶ˆæ¯å¤„ç†ã€‚
  */
 void ip_rt_send_redirect(struct sk_buff *skb)
 {
@@ -1378,7 +1378,7 @@ out:
 }
 
 /**
- * µ±²»´æÔÚÂ·ÓÉÏîÊ±£¬´¦Àí¶ÔÓ¦µÄÈë°ü¡£»áÏò·¢ËÍ·½·¢ËÍICMP_UNREACHABLEÏûÏ¢¡£
+ * å½“ä¸å­˜åœ¨è·¯ç”±é¡¹æ—¶ï¼Œå¤„ç†å¯¹åº”çš„å…¥åŒ…ã€‚ä¼šå‘å‘é€æ–¹å‘é€ICMP_UNREACHABLEæ¶ˆæ¯ã€‚
  */
 static int ip_error(struct sk_buff *skb)
 {
@@ -1589,7 +1589,7 @@ void ip_rt_get_source(u8 *addr, struct rtable *rt)
 
 #ifdef CONFIG_NET_CLS_ROUTE
 /**
- * ¸ø¶¨Ò»ÌõÂ·ÓÉºÍÒ»¸öÒÑ¾­±»µ÷ÓÃ·½³õÊ¼»¯ÁËµÄ±êÇ©£¬set_class_tagÊ¹ÓÃµÚ¶ş¸ö²ÎÊıÀ´Ìî³ädst_entry.tclassidÖĞ»¹Ã»ÓĞ±»³õÊ¼»¯µÄrealm¡£
+ * ç»™å®šä¸€æ¡è·¯ç”±å’Œä¸€ä¸ªå·²ç»è¢«è°ƒç”¨æ–¹åˆå§‹åŒ–äº†çš„æ ‡ç­¾ï¼Œset_class_tagä½¿ç”¨ç¬¬äºŒä¸ªå‚æ•°æ¥å¡«å……dst_entry.tclassidä¸­è¿˜æ²¡æœ‰è¢«åˆå§‹åŒ–çš„realmã€‚
  */
 static void set_class_tag(struct rtable *rt, u32 tag)
 {
@@ -1601,7 +1601,7 @@ static void set_class_tag(struct rtable *rt, u32 tag)
 #endif
 
 /**
- * ¸ø¶¨Ò»¸öÂ·ÓÉ»º´æÏîrtableºÍÒ»¸öÂ·ÓÉ±í²éÕÒ½á¹ûres£¬Íê³ÉrtableÄÚ¸÷×Ö¶ÎµÄ³õÊ¼»¯£¬ÖîÈçrt_gateway¡¢ËùÇ¶ÈëµÄdst_entry½á¹¹µÄmetricsÏòÁ¿µÈµÈ¡£
+ * ç»™å®šä¸€ä¸ªè·¯ç”±ç¼“å­˜é¡¹rtableå’Œä¸€ä¸ªè·¯ç”±è¡¨æŸ¥æ‰¾ç»“æœresï¼Œå®Œæˆrtableå†…å„å­—æ®µçš„åˆå§‹åŒ–ï¼Œè¯¸å¦‚rt_gatewayã€æ‰€åµŒå…¥çš„dst_entryç»“æ„çš„metricså‘é‡ç­‰ç­‰ã€‚
  */
 static void rt_set_nexthop(struct rtable *rt, struct fib_result *res, u32 itag)
 {
@@ -1622,7 +1622,7 @@ static void rt_set_nexthop(struct rtable *rt, struct fib_result *res, u32 itag)
 		}
 #ifdef CONFIG_NET_CLS_ROUTE
 		/**
-		 * ÉèÖÃÂ·ÓÉ±êÇ©¡£Ê×ÏÈÓÃÄ¿µÄÂ·ÓÉµÄrealmÀ´³õÊ¼»¯tclassid¡£
+		 * è®¾ç½®è·¯ç”±æ ‡ç­¾ã€‚é¦–å…ˆç”¨ç›®çš„è·¯ç”±çš„realmæ¥åˆå§‹åŒ–tclassidã€‚
 		 */
 		rt->u.dst.tclassid = FIB_RES_NH(*res).nh_tclassid;
 #endif
@@ -1642,14 +1642,14 @@ static void rt_set_nexthop(struct rtable *rt, struct fib_result *res, u32 itag)
 #ifdef CONFIG_NET_CLS_ROUTE
 #ifdef CONFIG_IP_MULTIPLE_TABLES
 	/**
-	 * Ö§³Ö²ßÂÔÂ·ÓÉÊ±£¬¸ù¾İ²ßÂÔrealmsÀ´Ìî³ädst.tclassidÖĞ»¹Ã»ÓĞ±»³õÊ¼»¯µÄ×Ö¶Î¡£
+	 * æ”¯æŒç­–ç•¥è·¯ç”±æ—¶ï¼Œæ ¹æ®ç­–ç•¥realmsæ¥å¡«å……dst.tclassidä¸­è¿˜æ²¡æœ‰è¢«åˆå§‹åŒ–çš„å­—æ®µã€‚
 	 */
 	set_class_tag(rt, fib_rules_tclass(res));
 #endif
 	/**
- 	 * Ê¹ÓÃµ÷ÓÃ·½ÏÈÇ°¼ÆËãµÄitagÊäÈë²ÎÊıÀ´Ìî³ädst.tclassidÖĞ»¹Ã»ÓĞ±»³õÊ¼»¯µÄ×Ö¶Î
- 	 *		ip_route_input_slow£¨Í¨¹ıµ÷ÓÃ__mkroute_input£©´«µİµÄitagÖµÊÇÓÃfib_combine_itag¼ÆËãµÄ¡£
- 	 *		ip_route_output_slow£¨Í¨¹ıµ÷ÓÃ__mkroute_output£©´«µİµÄitagÖµÎª0£¬ÒòÎªËüÂ·ÓÉµÄ±¨ÎÄÊÇ±¾µØÉú³ÉµÄ£¬Òò¶øÄÚºË²»ÓÃ×öÈÎºÎ·´Ïò²éÕÒÀ´Ìî³ä»¹Ã»ÓĞ±»³õÊ¼»¯µÄrealms¡£
+ 	 * ä½¿ç”¨è°ƒç”¨æ–¹å…ˆå‰è®¡ç®—çš„itagè¾“å…¥å‚æ•°æ¥å¡«å……dst.tclassidä¸­è¿˜æ²¡æœ‰è¢«åˆå§‹åŒ–çš„å­—æ®µ
+ 	 *		ip_route_input_slowï¼ˆé€šè¿‡è°ƒç”¨__mkroute_inputï¼‰ä¼ é€’çš„itagå€¼æ˜¯ç”¨fib_combine_itagè®¡ç®—çš„ã€‚
+ 	 *		ip_route_output_slowï¼ˆé€šè¿‡è°ƒç”¨__mkroute_outputï¼‰ä¼ é€’çš„itagå€¼ä¸º0ï¼Œå› ä¸ºå®ƒè·¯ç”±çš„æŠ¥æ–‡æ˜¯æœ¬åœ°ç”Ÿæˆçš„ï¼Œå› è€Œå†…æ ¸ä¸ç”¨åšä»»ä½•åå‘æŸ¥æ‰¾æ¥å¡«å……è¿˜æ²¡æœ‰è¢«åˆå§‹åŒ–çš„realmsã€‚
  	 */
 	set_class_tag(rt, itag);
 #endif
@@ -1747,7 +1747,7 @@ e_inval:
  *	2. IP spoofing attempts are filtered with 100% of guarantee.
  */
 /**
- * ÊäÈëÑ¡Â·¡£
+ * è¾“å…¥é€‰è·¯ã€‚
  */
 static int ip_route_input_slow(struct sk_buff *skb, u32 daddr, u32 saddr,
 			u8 tos, struct net_device *dev)
@@ -1784,14 +1784,14 @@ static int ip_route_input_slow(struct sk_buff *skb, u32 daddr, u32 saddr,
 	   by fib_lookup.
 	 */
 	/**
-	 * Ê×ÏÈ¶ÔÔ´µØÖ·ºÍÄ¿µÄµØÖ·½øĞĞÒ»Ğ©ºÏÀíĞÔ¼ì²é£¬ÀıÈçÔ´IPµØÖ·Ò»¶¨²»ÄÜÎª¶à²¥µØÖ·¡£
+	 * é¦–å…ˆå¯¹æºåœ°å€å’Œç›®çš„åœ°å€è¿›è¡Œä¸€äº›åˆç†æ€§æ£€æŸ¥ï¼Œä¾‹å¦‚æºIPåœ°å€ä¸€å®šä¸èƒ½ä¸ºå¤šæ’­åœ°å€ã€‚
 	 */
 	if (MULTICAST(saddr) || BADCLASS(saddr) || LOOPBACK(saddr))
 		goto martian_source;
 
 	/**
-	 * ÊÜÏŞ¹ã²¥£¬ÊÜÏŞ¹ã²¥µØÖ·ÓÉÈ«1×é³É£º255.255.255.255¡£
-	 * ¼´Ê¹²»µ÷ÓÃfib_lookupÒ²ºÜÈİÒ×Ê¶±ğ³ö£¬ÊÜÏŞ¹ã²¥±»ËÍ¸øÁ´Â·ÉÏµÄËùÓĞÖ÷»ú£¬ÓëÖ÷»úËùÅäÖÃµÄ×ÓÍøÎŞ¹Ø¡£²»ĞèÒª²éÕÒÂ·ÓÉ±í¡£
+	 * å—é™å¹¿æ’­ï¼Œå—é™å¹¿æ’­åœ°å€ç”±å…¨1ç»„æˆï¼š255.255.255.255ã€‚
+	 * å³ä½¿ä¸è°ƒç”¨fib_lookupä¹Ÿå¾ˆå®¹æ˜“è¯†åˆ«å‡ºï¼Œå—é™å¹¿æ’­è¢«é€ç»™é“¾è·¯ä¸Šçš„æ‰€æœ‰ä¸»æœºï¼Œä¸ä¸»æœºæ‰€é…ç½®çš„å­ç½‘æ— å…³ã€‚ä¸éœ€è¦æŸ¥æ‰¾è·¯ç”±è¡¨ã€‚
 	 */
 	if (daddr == 0xFFFFFFFF || (saddr == 0 && daddr == 0))
 		goto brd_input;
@@ -1809,44 +1809,44 @@ static int ip_route_input_slow(struct sk_buff *skb, u32 daddr, u32 saddr,
 	 *	Now we are ready to route packet.
 	 */
 	/**
-	 * ²éÕÒÂ·ÓÉ±íÊÇÓÉfib_lookupÀ´Íê³É
+	 * æŸ¥æ‰¾è·¯ç”±è¡¨æ˜¯ç”±fib_lookupæ¥å®Œæˆ
 	 */
 	if ((err = fib_lookup(&fl, &res)) != 0) {
 		/**
-		 * Èç¹û½ÓÊÕ½Ó¿Ú±»ÅäÖÃÎªÊ¹ÄÜ×ª·¢£¬ÔòÏòÔ´µØÖ·»ØËÍÒ»ÌõICMP_UNREACHABLEÏûÏ¢¡£
+		 * å¦‚æœæ¥æ”¶æ¥å£è¢«é…ç½®ä¸ºä½¿èƒ½è½¬å‘ï¼Œåˆ™å‘æºåœ°å€å›é€ä¸€æ¡ICMP_UNREACHABLEæ¶ˆæ¯ã€‚
 		 */
 		if (!IN_DEV_FORWARD(in_dev))
 			/**
-			 * ¸ÃICMPÏûÏ¢²»ÊÇÓÉip_route_input_slowÀ´ËÍ³öµÄ£¬¶øÊÇÓÉslowµÄµ÷ÓÃ·½ËÍ³ö£¬µ±µ÷ÓÃ·½¿´µ½·µ»ØÖµÎªRTN_UNREACHABLEÊ±ËÍ³ö¸ÃICMPÏûÏ¢¡£
+			 * è¯¥ICMPæ¶ˆæ¯ä¸æ˜¯ç”±ip_route_input_slowæ¥é€å‡ºçš„ï¼Œè€Œæ˜¯ç”±slowçš„è°ƒç”¨æ–¹é€å‡ºï¼Œå½“è°ƒç”¨æ–¹çœ‹åˆ°è¿”å›å€¼ä¸ºRTN_UNREACHABLEæ—¶é€å‡ºè¯¥ICMPæ¶ˆæ¯ã€‚
 			 */
 			goto e_inval;
 		/**
-		 * Èç¹ûfib_lookupÃ»ÓĞ²éÕÒµ½Ò»ÌõÆ¥ÅäÂ·ÓÉ£¬Ôò±¨ÎÄ±»¶ªÆú¡£
+		 * å¦‚æœfib_lookupæ²¡æœ‰æŸ¥æ‰¾åˆ°ä¸€æ¡åŒ¹é…è·¯ç”±ï¼Œåˆ™æŠ¥æ–‡è¢«ä¸¢å¼ƒã€‚
 		 */
 		goto no_route;
 	}
 	free_res = 1;
 
 	/**
-	 * fib_lookup³É¹¦²éÕÒµ½Æ¥ÅäÂ·ÓÉ£¬ÏÈ½øĞĞSNMP¼ÆÊı¡£
+	 * fib_lookupæˆåŠŸæŸ¥æ‰¾åˆ°åŒ¹é…è·¯ç”±ï¼Œå…ˆè¿›è¡ŒSNMPè®¡æ•°ã€‚
 	 */
 	RT_CACHE_STAT_INC(in_slow_tot);
 
 	/**
-	 * ±¨ÎÄÄ¿µÄµØÖ·ÎªÒ»¸ö¹ã²¥µØÖ·£¬±¨ÎÄ±»ËÍÍù±¾µØ¡£
-	 * ÕâÀï´¦ÀíµÄ²»ÊÇÊÜÏŞ¹ã²¥£¬¶øÊÇÒ»¸ö×ÓÍø¹ã²¥¡£
+	 * æŠ¥æ–‡ç›®çš„åœ°å€ä¸ºä¸€ä¸ªå¹¿æ’­åœ°å€ï¼ŒæŠ¥æ–‡è¢«é€å¾€æœ¬åœ°ã€‚
+	 * è¿™é‡Œå¤„ç†çš„ä¸æ˜¯å—é™å¹¿æ’­ï¼Œè€Œæ˜¯ä¸€ä¸ªå­ç½‘å¹¿æ’­ã€‚
 	 */
 	if (res.type == RTN_BROADCAST)
 		goto brd_input;
 
 	/**
-	 * ±¨ÎÄÄ¿µÄµØÖ·ÎªÒ»¸ö±¾µØµØÖ·
+	 * æŠ¥æ–‡ç›®çš„åœ°å€ä¸ºä¸€ä¸ªæœ¬åœ°åœ°å€
 	 */
 	if (res.type == RTN_LOCAL) {
 		int result;
 		/**
-		 * ºÏÀíĞÔ¼ì²é£¬ÓÈÆäÊÇÔ´µØÖ·¡£
-		 * ÔÙ´Î¼ì²éÔ´µØÖ·ÊÇ·ñÎª·Ç·¨Öµ£¬²¢ÇÒÍ¨¹ıfib_validate_sourceº¯ÊıÀ´¼ì²éspoofingÆóÍ¼¡£
+		 * åˆç†æ€§æ£€æŸ¥ï¼Œå°¤å…¶æ˜¯æºåœ°å€ã€‚
+		 * å†æ¬¡æ£€æŸ¥æºåœ°å€æ˜¯å¦ä¸ºéæ³•å€¼ï¼Œå¹¶ä¸”é€šè¿‡fib_validate_sourceå‡½æ•°æ¥æ£€æŸ¥spoofingä¼å›¾ã€‚
 		 */
 		result = fib_validate_source(saddr, daddr, tos,
 					     loopback_dev.ifindex,
@@ -1856,15 +1856,15 @@ static int ip_route_input_slow(struct sk_buff *skb, u32 daddr, u32 saddr,
 		if (result)
 			flags |= RTCF_DIRECTSRC;
 		/**
-		 * ±¨ÎÄÄ¿µÄµØÖ·Îª±¾µØµØÖ·Ê±£¬±¨ÎÄ±»ËÍÍùµÄ±¾µØµØÖ·ÎªÊ×Ñ¡Ô´µØÖ·
+		 * æŠ¥æ–‡ç›®çš„åœ°å€ä¸ºæœ¬åœ°åœ°å€æ—¶ï¼ŒæŠ¥æ–‡è¢«é€å¾€çš„æœ¬åœ°åœ°å€ä¸ºé¦–é€‰æºåœ°å€
 		 */
 		spec_dst = daddr;
 		goto local_input;
 	}
 
 	/**
-	 * Èç¹û±¨ÎÄĞèÒª±»×ª·¢£¬µ«ingressÉè±¸ÅäÖÃÎª½ûÖ¹×ª·¢£¬Ôò¸Ã±¨ÎÄ²»ÄÜ±»·¢ËÍ¶ø±ØĞë±»¶ªÆú¡£
-	 * ÀûÓÃIN_DEV_FORWARD¼ì²éÉè±¸µÄ×ª·¢×´Ì¬¡£
+	 * å¦‚æœæŠ¥æ–‡éœ€è¦è¢«è½¬å‘ï¼Œä½†ingressè®¾å¤‡é…ç½®ä¸ºç¦æ­¢è½¬å‘ï¼Œåˆ™è¯¥æŠ¥æ–‡ä¸èƒ½è¢«å‘é€è€Œå¿…é¡»è¢«ä¸¢å¼ƒã€‚
+	 * åˆ©ç”¨IN_DEV_FORWARDæ£€æŸ¥è®¾å¤‡çš„è½¬å‘çŠ¶æ€ã€‚
 	 */
 	if (!IN_DEV_FORWARD(in_dev))
 		goto e_inval;
@@ -1873,8 +1873,8 @@ static int ip_route_input_slow(struct sk_buff *skb, u32 daddr, u32 saddr,
 
 #ifdef CONFIG_IP_ROUTE_MULTIPATH
 	/**
-	 * Èç¹ûfib_lookup·µ»ØµÄÆ¥ÅäÂ·ÓÉÏîÓĞ¶à¸öÏÂÒ»Ìø£¬µ÷ÓÃfib_select_multipathÀ´Ñ¡ÔñÆäÖĞÒ»¸ö¡£
-	 * µ±Ö§³Ö¶àÂ·¾¶»º´æÌØĞÔÊ±£¬ÓĞ¶àÖÖ²»Í¬µÄÑ¡Ôñ·½·¨¡£
+	 * å¦‚æœfib_lookupè¿”å›çš„åŒ¹é…è·¯ç”±é¡¹æœ‰å¤šä¸ªä¸‹ä¸€è·³ï¼Œè°ƒç”¨fib_select_multipathæ¥é€‰æ‹©å…¶ä¸­ä¸€ä¸ªã€‚
+	 * å½“æ”¯æŒå¤šè·¯å¾„ç¼“å­˜ç‰¹æ€§æ—¶ï¼Œæœ‰å¤šç§ä¸åŒçš„é€‰æ‹©æ–¹æ³•ã€‚
 	 */
 	if (res.fi->fib_nhs > 1 && fl.oif == 0)
 		fib_select_multipath(&fl, &res);
@@ -1888,8 +1888,8 @@ static int ip_route_input_slow(struct sk_buff *skb, u32 daddr, u32 saddr,
 	}
 
 	/**
-	 * ×ª·¢±¨ÎÄÊ±£¬Ê×Ñ¡Ô´µØÖ·ÓÉfib_validate_sourceÀ´´¦Àí¡£
-	 * µ÷ÓÃfib_validate_sourceÀ´ÑéÖ¤Ô´µØÖ·¡£
+	 * è½¬å‘æŠ¥æ–‡æ—¶ï¼Œé¦–é€‰æºåœ°å€ç”±fib_validate_sourceæ¥å¤„ç†ã€‚
+	 * è°ƒç”¨fib_validate_sourceæ¥éªŒè¯æºåœ°å€ã€‚
 	 */
 	err = fib_validate_source(saddr, daddr, tos, FIB_RES_OIF(res), dev,
 				  &spec_dst, &itag);
@@ -1897,7 +1897,7 @@ static int ip_route_input_slow(struct sk_buff *skb, u32 daddr, u32 saddr,
 		goto martian_source;
 
 	/**
-	 * µ±ip_forward¿´µ½RTCF_DOREDIRECT±êÖ¾ºó£¬ÏòÍâ·¢ËÍ¸ÃICMPÏûÏ¢¡£
+	 * å½“ip_forwardçœ‹åˆ°RTCF_DOREDIRECTæ ‡å¿—åï¼Œå‘å¤–å‘é€è¯¥ICMPæ¶ˆæ¯ã€‚
 	 */
 	if (err)
 		flags |= RTCF_DIRECTSRC;
@@ -1961,25 +1961,25 @@ out:	return err;
 
 brd_input:
 	/**
-	 * ip_route_input_slow½ÓÊÜµÄ¹ã²¥±¨ÎÄÖ»ÄÜÓÉIPĞ­ÒéÉú³É¡£
-	 * ÓÉÓÚip_route_inputµÄÊäÈë»º³å²ÎÊı²»Ò»¶¨ÊÇĞèÒª±»Â·ÓÉµÄ±¨ÎÄ£¬Òò´ËÕâÀïĞèÒªÔÙ´Î¼ì²é±¨ÎÄĞ­Òé×Ö¶Î¡£
+	 * ip_route_input_slowæ¥å—çš„å¹¿æ’­æŠ¥æ–‡åªèƒ½ç”±IPåè®®ç”Ÿæˆã€‚
+	 * ç”±äºip_route_inputçš„è¾“å…¥ç¼“å†²å‚æ•°ä¸ä¸€å®šæ˜¯éœ€è¦è¢«è·¯ç”±çš„æŠ¥æ–‡ï¼Œå› æ­¤è¿™é‡Œéœ€è¦å†æ¬¡æ£€æŸ¥æŠ¥æ–‡åè®®å­—æ®µã€‚
 	 */
 	if (skb->protocol != htons(ETH_P_IP))
 		goto e_inval;
 
 	/**
-	 * µ±±¨ÎÄÊÇ¹ã²¥±¨ÎÄÊ±£¬¹ã²¥µØÖ·²»ÄÜ±»ÓÃ×÷egress±¨ÎÄµÄÊ×Ñ¡Ô´µØÖ·¡£ip_route_input_slowĞèÒª½èÖúÁíÍâÁ½¸ö³ÌĞò£ºinet_select_addrºÍfib_validate_source¡£
+	 * å½“æŠ¥æ–‡æ˜¯å¹¿æ’­æŠ¥æ–‡æ—¶ï¼Œå¹¿æ’­åœ°å€ä¸èƒ½è¢«ç”¨ä½œegressæŠ¥æ–‡çš„é¦–é€‰æºåœ°å€ã€‚ip_route_input_slowéœ€è¦å€ŸåŠ©å¦å¤–ä¸¤ä¸ªç¨‹åºï¼šinet_select_addrå’Œfib_validate_sourceã€‚
 	 */
 	if (ZERONET(saddr))
 		/**
-		 * µ±½ÓÊÕ±¨ÎÄÄÚÃ»ÓĞÉèÖÃÔ´IPµØÖ·£¨¼´ÎªÈ«Áã£©Ê±£¬inet_select_addrÔÚ½ÓÊÕ¸Ã±¨ÎÄµÄÉè±¸ÉÏÑ¡ÔñscopeÎªRT_SCOPE_LINKµÄµÚÒ»¸öµØÖ·¡£
-		 * ÕâÊÇÒòÎª±¨ÎÄÔ´µØÖ·Îª¿ÕÊ±Ä¿µÄµØÖ·ÎªÊÜÏŞ¹ã²¥µØÖ·£¨limited broadcast address£©£¬¶ø¹ã²¥µØÖ·scopeÎªRT_SCOPE_LINK¡£
-		 * ÆäÖĞÒ»¸öÀı×ÓÎªDHCP·¢ÏÖÏûÏ¢¡£
+		 * å½“æ¥æ”¶æŠ¥æ–‡å†…æ²¡æœ‰è®¾ç½®æºIPåœ°å€ï¼ˆå³ä¸ºå…¨é›¶ï¼‰æ—¶ï¼Œinet_select_addråœ¨æ¥æ”¶è¯¥æŠ¥æ–‡çš„è®¾å¤‡ä¸Šé€‰æ‹©scopeä¸ºRT_SCOPE_LINKçš„ç¬¬ä¸€ä¸ªåœ°å€ã€‚
+		 * è¿™æ˜¯å› ä¸ºæŠ¥æ–‡æºåœ°å€ä¸ºç©ºæ—¶ç›®çš„åœ°å€ä¸ºå—é™å¹¿æ’­åœ°å€ï¼ˆlimited broadcast addressï¼‰ï¼Œè€Œå¹¿æ’­åœ°å€scopeä¸ºRT_SCOPE_LINKã€‚
+		 * å…¶ä¸­ä¸€ä¸ªä¾‹å­ä¸ºDHCPå‘ç°æ¶ˆæ¯ã€‚
 		 */
 		spec_dst = inet_select_addr(dev, 0, RT_SCOPE_LINK);
 	else {
 		/**
-		 * µ±Ô´µØÖ·²»ÊÇÈ«ÁãÊ±£¬ÓÉfib_validate_sourceÀ´´¦Àí¡£
+		 * å½“æºåœ°å€ä¸æ˜¯å…¨é›¶æ—¶ï¼Œç”±fib_validate_sourceæ¥å¤„ç†ã€‚
 		 */
 		err = fib_validate_source(saddr, 0, tos, 0, dev, &spec_dst,
 					  &itag);
@@ -1991,13 +1991,13 @@ brd_input:
 	flags |= RTCF_BROADCAST;
 	res.type = RTN_BROADCAST;
 	/**
-	 * ¹ã²¥±¨ÎÄ¼ÆÊı¡£
+	 * å¹¿æ’­æŠ¥æ–‡è®¡æ•°ã€‚
 	 */
 	RT_CACHE_STAT_INC(in_brd);
 
 local_input:
 	/**
-	 * ´´½¨ºÍ³õÊ¼»¯Ò»ÌõĞÂ»º´æ±íÏî£¨¾Ö²¿±äÁ¿rth£©
+	 * åˆ›å»ºå’Œåˆå§‹åŒ–ä¸€æ¡æ–°ç¼“å­˜è¡¨é¡¹ï¼ˆå±€éƒ¨å˜é‡rthï¼‰
 	 */
 	rth = dst_alloc(&ipv4_dst_ops);
 	if (!rth)
@@ -2010,7 +2010,7 @@ local_input:
 	if (in_dev->cnf.no_policy)
 		rth->u.dst.flags |= DST_NOPOLICY;
 	/**
-	 * Ê¹ÓÃÊäÈë²ÎÊıÀ´³õÊ¼»¯fl£¬ÓÃ×ö»º´æ²éÕÒµÄËÑË÷key¡£
+	 * ä½¿ç”¨è¾“å…¥å‚æ•°æ¥åˆå§‹åŒ–flï¼Œç”¨åšç¼“å­˜æŸ¥æ‰¾çš„æœç´¢keyã€‚
 	 */
 	rth->fl.fl4_dst	= daddr;
 	rth->rt_dst	= daddr;
@@ -2030,7 +2030,7 @@ local_input:
 	rth->idev	= in_dev_get(rth->u.dst.dev);
 	rth->rt_gateway	= daddr;
 	/**
-	 * Ê×Ñ¡Ô´µØÖ·¡£ÓÃÓÚICMPºÍIPÑ¡Ïî¡£
+	 * é¦–é€‰æºåœ°å€ã€‚ç”¨äºICMPå’ŒIPé€‰é¡¹ã€‚
 	 */
 	rth->rt_spec_dst= spec_dst;
 	rth->u.dst.input= ip_local_deliver;
@@ -2048,8 +2048,8 @@ no_route:
 	spec_dst = inet_select_addr(dev, 0, RT_SCOPE_UNIVERSE);
 	res.type = RTN_UNREACHABLE;
 	/**
-	 * µ±Ò»¸ö±¨ÎÄÓÉÓÚÖ÷»úÅäÖÃ»òÊÇÓÉÓÚÃ»ÓĞÂ·ÓÉÆ¥Åä¶ø²»ÄÜ±»Â·ÓÉÊ±£¬Ò»ÌõĞÂÂ·ÓÉÏî±»²åÈëµ½»º´æÄÚ£¬¸ÃÂ·ÓÉµÄdst->input±»³õÊ¼»¯Îªip_error¡£
-	 * Òò´Ë£¬¼´Ê¹Ã»ÓĞÂ·ÓÉ£¬Ò²ĞèÒªÌø×ªµ½local_input£¬½«Â·ÓÉ»º´æ¼ÓÈëµ½»º´æÖĞ¡£²¢ÓÉip_error´¦Àí¡£
+	 * å½“ä¸€ä¸ªæŠ¥æ–‡ç”±äºä¸»æœºé…ç½®æˆ–æ˜¯ç”±äºæ²¡æœ‰è·¯ç”±åŒ¹é…è€Œä¸èƒ½è¢«è·¯ç”±æ—¶ï¼Œä¸€æ¡æ–°è·¯ç”±é¡¹è¢«æ’å…¥åˆ°ç¼“å­˜å†…ï¼Œè¯¥è·¯ç”±çš„dst->inputè¢«åˆå§‹åŒ–ä¸ºip_errorã€‚
+	 * å› æ­¤ï¼Œå³ä½¿æ²¡æœ‰è·¯ç”±ï¼Œä¹Ÿéœ€è¦è·³è½¬åˆ°local_inputï¼Œå°†è·¯ç”±ç¼“å­˜åŠ å…¥åˆ°ç¼“å­˜ä¸­ã€‚å¹¶ç”±ip_errorå¤„ç†ã€‚
 	 */
 	goto local_input;
 
@@ -2101,13 +2101,13 @@ martian_source:
 }
 
 /**
- * ÓÃÓÚÈëÁ÷Á¿µÄÂ·ÓÉ²éÕÒ£¬ÕâĞ©Á÷Á¿¿ÉÄÜËÍÍù±¾µØ»ò±»×ª·¢¡£
- * Õâ¸öº¯Êı¾ö¶¨ÈçºÎÀ´´¦ÀíÆÕÍ¨±¨ÎÄ£¨ÊÇËÍÍù±¾µØ¡¢»¹ÊÇ×ª·¢¡¢¶ªÆúµÈ£©£¬µ«ËüÒ²±»ÆäËü×ÓÏµÍ³ÓÃÓÚÈ·¶¨ÈçºÎÀ´´¦ÀíËüÃÇµÄÈëÁ÷Á¿¡£
- * ÀıÈç£¬ARPÊ¹ÓÃ¸Ãº¯ÊıÀ´ÅĞ¶ÏÊÇ·ñÓ¦µ±¶ÔÒ»¸öARPOP_REQUEST×÷³öÓ¦´ğ
- *		skb:			´¥·¢Â·ÓÉ²éÕÒµÄ±¨ÎÄ¡£Õâ¸ö±¨ÎÄ±¾Éí¿ÉÄÜ²»ĞèÒª±»Â·ÓÉ¡£ÀıÈçARP³öÓÚÄ³Ğ©Ô­ÒòÊ¹ÓÃip_route_inputÀ´×ÉÑ¯localÂ·ÓÉ±í£¬ÕâÊ±µÄskbÓ¦µ±ÊÇÒ»¸öingress ARPÇëÇó¡£
- * 		saddr,daddr:	ÓÃÓÚ²éÕÒµÄÔ´µØÖ·ºÍÄ¿µÄµØÖ·¡£
- *		tos:			ip±¨Í·ÖĞµÄTOS×Ö¶Î¡£
- *		dev:			½ÓÊÕ¸Ã±¨ÎÄµÄÉè±¸¡£
+ * ç”¨äºå…¥æµé‡çš„è·¯ç”±æŸ¥æ‰¾ï¼Œè¿™äº›æµé‡å¯èƒ½é€å¾€æœ¬åœ°æˆ–è¢«è½¬å‘ã€‚
+ * è¿™ä¸ªå‡½æ•°å†³å®šå¦‚ä½•æ¥å¤„ç†æ™®é€šæŠ¥æ–‡ï¼ˆæ˜¯é€å¾€æœ¬åœ°ã€è¿˜æ˜¯è½¬å‘ã€ä¸¢å¼ƒç­‰ï¼‰ï¼Œä½†å®ƒä¹Ÿè¢«å…¶å®ƒå­ç³»ç»Ÿç”¨äºç¡®å®šå¦‚ä½•æ¥å¤„ç†å®ƒä»¬çš„å…¥æµé‡ã€‚
+ * ä¾‹å¦‚ï¼ŒARPä½¿ç”¨è¯¥å‡½æ•°æ¥åˆ¤æ–­æ˜¯å¦åº”å½“å¯¹ä¸€ä¸ªARPOP_REQUESTä½œå‡ºåº”ç­”
+ *		skb:			è§¦å‘è·¯ç”±æŸ¥æ‰¾çš„æŠ¥æ–‡ã€‚è¿™ä¸ªæŠ¥æ–‡æœ¬èº«å¯èƒ½ä¸éœ€è¦è¢«è·¯ç”±ã€‚ä¾‹å¦‚ARPå‡ºäºæŸäº›åŸå› ä½¿ç”¨ip_route_inputæ¥å’¨è¯¢localè·¯ç”±è¡¨ï¼Œè¿™æ—¶çš„skbåº”å½“æ˜¯ä¸€ä¸ªingress ARPè¯·æ±‚ã€‚
+ * 		saddr,daddr:	ç”¨äºæŸ¥æ‰¾çš„æºåœ°å€å’Œç›®çš„åœ°å€ã€‚
+ *		tos:			ipæŠ¥å¤´ä¸­çš„TOSå­—æ®µã€‚
+ *		dev:			æ¥æ”¶è¯¥æŠ¥æ–‡çš„è®¾å¤‡ã€‚
  */
 int ip_route_input(struct sk_buff *skb, u32 daddr, u32 saddr,
 		   u8 tos, struct net_device *dev)
@@ -2118,18 +2118,18 @@ int ip_route_input(struct sk_buff *skb, u32 daddr, u32 saddr,
 
 	tos &= IPTOS_RT_MASK;
 	/**
-	 * ip_route_inputÊ×ÏÈ¸ù¾İÊäÈëÌõ¼şÑ¡ÔñÓ¦µ±°üº¬¸ÃÂ·ÓÉµÄ¹şÏ£Í°¡£
+	 * ip_route_inputé¦–å…ˆæ ¹æ®è¾“å…¥æ¡ä»¶é€‰æ‹©åº”å½“åŒ…å«è¯¥è·¯ç”±çš„å“ˆå¸Œæ¡¶ã€‚
 	 */
 	hash = rt_hash_code(daddr, saddr ^ (iif << 5), tos);
 
 	rcu_read_lock();
 	/**
-	 * È»ºóÒ»¸ö½ÓÒ»¸ö±éÀú¹şÏ£Í°Á´±íÖĞµÄÂ·ÓÉÏî£¬±È½ÏËùÓĞ±ØĞëµÄ×Ö¶Î£¬Ö±µ½²éÕÒµ½Æ¥Åä»òµ½Á´±íÎ²²¿Ê±»¹Ã»ÓĞÕÒµ½Æ¥Åä¡£
+	 * ç„¶åä¸€ä¸ªæ¥ä¸€ä¸ªéå†å“ˆå¸Œæ¡¶é“¾è¡¨ä¸­çš„è·¯ç”±é¡¹ï¼Œæ¯”è¾ƒæ‰€æœ‰å¿…é¡»çš„å­—æ®µï¼Œç›´åˆ°æŸ¥æ‰¾åˆ°åŒ¹é…æˆ–åˆ°é“¾è¡¨å°¾éƒ¨æ—¶è¿˜æ²¡æœ‰æ‰¾åˆ°åŒ¹é…ã€‚
 	 */
 	for (rth = rcu_dereference(rt_hash_table[hash].chain); rth;
 	     rth = rcu_dereference(rth->u.rt_next)) {
 		/**
-		 * ip_route_inputº¯Êı´«µİ½øÀ´µÄÊäÈë²ÎÊı±»×÷Îª²éÕÒ×Ö¶ÎÓëÂ·ÓÉ»º´æ±íÏîrtableÖĞ´æ´¢µÄfl×Ö¶ÎÏà±È½Ï
+		 * ip_route_inputå‡½æ•°ä¼ é€’è¿›æ¥çš„è¾“å…¥å‚æ•°è¢«ä½œä¸ºæŸ¥æ‰¾å­—æ®µä¸è·¯ç”±ç¼“å­˜è¡¨é¡¹rtableä¸­å­˜å‚¨çš„flå­—æ®µç›¸æ¯”è¾ƒ
 		 */
 		if (rth->fl.fl4_dst == daddr &&
 		    rth->fl.fl4_src == saddr &&
@@ -2148,7 +2148,7 @@ int ip_route_input(struct sk_buff *skb, u32 daddr, u32 saddr,
 			return 0;
 		}
 		/**
-		 * Í³¼ÆÔÚÍ°ÖĞËÑË÷µÄ´ÎÊı¡£
+		 * ç»Ÿè®¡åœ¨æ¡¶ä¸­æœç´¢çš„æ¬¡æ•°ã€‚
 		 */
 		RT_CACHE_STAT_INC(in_hlist_search);
 	}
@@ -2166,8 +2166,8 @@ int ip_route_input(struct sk_buff *skb, u32 daddr, u32 saddr,
 	   route cache entry is created eventually.
 	 */
 	/**
-	 * ÔËĞĞµ½ÕâÀï£¬ËµÃ÷ÔÚ»º´æÖĞ²éÕÒÒÑ¾­Ê§°Ü¡£
-	 * Ê×ÏÈÅĞ¶Ï±¨ÎÄÄ¿µÄµØÖ·ÊÇ²»ÊÇ¶à²¥µØÖ·¡£
+	 * è¿è¡Œåˆ°è¿™é‡Œï¼Œè¯´æ˜åœ¨ç¼“å­˜ä¸­æŸ¥æ‰¾å·²ç»å¤±è´¥ã€‚
+	 * é¦–å…ˆåˆ¤æ–­æŠ¥æ–‡ç›®çš„åœ°å€æ˜¯ä¸æ˜¯å¤šæ’­åœ°å€ã€‚
 	 */
 	if (MULTICAST(daddr)) {
 		struct in_device *in_dev;
@@ -2175,34 +2175,34 @@ int ip_route_input(struct sk_buff *skb, u32 daddr, u32 saddr,
 		rcu_read_lock();
 		if ((in_dev = __in_dev_get(dev)) != NULL) {
 			/**
-			 * Í¨¹ıip_check_mcÀ´¼ì²éÄ¿µÄµØÖ·ÊÇ·ñÎª±¾µØÅäÖÃµÄ¶à²¥µØÖ·¡£
+			 * é€šè¿‡ip_check_mcæ¥æ£€æŸ¥ç›®çš„åœ°å€æ˜¯å¦ä¸ºæœ¬åœ°é…ç½®çš„å¤šæ’­åœ°å€ã€‚
 			 */
 			int our = ip_check_mc(in_dev, daddr, saddr,
 				skb->nh.iph->protocol);
 			if (our
 #ifdef CONFIG_IP_MROUTE
 				/**
-				 * Ä¿µÄµØÖ·²»ÊÇ±¾µØÅäÖÃ£¬µ«ÄÚºË±àÒëÊ±Ö§³Ö¶à²¥Â·ÓÉ£¨CONFIG_IP_MROUTE£©¡£
+				 * ç›®çš„åœ°å€ä¸æ˜¯æœ¬åœ°é…ç½®ï¼Œä½†å†…æ ¸ç¼–è¯‘æ—¶æ”¯æŒå¤šæ’­è·¯ç”±ï¼ˆCONFIG_IP_MROUTEï¼‰ã€‚
 				 */
 			    || (!LOCAL_MCAST(daddr) && IN_DEV_MFORWARD(in_dev))
 #endif
 			    ) {
 				rcu_read_unlock();
 				/**
-				 * ¶à²¥´¦Àíº¯Êıip_route_input_mc¡£
+				 * å¤šæ’­å¤„ç†å‡½æ•°ip_route_input_mcã€‚
 				 */
 				return ip_route_input_mc(skb, daddr, saddr,
 							 tos, dev, our);
 			}
 		}
 		/**
-		 * ¶ªÆú±¨ÎÄ¡£
+		 * ä¸¢å¼ƒæŠ¥æ–‡ã€‚
 		 */
 		rcu_read_unlock();
 		return -EINVAL;
 	}
 	/**
-	 * Èç¹ûÔÚÄ¿µÄµØÖ·²»ÊÇ¶à²¥Çé¿öÏÂ»º´æ²éÕÒÊ§°Ü£¬ip_route_inputµ÷ÓÃip_route_input_slowÀ´²éÕÒÂ·ÓÉ±í
+	 * å¦‚æœåœ¨ç›®çš„åœ°å€ä¸æ˜¯å¤šæ’­æƒ…å†µä¸‹ç¼“å­˜æŸ¥æ‰¾å¤±è´¥ï¼Œip_route_inputè°ƒç”¨ip_route_input_slowæ¥æŸ¥æ‰¾è·¯ç”±è¡¨
 	 */
 	return ip_route_input_slow(skb, daddr, saddr, tos, dev);
 }
@@ -2211,30 +2211,30 @@ int ip_route_input(struct sk_buff *skb, u32 daddr, u32 saddr,
  * Major route resolver routine.
  */
 /**
- * ³ö°üÑ¡Â·¡£
+ * å‡ºåŒ…é€‰è·¯ã€‚
  */
 static int ip_route_output_slow(struct rtable **rp, const struct flowi *oldflp)
 {
 	/**
-	 * µ÷ÓÃ·½¿ÉÒÔ½«fl4_tos×Ö¶ÎµÄÁ½¸ö×îµÍÎ»ÓÃÓÚ´æ´¢flags£¬ip_route_output_slow¿ÉÒÔÊ¹ÓÃ¸ÃflagsÀ´È·¶¨´ıËÑË÷Â·ÓÉÏîµÄscope¡£
+	 * è°ƒç”¨æ–¹å¯ä»¥å°†fl4_toså­—æ®µçš„ä¸¤ä¸ªæœ€ä½ä½ç”¨äºå­˜å‚¨flagsï¼Œip_route_output_slowå¯ä»¥ä½¿ç”¨è¯¥flagsæ¥ç¡®å®šå¾…æœç´¢è·¯ç”±é¡¹çš„scopeã€‚
 	 */
 	u32 tos	= oldflp->fl4_tos & (IPTOS_RT_MASK | RTO_ONLINK);
 	/**
-	 * ³õÊ¼»¯ËÑË÷key£¬¸ÃËÑË÷key×÷Îªfib_lookupµÄ²ÎÊıÓÃÓÚÂ·ÓÉ±íµÄ²éÕÒ¡£
-	 * ¸ÃËÑË÷key½«ÓëĞÂµÄ±»»º´æµÄÂ·ÓÉÏîÒ»Æğ±»±£´æÆğÀ´£¬ÒÔÓÃÓÚºóĞøµÄ»º´æ²éÕÒ¡£
+	 * åˆå§‹åŒ–æœç´¢keyï¼Œè¯¥æœç´¢keyä½œä¸ºfib_lookupçš„å‚æ•°ç”¨äºè·¯ç”±è¡¨çš„æŸ¥æ‰¾ã€‚
+	 * è¯¥æœç´¢keyå°†ä¸æ–°çš„è¢«ç¼“å­˜çš„è·¯ç”±é¡¹ä¸€èµ·è¢«ä¿å­˜èµ·æ¥ï¼Œä»¥ç”¨äºåç»­çš„ç¼“å­˜æŸ¥æ‰¾ã€‚
 	 */
 	struct flowi fl = { .nl_u = { .ip4_u =
-				      { .daddr = oldflp->fl4_dst,	/* Ô´IPµØÖ·¡¢Ä¿µÄIPµØÖ·ºÍ·À»ğÇ½±ê¼ÇÊÇÖ±½Ó´Óº¯ÊıµÄÊäÈë²ÎÊı¿½±´¶øÀ´¡£ */
-					.saddr = oldflp->fl4_src,		/* Ô´IPµØÖ·¡¢Ä¿µÄIPµØÖ·ºÍ·À»ğÇ½±ê¼ÇÊÇÖ±½Ó´Óº¯ÊıµÄÊäÈë²ÎÊı¿½±´¶øÀ´¡£ */
-					.tos = tos & IPTOS_RT_MASK,		/* ºóÁ½Î»²»ÊÇÕæÕıµÄTOS */
-					.scope = ((tos & RTO_ONLINK) ?	/* µ±RTO_ONLINK±êÖ¾±»ÉèÖÃÊ±£¬ÉèÖÃ´ıËÑË÷µÄÂ·ÓÉÏîµÄscopeÎªRT_SCOPE_LINK£»·ñÔòÉèÖÃÎªRT_SCOPE_UNIVERSE¡£ */
+				      { .daddr = oldflp->fl4_dst,	/* æºIPåœ°å€ã€ç›®çš„IPåœ°å€å’Œé˜²ç«å¢™æ ‡è®°æ˜¯ç›´æ¥ä»å‡½æ•°çš„è¾“å…¥å‚æ•°æ‹·è´è€Œæ¥ã€‚ */
+					.saddr = oldflp->fl4_src,		/* æºIPåœ°å€ã€ç›®çš„IPåœ°å€å’Œé˜²ç«å¢™æ ‡è®°æ˜¯ç›´æ¥ä»å‡½æ•°çš„è¾“å…¥å‚æ•°æ‹·è´è€Œæ¥ã€‚ */
+					.tos = tos & IPTOS_RT_MASK,		/* åä¸¤ä½ä¸æ˜¯çœŸæ­£çš„TOS */
+					.scope = ((tos & RTO_ONLINK) ?	/* å½“RTO_ONLINKæ ‡å¿—è¢«è®¾ç½®æ—¶ï¼Œè®¾ç½®å¾…æœç´¢çš„è·¯ç”±é¡¹çš„scopeä¸ºRT_SCOPE_LINKï¼›å¦åˆ™è®¾ç½®ä¸ºRT_SCOPE_UNIVERSEã€‚ */
 						  RT_SCOPE_LINK :
 						  RT_SCOPE_UNIVERSE),
 #ifdef CONFIG_IP_ROUTE_FWMARK
-					.fwmark = oldflp->fl4_fwmark	/* Ô´IPµØÖ·¡¢Ä¿µÄIPµØÖ·ºÍ·À»ğÇ½±ê¼ÇÊÇÖ±½Ó´Óº¯ÊıµÄÊäÈë²ÎÊı¿½±´¶øÀ´¡£ */
+					.fwmark = oldflp->fl4_fwmark	/* æºIPåœ°å€ã€ç›®çš„IPåœ°å€å’Œé˜²ç«å¢™æ ‡è®°æ˜¯ç›´æ¥ä»å‡½æ•°çš„è¾“å…¥å‚æ•°æ‹·è´è€Œæ¥ã€‚ */
 #endif
 				      } },
-			    .iif = loopback_dev.ifindex,/* ÒòÎªµ÷ÓÃip_route_output_slowÖ»ÊÇÎªÁËÂ·ÓÉ±¾µØÉú³ÉµÄÁ÷Á¿£¬ËùÒÔËÑË÷key flÖĞµÄÔ´Éè±¸±»³õÊ¼»¯Îª»Ø»·Éè±¸¡£ */
+			    .iif = loopback_dev.ifindex,/* å› ä¸ºè°ƒç”¨ip_route_output_slowåªæ˜¯ä¸ºäº†è·¯ç”±æœ¬åœ°ç”Ÿæˆçš„æµé‡ï¼Œæ‰€ä»¥æœç´¢key flä¸­çš„æºè®¾å¤‡è¢«åˆå§‹åŒ–ä¸ºå›ç¯è®¾å¤‡ã€‚ */
 			    .oif = oldflp->oif };
 	struct fib_result res;
 	unsigned flags = 0;
@@ -2251,12 +2251,12 @@ static int ip_route_output_slow(struct rtable **rp, const struct flowi *oldflp)
 #endif
 
 	/**
-	 * ÊÇ·ñÖ¸¶¨Ô´IPµØÖ·¡£
+	 * æ˜¯å¦æŒ‡å®šæºIPåœ°å€ã€‚
 	 */
 	if (oldflp->fl4_src) {
 		err = -EINVAL;
 		/**
-		 * ¶ÔÔ´µØÖ·½øĞĞ½¡¿µ¼ì²é¡£
+		 * å¯¹æºåœ°å€è¿›è¡Œå¥åº·æ£€æŸ¥ã€‚
 		 */
 		if (MULTICAST(oldflp->fl4_src) ||
 		    BADCLASS(oldflp->fl4_src) ||
@@ -2265,11 +2265,11 @@ static int ip_route_output_slow(struct rtable **rp, const struct flowi *oldflp)
 
 		/* It is equivalent to inet_addr_type(saddr) == RTN_LOCAL */
 		/**
-		 * ²éÕÒÔ´µØÖ·ËùÔÚ³öÉè±¸¡£
+		 * æŸ¥æ‰¾æºåœ°å€æ‰€åœ¨å‡ºè®¾å¤‡ã€‚
 		 */
 		dev_out = ip_dev_find(oldflp->fl4_src);
 		/**
-		 * Ä¿µÄÉè±¸²»´æÔÚ£¬ÍË³ö¡£
+		 * ç›®çš„è®¾å¤‡ä¸å­˜åœ¨ï¼Œé€€å‡ºã€‚
 		 */
 		if (dev_out == NULL)
 			goto out;
@@ -2282,7 +2282,7 @@ static int ip_route_output_slow(struct rtable **rp, const struct flowi *oldflp)
 		      of another iface. --ANK
 		 */
 		/**
-		 * Ä¿µÄµØÖ·ÊÇ·ñÎª¶à²¥»òÕßÊÜÏŞ¹ã²¥¡£
+		 * ç›®çš„åœ°å€æ˜¯å¦ä¸ºå¤šæ’­æˆ–è€…å—é™å¹¿æ’­ã€‚
 		 */
 		if (oldflp->oif == 0
 		    && (MULTICAST(oldflp->fl4_dst) || oldflp->fl4_dst == 0xFFFFFFFF)) {
@@ -2301,11 +2301,11 @@ static int ip_route_output_slow(struct rtable **rp, const struct flowi *oldflp)
 			   Luckily, this hack is good workaround.
 			 */
 			/**
-			 * Ñ¡ÔñÔ´µØÖ·¶ÔÓ¦µÄÉè±¸Îª³öÉè±¸¡£
+			 * é€‰æ‹©æºåœ°å€å¯¹åº”çš„è®¾å¤‡ä¸ºå‡ºè®¾å¤‡ã€‚
 			 */
 			fl.oif = dev_out->ifindex;
 			/**
-			 * Ö»Ìá¹©ÁËÔ´µØÖ·£¬Ã»ÓĞÌá¹©³öÉè±¸£¬Í¬Ê±Ä¿µÄµØÖ·Îª¹ã²¥µØÖ·£¬ÕâÖÖÇé¿öÊÇÓÉÓÚÊ¹ÓÃÖîÈçvicºÍvatµÈ¶àÃ½Ìå¹¤¾ß¶øÒı·¢µÄÒ»¸öÎÊÌâ¡£
+			 * åªæä¾›äº†æºåœ°å€ï¼Œæ²¡æœ‰æä¾›å‡ºè®¾å¤‡ï¼ŒåŒæ—¶ç›®çš„åœ°å€ä¸ºå¹¿æ’­åœ°å€ï¼Œè¿™ç§æƒ…å†µæ˜¯ç”±äºä½¿ç”¨è¯¸å¦‚vicå’Œvatç­‰å¤šåª’ä½“å·¥å…·è€Œå¼•å‘çš„ä¸€ä¸ªé—®é¢˜ã€‚
 			 */
 			goto make_route;
 		}
@@ -2314,7 +2314,7 @@ static int ip_route_output_slow(struct rtable **rp, const struct flowi *oldflp)
 		dev_out = NULL;
 	}
 	/**
-	 * ÊÇ·ñÖ¸¶¨³öÉè±¸¡£
+	 * æ˜¯å¦æŒ‡å®šå‡ºè®¾å¤‡ã€‚
 	 */
 	if (oldflp->oif) {
 		dev_out = dev_get_by_index(oldflp->oif);
@@ -2327,29 +2327,29 @@ static int ip_route_output_slow(struct rtable **rp, const struct flowi *oldflp)
 		}
 
 		/**
-		 * Ä¿µÄIPÊÇ·ñÊÇ±¾µØ¶à²¥»òÕßÏŞÖÆ¹ã²¥¡£
+		 * ç›®çš„IPæ˜¯å¦æ˜¯æœ¬åœ°å¤šæ’­æˆ–è€…é™åˆ¶å¹¿æ’­ã€‚
 		 */
 		if (LOCAL_MCAST(oldflp->fl4_dst) || oldflp->fl4_dst == 0xFFFFFFFF) {
 			/**
-			 * ÊÇ·ñÖ¸¶¨Ô´IP
+			 * æ˜¯å¦æŒ‡å®šæºIP
 			 */
 			if (!fl.fl4_src)
 				/**
-				 * ´ÓOUTÉè±¸Ñ¡ÔñRT_SCOPE_LINKµÄÔ´IP¡£
+				 * ä»OUTè®¾å¤‡é€‰æ‹©RT_SCOPE_LINKçš„æºIPã€‚
 				 */
 				fl.fl4_src = inet_select_addr(dev_out, 0,
 							      RT_SCOPE_LINK);
 			/**
-			 * ÕâÖÖÇé¿öÏÂ£¬Â·ÓÉ×ÓÏµÍ³ÒÑ¾­ÓµÓĞÂ·ÓÉ¸Ã±¨ÎÄµÄËùÓĞĞÅÏ¢£¬²»ĞèÒª²éÕÒÂ·ÓÉÁË¡£
+			 * è¿™ç§æƒ…å†µä¸‹ï¼Œè·¯ç”±å­ç³»ç»Ÿå·²ç»æ‹¥æœ‰è·¯ç”±è¯¥æŠ¥æ–‡çš„æ‰€æœ‰ä¿¡æ¯ï¼Œä¸éœ€è¦æŸ¥æ‰¾è·¯ç”±äº†ã€‚
 			 */
 			goto make_route;
 		}
 		/**
-		 * ²»ÊÇ¹ã²¥£¬ÅĞ¶ÏÊÇ·ñÖ¸¶¨Ô´IP¡£
+		 * ä¸æ˜¯å¹¿æ’­ï¼Œåˆ¤æ–­æ˜¯å¦æŒ‡å®šæºIPã€‚
 		 */
 		if (!fl.fl4_src) {
 			/**
-			 * Ã»ÓĞÖ¸¶¨Ô´IP£¬¸ù¾İÄ¿µÄµØÖ·Ñ¡ÔñÔ´IP¡£
+			 * æ²¡æœ‰æŒ‡å®šæºIPï¼Œæ ¹æ®ç›®çš„åœ°å€é€‰æ‹©æºIPã€‚
 			 */
 			if (MULTICAST(oldflp->fl4_dst))
 				fl.fl4_src = inet_select_addr(dev_out, 0,
@@ -2361,23 +2361,23 @@ static int ip_route_output_slow(struct rtable **rp, const struct flowi *oldflp)
 	}
 
 	/**
-	 * Ã»ÓĞÖ¸¶¨Ä¿µÄIP¡£
-	 * ±¨ÎÄÄ¿µÄµØÎªÎ´ÖªµØÖ·£¬ÕâĞ©±¨ÎÄ±»ËÍÍù±¾µØ£¬¶ø²»ÊÇ±»·¢ËÍ³öÈ¥¡£
+	 * æ²¡æœ‰æŒ‡å®šç›®çš„IPã€‚
+	 * æŠ¥æ–‡ç›®çš„åœ°ä¸ºæœªçŸ¥åœ°å€ï¼Œè¿™äº›æŠ¥æ–‡è¢«é€å¾€æœ¬åœ°ï¼Œè€Œä¸æ˜¯è¢«å‘é€å‡ºå»ã€‚
 	 */
 	if (!fl.fl4_dst) {
 		/**
-		 * ÉèÖÃÄ¿µÄµØÖ·ÎªÔ´µØÖ·¡£
+		 * è®¾ç½®ç›®çš„åœ°å€ä¸ºæºåœ°å€ã€‚
 		 */
 		fl.fl4_dst = fl.fl4_src;
 		/**
-		 * Ã»ÓĞÔ´IP£¬ÔòÉèÖÃÔ´ºÍÄ¿µÄµØÖ·¶¼Îª127.0.0.1¡£
+		 * æ²¡æœ‰æºIPï¼Œåˆ™è®¾ç½®æºå’Œç›®çš„åœ°å€éƒ½ä¸º127.0.0.1ã€‚
 		 */
 		if (!fl.fl4_dst)
 			fl.fl4_dst = fl.fl4_src = htonl(INADDR_LOOPBACK);
 		if (dev_out)
 			dev_put(dev_out);
 		/**
-		 * egressÉè±¸±»ÉèÖÃÎª»Ø»·Éè±¸¡£Õâ±íÊ¾¸Ã±¨ÎÄ²»»áÀë¿ª±¾µØÖ÷»ú£¬¸Ã±¨ÎÄ±»·¢ËÍ³öºó£¬½«ÖØĞÂ»Øµ½IPÊäÈëÕ»¡£
+		 * egressè®¾å¤‡è¢«è®¾ç½®ä¸ºå›ç¯è®¾å¤‡ã€‚è¿™è¡¨ç¤ºè¯¥æŠ¥æ–‡ä¸ä¼šç¦»å¼€æœ¬åœ°ä¸»æœºï¼Œè¯¥æŠ¥æ–‡è¢«å‘é€å‡ºåï¼Œå°†é‡æ–°å›åˆ°IPè¾“å…¥æ ˆã€‚
 		 */
 		dev_out = &loopback_dev;
 		dev_hold(dev_out);
@@ -2387,10 +2387,10 @@ static int ip_route_output_slow(struct rtable **rp, const struct flowi *oldflp)
 		goto make_route;
 	}
 
-	if (fib_lookup(&fl, &res)) {/* ¼´Ê¹fib_lookup²éÕÒÂ·ÓÉÊ§°Ü£¬µ«»¹ÊÇÓĞ¿ÉÄÜ³É¹¦µØ½«±¨ÎÄ·¢ËÍ³öÈ¥¡£ */
+	if (fib_lookup(&fl, &res)) {/* å³ä½¿fib_lookupæŸ¥æ‰¾è·¯ç”±å¤±è´¥ï¼Œä½†è¿˜æ˜¯æœ‰å¯èƒ½æˆåŠŸåœ°å°†æŠ¥æ–‡å‘é€å‡ºå»ã€‚ */
 		res.fi = NULL;
 		/**
-		 * ËÑË÷keyÌá¹©ÁËegressÉè±¸£¬ip_route_output_slow¼Ù¶¨Í¨¹ı¸ÃegressÉè±¸¿ÉÒÔÖ±½Óµ½´ïÄ¿µÄµØ¡£
+		 * æœç´¢keyæä¾›äº†egressè®¾å¤‡ï¼Œip_route_output_slowå‡å®šé€šè¿‡è¯¥egressè®¾å¤‡å¯ä»¥ç›´æ¥åˆ°è¾¾ç›®çš„åœ°ã€‚
 		 */
 		if (oldflp->oif) {
 			/* Apparently, routing tables are wrong. Assume,
@@ -2412,7 +2412,7 @@ static int ip_route_output_slow(struct rtable **rp, const struct flowi *oldflp)
 			 */
 
 			/**
-			 * Èç¹û»¹Ã»ÓĞÔ´IPµØÖ·£¬Ôò»¹ĞèÒªÉèÖÃÒ»¸öscopeÎªRT_SCOPE_LINKµÄÔ´IPµØÖ·£¬¿ÉÄÜµÄÇé¿öÏÂÓÃµÄÊÇ¸ÃegressÉè±¸ÉÏµÄÒ»¸öµØÖ·¡£
+			 * å¦‚æœè¿˜æ²¡æœ‰æºIPåœ°å€ï¼Œåˆ™è¿˜éœ€è¦è®¾ç½®ä¸€ä¸ªscopeä¸ºRT_SCOPE_LINKçš„æºIPåœ°å€ï¼Œå¯èƒ½çš„æƒ…å†µä¸‹ç”¨çš„æ˜¯è¯¥egressè®¾å¤‡ä¸Šçš„ä¸€ä¸ªåœ°å€ã€‚
 			 */
 			if (fl.fl4_src == 0)
 				fl.fl4_src = inet_select_addr(dev_out, 0,
@@ -2421,7 +2421,7 @@ static int ip_route_output_slow(struct rtable **rp, const struct flowi *oldflp)
 			goto make_route;
 		}
 		/**
-		 * Ã»ÓĞÌá¹©³öÉè±¸£¬Â·ÓÉ²éÕÒÒ²Ê§°ÜÁË£¬·µ»Ø´íÎó¡£
+		 * æ²¡æœ‰æä¾›å‡ºè®¾å¤‡ï¼Œè·¯ç”±æŸ¥æ‰¾ä¹Ÿå¤±è´¥äº†ï¼Œè¿”å›é”™è¯¯ã€‚
 		 */
 		if (dev_out)
 			dev_put(dev_out);
@@ -2431,7 +2431,7 @@ static int ip_route_output_slow(struct rtable **rp, const struct flowi *oldflp)
 	free_res = 1;
 
 	/**
-	 * ±¨ÎÄ±»ËÍÍù±¾µØ¡£
+	 * æŠ¥æ–‡è¢«é€å¾€æœ¬åœ°ã€‚
 	 */
 	if (res.type == RTN_LOCAL) {
 		if (!fl.fl4_src)
@@ -2439,7 +2439,7 @@ static int ip_route_output_slow(struct rtable **rp, const struct flowi *oldflp)
 		if (dev_out)
 			dev_put(dev_out);
 		/**
-		 * egressÉè±¸±»ÉèÖÃÎª»Ø»·Éè±¸¡£Õâ±íÊ¾¸Ã±¨ÎÄ²»»áÀë¿ª±¾µØÖ÷»ú£¬¸Ã±¨ÎÄ±»·¢ËÍ³öºó£¬½«ÖØĞÂ»Øµ½IPÊäÈëÕ»¡£
+		 * egressè®¾å¤‡è¢«è®¾ç½®ä¸ºå›ç¯è®¾å¤‡ã€‚è¿™è¡¨ç¤ºè¯¥æŠ¥æ–‡ä¸ä¼šç¦»å¼€æœ¬åœ°ä¸»æœºï¼Œè¯¥æŠ¥æ–‡è¢«å‘é€å‡ºåï¼Œå°†é‡æ–°å›åˆ°IPè¾“å…¥æ ˆã€‚
 		 */
 		dev_out = &loopback_dev;
 		dev_hold(dev_out);
@@ -2452,28 +2452,28 @@ static int ip_route_output_slow(struct rtable **rp, const struct flowi *oldflp)
 	}
 
 	/**
-	 * ÔËĞĞµ½ÕâÀï£¬ËµÃ÷±¨ÎÄ²»ÊÇËÍÍù±¾µØ£¬¶øÊÇ·¢ËÍ¸øÆäËûÖ÷»ú¡£
+	 * è¿è¡Œåˆ°è¿™é‡Œï¼Œè¯´æ˜æŠ¥æ–‡ä¸æ˜¯é€å¾€æœ¬åœ°ï¼Œè€Œæ˜¯å‘é€ç»™å…¶ä»–ä¸»æœºã€‚
 	 */
 #ifdef CONFIG_IP_ROUTE_MULTIPATH
 	/**
-	 * µ±²éÕÒ·µ»ØµÄÂ·ÓÉÊÇÒ»Ìõ¶àÂ·¾¶Â·ÓÉÏîÊ±£¬ĞèÒªÑ¡³öÏÂÒ»Ìø¡£ÕâÓÉfib_select_multipathº¯ÊıÀ´Ö´ĞĞ¡£
+	 * å½“æŸ¥æ‰¾è¿”å›çš„è·¯ç”±æ˜¯ä¸€æ¡å¤šè·¯å¾„è·¯ç”±é¡¹æ—¶ï¼Œéœ€è¦é€‰å‡ºä¸‹ä¸€è·³ã€‚è¿™ç”±fib_select_multipathå‡½æ•°æ¥æ‰§è¡Œã€‚
 	 */
-	if (res.fi->fib_nhs > 1 && fl.oif == 0)/* ËÑË÷keyÖ¸¶¨ÁËÒªÊ¹ÓÃµÄegressÉè±¸£¨fl.oif£©Ê±£¬²»ĞèÒªµ÷ÓÃfib_select_multipath */
-		fib_select_multipath(&fl, &res);/* ×¢Òâ:fib_select_multipathÒ²ÄÜ´¦Àí¶àÂ·¾¶Â·ÓÉ¡£ */
+	if (res.fi->fib_nhs > 1 && fl.oif == 0)/* æœç´¢keyæŒ‡å®šäº†è¦ä½¿ç”¨çš„egressè®¾å¤‡ï¼ˆfl.oifï¼‰æ—¶ï¼Œä¸éœ€è¦è°ƒç”¨fib_select_multipath */
+		fib_select_multipath(&fl, &res);/* æ³¨æ„:fib_select_multipathä¹Ÿèƒ½å¤„ç†å¤šè·¯å¾„è·¯ç”±ã€‚ */
 	else
 #endif
 	/**
-	 * µ±²éÕÒ·µ»ØµÄÂ·ÓÉÊÇÈ±Ê¡Â·ÓÉÊ±£¬ĞèÒªÑ¡ÔñÊ¹ÓÃµÄÈ±Ê¡Íø¹Ø¡£ÕâÓÉfib_select_defaultº¯ÊıÀ´Ö´ĞĞ¡£
+	 * å½“æŸ¥æ‰¾è¿”å›çš„è·¯ç”±æ˜¯ç¼ºçœè·¯ç”±æ—¶ï¼Œéœ€è¦é€‰æ‹©ä½¿ç”¨çš„ç¼ºçœç½‘å…³ã€‚è¿™ç”±fib_select_defaultå‡½æ•°æ¥æ‰§è¡Œã€‚
 	 */
-	if (!res.prefixlen && res.type == RTN_UNICAST && !fl.oif)/* ËÑË÷keyÖ¸¶¨ÁËÒªÊ¹ÓÃµÄegressÉè±¸£¨fl.oif£©Ê±£¬²»ĞèÒªµ÷ÓÃfib_select_default */
-		fib_select_default(&fl, &res);/* ×¢Òâ:¶àÂ·¾¶Ò²¿ÉÓÃÓÚÈ±Ê¡Â·ÓÉ */
+	if (!res.prefixlen && res.type == RTN_UNICAST && !fl.oif)/* æœç´¢keyæŒ‡å®šäº†è¦ä½¿ç”¨çš„egressè®¾å¤‡ï¼ˆfl.oifï¼‰æ—¶ï¼Œä¸éœ€è¦è°ƒç”¨fib_select_default */
+		fib_select_default(&fl, &res);/* æ³¨æ„:å¤šè·¯å¾„ä¹Ÿå¯ç”¨äºç¼ºçœè·¯ç”± */
 
 	/**
-	 * ¸ù¾İÂ·ÓÉÈ·¶¨Ô´IPµØÖ·¡£
+	 * æ ¹æ®è·¯ç”±ç¡®å®šæºIPåœ°å€ã€‚
 	 */
 	if (!fl.fl4_src)
 		/**
-		 * FIB_RES_PREFSRCÊ¹ÓÃ¶àÖÖ·½·¨À´Ñ¡ÔñÊ×Ñ¡Ô´IPµØÖ·£ºÈç¹ûÓÃ»§Îª¸ÃÂ·ÓÉÏîÃ÷È·ÅäÖÃÁËÊ×Ñ¡Ô´µØÖ·Ôò·µ»ØËü£¬·ñÔòÓÃÆ¥ÅäÂ·ÓÉµÄ×÷ÓÃ·¶Î§£¨res->scope£©ÎªÊäÈë²ÎÊı£¬µ÷ÓÃinet_select_addrÀ´µÃµ½Ê×Ñ¡Ô´IPµØÖ·¡£
+		 * FIB_RES_PREFSRCä½¿ç”¨å¤šç§æ–¹æ³•æ¥é€‰æ‹©é¦–é€‰æºIPåœ°å€ï¼šå¦‚æœç”¨æˆ·ä¸ºè¯¥è·¯ç”±é¡¹æ˜ç¡®é…ç½®äº†é¦–é€‰æºåœ°å€åˆ™è¿”å›å®ƒï¼Œå¦åˆ™ç”¨åŒ¹é…è·¯ç”±çš„ä½œç”¨èŒƒå›´ï¼ˆres->scopeï¼‰ä¸ºè¾“å…¥å‚æ•°ï¼Œè°ƒç”¨inet_select_addræ¥å¾—åˆ°é¦–é€‰æºIPåœ°å€ã€‚
 		 */
 		fl.fl4_src = FIB_RES_PREFSRC(res);
 
@@ -2553,8 +2553,8 @@ make_route:
 
 	if (flags & RTCF_LOCAL) {
 		/**
-		 * dst->input±»³õÊ¼»¯Îªip_local_deliver¡£
-		 * ÕıÊÇÓÉÓÚÕâÒ»²Ù×÷£¬µ±±¨ÎÄÖØĞÂ»Øµ½IPÊäÈëÕ»Ê±£¬ip_rcv_finishµ÷ÓÃdst_input£¬¼´µ÷ÓÃip_local_deliverº¯ÊıÀ´´¦Àí¸Ã±¨ÎÄ¡£
+		 * dst->inputè¢«åˆå§‹åŒ–ä¸ºip_local_deliverã€‚
+		 * æ­£æ˜¯ç”±äºè¿™ä¸€æ“ä½œï¼Œå½“æŠ¥æ–‡é‡æ–°å›åˆ°IPè¾“å…¥æ ˆæ—¶ï¼Œip_rcv_finishè°ƒç”¨dst_inputï¼Œå³è°ƒç”¨ip_local_deliverå‡½æ•°æ¥å¤„ç†è¯¥æŠ¥æ–‡ã€‚
 		 */
 		rth->u.dst.input = ip_local_deliver;
 		rth->rt_spec_dst = fl.fl4_dst;
@@ -2601,9 +2601,9 @@ e_nobufs:
 }
 
 /**
- * ³ö°üÂ·ÓÉ²éÕÒ¡£
- *		rp:		µ±³ÌĞò·µ»Ø³É¹¦Ê±£¬*rpÖ¸ÏòÓëËÑË÷key flpÏàÆ¥ÅäµÄ»º´æ±íÏî¡£
- *		flp:	ËÑË÷key¡£
+ * å‡ºåŒ…è·¯ç”±æŸ¥æ‰¾ã€‚
+ *		rp:		å½“ç¨‹åºè¿”å›æˆåŠŸæ—¶ï¼Œ*rpæŒ‡å‘ä¸æœç´¢key flpç›¸åŒ¹é…çš„ç¼“å­˜è¡¨é¡¹ã€‚
+ *		flp:	æœç´¢keyã€‚
  */
 int __ip_route_output_key(struct rtable **rp, const struct flowi *flp)
 {
@@ -2623,14 +2623,14 @@ int __ip_route_output_key(struct rtable **rp, const struct flowi *flp)
 		    rth->fl.fl4_fwmark == flp->fl4_fwmark &&
 #endif
 			/**
-			 * egress»º´æ²éÕÒ³É¹¦ĞèÒªÆ¥ÅäRTO_ONLINK±êÖ¾£¬¼ì²é¸Ã±êÖ¾ÊÇ·ñÉèÖÃ
-			 * RTO_ONLINK±êÖ¾Ö¸¶¨ËÑË÷µÄÂ·ÓÉÀàĞÍµÄscope±ØĞëÎªRT_SCOPE_LINK
-			 * ²éÕÒÊ±µÄRTO_ONLINK±êÖ¾¿ÉÍ¨¹ıÏÂÃæĞ­ÒéÀ´ÉèÖÃ£º
-			 * 		ARP:			µ±¹ÜÀíÔ±ÊÖ¹¤ÅäÖÃÒ»¸öARPÓ³ÉäÊ±£¬ÄÚºËÈ·±£¸ÃIPµØÖ·ÊÇ±¾µØÅäÖÃ×ÓÍøÄÚµÄµØÖ·¡£
-			 * 		Raw IPºÍUDP:	µ±Í¨¹ıÒ»¸öÌ×½Ó×Ö·¢ËÍÊı¾İÊ±£¬ÓÃ»§¿ÉÒÔÉèÖÃMSG_DONTROUTE±êÖ¾¡£µ±Ó¦ÓÃ³ÌĞò´ÓÒ»¸öÒÑÖª½Ó¿ÚÏòÖ±Á¬Ä¿µÄµØ£¨²»ĞèÒªÍø¹Ø£©·¢ËÍ±¨ÎÄÊ±Ê¹ÓÃ¸Ã±êÖ¾£¬¸æËßÄÚºË²»ĞèÒªÈ·¶¨³öÉè±¸¡£ÔÚÂ·ÓÉĞ­ÒéºÍÕï¶ÏÓ¦ÓÃ³ÌĞòÖĞÊ¹ÓÃÕâÖÖ·¢ËÍ·½Ê½¡£
+			 * egressç¼“å­˜æŸ¥æ‰¾æˆåŠŸéœ€è¦åŒ¹é…RTO_ONLINKæ ‡å¿—ï¼Œæ£€æŸ¥è¯¥æ ‡å¿—æ˜¯å¦è®¾ç½®
+			 * RTO_ONLINKæ ‡å¿—æŒ‡å®šæœç´¢çš„è·¯ç”±ç±»å‹çš„scopeå¿…é¡»ä¸ºRT_SCOPE_LINK
+			 * æŸ¥æ‰¾æ—¶çš„RTO_ONLINKæ ‡å¿—å¯é€šè¿‡ä¸‹é¢åè®®æ¥è®¾ç½®ï¼š
+			 * 		ARP:			å½“ç®¡ç†å‘˜æ‰‹å·¥é…ç½®ä¸€ä¸ªARPæ˜ å°„æ—¶ï¼Œå†…æ ¸ç¡®ä¿è¯¥IPåœ°å€æ˜¯æœ¬åœ°é…ç½®å­ç½‘å†…çš„åœ°å€ã€‚
+			 * 		Raw IPå’ŒUDP:	å½“é€šè¿‡ä¸€ä¸ªå¥—æ¥å­—å‘é€æ•°æ®æ—¶ï¼Œç”¨æˆ·å¯ä»¥è®¾ç½®MSG_DONTROUTEæ ‡å¿—ã€‚å½“åº”ç”¨ç¨‹åºä»ä¸€ä¸ªå·²çŸ¥æ¥å£å‘ç›´è¿ç›®çš„åœ°ï¼ˆä¸éœ€è¦ç½‘å…³ï¼‰å‘é€æŠ¥æ–‡æ—¶ä½¿ç”¨è¯¥æ ‡å¿—ï¼Œå‘Šè¯‰å†…æ ¸ä¸éœ€è¦ç¡®å®šå‡ºè®¾å¤‡ã€‚åœ¨è·¯ç”±åè®®å’Œè¯Šæ–­åº”ç”¨ç¨‹åºä¸­ä½¿ç”¨è¿™ç§å‘é€æ–¹å¼ã€‚
 			 */
-		    !((rth->fl.fl4_tos ^ flp->fl4_tos) & /* Â·ÓÉ»º´æ±íÏîµÄTOSÓëËÑË÷keyÖĞµÄTOSÆ¥Åä¡£ */
-			    (IPTOS_RT_MASK | RTO_ONLINK))) {/* µ±Â·ÓÉ»º´æ±íÏîºÍËÑË÷key¶¼ÉèÖÃÁËRTO_ONLINK±êÖ¾£¬»òÕß¶¼Ã»ÓĞÉèÖÃ¡£ */
+		    !((rth->fl.fl4_tos ^ flp->fl4_tos) & /* è·¯ç”±ç¼“å­˜è¡¨é¡¹çš„TOSä¸æœç´¢keyä¸­çš„TOSåŒ¹é…ã€‚ */
+			    (IPTOS_RT_MASK | RTO_ONLINK))) {/* å½“è·¯ç”±ç¼“å­˜è¡¨é¡¹å’Œæœç´¢keyéƒ½è®¾ç½®äº†RTO_ONLINKæ ‡å¿—ï¼Œæˆ–è€…éƒ½æ²¡æœ‰è®¾ç½®ã€‚ */
 			rth->u.dst.lastuse = jiffies;
 			dst_hold(&rth->u.dst);
 			rth->u.dst.__use++;
@@ -2665,12 +2665,12 @@ int ip_route_output_flow(struct rtable **rp, struct flowi *flp, struct sock *sk,
 }
 
 /**
- * ÓÃÓÚ³öÁ÷Á¿µÄÂ·ÓÉ²éÕÒ£¬ÕâĞ©Á÷Á¿ÊÇÓÉ±¾µØÉú³É£¬¿ÉÄÜ±»ËÍÍù±¾µØ»ò±»·¢ËÍ³öÈ¥¡£
- * ÕâÁ½¸öº¯ÊıµÄ·µ»ØÖµ°üÀ¨£º
- *		0:			Â·ÓÉ²éÕÒ³É¹¦¡£µ±»º´æ²éÕÒÊ§°Ü¶ø´¥·¢Â·ÓÉ±í²éÕÒÇÒ³É¹¦Ê±Ò²·µ»Ø0¡£
- *		-ENOBUF:	ÓÉÓÚÄÚ´æÎÊÌâ¶øÊ¹²éÕÒÊ§°Ü¡£
- * 		-ENODEV:	²éÕÒkey°üº¬ÁËÒ»¸öÉè±¸ID£¬µ«¸ÃÉè±¸IDÎŞĞ§¡£
- *		-EINVAL:	Generic²éÕÒÊ§°Ü¡£
+ * ç”¨äºå‡ºæµé‡çš„è·¯ç”±æŸ¥æ‰¾ï¼Œè¿™äº›æµé‡æ˜¯ç”±æœ¬åœ°ç”Ÿæˆï¼Œå¯èƒ½è¢«é€å¾€æœ¬åœ°æˆ–è¢«å‘é€å‡ºå»ã€‚
+ * è¿™ä¸¤ä¸ªå‡½æ•°çš„è¿”å›å€¼åŒ…æ‹¬ï¼š
+ *		0:			è·¯ç”±æŸ¥æ‰¾æˆåŠŸã€‚å½“ç¼“å­˜æŸ¥æ‰¾å¤±è´¥è€Œè§¦å‘è·¯ç”±è¡¨æŸ¥æ‰¾ä¸”æˆåŠŸæ—¶ä¹Ÿè¿”å›0ã€‚
+ *		-ENOBUF:	ç”±äºå†…å­˜é—®é¢˜è€Œä½¿æŸ¥æ‰¾å¤±è´¥ã€‚
+ * 		-ENODEV:	æŸ¥æ‰¾keyåŒ…å«äº†ä¸€ä¸ªè®¾å¤‡IDï¼Œä½†è¯¥è®¾å¤‡IDæ— æ•ˆã€‚
+ *		-EINVAL:	GenericæŸ¥æ‰¾å¤±è´¥ã€‚
  */
 int ip_route_output_key(struct rtable **rp, struct flowi *flp)
 {
@@ -3148,7 +3148,7 @@ static int ip_rt_acct_read(char *buffer, char **start, off_t offset,
 #endif /* CONFIG_NET_CLS_ROUTE */
 
 /**
- * ÓÃ»§Æô¶¯Ñ¡ÏîÖ¸¶¨µÄÂ·ÓÉ»º´æÈİÁ¿Öµ¡£
+ * ç”¨æˆ·å¯åŠ¨é€‰é¡¹æŒ‡å®šçš„è·¯ç”±ç¼“å­˜å®¹é‡å€¼ã€‚
  */
 static __initdata unsigned long rhash_entries;
 static int __init set_rhash_entries(char *str)
@@ -3161,30 +3161,30 @@ static int __init set_rhash_entries(char *str)
 __setup("rhash_entries=", set_rhash_entries);
 
 /**
- * Ipv4Â·ÓÉ´úÂëµÄ³õÊ¼»¯¡£
- * ÏµÍ³Æô¶¯Ê±±»³õÊ¼»¯IP×ÓÏµÍ³µÄip_init½Ó¿Úµ÷ÓÃ¡£
- * ²ßÂÔÂ·ÓÉµÄ³õÊ¼»¯ÊÇÓÉfib_rules_initº¯ÊıÀ´ÊµÏÖ¡£³õÊ¼»¯¾ÍÊÇ¼òµ¥Îªnetdev_chainÍ¨ÖªÁ´×¢²á´¦Àí¹³×Ó¡£×¢²áµÄ´¦Àí¹³×ÓÎªfib_rules_event¡£
+ * Ipv4è·¯ç”±ä»£ç çš„åˆå§‹åŒ–ã€‚
+ * ç³»ç»Ÿå¯åŠ¨æ—¶è¢«åˆå§‹åŒ–IPå­ç³»ç»Ÿçš„ip_initæ¥å£è°ƒç”¨ã€‚
+ * ç­–ç•¥è·¯ç”±çš„åˆå§‹åŒ–æ˜¯ç”±fib_rules_initå‡½æ•°æ¥å®ç°ã€‚åˆå§‹åŒ–å°±æ˜¯ç®€å•ä¸ºnetdev_chainé€šçŸ¥é“¾æ³¨å†Œå¤„ç†é’©å­ã€‚æ³¨å†Œçš„å¤„ç†é’©å­ä¸ºfib_rules_eventã€‚
  */
 int __init ip_rt_init(void)
 {
 	int i, order, goal, rc = 0;
 
 	/**
-	 * ³õÊ¼»¯Ò»Ğ©Êı¾İ½á¹¹ºÍÈ«¾Ö±äÁ¿¡£
-	 * rt_hash_rndÓÃÓÚ·ÀÖ¹DoS¹¥»÷¡£ÏµÍ³Æô¶¯ºó£¬»áÒÔget_random_bytesÀ´ÖØÖÃ¸Ã±äÁ¿¡£
+	 * åˆå§‹åŒ–ä¸€äº›æ•°æ®ç»“æ„å’Œå…¨å±€å˜é‡ã€‚
+	 * rt_hash_rndç”¨äºé˜²æ­¢DoSæ”»å‡»ã€‚ç³»ç»Ÿå¯åŠ¨åï¼Œä¼šä»¥get_random_bytesæ¥é‡ç½®è¯¥å˜é‡ã€‚
 	 */
 	rt_hash_rnd = (int) ((num_physpages ^ (num_physpages>>8)) ^
 			     (jiffies ^ (jiffies >> 7)));
 
 #ifdef CONFIG_NET_CLS_ROUTE
 	/**
-	 * ¼ÆËãÂ·ÓÉÍ³¼ÆĞÅÏ¢ĞèÒªµÄÄÚ´æ¡£
+	 * è®¡ç®—è·¯ç”±ç»Ÿè®¡ä¿¡æ¯éœ€è¦çš„å†…å­˜ã€‚
 	 */
 	for (order = 0;
 	     (PAGE_SIZE << order) < 256 * sizeof(struct ip_rt_acct) * NR_CPUS; order++)
 		/* NOTHING */;
 	/**
-	 * ÎªÂ·ÓÉÍ³¼ÆĞÅÏ¢·ÖÅäÒ³Ãæ¡£
+	 * ä¸ºè·¯ç”±ç»Ÿè®¡ä¿¡æ¯åˆ†é…é¡µé¢ã€‚
 	 */
 	ip_rt_acct = (struct ip_rt_acct *)__get_free_pages(GFP_KERNEL, order);
 	if (!ip_rt_acct)
@@ -3193,7 +3193,7 @@ int __init ip_rt_init(void)
 #endif
 
 	/**
-	 * ´´½¨ÓÃÓÚ·ÖÅäÂ·ÓÉ»º´æÔªËØµÄÄÚ´æ³Ø¡£
+	 * åˆ›å»ºç”¨äºåˆ†é…è·¯ç”±ç¼“å­˜å…ƒç´ çš„å†…å­˜æ± ã€‚
 	 */
 	ipv4_dst_ops.kmem_cachep = kmem_cache_create("ip_dst_cache",
 						     sizeof(struct rtable),
@@ -3210,7 +3210,7 @@ int __init ip_rt_init(void)
 		/* NOTHING */;
 
 	/**
-	 * ³õÊ¼»¯Â·ÓÉ»º´æ
+	 * åˆå§‹åŒ–è·¯ç”±ç¼“å­˜
 	 */
 	do {
 		rt_hash_mask = (1UL << order) * PAGE_SIZE /
@@ -3238,7 +3238,7 @@ int __init ip_rt_init(void)
 	}
 
 	/**
-	 * È·¶¨ÓÉÀ¬»ø»ØÊÕËã·¨Ê¹ÓÃµÄgc_threshÃÅÏŞÖµ
+	 * ç¡®å®šç”±åƒåœ¾å›æ”¶ç®—æ³•ä½¿ç”¨çš„gc_threshé—¨é™å€¼
 	 */
 	ipv4_dst_ops.gc_thresh = (rt_hash_mask + 1);
 	ip_rt_max_size = (rt_hash_mask + 1) * 16;
@@ -3248,11 +3248,11 @@ int __init ip_rt_init(void)
 		return -ENOMEM;
 
 	/**
-	 * ÎªÍ¨ÖªÁ´netdev_chain×¢²áÁíÒ»¸ö´¦Àí¹³×Ó£¬×¢²áNetlinkÌ×½Ó×ÖÉÏµØÖ·ºÍÂ·ÓÉÃüÁî£¨¼´ip addr ... Óëip route ..ÃüÁî£©µÄ´¦Àí¹³×Óº¯Êı£¬²¢´´½¨/proc/sys/net/confºÍ/proc/sys/net/conf/defaultÄ¿Â¼¡£
+	 * ä¸ºé€šçŸ¥é“¾netdev_chainæ³¨å†Œå¦ä¸€ä¸ªå¤„ç†é’©å­ï¼Œæ³¨å†ŒNetlinkå¥—æ¥å­—ä¸Šåœ°å€å’Œè·¯ç”±å‘½ä»¤ï¼ˆå³ip addr ... ä¸ip route ..å‘½ä»¤ï¼‰çš„å¤„ç†é’©å­å‡½æ•°ï¼Œå¹¶åˆ›å»º/proc/sys/net/confå’Œ/proc/sys/net/conf/defaultç›®å½•ã€‚
 	 */
 	devinet_init();
 	/**
-	 * ³õÊ¼»¯È±Ê¡Â·ÓÉ±í£¬ÎªÁ½¸öÍ¨ÖªÁ´netdev_chainÓëinetaddr_chain·Ö±ğ×¢²á´¦Àí¹³×Ó¡£
+	 * åˆå§‹åŒ–ç¼ºçœè·¯ç”±è¡¨ï¼Œä¸ºä¸¤ä¸ªé€šçŸ¥é“¾netdev_chainä¸inetaddr_chainåˆ†åˆ«æ³¨å†Œå¤„ç†é’©å­ã€‚
 	 */
 	ip_fib_init();
 
@@ -3269,20 +3269,20 @@ int __init ip_rt_init(void)
 	rt_periodic_timer.expires = jiffies + net_random() % ip_rt_gc_interval +
 					ip_rt_gc_interval;
 	/**
-	 * Æô¶¯rt_periodic_timer¶¨Ê±Æ÷(À¬»ø»ØÊÕ)
+	 * å¯åŠ¨rt_periodic_timerå®šæ—¶å™¨(åƒåœ¾å›æ”¶)
 	 */
 	add_timer(&rt_periodic_timer);
 
 	rt_secret_timer.expires = jiffies + net_random() % ip_rt_secret_interval +
 		ip_rt_secret_interval;
 	/**
-	 * Æô¶¯rt_secret_timer¶¨Ê±Æ÷(FlushÂ·ÓÉ»º´æ)
+	 * å¯åŠ¨rt_secret_timerå®šæ—¶å™¨(Flushè·¯ç”±ç¼“å­˜)
 	 */
 	add_timer(&rt_secret_timer);
 
 #ifdef CONFIG_PROC_FS
 	/**
-	 * Ìí¼ÓÒ»Ğ©ÎÄ¼şµ½/procÎÄ¼şÏµÍ³
+	 * æ·»åŠ ä¸€äº›æ–‡ä»¶åˆ°/procæ–‡ä»¶ç³»ç»Ÿ
 	 */
 	{
 	struct proc_dir_entry *rtstat_pde = NULL; /* keep gcc happy */
@@ -3300,7 +3300,7 @@ int __init ip_rt_init(void)
 #endif
 #ifdef CONFIG_XFRM
 	/**
-	 * Èç¹ûÄÚºË±àÒëÊ±Ö§³ÖIPsec£¬ÄÇÃ´ip_rt_initÒ²µ÷ÓÃÁ½¸öIPsec³õÊ¼»¯º¯Êı£¨xfrm_initÓëxfrm4_init£©¡£
+	 * å¦‚æœå†…æ ¸ç¼–è¯‘æ—¶æ”¯æŒIPsecï¼Œé‚£ä¹ˆip_rt_initä¹Ÿè°ƒç”¨ä¸¤ä¸ªIPsecåˆå§‹åŒ–å‡½æ•°ï¼ˆxfrm_initä¸xfrm4_initï¼‰ã€‚
 	 */
 	xfrm_init();
 	xfrm4_init();

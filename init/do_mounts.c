@@ -19,7 +19,7 @@ extern int get_filesystem_list(char * buf);
 int __initdata rd_doload;	/* 1 = load RAM disk, 0 = don't load */
 
 /**
- * ¸ùÎÄ¼şÏµÍ³µÄ°²×°±êÖ¾¡£¿ÉÍ¨¹ırootflagsÆô¶¯²ÎÊıĞŞ¸Ä
+ * æ ¹æ–‡ä»¶ç³»ç»Ÿçš„å®‰è£…æ ‡å¿—ã€‚å¯é€šè¿‡rootflagså¯åŠ¨å‚æ•°ä¿®æ”¹
  */
 int root_mountflags = MS_RDONLY | MS_VERBOSE;
 char * __initdata root_device_name;
@@ -27,7 +27,7 @@ static char __initdata saved_root_name[64];
 
 /* this is initialized in init/main.c */
 /**
- * ÔÚÏµÍ³³õÊ¼»¯Ê±Ö¸¶¨£¬±íÊ¾°üº¬¸ùÎÄ¼şÏµÍ³µÄ´ÅÅÌÖ÷Éè±¸ºÅ
+ * åœ¨ç³»ç»Ÿåˆå§‹åŒ–æ—¶æŒ‡å®šï¼Œè¡¨ç¤ºåŒ…å«æ ¹æ–‡ä»¶ç³»ç»Ÿçš„ç£ç›˜ä¸»è®¾å¤‡å·
  */
 dev_t ROOT_DEV;
 
@@ -325,7 +325,7 @@ out:
  
 #ifdef CONFIG_ROOT_NFS
 /**
- * °ó¶¨Ô¶³ÌNFSÎÄ¼şÏµÍ³×÷Îª¸ùÎÄ¼şÏµÍ³¡£
+ * ç»‘å®šè¿œç¨‹NFSæ–‡ä»¶ç³»ç»Ÿä½œä¸ºæ ¹æ–‡ä»¶ç³»ç»Ÿã€‚
  */
 static int __init mount_nfs_root(void)
 {
@@ -393,12 +393,12 @@ void __init mount_root(void)
 	}
 #endif
 	/**
-	 * µ÷ÓÃsys_mknodÔÚrootfsÖĞ´´½¨Éè±¸ÎÄ¼ş/dev/root¡£
+	 * è°ƒç”¨sys_mknodåœ¨rootfsä¸­åˆ›å»ºè®¾å¤‡æ–‡ä»¶/dev/rootã€‚
 	 */
 	create_dev("/dev/root", ROOT_DEV, root_device_name);
 	/**
-	 * ·ÖÅäÒ»¸ö»º³åÇø²¢Ìî³äËü
-	 * È»ºóÉ¨ÃèÎÄ¼şÏµÍ³ÀàĞÍÁ´±í£¬¶ÔÃ¿¸öÃû×Ö£¬µ÷ÓÃsys_mountÊÔÍ¼ÔÚ¸ùÉè±¸ÉÏ°²×°¸ø¶¨µÄÎÄ¼şÏµÍ³¡£
+	 * åˆ†é…ä¸€ä¸ªç¼“å†²åŒºå¹¶å¡«å……å®ƒ
+	 * ç„¶åæ‰«ææ–‡ä»¶ç³»ç»Ÿç±»å‹é“¾è¡¨ï¼Œå¯¹æ¯ä¸ªåå­—ï¼Œè°ƒç”¨sys_mountè¯•å›¾åœ¨æ ¹è®¾å¤‡ä¸Šå®‰è£…ç»™å®šçš„æ–‡ä»¶ç³»ç»Ÿã€‚
 	 */
 	mount_block_root("/dev/root", root_mountflags);
 }
@@ -407,7 +407,7 @@ void __init mount_root(void)
  * Prepare the namespace - decide what/where to mount, load ramdisks, etc.
  */
 /**
- * °²×°Êµ¼ÊÉÏ¸ùÎÄ¼şÏµÍ³¡£¶ø²»ÊÇ³õÊ¼µÄrootfs¡£
+ * å®‰è£…å®é™…ä¸Šæ ¹æ–‡ä»¶ç³»ç»Ÿã€‚è€Œä¸æ˜¯åˆå§‹çš„rootfsã€‚
  */
 void __init prepare_namespace(void)
 {
@@ -424,12 +424,12 @@ void __init prepare_namespace(void)
 	md_run_setup();
 
 	/**
-	 * °Ñroot_device_name±äÁ¿ÖÃÎª´ÓÆô¶¯²ÎÊı"root"ÖĞ»ñÈ¡µÄÉè±¸ÎÄ¼şÃû¡£
+	 * æŠŠroot_device_nameå˜é‡ç½®ä¸ºä»å¯åŠ¨å‚æ•°"root"ä¸­è·å–çš„è®¾å¤‡æ–‡ä»¶åã€‚
 	 */
 	if (saved_root_name[0]) {
 		root_device_name = saved_root_name;
 		/**
-		 * °ÑROOT_DEVÖÃÎªÍ¬Ò»Éè±¸ÎÄ¼şµÄÖ÷Éè±¸ºÅºÍ´ÎÉè±¸ºÅ¡£
+		 * æŠŠROOT_DEVç½®ä¸ºåŒä¸€è®¾å¤‡æ–‡ä»¶çš„ä¸»è®¾å¤‡å·å’Œæ¬¡è®¾å¤‡å·ã€‚
 		 */
 		ROOT_DEV = name_to_dev_t(root_device_name);
 		if (strncmp(root_device_name, "/dev/", 5) == 0)
@@ -445,13 +445,13 @@ void __init prepare_namespace(void)
 		ROOT_DEV = Root_RAM0;
 
 	/**
-	 * mount_rootÖ´ĞĞÕæÕıµÄ¹ÒÔØ¡£
+	 * mount_rootæ‰§è¡ŒçœŸæ­£çš„æŒ‚è½½ã€‚
 	 */
 	mount_root();
 out:
 	umount_devfs("/dev");
 	/**
-	 * ÒÆ¶¯rootfsÎÄ¼şÏµÍ³¸ùÄ¿Â¼ÉÏµÄÒÑ°²×°ÎÄ¼şÏµÍ³µÄ°²×°µã¡£
+	 * ç§»åŠ¨rootfsæ–‡ä»¶ç³»ç»Ÿæ ¹ç›®å½•ä¸Šçš„å·²å®‰è£…æ–‡ä»¶ç³»ç»Ÿçš„å®‰è£…ç‚¹ã€‚
 	 */
 	sys_mount(".", "/", NULL, MS_MOVE, NULL);
 	sys_chroot(".");

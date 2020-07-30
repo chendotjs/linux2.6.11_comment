@@ -171,12 +171,12 @@ err_unlock:
  * future.
  */
 /**
- * ÖØĞÂÓ³ÉäÄÚ´æÓ³ÉäÖĞµÄÒ»Ğ©Ò³¡£
- * 		start:	µ÷ÓÃ½ø³Ì¹²ÏíÎÄ¼şÄÚ´æÓ³ÉäÇøµÄÏßĞÔµØÖ·¡£
- * 		size:	ÎÄ¼şÖØĞÂÓ³Éä²¿·ÖµÄ×Ö½ÚÊı¡£
- *		prot:	Î´ÓÃ£¬±ØĞëÎª0.
- *		pgoff:	´ıÓ³ÉäÎÄ¼ş³õÊ¼Ò³µÄÒ³Ë÷Òı¡£
- *		flags:	¿ØÖÆ·ÇÏßĞÔÓ³ÉäµÄ±êÖ¾¡£
+ * é‡æ–°æ˜ å°„å†…å­˜æ˜ å°„ä¸­çš„ä¸€äº›é¡µã€‚
+ * 		start:	è°ƒç”¨è¿›ç¨‹å…±äº«æ–‡ä»¶å†…å­˜æ˜ å°„åŒºçš„çº¿æ€§åœ°å€ã€‚
+ * 		size:	æ–‡ä»¶é‡æ–°æ˜ å°„éƒ¨åˆ†çš„å­—èŠ‚æ•°ã€‚
+ *		prot:	æœªç”¨ï¼Œå¿…é¡»ä¸º0.
+ *		pgoff:	å¾…æ˜ å°„æ–‡ä»¶åˆå§‹é¡µçš„é¡µç´¢å¼•ã€‚
+ *		flags:	æ§åˆ¶éçº¿æ€§æ˜ å°„çš„æ ‡å¿—ã€‚
  */
 asmlinkage long sys_remap_file_pages(unsigned long start, unsigned long size,
 	unsigned long __prot, unsigned long pgoff, unsigned long flags)
@@ -218,16 +218,16 @@ asmlinkage long sys_remap_file_pages(unsigned long start, unsigned long size,
 	 * swapout cursor in a VM_NONLINEAR vma (unless VM_RESERVED
 	 * or VM_LOCKED, but VM_LOCKED could be revoked later on).
 	 */
-	if (vma && (vma->vm_flags & VM_SHARED) &&/* ±ØĞëÊÇ¹²ÏíÓ³Éä */
-		(!vma->vm_private_data ||/* ÏßĞÔÇø±ØĞëÖ§³Ö·ÇÏßĞÔÓ³Éä */
+	if (vma && (vma->vm_flags & VM_SHARED) &&/* å¿…é¡»æ˜¯å…±äº«æ˜ å°„ */
+		(!vma->vm_private_data ||/* çº¿æ€§åŒºå¿…é¡»æ”¯æŒéçº¿æ€§æ˜ å°„ */
 			(vma->vm_flags & (VM_NONLINEAR|VM_RESERVED))) &&
 		vma->vm_ops && vma->vm_ops->populate &&
-			end > start && start >= vma->vm_start &&/* µØÖ·Ã»ÓĞ³¬³ö·¶Î§ */
+			end > start && start >= vma->vm_start &&/* åœ°å€æ²¡æœ‰è¶…å‡ºèŒƒå›´ */
 				end <= vma->vm_end) {
 
 		/* Must set VM_NONLINEAR before any pages are populated. */
 		/**
-		 * ½«ÏßĞÔÇø²åÈëÎÄ¼şµÄi_mmap_nonlinearÁ´±í¡£
+		 * å°†çº¿æ€§åŒºæ’å…¥æ–‡ä»¶çš„i_mmap_nonlinearé“¾è¡¨ã€‚
 		 */
 		if (pgoff != linear_page_index(vma, start) &&
 		    !(vma->vm_flags & VM_NONLINEAR)) {
@@ -248,7 +248,7 @@ asmlinkage long sys_remap_file_pages(unsigned long start, unsigned long size,
 		}
 
 		/**
-		 * µ÷ÓÃÏßĞÔÇøµÄpopulate·½·¨¡£¶ÔÓÚÆÕÍ¨ÎÄ¼ş£¬¸Ã·½·¨Ò»°ãÊÇÓÉfilemap_populateº¯ÊıÊµÏÖµÄ¡£
+		 * è°ƒç”¨çº¿æ€§åŒºçš„populateæ–¹æ³•ã€‚å¯¹äºæ™®é€šæ–‡ä»¶ï¼Œè¯¥æ–¹æ³•ä¸€èˆ¬æ˜¯ç”±filemap_populateå‡½æ•°å®ç°çš„ã€‚
 		 */
 		err = vma->vm_ops->populate(vma, start, size,
 					    vma->vm_page_prot,

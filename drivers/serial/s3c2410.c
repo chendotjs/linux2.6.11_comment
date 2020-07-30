@@ -19,8 +19,8 @@
  *		     - S3C2410 and S3C2440 serial support
  *		     - Power Management support
  *		     - Fix console via IrDA devices
- *		     - SysReq (Herbert Pötzl)
- *		     - Break character handling (Herbert Pötzl)
+ *		     - SysReq (Herbert Ptzl)
+ *		     - Break character handling (Herbert Ptzl)
  *		     - spin-lock initialisation (Dimitry Andric)
  *		     - added clock control
  *		     - updated init code to use platform_device info

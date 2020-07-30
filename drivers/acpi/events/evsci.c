@@ -64,7 +64,7 @@
  ******************************************************************************/
 
 /**
- * ´¦ÀíSCIÖÐ¶ÏµÄ·þÎñÀý³Ì¡£±»acpi_irqµ÷ÓÃ¡£
+ * å¤„ç†SCIä¸­æ–­çš„æœåŠ¡ä¾‹ç¨‹ã€‚è¢«acpi_irqè°ƒç”¨ã€‚
  */
 static u32 ACPI_SYSTEM_XFACE
 acpi_ev_sci_xrupt_handler (
@@ -87,7 +87,7 @@ acpi_ev_sci_xrupt_handler (
 	 * Check for and dispatch any Fixed Events that have occurred
 	 */
 	/**
-	 * ¼ì²éPM¼Ä´æÆ÷×é£¬ÅÐ¶ÏÊÇ·ñ´æÔÚPMÊÂ¼þ¡£
+	 * æ£€æŸ¥PMå¯„å­˜å™¨ç»„ï¼Œåˆ¤æ–­æ˜¯å¦å­˜åœ¨PMäº‹ä»¶ã€‚
 	 */
 	interrupt_handled |= acpi_ev_fixed_event_detect ();
 
@@ -96,7 +96,7 @@ acpi_ev_sci_xrupt_handler (
 	 * Check for and dispatch any GPEs that have occurred
 	 */
 	/**
-	 * ¼ì²éÊÇ·ñ´æÔÚGPEÊÂ¼þ¡£
+	 * æ£€æŸ¥æ˜¯å¦å­˜åœ¨GPEäº‹ä»¶ã€‚
 	 */
 	interrupt_handled |= acpi_ev_gpe_detect (gpe_xrupt_list);
 
@@ -155,7 +155,7 @@ acpi_ev_gpe_xrupt_handler (
  ******************************************************************************/
 
 /**
- * ×¢²áSCIÖÐ¶Ï·þÎñ³ÌÐò¡£
+ * æ³¨å†ŒSCIä¸­æ–­æœåŠ¡ç¨‹åºã€‚
  */
 u32
 acpi_ev_install_sci_handler (void)
@@ -167,9 +167,9 @@ acpi_ev_install_sci_handler (void)
 
 
 	/**
-	 * sci_intÊÇSCIÖÐ¶ÏÊ¹ÓÃµÄIRQºÅ¡£
-	 * acpi_ev_sci_xrupt_handlerÊÇÖÐ¶Ï´¦Àíº¯Êý¡£
-	 * acpi_gbl_gpe_xrupt_list_headÊÇÖÐ¶Ï´¦Àíº¯ÊýµÄ²ÎÊý¡£
+	 * sci_intæ˜¯SCIä¸­æ–­ä½¿ç”¨çš„IRQå·ã€‚
+	 * acpi_ev_sci_xrupt_handleræ˜¯ä¸­æ–­å¤„ç†å‡½æ•°ã€‚
+	 * acpi_gbl_gpe_xrupt_list_headæ˜¯ä¸­æ–­å¤„ç†å‡½æ•°çš„å‚æ•°ã€‚
 	 */
 	status = acpi_os_install_interrupt_handler ((u32) acpi_gbl_FADT->sci_int,
 			   acpi_ev_sci_xrupt_handler, acpi_gbl_gpe_xrupt_list_head);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) Michel Dänzer <michdaen@iiic.ethz.ch>
+ * Copyright (C) Michel Dnzer <michdaen@iiic.ethz.ch>
  *
  * APUS PCI routines.
  *

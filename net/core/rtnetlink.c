@@ -54,7 +54,7 @@
 DECLARE_MUTEX(rtnl_sem);
 
 /**
- * »ñµÃnetlinkËø¡£
+ * è·å¾—netlinké”ã€‚
  */
 void rtnl_lock(void)
 {
@@ -67,7 +67,7 @@ int rtnl_lock_interruptible(void)
 }
 
 /**
- * ÊÍ·ÅnetlinkËø¡£
+ * é‡Šæ”¾netlinké”ã€‚
  */
 void rtnl_unlock(void)
 {

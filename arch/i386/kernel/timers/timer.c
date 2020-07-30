@@ -50,8 +50,8 @@ void clock_fallback(void)
  * one that initializes successfully.
  */
 /**
- * ÉèÖÃcur_timerÖ¸ÏòÊÊµ±¶¨Ê±Æ÷¶ÔÏóµÄµØÖ·¡£Ëü´Ó¿ÉÓÃ¶¨Ê±Æ÷ÖÐÑ¡Ôñ¡°×îºÃµÄ¡±¶¨Ê±Æ÷×÷Îªµ±Ç°¶¨Ê±Æ÷¡£
- * ÓÅÏÈÑ¡ÔñHPET->ACPI->TSC->PIT
+ * è®¾ç½®cur_timeræŒ‡å‘é€‚å½“å®šæ—¶å™¨å¯¹è±¡çš„åœ°å€ã€‚å®ƒä»Žå¯ç”¨å®šæ—¶å™¨ä¸­é€‰æ‹©â€œæœ€å¥½çš„â€å®šæ—¶å™¨ä½œä¸ºå½“å‰å®šæ—¶å™¨ã€‚
+ * ä¼˜å…ˆé€‰æ‹©HPET->ACPI->TSC->PIT
  */
 struct timer_opts* __init select_timer(void)
 {

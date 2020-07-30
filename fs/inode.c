@@ -72,11 +72,11 @@ static unsigned int i_hash_shift;
 
 LIST_HEAD(inode_in_use);
 /**
- * Î´ÓÃË÷Òı½ÚµãÁ´±í¡£
+ * æœªç”¨ç´¢å¼•èŠ‚ç‚¹é“¾è¡¨ã€‚
  */
 LIST_HEAD(inode_unused);
 /**
- * ËùÓĞË÷Òı½Úµã¶ÔÏóµÄ¹şÏ£±í¡£
+ * æ‰€æœ‰ç´¢å¼•èŠ‚ç‚¹å¯¹è±¡çš„å“ˆå¸Œè¡¨ã€‚
  */
 static struct hlist_head *inode_hashtable;
 
@@ -247,13 +247,13 @@ void __iget(struct inode * inode)
  * terminate it with extreme prejudice.
  */
 /**
- * É¾³ıinodeÊ±ÓÃ¡£
+ * åˆ é™¤inodeæ—¶ç”¨ã€‚
  */
 void clear_inode(struct inode *inode)
 {
 	might_sleep();
 	/**
-	 * É¾³ı¼ä½ÓÔà»º³åÇø¡£
+	 * åˆ é™¤é—´æ¥è„ç¼“å†²åŒºã€‚
 	 */
 	invalidate_inode_buffers(inode);
        
@@ -264,24 +264,24 @@ void clear_inode(struct inode *inode)
 	if (inode->i_state & I_CLEAR)
 		BUG();
 	/**
-	 * Èç¹ûË÷Òı½ÚµãµÄI_LOCK±êÖ¾±»ÉèÖÃ£¬ËµÃ÷Ë÷Òı½ÚµãµÄÄ³Ğ©»º³åÇøÕıÔÚ½øĞĞIO²Ù×÷£¬µÈ´ıÆäËûÍê³É¡£
+	 * å¦‚æœç´¢å¼•èŠ‚ç‚¹çš„I_LOCKæ ‡å¿—è¢«è®¾ç½®ï¼Œè¯´æ˜ç´¢å¼•èŠ‚ç‚¹çš„æŸäº›ç¼“å†²åŒºæ­£åœ¨è¿›è¡ŒIOæ“ä½œï¼Œç­‰å¾…å…¶ä»–å®Œæˆã€‚
 	 */
 	wait_on_inode(inode);
 	DQUOT_DROP(inode);
 	/**
-	 * ³¬¼¶¿é¶ÔÏóµÄ·½·¨£¬¶Ôext2ÎÄ¼şÏµÍ³À´Ëµ£¬Ã»ÓĞÊµÏÖµÄÕâ¸ö·½·¨
+	 * è¶…çº§å—å¯¹è±¡çš„æ–¹æ³•ï¼Œå¯¹ext2æ–‡ä»¶ç³»ç»Ÿæ¥è¯´ï¼Œæ²¡æœ‰å®ç°çš„è¿™ä¸ªæ–¹æ³•
 	 */
 	if (inode->i_sb && inode->i_sb->s_op->clear_inode)
 		inode->i_sb->s_op->clear_inode(inode);
 	/**
-	 * Èç¹ûË÷Òı½ÚµãÖ¸ÏòÒ»¸öÉè±¸ÎÄ¼ş£¬Ôò´ÓÉè±¸µÄË÷Òı½ÚµãÁ´±íÖĞÉ¾³ıË÷Òı½Úµã¶ÔÏó¡£
+	 * å¦‚æœç´¢å¼•èŠ‚ç‚¹æŒ‡å‘ä¸€ä¸ªè®¾å¤‡æ–‡ä»¶ï¼Œåˆ™ä»è®¾å¤‡çš„ç´¢å¼•èŠ‚ç‚¹é“¾è¡¨ä¸­åˆ é™¤ç´¢å¼•èŠ‚ç‚¹å¯¹è±¡ã€‚
 	 */
 	if (inode->i_bdev)
 		bd_forget(inode);
 	if (inode->i_cdev)
 		cd_forget(inode);
 	/**
-	 * °ÑË÷Òı½ÚµãµÄ×´Ì¬ÖÃÎªI_CLEAR
+	 * æŠŠç´¢å¼•èŠ‚ç‚¹çš„çŠ¶æ€ç½®ä¸ºI_CLEAR
 	 */
 	inode->i_state = I_CLEAR;
 }
@@ -445,7 +445,7 @@ static int can_unuse(struct inode *inode)
  * try to remove them.
  */
 /**
- * ÔÚË÷Òı½Úµã¸ßËÙ»º´æÖĞ»ØÊÕÒ³¿ò¡£
+ * åœ¨ç´¢å¼•èŠ‚ç‚¹é«˜é€Ÿç¼“å­˜ä¸­å›æ”¶é¡µæ¡†ã€‚
  */
 static void prune_icache(int nr_to_scan)
 {
@@ -457,13 +457,13 @@ static void prune_icache(int nr_to_scan)
 	down(&iprune_sem);
 	spin_lock(&inode_lock);
 	/**
-	 * É¨Ãèinode_unusedÁ´±í£¬½øĞĞË÷Òı½Úµã»ØÊÕ¡£
+	 * æ‰«æinode_unusedé“¾è¡¨ï¼Œè¿›è¡Œç´¢å¼•èŠ‚ç‚¹å›æ”¶ã€‚
 	 */
 	for (nr_scanned = 0; nr_scanned < nr_to_scan; nr_scanned++) {
 		struct inode *inode;
 
 		/**
-		 * Èç¹ûÒÑ¾­É¨ÃèÍêÕû¸öÎ´ÓÃË÷Òı½ÚµãÁ´±í¡£
+		 * å¦‚æœå·²ç»æ‰«æå®Œæ•´ä¸ªæœªç”¨ç´¢å¼•èŠ‚ç‚¹é“¾è¡¨ã€‚
 		 */
 		if (list_empty(&inode_unused))
 			break;
@@ -516,13 +516,13 @@ static void prune_icache(int nr_to_scan)
  * total number of remaining possibly-reclaimable inodes.
  */
 /**
- * ´ÓË÷Òı½Úµã¸ßËÙ»º´æ»ØÊÕÒ³¿ò¡£
- * Î´ÓÃÊÇÖ¸Ò»¸öË÷Òı½Úµã²»ÔÙÓĞÒ»¸ö¿ØÖÆÄ¿Â¼Ïî¶ÔÏó¡£
+ * ä»ç´¢å¼•èŠ‚ç‚¹é«˜é€Ÿç¼“å­˜å›æ”¶é¡µæ¡†ã€‚
+ * æœªç”¨æ˜¯æŒ‡ä¸€ä¸ªç´¢å¼•èŠ‚ç‚¹ä¸å†æœ‰ä¸€ä¸ªæ§åˆ¶ç›®å½•é¡¹å¯¹è±¡ã€‚
  */
 static int shrink_icache_memory(int nr, unsigned int gfp_mask)
 {
 	/**
-	 * Èç¹ûnrÎª0£¬±íÊ¾ÉÏ²ãÓ¦ÓÃ½ö½öĞèÒªÖªµÀ¿ÉÒÔ»ØÊÕµÄÒ³Ãæ¸öÊı¡£
+	 * å¦‚æœnrä¸º0ï¼Œè¡¨ç¤ºä¸Šå±‚åº”ç”¨ä»…ä»…éœ€è¦çŸ¥é“å¯ä»¥å›æ”¶çš„é¡µé¢ä¸ªæ•°ã€‚
 	 */
 	if (nr) {
 		/*
@@ -531,12 +531,12 @@ static int shrink_icache_memory(int nr, unsigned int gfp_mask)
 		 * in clear_inode() and friends..
 	 	 */
 	 	/**
- 	 	 * Óëshrink_dcache_memoryÀàËÆ£¬ÈÔÈ»ĞèÒª¼ì²é__GFP_FS±êÖ¾¡£
+ 	 	 * ä¸shrink_dcache_memoryç±»ä¼¼ï¼Œä»ç„¶éœ€è¦æ£€æŸ¥__GFP_FSæ ‡å¿—ã€‚
  	 	 */
 		if (!(gfp_mask & __GFP_FS))
 			return -1;
 		/**
-		 * ½øĞĞÓĞĞ§µÄË÷Òı½ÚµãÒ³¿òÊÍ·Å²Ù×÷¡£
+		 * è¿›è¡Œæœ‰æ•ˆçš„ç´¢å¼•èŠ‚ç‚¹é¡µæ¡†é‡Šæ”¾æ“ä½œã€‚
 		 */
 		prune_icache(nr);
 	}

@@ -36,58 +36,58 @@ struct rpc_inode;
  * The high-level client handle
  */
 /**
- * RPC¿Í»§»úµÄĞÅÏ¢
+ * RPCå®¢æˆ·æœºçš„ä¿¡æ¯
  */
 struct rpc_clnt {
 	atomic_t		cl_count;	/* Number of clones */
 	/**
-	 * ÒıÓÃ´ÎÊı 
+	 * å¼•ç”¨æ¬¡æ•° 
 	 */
 	atomic_t		cl_users;	/* number of references */
 	/**
-	 * ´«Êä²ã½Ó¿Ú
+	 * ä¼ è¾“å±‚æ¥å£
 	 */
 	struct rpc_xprt *	cl_xprt;	/* transport */
 	/**
-	 * Ô¶³Ì¹ı³Ì 
+	 * è¿œç¨‹è¿‡ç¨‹ 
 	 */
 	struct rpc_procinfo *	cl_procinfo;	/* procedure info */
 	/**
-	 * ×î´óÔ¶³Ì¹ı³ÌÊıÄ¿ 
+	 * æœ€å¤§è¿œç¨‹è¿‡ç¨‹æ•°ç›® 
 	 */
 	u32			cl_maxproc;	/* max procedure number */
 
 	/**
-	 * Server»úÆ÷Ãû 
+	 * Serveræœºå™¨å 
 	 */
 	char *			cl_server;	/* server machine name */
 	/**
-	 * Ô¶³Ì³ÌĞòÃû 
+	 * è¿œç¨‹ç¨‹åºå 
 	 */
 	char *			cl_protname;	/* protocol name */
 	/**
-	 * ÑéÖ¤½Ó¿Ú 
+	 * éªŒè¯æ¥å£ 
 	 */
 	struct rpc_auth *	cl_auth;	/* authenticator */
 	/**
-	 * Í³¼ÆÊı×Ö 
+	 * ç»Ÿè®¡æ•°å­— 
 	 */
 	struct rpc_stat *	cl_stats;	/* statistics */
 
 	/**
-	 * Èí³¬Ê± 
+	 * è½¯è¶…æ—¶ 
 	 */
 	unsigned int		cl_softrtry : 1,/* soft timeouts */
 	/**
-	 * ÊÇ·ñ¿ÉÖĞ¶Ï 
+	 * æ˜¯å¦å¯ä¸­æ–­ 
 	 */
 				cl_intr     : 1,/* interruptible */
 	/**
-	 * ÊÇ·ñÏêÏ¸ËµÃ÷ 
+	 * æ˜¯å¦è¯¦ç»†è¯´æ˜ 
 	 */
 				cl_chatty   : 1,/* be verbose */
 	/**
-	 * ÊÇ·ñ²ÉÓÃ¶Ë¿ÚÓ³Éä 
+	 * æ˜¯å¦é‡‡ç”¨ç«¯å£æ˜ å°„ 
 	 */
 				cl_autobind : 1,/* use getport() */
 				cl_droppriv : 1,/* enable NFS suid hack */
@@ -95,16 +95,16 @@ struct rpc_clnt {
 				cl_dead     : 1;/* abandoned */
 
 	/**
-	 * ¿Í»§»úÊôĞÔ 
+	 * å®¢æˆ·æœºå±æ€§ 
 	 */
 	struct rpc_rtt *	cl_rtt;		/* RTO estimator data */
 	/**
-	 * ¶Ë¿ÚÓ³Éä½Ó¿Ú
+	 * ç«¯å£æ˜ å°„æ¥å£
 	 */
 	struct rpc_portmap *	cl_pmap;	/* port mapping */
 
 	/** 
-	 * ½áµã³¤¶È 
+	 * ç»“ç‚¹é•¿åº¦ 
 	 */
 	int			cl_nodelen;	/* nodename length */
 	char 			cl_nodename[UNX_MAXNODENAME];
@@ -126,46 +126,46 @@ struct rpc_clnt {
  */
 #define RPC_MAXVERSION		4
 /**
- * Ô¶³Ì³ÌĞò¡£
+ * è¿œç¨‹ç¨‹åºã€‚
  */
 struct rpc_program {
 	/**
-	 * Ô¶³Ì³ÌĞòÃû 
+	 * è¿œç¨‹ç¨‹åºå 
 	 */
 	char *			name;		/* protocol name */
 	/**
-	 * ³ÌĞòºÅ 
+	 * ç¨‹åºå· 
 	 */
 	u32			number;		/* program number */
 	/**
-	 * °æ±¾¸öÊı 
+	 * ç‰ˆæœ¬ä¸ªæ•° 
 	 */
 	unsigned int		nrvers;		/* number of versions */
 	/**
-	 * Ö¸Ïòº¬ÓĞ¸÷¸ö°æ±¾ĞÅÏ¢µÄÊı×éÖ¸Õë 
+	 * æŒ‡å‘å«æœ‰å„ä¸ªç‰ˆæœ¬ä¿¡æ¯çš„æ•°ç»„æŒ‡é’ˆ 
 	 */
 	struct rpc_version **	version;	/* version array */
 	/**
-	 * Í³¼ÆĞÅÏ¢ 
+	 * ç»Ÿè®¡ä¿¡æ¯ 
 	 */
 	struct rpc_stat *	stats;		/* statistics */
 	char *			pipe_dir_name;	/* path to rpc_pipefs dir */
 };
 
 /**
- * °æ±¾ĞÅÏ¢ 
+ * ç‰ˆæœ¬ä¿¡æ¯ 
  */
 struct rpc_version {
 	/**
-	 * °æ±¾ºÅ 
+	 * ç‰ˆæœ¬å· 
 	 */
 	u32			number;		/* version number */
 	/**
-	 * Ô¶³Ì¹ı³ÌÊı
+	 * è¿œç¨‹è¿‡ç¨‹æ•°
 	 */
 	unsigned int		nrprocs;	/* number of procs */
 	/**
-	 * Ô¶³Ì¹ı³ÌÊı×é 
+	 * è¿œç¨‹è¿‡ç¨‹æ•°ç»„ 
 	 */
 	struct rpc_procinfo *	procs;		/* procedure array */
 };
@@ -174,27 +174,27 @@ struct rpc_version {
  * Procedure information
  */
 /**
- * Ô¶³Ì¹ı³ÌĞÅÏ¢ 
+ * è¿œç¨‹è¿‡ç¨‹ä¿¡æ¯ 
  */
 struct rpc_procinfo {
 	/**
-	 * ¹ı³ÌºÅ
+	 * è¿‡ç¨‹å·
 	 */
 	u32			p_proc;		/* RPC procedure number */
 	/**
-	 * XDRÒëÂëº¯Êı 
+	 * XDRè¯‘ç å‡½æ•° 
 	 */
 	kxdrproc_t		p_encode;	/* XDR encode function */
 	/**
-	 * XDR ½âÂëº¯Êı 
+	 * XDR è§£ç å‡½æ•° 
 	 */
 	kxdrproc_t		p_decode;	/* XDR decode function */
 	/**
-	 * ÇëÇó»º´æ´óĞ¡ 
+	 * è¯·æ±‚ç¼“å­˜å¤§å° 
 	 */
 	unsigned int		p_bufsiz;	/* req. buffer size */
 	/**
-	 * µ÷ÓÃÊı 
+	 * è°ƒç”¨æ•° 
 	 */
 	unsigned int		p_count;	/* call count */
 	unsigned int		p_timer;	/* Which RTT timer to use */

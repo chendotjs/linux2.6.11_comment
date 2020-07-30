@@ -31,31 +31,31 @@
  * ino/dev of the exported inode.
  */
 /**
- * NFS·şÎñÆ÷Ìá¹©¸ø¿Í»§¶ËµÄÎÄ¼ş¾ä±ú¡£
+ * NFSæœåŠ¡å™¨æä¾›ç»™å®¢æˆ·ç«¯çš„æ–‡ä»¶å¥æŸ„ã€‚
  */
 struct nfs_fhbase_old {
 	/**
-	 * dentryÄ§±ı 
+	 * dentryé­”é¥¼ 
 	 */
 	__u32		fb_dcookie;	/* dentry cookie - always 0xfeebbaca */
 	/**
-	 * inodeºÅ 
+	 * inodeå· 
 	 */
 	__u32		fb_ino;		/* our inode number */
 	/**
-	 * Ä¿Â¼inodeºÅ 
+	 * ç›®å½•inodeå· 
 	 */
 	__u32		fb_dirino;	/* dir inode number, 0 for directories */
 	/**
-	 * Éè±¸ºÅ 
+	 * è®¾å¤‡å· 
 	 */
 	__u32		fb_dev;		/* our device */
 	/**
-	 * export±íµÄÉè±¸ºÅ 
+	 * exportè¡¨çš„è®¾å¤‡å· 
 	 */
 	__u32		fb_xdev;
 	/**
-	 * export±íµÄinodeºÅ 
+	 * exportè¡¨çš„inodeå· 
 	 */
 	__u32		fb_xino;
 	__u32		fb_generation;
@@ -155,25 +155,25 @@ static inline ino_t u32_to_ino_t(__u32 uino)
  * pre_mtime/post_version will be used to support wcc_attr's in NFSv3.
  */
 /**
- * ·şÎñÆ÷¶Ë±íÊ¾Ò»¸ö´ò¿ªµÄNFSÎÄ¼ş¾ä±ú
+ * æœåŠ¡å™¨ç«¯è¡¨ç¤ºä¸€ä¸ªæ‰“å¼€çš„NFSæ–‡ä»¶å¥æŸ„
  */
 typedef struct svc_fh {
 	/**
-	 * ´«¸ø¿Í»§»úµÄÎÄ¼ş¾ä±ú
+	 * ä¼ ç»™å®¢æˆ·æœºçš„æ–‡ä»¶å¥æŸ„
 	 */
 	struct knfsd_fh		fh_handle;	/* FH data */
 	/**
-	 * ÑéÖ¤¹ıµÄdentry 
+	 * éªŒè¯è¿‡çš„dentry 
 	 */
 	struct dentry *		fh_dentry;	/* validated dentry */
 	/**
-	 * export±íÖ¸Õë 
+	 * exportè¡¨æŒ‡é’ˆ 
 	 */
 	struct svc_export *	fh_export;	/* export pointer */
 	int			fh_maxsize;	/* max size for fh_handle */
 
 	/**
-	 * ¼ÓËøµÄinode 
+	 * åŠ é”çš„inode 
 	 */
 	unsigned char		fh_locked;	/* inode locked by us */
 
@@ -183,15 +183,15 @@ typedef struct svc_fh {
 
 	/* Pre-op attributes saved during fh_lock */
 	/**
-	 * ²Ù×÷Ç°´óĞ¡ 
+	 * æ“ä½œå‰å¤§å° 
 	 */
 	__u64			fh_pre_size;	/* size before operation */
 	/**
-	 * ²Ù×÷Ç°µÄmtime 
+	 * æ“ä½œå‰çš„mtime 
 	 */
 	struct timespec		fh_pre_mtime;	/* mtime before oper */
 	/**
-	 * ²Ù×÷Ç°µÄctime 
+	 * æ“ä½œå‰çš„ctime 
 	 */
 	struct timespec		fh_pre_ctime;	/* ctime before oper */
 

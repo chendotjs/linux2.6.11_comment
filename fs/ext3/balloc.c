@@ -489,22 +489,22 @@ void ext3_free_blocks(handle_t *handle, struct inode *inode,
  * sync-data inodes.
  */
 /**
- * ÅĞ¶ÏÄ³¸ö¿éÊÇ·ñ¿ÉÒÔ·ÖÅä
+ * åˆ¤æ–­æŸä¸ªå—æ˜¯å¦å¯ä»¥åˆ†é…
  */
 static int ext3_test_allocatable(int nr, struct buffer_head *bh)
 {
 	int ret;
 	struct journal_head *jh = bh2jh(bh);
 
-	/* ÄÚ´æ¿éÖĞ£¬ÏàÓ¦Î»Îª1£¬²»ÄÜ·ÖÅä */
+	/* å†…å­˜å—ä¸­ï¼Œç›¸åº”ä½ä¸º1ï¼Œä¸èƒ½åˆ†é… */
 	if (ext3_test_bit(nr, bh->b_data))
 		return 0;
 
 	jbd_lock_bh_state(bh);
-	if (!jh->b_committed_data) /* Ã»ÓĞJBDÔÚÉêÇëÆäundo·ÃÎÊ */
+	if (!jh->b_committed_data) /* æ²¡æœ‰JBDåœ¨ç”³è¯·å…¶undoè®¿é—® */
 		ret = 1;
 	else
-		/* ´ıÌá½»µÄ¿éÖĞ£¬ÊÇ·ñÔÊĞí·ÖÅä? */
+		/* å¾…æäº¤çš„å—ä¸­ï¼Œæ˜¯å¦å…è®¸åˆ†é…? */
 		ret = !ext3_test_bit(nr, jh->b_committed_data);
 	jbd_unlock_bh_state(bh);
 	return ret;

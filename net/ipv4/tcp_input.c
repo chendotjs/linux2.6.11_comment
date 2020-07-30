@@ -72,47 +72,47 @@
 #include <net/inet_common.h>
 #include <linux/ipsec.h>
 
-/* ÊÇ·ñÆôÓÃTCPÊ±¼ä´ÁÑ¡Ïî */
+/* æ˜¯å¦å¯ç”¨TCPæ—¶é—´æˆ³é€‰é¡¹ */
 int sysctl_tcp_timestamps = 1;
-/* ±êÊ¶ÊÇ·ñÆôÓÃTCP´°¿ÚÀ©´óÒò×ÓÑ¡Ïî */
+/* æ ‡è¯†æ˜¯å¦å¯ç”¨TCPçª—å£æ‰©å¤§å› å­é€‰é¡¹ */
 int sysctl_tcp_window_scaling = 1;
-/* ±êÊ¶ÊÇ·ñÆôÓÃÑ¡ÔñĞÔÈ·ÈÏSACKSÑ¡Ïî¡£¶Ô¹ãÓòÍøÀ´Ëµ¿ÉÒÔ´ò¿ª´ËÑ¡Ïî¡£ */
+/* æ ‡è¯†æ˜¯å¦å¯ç”¨é€‰æ‹©æ€§ç¡®è®¤SACKSé€‰é¡¹ã€‚å¯¹å¹¿åŸŸç½‘æ¥è¯´å¯ä»¥æ‰“å¼€æ­¤é€‰é¡¹ã€‚ */
 int sysctl_tcp_sack = 1;
-/* ÊÇ·ñÆôÓÃFACKÓµÈû±ÜÃâÓë¿ìËÙÖØ´«¹¦ÄÜ¡£ */
+/* æ˜¯å¦å¯ç”¨FACKæ‹¥å¡é¿å…ä¸å¿«é€Ÿé‡ä¼ åŠŸèƒ½ã€‚ */
 int sysctl_tcp_fack = 1;
 /**
- * ÔÚ²»Ö§³ÖSACKÊ±£¬ÎªÓÉÓÚÁ¬½Ó½ÓÊÕµ½ÖØ¸´È·ÈÏ¶ø½øÈë¿ìËÙ»Ö¸´¶ÎµÄÖØ¸´È·ÈÏÊı·§Öµ 
- * ÔÚÖ§³ÖSACKÊ±£¬ÔÚÃ»ÓĞÈ·¶¨¶ªÊ§°üµÄÇé¿öÏÂ£¬ÊÇTCPÁ÷ÖĞ¿ÉÒÔÖØÅÅĞòµÄÊı¾İ¶ÎÊı¡£
+ * åœ¨ä¸æ”¯æŒSACKæ—¶ï¼Œä¸ºç”±äºè¿æ¥æ¥æ”¶åˆ°é‡å¤ç¡®è®¤è€Œè¿›å…¥å¿«é€Ÿæ¢å¤æ®µçš„é‡å¤ç¡®è®¤æ•°é˜€å€¼ 
+ * åœ¨æ”¯æŒSACKæ—¶ï¼Œåœ¨æ²¡æœ‰ç¡®å®šä¸¢å¤±åŒ…çš„æƒ…å†µä¸‹ï¼Œæ˜¯TCPæµä¸­å¯ä»¥é‡æ’åºçš„æ•°æ®æ®µæ•°ã€‚
  */
 int sysctl_tcp_reordering = TCP_FASTRETRANS_THRESH;
-/* ÊÇ·ñÆôÓÃTCPµÄÏÔÊ½ÓµÈûÍ¨Öª¹¦ÄÜ¡£ */
+/* æ˜¯å¦å¯ç”¨TCPçš„æ˜¾å¼æ‹¥å¡é€šçŸ¥åŠŸèƒ½ã€‚ */
 int sysctl_tcp_ecn;
-/* ÊÇ·ñÖ§³ÖD-SACK */
+/* æ˜¯å¦æ”¯æŒD-SACK */
 int sysctl_tcp_dsack = 1;
-/* ÎªÓ¦ÓÃ³ÌĞò»º´æÊ¹ÓÃ£¬±£Áômax(window/2^sysctl_tcp_app_win, mss)´óĞ¡µÄ´°¿Ú¡£Îª0±íÊ¾²»±£Áô¡£ */
+/* ä¸ºåº”ç”¨ç¨‹åºç¼“å­˜ä½¿ç”¨ï¼Œä¿ç•™max(window/2^sysctl_tcp_app_win, mss)å¤§å°çš„çª—å£ã€‚ä¸º0è¡¨ç¤ºä¸ä¿ç•™ã€‚ */
 int sysctl_tcp_app_win = 31;
-/* µ±Í¨¹ıµ÷½Ú½ÓÊÕ´°¿ÚÀ´½øĞĞÁ÷Á¿¿ØÖÆµÄÇé¿öÏÂ£¬¼ÆËãµ÷Õû½ÓÊÕ»º´æºÍ½ÓÊÕ´°¿ÚÊ±£¬ÓÃÀ´¶Ô¼ÆËãµÄ²ÎÊı½øĞĞÎ¢µ÷ */
+/* å½“é€šè¿‡è°ƒèŠ‚æ¥æ”¶çª—å£æ¥è¿›è¡Œæµé‡æ§åˆ¶çš„æƒ…å†µä¸‹ï¼Œè®¡ç®—è°ƒæ•´æ¥æ”¶ç¼“å­˜å’Œæ¥æ”¶çª—å£æ—¶ï¼Œç”¨æ¥å¯¹è®¡ç®—çš„å‚æ•°è¿›è¡Œå¾®è°ƒ */
 int sysctl_tcp_adv_win_scale = 2;
 
-/* ±êÊ¶ÊÇ·ñÊ¹ÓÃTCP½ô¼±Ö¸Õë×Ö¶Î±ê×¼½âÊÍ¡£ÎªÁËÓëÒÑÓĞÏµÍ³¼æÈİ£¬¹Ø±Õ´Ë¹¦ÄÜ¡£Õâ½«Óërfc±ê×¼²»¼æÈİ¡£ */
+/* æ ‡è¯†æ˜¯å¦ä½¿ç”¨TCPç´§æ€¥æŒ‡é’ˆå­—æ®µæ ‡å‡†è§£é‡Šã€‚ä¸ºäº†ä¸å·²æœ‰ç³»ç»Ÿå…¼å®¹ï¼Œå…³é—­æ­¤åŠŸèƒ½ã€‚è¿™å°†ä¸rfcæ ‡å‡†ä¸å…¼å®¹ã€‚ */
 int sysctl_tcp_stdurg;
-/* Ô¤·ÀÔÚrfc1337ÖĞÃèÊöµÄTIME-WAITÎÊÌâ£¬Ä¬ÈÏÎª0£¬½«¶ªÆúÄÇĞ©·¢ÍùTIME-WAIT×´Ì¬µÄRST¶Î¡£ */
+/* é¢„é˜²åœ¨rfc1337ä¸­æè¿°çš„TIME-WAITé—®é¢˜ï¼Œé»˜è®¤ä¸º0ï¼Œå°†ä¸¢å¼ƒé‚£äº›å‘å¾€TIME-WAITçŠ¶æ€çš„RSTæ®µã€‚ */
 int sysctl_tcp_rfc1337;
 /**
- * ÏµÍ³×î¶àÄÜ´¦ÀíµÄ¹Â¶ùÌ×½Ó¿Ú(²»ÊôÓÚÈÎºÎ½ø³ÌµÄÌ×½Ó¿Ú)ÊıÁ¿£¬Ä¬ÈÏÎª16384¸ö 
- * Èç¹û³¬¹ıÕâ¸öÊıÁ¿£¬Ôò²»ÊôÓÚÈÎºÎ½ø³ÌµÄÁ¬½Ó»á±»Á¢¼´¸´Î»¡£
- * Ã¿¸ö¹Â¶ù½Ó¿ÚÏûºÄ64KµÄÄÚ´æ¡£
+ * ç³»ç»Ÿæœ€å¤šèƒ½å¤„ç†çš„å­¤å„¿å¥—æ¥å£(ä¸å±äºä»»ä½•è¿›ç¨‹çš„å¥—æ¥å£)æ•°é‡ï¼Œé»˜è®¤ä¸º16384ä¸ª 
+ * å¦‚æœè¶…è¿‡è¿™ä¸ªæ•°é‡ï¼Œåˆ™ä¸å±äºä»»ä½•è¿›ç¨‹çš„è¿æ¥ä¼šè¢«ç«‹å³å¤ä½ã€‚
+ * æ¯ä¸ªå­¤å„¿æ¥å£æ¶ˆè€—64Kçš„å†…å­˜ã€‚
  */
 int sysctl_tcp_max_orphans = NR_FILE;
-/* ÊÇ·ñÆôÓÃfrto,¾­³£ÓÃÓÚÎŞÏß»·¾³£¬Ê¹ÓÃÓÅ»¯µÄTCPÖØ´«Ëã·¨ */
+/* æ˜¯å¦å¯ç”¨frto,ç»å¸¸ç”¨äºæ— çº¿ç¯å¢ƒï¼Œä½¿ç”¨ä¼˜åŒ–çš„TCPé‡ä¼ ç®—æ³• */
 int sysctl_tcp_frto;
 int sysctl_tcp_nometrics_save;
 int sysctl_tcp_westwood;
 int sysctl_tcp_vegas_cong_avoid;
 
 /**
- * ±êÊ¶ÊÇ·ñÆô¶¯×Ô¶¯µ÷½Ú½ÓÊÕ»º³åÇø´óĞ¡¡£
- * Èç¹ûÆô¶¯£¬Ôò×Ô¶¯µØµ÷Õû½ÓÊÕ»º³åÇøµÄ´óĞ¡£¬ÒÔ´ËÀ´½øĞĞÁ÷Á¿¿ØÖÆ¡£
+ * æ ‡è¯†æ˜¯å¦å¯åŠ¨è‡ªåŠ¨è°ƒèŠ‚æ¥æ”¶ç¼“å†²åŒºå¤§å°ã€‚
+ * å¦‚æœå¯åŠ¨ï¼Œåˆ™è‡ªåŠ¨åœ°è°ƒæ•´æ¥æ”¶ç¼“å†²åŒºçš„å¤§å°ï¼Œä»¥æ­¤æ¥è¿›è¡Œæµé‡æ§åˆ¶ã€‚
  */
 int sysctl_tcp_moderate_rcvbuf = 1;
 
@@ -128,25 +128,25 @@ int sysctl_tcp_bic_fast_convergence = 1;
 int sysctl_tcp_bic_low_window = 14;
 int sysctl_tcp_bic_beta = 819;		/* = 819/1024 (BICTCP_BETA_SCALE) */
 
-/* ½ÓÊÕµ½µÄACK¶ÎµÄ±êÖ¾ */
+/* æ¥æ”¶åˆ°çš„ACKæ®µçš„æ ‡å¿— */
 
-/* ½ÓÊÕµÄACK¶ÎÊÇ¸ººÉÊı¾İµÄ */
+/* æ¥æ”¶çš„ACKæ®µæ˜¯è´Ÿè·æ•°æ®çš„ */
 #define FLAG_DATA		0x01 /* Incoming frame contained data.		*/
-/* ½ÓÊÕµÄACk¶Î¸üĞÂÁË·¢ËÍ´°¿Ú */
+/* æ¥æ”¶çš„ACkæ®µæ›´æ–°äº†å‘é€çª—å£ */
 #define FLAG_WIN_UPDATE		0x02 /* Incoming ACK was a window update.	*/
-/* ½ÓÊÕµÄACk¶ÎÈ·ÈÏÁËĞÂµÄÊı¾İ */
+/* æ¥æ”¶çš„ACkæ®µç¡®è®¤äº†æ–°çš„æ•°æ® */
 #define FLAG_DATA_ACKED		0x04 /* This ACK acknowledged new data.		*/
-/* ´Ë¶ÎÒÑ¾­ÖØ´«¹ı */
+/* æ­¤æ®µå·²ç»é‡ä¼ è¿‡ */
 #define FLAG_RETRANS_DATA_ACKED	0x08 /* "" "" some of which was retransmitted.	*/
-/* ½ÓÊÕµÄACk¶ÎÈ·ÈÏÁËSYN¶Î */
+/* æ¥æ”¶çš„ACkæ®µç¡®è®¤äº†SYNæ®µ */
 #define FLAG_SYN_ACKED		0x10 /* This ACK acknowledged SYN.		*/
-/* ĞÂµÄSACK */
+/* æ–°çš„SACK */
 #define FLAG_DATA_SACKED	0x20 /* New SACK.				*/
-/* ½ÓÊÕµ½ÏÔÊ½ÓµÈûÍ¨Öª */
+/* æ¥æ”¶åˆ°æ˜¾å¼æ‹¥å¡é€šçŸ¥ */
 #define FLAG_ECE		0x40 /* ECE in this ACK				*/
-/* ÓÉSACK±êÊ¶µÄÊı¾İÒÑ¶ªÊ§ */
+/* ç”±SACKæ ‡è¯†çš„æ•°æ®å·²ä¸¢å¤± */
 #define FLAG_DATA_LOST		0x80 /* SACK detected data lossage.		*/
-/* ÔÚÂıËÙÂ·¾¶ÖĞ´¦ÀíµÄ */
+/* åœ¨æ…¢é€Ÿè·¯å¾„ä¸­å¤„ç†çš„ */
 #define FLAG_SLOWPATH		0x100 /* Do not skip RFC checks for window update.*/
 
 #define FLAG_ACKED		(FLAG_DATA_ACKED|FLAG_SYN_ACKED)
@@ -163,7 +163,7 @@ int sysctl_tcp_bic_beta = 819;		/* = 819/1024 (BICTCP_BETA_SCALE) */
 /* Adapt the MSS value used to make delayed ack decision to the 
  * real world.
  */ 
-/* ½ÓÊÕµ½±¨ÎÄºó£¬¹ÀËã·¢ËÍ·½µÄMSS */
+/* æ¥æ”¶åˆ°æŠ¥æ–‡åï¼Œä¼°ç®—å‘é€æ–¹çš„MSS */
 static inline void tcp_measure_rcv_mss(struct tcp_sock *tp,
 				       struct sk_buff *skb)
 {
@@ -176,7 +176,7 @@ static inline void tcp_measure_rcv_mss(struct tcp_sock *tp,
 	 * sends good full-sized frames.
 	 */
 	len = skb->len;
-	if (len >= tp->ack.rcv_mss) {/* ½ÓÊÕµ½µÄ¶Î±¨ÎÄ´óÓÚ·¢ËÍ·½MSS£¬Ôò¸üĞÂMSS */
+	if (len >= tp->ack.rcv_mss) {/* æ¥æ”¶åˆ°çš„æ®µæŠ¥æ–‡å¤§äºå‘é€æ–¹MSSï¼Œåˆ™æ›´æ–°MSS */
 		tp->ack.rcv_mss = len;
 	} else {
 		/* Otherwise, we make more careful check taking into account,
@@ -184,27 +184,27 @@ static inline void tcp_measure_rcv_mss(struct tcp_sock *tp,
 		 *
 		 * "len" is invariant segment length, including TCP header.
 		 */
-		len += skb->data - skb->h.raw;/* TCP±¨ÎÄ³¤¶È */
-		if (len >= TCP_MIN_RCVMSS + sizeof(struct tcphdr) ||/* ´óÓÚ536 */
+		len += skb->data - skb->h.raw;/* TCPæŠ¥æ–‡é•¿åº¦ */
+		if (len >= TCP_MIN_RCVMSS + sizeof(struct tcphdr) ||/* å¤§äº536 */
 		    /* If PSH is not set, packet should be
 		     * full sized, provided peer TCP is not badly broken.
 		     * This observation (if it is correct 8)) allows
 		     * to handle super-low mtu links fairly.
 		     */
-		    (len >= TCP_MIN_MSS + sizeof(struct tcphdr) &&/* ´óÓÚ×îĞ¡TCP¶Î³¤¶È88 */
-		     !(tcp_flag_word(skb->h.th)&TCP_REMNANT))) {/* Ã»ÓĞPSH±êÖ¾£¬ËµÃ÷ÊÇÈ«³ß´ç¶Î */
+		    (len >= TCP_MIN_MSS + sizeof(struct tcphdr) &&/* å¤§äºæœ€å°TCPæ®µé•¿åº¦88 */
+		     !(tcp_flag_word(skb->h.th)&TCP_REMNANT))) {/* æ²¡æœ‰PSHæ ‡å¿—ï¼Œè¯´æ˜æ˜¯å…¨å°ºå¯¸æ®µ */
 			/* Subtract also invariant (if peer is RFC compliant),
 			 * tcp header plus fixed timestamp option length.
 			 * Resulting "len" is MSS free of SACK jitter.
 			 */
 			len -= tp->tcp_header_len;
 			tp->ack.last_seg_size = len;
-			if (len == lss) {/* ÓëÉÏ´Î½ÓÊÕµ½µÄ¶ÎÏàÍ¬£¬ËµÃ÷´ËMSSÖµÊÇ¿ÉĞÅµÄ£¬¸üĞÂMSS */
+			if (len == lss) {/* ä¸ä¸Šæ¬¡æ¥æ”¶åˆ°çš„æ®µç›¸åŒï¼Œè¯´æ˜æ­¤MSSå€¼æ˜¯å¯ä¿¡çš„ï¼Œæ›´æ–°MSS */
 				tp->ack.rcv_mss = len;
 				return;
 			}
 		}
-		/* ÆäËûÇé¿öÏÂÔòÈÏÎª½ÓÊÕµ½Ğ¡°ü£¬ÉèÖÃTCP_ACK_PUSHED±êÖ¾¡£ĞÂ°æ±¾Ôö¼ÓÁËTCP_ACK_PUSHED2±êÖ¾ */
+		/* å…¶ä»–æƒ…å†µä¸‹åˆ™è®¤ä¸ºæ¥æ”¶åˆ°å°åŒ…ï¼Œè®¾ç½®TCP_ACK_PUSHEDæ ‡å¿—ã€‚æ–°ç‰ˆæœ¬å¢åŠ äº†TCP_ACK_PUSHED2æ ‡å¿— */
 		tp->ack.pending |= TCP_ACK_PUSHED;
 	}
 }
@@ -219,20 +219,20 @@ static void tcp_incr_quickack(struct tcp_sock *tp)
 		tp->ack.quick = min(quickacks, TCP_MAX_QUICKACKS);
 }
 
-/* ½øÈë¿ìËÙÈ·ÈÏÄ£Ê½ */
+/* è¿›å…¥å¿«é€Ÿç¡®è®¤æ¨¡å¼ */
 void tcp_enter_quickack_mode(struct tcp_sock *tp)
 {
-	/* ¸ù¾İ½ÓÊÕ´°¿ÚºÍMSS¼ÆËã¿ìËÙÈ·ÈÏ¶ÎÊı£¬³¬¹ıºó½øÈëÂıËÙÈ·ÈÏÄ£Ê½ */
+	/* æ ¹æ®æ¥æ”¶çª—å£å’ŒMSSè®¡ç®—å¿«é€Ÿç¡®è®¤æ®µæ•°ï¼Œè¶…è¿‡åè¿›å…¥æ…¢é€Ÿç¡®è®¤æ¨¡å¼ */
 	tcp_incr_quickack(tp);
-	tp->ack.pingpong = 0;/* ¿ìËÙÈ·ÈÏÄ£Ê½ */
-	/* ÑÓ³Ù40ºÁÃë¾Í±ØĞë·¢ËÍÈ·ÈÏ */
+	tp->ack.pingpong = 0;/* å¿«é€Ÿç¡®è®¤æ¨¡å¼ */
+	/* å»¶è¿Ÿ40æ¯«ç§’å°±å¿…é¡»å‘é€ç¡®è®¤ */
 	tp->ack.ato = TCP_ATO_MIN;
 }
 
 /* Send ACKs quickly, if "quick" count is not exhausted
  * and the session is not interactive.
  */
-/* µ±Ç°ÊÇ·ñÊÇ¿ìËÙÈ·ÈÏÄ£Ê½ */
+/* å½“å‰æ˜¯å¦æ˜¯å¿«é€Ÿç¡®è®¤æ¨¡å¼ */
 static __inline__ int tcp_in_quickack_mode(struct tcp_sock *tp)
 {
 	return (tp->ack.quick && !tp->ack.pingpong);
@@ -295,20 +295,20 @@ static int __tcp_grow_window(struct sock *sk, struct tcp_sock *tp,
 	return 0;
 }
 
-/* µ±½ÓÊÕµ½±¨ÎÄºó£¬Ôö¼Ó½ÓÊÕ´°¿Ú´óĞ¡·§Öµ */
+/* å½“æ¥æ”¶åˆ°æŠ¥æ–‡åï¼Œå¢åŠ æ¥æ”¶çª—å£å¤§å°é˜€å€¼ */
 static inline void tcp_grow_window(struct sock *sk, struct tcp_sock *tp,
 				   struct sk_buff *skb)
 {
 	/* Check #1 */
-	if (tp->rcv_ssthresh < tp->window_clamp &&/* µ±Ç°½ÓÊÕ´°¿Ú´óĞ¡·§ÖµĞ¡ÓÚ»¬¶¯´°¿Ú×î´óÖµ */
-	    (int)tp->rcv_ssthresh < tcp_space(sk) &&/* Ò²Ğ¡ÓÚTCP¿ÉÓÃ½ÓÊÕ¿Õ¼ä */
-	    !tcp_memory_pressure) {/* TCP»º´æÎ´¸æ¾¯ */
+	if (tp->rcv_ssthresh < tp->window_clamp &&/* å½“å‰æ¥æ”¶çª—å£å¤§å°é˜€å€¼å°äºæ»‘åŠ¨çª—å£æœ€å¤§å€¼ */
+	    (int)tp->rcv_ssthresh < tcp_space(sk) &&/* ä¹Ÿå°äºTCPå¯ç”¨æ¥æ”¶ç©ºé—´ */
+	    !tcp_memory_pressure) {/* TCPç¼“å­˜æœªå‘Šè­¦ */
 		int incr;
 
 		/* Check #2. Increase window, if skb with such overhead
 		 * will fit to rcvbuf in future.
 		 */
-		/* µİÔöµ±Ç°½ÓÊÕ´°¿Ú´óĞ¡µÄ·§Öµ */
+		/* é€’å¢å½“å‰æ¥æ”¶çª—å£å¤§å°çš„é˜€å€¼ */
 		if (tcp_win_from_space(skb->truesize) <= skb->len)
 			incr = 2*tp->advmss;
 		else
@@ -433,14 +433,14 @@ static void tcp_clamp_window(struct sock *sk, struct tcp_sock *tp)
  * is pending.
  */
 /**
- * ¸üĞÂRTT
+ * æ›´æ–°RTT
  */
 static void tcp_rcv_rtt_update(struct tcp_sock *tp, u32 sample, int win_dep)
 {
-	u32 new_sample = tp->rcv_rtt_est.rtt;/* new_sampleÎªÒÑ¾­µÃµ½RTT */
-	long m = sample;/* sampleÊÇ±¾´Î²ÉÑùµÃµ½µÄRTT */
+	u32 new_sample = tp->rcv_rtt_est.rtt;/* new_sampleä¸ºå·²ç»å¾—åˆ°RTT */
+	long m = sample;/* sampleæ˜¯æœ¬æ¬¡é‡‡æ ·å¾—åˆ°çš„RTT */
 
-	if (m == 0)/* ²ÉÑùÖµ²»ÄÜÎª0£¬ÖÁÉÙÎª1¸ötick */
+	if (m == 0)/* é‡‡æ ·å€¼ä¸èƒ½ä¸º0ï¼Œè‡³å°‘ä¸º1ä¸ªtick */
 		m = 1;
 
 	if (new_sample != 0) {
@@ -454,45 +454,45 @@ static void tcp_rcv_rtt_update(struct tcp_sock *tp, u32 sample, int win_dep)
 		 * else with timestamps disabled convergance takes too
 		 * long.
 		 */
-		if (!win_dep) {/* ½øĞĞRTTÎ¢µ÷£¬¹«Ê½Îªrtt=rtt+(sample-rtt)/8 */
+		if (!win_dep) {/* è¿›è¡ŒRTTå¾®è°ƒï¼Œå…¬å¼ä¸ºrtt=rtt+(sample-rtt)/8 */
 			m -= (new_sample >> 3);
 			new_sample += m;
-		} else if (m < new_sample)/* ²»½øĞĞÎ¢µ÷£¬Èç¹ûRTTĞ¡ÓÚÔ­À´µÄÖµ£¬Ôò²ÉÓÃĞÂÖµ */
+		} else if (m < new_sample)/* ä¸è¿›è¡Œå¾®è°ƒï¼Œå¦‚æœRTTå°äºåŸæ¥çš„å€¼ï¼Œåˆ™é‡‡ç”¨æ–°å€¼ */
 			new_sample = m << 3;
-	} else {/* Èç¹ûÊÇµÚÒ»´Î²ÉÑù£¬ÔòÖ±½Ó±£´æ±¾´Î²ÉÑù½á¹û */
+	} else {/* å¦‚æœæ˜¯ç¬¬ä¸€æ¬¡é‡‡æ ·ï¼Œåˆ™ç›´æ¥ä¿å­˜æœ¬æ¬¡é‡‡æ ·ç»“æœ */
 		/* No previous mesaure. */
 		new_sample = m << 3;
 	}
 
-	if (tp->rcv_rtt_est.rtt != new_sample)/* ¸üĞÂRTT */
+	if (tp->rcv_rtt_est.rtt != new_sample)/* æ›´æ–°RTT */
 		tp->rcv_rtt_est.rtt = new_sample;
 }
 
-/* ÔÚÃ»ÓĞÊ±¼ä´ÁÑ¡ÏîµÄÇé¿öÏÂ£¬»òÕßµ±Êı¾İÁ÷Á¿·Ç³£Ğ¡µÄÇé¿öÏÂ£¬Ê¹ÓÃ´Ëº¯Êı²ÉÑùRTT */
+/* åœ¨æ²¡æœ‰æ—¶é—´æˆ³é€‰é¡¹çš„æƒ…å†µä¸‹ï¼Œæˆ–è€…å½“æ•°æ®æµé‡éå¸¸å°çš„æƒ…å†µä¸‹ï¼Œä½¿ç”¨æ­¤å‡½æ•°é‡‡æ ·RTT */
 static inline void tcp_rcv_rtt_measure(struct tcp_sock *tp)
 {
-	if (tp->rcv_rtt_est.time == 0)/* µÚÒ»´Î½ÓÊÕµ½Êı¾İ»òµÚÒ»´Î²ÉÓÃ±¾·½·¨£¬²»ÄÜ²ÉÑùRTT */
+	if (tp->rcv_rtt_est.time == 0)/* ç¬¬ä¸€æ¬¡æ¥æ”¶åˆ°æ•°æ®æˆ–ç¬¬ä¸€æ¬¡é‡‡ç”¨æœ¬æ–¹æ³•ï¼Œä¸èƒ½é‡‡æ ·RTT */
 		goto new_measure;
-	if (before(tp->rcv_nxt, tp->rcv_rtt_est.seq))/* ¼ì²éÊÇ·ñÒÑ¾­µ½´ï½øĞĞRTT²ÉÑùµÄÊ±¼äµã£¬¼´´ÓÉÏ´Î²ÉÑùºóÒ»¸ö½ÓÊÕ´°¿ÚÊıÁ¿µÄÊı¾İ */
+	if (before(tp->rcv_nxt, tp->rcv_rtt_est.seq))/* æ£€æŸ¥æ˜¯å¦å·²ç»åˆ°è¾¾è¿›è¡ŒRTTé‡‡æ ·çš„æ—¶é—´ç‚¹ï¼Œå³ä»ä¸Šæ¬¡é‡‡æ ·åä¸€ä¸ªæ¥æ”¶çª—å£æ•°é‡çš„æ•°æ® */
 		return;
-	/* ²ÉÑùRTTÊı¾İ£¬µÚ¶ş¸ö²ÎÊıÎªRTTµÄ²ÉÑù£¬²ÎÊı1±íÊ¾²»¶ÔRTT²ÉÑù½øĞĞÎ¢µ÷ */
+	/* é‡‡æ ·RTTæ•°æ®ï¼Œç¬¬äºŒä¸ªå‚æ•°ä¸ºRTTçš„é‡‡æ ·ï¼Œå‚æ•°1è¡¨ç¤ºä¸å¯¹RTTé‡‡æ ·è¿›è¡Œå¾®è°ƒ */
 	tcp_rcv_rtt_update(tp,
 			   jiffies - tp->rcv_rtt_est.time,
 			   1);
 
 new_measure:
-	/* ¼ÇÂ¼±¾´Î²ÉÑùÊ±¼äºÍÏÂ´Î²ÉÑùµÄÊ±¼äµã */
+	/* è®°å½•æœ¬æ¬¡é‡‡æ ·æ—¶é—´å’Œä¸‹æ¬¡é‡‡æ ·çš„æ—¶é—´ç‚¹ */
 	tp->rcv_rtt_est.seq = tp->rcv_nxt + tp->rcv_wnd;
 	tp->rcv_rtt_est.time = tcp_time_stamp;
 }
 
-/* ÔÚÓĞÊ±¼ä´ÁµÄÇé¿öÏÂ²ÉÑùRTT */
+/* åœ¨æœ‰æ—¶é—´æˆ³çš„æƒ…å†µä¸‹é‡‡æ ·RTT */
 static inline void tcp_rcv_rtt_measure_ts(struct tcp_sock *tp, struct sk_buff *skb)
 {
-	if (tp->rx_opt.rcv_tsecr &&/* TCP¶ÎÖĞÓĞÊ±¼ä´Á»ØÏÔ */
+	if (tp->rx_opt.rcv_tsecr &&/* TCPæ®µä¸­æœ‰æ—¶é—´æˆ³å›æ˜¾ */
 	    (TCP_SKB_CB(skb)->end_seq -
-	     TCP_SKB_CB(skb)->seq >= tp->ack.rcv_mss))/* ±¨ÎÄ´óĞ¡´óÓÚµÈÓÚ½ÓÊÕ·½µÄMSS£¬±íÊ¾ÊÇÒ»¸öÈ«Êı¾İ¶Î */
-		/* ¸üĞÂ²ÉÑùÊı¾İ£¬µÚ¶ş¸ö²ÎÊıÊÇµ±Ç°Ê±¼ä¼õÈ¥±¨ÎÄ»ØÏÔÊ±¼ä£¬µÚÈı¸ö²ÎÊı0±íÊ¾¶ÔRTT½øĞĞÎ¢µ÷ */
+	     TCP_SKB_CB(skb)->seq >= tp->ack.rcv_mss))/* æŠ¥æ–‡å¤§å°å¤§äºç­‰äºæ¥æ”¶æ–¹çš„MSSï¼Œè¡¨ç¤ºæ˜¯ä¸€ä¸ªå…¨æ•°æ®æ®µ */
+		/* æ›´æ–°é‡‡æ ·æ•°æ®ï¼Œç¬¬äºŒä¸ªå‚æ•°æ˜¯å½“å‰æ—¶é—´å‡å»æŠ¥æ–‡å›æ˜¾æ—¶é—´ï¼Œç¬¬ä¸‰ä¸ªå‚æ•°0è¡¨ç¤ºå¯¹RTTè¿›è¡Œå¾®è°ƒ */
 		tcp_rcv_rtt_update(tp, tcp_time_stamp - tp->rx_opt.rcv_tsecr, 0);
 }
 
@@ -500,33 +500,33 @@ static inline void tcp_rcv_rtt_measure_ts(struct tcp_sock *tp, struct sk_buff *s
  * This function should be called every time data is copied to user space.
  * It calculates the appropriate TCP receive buffer space.
  */
-/* µ±Êı¾İ´Ó½ÓÊÕ»º´æ¸´ÖÆµ½ÓÃ»§¿Õ¼äºó£¬µ÷ÓÃ´Ëº¯Êıµ÷Õû½ÓÊÕ»º´æµÄ´óĞ¡ */
+/* å½“æ•°æ®ä»æ¥æ”¶ç¼“å­˜å¤åˆ¶åˆ°ç”¨æˆ·ç©ºé—´åï¼Œè°ƒç”¨æ­¤å‡½æ•°è°ƒæ•´æ¥æ”¶ç¼“å­˜çš„å¤§å° */
 void tcp_rcv_space_adjust(struct sock *sk)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
 	int time;
 	int space;
 	
-	if (tp->rcvq_space.time == 0)/* µÚÒ»´Îµ÷Õû£¬¼´½ÓÊÕµ½µÚÒ»¸öÓÃ»§Êı¾İ¶Î£¬²»±Øµ÷Õû½ÓÊÕ»º´æ£¬½ö½ö¼ÇÂ¼¸´ÖÆµ½ÓÃ»§¿Õ¼äµÄTCPĞòºÅºÍ×îºóÒ»´Îµ÷ÕûµÄÊ±¼ä */
+	if (tp->rcvq_space.time == 0)/* ç¬¬ä¸€æ¬¡è°ƒæ•´ï¼Œå³æ¥æ”¶åˆ°ç¬¬ä¸€ä¸ªç”¨æˆ·æ•°æ®æ®µï¼Œä¸å¿…è°ƒæ•´æ¥æ”¶ç¼“å­˜ï¼Œä»…ä»…è®°å½•å¤åˆ¶åˆ°ç”¨æˆ·ç©ºé—´çš„TCPåºå·å’Œæœ€åä¸€æ¬¡è°ƒæ•´çš„æ—¶é—´ */
 		goto new_measure;
 	
 	time = tcp_time_stamp - tp->rcvq_space.time;
-	if (time < (tp->rcv_rtt_est.rtt >> 3) ||/* ¾àÀëÉÏ´Îµ÷ÕûÊ±¼äĞ¡ÓÚRTT/8£¬»òÕß»¹Ã»ÓĞ¼ÆËã³öRTT£¬Ôò·µ»Ø */
+	if (time < (tp->rcv_rtt_est.rtt >> 3) ||/* è·ç¦»ä¸Šæ¬¡è°ƒæ•´æ—¶é—´å°äºRTT/8ï¼Œæˆ–è€…è¿˜æ²¡æœ‰è®¡ç®—å‡ºRTTï¼Œåˆ™è¿”å› */
 	    tp->rcv_rtt_est.rtt == 0)
 		return;
 
-	/* 2±¶Íù·µÊ±¼äÄÚ½ÓÊÕ·½Ó¦ÓÃ³ÌĞò½ÓÊÕµÄÊı¾İÁ¿ */
+	/* 2å€å¾€è¿”æ—¶é—´å†…æ¥æ”¶æ–¹åº”ç”¨ç¨‹åºæ¥æ”¶çš„æ•°æ®é‡ */
 	space = 2 * (tp->copied_seq - tp->rcvq_space.seq);
 
-	/* ·¢ËÍ·½Ò»¸öÍù·µÊ±¼äÄÚ·¢ËÍµÄÊı¾İÁ¿ */
+	/* å‘é€æ–¹ä¸€ä¸ªå¾€è¿”æ—¶é—´å†…å‘é€çš„æ•°æ®é‡ */
 	space = max(tp->rcvq_space.space, space);
 
-	if (tp->rcvq_space.space != space) {/* ĞèÒªµ÷Õû½ÓÊÕ´°¿Ú */
+	if (tp->rcvq_space.space != space) {/* éœ€è¦è°ƒæ•´æ¥æ”¶çª—å£ */
 		int rcvmem;
 
 		tp->rcvq_space.space = space;
 
-		if (sysctl_tcp_moderate_rcvbuf) {/* ÔÊĞí×Ô¶¯µ÷½Ú½ÓÊÕ´°¿Ú´óĞ¡ */
+		if (sysctl_tcp_moderate_rcvbuf) {/* å…è®¸è‡ªåŠ¨è°ƒèŠ‚æ¥æ”¶çª—å£å¤§å° */
 			int new_clamp = space;
 
 			/* Receive space grows, normalize in order to
@@ -567,30 +567,30 @@ new_measure:
  * queue.  -DaveM
  */
 /**
- * ÔÚ½ÓÊÕµ½Êı¾İºóµ÷ÓÃ£¬ÓÃÓÚ´¦Àí½ÓÊÕµ½Êı¾İÖ®ºóÓ¦¸Ã´¥·¢µÄÒ»Ğ©ÊÂ¼ş
- * ÈçÉèÖÃ·¢ËÍÈ·ÈÏ×´Ì¬£¬¹ÀËã¶Ô¶ËMSS£¬¼ÆËã½ÓÊÕ·½RTT£¬È·¶¨ÊÇ½øÈë¿ìËÙÈ·ÈÏ»¹ÊÇÂıËÙÈ·ÈÏ×´Ì¬£¬ÒÔ¼°¸üĞÂ×î½üÒ»´Î½ÓÊÕµ½µÄÊı¾İ°üÊ±¼ä
+ * åœ¨æ¥æ”¶åˆ°æ•°æ®åè°ƒç”¨ï¼Œç”¨äºå¤„ç†æ¥æ”¶åˆ°æ•°æ®ä¹‹ååº”è¯¥è§¦å‘çš„ä¸€äº›äº‹ä»¶
+ * å¦‚è®¾ç½®å‘é€ç¡®è®¤çŠ¶æ€ï¼Œä¼°ç®—å¯¹ç«¯MSSï¼Œè®¡ç®—æ¥æ”¶æ–¹RTTï¼Œç¡®å®šæ˜¯è¿›å…¥å¿«é€Ÿç¡®è®¤è¿˜æ˜¯æ…¢é€Ÿç¡®è®¤çŠ¶æ€ï¼Œä»¥åŠæ›´æ–°æœ€è¿‘ä¸€æ¬¡æ¥æ”¶åˆ°çš„æ•°æ®åŒ…æ—¶é—´
  */
 static void tcp_event_data_recv(struct sock *sk, struct tcp_sock *tp, struct sk_buff *skb)
 {
 	u32 now;
 
-	/* ½ÓÊÕµ½ĞÂµÄ¶Î£¬ÄÇÃ´¾ÍÓ¦µ±·¢ËÍACK£¬ÉèÖÃACk·¢ËÍ±êÖ¾ */
+	/* æ¥æ”¶åˆ°æ–°çš„æ®µï¼Œé‚£ä¹ˆå°±åº”å½“å‘é€ACKï¼Œè®¾ç½®ACkå‘é€æ ‡å¿— */
 	tcp_schedule_ack(tp);
 
-	/* ¹ÀËã¸üĞÂ¶Ô·½MSS */
+	/* ä¼°ç®—æ›´æ–°å¯¹æ–¹MSS */
 	tcp_measure_rcv_mss(tp, skb);
 
 	tcp_rcv_rtt_measure(tp);
 	
 	now = tcp_time_stamp;
 
-	if (!tp->ack.ato) {/* Ã»ÓĞÉèÖÃÑÓÊ±È·ÈÏµÄÊ±¼ä£¬Ôò½øÈë¿ìËÙÈ·ÈÏÄ£Ê½ */
+	if (!tp->ack.ato) {/* æ²¡æœ‰è®¾ç½®å»¶æ—¶ç¡®è®¤çš„æ—¶é—´ï¼Œåˆ™è¿›å…¥å¿«é€Ÿç¡®è®¤æ¨¡å¼ */
 		/* The _first_ data packet received, initialize
 		 * delayed ACK engine.
 		 */
 		tcp_incr_quickack(tp);
 		tp->ack.ato = TCP_ATO_MIN;
-	} else {/* ·ñÔò¸ù¾İ±¾´ÎÓëÉÏ´Î½ÓÊÕµ½µÄÊ±¼ä¼ä¸ô£¬ÖØĞÂÉèÖÃÑÓ³ÙACKµÄ³¬Ê±Ê±¼ä»òÕß½øÈë¿ìËÙÈ·ÈÏÄ£Ê½ */
+	} else {/* å¦åˆ™æ ¹æ®æœ¬æ¬¡ä¸ä¸Šæ¬¡æ¥æ”¶åˆ°çš„æ—¶é—´é—´éš”ï¼Œé‡æ–°è®¾ç½®å»¶è¿ŸACKçš„è¶…æ—¶æ—¶é—´æˆ–è€…è¿›å…¥å¿«é€Ÿç¡®è®¤æ¨¡å¼ */
 		int m = now - tp->ack.lrcvtime;
 
 		if (m <= TCP_ATO_MIN/2) {
@@ -608,13 +608,13 @@ static void tcp_event_data_recv(struct sock *sk, struct tcp_sock *tp, struct sk_
 			sk_stream_mem_reclaim(sk);
 		}
 	}
-	/* ¸üĞÂ×î½ü½ÓÊÕÊı¾İ°üµÄÊ±¼ä */
+	/* æ›´æ–°æœ€è¿‘æ¥æ”¶æ•°æ®åŒ…çš„æ—¶é—´ */
 	tp->ack.lrcvtime = now;
 
-	/* ÔÚÖ§³ÖÏÔÊ½ÓµÈûÍ¨ÖªµÄÇé¿öÏÂ£¬È·¶¨½ÓÊÕµ½µÄ¶ÎÊÇ·ñ¾­ÀúÁËÓµÈû */
+	/* åœ¨æ”¯æŒæ˜¾å¼æ‹¥å¡é€šçŸ¥çš„æƒ…å†µä¸‹ï¼Œç¡®å®šæ¥æ”¶åˆ°çš„æ®µæ˜¯å¦ç»å†äº†æ‹¥å¡ */
 	TCP_ECN_check_ce(tp, skb);
 
-	if (skb->len >= 128)/* Ôö¼Óµ±Ç°½ÓÊÕ´°¿Ú´óĞ¡µÄ·§Öµ */
+	if (skb->len >= 128)/* å¢åŠ å½“å‰æ¥æ”¶çª—å£å¤§å°çš„é˜€å€¼ */
 		tcp_grow_window(sk, tp, skb);
 }
 
@@ -666,7 +666,7 @@ static inline void vegas_rtt_calc(struct tcp_sock *tp, __u32 rtt)
  * To save cycles in the RFC 1323 implementation it was better to break
  * it up into three procedures. -- erics
  */
-/* ¹ÀËãRTT£¬È»ºóÔÙÉèÖÃÖØ´«³¬Ê±Ê±¼ä */
+/* ä¼°ç®—RTTï¼Œç„¶åå†è®¾ç½®é‡ä¼ è¶…æ—¶æ—¶é—´ */
 static void tcp_rtt_estimator(struct tcp_sock *tp, __u32 mrtt)
 {
 	long m = mrtt; /* RTT */
@@ -690,13 +690,13 @@ static void tcp_rtt_estimator(struct tcp_sock *tp, __u32 mrtt)
 	 * does not matter how to _calculate_ it. Seems, it was trap
 	 * that VJ failed to avoid. 8)
 	 */
-	if(m == 0)/* ¹ÀËãRTTµÄ²ÉÑù²»ÄÜÎª0 */
+	if(m == 0)/* ä¼°ç®—RTTçš„é‡‡æ ·ä¸èƒ½ä¸º0 */
 		m = 1;
-	if (tp->srtt != 0) {/* Í¨¹ı²ÉÑùÖµÓëÏÖÓĞRTT¹ÀËãĞÂµÄRTT */
-		/* ¸ù¾İRFC2988µÄËã·¨£¬SRTT=(1-1/8)*SRTT+1/8*RTTÀ´»ñµÃRTTµÄÆ½»¬Öµ */
+	if (tp->srtt != 0) {/* é€šè¿‡é‡‡æ ·å€¼ä¸ç°æœ‰RTTä¼°ç®—æ–°çš„RTT */
+		/* æ ¹æ®RFC2988çš„ç®—æ³•ï¼ŒSRTT=(1-1/8)*SRTT+1/8*RTTæ¥è·å¾—RTTçš„å¹³æ»‘å€¼ */
 		m -= (tp->srtt >> 3);	/* m is now error in rtt est */
 		tp->srtt += m;		/* rtt = 7/8 rtt + 1/8 new */
-		/* °´mdev=3/4+1/4(|SRTT-RTT²ÉÑù|)À´»ñÈ¡mdev */
+		/* æŒ‰mdev=3/4+1/4(|SRTT-RTTé‡‡æ ·|)æ¥è·å–mdev */
 		if (m < 0) {
 			m = -m;		/* m is now abs(error) */
 			m -= (tp->mdev >> 2);   /* similar update on mdev */
@@ -714,20 +714,20 @@ static void tcp_rtt_estimator(struct tcp_sock *tp, __u32 mrtt)
 			m -= (tp->mdev >> 2);   /* similar update on mdev */
 		}
 		tp->mdev += m;	    	/* mdev = 3/4 mdev + 1/4 new */
-		/* ¸üĞÂRTT¶¶¶¯µÄ×î´ó·¶Î§ºÍÆ½»¬µÄRTTÆ½¾ùÆ«²î */
+		/* æ›´æ–°RTTæŠ–åŠ¨çš„æœ€å¤§èŒƒå›´å’Œå¹³æ»‘çš„RTTå¹³å‡åå·® */
 		if (tp->mdev > tp->mdev_max) {
 			tp->mdev_max = tp->mdev;
 			if (tp->mdev_max > tp->rttvar)
 				tp->rttvar = tp->mdev_max;
 		}
-		/* ¼ì²âÊÇ·ñÓ¦¸Ã¸´Î»mdev_max£¬¼´ÉÏ´Î¸´Î»ºó½ÓÊÕ·½ÊÇ·ñÒÑ¾­½ÓÊÕÍêÒ»¸ö½ÓÊÕ´°¿ÚµÄÖµ */
+		/* æ£€æµ‹æ˜¯å¦åº”è¯¥å¤ä½mdev_maxï¼Œå³ä¸Šæ¬¡å¤ä½åæ¥æ”¶æ–¹æ˜¯å¦å·²ç»æ¥æ”¶å®Œä¸€ä¸ªæ¥æ”¶çª—å£çš„å€¼ */
 		if (after(tp->snd_una, tp->rtt_seq)) {
 			if (tp->mdev_max < tp->rttvar)
 				tp->rttvar -= (tp->rttvar-tp->mdev_max)>>2;
 			tp->rtt_seq = tp->snd_nxt;
 			tp->mdev_max = TCP_RTO_MIN;
 		}
-	} else {/* µÚÒ»¸öRTTµÄ²âÁ¿ */
+	} else {/* ç¬¬ä¸€ä¸ªRTTçš„æµ‹é‡ */
 		/* no previous measure. */
 		tp->srtt = m<<3;	/* take the measured time to be rtt */
 		tp->mdev = m<<1;	/* make sure rto = 3*rtt */
@@ -741,7 +741,7 @@ static void tcp_rtt_estimator(struct tcp_sock *tp, __u32 mrtt)
 /* Calculate rto without backoff.  This is the second half of Van Jacobson's
  * routine referred to above.
  */
-/* ¸ù¾İ×î½üÒ»´ÎµÃµ½µÄRTTÀ´¼ÆËãÖØ´«³¬Ê±Ê±¼ä */
+/* æ ¹æ®æœ€è¿‘ä¸€æ¬¡å¾—åˆ°çš„RTTæ¥è®¡ç®—é‡ä¼ è¶…æ—¶æ—¶é—´ */
 static inline void tcp_set_rto(struct tcp_sock *tp)
 {
 	/* Old crap is replaced with new one. 8)
@@ -1027,18 +1027,18 @@ static void tcp_update_reordering(struct tcp_sock *tp, int metric, int ts)
  * Both of these heuristics are not used in Loss state, when we cannot
  * account for retransmits accurately.
  */
-/* µ±½ÓÊÕµ½ACKºó£¬¸ù¾İSACKÑ¡Ïî±ê¼ÇÖØ´«¶ÓÁĞÖĞSKBµÄ¼Ç·Ö´¦ÓÚ×´Ì¬ */
+/* å½“æ¥æ”¶åˆ°ACKåï¼Œæ ¹æ®SACKé€‰é¡¹æ ‡è®°é‡ä¼ é˜Ÿåˆ—ä¸­SKBçš„è®°åˆ†å¤„äºçŠ¶æ€ */
 static int
 tcp_sacktag_write_queue(struct sock *sk, struct sk_buff *ack_skb, u32 prior_snd_una)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
-	/* µÃµ½TCPÑ¡ÏîÖĞSACKEDÑ¡ÏîµÄÆ«ÒÆ£¬ÒÔ¼°SACKÑ¡ÏîµÄ¸öÊı */
+	/* å¾—åˆ°TCPé€‰é¡¹ä¸­SACKEDé€‰é¡¹çš„åç§»ï¼Œä»¥åŠSACKé€‰é¡¹çš„ä¸ªæ•° */
 	unsigned char *ptr = ack_skb->h.raw + TCP_SKB_CB(ack_skb)->sacked;
 	struct tcp_sack_block *sp = (struct tcp_sack_block *)(ptr+2);
 	int num_sacks = (ptr[1] - TCPOLEN_SACK_BASE)>>3;
 	int reord = tp->packets_out;
 	int prior_fackets;
-	/* ÓÃÓÚ¼ÆËã¿ÉÄÜ¶ªÊ§µÄ¶ÎµÄ×î´óĞòºÅ */
+	/* ç”¨äºè®¡ç®—å¯èƒ½ä¸¢å¤±çš„æ®µçš„æœ€å¤§åºå· */
 	u32 lost_retrans = 0;
 	int flag = 0;
 	int i;
@@ -1055,7 +1055,7 @@ tcp_sacktag_write_queue(struct sock *sk, struct sk_buff *ack_skb, u32 prior_snd_
 		tp->fackets_out = 0;
 	prior_fackets = tp->fackets_out;
 
-	for (i=0; i<num_sacks; i++, sp++) {/* ´ÓÑ¡ÏîÖĞ¶ÁÈ¡sack¿é */
+	for (i=0; i<num_sacks; i++, sp++) {/* ä»é€‰é¡¹ä¸­è¯»å–sackå— */
 		struct sk_buff *skb;
 		__u32 start_seq = ntohl(sp->start_seq);
 		__u32 end_seq = ntohl(sp->end_seq);
@@ -1063,14 +1063,14 @@ tcp_sacktag_write_queue(struct sock *sk, struct sk_buff *ack_skb, u32 prior_snd_
 		int dup_sack = 0;
 
 		/* Check for D-SACK. */
-		if (i == 0) {/* ¼ì²âµÚÒ»¸ö¿éÊÇ²»ÊÇDSACK */
+		if (i == 0) {/* æ£€æµ‹ç¬¬ä¸€ä¸ªå—æ˜¯ä¸æ˜¯DSACK */
 			u32 ack = TCP_SKB_CB(ack_skb)->ack_seq;
 
-			if (before(start_seq, ack)) {/* µÚÒ»¸öSACK¿éĞ¡ÓÚÒÑÈ·ÈÏ¿éºÅ£¬ËµÃ÷ÊÇDSACK */
+			if (before(start_seq, ack)) {/* ç¬¬ä¸€ä¸ªSACKå—å°äºå·²ç¡®è®¤å—å·ï¼Œè¯´æ˜æ˜¯DSACK */
 				dup_sack = 1;
 				tp->rx_opt.sack_ok |= 4;
 				NET_INC_STATS_BH(LINUX_MIB_TCPDSACKRECV);
-			} else if (num_sacks > 1 &&/* Èç¹ûµÚÒ»¸ö¿é´óÓÚÒÑÈ·ÈÏĞòºÅ£¬Ôò±È½ÏµÚÒ»¸öSACK¿éºÍµÚ¶ş¸öSACK¿é£¬Èç¹ûµÚÒ»¸öSACK¿é°üº¬ÔÚµÚ¶ş¸öSACKÖĞ£¬ÔòÒ²ÊÇDSACK¿é */
+			} else if (num_sacks > 1 &&/* å¦‚æœç¬¬ä¸€ä¸ªå—å¤§äºå·²ç¡®è®¤åºå·ï¼Œåˆ™æ¯”è¾ƒç¬¬ä¸€ä¸ªSACKå—å’Œç¬¬äºŒä¸ªSACKå—ï¼Œå¦‚æœç¬¬ä¸€ä¸ªSACKå—åŒ…å«åœ¨ç¬¬äºŒä¸ªSACKä¸­ï¼Œåˆ™ä¹Ÿæ˜¯DSACKå— */
 				   !after(end_seq, ntohl(sp[1].end_seq)) &&
 				   !before(start_seq, ntohl(sp[1].start_seq))) {
 				dup_sack = 1;
@@ -1081,55 +1081,55 @@ tcp_sacktag_write_queue(struct sock *sk, struct sk_buff *ack_skb, u32 prior_snd_
 			/* D-SACK for already forgotten data...
 			 * Do dumb counting. */
 			/**
-			 * undo_markerÊÇ³¬Ê±ÖØ´«»òÕßFRTOÊ±¼ÇÂ¼µÄUNA£¬prior_snd_unaÊÇ±¾´ÎACKÖ®Ç°µÄUNA
-			 * Èç¹ûDSACKÔÚÕâÖ®¼ä£¬ËµÃ÷ÊÇ³¬Ê±ÖØ´«»òFRTOÖ®ºó½øĞĞµÄÖØ´«
+			 * undo_markeræ˜¯è¶…æ—¶é‡ä¼ æˆ–è€…FRTOæ—¶è®°å½•çš„UNAï¼Œprior_snd_unaæ˜¯æœ¬æ¬¡ACKä¹‹å‰çš„UNA
+			 * å¦‚æœDSACKåœ¨è¿™ä¹‹é—´ï¼Œè¯´æ˜æ˜¯è¶…æ—¶é‡ä¼ æˆ–FRTOä¹‹åè¿›è¡Œçš„é‡ä¼ 
 			 */
 			if (dup_sack &&
 			    !after(end_seq, prior_snd_una) &&
 			    after(end_seq, tp->undo_marker))
-				tp->undo_retrans--;/* ½ÓÊÕ·½ÖØ¸´½ÓÊÕÁË£¬¼õÉÙundo_retrans£¬ËµÃ÷ÍøÂçÓµÈû¿ÉÄÜ²»ÊÇºÜÑÏÖØ£¬¼õµ½0Ê±£¬Ó¦µ±»Ö¸´µ½Õı³£×´Ì¬ */
+				tp->undo_retrans--;/* æ¥æ”¶æ–¹é‡å¤æ¥æ”¶äº†ï¼Œå‡å°‘undo_retransï¼Œè¯´æ˜ç½‘ç»œæ‹¥å¡å¯èƒ½ä¸æ˜¯å¾ˆä¸¥é‡ï¼Œå‡åˆ°0æ—¶ï¼Œåº”å½“æ¢å¤åˆ°æ­£å¸¸çŠ¶æ€ */
 
 			/* Eliminate too old ACKs, but take into
 			 * account more or less fresh ones, they can
 			 * contain valid SACK info.
 			 */
-			/* ACKÊÇÒ»¸ö´°¿ÚÒÔÇ°µÄ£¬ËµÃ÷ACKÌ«ÀÏÁË£¬²»ĞèÒªÔÙ´¦Àí */
+			/* ACKæ˜¯ä¸€ä¸ªçª—å£ä»¥å‰çš„ï¼Œè¯´æ˜ACKå¤ªè€äº†ï¼Œä¸éœ€è¦å†å¤„ç† */
 			if (before(ack, prior_snd_una - tp->max_window))
 				return 0;
 		}
 
 		/* Event "B" in the comment above. */
-		if (after(end_seq, tp->high_seq))/* SACK³¬¹ıÁËÖØ´«¶ÓÁĞµÄÎ²²¿£¬ËµÃ÷ÓĞ¶Î¶ªÊ§£¬Ôö¼ÓLOST±êÖ¾ */
+		if (after(end_seq, tp->high_seq))/* SACKè¶…è¿‡äº†é‡ä¼ é˜Ÿåˆ—çš„å°¾éƒ¨ï¼Œè¯´æ˜æœ‰æ®µä¸¢å¤±ï¼Œå¢åŠ LOSTæ ‡å¿— */
 			flag |= FLAG_DATA_LOST;
 
-		sk_stream_for_retrans_queue(skb, sk) {/* ±éÀúÖØ´«¶ÓÁĞ */
+		sk_stream_for_retrans_queue(skb, sk) {/* éå†é‡ä¼ é˜Ÿåˆ— */
 			u8 sacked = TCP_SKB_CB(skb)->sacked;
 			int in_sack;
 
 			/* The retransmission queue is always in order, so
 			 * we can short-circuit the walk early.
 			 */
-			/* ÖØ´«¶ÓÁĞÊÇÅÅĞòµÄ£¬Òò´ËÈç¹ûµ±Ç°SKBĞòºÅ´óÓÚSACKÓÒ¶ËĞòºÅÊ±£¬Ôò²»±Ø¼ÌĞø´¦Àí */
+			/* é‡ä¼ é˜Ÿåˆ—æ˜¯æ’åºçš„ï¼Œå› æ­¤å¦‚æœå½“å‰SKBåºå·å¤§äºSACKå³ç«¯åºå·æ—¶ï¼Œåˆ™ä¸å¿…ç»§ç»­å¤„ç† */
 			if(!before(TCP_SKB_CB(skb)->seq, end_seq))
 				break;
 
 			fack_count += tcp_skb_pcount(skb);
 
-			/* ¼ì²âµ±Ç°¶ÎÊÇ·ñÍêÈ«ÔÚSACKÖĞ£¬Èç¹ûÊÇ£¬ÔòËµÃ÷¸Ã¶ÎÒÑ¾­ÍêÈ«±»½ÓÊÕµ½ */
+			/* æ£€æµ‹å½“å‰æ®µæ˜¯å¦å®Œå…¨åœ¨SACKä¸­ï¼Œå¦‚æœæ˜¯ï¼Œåˆ™è¯´æ˜è¯¥æ®µå·²ç»å®Œå…¨è¢«æ¥æ”¶åˆ° */
 			in_sack = !after(start_seq, TCP_SKB_CB(skb)->seq) &&
 				!before(end_seq, TCP_SKB_CB(skb)->end_seq);
 
 			/* Account D-SACK for retransmitted packet. */
-			if ((dup_sack && in_sack) &&/* ÖØ¸´½ÓÊÕ£¬¶ÎÍêÈ«ÔÚSACKÖ®ÄÚ */
-			    (sacked & TCPCB_RETRANS) &&/* ÖØ´«¶Î */
-			    after(TCP_SKB_CB(skb)->end_seq, tp->undo_marker))/* ¶ÎÎ»ÓÚÉÏ´ÎÓµÈûĞòºÅÖ®ºó */
-				tp->undo_retrans--;/* ËµÃ÷½ÓÊÕ·½ÖØ¸´½ÓÊÕÁË¸ÃTCP¶Î£¬Òò´Ë¼õÉÙundo_retrans */
+			if ((dup_sack && in_sack) &&/* é‡å¤æ¥æ”¶ï¼Œæ®µå®Œå…¨åœ¨SACKä¹‹å†… */
+			    (sacked & TCPCB_RETRANS) &&/* é‡ä¼ æ®µ */
+			    after(TCP_SKB_CB(skb)->end_seq, tp->undo_marker))/* æ®µä½äºä¸Šæ¬¡æ‹¥å¡åºå·ä¹‹å */
+				tp->undo_retrans--;/* è¯´æ˜æ¥æ”¶æ–¹é‡å¤æ¥æ”¶äº†è¯¥TCPæ®µï¼Œå› æ­¤å‡å°‘undo_retrans */
 
 			/* The frame is ACKed. */
-			/* ¸Ã¶ÎÒÑ¾­È·ÈÏ¹ı£¬ÔòÌø¹ı */
+			/* è¯¥æ®µå·²ç»ç¡®è®¤è¿‡ï¼Œåˆ™è·³è¿‡ */
 			if (!after(TCP_SKB_CB(skb)->end_seq, tp->snd_una)) {
-				if (sacked&TCPCB_RETRANS) {/* ÒÑ¾­È·ÈÏ¹ıµÄ¶ÎÖØ´«¹ı */
-					if ((dup_sack && in_sack) &&/* µ±Ç°SACK¿éÈ·ÈÏÁË¸Ã¶Î */
+				if (sacked&TCPCB_RETRANS) {/* å·²ç»ç¡®è®¤è¿‡çš„æ®µé‡ä¼ è¿‡ */
+					if ((dup_sack && in_sack) &&/* å½“å‰SACKå—ç¡®è®¤äº†è¯¥æ®µ */
 					    (sacked&TCPCB_SACKED_ACKED))
 						reord = min(fack_count, reord);
 				} else {
@@ -1143,29 +1143,29 @@ tcp_sacktag_write_queue(struct sock *sk, struct sk_buff *ack_skb, u32 prior_snd_
 				continue;
 			}
 
-			/* ¿ÉÄÜ¶ªÊ§µÄ¶ÎµÄ·¶Î§ÎªÖØ´«¶ÓÁĞÍ·ºÍSACK¿éÖĞ×îºóÒ»¸öÖØ´«¶ÎÖ®¼ä */
+			/* å¯èƒ½ä¸¢å¤±çš„æ®µçš„èŒƒå›´ä¸ºé‡ä¼ é˜Ÿåˆ—å¤´å’ŒSACKå—ä¸­æœ€åä¸€ä¸ªé‡ä¼ æ®µä¹‹é—´ */
 			if ((sacked&TCPCB_SACKED_RETRANS) &&
 			    after(end_seq, TCP_SKB_CB(skb)->ack_seq) &&
 			    (!lost_retrans || after(end_seq, lost_retrans)))
 				lost_retrans = end_seq;
 
-			/* ²»´¦ÀíÎ»ÓÚACK¿éÖ®¼äµÄ¶Î */
+			/* ä¸å¤„ç†ä½äºACKå—ä¹‹é—´çš„æ®µ */
 			if (!in_sack)
 				continue;
 
 			if (!(sacked&TCPCB_SACKED_ACKED)) {
-				if (sacked & TCPCB_SACKED_RETRANS) {/* SACKÈ·ÈÏµÄÊÇÈÏÎª¶ªÊ§²¢¾­¹ıÖØ´«µÄ¶Î£¬ËµÃ÷²¢Ã»ÓĞ¶ªÊ§ */
+				if (sacked & TCPCB_SACKED_RETRANS) {/* SACKç¡®è®¤çš„æ˜¯è®¤ä¸ºä¸¢å¤±å¹¶ç»è¿‡é‡ä¼ çš„æ®µï¼Œè¯´æ˜å¹¶æ²¡æœ‰ä¸¢å¤± */
 					/* If the segment is not tagged as lost,
 					 * we do not clear RETRANS, believing
 					 * that retransmission is still in flight.
 					 */
 					if (sacked & TCPCB_LOST) {
-						/* È¥³ıLOST±êÖ¾ */
+						/* å»é™¤LOSTæ ‡å¿— */
 						TCP_SKB_CB(skb)->sacked &= ~(TCPCB_LOST|TCPCB_SACKED_RETRANS);
 						tp->lost_out -= tcp_skb_pcount(skb);
 						tp->retrans_out -= tcp_skb_pcount(skb);
 					}
-				} else {/* È·ÈÏµÄÊÇÎ´ÖØ´«¹ıµÄ¶Î */
+				} else {/* ç¡®è®¤çš„æ˜¯æœªé‡ä¼ è¿‡çš„æ®µ */
 					/* New sack for not retransmitted frame,
 					 * which was in hole. It is reordering.
 					 */
@@ -1173,13 +1173,13 @@ tcp_sacktag_write_queue(struct sock *sk, struct sk_buff *ack_skb, u32 prior_snd_
 					    fack_count < prior_fackets)
 						reord = min(fack_count, reord);
 
-					if (sacked & TCPCB_LOST) {/* Èç¹ûÊÇLOST¶Î£¬ÔòÇå³ıLOST±êÖ¾ */
+					if (sacked & TCPCB_LOST) {/* å¦‚æœæ˜¯LOSTæ®µï¼Œåˆ™æ¸…é™¤LOSTæ ‡å¿— */
 						TCP_SKB_CB(skb)->sacked &= ~TCPCB_LOST;
 						tp->lost_out -= tcp_skb_pcount(skb);
 					}
 				}
 
-				/* ÓÉÓÚ¸Ã´¦ÓÚSACKÖĞ£¬Òò´ËÌí¼ÓÏà¹Ø±ê¼Ç£¬ÀÛ¼Æsacked_out */
+				/* ç”±äºè¯¥å¤„äºSACKä¸­ï¼Œå› æ­¤æ·»åŠ ç›¸å…³æ ‡è®°ï¼Œç´¯è®¡sacked_out */
 				TCP_SKB_CB(skb)->sacked |= TCPCB_SACKED_ACKED;
 				flag |= FLAG_DATA_SACKED;
 				tp->sacked_out += tcp_skb_pcount(skb);
@@ -1196,7 +1196,7 @@ tcp_sacktag_write_queue(struct sock *sk, struct sk_buff *ack_skb, u32 prior_snd_
 			 * undo_retrans is decreased above, L|R frames
 			 * are accounted above as well.
 			 */
-			if (dup_sack &&/* ¶ÔÖØ´«°üÀ´Ëµ£¬ÊÕµ½SACKËµÃ÷ÖØ´«ÊÇ¶àÓàµÄ */
+			if (dup_sack &&/* å¯¹é‡ä¼ åŒ…æ¥è¯´ï¼Œæ”¶åˆ°SACKè¯´æ˜é‡ä¼ æ˜¯å¤šä½™çš„ */
 			    (TCP_SKB_CB(skb)->sacked&TCPCB_SACKED_RETRANS)) {
 				TCP_SKB_CB(skb)->sacked &= ~TCPCB_SACKED_RETRANS;
 				tp->retrans_out -= tcp_skb_pcount(skb);
@@ -1210,11 +1210,11 @@ tcp_sacktag_write_queue(struct sock *sk, struct sk_buff *ack_skb, u32 prior_snd_
 	 * we have to account for reordering! Ugly,
 	 * but should help.
 	 */
-	if (lost_retrans && tp->ca_state == TCP_CA_Recovery) {/* ÓµÈû»ú×´Ì¬´¦ÓÚRecovery×´Ì¬£¬²¢ÇÒ´æÔÚ¿ÉÄÜ¶ªÊ§µÄ¶Î */
+	if (lost_retrans && tp->ca_state == TCP_CA_Recovery) {/* æ‹¥å¡æœºçŠ¶æ€å¤„äºRecoveryçŠ¶æ€ï¼Œå¹¶ä¸”å­˜åœ¨å¯èƒ½ä¸¢å¤±çš„æ®µ */
 		struct sk_buff *skb;
 
-		sk_stream_for_retrans_queue(skb, sk) {/* ±éÀúËùÓĞÖØ´«¶ÓÁĞÖĞµÄ¶Î */
-			/* Ö»´¦Àí½éÓÚUNAºÍlost_retransÖ®¼äµÄ¶Î */
+		sk_stream_for_retrans_queue(skb, sk) {/* éå†æ‰€æœ‰é‡ä¼ é˜Ÿåˆ—ä¸­çš„æ®µ */
+			/* åªå¤„ç†ä»‹äºUNAå’Œlost_retransä¹‹é—´çš„æ®µ */
 			if (after(TCP_SKB_CB(skb)->seq, lost_retrans))
 				break;
 			if (!after(TCP_SKB_CB(skb)->end_seq, tp->snd_una))
@@ -1238,10 +1238,10 @@ tcp_sacktag_write_queue(struct sock *sk, struct sk_buff *ack_skb, u32 prior_snd_
 		}
 	}
 
-	/* ¼ÆËãÒÑ¾­Àë¿ªÖ÷»úµ«Î´±»È·ÈÏµÄ¶ÎÊı£¬°üÀ¨Í¨¹ıSACKÈ·ÈÏµÄ¶ÎºÍÈ·ÈÏ¶ªÊ§µÄ¶Î */
+	/* è®¡ç®—å·²ç»ç¦»å¼€ä¸»æœºä½†æœªè¢«ç¡®è®¤çš„æ®µæ•°ï¼ŒåŒ…æ‹¬é€šè¿‡SACKç¡®è®¤çš„æ®µå’Œç¡®è®¤ä¸¢å¤±çš„æ®µ */
 	tp->left_out = tp->sacked_out + tp->lost_out;
 
-	/* ¸üĞÂÅÅĞò·§Öµ */
+	/* æ›´æ–°æ’åºé˜€å€¼ */
 	if ((reord < tp->fackets_out) && tp->ca_state != TCP_CA_Loss)
 		tcp_update_reordering(tp, ((tp->fackets_out + 1) - reord), 0);
 
@@ -1259,20 +1259,20 @@ tcp_sacktag_write_queue(struct sock *sk, struct sk_buff *ack_skb, u32 prior_snd_
  * If the RTO was spurious, new ACKs should arrive.
  */
 /**
- * µ±·¢ËÍ¶Î³¬Ê±ºó£¬²»Ö±½Ó½øÈëLOSS×´Ì¬£¬¶øÊÇ½øÈëFRTO×´Ì¬¡£
- * ¶øÊÇ´«ËÍÁ½¸ö¶Îºó¸ù¾İ½ÓÊÕµ½µÄACKÀ´È·ÈÏÊı¾İÊÇ·ñ¶ªÊ§¡£±ÜÃâĞé¼ÙµÄ³¬Ê±¡£
+ * å½“å‘é€æ®µè¶…æ—¶åï¼Œä¸ç›´æ¥è¿›å…¥LOSSçŠ¶æ€ï¼Œè€Œæ˜¯è¿›å…¥FRTOçŠ¶æ€ã€‚
+ * è€Œæ˜¯ä¼ é€ä¸¤ä¸ªæ®µåæ ¹æ®æ¥æ”¶åˆ°çš„ACKæ¥ç¡®è®¤æ•°æ®æ˜¯å¦ä¸¢å¤±ã€‚é¿å…è™šå‡çš„è¶…æ—¶ã€‚
  */
 void tcp_enter_frto(struct sock *sk)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
 	struct sk_buff *skb;
 
-	tp->frto_counter = 1;/* Îª1±íÊ¾¸Õ½øÈëFRTO */
+	tp->frto_counter = 1;/* ä¸º1è¡¨ç¤ºåˆšè¿›å…¥FRTO */
 
 	if (tp->ca_state <= TCP_CA_Disorder ||
             tp->snd_una == tp->high_seq ||
-            (tp->ca_state == TCP_CA_Loss && !tp->retransmits)) {/* ½øÈëFRTOÊ±£¬ÍøÂç±È½ÏÁ÷³© */
-		tp->prior_ssthresh = tcp_current_ssthresh(tp);/* ±£´æÂıÆô¶¯·§Öµ */
+            (tp->ca_state == TCP_CA_Loss && !tp->retransmits)) {/* è¿›å…¥FRTOæ—¶ï¼Œç½‘ç»œæ¯”è¾ƒæµç•… */
+		tp->prior_ssthresh = tcp_current_ssthresh(tp);/* ä¿å­˜æ…¢å¯åŠ¨é˜€å€¼ */
 		if (!tcp_westwood_ssthresh(tp))
 			tp->snd_ssthresh = tcp_recalc_ssthresh(tp);
 	}
@@ -1282,7 +1282,7 @@ void tcp_enter_frto(struct sock *sk)
 	 * If something was really lost, it is eventually caught up
 	 * in tcp_enter_frto_loss.
 	 */
-	/* Çå³ıÓëÖØ´«Ïà¹ØµÄ±ê¼Ç£¬Í¬Ê±¼ÇÂ¼µ±Ç°NUA£¬ÒÔ±ã»Ö¸´ */
+	/* æ¸…é™¤ä¸é‡ä¼ ç›¸å…³çš„æ ‡è®°ï¼ŒåŒæ—¶è®°å½•å½“å‰NUAï¼Œä»¥ä¾¿æ¢å¤ */
 	tp->retrans_out = 0;
 	tp->undo_marker = tp->snd_una;
 	tp->undo_retrans = 0;
@@ -1290,10 +1290,10 @@ void tcp_enter_frto(struct sock *sk)
 	sk_stream_for_retrans_queue(skb, sk) {
 		TCP_SKB_CB(skb)->sacked &= ~TCPCB_RETRANS;
 	}
-	/* Ë¢ĞÂÎ´È·ÈÏµÄTCP¶ÎÊıÁ¿ */
+	/* åˆ·æ–°æœªç¡®è®¤çš„TCPæ®µæ•°é‡ */
 	tcp_sync_left_out(tp);
 
-	/* ¼ÇÂ¼ÏÂFRTO×´Ì¬Ê±µÄnxt */
+	/* è®°å½•ä¸‹FRTOçŠ¶æ€æ—¶çš„nxt */
 	tcp_set_ca_state(tp, TCP_CA_Open);
 	tp->frto_highmark = tp->snd_nxt;
 }
@@ -1303,7 +1303,7 @@ void tcp_enter_frto(struct sock *sk)
  * i.e. mark everything lost and do go-back-N retransmission.
  */
 /**
- * ÔÚFRTO½×¶Î£¬Èç¹û½ÓÊÕµ½ACK·¢ÏÖÈ·ÊµÊÇ²úÉúÁË´«ËÍ³¬Ê±£¬Ôòµ÷ÓÃ´Ëº¯Êı½øÈëÓµÈû»Ö¸´½×¶Î£¬¿ªÊ¼ÂıÆô¶¯¹ı³Ì¡£
+ * åœ¨FRTOé˜¶æ®µï¼Œå¦‚æœæ¥æ”¶åˆ°ACKå‘ç°ç¡®å®æ˜¯äº§ç”Ÿäº†ä¼ é€è¶…æ—¶ï¼Œåˆ™è°ƒç”¨æ­¤å‡½æ•°è¿›å…¥æ‹¥å¡æ¢å¤é˜¶æ®µï¼Œå¼€å§‹æ…¢å¯åŠ¨è¿‡ç¨‹ã€‚
  */
 static void tcp_enter_frto_loss(struct sock *sk)
 {
@@ -1311,21 +1311,21 @@ static void tcp_enter_frto_loss(struct sock *sk)
 	struct sk_buff *skb;
 	int cnt = 0;
 
-	/* ½øÈëLoss×´Ì¬ºó£¬ÖØĞÂÍ³¼ÆÏà¹ØµÄSACK¡¢¶ªÊ§µÈµÈÊı¾İ */
+	/* è¿›å…¥LossçŠ¶æ€åï¼Œé‡æ–°ç»Ÿè®¡ç›¸å…³çš„SACKã€ä¸¢å¤±ç­‰ç­‰æ•°æ® */
 	tp->sacked_out = 0;
 	tp->lost_out = 0;
 	tp->fackets_out = 0;
 
-	/* ±éÀúÖØ´«¶ÓÁĞ£¬ÖØĞÂ±ê¼ÇLOST±êÖ¾¡£ */
+	/* éå†é‡ä¼ é˜Ÿåˆ—ï¼Œé‡æ–°æ ‡è®°LOSTæ ‡å¿—ã€‚ */
 	sk_stream_for_retrans_queue(skb, sk) {
 		cnt += tcp_skb_pcount(skb);
 		TCP_SKB_CB(skb)->sacked &= ~TCPCB_LOST;
-		if (!(TCP_SKB_CB(skb)->sacked&TCPCB_SACKED_ACKED)) {/* ÒÑ¾­È·ÈÏ¹ıµÄ²»ÓÃĞŞ¸Ä */
+		if (!(TCP_SKB_CB(skb)->sacked&TCPCB_SACKED_ACKED)) {/* å·²ç»ç¡®è®¤è¿‡çš„ä¸ç”¨ä¿®æ”¹ */
 
 			/* Do not mark those segments lost that were
 			 * forward transmitted after RTO
 			 */
-			if (!after(TCP_SKB_CB(skb)->end_seq,/* ÉèÖÃ±êÖ¾ */
+			if (!after(TCP_SKB_CB(skb)->end_seq,/* è®¾ç½®æ ‡å¿— */
 				   tp->frto_highmark)) {
 				TCP_SKB_CB(skb)->sacked |= TCPCB_LOST;
 				tp->lost_out += tcp_skb_pcount(skb);
@@ -1337,7 +1337,7 @@ static void tcp_enter_frto_loss(struct sock *sk)
 	}
 	tcp_sync_left_out(tp);
 
-	/* ½øÈëLoss×´Ì¬£¬ÖØĞÂÉèÖÃÓµÈû´°¿ÚµÈµÈ */
+	/* è¿›å…¥LossçŠ¶æ€ï¼Œé‡æ–°è®¾ç½®æ‹¥å¡çª—å£ç­‰ç­‰ */
 	tp->snd_cwnd = tp->frto_counter + tcp_packets_in_flight(tp)+1;
 	tp->snd_cwnd_cnt = 0;
 	tp->snd_cwnd_stamp = tcp_time_stamp;
@@ -1370,7 +1370,7 @@ void tcp_clear_retrans(struct tcp_sock *tp)
  * and reset tags completely, otherwise preserve SACKs. If receiver
  * dropped its ofo queue, we will know this due to reneging detection.
  */
-/* ½øÈëLOSS×´Ì¬ */
+/* è¿›å…¥LOSSçŠ¶æ€ */
 void tcp_enter_loss(struct sock *sk, int how)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
@@ -1379,14 +1379,14 @@ void tcp_enter_loss(struct sock *sk, int how)
 
 	/* Reduce ssthresh if it has not yet been made inside this window. */
 	if (tp->ca_state <= TCP_CA_Disorder || tp->snd_una == tp->high_seq ||
-	    (tp->ca_state == TCP_CA_Loss && !tp->retransmits)) {/* ¸Õ½øÈëLOSS×´Ì¬ */
-	    /* ÉèÖÃ·¢ËÍÓµÈû´°¿ÚµÄ·§Öµ */
+	    (tp->ca_state == TCP_CA_Loss && !tp->retransmits)) {/* åˆšè¿›å…¥LOSSçŠ¶æ€ */
+	    /* è®¾ç½®å‘é€æ‹¥å¡çª—å£çš„é˜€å€¼ */
 		tp->prior_ssthresh = tcp_current_ssthresh(tp);
 		tp->snd_ssthresh = tcp_recalc_ssthresh(tp);
 	}
-	/* ½«ÓµÈû´°¿ÚÉèÖÃÎª1¸ö¶Î */
+	/* å°†æ‹¥å¡çª—å£è®¾ç½®ä¸º1ä¸ªæ®µ */
 	tp->snd_cwnd	   = 1;
-	/* Çå³ıCAK¶Î¼ÆÊı£¬ºÍÓµÈû´°¿ÚÊ±¼ä */
+	/* æ¸…é™¤CAKæ®µè®¡æ•°ï¼Œå’Œæ‹¥å¡çª—å£æ—¶é—´ */
 	tp->snd_cwnd_cnt   = 0;
 	tp->snd_cwnd_stamp = tcp_time_stamp;
 
@@ -1394,43 +1394,43 @@ void tcp_enter_loss(struct sock *sk, int how)
 
 	/* Push undo marker, if it was plain RTO and nothing
 	 * was retransmitted. */
-	if (!how)/* ²»Çå³ıSACK±ê¼Ç£¬Ôò¼ÇÂ¼UNAÒÔ±ãÔÚºÏÊÊµÄÊ±ºòÄÜ¹»½øĞĞÓµÈû´°¿Úµ÷Õû³·Ïú²Ù×÷ */
+	if (!how)/* ä¸æ¸…é™¤SACKæ ‡è®°ï¼Œåˆ™è®°å½•UNAä»¥ä¾¿åœ¨åˆé€‚çš„æ—¶å€™èƒ½å¤Ÿè¿›è¡Œæ‹¥å¡çª—å£è°ƒæ•´æ’¤é”€æ“ä½œ */
 		tp->undo_marker = tp->snd_una;
 
 	sk_stream_for_retrans_queue(skb, sk) {
-		cnt += tcp_skb_pcount(skb);/* ¶ÎÖĞGSO·Ö¶ÎÊıÁ¿£¬ÓÃÓÚÀÛ¼Æfackets_out */
-		/* ÖØ´«¶ÓÁĞÖĞ¶ÎµÄ¼Ç·ÖÅÆÒÑ¾­ÓĞÖØ´«±êÖ¾£¬ÔòÇå³ıÓµÈû´°¿Úµ÷Õû³·Ïú±ê¼Ç */
+		cnt += tcp_skb_pcount(skb);/* æ®µä¸­GSOåˆ†æ®µæ•°é‡ï¼Œç”¨äºç´¯è®¡fackets_out */
+		/* é‡ä¼ é˜Ÿåˆ—ä¸­æ®µçš„è®°åˆ†ç‰Œå·²ç»æœ‰é‡ä¼ æ ‡å¿—ï¼Œåˆ™æ¸…é™¤æ‹¥å¡çª—å£è°ƒæ•´æ’¤é”€æ ‡è®° */
 		if (TCP_SKB_CB(skb)->sacked&TCPCB_RETRANS)
 			tp->undo_marker = 0;
-		/* ½«ÖØ´«¶ÓÁĞÖĞ¶Î¼Ç·ÖÅÆÈ¥µôÖØ´«ºÍ¶ªÊ§±ê¼Ç */
+		/* å°†é‡ä¼ é˜Ÿåˆ—ä¸­æ®µè®°åˆ†ç‰Œå»æ‰é‡ä¼ å’Œä¸¢å¤±æ ‡è®° */
 		TCP_SKB_CB(skb)->sacked &= (~TCPCB_TAGBITS)|TCPCB_SACKED_ACKED;
-		/* ¶Î¼Ç·ÖÅÆÃ»ÓĞSACK±ê¼Ç»òĞèÒªÇå³ıSACK±ê¼Ç */
+		/* æ®µè®°åˆ†ç‰Œæ²¡æœ‰SACKæ ‡è®°æˆ–éœ€è¦æ¸…é™¤SACKæ ‡è®° */
 		if (!(TCP_SKB_CB(skb)->sacked&TCPCB_SACKED_ACKED) || how) {
-			/* Çå³ıSACK±ê¼Ç²¢¼ÓÉÏLOST±ê¼Ç */
+			/* æ¸…é™¤SACKæ ‡è®°å¹¶åŠ ä¸ŠLOSTæ ‡è®° */
 			TCP_SKB_CB(skb)->sacked &= ~TCPCB_SACKED_ACKED;
 			TCP_SKB_CB(skb)->sacked |= TCPCB_LOST;
-			/* Í³¼Æ¶ªÊ§¶ÎµÄÊıÁ¿ */
+			/* ç»Ÿè®¡ä¸¢å¤±æ®µçš„æ•°é‡ */
 			tp->lost_out += tcp_skb_pcount(skb);
 		} else {
-			/* ¸üĞÂSACKÈ·ÈÏµÄÊıÁ¿ºÍfackets_out */
+			/* æ›´æ–°SACKç¡®è®¤çš„æ•°é‡å’Œfackets_out */
 			tp->sacked_out += tcp_skb_pcount(skb);
 			tp->fackets_out = cnt;
 		}
 	}
 	tcp_sync_left_out(tp);
 
-	/* ÖØÅÅĞòµÄÊıÁ¿ */
+	/* é‡æ’åºçš„æ•°é‡ */
 	tp->reordering = min_t(unsigned int, tp->reordering,
 					     sysctl_tcp_reordering);
-	/* ÉèÖÃÓµÈû×´Ì¬ÎªLOSS×´Ì¬ */
+	/* è®¾ç½®æ‹¥å¡çŠ¶æ€ä¸ºLOSSçŠ¶æ€ */
 	tcp_set_ca_state(tp, TCP_CA_Loss);
-	/* ·¢ÉúÓµÈûÊ±µÄnxt */
+	/* å‘ç”Ÿæ‹¥å¡æ—¶çš„nxt */
 	tp->high_seq = tp->snd_nxt;
-	/* Çå³ıÖØ´«µÄ±äÁ¿ */
+	/* æ¸…é™¤é‡ä¼ çš„å˜é‡ */
 	TCP_ECN_queue_cwr(tp);
 }
 
-/* Èç¹û½ÓÊÕµ½µÄACKÈ·ÈÏµÄÊÇÒÑ¾­Í¨¹ıSACKÈ·ÈÏµÄ¶Î£¬Ôò±íÊ¾¼ÇÂ¼µÄSACK²»ÄÜ·´Ó³½ÓÊÕ·½Êµ¼ÊµÄ×´Ì¬ */
+/* å¦‚æœæ¥æ”¶åˆ°çš„ACKç¡®è®¤çš„æ˜¯å·²ç»é€šè¿‡SACKç¡®è®¤çš„æ®µï¼Œåˆ™è¡¨ç¤ºè®°å½•çš„SACKä¸èƒ½åæ˜ æ¥æ”¶æ–¹å®é™…çš„çŠ¶æ€ */
 static int tcp_check_sack_reneging(struct sock *sk, struct tcp_sock *tp)
 {
 	struct sk_buff *skb;
@@ -1563,30 +1563,30 @@ static inline int tcp_head_timedout(struct sock *sk, struct tcp_sock *tp)
  * Main question: may we further continue forward transmission
  * with the same cwnd?
  */
-/* ÓÃÓÚ¼ì²âÄÜ·ñ½øÈë¿ìËÙ»Ö¸´×´Ì¬¡£¶ÔÓÚNewRenoÀ´Ëµ£¬Á¬Ğø½ÓÊÕµ½3¸öÖØ¸´È·ÈÏ£¬±ã»á½øÈërecover×´Ì¬ */
+/* ç”¨äºæ£€æµ‹èƒ½å¦è¿›å…¥å¿«é€Ÿæ¢å¤çŠ¶æ€ã€‚å¯¹äºNewRenoæ¥è¯´ï¼Œè¿ç»­æ¥æ”¶åˆ°3ä¸ªé‡å¤ç¡®è®¤ï¼Œä¾¿ä¼šè¿›å…¥recoverçŠ¶æ€ */
 static int tcp_time_to_recover(struct sock *sk, struct tcp_sock *tp)
 {
 	__u32 packets_out;
 
 	/* Trick#1: The loss is proven. */
-	if (tp->lost_out)/* ÓĞ¶ªÊ§µÄ¶Î£¬Ôò¿ÉÒÔ½øÈërecover×´Ì¬ */
+	if (tp->lost_out)/* æœ‰ä¸¢å¤±çš„æ®µï¼Œåˆ™å¯ä»¥è¿›å…¥recoverçŠ¶æ€ */
 		return 1;
 
 	/* Not-A-Trick#2 : Classic rule... */
-	if (tcp_fackets_out(tp) > tp->reordering)/* ¶ªÊ§µÄ¶Î³¬¹ıÂÒĞòµÄ¶Î */
+	if (tcp_fackets_out(tp) > tp->reordering)/* ä¸¢å¤±çš„æ®µè¶…è¿‡ä¹±åºçš„æ®µ */
 		return 1;
 
 	/* Trick#3 : when we use RFC2988 timer restart, fast
 	 * retransmit can be triggered by timeout of queue head.
 	 */
-	if (tcp_head_timedout(sk, tp))/* ÖØ´«¶ÓÁĞ¶ÓÊ×µÄ¶Î·¢ËÍ³¬Ê±£¬¿ÉÒÔ½øÈërecover×´Ì¬ */
+	if (tcp_head_timedout(sk, tp))/* é‡ä¼ é˜Ÿåˆ—é˜Ÿé¦–çš„æ®µå‘é€è¶…æ—¶ï¼Œå¯ä»¥è¿›å…¥recoverçŠ¶æ€ */
 		return 1;
 
 	/* Trick#4: It is still not OK... But will it be useful to delay
 	 * recovery more?
 	 */
 	packets_out = tp->packets_out;
-	/* Î´È·ÈÏµÄ¶Î½ÏÉÙ£¬Í¨¹ıSACKÈ·ÈÏµÄ¶Î³¬¹ıÎ´È·ÈÏµÄÒ»°ë£¬Í¬Ê±Ã»ÓĞ¶ÎĞèÒª¼°Ê±Êä³ö */
+	/* æœªç¡®è®¤çš„æ®µè¾ƒå°‘ï¼Œé€šè¿‡SACKç¡®è®¤çš„æ®µè¶…è¿‡æœªç¡®è®¤çš„ä¸€åŠï¼ŒåŒæ—¶æ²¡æœ‰æ®µéœ€è¦åŠæ—¶è¾“å‡º */
 	if (packets_out <= tp->reordering &&
 	    tp->sacked_out >= max_t(__u32, packets_out/2, sysctl_tcp_reordering) &&
 	    !tcp_may_send_now(sk, tp)) {
@@ -1648,8 +1648,8 @@ static inline void tcp_reset_reno_sack(struct tcp_sock *tp)
 
 /* Mark head of queue up as lost. */
 /**
- * ´ÓÖØ´«¶ÓÁĞÊ×²¿»òÉÏ´Î±ê¼Ç¶ªÊ§¶ÎµÄÎ»ÖÃ¿ªÊ¼£¬Îª¼Ç·ÖÅÆÎª0µÄ¶ÎÌí¼ÓLOST±ê¼Ç¡£
- * Ö±µ½ËùÓĞ±»±ê¼ÇÎªLOSTµÄ¶Î´ïµ½packets»ò±»±ê¼ÇĞòºÅ³¬¹ıhigh_seqÎªÖ¹¡£
+ * ä»é‡ä¼ é˜Ÿåˆ—é¦–éƒ¨æˆ–ä¸Šæ¬¡æ ‡è®°ä¸¢å¤±æ®µçš„ä½ç½®å¼€å§‹ï¼Œä¸ºè®°åˆ†ç‰Œä¸º0çš„æ®µæ·»åŠ LOSTæ ‡è®°ã€‚
+ * ç›´åˆ°æ‰€æœ‰è¢«æ ‡è®°ä¸ºLOSTçš„æ®µè¾¾åˆ°packetsæˆ–è¢«æ ‡è®°åºå·è¶…è¿‡high_seqä¸ºæ­¢ã€‚
  */
 static void tcp_mark_head_lost(struct sock *sk, struct tcp_sock *tp,
 			       int packets, u32 high_seq)
@@ -1673,10 +1673,10 @@ static void tcp_mark_head_lost(struct sock *sk, struct tcp_sock *tp,
 
 /* Account newly detected lost packet(s) */
 
-/* ÎªÈ·¶¨¶ªÊ§µÄ¶Î¸üĞÂ¼Ç·ÖÅÆ¡£Èç¹ûÈ·ÈÏ½ÓÊÕµ½ÖØ¸´ACK»òÕßÖØ´«¶ÓÊ×µÄ¶Î´«ËÍ³¬Ê±Ê±±»µ÷ÓÃ¡£ */
+/* ä¸ºç¡®å®šä¸¢å¤±çš„æ®µæ›´æ–°è®°åˆ†ç‰Œã€‚å¦‚æœç¡®è®¤æ¥æ”¶åˆ°é‡å¤ACKæˆ–è€…é‡ä¼ é˜Ÿé¦–çš„æ®µä¼ é€è¶…æ—¶æ—¶è¢«è°ƒç”¨ã€‚ */
 static void tcp_update_scoreboard(struct sock *sk, struct tcp_sock *tp)
 {
-	/* ÎªÖØ´«¶ÓÁĞÉÏµÄ¶ÎÌí¼ÓLOST±ê¼Ç */
+	/* ä¸ºé‡ä¼ é˜Ÿåˆ—ä¸Šçš„æ®µæ·»åŠ LOSTæ ‡è®° */
 	if (IsFack(tp)) {
 		int lost = tp->fackets_out - tp->reordering;
 		if (lost <= 0)
@@ -1691,17 +1691,17 @@ static void tcp_update_scoreboard(struct sock *sk, struct tcp_sock *tp)
 	 * Hence, we can detect timed out packets during fast
 	 * retransmit without falling to slow start.
 	 */
-	if (tcp_head_timedout(sk, tp)) {/* ÖØ´«¶ÓÁĞ¶ÓÊ×µÄ¶ÎÒÑ¾­³¬Ê± */
+	if (tcp_head_timedout(sk, tp)) {/* é‡ä¼ é˜Ÿåˆ—é˜Ÿé¦–çš„æ®µå·²ç»è¶…æ—¶ */
 		struct sk_buff *skb;
 
-		sk_stream_for_retrans_queue(skb, sk) {/* ÎªÒÑ¾­³¬Ê±ÇÒ¼Ç·ÖÅÆÎª¿ÕµÄ¶ÎÌí¼ÓLOST±êÖ¾ */
+		sk_stream_for_retrans_queue(skb, sk) {/* ä¸ºå·²ç»è¶…æ—¶ä¸”è®°åˆ†ç‰Œä¸ºç©ºçš„æ®µæ·»åŠ LOSTæ ‡å¿— */
 			if (tcp_skb_timedout(tp, skb) &&
 			    !(TCP_SKB_CB(skb)->sacked&TCPCB_TAGBITS)) {
 				TCP_SKB_CB(skb)->sacked |= TCPCB_LOST;
 				tp->lost_out += tcp_skb_pcount(skb);
 			}
 		}
-		/* ¼ÆËãÒÑ¾­Àë¿ªÖ÷»úµ«ÊÇÃ»ÓĞÈ·ÈÏµÄ¶ÎÊı */
+		/* è®¡ç®—å·²ç»ç¦»å¼€ä¸»æœºä½†æ˜¯æ²¡æœ‰ç¡®è®¤çš„æ®µæ•° */
 		tcp_sync_left_out(tp);
 	}
 }
@@ -1710,9 +1710,9 @@ static void tcp_update_scoreboard(struct sock *sk, struct tcp_sock *tp)
  * in dubious situations.
  */
 /**
- * ¶ÔÓµÈû´°¿Ú½øĞĞÎ¢µ÷¡£
- * ÔÙÈ¡ÓµÈû´°¿Ú´óĞ¡ºÍÒÑ·¢ËÍµ«Î´È·ÈÏ¶ÎÊıÁ¿¼Ó3Ö®¼äµÄ×îĞ¡Öµ×÷Îªµ±Ç°ÓµÈû´°¿Ú¡£
- * ²¢¼ÇÂ¼×î½üÒ»´Îµ÷ÕûÓµÈû´°¿ÚµÄÊ±¼ä¡£
+ * å¯¹æ‹¥å¡çª—å£è¿›è¡Œå¾®è°ƒã€‚
+ * å†å–æ‹¥å¡çª—å£å¤§å°å’Œå·²å‘é€ä½†æœªç¡®è®¤æ®µæ•°é‡åŠ 3ä¹‹é—´çš„æœ€å°å€¼ä½œä¸ºå½“å‰æ‹¥å¡çª—å£ã€‚
+ * å¹¶è®°å½•æœ€è¿‘ä¸€æ¬¡è°ƒæ•´æ‹¥å¡çª—å£çš„æ—¶é—´ã€‚
  */
 static inline void tcp_moderate_cwnd(struct tcp_sock *tp)
 {
@@ -1777,44 +1777,44 @@ static void DBGUNDO(struct sock *sk, struct tcp_sock *tp, const char *msg)
 #define DBGUNDO(x...) do { } while (0)
 #endif
 
-/* ²»ÔÙËõĞ¡ÓµÈû´°¿Ú */
+/* ä¸å†ç¼©å°æ‹¥å¡çª—å£ */
 static void tcp_undo_cwr(struct tcp_sock *tp, int undo)
 {
-	if (tp->prior_ssthresh) {/* ¸ù¾İÂıÆô¶¯·§ÖµµÄ¾ÉÖµ´æÔÚÓë·ñ£¬À´È·¶¨³·Ïú²Ù×÷ */
-		/* ÔÚµ±Ç°µÄÓµÈû´°¿ÚºÍ2±¶´óµÄÂıÆô¶¯ÖµÖ®¼äÑ¡Ôñ½Ï´óÖµ×÷Îªµ±Ç°µÄÓµÈû´°¿Ú´óĞ¡ */
+	if (tp->prior_ssthresh) {/* æ ¹æ®æ…¢å¯åŠ¨é˜€å€¼çš„æ—§å€¼å­˜åœ¨ä¸å¦ï¼Œæ¥ç¡®å®šæ’¤é”€æ“ä½œ */
+		/* åœ¨å½“å‰çš„æ‹¥å¡çª—å£å’Œ2å€å¤§çš„æ…¢å¯åŠ¨å€¼ä¹‹é—´é€‰æ‹©è¾ƒå¤§å€¼ä½œä¸ºå½“å‰çš„æ‹¥å¡çª—å£å¤§å° */
 		tp->snd_cwnd = max(tp->snd_cwnd, tp->snd_ssthresh<<1);
 
-		/* ³·ÏúÂıÆô¶¯·§Öµ¼°TCP_ECN_DEMAND_CWR±êÖ¾ */
+		/* æ’¤é”€æ…¢å¯åŠ¨é˜€å€¼åŠTCP_ECN_DEMAND_CWRæ ‡å¿— */
 		if (undo && tp->prior_ssthresh > tp->snd_ssthresh) {
 			tp->snd_ssthresh = tp->prior_ssthresh;
 			TCP_ECN_withdraw_cwr(tp);
 		}
-	} else {/* ²»´æÔÚÆô¶¯·§ÖµµÄ¾ÉÖµ */
-		/* È¡ÓµÈû´°¿Ú´óĞ¡ºÍÆô¶¯·§ÖµÖ®¼äµÄ½Ï´óÎªµ±Ç°ÓµÈû´°¿Ú */
+	} else {/* ä¸å­˜åœ¨å¯åŠ¨é˜€å€¼çš„æ—§å€¼ */
+		/* å–æ‹¥å¡çª—å£å¤§å°å’Œå¯åŠ¨é˜€å€¼ä¹‹é—´çš„è¾ƒå¤§ä¸ºå½“å‰æ‹¥å¡çª—å£ */
 		tp->snd_cwnd = max(tp->snd_cwnd, tp->snd_ssthresh);
 	}
-	/* ¶ÔÓµÈû´°¿Ú½øĞĞÎ¢µ÷£¬È¡ÓµÈû´°¿Ú´óĞ¡ºÍÒÑ·¢ËÍµ«Î´È·ÈÏ¶ÎÊıÁ¿¼Ó3Ö®¼äµÄ×îĞ¡Öµ×÷Îªµ±Ç°ÓµÈû´°¿Ú */
+	/* å¯¹æ‹¥å¡çª—å£è¿›è¡Œå¾®è°ƒï¼Œå–æ‹¥å¡çª—å£å¤§å°å’Œå·²å‘é€ä½†æœªç¡®è®¤æ®µæ•°é‡åŠ 3ä¹‹é—´çš„æœ€å°å€¼ä½œä¸ºå½“å‰æ‹¥å¡çª—å£ */
 	tcp_moderate_cwnd(tp);
 	tp->snd_cwnd_stamp = tcp_time_stamp;
 }
 
-/* ÔÚ½øĞĞÓµÈû´°¿Úµ÷Õû³·ÏúÖ®Ç°£¬µ÷ÓÃ´Ëº¯Êı¼ì²âÄÜ·ñ³·Ïú */
+/* åœ¨è¿›è¡Œæ‹¥å¡çª—å£è°ƒæ•´æ’¤é”€ä¹‹å‰ï¼Œè°ƒç”¨æ­¤å‡½æ•°æ£€æµ‹èƒ½å¦æ’¤é”€ */
 static inline int tcp_may_undo(struct tcp_sock *tp)
 {
-	return tp->undo_marker &&/* ÖØ´«ÆğÊ¼µã²»Îª0 */
-		(!tp->undo_retrans || tcp_packet_delayed(tp));/* Ã»ÓĞ¿É³·ÏúµÄÖØ´«¶ÎÊı£¬»òÕßÃ»ÓĞÖØ´«»òÖØ´«ÁËÖ®ºó»¹Ã»ÓĞ½ÓÊÕµ½¶Ô·½·¢ËÍµÄÈ·ÈÏ */
+	return tp->undo_marker &&/* é‡ä¼ èµ·å§‹ç‚¹ä¸ä¸º0 */
+		(!tp->undo_retrans || tcp_packet_delayed(tp));/* æ²¡æœ‰å¯æ’¤é”€çš„é‡ä¼ æ®µæ•°ï¼Œæˆ–è€…æ²¡æœ‰é‡ä¼ æˆ–é‡ä¼ äº†ä¹‹åè¿˜æ²¡æœ‰æ¥æ”¶åˆ°å¯¹æ–¹å‘é€çš„ç¡®è®¤ */
 }
 
 /* People celebrate: "We love our President!" */
-/* ´Órecovery×´Ì¬³·Ïú */
+/* ä»recoveryçŠ¶æ€æ’¤é”€ */
 static int tcp_try_undo_recovery(struct sock *sk, struct tcp_sock *tp)
 {
-	if (tcp_may_undo(tp)) {/* ¿ÉÒÔ½øĞĞ³·Ïú */
+	if (tcp_may_undo(tp)) {/* å¯ä»¥è¿›è¡Œæ’¤é”€ */
 		/* Happy end! We did not retransmit anything
 		 * or our original transmission succeeded.
 		 */
 		DBGUNDO(sk, tp, tp->ca_state == TCP_CA_Loss ? "loss" : "retrans");
-		/* »Ö¸´ÓµÈû´°¿ÚºÍÓµÈû¿ØÖÆÊ±ÂıÆô¶¯µÄ·§Öµ */
+		/* æ¢å¤æ‹¥å¡çª—å£å’Œæ‹¥å¡æ§åˆ¶æ—¶æ…¢å¯åŠ¨çš„é˜€å€¼ */
 		tcp_undo_cwr(tp, 1);
 		if (tp->ca_state == TCP_CA_Loss)
 			NET_INC_STATS_BH(LINUX_MIB_TCPLOSSUNDO);
@@ -1822,15 +1822,15 @@ static int tcp_try_undo_recovery(struct sock *sk, struct tcp_sock *tp)
 			NET_INC_STATS_BH(LINUX_MIB_TCPFULLUNDO);
 		tp->undo_marker = 0;
 	}
-	if (tp->snd_una == tp->high_seq && IsReno(tp)) {/* ²»Ö§³ÖSACK */
+	if (tp->snd_una == tp->high_seq && IsReno(tp)) {/* ä¸æ”¯æŒSACK */
 		/* Hold old state until something *above* high_seq
 		 * is ACKed. For Reno it is MUST to prevent false
 		 * fast retransmits (RFC2582). SACK TCP is safe. */
-		 /* Ö»¶ÔÓµÈû´°¿Ú½øĞĞÎ¢µ÷ */
+		 /* åªå¯¹æ‹¥å¡çª—å£è¿›è¡Œå¾®è°ƒ */
 		tcp_moderate_cwnd(tp);
 		return 1;
 	}
-	/* Ö§³ÖSACK£¬³·Ïúµ½OPEN×´Ì¬ */
+	/* æ”¯æŒSACKï¼Œæ’¤é”€åˆ°OPENçŠ¶æ€ */
 	tcp_set_ca_state(tp, TCP_CA_Open);
 	return 0;
 }
@@ -1848,7 +1848,7 @@ static void tcp_try_undo_dsack(struct sock *sk, struct tcp_sock *tp)
 
 /* Undo during fast recovery after partial ACK. */
 
-/* ÔÚRecoveryÓµÈû×´Ì¬£¬Èç¹ûACKÈ·ÈÏÁË²¿·ÖÖØ´«µÄ¶Î£¬µ÷ÓÃ´Ëº¯Êı½øĞĞÓµÈû´°¿ÚµÄ³·Ïú */
+/* åœ¨Recoveryæ‹¥å¡çŠ¶æ€ï¼Œå¦‚æœACKç¡®è®¤äº†éƒ¨åˆ†é‡ä¼ çš„æ®µï¼Œè°ƒç”¨æ­¤å‡½æ•°è¿›è¡Œæ‹¥å¡çª—å£çš„æ’¤é”€ */
 static int tcp_try_undo_partial(struct sock *sk, struct tcp_sock *tp,
 				int acked)
 {
@@ -1878,17 +1878,17 @@ static int tcp_try_undo_partial(struct sock *sk, struct tcp_sock *tp,
 }
 
 /* Undo during loss recovery after partial ACK. */
-/* ÔÚ½ÓÊÕµ½ĞÂµÄÈ·ÈÏÊ±£¬³¢ÊÔ´ÓLOSS×´Ì¬½øÈëopen×´Ì¬£¬·µ»Ø1±íÊ¾³·Ïú³É¹¦ */
+/* åœ¨æ¥æ”¶åˆ°æ–°çš„ç¡®è®¤æ—¶ï¼Œå°è¯•ä»LOSSçŠ¶æ€è¿›å…¥opençŠ¶æ€ï¼Œè¿”å›1è¡¨ç¤ºæ’¤é”€æˆåŠŸ */
 static int tcp_try_undo_loss(struct sock *sk, struct tcp_sock *tp)
 {
-	if (tcp_may_undo(tp)) {/* ÊÇ·ñ¿ÉÒÔ´ÓLoss×´Ì¬³·Ïú */
+	if (tcp_may_undo(tp)) {/* æ˜¯å¦å¯ä»¥ä»LossçŠ¶æ€æ’¤é”€ */
 		struct sk_buff *skb;
-		/* Çå³ıÖØ´«¶ÓÁĞÉÏ£¬ËùÓĞ¶ÎµÄ¼Ç·ÖÅÆÉÏµÄLOST±êÖ¾ */
+		/* æ¸…é™¤é‡ä¼ é˜Ÿåˆ—ä¸Šï¼Œæ‰€æœ‰æ®µçš„è®°åˆ†ç‰Œä¸Šçš„LOSTæ ‡å¿— */
 		sk_stream_for_retrans_queue(skb, sk) {
 			TCP_SKB_CB(skb)->sacked &= ~TCPCB_LOST;
 		}
 		DBGUNDO(sk, tp, "partial loss");
-		/* Çå³ıËùÓĞÓëÓµÈû¿ØÖÆÏà¹ØµÄ±êÖ¾ */
+		/* æ¸…é™¤æ‰€æœ‰ä¸æ‹¥å¡æ§åˆ¶ç›¸å…³çš„æ ‡å¿— */
 		tp->lost_out = 0;
 		tp->left_out = tp->sacked_out;
 		tcp_undo_cwr(tp, 1);
@@ -1902,7 +1902,7 @@ static int tcp_try_undo_loss(struct sock *sk, struct tcp_sock *tp)
 	return 0;
 }
 
-/* ½áÊøÓµÈû´°¿Ú¼õĞ¡£¬½«ÓµÈû´°¿Ú¸üĞÂÎªÓµÈû´°¿ÚÓëÂıÆô¶¯µÄ·§ÖµÖ®¼äµÄ½ÏĞ¡Öµ¡£¼ÇÂ¼×î½üÒ»´Îµ÷ÕûÓµÈû´°¿ÚµÄÊ±¼ä */
+/* ç»“æŸæ‹¥å¡çª—å£å‡å°ï¼Œå°†æ‹¥å¡çª—å£æ›´æ–°ä¸ºæ‹¥å¡çª—å£ä¸æ…¢å¯åŠ¨çš„é˜€å€¼ä¹‹é—´çš„è¾ƒå°å€¼ã€‚è®°å½•æœ€è¿‘ä¸€æ¬¡è°ƒæ•´æ‹¥å¡çª—å£çš„æ—¶é—´ */
 static inline void tcp_complete_cwr(struct tcp_sock *tp)
 {
 	if (tcp_westwood_cwnd(tp)) 
@@ -1950,8 +1950,8 @@ static void tcp_try_to_open(struct sock *sk, struct tcp_sock *tp, int flag)
  * tcp_xmit_retransmit_queue().
  */
 /**
- * ÓµÈû¿ØÖÆ×´Ì¬µÄ´¦Àí 
- * °üÀ¨´¦ÀíÏÔÊ½ÓµÈûÍ¨Öª£¬ÅĞ¶ÏSACKÊÇ·ñĞé¼ÙµÈµÈ
+ * æ‹¥å¡æ§åˆ¶çŠ¶æ€çš„å¤„ç† 
+ * åŒ…æ‹¬å¤„ç†æ˜¾å¼æ‹¥å¡é€šçŸ¥ï¼Œåˆ¤æ–­SACKæ˜¯å¦è™šå‡ç­‰ç­‰
  */
 static void
 tcp_fastretrans_alert(struct sock *sk, u32 prior_snd_una,
@@ -1962,7 +1962,7 @@ tcp_fastretrans_alert(struct sock *sk, u32 prior_snd_una,
 
 	/* Some technical things:
 	 * 1. Reno does not count dupacks (sacked_out) automatically. */
-	/* ¶Ôsacked_outºÍfackets_out½øĞĞÎ¢µ÷ */
+	/* å¯¹sacked_outå’Œfackets_outè¿›è¡Œå¾®è°ƒ */
 	if (!tp->packets_out)
 		tp->sacked_out = 0;
         /* 2. SACK counts snd_fack in packets inaccurately. */
@@ -1971,76 +1971,76 @@ tcp_fastretrans_alert(struct sock *sk, u32 prior_snd_una,
 
         /* Now state machine starts.
 	 * A. ECE, hence prohibit cwnd undoing, the reduction is required. */
-	if (flag&FLAG_ECE)/* ½ÓÊÕµ½ÏÔÊ½ÓµÈûÍ¨Öª£¬Òò´Ë½ûÖ¹ÓµÈû´°¿Ú³·Ïú£¬²¢¿ªÊ¼¼õĞ¡ÓµÈû´°¿Ú */
+	if (flag&FLAG_ECE)/* æ¥æ”¶åˆ°æ˜¾å¼æ‹¥å¡é€šçŸ¥ï¼Œå› æ­¤ç¦æ­¢æ‹¥å¡çª—å£æ’¤é”€ï¼Œå¹¶å¼€å§‹å‡å°æ‹¥å¡çª—å£ */
 		tp->prior_ssthresh = 0;
 
 	/* B. In all the states check for reneging SACKs. */
 	/**
-	 * Èç¹û½ÓÊÕµÄACKÖ¸ÏòÒÑ¼ÇÂ¼µÄSACK£¬ËµÃ÷¼ÇÂ¼µÄSACK²»ÄÜ·´Ó¦½ÓÊÕ·½µÄÕæÊµ×´Ì¬£¬ÄÇÃ´°´ÕÕÖØ´«³¬Ê±´¦Àí 
-	 * ÒòÎªÒ»°ãÇé¿öÏÂ£¬ACKÓ¦µ±Ö¸ÏòSACKºóÃæÎ´½ÓÊÕµÄµØ·½¡£
+	 * å¦‚æœæ¥æ”¶çš„ACKæŒ‡å‘å·²è®°å½•çš„SACKï¼Œè¯´æ˜è®°å½•çš„SACKä¸èƒ½ååº”æ¥æ”¶æ–¹çš„çœŸå®çŠ¶æ€ï¼Œé‚£ä¹ˆæŒ‰ç…§é‡ä¼ è¶…æ—¶å¤„ç† 
+	 * å› ä¸ºä¸€èˆ¬æƒ…å†µä¸‹ï¼ŒACKåº”å½“æŒ‡å‘SACKåé¢æœªæ¥æ”¶çš„åœ°æ–¹ã€‚
 	 */
 	if (tp->sacked_out && tcp_check_sack_reneging(sk, tp))
 		return;
 
 	/* C. Process data loss notification, provided it is valid. */
-	if ((flag&FLAG_DATA_LOST) &&/* Í¨¹ıSACK·¢ÏÖÓĞ¶Î¶ªÊ§ */
+	if ((flag&FLAG_DATA_LOST) &&/* é€šè¿‡SACKå‘ç°æœ‰æ®µä¸¢å¤± */
 	    before(tp->snd_una, tp->high_seq) &&
 	    tp->ca_state != TCP_CA_Open &&
 	    tp->fackets_out > tp->reordering) {
-	    /* ´ÓÖØ´«¶ÓÁĞÊ×²¿»òÉÏ´Î±êÊ¶¶ªÊ§¶ÎµÄÎ»ÖÃ¿ªÊ¼£¬Îª¼Ç·ÖÅÆÎª0µÄ¶ÎÌí¼ÓLOST±ê¼Ç */
+	    /* ä»é‡ä¼ é˜Ÿåˆ—é¦–éƒ¨æˆ–ä¸Šæ¬¡æ ‡è¯†ä¸¢å¤±æ®µçš„ä½ç½®å¼€å§‹ï¼Œä¸ºè®°åˆ†ç‰Œä¸º0çš„æ®µæ·»åŠ LOSTæ ‡è®° */
 		tcp_mark_head_lost(sk, tp, tp->fackets_out-tp->reordering, tp->high_seq);
 		NET_INC_STATS_BH(LINUX_MIB_TCPLOSS);
 	}
 
 	/* D. Synchronize left_out to current state. */
-	/* ¸üĞÂÒÑ¾­Àë¿ªÖ÷»ú£¬µ«ÊÇÔÚÍøÂçÖĞÎ´È·ÈÏµÄTCP¶ÎÊı */
+	/* æ›´æ–°å·²ç»ç¦»å¼€ä¸»æœºï¼Œä½†æ˜¯åœ¨ç½‘ç»œä¸­æœªç¡®è®¤çš„TCPæ®µæ•° */
 	tcp_sync_left_out(tp);
 
 	/* E. Check state exit conditions. State can be terminated
 	 *    when high_seq is ACKed. */
-	/* ¿ªÊ¼´¦Àí´ÓÓµÈû×´Ì¬³·Ïú */
-	if (tp->ca_state == TCP_CA_Open) {/* µ±Ç°ÊÇopen×´Ì¬ */
+	/* å¼€å§‹å¤„ç†ä»æ‹¥å¡çŠ¶æ€æ’¤é”€ */
+	if (tp->ca_state == TCP_CA_Open) {/* å½“å‰æ˜¯opençŠ¶æ€ */
 		if (!sysctl_tcp_frto)
 			BUG_TRAP(tp->retrans_out == 0);
-		tp->retrans_stamp = 0;/* Çå³ıÉÏ´ÎÖØ´«½×¶ÎµÄµÚÒ»¸öÖØ´«¶ÎµÄ·¢ËÍÊ±¼ä */
-	} else if (!before(tp->snd_una, tp->high_seq)) {/* µ±ÓµÈûÊ±¼ÇÂ¼µÄnxt±»È·ÈÏÊ±£¬ÓµÈû×´¿öÒÑ¾­ºÃ×ª£¬¿ÉÒÔÊÓÇé¿ö»Øµ½open×´Ì¬ */
+		tp->retrans_stamp = 0;/* æ¸…é™¤ä¸Šæ¬¡é‡ä¼ é˜¶æ®µçš„ç¬¬ä¸€ä¸ªé‡ä¼ æ®µçš„å‘é€æ—¶é—´ */
+	} else if (!before(tp->snd_una, tp->high_seq)) {/* å½“æ‹¥å¡æ—¶è®°å½•çš„nxtè¢«ç¡®è®¤æ—¶ï¼Œæ‹¥å¡çŠ¶å†µå·²ç»å¥½è½¬ï¼Œå¯ä»¥è§†æƒ…å†µå›åˆ°opençŠ¶æ€ */
 		switch (tp->ca_state) {
-		case TCP_CA_Loss:/* ´ÓLoss×´Ì¬³·Ïúµ½open×´Ì¬ */
+		case TCP_CA_Loss:/* ä»LossçŠ¶æ€æ’¤é”€åˆ°opençŠ¶æ€ */
 			tp->retransmits = 0;
-			if (tcp_try_undo_recovery(sk, tp))/* ³·Ïú²»³É¹¦Ôò·µ»Ø */
+			if (tcp_try_undo_recovery(sk, tp))/* æ’¤é”€ä¸æˆåŠŸåˆ™è¿”å› */
 				return;
-			/* ³·Ïú³É¹¦Ôò¼ÌĞø´¦Àíopen×´Ì¬ */
+			/* æ’¤é”€æˆåŠŸåˆ™ç»§ç»­å¤„ç†opençŠ¶æ€ */
 			break;
 
 		case TCP_CA_CWR:
 			/* CWR is to be held something *above* high_seq
 			 * is ACKed for CWR bit to reach receiver. */
-			if (tp->snd_una != tp->high_seq) {/* ÓµÈûÊ±¼ÇÂ¼µÄnxt¶Î¶¼±»È·ÈÏÁË */
-				/* ¼õĞ¡ÓµÈû´°¿Ú£¬²¢³·Ïúµ½open×´Ì¬ */
+			if (tp->snd_una != tp->high_seq) {/* æ‹¥å¡æ—¶è®°å½•çš„nxtæ®µéƒ½è¢«ç¡®è®¤äº† */
+				/* å‡å°æ‹¥å¡çª—å£ï¼Œå¹¶æ’¤é”€åˆ°opençŠ¶æ€ */
 				tcp_complete_cwr(tp);
 				tcp_set_ca_state(tp, TCP_CA_Open);
 			}
 			break;
 
 		case TCP_CA_Disorder:
-			/* Èç¹ûDSACKÈ·ÈÏÁËËùÓĞÖØ´«µÄ¶Î£¬ÔòÒª³·ÏúÓµÈû´°¿Ú */
+			/* å¦‚æœDSACKç¡®è®¤äº†æ‰€æœ‰é‡ä¼ çš„æ®µï¼Œåˆ™è¦æ’¤é”€æ‹¥å¡çª—å£ */
 			tcp_try_undo_dsack(sk, tp);
-			if (!tp->undo_marker ||/* ÓµÈûÊ±¼ÇÂ¼µÄnxtÖ®ºóµÄ¶Î¶¼±»È·ÈÏÁË */
+			if (!tp->undo_marker ||/* æ‹¥å¡æ—¶è®°å½•çš„nxtä¹‹åçš„æ®µéƒ½è¢«ç¡®è®¤äº† */
 			    /* For SACK case do not Open to allow to undo
 			     * catching for all duplicate ACKs. */
-			    IsReno(tp) || tp->snd_una != tp->high_seq) {/* ÆôÓÃÁËNewReno */
-			    /* »Ö¸´µ½open×´Ì¬ */
+			    IsReno(tp) || tp->snd_una != tp->high_seq) {/* å¯ç”¨äº†NewReno */
+			    /* æ¢å¤åˆ°opençŠ¶æ€ */
 				tp->undo_marker = 0;
 				tcp_set_ca_state(tp, TCP_CA_Open);
 			}
 			break;
 
 		case TCP_CA_Recovery:
-			if (IsReno(tp))/* Èç¹ûÆôÓÃÁËNewReno */
-				tcp_reset_reno_sack(tp);/* ¸´Î»SACKÏà¹ØµÄÊı¾İ */
-			if (tcp_try_undo_recovery(sk, tp))/* ³¢ÊÔ´ÓRecovery×´Ì¬³·Ïú */
+			if (IsReno(tp))/* å¦‚æœå¯ç”¨äº†NewReno */
+				tcp_reset_reno_sack(tp);/* å¤ä½SACKç›¸å…³çš„æ•°æ® */
+			if (tcp_try_undo_recovery(sk, tp))/* å°è¯•ä»RecoveryçŠ¶æ€æ’¤é”€ */
 				return;
-			/* Èç¹û³·Ïú³É¹¦£¬Ôò½áÊøÓµÈû´°¿Ú¼õĞ¡ */
+			/* å¦‚æœæ’¤é”€æˆåŠŸï¼Œåˆ™ç»“æŸæ‹¥å¡çª—å£å‡å° */
 			tcp_complete_cwr(tp);
 			break;
 		}
@@ -2049,51 +2049,51 @@ tcp_fastretrans_alert(struct sock *sk, u32 prior_snd_una,
 	/* F. Process state. */
 	switch (tp->ca_state) {
 	case TCP_CA_Recovery:
-		if (prior_snd_una == tp->snd_una) {/* Ã»ÓĞ¶Î±»È·ÈÏ */
-			if (IsReno(tp) && is_dupack)/* ÊÇÖØ¸´ACK£¬¼ÇÂ¼½ÓÊÕµ½µÄÖØ¸´ACKÊıÁ¿ */
+		if (prior_snd_una == tp->snd_una) {/* æ²¡æœ‰æ®µè¢«ç¡®è®¤ */
+			if (IsReno(tp) && is_dupack)/* æ˜¯é‡å¤ACKï¼Œè®°å½•æ¥æ”¶åˆ°çš„é‡å¤ACKæ•°é‡ */
 				tcp_add_reno_sack(tp);
-		} else {/* ÓĞĞÂµÄ¶Î±»È·ÈÏ */
-			/* ¼ÆËã±»È·ÈÏµÄ¶ÎÊıÁ¿ */
+		} else {/* æœ‰æ–°çš„æ®µè¢«ç¡®è®¤ */
+			/* è®¡ç®—è¢«ç¡®è®¤çš„æ®µæ•°é‡ */
 			int acked = prior_packets - tp->packets_out;
 			if (IsReno(tp))
 				tcp_remove_reno_sacks(sk, tp, acked);
-			/* ´¦ÀíÓµÈû´°¿ÚµÄ³·Ïú */
+			/* å¤„ç†æ‹¥å¡çª—å£çš„æ’¤é”€ */
 			is_dupack = tcp_try_undo_partial(sk, tp, acked);
 		}
 		break;
 	case TCP_CA_Loss:
-		if (flag&FLAG_DATA_ACKED)/* È·ÈÏÁËĞÂµÄ¶Î */
+		if (flag&FLAG_DATA_ACKED)/* ç¡®è®¤äº†æ–°çš„æ®µ */
 			tp->retransmits = 0;
-		if (!tcp_try_undo_loss(sk, tp)) {/* ³¢ÊÔ³·Ïúµ½open×´Ì¬ */
-			/* Î¢µ÷ÓµÈû´°¿Ú */
+		if (!tcp_try_undo_loss(sk, tp)) {/* å°è¯•æ’¤é”€åˆ°opençŠ¶æ€ */
+			/* å¾®è°ƒæ‹¥å¡çª—å£ */
 			tcp_moderate_cwnd(tp);
-			/* ¿ªÊ¼ÖØ´«ÄÇĞ©±ê¼Ç¶ªÊ§µÄ¶Î */
+			/* å¼€å§‹é‡ä¼ é‚£äº›æ ‡è®°ä¸¢å¤±çš„æ®µ */
 			tcp_xmit_retransmit_queue(sk);
 			return;
 		}
 		if (tp->ca_state != TCP_CA_Open)
 			return;
 		/* Loss is undone; fall through to processing in Open state. */
-	default:/* ´ÓDisorder½øÈëRecovery×´Ì¬ */
-		if (IsReno(tp)) {/* ²»Ö§³ÖSACK */
-			if (tp->snd_una != prior_snd_una)/* ÓĞĞÂµÄ¶Î±»È·ÈÏ */
-				tcp_reset_reno_sack(tp);/* ¸´Î»ÖØ¸´È·ÈÏ¼ÆÊı */
+	default:/* ä»Disorderè¿›å…¥RecoveryçŠ¶æ€ */
+		if (IsReno(tp)) {/* ä¸æ”¯æŒSACK */
+			if (tp->snd_una != prior_snd_una)/* æœ‰æ–°çš„æ®µè¢«ç¡®è®¤ */
+				tcp_reset_reno_sack(tp);/* å¤ä½é‡å¤ç¡®è®¤è®¡æ•° */
 			if (is_dupack)
 				tcp_add_reno_sack(tp);
 		}
 
-		if (tp->ca_state == TCP_CA_Disorder)/* Èç¹û´¦ÓÚDisorder×´Ì¬ */
-			tcp_try_undo_dsack(sk, tp);/* Èç¹ûD-SACKÈ·ÈÏÁËËùÓĞÖØ´«µÄ¶Î£¬Ôò³¢ÊÔ³·Ïú"ËõĞ¡ÓµÈû´°¿Ú" */
+		if (tp->ca_state == TCP_CA_Disorder)/* å¦‚æœå¤„äºDisorderçŠ¶æ€ */
+			tcp_try_undo_dsack(sk, tp);/* å¦‚æœD-SACKç¡®è®¤äº†æ‰€æœ‰é‡ä¼ çš„æ®µï¼Œåˆ™å°è¯•æ’¤é”€"ç¼©å°æ‹¥å¡çª—å£" */
 
-		if (!tcp_time_to_recover(sk, tp)) {/* ÅĞ¶ÏÊÇ·ñÄÜ¹»½øÈërecover×´Ì¬ */
-			/* Èç¹û²»ÄÜ½øÈërecover×´Ì¬£¬Ôò³¢ÊÔÊÇ·ñÄÜ¹»½øÈëopen×´Ì¬ */
+		if (!tcp_time_to_recover(sk, tp)) {/* åˆ¤æ–­æ˜¯å¦èƒ½å¤Ÿè¿›å…¥recoverçŠ¶æ€ */
+			/* å¦‚æœä¸èƒ½è¿›å…¥recoverçŠ¶æ€ï¼Œåˆ™å°è¯•æ˜¯å¦èƒ½å¤Ÿè¿›å…¥opençŠ¶æ€ */
 			tcp_try_to_open(sk, tp, flag);
 			return;
 		}
 
 		/* Otherwise enter Recovery state */
 
-		/* Í³¼Æmib¼ÆÊı */
+		/* ç»Ÿè®¡mibè®¡æ•° */
 		if (IsReno(tp))
 			NET_INC_STATS_BH(LINUX_MIB_TCPRENORECOVERY);
 		else
@@ -2105,24 +2105,24 @@ tcp_fastretrans_alert(struct sock *sk, u32 prior_snd_una,
 		tp->undo_retrans = tp->retrans_out;
 
 		if (tp->ca_state < TCP_CA_CWR) {
-			if (!(flag&FLAG_ECE))/* ±£´æµ±Ç°µÄÂıÆô¶¯·§Öµ */
+			if (!(flag&FLAG_ECE))/* ä¿å­˜å½“å‰çš„æ…¢å¯åŠ¨é˜€å€¼ */
 				tp->prior_ssthresh = tcp_current_ssthresh(tp);
-			/* ¸ù¾İ²»Í¬µÄËã·¨ÉèÖÃµ±Ç°µÄÂıÆô¶¯·§Öµ */
+			/* æ ¹æ®ä¸åŒçš„ç®—æ³•è®¾ç½®å½“å‰çš„æ…¢å¯åŠ¨é˜€å€¼ */
 			tp->snd_ssthresh = tcp_recalc_ssthresh(tp);
 			TCP_ECN_queue_cwr(tp);
 		}
 
-		/* Çå³ı¼ÆÊıºó½øÈërecover×´Ì¬ */
+		/* æ¸…é™¤è®¡æ•°åè¿›å…¥recoverçŠ¶æ€ */
 		tp->snd_cwnd_cnt = 0;
 		tcp_set_ca_state(tp, TCP_CA_Recovery);
 	}
 
-	/* ½ÓÊÕµ½ÖØ¸´ACK£¬»òÕßÖØ´«¶ÓÊ×µÄ¶Î´«ËÍ³¬Ê± */
+	/* æ¥æ”¶åˆ°é‡å¤ACKï¼Œæˆ–è€…é‡ä¼ é˜Ÿé¦–çš„æ®µä¼ é€è¶…æ—¶ */
 	if (is_dupack || tcp_head_timedout(sk, tp))
-		tcp_update_scoreboard(sk, tp);/* Îª¶ªÊ§µÄ¶Î¸üĞÂ¼Ç·ÖÅÆ */
-	/* ÔÚCWRºÍRecovery×´Ì¬£¬ÓµÈû´°¿ÚÃ¿¸ôÒ»¸öĞÂµ½µÄÈ·ÈÏ¾Í¼õÉÙÒ»¸ö¶Î£¬Ö±µ½ÓµÈû´°¿Ú´óĞ¡µÈÓÚÓµÈû´°¿Ú·§ÖµÎªÖ¹ */
+		tcp_update_scoreboard(sk, tp);/* ä¸ºä¸¢å¤±çš„æ®µæ›´æ–°è®°åˆ†ç‰Œ */
+	/* åœ¨CWRå’ŒRecoveryçŠ¶æ€ï¼Œæ‹¥å¡çª—å£æ¯éš”ä¸€ä¸ªæ–°åˆ°çš„ç¡®è®¤å°±å‡å°‘ä¸€ä¸ªæ®µï¼Œç›´åˆ°æ‹¥å¡çª—å£å¤§å°ç­‰äºæ‹¥å¡çª—å£é˜€å€¼ä¸ºæ­¢ */
 	tcp_cwnd_down(tp);
-	/* ÖØ´«ÖØ´«¶ÓÁĞÖĞ±ê¼ÇÎªLOSTµÄ¶Î£¬Í¬Ê±ÖØÖÃRTO¶¨Ê±Æ÷ */
+	/* é‡ä¼ é‡ä¼ é˜Ÿåˆ—ä¸­æ ‡è®°ä¸ºLOSTçš„æ®µï¼ŒåŒæ—¶é‡ç½®RTOå®šæ—¶å™¨ */
 	tcp_xmit_retransmit_queue(sk);
 }
 
@@ -2175,7 +2175,7 @@ static void tcp_ack_no_tstamp(struct tcp_sock *tp, u32 seq_rtt, int flag)
 	tcp_bound_rto(tp);
 }
 
-/* µ±È·ÈÏÁË·¢ËÍ±¨ÎÄÊ±£¬µ÷ÓÃ´Ëº¯Êı¸üĞÂÍù·µÊ±¼ä */
+/* å½“ç¡®è®¤äº†å‘é€æŠ¥æ–‡æ—¶ï¼Œè°ƒç”¨æ­¤å‡½æ•°æ›´æ–°å¾€è¿”æ—¶é—´ */
 static inline void tcp_ack_update_rtt(struct tcp_sock *tp,
 				      int flag, s32 seq_rtt)
 {
@@ -2494,7 +2494,7 @@ static void vegas_cong_avoid(struct tcp_sock *tp, u32 ack, u32 seq_rtt)
 	tp->snd_cwnd_stamp = tcp_time_stamp;
 }
 
-/* ÓµÈû±ÜÃâ£¬Í¨¹ıµ÷ÓÃµ±Ç°µÄÓµÈû¿ØÖÆËã·¨ÖØĞÂ¼ÆËãÓµÈû´°¿Ú */
+/* æ‹¥å¡é¿å…ï¼Œé€šè¿‡è°ƒç”¨å½“å‰çš„æ‹¥å¡æ§åˆ¶ç®—æ³•é‡æ–°è®¡ç®—æ‹¥å¡çª—å£ */
 static inline void tcp_cong_avoid(struct tcp_sock *tp, u32 ack, u32 seq_rtt)
 {
 	if (tcp_vegas_enabled(tp))
@@ -2583,7 +2583,7 @@ static int tcp_tso_acked(struct sock *sk, struct sk_buff *skb,
 
 
 /* Remove acknowledged frames from the retransmission queue. */
-/* É¾³ıÖØ´«¶ÓÁĞÖĞÒÑ¾­È·ÈÏµÄ¶Î */
+/* åˆ é™¤é‡ä¼ é˜Ÿåˆ—ä¸­å·²ç»ç¡®è®¤çš„æ®µ */
 static int tcp_clean_rtx_queue(struct sock *sk, __s32 *seq_rtt_p)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
@@ -2593,7 +2593,7 @@ static int tcp_clean_rtx_queue(struct sock *sk, __s32 *seq_rtt_p)
 	__s32 seq_rtt = -1;
 
 	while ((skb = skb_peek(&sk->sk_write_queue)) &&
-	       skb != sk->sk_send_head) {/* ±éÀúÖØ´«¶ÓÁĞ */
+	       skb != sk->sk_send_head) {/* éå†é‡ä¼ é˜Ÿåˆ— */
 		struct tcp_skb_cb *scb = TCP_SKB_CB(skb); 
 		__u8 sacked = scb->sacked;
 
@@ -2601,10 +2601,10 @@ static int tcp_clean_rtx_queue(struct sock *sk, __s32 *seq_rtt_p)
 		 * discard it as it's confirmed to have arrived at
 		 * the other end.
 		 */
-		if (after(scb->end_seq, tp->snd_una)) {/* µ±Ç°¶ÎÎ»ÓÚunaÖ®ºó£¬Ö»È·ÈÏÁË¶ÎµÄÒ»²¿·Ö */
-			if (tcp_skb_pcount(skb) > 1)/* ÊÇTSO¶Î */
+		if (after(scb->end_seq, tp->snd_una)) {/* å½“å‰æ®µä½äºunaä¹‹åï¼Œåªç¡®è®¤äº†æ®µçš„ä¸€éƒ¨åˆ† */
+			if (tcp_skb_pcount(skb) > 1)/* æ˜¯TSOæ®µ */
 				acked |= tcp_tso_acked(sk, skb,
-						       now, &seq_rtt);/* ½«ÒÑ¾­È·ÈÏµÄ²¿·Ö´ÓTCP¶ÎÖĞÉ¾³ı£¬Í¬Ê±¸üĞÂSBKÖĞGSOÆÆ¹ØĞÅÏ¢ */
+						       now, &seq_rtt);/* å°†å·²ç»ç¡®è®¤çš„éƒ¨åˆ†ä»TCPæ®µä¸­åˆ é™¤ï¼ŒåŒæ—¶æ›´æ–°SBKä¸­GSOç ´å…³ä¿¡æ¯ */
 			break;
 		}
 
@@ -2615,7 +2615,7 @@ static int tcp_clean_rtx_queue(struct sock *sk, __s32 *seq_rtt_p)
 		 * connection startup slow start one packet too
 		 * quickly.  This is severely frowned upon behavior.
 		 */
-		/* ÒÔÏÂµÄ¶Î¶¼ÊÇ±»ÍêÈ«È·ÈÏµÄ¡£ÉèÖÃacked±êÖ¾ */
+		/* ä»¥ä¸‹çš„æ®µéƒ½æ˜¯è¢«å®Œå…¨ç¡®è®¤çš„ã€‚è®¾ç½®ackedæ ‡å¿— */
 		if (!(scb->flags & TCPCB_FLAG_SYN)) {
 			acked |= FLAG_DATA_ACKED;
 		} else {
@@ -2624,33 +2624,33 @@ static int tcp_clean_rtx_queue(struct sock *sk, __s32 *seq_rtt_p)
 		}
 
 		if (sacked) {
-			if (sacked & TCPCB_RETRANS) {/* ¶ÎÖØ´«¹ı */
+			if (sacked & TCPCB_RETRANS) {/* æ®µé‡ä¼ è¿‡ */
 				if(sacked & TCPCB_SACKED_RETRANS)
 					tp->retrans_out -= tcp_skb_pcount(skb);
 				acked |= FLAG_RETRANS_DATA_ACKED;
 				seq_rtt = -1;
-			} else if (seq_rtt < 0)/* ¶ÎÃ»ÓĞÖØ´«¹ı£¬»ñÈ¡Íù·µÊ±¼äºÍÊ±¼ä´Á */
+			} else if (seq_rtt < 0)/* æ®µæ²¡æœ‰é‡ä¼ è¿‡ï¼Œè·å–å¾€è¿”æ—¶é—´å’Œæ—¶é—´æˆ³ */
 				seq_rtt = now - scb->when;
 			if (sacked & TCPCB_SACKED_ACKED)
 				tp->sacked_out -= tcp_skb_pcount(skb);
 			if (sacked & TCPCB_LOST)
 				tp->lost_out -= tcp_skb_pcount(skb);
-			if (sacked & TCPCB_URG) {/* ¶ÎÖĞ´æÔÚ´øÍâÊı¾İ */
-				if (tp->urg_mode &&/* tcpÄ¿Ç°»¹´¦ÓÚ½ô¼±Ä£Ê½ */
-				    !before(scb->end_seq, tp->snd_up))/* ´øÍâÊı¾İÎ»ÓÚÉÏ´ÎÖ¸Ê¾µÄ´øÍâÊı¾İÖ®ºó */
-					tp->urg_mode = 0;/* ÓÃ»§ÒÑ¾­Ó¦´ğÁË´øÍâÊı¾İ£¬È¡Ïû½ô¼±Ä£Ê½ */
+			if (sacked & TCPCB_URG) {/* æ®µä¸­å­˜åœ¨å¸¦å¤–æ•°æ® */
+				if (tp->urg_mode &&/* tcpç›®å‰è¿˜å¤„äºç´§æ€¥æ¨¡å¼ */
+				    !before(scb->end_seq, tp->snd_up))/* å¸¦å¤–æ•°æ®ä½äºä¸Šæ¬¡æŒ‡ç¤ºçš„å¸¦å¤–æ•°æ®ä¹‹å */
+					tp->urg_mode = 0;/* ç”¨æˆ·å·²ç»åº”ç­”äº†å¸¦å¤–æ•°æ®ï¼Œå–æ¶ˆç´§æ€¥æ¨¡å¼ */
 			}
-		} else if (seq_rtt < 0)/* Î´»ñµÃ¶ÎµÄÍù·µÊ±¼ä */
-			seq_rtt = now - scb->when;/* ÒÔ·¢ËÍ¸Ã¶ÎÓë½ÓÊÕµ½¸Ã¶ÎµÄACKÖ®¼äµÄÊ±¼ä×÷ÎªÍù·µ»ØÊ±¼ä */
-		/* µ±Ç°¶ÎÒÑ¾­È·ÈÏ¹ıÁË£¬Òò´Ëµ÷ÓÃfackets_out£¬²¢½«¶Î´ÓÖØ´«¶ÓÁĞÖĞÉ¾³ı²¢ÊÍ·Å */
+		} else if (seq_rtt < 0)/* æœªè·å¾—æ®µçš„å¾€è¿”æ—¶é—´ */
+			seq_rtt = now - scb->when;/* ä»¥å‘é€è¯¥æ®µä¸æ¥æ”¶åˆ°è¯¥æ®µçš„ACKä¹‹é—´çš„æ—¶é—´ä½œä¸ºå¾€è¿”å›æ—¶é—´ */
+		/* å½“å‰æ®µå·²ç»ç¡®è®¤è¿‡äº†ï¼Œå› æ­¤è°ƒç”¨fackets_outï¼Œå¹¶å°†æ®µä»é‡ä¼ é˜Ÿåˆ—ä¸­åˆ é™¤å¹¶é‡Šæ”¾ */
 		tcp_dec_pcount_approx(&tp->fackets_out, skb);
 		tcp_packets_out_dec(tp, skb);
 		__skb_unlink(skb, skb->list);
 		sk_stream_free_skb(sk, skb);
 	}
 
-	if (acked&FLAG_ACKED) {/* ±¾´Î´¦ÀíÓĞ¶ÔÊı¾İºÍSYNµÄÈ·ÈÏ */
-		/* ²âÁ¿¸üĞÂÍù·µÊ±¼ä£¬²¢È·ÈÏÊÇ·ñÆô¶¯ÖØ´«¶¨Ê±Æ÷ */
+	if (acked&FLAG_ACKED) {/* æœ¬æ¬¡å¤„ç†æœ‰å¯¹æ•°æ®å’ŒSYNçš„ç¡®è®¤ */
+		/* æµ‹é‡æ›´æ–°å¾€è¿”æ—¶é—´ï¼Œå¹¶ç¡®è®¤æ˜¯å¦å¯åŠ¨é‡ä¼ å®šæ—¶å™¨ */
 		tcp_ack_update_rtt(tp, acked, seq_rtt);
 		tcp_ack_packets_out(sk, tp);
 	}
@@ -2728,23 +2728,23 @@ static inline int tcp_may_update_window(struct tcp_sock *tp, u32 ack,
  * Window update algorithm, described in RFC793/RFC1122 (used in linux-2.2
  * and in FreeBSD. NetBSD's one is even worse.) is wrong.
  */
-/* ¸üĞÂ·¢ËÍ´°¿Ú */
+/* æ›´æ–°å‘é€çª—å£ */
 static int tcp_ack_update_window(struct sock *sk, struct tcp_sock *tp,
 				 struct sk_buff *skb, u32 ack, u32 ack_seq)
 {
 	int flag = 0;
-	/* ´ÓTCPÊ×²¿ÖĞ»ñÈ¡½ÓÊÕ·½½ÓÊÕ´°¿Ú´óĞ¡ */
+	/* ä»TCPé¦–éƒ¨ä¸­è·å–æ¥æ”¶æ–¹æ¥æ”¶çª—å£å¤§å° */
 	u32 nwin = ntohs(skb->h.th->window);
 
-	if (likely(!skb->h.th->syn))/* ²¢ÓÉ´°¿ÚÀ©´óÒò×Ó¼ÆËã³ö½ÓÊÕ´°¿ÚµÄ×Ö½ÚÊı */
+	if (likely(!skb->h.th->syn))/* å¹¶ç”±çª—å£æ‰©å¤§å› å­è®¡ç®—å‡ºæ¥æ”¶çª—å£çš„å­—èŠ‚æ•° */
 		nwin <<= tp->rx_opt.snd_wscale;
 
-	if (tcp_may_update_window(tp, ack, ack_seq, nwin)) {/* ÅĞ¶ÏÊÇ·ñĞèÒª¸üĞÂ·¢ËÍ·½µÄ·¢ËÍ´°¿Ú */
-		flag |= FLAG_WIN_UPDATE;/* ¸üĞÂ±ê¼Ç */
-		tcp_update_wl(tp, ack, ack_seq);/* ¼ÇÂ¼×îĞÂACKĞòºÅ */
+	if (tcp_may_update_window(tp, ack, ack_seq, nwin)) {/* åˆ¤æ–­æ˜¯å¦éœ€è¦æ›´æ–°å‘é€æ–¹çš„å‘é€çª—å£ */
+		flag |= FLAG_WIN_UPDATE;/* æ›´æ–°æ ‡è®° */
+		tcp_update_wl(tp, ack, ack_seq);/* è®°å½•æœ€æ–°ACKåºå· */
 
-		if (tp->snd_wnd != nwin) {/* ½ÓÊÕ·½µÄ½ÓÊÕ´°¿ÚÓë·¢ËÍ·½µÄ·¢ËÍ´°¿Ú²»ÏàµÈ */
-			/* ÒÔ·¢ËÍ·½µÄ·¢ËÍ´°¿ÚÎª×¼ */
+		if (tp->snd_wnd != nwin) {/* æ¥æ”¶æ–¹çš„æ¥æ”¶çª—å£ä¸å‘é€æ–¹çš„å‘é€çª—å£ä¸ç›¸ç­‰ */
+			/* ä»¥å‘é€æ–¹çš„å‘é€çª—å£ä¸ºå‡† */
 			tp->snd_wnd = nwin;
 
 			/* Note, it is the only place, where
@@ -2752,49 +2752,49 @@ static int tcp_ack_update_window(struct sock *sk, struct tcp_sock *tp,
 			 */
 			tcp_fast_path_check(sk, tp);
 
-			if (nwin > tp->max_window) {/* ½ÓÊÕ·½µÄ½ÓÊÕ´°¿Ú³¬¹ı×î´ó½ÓÊÕ´°¿Ú */
-				/* ¸üĞÂ×î´ó½ÓÊÕ´°¿Ú£¬²¢ÖØĞÂ¼ÆËãMSS */
+			if (nwin > tp->max_window) {/* æ¥æ”¶æ–¹çš„æ¥æ”¶çª—å£è¶…è¿‡æœ€å¤§æ¥æ”¶çª—å£ */
+				/* æ›´æ–°æœ€å¤§æ¥æ”¶çª—å£ï¼Œå¹¶é‡æ–°è®¡ç®—MSS */
 				tp->max_window = nwin;
 				tcp_sync_mss(sk, tp->pmtu_cookie);
 			}
 		}
 	}
 
-	/* ¸üĞÂ·¢ËÍ´°¿Ú×ó¶Ë */
+	/* æ›´æ–°å‘é€çª—å£å·¦ç«¯ */
 	tp->snd_una = ack;
 
 	return flag;
 }
 
-/* µ±´¦ÓÚFRTO½×¶ÎÊ±£¬È·ÈÏ¶ÎÊÇ·ñÕæµÄ¶ªÊ§£¬ÒÔ¼°´«ËÍ³¬Ê±ÊÇ²»ÊÇĞé¼ÙµÄ */
+/* å½“å¤„äºFRTOé˜¶æ®µæ—¶ï¼Œç¡®è®¤æ®µæ˜¯å¦çœŸçš„ä¸¢å¤±ï¼Œä»¥åŠä¼ é€è¶…æ—¶æ˜¯ä¸æ˜¯è™šå‡çš„ */
 static void tcp_process_frto(struct sock *sk, u32 prior_snd_una)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
 
-	/* ½ÓÊÕµ½ACKºó£¬Ë¢ĞÂÃ»ÓĞÈ·ÈÏµÄTCP¶ÎÊıÁ¿ */
+	/* æ¥æ”¶åˆ°ACKåï¼Œåˆ·æ–°æ²¡æœ‰ç¡®è®¤çš„TCPæ®µæ•°é‡ */
 	tcp_sync_left_out(tp);
 	
 	if (tp->snd_una == prior_snd_una ||
-	    !before(tp->snd_una, tp->frto_highmark)) {/* ½ÓÊÕµ½µÄACKÊÇÖØ¸´µÄ£¬ËµÃ÷´«ËÍ³¬Ê±ÊÇÕæµÄ */
+	    !before(tp->snd_una, tp->frto_highmark)) {/* æ¥æ”¶åˆ°çš„ACKæ˜¯é‡å¤çš„ï¼Œè¯´æ˜ä¼ é€è¶…æ—¶æ˜¯çœŸçš„ */
 		/* RTO was caused by loss, start retransmitting in
 		 * go-back-N slow start
 		 */
-		tcp_enter_frto_loss(sk);/* ½øÈëÓµÈû»Ö¸´½×¶Î */
+		tcp_enter_frto_loss(sk);/* è¿›å…¥æ‹¥å¡æ¢å¤é˜¶æ®µ */
 		return;
 	}
 
-	if (tp->frto_counter == 1) {/* ½øÈëFRTOºó½ÓÊÕµÄµÚÒ»¸öACK */
+	if (tp->frto_counter == 1) {/* è¿›å…¥FRTOåæ¥æ”¶çš„ç¬¬ä¸€ä¸ªACK */
 		/* First ACK after RTO advances the window: allow two new
 		 * segments out.
 		 */
-		/* ÖØĞÂÉèÖÃÓµÈû´°¿Ú£¬ÔÊĞíÔÙ·¢ËÍÁ½¸ö±¨ÎÄ */
+		/* é‡æ–°è®¾ç½®æ‹¥å¡çª—å£ï¼Œå…è®¸å†å‘é€ä¸¤ä¸ªæŠ¥æ–‡ */
 		tp->snd_cwnd = tcp_packets_in_flight(tp) + 2;
-	} else {/* ½øÈëFRTOºó£¬½ÓÊÕµ½µÄµÚ¶ş¸öACK */
+	} else {/* è¿›å…¥FRTOåï¼Œæ¥æ”¶åˆ°çš„ç¬¬äºŒä¸ªACK */
 		/* Also the second ACK after RTO advances the window.
 		 * The RTO was likely spurious. Reduce cwnd and continue
 		 * in congestion avoidance
 		 */
-		/* ½øÒ»²½µ÷ÕûÓµÈû´°¿Ú */
+		/* è¿›ä¸€æ­¥è°ƒæ•´æ‹¥å¡çª—å£ */
 		tp->snd_cwnd = min(tp->snd_cwnd, tp->snd_ssthresh);
 		tcp_moderate_cwnd(tp);
 	}
@@ -2802,7 +2802,7 @@ static void tcp_process_frto(struct sock *sk, u32 prior_snd_una)
 	/* F-RTO affects on two new ACKs following RTO.
 	 * At latest on third ACK the TCP behavor is back to normal.
 	 */
-	/* Ôö¼Ó¼ÆÊı£¬Èç¹ûÁ¬Ğø½ÓÊÕµ½Á½¸ö¶ÔĞÂÊı¾İµÄÈ·ÈÏ£¬ÔòËµÃ÷´«ËÍ³¬Ê±ÊÇĞé¼ÙµÄ£¬ÍË³öFRTO»Ö¸´ */
+	/* å¢åŠ è®¡æ•°ï¼Œå¦‚æœè¿ç»­æ¥æ”¶åˆ°ä¸¤ä¸ªå¯¹æ–°æ•°æ®çš„ç¡®è®¤ï¼Œåˆ™è¯´æ˜ä¼ é€è¶…æ—¶æ˜¯è™šå‡çš„ï¼Œé€€å‡ºFRTOæ¢å¤ */
 	tp->frto_counter = (tp->frto_counter + 1) % 3;
 }
 
@@ -3058,7 +3058,7 @@ static inline void tcp_westwood_slow_bw(struct sock *sk, struct sk_buff *skb)
 }
 
 /* This routine deals with incoming acks, but not outgoing ones. */
-/* ´¦Àí½ÓÊÕµ½µÄack±¨ÎÄ */
+/* å¤„ç†æ¥æ”¶åˆ°çš„ackæŠ¥æ–‡ */
 static int tcp_ack(struct sock *sk, struct sk_buff *skb, int flag)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
@@ -3072,41 +3072,41 @@ static int tcp_ack(struct sock *sk, struct sk_buff *skb, int flag)
 	/* If the ack is newer than sent or older than previous acks
 	 * then we can probably ignore it.
 	 */
-	if (after(ack, tp->snd_nxt))/* È·ÈÏµÄĞòºÅ´óÓÚnxt£¬²»ºÏ·¨ */
+	if (after(ack, tp->snd_nxt))/* ç¡®è®¤çš„åºå·å¤§äºnxtï¼Œä¸åˆæ³• */
 		goto uninteresting_ack;
 
-	if (before(ack, prior_snd_una))/* È·ÈÏµÄĞòºÅĞ¡ÓÚuna£¬²»ºÏ·¨ */
+	if (before(ack, prior_snd_una))/* ç¡®è®¤çš„åºå·å°äºunaï¼Œä¸åˆæ³• */
 		goto old_ack;
 
-	if (!(flag&FLAG_SLOWPATH) && after(ack, prior_snd_una)) {/* ¿ìËÙÂ·¾¶£¬²¢ÇÒ¸üĞÂÁËuna */
+	if (!(flag&FLAG_SLOWPATH) && after(ack, prior_snd_una)) {/* å¿«é€Ÿè·¯å¾„ï¼Œå¹¶ä¸”æ›´æ–°äº†una */
 		/* Window is constant, pure forward advance.
 		 * No more checks are required.
 		 * Note, we use the fact that SND.UNA>=SND.WL2.
 		 */
-		/* ¸üĞÂ·¢ËÍ´°¿Ú×ó±ß½ç */
+		/* æ›´æ–°å‘é€çª—å£å·¦è¾¹ç•Œ */
 		tcp_update_wl(tp, ack, ack_seq);
 		tp->snd_una = ack;
-		/* Í¨ÖªÓµÈû¿ØÖÆËã·¨±¾´ÎACKÊÇ¿ìËÙÂ·¾¶ */
+		/* é€šçŸ¥æ‹¥å¡æ§åˆ¶ç®—æ³•æœ¬æ¬¡ACKæ˜¯å¿«é€Ÿè·¯å¾„ */
 		tcp_westwood_fast_bw(sk, skb);
 		flag |= FLAG_WIN_UPDATE;
 
 		NET_INC_STATS_BH(LINUX_MIB_TCPHPACKS);
-	} else {/* ÂıËÙÂ·¾¶ */
-		if (ack_seq != TCP_SKB_CB(skb)->end_seq)/* ±¨ÎÄÖĞ°üº¬ÓĞÊı¾İ */
+	} else {/* æ…¢é€Ÿè·¯å¾„ */
+		if (ack_seq != TCP_SKB_CB(skb)->end_seq)/* æŠ¥æ–‡ä¸­åŒ…å«æœ‰æ•°æ® */
 			flag |= FLAG_DATA;
 		else
 			NET_INC_STATS_BH(LINUX_MIB_TCPPUREACKS);
 
-		/* ¸üĞÂ·¢ËÍ´°¿Ú */
+		/* æ›´æ–°å‘é€çª—å£ */
 		flag |= tcp_ack_update_window(sk, tp, skb, ack, ack_seq);
 
-		if (TCP_SKB_CB(skb)->sacked)/* Èç¹ûÓĞsack±êÖ¾£¬Ôò±ê¼ÇÖØ´«¶ÓÁĞ */
+		if (TCP_SKB_CB(skb)->sacked)/* å¦‚æœæœ‰sackæ ‡å¿—ï¼Œåˆ™æ ‡è®°é‡ä¼ é˜Ÿåˆ— */
 			flag |= tcp_sacktag_write_queue(sk, skb, prior_snd_una);
 
-		if (TCP_ECN_rcv_ecn_echo(tp, skb->h.th))/* Èç¹ûACK¶ÎÖĞ´æÔÚECE±êÖ¾ */
+		if (TCP_ECN_rcv_ecn_echo(tp, skb->h.th))/* å¦‚æœACKæ®µä¸­å­˜åœ¨ECEæ ‡å¿— */
 			flag |= FLAG_ECE;
 
-		/* Í¨ÖªÓµÈû¿ØÖÆËã·¨±¾´ÎACKÊÇÂıËÙÂ·¾¶ */
+		/* é€šçŸ¥æ‹¥å¡æ§åˆ¶ç®—æ³•æœ¬æ¬¡ACKæ˜¯æ…¢é€Ÿè·¯å¾„ */
 		tcp_westwood_slow_bw(sk,skb);
 	}
 
@@ -3114,58 +3114,58 @@ static int tcp_ack(struct sock *sk, struct sk_buff *skb, int flag)
 	 * log. Something worked...
 	 */
 	sk->sk_err_soft = 0;
-	/* ¼ÇÂ¼×î½üÒ»´ÎÊÕµ½ACKµÄÊ±¼ä */
+	/* è®°å½•æœ€è¿‘ä¸€æ¬¡æ”¶åˆ°ACKçš„æ—¶é—´ */
 	tp->rcv_tstamp = tcp_time_stamp;
 	prior_packets = tp->packets_out;
-	if (!prior_packets)/* Èç¹ûÃ»ÓĞÒÑ¾­·¢³öµ«»¹Ã»ÓĞÈ·ÈÏµÄ¶Î */
+	if (!prior_packets)/* å¦‚æœæ²¡æœ‰å·²ç»å‘å‡ºä½†è¿˜æ²¡æœ‰ç¡®è®¤çš„æ®µ */
 		goto no_queue;
 
-	/* ÕıÔÚ´«ÊäµÄ¶ÎÊı */
+	/* æ­£åœ¨ä¼ è¾“çš„æ®µæ•° */
 	prior_in_flight = tcp_packets_in_flight(tp);
 
 	/* See if we can take anything off of the retransmit queue. */
-	/* ÔÚÖØ´«¶ÓÁĞÖĞÉ¾³ıÒÑÈ·ÈÏµÄ¶Î */
+	/* åœ¨é‡ä¼ é˜Ÿåˆ—ä¸­åˆ é™¤å·²ç¡®è®¤çš„æ®µ */
 	flag |= tcp_clean_rtx_queue(sk, &seq_rtt);
 
-	if (tp->frto_counter)/* µ±Ç°´¦ÓÚFRTO½×¶Î£¬½øĞĞ´¦ÀíÒÔÅĞ¶ÏÊÇ·ñÕæµÄ³¬Ê± */
+	if (tp->frto_counter)/* å½“å‰å¤„äºFRTOé˜¶æ®µï¼Œè¿›è¡Œå¤„ç†ä»¥åˆ¤æ–­æ˜¯å¦çœŸçš„è¶…æ—¶ */
 		tcp_process_frto(sk, prior_snd_una);
 
-	/* ²»Ã÷È·????»òÕßÓµÈû×´Ì¬²»ÊÇopen£¬Ôò½øĞĞÓµÈû×´Ì¬»ú×´Ì¬µÄÇ¨ÒÆ¡£ */
-	if (tcp_ack_is_dubious(tp, flag)) {/* ½ÓÊÕµ½µÄACKÊÇÖØ¸´µÄ£¬»òÕß½ÓÊÕµ½SACK¿é»òÏÔÊ½ÓµÈûÍ¨Öª£¬»òÕßµ±Ç°×´Ì¬²»ÊÇopen */
+	/* ä¸æ˜ç¡®????æˆ–è€…æ‹¥å¡çŠ¶æ€ä¸æ˜¯openï¼Œåˆ™è¿›è¡Œæ‹¥å¡çŠ¶æ€æœºçŠ¶æ€çš„è¿ç§»ã€‚ */
+	if (tcp_ack_is_dubious(tp, flag)) {/* æ¥æ”¶åˆ°çš„ACKæ˜¯é‡å¤çš„ï¼Œæˆ–è€…æ¥æ”¶åˆ°SACKå—æˆ–æ˜¾å¼æ‹¥å¡é€šçŸ¥ï¼Œæˆ–è€…å½“å‰çŠ¶æ€ä¸æ˜¯open */
 		/* Advanve CWND, if state allows this. */
-		if ((flag & FLAG_DATA_ACKED) &&/* È·ÈÏÁËĞÂµÄ¶Î */
+		if ((flag & FLAG_DATA_ACKED) &&/* ç¡®è®¤äº†æ–°çš„æ®µ */
 		    (tcp_vegas_enabled(tp) || prior_in_flight >= tp->snd_cwnd) &&
-		    tcp_may_raise_cwnd(tp, flag))/* ÓµÈû´°¿Ú¿ÉÒÔ¸üĞÂ */
-			tcp_cong_avoid(tp, ack, seq_rtt);/* ½øĞĞÓµÈû±ÜÃâ */
-		/* ÓµÈû¿ØÖÆ×´Ì¬µÄ´¦Àí */
+		    tcp_may_raise_cwnd(tp, flag))/* æ‹¥å¡çª—å£å¯ä»¥æ›´æ–° */
+			tcp_cong_avoid(tp, ack, seq_rtt);/* è¿›è¡Œæ‹¥å¡é¿å… */
+		/* æ‹¥å¡æ§åˆ¶çŠ¶æ€çš„å¤„ç† */
 		tcp_fastretrans_alert(sk, prior_snd_una, prior_packets, flag);
 	} else {
-		if ((flag & FLAG_DATA_ACKED) && /* È·ÈÏÁËĞÂµÄ¶Î */
+		if ((flag & FLAG_DATA_ACKED) && /* ç¡®è®¤äº†æ–°çš„æ®µ */
 		    (tcp_vegas_enabled(tp) || prior_in_flight >= tp->snd_cwnd))
-			tcp_cong_avoid(tp, ack, seq_rtt);/* ½øĞĞÓµÈû±ÜÃâ */
+			tcp_cong_avoid(tp, ack, seq_rtt);/* è¿›è¡Œæ‹¥å¡é¿å… */
 	}
 
-	/* Èç¹ûÈ·ÈÏÁËĞÂµÄ¶Î£¬»òÕß½ÓÊÕµ½µÄACKÊÇÖØ¸´µÄ£¬ÔòÈ·ÈÏÊä³öÂ·ÓÉÊÇÓĞĞ§µÄ */
+	/* å¦‚æœç¡®è®¤äº†æ–°çš„æ®µï¼Œæˆ–è€…æ¥æ”¶åˆ°çš„ACKæ˜¯é‡å¤çš„ï¼Œåˆ™ç¡®è®¤è¾“å‡ºè·¯ç”±æ˜¯æœ‰æ•ˆçš„ */
 	if ((flag & FLAG_FORWARD_PROGRESS) || !(flag&FLAG_NOT_DUP))
 		dst_confirm(sk->sk_dst_cache);
 
 	return 1;
 
 no_queue:
-	/* ÓÉÓÚ½ÓÊÕµ½¶Ô¶ËµÄack£¬Òò´Ë½«TCP±£»îÌ½²â¶ÎÎ´È·ÈÏÊıÇå0£¬ËµÃ÷´ËÊ±TCPÁ¬½ÓÊÇÕı³£µÄ */
+	/* ç”±äºæ¥æ”¶åˆ°å¯¹ç«¯çš„ackï¼Œå› æ­¤å°†TCPä¿æ´»æ¢æµ‹æ®µæœªç¡®è®¤æ•°æ¸…0ï¼Œè¯´æ˜æ­¤æ—¶TCPè¿æ¥æ˜¯æ­£å¸¸çš„ */
 	tp->probes_out = 0;
 
 	/* If this ack opens up a zero window, clear backoff.  It was
 	 * being used to time the probes, and is probably far higher than
 	 * it needs to be for normal retransmission.
 	 */
-	if (sk->sk_send_head)/* »¹ÓĞ´ı·¢ËÍµÄÊı¾İ */
-		/* ½ÓÊÕµ½ackºó£¬Èç¹û¶Ô·½½ÓÊÕ´°¿ÚÃ»ÓĞ¹Ø±Õ£¬ÔòÇå³ı³ÖĞø¶¨Ê±Æ÷ÖĞÖ¸ÊıÍË±ÜËã·¨Ö¸Êı£¬Í£Ö¹³ÖĞø¶¨Ê±Æ÷£¬·ñÔò¿ªÆô³ÖĞø¶¨Ê±Æ÷ */
-		tcp_ack_probe(sk);/* tcp_ack_probeÓÃÀ´È·¶¨ÊÇ·ñĞèÒª½øĞĞ0´°¿ÚÌ½²â */
+	if (sk->sk_send_head)/* è¿˜æœ‰å¾…å‘é€çš„æ•°æ® */
+		/* æ¥æ”¶åˆ°ackåï¼Œå¦‚æœå¯¹æ–¹æ¥æ”¶çª—å£æ²¡æœ‰å…³é—­ï¼Œåˆ™æ¸…é™¤æŒç»­å®šæ—¶å™¨ä¸­æŒ‡æ•°é€€é¿ç®—æ³•æŒ‡æ•°ï¼Œåœæ­¢æŒç»­å®šæ—¶å™¨ï¼Œå¦åˆ™å¼€å¯æŒç»­å®šæ—¶å™¨ */
+		tcp_ack_probe(sk);/* tcp_ack_probeç”¨æ¥ç¡®å®šæ˜¯å¦éœ€è¦è¿›è¡Œ0çª—å£æ¢æµ‹ */
 	return 1;
 
 old_ack:
-	if (TCP_SKB_CB(skb)->sacked)/* Èç¹ûÊÇÒÑ¾­È·ÈÏ¹ıµÄACK£¬²¢ÇÒÆäÖĞ´øÓĞSACKÑ¡ÏîĞÅÏ¢£¬Ôò±ê¼ÇÖØ´«¶ÓÁĞÖĞ¸÷¸ö¶ÎµÄ¼Ç·ÖÅÆ */
+	if (TCP_SKB_CB(skb)->sacked)/* å¦‚æœæ˜¯å·²ç»ç¡®è®¤è¿‡çš„ACKï¼Œå¹¶ä¸”å…¶ä¸­å¸¦æœ‰SACKé€‰é¡¹ä¿¡æ¯ï¼Œåˆ™æ ‡è®°é‡ä¼ é˜Ÿåˆ—ä¸­å„ä¸ªæ®µçš„è®°åˆ†ç‰Œ */
 		tcp_sacktag_write_queue(sk, skb, prior_snd_una);
 
 uninteresting_ack:
@@ -3178,7 +3178,7 @@ uninteresting_ack:
  * But, this can also be called on packets in the established flow when
  * the fast version below fails.
  */
-/* ÍêÕûµÄ½âÎöÊ±¼ä´ÁÑ¡Ïî£¬³ıÁËÔÚ·ÖÎöSYNºÍSYN+ACK¶ÎÊ±µ÷ÓÃÍâ£¬ÔÚÂıËÙÁ÷³ÌÖĞÒ²µ÷ÓÃ£¬ÒÔ½âÎö³ıÊ±¼ä´ÁÍâµÄÆäËûÑ¡Ïî */
+/* å®Œæ•´çš„è§£ææ—¶é—´æˆ³é€‰é¡¹ï¼Œé™¤äº†åœ¨åˆ†æSYNå’ŒSYN+ACKæ®µæ—¶è°ƒç”¨å¤–ï¼Œåœ¨æ…¢é€Ÿæµç¨‹ä¸­ä¹Ÿè°ƒç”¨ï¼Œä»¥è§£æé™¤æ—¶é—´æˆ³å¤–çš„å…¶ä»–é€‰é¡¹ */
 void tcp_parse_options(struct sk_buff *skb, struct tcp_options_received *opt_rx, int estab)
 {
 	unsigned char *ptr;
@@ -3188,41 +3188,41 @@ void tcp_parse_options(struct sk_buff *skb, struct tcp_options_received *opt_rx,
 	ptr = (unsigned char *)(th + 1);
 	opt_rx->saw_tstamp = 0;
 
-	while(length>0) {/* ±éÀúÑ¡Ïî£¬Ö±µ½ËùÓĞÑ¡Ïî·ÖÎöÍê±Ï */
-	  	int opcode=*ptr++;/* Ñ¡ÏîÀàĞÍ */
+	while(length>0) {/* éå†é€‰é¡¹ï¼Œç›´åˆ°æ‰€æœ‰é€‰é¡¹åˆ†æå®Œæ¯• */
+	  	int opcode=*ptr++;/* é€‰é¡¹ç±»å‹ */
 		int opsize;
 
 		switch (opcode) {
 			case TCPOPT_EOL:
-				return;/* Ñ¡Ïî½áÊø£¬·µ»Ø */
+				return;/* é€‰é¡¹ç»“æŸï¼Œè¿”å› */
 			case TCPOPT_NOP:	/* Ref: RFC 793 section 3.1 */
 				length--;
-				continue;/* NOPÑ¡Ïî£¬Ö±½ÓÌøµ½ÏÂÒ»¸öÑ¡Ïî */
+				continue;/* NOPé€‰é¡¹ï¼Œç›´æ¥è·³åˆ°ä¸‹ä¸€ä¸ªé€‰é¡¹ */
 			default:
-				opsize=*ptr++;/* »ñµÃÑ¡Ïî³¤¶È£¬²¢ÅĞ¶ÏÆäºÏ·¨ĞÔ  */
+				opsize=*ptr++;/* è·å¾—é€‰é¡¹é•¿åº¦ï¼Œå¹¶åˆ¤æ–­å…¶åˆæ³•æ€§  */
 				if (opsize < 2) /* "silly options" */
 					return;
-				if (opsize > length)/* ³¬¹ıÑ¡Ïî×Ü³¤¶È£¬·Ç·¨Ñ¡Ïî */
+				if (opsize > length)/* è¶…è¿‡é€‰é¡¹æ€»é•¿åº¦ï¼Œéæ³•é€‰é¡¹ */
 					return;	/* don't parse partial options */
 	  			switch(opcode) {
-				case TCPOPT_MSS:/* MSSÍ¨¸æÑ¡Ïî */
-					if(opsize==TCPOLEN_MSS && th->syn && !estab) {/* ´ËÑ¡Ïî½öÄÜ³öÏÖÔÚSYN¶ÎÖĞ,²¢ÇÒ²»ÄÜÔÚ½ÓÊÕ±¨ÎÄ½×¶Îµ÷ÓÃ */
+				case TCPOPT_MSS:/* MSSé€šå‘Šé€‰é¡¹ */
+					if(opsize==TCPOLEN_MSS && th->syn && !estab) {/* æ­¤é€‰é¡¹ä»…èƒ½å‡ºç°åœ¨SYNæ®µä¸­,å¹¶ä¸”ä¸èƒ½åœ¨æ¥æ”¶æŠ¥æ–‡é˜¶æ®µè°ƒç”¨ */
 						u16 in_mss = ntohs(*(__u16 *)ptr);
-						if (in_mss) {/* »ñÈ¡Í¨¸æ´°¿Ú´óĞ¡ */
-							/* Èç¹ûÍ¨¸æ´°¿Ú´óÓÚÓÃ»§ÉèÖÃµÄ´°¿Ú£¬ÔòÒÔÉèÖÃµÄ´°¿ÚÎª×¼ */
+						if (in_mss) {/* è·å–é€šå‘Šçª—å£å¤§å° */
+							/* å¦‚æœé€šå‘Šçª—å£å¤§äºç”¨æˆ·è®¾ç½®çš„çª—å£ï¼Œåˆ™ä»¥è®¾ç½®çš„çª—å£ä¸ºå‡† */
 							if (opt_rx->user_mss && opt_rx->user_mss < in_mss)
 								in_mss = opt_rx->user_mss;
-							opt_rx->mss_clamp = in_mss;/* ÉèÖÃMSS×î´óÖµ */
+							opt_rx->mss_clamp = in_mss;/* è®¾ç½®MSSæœ€å¤§å€¼ */
 						}
 					}
 					break;
 				case TCPOPT_WINDOW:
-					/* À©´óÒò×ÓÒ²Ö»ÄÜ³öÏÖÔÚSYN¶ÎÖĞ */
+					/* æ‰©å¤§å› å­ä¹Ÿåªèƒ½å‡ºç°åœ¨SYNæ®µä¸­ */
 					if(opsize==TCPOLEN_WINDOW && th->syn && !estab)
 						if (sysctl_tcp_window_scaling) {
 							opt_rx->wscale_ok = 1;
 							opt_rx->snd_wscale = *(__u8 *)ptr;
-							if(opt_rx->snd_wscale > 14) {/* ´°¿ÚÀ©´óÒò×Ó²»ÄÜ´óÓÚ14 */
+							if(opt_rx->snd_wscale > 14) {/* çª—å£æ‰©å¤§å› å­ä¸èƒ½å¤§äº14 */
 								if(net_ratelimit())
 									printk(KERN_INFO "tcp_parse_options: Illegal window "
 									       "scaling value %d >14 received.\n",
@@ -3232,7 +3232,7 @@ void tcp_parse_options(struct sk_buff *skb, struct tcp_options_received *opt_rx,
 						}
 					break;
 				case TCPOPT_TIMESTAMP:
-					if(opsize==TCPOLEN_TIMESTAMP) {/* Ê±¼ä´ÁÑ¡Ïî£¬ÅĞ¶ÏÆä³¤¶ÈÊÇ·ñºÏ·¨ */
+					if(opsize==TCPOLEN_TIMESTAMP) {/* æ—¶é—´æˆ³é€‰é¡¹ï¼Œåˆ¤æ–­å…¶é•¿åº¦æ˜¯å¦åˆæ³• */
 						if ((estab && opt_rx->tstamp_ok) ||
 						    (!estab && sysctl_tcp_timestamps)) {
 							opt_rx->saw_tstamp = 1;
@@ -3242,20 +3242,20 @@ void tcp_parse_options(struct sk_buff *skb, struct tcp_options_received *opt_rx,
 					}
 					break;
 				case TCPOPT_SACK_PERM:
-					/* SACKÔÊĞíÑ¡ÏîÖ»ÄÜ³öÏÖÔÚSYN¶ÎÖĞ */
+					/* SACKå…è®¸é€‰é¡¹åªèƒ½å‡ºç°åœ¨SYNæ®µä¸­ */
 					if(opsize==TCPOLEN_SACK_PERM && th->syn && !estab) {
 						if (sysctl_tcp_sack) {
-							opt_rx->sack_ok = 1;/* ÔÊĞíSACK */
+							opt_rx->sack_ok = 1;/* å…è®¸SACK */
 							tcp_sack_reset(opt_rx);
 						}
 					}
 					break;
 
 				case TCPOPT_SACK:
-					if((opsize >= (TCPOLEN_SACK_BASE + TCPOLEN_SACK_PERBLOCK)) &&/* ÖÁÉÙ°üº¬Ò»¸öSACK */
-					   !((opsize - TCPOLEN_SACK_BASE) % TCPOLEN_SACK_PERBLOCK) &&/* SACK±ß½çÅĞ¶Ï */
-					   opt_rx->sack_ok) {/* ÔÊĞíSACK */
-					   /* ½«sackedÖ¸ÏòSACKÊı¾İ¿ªÊ¼´¦ */
+					if((opsize >= (TCPOLEN_SACK_BASE + TCPOLEN_SACK_PERBLOCK)) &&/* è‡³å°‘åŒ…å«ä¸€ä¸ªSACK */
+					   !((opsize - TCPOLEN_SACK_BASE) % TCPOLEN_SACK_PERBLOCK) &&/* SACKè¾¹ç•Œåˆ¤æ–­ */
+					   opt_rx->sack_ok) {/* å…è®¸SACK */
+					   /* å°†sackedæŒ‡å‘SACKæ•°æ®å¼€å§‹å¤„ */
 						TCP_SKB_CB(skb)->sacked = (ptr - 2) - (unsigned char *)th;
 					}
 	  			};
@@ -3268,19 +3268,19 @@ void tcp_parse_options(struct sk_buff *skb, struct tcp_options_received *opt_rx,
 /* Fast parse options. This hopes to only see timestamps.
  * If it is wrong it falls back on tcp_parse_options().
  */
-/* ÔÚTCPÂıËÙ½ÓÊÕ±¨ÎÄµÄ½×¶Î£¬µ÷ÓÃ´Ëº¯Êı½âÎöTCPÑ¡Ïî */
+/* åœ¨TCPæ…¢é€Ÿæ¥æ”¶æŠ¥æ–‡çš„é˜¶æ®µï¼Œè°ƒç”¨æ­¤å‡½æ•°è§£æTCPé€‰é¡¹ */
 static inline int tcp_fast_parse_options(struct sk_buff *skb, struct tcphdr *th,
 					 struct tcp_sock *tp)
 {
-	if (th->doff == sizeof(struct tcphdr)>>2) {/* Ã»ÓĞÑ¡Ïî */
-		tp->rx_opt.saw_tstamp = 0;/* ½«Ê±¼ä´Á±êÖ¾ÉèÖÃ0ºóÍË³ö */
+	if (th->doff == sizeof(struct tcphdr)>>2) {/* æ²¡æœ‰é€‰é¡¹ */
+		tp->rx_opt.saw_tstamp = 0;/* å°†æ—¶é—´æˆ³æ ‡å¿—è®¾ç½®0åé€€å‡º */
 		return 0;
-	} else if (tp->rx_opt.tstamp_ok &&/* ÆôÓÃÊ±¼ä´ÁÑ¡Ïî */
-		   th->doff == (sizeof(struct tcphdr)>>2)+(TCPOLEN_TSTAMP_ALIGNED>>2)) {/* ²¢ÇÒ½ö½öÖ»¿ÉÄÜÓĞÊ±¼ä´ÁÑ¡Ïî */
+	} else if (tp->rx_opt.tstamp_ok &&/* å¯ç”¨æ—¶é—´æˆ³é€‰é¡¹ */
+		   th->doff == (sizeof(struct tcphdr)>>2)+(TCPOLEN_TSTAMP_ALIGNED>>2)) {/* å¹¶ä¸”ä»…ä»…åªå¯èƒ½æœ‰æ—¶é—´æˆ³é€‰é¡¹ */
 		__u32 *ptr = (__u32 *)(th + 1);
 		if (*ptr == ntohl((TCPOPT_NOP << 24) | (TCPOPT_NOP << 16)
-				  | (TCPOPT_TIMESTAMP << 8) | TCPOLEN_TIMESTAMP)) {/* ÅĞ¶Ï¸ÃÑ¡ÏîÊÇ·ñÊÇÊ±¼ä´Á */
-			/* »ñÈ¡Ê±¼ä´ÁµÄÖµ */
+				  | (TCPOPT_TIMESTAMP << 8) | TCPOLEN_TIMESTAMP)) {/* åˆ¤æ–­è¯¥é€‰é¡¹æ˜¯å¦æ˜¯æ—¶é—´æˆ³ */
+			/* è·å–æ—¶é—´æˆ³çš„å€¼ */
 			tp->rx_opt.saw_tstamp = 1;
 			++ptr;
 			tp->rx_opt.rcv_tsval = ntohl(*ptr);
@@ -3289,7 +3289,7 @@ static inline int tcp_fast_parse_options(struct sk_buff *skb, struct tcphdr *th,
 			return 1;
 		}
 	}
-	/* ³ıÁËÊ±¼ä´ÁÍâ£¬»¹ÓĞÆäËûÑ¡Ïî¡£ */
+	/* é™¤äº†æ—¶é—´æˆ³å¤–ï¼Œè¿˜æœ‰å…¶ä»–é€‰é¡¹ã€‚ */
 	tcp_parse_options(skb, &tp->rx_opt, 1);
 	return 1;
 }
@@ -3421,27 +3421,27 @@ static void tcp_reset(struct sock *sk)
  *
  *	If we are in FINWAIT-2, a received FIN moves us to TIME-WAIT.
  */
-/* µ±Ì×½Ó¿Ú½ÓÊÕµ½FIN¶Îºó£¬Í¨ÖªµÈ´ıµÄ½ø³Ì */
+/* å½“å¥—æ¥å£æ¥æ”¶åˆ°FINæ®µåï¼Œé€šçŸ¥ç­‰å¾…çš„è¿›ç¨‹ */
 static void tcp_fin(struct sk_buff *skb, struct sock *sk, struct tcphdr *th)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
 
-	tcp_schedule_ack(tp);/* ½ÓÊÕµ½FINºó£¬ĞèÒª·¢ËÍACK */
+	tcp_schedule_ack(tp);/* æ¥æ”¶åˆ°FINåï¼Œéœ€è¦å‘é€ACK */
 
-	sk->sk_shutdown |= RCV_SHUTDOWN;/* ½ÓÊÕ¹Ø±Õ */
-	sock_set_flag(sk, SOCK_DONE);/* Ì×¿Ú¼´½«½áÊø£¬²»ÔÙ½ÓÊÕºóÃæµÄÊı¾İ */
+	sk->sk_shutdown |= RCV_SHUTDOWN;/* æ¥æ”¶å…³é—­ */
+	sock_set_flag(sk, SOCK_DONE);/* å¥—å£å³å°†ç»“æŸï¼Œä¸å†æ¥æ”¶åé¢çš„æ•°æ® */
 
 	switch (sk->sk_state) {
 		case TCP_SYN_RECV:
 		case TCP_ESTABLISHED:
 			/* Move to CLOSE_WAIT */
-			/* ÕâÖÖÇé¿öÏÂ£¬ÉèÖÃ×´Ì¬ÎªTCP_CLOSE_WAIT£¬²¢ÑÓÊ±·¢ËÍACK */
+			/* è¿™ç§æƒ…å†µä¸‹ï¼Œè®¾ç½®çŠ¶æ€ä¸ºTCP_CLOSE_WAITï¼Œå¹¶å»¶æ—¶å‘é€ACK */
 			tcp_set_state(sk, TCP_CLOSE_WAIT);
 			tp->ack.pingpong = 1;
 			break;
 
 		case TCP_CLOSE_WAIT:
-		case TCP_CLOSING:/* ÕâÁ½ÖÖÇé¿öÏÂ£¬ÊÕµ½µÄFINÓ¦µ±ÊÇÖØ¸´¶Î£¬ºöÂÔ */
+		case TCP_CLOSING:/* è¿™ä¸¤ç§æƒ…å†µä¸‹ï¼Œæ”¶åˆ°çš„FINåº”å½“æ˜¯é‡å¤æ®µï¼Œå¿½ç•¥ */
 			/* Received a retransmission of the FIN, do
 			 * nothing.
 			 */
@@ -3450,22 +3450,22 @@ static void tcp_fin(struct sk_buff *skb, struct sock *sk, struct tcphdr *th)
 			/* RFC793: Remain in the LAST-ACK state. */
 			break;
 
-		case TCP_FIN_WAIT1:/* ´Ë×´Ì¬±íÊ¾Á½¶ËÍ¬Ê±¹Ø±Õ */
+		case TCP_FIN_WAIT1:/* æ­¤çŠ¶æ€è¡¨ç¤ºä¸¤ç«¯åŒæ—¶å…³é—­ */
 			/* This case occurs when a simultaneous close
 			 * happens, we must ack the received FIN and
 			 * enter the CLOSING state.
 			 */
-			/* ¸ù¾İĞ­Òé£¬Ó¦µ±Ïò¶Ô·½·¢ËÍACK£¬²¢ÇÒ×ª»»µ½CLOSING×´Ì¬ */
+			/* æ ¹æ®åè®®ï¼Œåº”å½“å‘å¯¹æ–¹å‘é€ACKï¼Œå¹¶ä¸”è½¬æ¢åˆ°CLOSINGçŠ¶æ€ */
 			tcp_send_ack(sk);
 			tcp_set_state(sk, TCP_CLOSING);
 			break;
 		case TCP_FIN_WAIT2:
 			/* Received a FIN -- send ACK and enter TIME_WAIT. */
-			/* ¸ù¾İ×´Ì¬Í¼£¬ÕâÖÖÇé¿öÏÂÓ¦µ±Ïò¶Ô·½·¢ËÍACK²¢½øÈëµ½TIME_WAIT×´Ì¬ */
+			/* æ ¹æ®çŠ¶æ€å›¾ï¼Œè¿™ç§æƒ…å†µä¸‹åº”å½“å‘å¯¹æ–¹å‘é€ACKå¹¶è¿›å…¥åˆ°TIME_WAITçŠ¶æ€ */
 			tcp_send_ack(sk);
 			tcp_time_wait(sk, TCP_TIME_WAIT, 0);
 			break;
-		default:/* LISTENºÍCLOSE×´Ì¬ºöÂÔFIN¶Î */
+		default:/* LISTENå’ŒCLOSEçŠ¶æ€å¿½ç•¥FINæ®µ */
 			/* Only TCP_LISTEN and TCP_CLOSE are left, in these
 			 * cases we should never reach this piece of code.
 			 */
@@ -3477,21 +3477,21 @@ static void tcp_fin(struct sk_buff *skb, struct sock *sk, struct tcphdr *th)
 	/* It _is_ possible, that we have something out-of-order _after_ FIN.
 	 * Probably, we should reset in this case. For now drop them.
 	 */
-	/* Çå¿Õ½ÓÊÕµ½ÂÒĞò¶ÓÁĞÉÏµÄ¶Î */
+	/* æ¸…ç©ºæ¥æ”¶åˆ°ä¹±åºé˜Ÿåˆ—ä¸Šçš„æ®µ */
 	__skb_queue_purge(&tp->out_of_order_queue);
-	if (tp->rx_opt.sack_ok)/* Çå³ıSACK±êÖ¾ */
+	if (tp->rx_opt.sack_ok)/* æ¸…é™¤SACKæ ‡å¿— */
 		tcp_sack_reset(&tp->rx_opt);
-	/* ÊÍ·ÅÌ×½Ó¿ÚÉÏµÄ»º´æ */
+	/* é‡Šæ”¾å¥—æ¥å£ä¸Šçš„ç¼“å­˜ */
 	sk_stream_mem_reclaim(sk);
 
-	if (!sock_flag(sk, SOCK_DEAD)) {/* Á¬½Ó»¹Ã»ÓĞÖÕÖ¹ */
-		sk->sk_state_change(sk);/* »½ĞÑµÈ´ıÌ×¿ÚµÄ½ø³Ì */
+	if (!sock_flag(sk, SOCK_DEAD)) {/* è¿æ¥è¿˜æ²¡æœ‰ç»ˆæ­¢ */
+		sk->sk_state_change(sk);/* å”¤é†’ç­‰å¾…å¥—å£çš„è¿›ç¨‹ */
 
 		/* Do not send POLL_HUP for half duplex close. */
 		if (sk->sk_shutdown == SHUTDOWN_MASK ||
-		    sk->sk_state == TCP_CLOSE)/* ¶ÁĞ´ÒÑ¾­¹Ø±ÕÁË£¬Í¨ÖªÒì²½µÈ´ıµÄÏß³Ì */
+		    sk->sk_state == TCP_CLOSE)/* è¯»å†™å·²ç»å…³é—­äº†ï¼Œé€šçŸ¥å¼‚æ­¥ç­‰å¾…çš„çº¿ç¨‹ */
 			sk_wake_async(sk, 1, POLL_HUP);
-		else/* Ö»¹Ø±ÕÁË¶Á£¬ÔòÍ¨ÖªÒì²½µÈ´ıµÄÏß³Ì£¬¶ÁÍ¨µÀ±»¹Ø±Õ */
+		else/* åªå…³é—­äº†è¯»ï¼Œåˆ™é€šçŸ¥å¼‚æ­¥ç­‰å¾…çš„çº¿ç¨‹ï¼Œè¯»é€šé“è¢«å…³é—­ */
 			sk_wake_async(sk, 1, POLL_IN);
 	}
 }
@@ -3509,7 +3509,7 @@ tcp_sack_extend(struct tcp_sack_block *sp, u32 seq, u32 end_seq)
 	return 0;
 }
 
-/* µ±½ÓÊÕµ½ÖØ¸´¶ÎÊ±£¬Èç¹ûÆôÓÃÁËDSACK£¬Ôòµ÷ÓÃ´Ëº¯ÊıÉèÖÃÓÃÓÚ¹¹³ÉSACKÑ¡ÏîµÄduplicate_sackÊı×é */
+/* å½“æ¥æ”¶åˆ°é‡å¤æ®µæ—¶ï¼Œå¦‚æœå¯ç”¨äº†DSACKï¼Œåˆ™è°ƒç”¨æ­¤å‡½æ•°è®¾ç½®ç”¨äºæ„æˆSACKé€‰é¡¹çš„duplicate_sackæ•°ç»„ */
 static inline void tcp_dsack_set(struct tcp_sock *tp, u32 seq, u32 end_seq)
 {
 	if (tp->rx_opt.sack_ok && sysctl_tcp_dsack) {
@@ -3596,7 +3596,7 @@ static __inline__ void tcp_sack_swap(struct tcp_sack_block *sack1, struct tcp_sa
 	sack2->end_seq = tmp;
 }
 
-/* µ±½ÓÊÕµ½ÂÒĞò¶Îºó£¬µ÷ÓÃ´Ëº¯ÊıÉèÖÃselective_acksÊı×é£¬¼ÆËãÏÂÒ»¸ö·¢ËÍ¶ÎÖĞSACKÑ¡ÏîÖĞSACK¿éÊı */
+/* å½“æ¥æ”¶åˆ°ä¹±åºæ®µåï¼Œè°ƒç”¨æ­¤å‡½æ•°è®¾ç½®selective_acksæ•°ç»„ï¼Œè®¡ç®—ä¸‹ä¸€ä¸ªå‘é€æ®µä¸­SACKé€‰é¡¹ä¸­SACKå—æ•° */
 static void tcp_sack_new_ofo_skb(struct sock *sk, u32 seq, u32 end_seq)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
@@ -3641,7 +3641,7 @@ new_sack:
 }
 
 /* RCV.NXT advances, some SACKs should be eaten. */
-/* ÔÚ½ÓÊÕ¶ÎµÄÂıËÙÁ÷³ÌÖĞ£¬Èç¹û´ı»Ø¸´µÄACk¶ÎÖĞ´æÔÚSACKÑ¡Ïî£¬Ôòµ÷ÓÃ´Ëº¯Êı£¬¸ù¾İ½ÓÊÕµ½µÄ¶Îµ÷Õûselective_acksÊı×é */
+/* åœ¨æ¥æ”¶æ®µçš„æ…¢é€Ÿæµç¨‹ä¸­ï¼Œå¦‚æœå¾…å›å¤çš„ACkæ®µä¸­å­˜åœ¨SACKé€‰é¡¹ï¼Œåˆ™è°ƒç”¨æ­¤å‡½æ•°ï¼Œæ ¹æ®æ¥æ”¶åˆ°çš„æ®µè°ƒæ•´selective_acksæ•°ç»„ */
 static void tcp_sack_remove(struct tcp_sock *tp)
 {
 	struct tcp_sack_block *sp = &tp->selective_acks[0];
@@ -3681,25 +3681,25 @@ static void tcp_sack_remove(struct tcp_sock *tp)
 /* This one checks to see if we can put data from the
  * out_of_order queue into the receive_queue.
  */
-/* ¸Ãº¯Êı¼ì²â½«½ÓÊÕµÄ¶ÎÊÇ·ñÄÜÓëÂÒĞò¶ÓÁĞÖĞµÄ¶ÎºÏ²¢²¢·Åµ½½ÓÊÕ¶ÓÁĞÖĞ */
+/* è¯¥å‡½æ•°æ£€æµ‹å°†æ¥æ”¶çš„æ®µæ˜¯å¦èƒ½ä¸ä¹±åºé˜Ÿåˆ—ä¸­çš„æ®µåˆå¹¶å¹¶æ”¾åˆ°æ¥æ”¶é˜Ÿåˆ—ä¸­ */
 static void tcp_ofo_queue(struct sock *sk)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
-	__u32 dsack_high = tp->rcv_nxt;/* dsack_highÊÇÒÑ¾­Í¨¹ıdsack´¦ÀíµÄĞòºÅ */
+	__u32 dsack_high = tp->rcv_nxt;/* dsack_highæ˜¯å·²ç»é€šè¿‡dsackå¤„ç†çš„åºå· */
 	struct sk_buff *skb;
 
-	while ((skb = skb_peek(&tp->out_of_order_queue)) != NULL) {/* ±éÀúÂÒĞò¶ÓÁĞÖĞËùÓĞµÄ¶Î */
-		if (after(TCP_SKB_CB(skb)->seq, tp->rcv_nxt))/* µ±Ç°¶ÎµÄĞòºÅ³¬¹ıÔ¤ÆÚ½ÓÊÕµÄĞòºÅ£¬ÍË³ö */
+	while ((skb = skb_peek(&tp->out_of_order_queue)) != NULL) {/* éå†ä¹±åºé˜Ÿåˆ—ä¸­æ‰€æœ‰çš„æ®µ */
+		if (after(TCP_SKB_CB(skb)->seq, tp->rcv_nxt))/* å½“å‰æ®µçš„åºå·è¶…è¿‡é¢„æœŸæ¥æ”¶çš„åºå·ï¼Œé€€å‡º */
 			break;
 
-		if (before(TCP_SKB_CB(skb)->seq, dsack_high)) {/* ¶ÎĞòºÅĞ¡ÓÚÔ¤ÆÚµÄĞòºÅ£¬ËµÃ÷ÖØ¸´½ÓÊÕÁË±¨ÎÄ */
+		if (before(TCP_SKB_CB(skb)->seq, dsack_high)) {/* æ®µåºå·å°äºé¢„æœŸçš„åºå·ï¼Œè¯´æ˜é‡å¤æ¥æ”¶äº†æŠ¥æ–‡ */
 			__u32 dsack = dsack_high;
-			if (before(TCP_SKB_CB(skb)->end_seq, dsack_high))/* ´¦ÀíDSACK */
+			if (before(TCP_SKB_CB(skb)->end_seq, dsack_high))/* å¤„ç†DSACK */
 				dsack_high = TCP_SKB_CB(skb)->end_seq;
 			tcp_dsack_extend(tp, TCP_SKB_CB(skb)->seq, dsack);
 		}
 
-		if (!after(TCP_SKB_CB(skb)->end_seq, tp->rcv_nxt)) {/* ¸Ã¶ÎÒÑ¾­±»È«²¿½ÓÊÕ£¬²»±ØÔÙ±£´æÔÚÂÒĞò¶ÓÁĞÖĞÁË */
+		if (!after(TCP_SKB_CB(skb)->end_seq, tp->rcv_nxt)) {/* è¯¥æ®µå·²ç»è¢«å…¨éƒ¨æ¥æ”¶ï¼Œä¸å¿…å†ä¿å­˜åœ¨ä¹±åºé˜Ÿåˆ—ä¸­äº† */
 			SOCK_DEBUG(sk, "ofo packet was already received \n");
 			__skb_unlink(skb, skb->list);
 			__kfree_skb(skb);
@@ -3709,10 +3709,10 @@ static void tcp_ofo_queue(struct sock *sk)
 			   tp->rcv_nxt, TCP_SKB_CB(skb)->seq,
 			   TCP_SKB_CB(skb)->end_seq);
 
-		/* Ô¤ÆÚµÄ¶Î£¬½«Æä´ÓÂÒĞò¶ÓÁĞÖĞÒÆµ½½ÓÊÕ¶ÓÁĞÖĞ */
+		/* é¢„æœŸçš„æ®µï¼Œå°†å…¶ä»ä¹±åºé˜Ÿåˆ—ä¸­ç§»åˆ°æ¥æ”¶é˜Ÿåˆ—ä¸­ */
 		__skb_unlink(skb, skb->list);
 		__skb_queue_tail(&sk->sk_receive_queue, skb);
-		/* ¸üĞÂÔ¤ÆÚ¶ÎµÄĞòºÅ²¢´¦ÀíFIN */
+		/* æ›´æ–°é¢„æœŸæ®µçš„åºå·å¹¶å¤„ç†FIN */
 		tp->rcv_nxt = TCP_SKB_CB(skb)->end_seq;
 		if(skb->h.th->fin)
 			tcp_fin(skb, sk, skb->h.th);
@@ -3721,25 +3721,25 @@ static void tcp_ofo_queue(struct sock *sk)
 
 static int tcp_prune_queue(struct sock *sk);
 
-/* ÂıËÙÂ·¾¶´¦ÀíTCPÊı¾İ±¨ÎÄ */
+/* æ…¢é€Ÿè·¯å¾„å¤„ç†TCPæ•°æ®æŠ¥æ–‡ */
 static void tcp_data_queue(struct sock *sk, struct sk_buff *skb)
 {
 	struct tcphdr *th = skb->h.th;
 	struct tcp_sock *tp = tcp_sk(sk);
 	int eaten = -1;
 
-	if (TCP_SKB_CB(skb)->seq == TCP_SKB_CB(skb)->end_seq)/* Ã»ÓĞÊı¾İ¸ººÉ£¬ÍË³ö */
+	if (TCP_SKB_CB(skb)->seq == TCP_SKB_CB(skb)->end_seq)/* æ²¡æœ‰æ•°æ®è´Ÿè·ï¼Œé€€å‡º */
 		goto drop;
 
 	th = skb->h.th;
-	/* ÒÆ¶¯Ö¸Õë£¬Ìø¹ıTCP±¨Í· */
+	/* ç§»åŠ¨æŒ‡é’ˆï¼Œè·³è¿‡TCPæŠ¥å¤´ */
 	__skb_pull(skb, th->doff*4);
 
-	/* ´¦ÀíCWR±êÖ¾£¬Èç¹û½ÓÊÕµ½µÄTCPÊ×²¿ÖĞ´æÔÚ´Ë±êÖ¾£¬±íÊ¾·¢ËÍ·½×÷ÁËÓµÈû´¦Àí£¬ËùÒÔ±¾¶Ë¿ÉÒÔÈ¥µôTCP_ECN_DEMAND_CWR±êÖ¾ */
+	/* å¤„ç†CWRæ ‡å¿—ï¼Œå¦‚æœæ¥æ”¶åˆ°çš„TCPé¦–éƒ¨ä¸­å­˜åœ¨æ­¤æ ‡å¿—ï¼Œè¡¨ç¤ºå‘é€æ–¹ä½œäº†æ‹¥å¡å¤„ç†ï¼Œæ‰€ä»¥æœ¬ç«¯å¯ä»¥å»æ‰TCP_ECN_DEMAND_CWRæ ‡å¿— */
 	TCP_ECN_accept_cwr(tp, skb);
 
-	if (tp->rx_opt.dsack) {/* ÉÏ´ÎµÄ¶ÎÖĞ´æÔÚDSACK */
-		tp->rx_opt.dsack = 0;/* ÒòÎªÄ¿Ç°»¹²»Çå³şÏÂ´Î·¢ËÍµÄ¶ÎÊÇ·ñ´æÔÚDSACK£¬Òò´ËÇå³ı´Ë±êÖ¾ */
+	if (tp->rx_opt.dsack) {/* ä¸Šæ¬¡çš„æ®µä¸­å­˜åœ¨DSACK */
+		tp->rx_opt.dsack = 0;/* å› ä¸ºç›®å‰è¿˜ä¸æ¸…æ¥šä¸‹æ¬¡å‘é€çš„æ®µæ˜¯å¦å­˜åœ¨DSACKï¼Œå› æ­¤æ¸…é™¤æ­¤æ ‡å¿— */
 		tp->rx_opt.eff_sacks = min_t(unsigned int, tp->rx_opt.num_sacks,
 						    4 - tp->rx_opt.tstamp_ok);
 	}
@@ -3748,99 +3748,99 @@ static void tcp_data_queue(struct sock *sk, struct sk_buff *skb)
 	 *  Packets in sequence go to the receive queue.
 	 *  Out of sequence packets to the out_of_order_queue.
 	 */
-	if (TCP_SKB_CB(skb)->seq == tp->rcv_nxt) {/* ÊÇÔ¤ÆÚµÄ¶Î£¬Ö»ÓĞ¹ı´æÔÚÑ¡Ïî¶øÒÑ */
-		if (tcp_receive_window(tp) == 0)/* ½ÓÊÕ´°¿ÚÎª0£¬²»ÄÜ½ÓÊÕÊı¾İ£¬Ïò¶Ô·½·¢ËÍACKºó¶ªÆú¶Î¡£¶Ô·½½øĞĞÓµÈû´¦Àí¡£ */
+	if (TCP_SKB_CB(skb)->seq == tp->rcv_nxt) {/* æ˜¯é¢„æœŸçš„æ®µï¼Œåªæœ‰è¿‡å­˜åœ¨é€‰é¡¹è€Œå·² */
+		if (tcp_receive_window(tp) == 0)/* æ¥æ”¶çª—å£ä¸º0ï¼Œä¸èƒ½æ¥æ”¶æ•°æ®ï¼Œå‘å¯¹æ–¹å‘é€ACKåä¸¢å¼ƒæ®µã€‚å¯¹æ–¹è¿›è¡Œæ‹¥å¡å¤„ç†ã€‚ */
 			goto out_of_window;
 
 		/* Ok. In sequence. In window. */
 		if (tp->ucopy.task == current &&
 		    tp->copied_seq == tp->rcv_nxt && tp->ucopy.len &&
-		    sock_owned_by_user(sk) && !tp->urg_data) {/* ÅĞ¶ÏÊÇ·ñ¿ÉÒÔ¸´ÖÆµ½ÓÃ»§¿Õ¼ä */
+		    sock_owned_by_user(sk) && !tp->urg_data) {/* åˆ¤æ–­æ˜¯å¦å¯ä»¥å¤åˆ¶åˆ°ç”¨æˆ·ç©ºé—´ */
 			int chunk = min_t(unsigned int, skb->len,
-							tp->ucopy.len);/* ¸´ÖÆµ½ÓÃ»§¿Õ¼äµÄÊı¾İ³¤¶È */
+							tp->ucopy.len);/* å¤åˆ¶åˆ°ç”¨æˆ·ç©ºé—´çš„æ•°æ®é•¿åº¦ */
 
 			__set_current_state(TASK_RUNNING);
 
 			local_bh_enable();
-			if (!skb_copy_datagram_iovec(skb, 0, tp->ucopy.iov, chunk)) {/* ½«Êı¾İ¸´ÖÆµ½ÓÃ»§¿Õ¼ä */
-				/* ¸´ÖÆ³É¹¦µÄ»°£¬¸üĞÂÓÃ»§¿Õ¼ä»º´æ³¤¶È£¬¸´ÖÆµÄĞòºÅ */
+			if (!skb_copy_datagram_iovec(skb, 0, tp->ucopy.iov, chunk)) {/* å°†æ•°æ®å¤åˆ¶åˆ°ç”¨æˆ·ç©ºé—´ */
+				/* å¤åˆ¶æˆåŠŸçš„è¯ï¼Œæ›´æ–°ç”¨æˆ·ç©ºé—´ç¼“å­˜é•¿åº¦ï¼Œå¤åˆ¶çš„åºå· */
 				tp->ucopy.len -= chunk;
 				tp->copied_seq += chunk;
 				eaten = (chunk == skb->len && !th->fin);
-				/* ¸üĞÂ½ÓÊÕ»º´æºÍ½ÓÊÕ´°¿Ú */
+				/* æ›´æ–°æ¥æ”¶ç¼“å­˜å’Œæ¥æ”¶çª—å£ */
 				tcp_rcv_space_adjust(sk);
 			}
 			local_bh_disable();
 		}
 
-		if (eaten <= 0) {/* Ã»ÓĞ¸´ÖÆµ½ÓÃ»§¿Õ¼ä£¬»º´æµ½½ÓÊÕ¶ÓÁĞÖĞ */
+		if (eaten <= 0) {/* æ²¡æœ‰å¤åˆ¶åˆ°ç”¨æˆ·ç©ºé—´ï¼Œç¼“å­˜åˆ°æ¥æ”¶é˜Ÿåˆ—ä¸­ */
 queue_and_out:
-			if (eaten < 0 &&/* Èç¹û½ÓÊÕ»º´æ²»×ã£¬Ôò¶ªÆú */
+			if (eaten < 0 &&/* å¦‚æœæ¥æ”¶ç¼“å­˜ä¸è¶³ï¼Œåˆ™ä¸¢å¼ƒ */
 			    (atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf ||
 			     !sk_stream_rmem_schedule(sk, skb))) {
 				if (tcp_prune_queue(sk) < 0 ||
 				    !sk_stream_rmem_schedule(sk, skb))
 					goto drop;
 			}
-			/* ÉèÖÃËŞÖ÷£¬²¢Ìí¼Óµ½½ÓÊÕ¶ÓÁĞ¶ÓÎ² */
+			/* è®¾ç½®å®¿ä¸»ï¼Œå¹¶æ·»åŠ åˆ°æ¥æ”¶é˜Ÿåˆ—é˜Ÿå°¾ */
 			sk_stream_set_owner_r(skb, sk);
 			__skb_queue_tail(&sk->sk_receive_queue, skb);
 		}
-		/* ³É¹¦½ÓÊÕÁË±¨ÎÄ£¬¸üĞÂÏÂÒ»¸öÔ¤ÆÚ½ÓÊÕµÄĞòºÅ */
+		/* æˆåŠŸæ¥æ”¶äº†æŠ¥æ–‡ï¼Œæ›´æ–°ä¸‹ä¸€ä¸ªé¢„æœŸæ¥æ”¶çš„åºå· */
 		tp->rcv_nxt = TCP_SKB_CB(skb)->end_seq;
-		if(skb->len)/* ½ÓÊÕµ½ÓĞĞ§Êı¾İ£¬Ôò´¦ÀíÒ»Ğ©Êı¾İ½ÓÊÕÏà¹ØµÄ²Ù×÷£¬Ö÷ÒªÊÇÓĞ¹ØÑÓÊ±ACKÒÔ¼°ECN±êÖ¾µÈµÈ */
+		if(skb->len)/* æ¥æ”¶åˆ°æœ‰æ•ˆæ•°æ®ï¼Œåˆ™å¤„ç†ä¸€äº›æ•°æ®æ¥æ”¶ç›¸å…³çš„æ“ä½œï¼Œä¸»è¦æ˜¯æœ‰å…³å»¶æ—¶ACKä»¥åŠECNæ ‡å¿—ç­‰ç­‰ */
 			tcp_event_data_recv(sk, tp, skb);
-		if(th->fin)/* ´¦ÀíFIN */
+		if(th->fin)/* å¤„ç†FIN */
 			tcp_fin(skb, sk, th);
 
-		if (skb_queue_len(&tp->out_of_order_queue)) {/* ÂÒĞò¶ÓÁĞÖĞ´æÔÚÊı¾İ */
-			/* ´¦ÀíÂÒĞò¶ÓÁĞ£¬½«ÆäÒÆµ½½ÓÊÕ¶ÓÁĞÖĞ */
+		if (skb_queue_len(&tp->out_of_order_queue)) {/* ä¹±åºé˜Ÿåˆ—ä¸­å­˜åœ¨æ•°æ® */
+			/* å¤„ç†ä¹±åºé˜Ÿåˆ—ï¼Œå°†å…¶ç§»åˆ°æ¥æ”¶é˜Ÿåˆ—ä¸­ */
 			tcp_ofo_queue(sk);
 
 			/* RFC2581. 4.2. SHOULD send immediate ACK, when
 			 * gap in queue is filled.
 			 */
-			if (!skb_queue_len(&tp->out_of_order_queue))/* ÂÒĞò¶ÓÁĞÖĞÒÑ¾­Ã»ÓĞÊı¾İ£¬È¥³ıpingpong±êÖ¾£¬ÆôÓÃ¿ìËÙÈ·ÈÏ */
+			if (!skb_queue_len(&tp->out_of_order_queue))/* ä¹±åºé˜Ÿåˆ—ä¸­å·²ç»æ²¡æœ‰æ•°æ®ï¼Œå»é™¤pingpongæ ‡å¿—ï¼Œå¯ç”¨å¿«é€Ÿç¡®è®¤ */
 				tp->ack.pingpong = 0;
 		}
 
-		if (tp->rx_opt.num_sacks)/* ½ÓÊÕµ½ĞÂÊı¾İ£¬rcv.nxt·¢ÉúÁË±ä»¯£¬¿ÉÄÜĞèÒªÈ¥³ıselective_acksÖĞµÄÄ³Ğ©Ïî */
+		if (tp->rx_opt.num_sacks)/* æ¥æ”¶åˆ°æ–°æ•°æ®ï¼Œrcv.nxtå‘ç”Ÿäº†å˜åŒ–ï¼Œå¯èƒ½éœ€è¦å»é™¤selective_acksä¸­çš„æŸäº›é¡¹ */
 			tcp_sack_remove(tp);
 
-		/* ÔÚÂú×ãÌõ¼şµÄÇé¿öÏÂ£¬ÖØĞÂÉèÖÃÊ×²¿Ô¤²âµÄ±êÖ¾ */
+		/* åœ¨æ»¡è¶³æ¡ä»¶çš„æƒ…å†µä¸‹ï¼Œé‡æ–°è®¾ç½®é¦–éƒ¨é¢„æµ‹çš„æ ‡å¿— */
 		tcp_fast_path_check(sk, tp);
 
-		if (eaten > 0)/* ¸´ÖÆÊı¾İµ½ÓÃ»§¿Õ¼äÁË */
-			__kfree_skb(skb);/* ÊÍ·Å±¨ÎÄ */
-		else if (!sock_flag(sk, SOCK_DEAD))/* Ã»ÓĞ¸´ÖÆÊı¾İµ½ÓÃ»§¿Õ¼ä£¬²¢ÇÒÌ×½Ó¿ÚÁ¬½ÓÎ´¶Ï¿ª£¬Ôò»½ĞÑµÈ´ı½ÓÊÕÊı¾İµÄ½ø³Ì */
+		if (eaten > 0)/* å¤åˆ¶æ•°æ®åˆ°ç”¨æˆ·ç©ºé—´äº† */
+			__kfree_skb(skb);/* é‡Šæ”¾æŠ¥æ–‡ */
+		else if (!sock_flag(sk, SOCK_DEAD))/* æ²¡æœ‰å¤åˆ¶æ•°æ®åˆ°ç”¨æˆ·ç©ºé—´ï¼Œå¹¶ä¸”å¥—æ¥å£è¿æ¥æœªæ–­å¼€ï¼Œåˆ™å”¤é†’ç­‰å¾…æ¥æ”¶æ•°æ®çš„è¿›ç¨‹ */
 			sk->sk_data_ready(sk, 0);
 		return;
 	}
 
-	/* ÔËĞĞµ½ÕâÀï£¬ËµÃ÷±¨ÎÄ²»ÊÇÔ¤ÆÚµÄ¶Î£¬ÂÒĞòÁË */
-	if (!after(TCP_SKB_CB(skb)->end_seq, tp->rcv_nxt)) {/* ±¾´Î½ÓÊÕµÄ¶ÎÊÇ½ÏÔçµÄ¶Î£¬ËµÃ÷¶Ô·½ÖØ·¢ÁË */
+	/* è¿è¡Œåˆ°è¿™é‡Œï¼Œè¯´æ˜æŠ¥æ–‡ä¸æ˜¯é¢„æœŸçš„æ®µï¼Œä¹±åºäº† */
+	if (!after(TCP_SKB_CB(skb)->end_seq, tp->rcv_nxt)) {/* æœ¬æ¬¡æ¥æ”¶çš„æ®µæ˜¯è¾ƒæ—©çš„æ®µï¼Œè¯´æ˜å¯¹æ–¹é‡å‘äº† */
 		/* A retransmit, 2nd most common case.  Force an immediate ack. */
 		NET_INC_STATS_BH(LINUX_MIB_DELAYEDACKLOST);
-		/* ´¦ÀíDSACK£¬ÔÚÏÂÒ»¸öÈ·ÈÏÖĞ·¢ËÍDSACKÏûÏ¢ */
+		/* å¤„ç†DSACKï¼Œåœ¨ä¸‹ä¸€ä¸ªç¡®è®¤ä¸­å‘é€DSACKæ¶ˆæ¯ */
 		tcp_dsack_set(tp, TCP_SKB_CB(skb)->seq, TCP_SKB_CB(skb)->end_seq);
 
-out_of_window:/* µ÷¶ÈACK£¬ÈÃÈ·ÈÏ¶Î¾¡¿ÉÄÜ¿ìµÄ·¢ËÍ¸ø·¢ËÍ·½ */
+out_of_window:/* è°ƒåº¦ACKï¼Œè®©ç¡®è®¤æ®µå°½å¯èƒ½å¿«çš„å‘é€ç»™å‘é€æ–¹ */
 		tcp_enter_quickack_mode(tp);
 		tcp_schedule_ack(tp);
 drop:
-		__kfree_skb(skb);/* ÊÍ·ÅSKB²¢ÍË³ö */
+		__kfree_skb(skb);/* é‡Šæ”¾SKBå¹¶é€€å‡º */
 		return;
 	}
 
 	/* Out of window. F.e. zero window probe. */
-	/* ½ÓÊÕµ½µÄ¶ÎĞòºÅ½Ï´ó£¬³¬¹ıÁË½ÓÊÕ´°¿Ú£¬Ìøµ½out_of_window´¦ÊÍ·ÅËü */
+	/* æ¥æ”¶åˆ°çš„æ®µåºå·è¾ƒå¤§ï¼Œè¶…è¿‡äº†æ¥æ”¶çª—å£ï¼Œè·³åˆ°out_of_windowå¤„é‡Šæ”¾å®ƒ */
 	if (!before(TCP_SKB_CB(skb)->seq, tp->rcv_nxt + tcp_receive_window(tp)))
 		goto out_of_window;
 
-	/* ĞèÒª½ÓÊÕµÄÂÒĞòµÄ¶Î£¬ÏÈ½øĞĞ¿ìËÙÈ·ÈÏ´¦Àí */
+	/* éœ€è¦æ¥æ”¶çš„ä¹±åºçš„æ®µï¼Œå…ˆè¿›è¡Œå¿«é€Ÿç¡®è®¤å¤„ç† */
 	tcp_enter_quickack_mode(tp);
 
-	if (before(TCP_SKB_CB(skb)->seq, tp->rcv_nxt)) {/* ²¿·Ö¶ÎÒÑ¾­½ÓÊÕ£¬ÔòÏÈ´¦ÀíSACKÑ¡ÏîµÄD-SACK */
+	if (before(TCP_SKB_CB(skb)->seq, tp->rcv_nxt)) {/* éƒ¨åˆ†æ®µå·²ç»æ¥æ”¶ï¼Œåˆ™å…ˆå¤„ç†SACKé€‰é¡¹çš„D-SACK */
 		/* Partial packet, seq < rcv_next < end_seq */
 		SOCK_DEBUG(sk, "partial packet: rcv_next %X seq %X - %X\n",
 			   tp->rcv_nxt, TCP_SKB_CB(skb)->seq,
@@ -3851,36 +3851,36 @@ drop:
 		/* If window is closed, drop tail of packet. But after
 		 * remembering D-SACK for its head made in previous line.
 		 */
-		if (!tcp_receive_window(tp))/* ½ÓÊÕ´°¿ÚÎª0£¬Ö»ÄÜ¶ªÆúÁË */
+		if (!tcp_receive_window(tp))/* æ¥æ”¶çª—å£ä¸º0ï¼Œåªèƒ½ä¸¢å¼ƒäº† */
 			goto out_of_window;
-		goto queue_and_out;/* »¹ÔÊĞí½ÓÊÕ£¬ÔòÌø×ªµ½queue_and_out½ÓÊÕÊı¾İ£¬ÕâÀïÃ»ÓĞÅĞ¶Ï±¨ÎÄ´óĞ¡? */
+		goto queue_and_out;/* è¿˜å…è®¸æ¥æ”¶ï¼Œåˆ™è·³è½¬åˆ°queue_and_outæ¥æ”¶æ•°æ®ï¼Œè¿™é‡Œæ²¡æœ‰åˆ¤æ–­æŠ¥æ–‡å¤§å°? */
 	}
 
 	/**
-	 * ½ÓÊÕµ½ÁËÂÒĞòµÄ¶Î£¬¿ÉÄÜÊÇ´«Êä¹ı³ÌÖĞ·¢ÉúÁËÓµÈû£¬Òò´Ë¼ì²âECN±êÖ¾ 
-	 * Èç¹ûÓĞÓµÈû£¬ÔòĞèÒªË«·½½øĞĞÓµÈû¿ØÖÆ´¦Àí£¬·ñÔò¾¡¿ìÍ¨Öª¶Ô·½£¬ÈÃ·¢ËÍ·½¾¡¿ÉÄÜµÄÖØ´«¶ªÊ§µÄ¶Î
+	 * æ¥æ”¶åˆ°äº†ä¹±åºçš„æ®µï¼Œå¯èƒ½æ˜¯ä¼ è¾“è¿‡ç¨‹ä¸­å‘ç”Ÿäº†æ‹¥å¡ï¼Œå› æ­¤æ£€æµ‹ECNæ ‡å¿— 
+	 * å¦‚æœæœ‰æ‹¥å¡ï¼Œåˆ™éœ€è¦åŒæ–¹è¿›è¡Œæ‹¥å¡æ§åˆ¶å¤„ç†ï¼Œå¦åˆ™å°½å¿«é€šçŸ¥å¯¹æ–¹ï¼Œè®©å‘é€æ–¹å°½å¯èƒ½çš„é‡ä¼ ä¸¢å¤±çš„æ®µ
 	 */
 	TCP_ECN_check_ce(tp, skb);
 
 	if (atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf ||
 	    !sk_stream_rmem_schedule(sk, skb)) {
-		if (tcp_prune_queue(sk) < 0 ||/* ½ÓÊÕ»º´æ¿Õ¼ä²»¹»£¬Ö»ÄÜ¶ªÆúÁË */
+		if (tcp_prune_queue(sk) < 0 ||/* æ¥æ”¶ç¼“å­˜ç©ºé—´ä¸å¤Ÿï¼Œåªèƒ½ä¸¢å¼ƒäº† */
 		    !sk_stream_rmem_schedule(sk, skb))
 			goto drop;
 	}
 
 	/* Disable header prediction. */
-	tp->pred_flags = 0;/* È¥µôÔ¤²â±êÖ¾£¬ÒòÎªÖ»ÒªÓĞÂÒĞò±¨ÎÄ´æÔÚ£¬¾Í²»¿ÉÄÜ×ß¿ìËÙÁ÷³Ì£¬²»±ØÔ¤²âÁË */
-	tcp_schedule_ack(tp);/* ±êÊ¶ÓĞÈ·ÈÏĞèÒª·¢ËÍ */
+	tp->pred_flags = 0;/* å»æ‰é¢„æµ‹æ ‡å¿—ï¼Œå› ä¸ºåªè¦æœ‰ä¹±åºæŠ¥æ–‡å­˜åœ¨ï¼Œå°±ä¸å¯èƒ½èµ°å¿«é€Ÿæµç¨‹ï¼Œä¸å¿…é¢„æµ‹äº† */
+	tcp_schedule_ack(tp);/* æ ‡è¯†æœ‰ç¡®è®¤éœ€è¦å‘é€ */
 
 	SOCK_DEBUG(sk, "out of order segment: rcv_next %X seq %X - %X\n",
 		   tp->rcv_nxt, TCP_SKB_CB(skb)->seq, TCP_SKB_CB(skb)->end_seq);
 
-	sk_stream_set_owner_r(skb, sk);/* ÉèÖÃskbµÄowner */
+	sk_stream_set_owner_r(skb, sk);/* è®¾ç½®skbçš„owner */
 
-	if (!skb_peek(&tp->out_of_order_queue)) {/* ÂÒĞò¶ÓÁĞÄ¿Ç°Îª¿Õ */
+	if (!skb_peek(&tp->out_of_order_queue)) {/* ä¹±åºé˜Ÿåˆ—ç›®å‰ä¸ºç©º */
 		/* Initial out of order segment, build 1 SACK. */
-		if (tp->rx_opt.sack_ok) {/* ÔÊĞí·¢ËÍSACK£¬ÉèÖÃSACKµÄÊôĞÔ */
+		if (tp->rx_opt.sack_ok) {/* å…è®¸å‘é€SACKï¼Œè®¾ç½®SACKçš„å±æ€§ */
 			tp->rx_opt.num_sacks = 1;
 			tp->rx_opt.dsack     = 0;
 			tp->rx_opt.eff_sacks = 1;
@@ -3888,73 +3888,73 @@ drop:
 			tp->selective_acks[0].end_seq =
 						TCP_SKB_CB(skb)->end_seq;
 		}
-		/* ½«±¨ÎÄ¼Óµ½ÂÒĞò¶ÓÁĞ */
+		/* å°†æŠ¥æ–‡åŠ åˆ°ä¹±åºé˜Ÿåˆ— */
 		__skb_queue_head(&tp->out_of_order_queue,skb);
-	} else {/* ÒÑ¾­ÓĞÂÒĞòµÄ±¨ÎÄÁË */
-		struct sk_buff *skb1 = tp->out_of_order_queue.prev;/* ÂÒĞò¶ÓÁĞÖĞ×îºóÒ»¸ö±¨ÎÄ */
+	} else {/* å·²ç»æœ‰ä¹±åºçš„æŠ¥æ–‡äº† */
+		struct sk_buff *skb1 = tp->out_of_order_queue.prev;/* ä¹±åºé˜Ÿåˆ—ä¸­æœ€åä¸€ä¸ªæŠ¥æ–‡ */
 		u32 seq = TCP_SKB_CB(skb)->seq;
 		u32 end_seq = TCP_SKB_CB(skb)->end_seq;
 
-		if (seq == TCP_SKB_CB(skb1)->end_seq) {/* µ±Ç°±¨ÎÄµÄĞòºÅÊÇÂÒĞò¶ÓÁĞ×îºóÒ»¸ö±¨ÎÄµÄ½áÊøĞòºÅ£¬¼´¶şÕßÊÇÁ¬ĞøµÄ */
-			__skb_append(skb1, skb);/* ½«ĞÂ±¨ÎÄÌí¼Óµ½Î²²¿¼´¿É */
+		if (seq == TCP_SKB_CB(skb1)->end_seq) {/* å½“å‰æŠ¥æ–‡çš„åºå·æ˜¯ä¹±åºé˜Ÿåˆ—æœ€åä¸€ä¸ªæŠ¥æ–‡çš„ç»“æŸåºå·ï¼Œå³äºŒè€…æ˜¯è¿ç»­çš„ */
+			__skb_append(skb1, skb);/* å°†æ–°æŠ¥æ–‡æ·»åŠ åˆ°å°¾éƒ¨å³å¯ */
 
-			if (!tp->rx_opt.num_sacks ||/* SACK¸öÊıÎª0 */
-			    tp->selective_acks[0].end_seq != seq)/* »òÕßÓëµÚÒ»¸öDSACKµÄĞòºÅ²»ÏàÁ¬ */
-				goto add_sack;/* ĞÂÔöÒ»¸öDSACK */
+			if (!tp->rx_opt.num_sacks ||/* SACKä¸ªæ•°ä¸º0 */
+			    tp->selective_acks[0].end_seq != seq)/* æˆ–è€…ä¸ç¬¬ä¸€ä¸ªDSACKçš„åºå·ä¸ç›¸è¿ */
+				goto add_sack;/* æ–°å¢ä¸€ä¸ªDSACK */
 
 			/* Common case: data arrive in order after hole. */
-			/* ½«µ±Ç°±¨ÎÄµÄsackÌí¼Óµ½µÚÒ»¸öDSACKÖĞ¼´¿É */
+			/* å°†å½“å‰æŠ¥æ–‡çš„sackæ·»åŠ åˆ°ç¬¬ä¸€ä¸ªDSACKä¸­å³å¯ */
 			tp->selective_acks[0].end_seq = end_seq;
 			return;
 		}
 
 		/* Find place to insert this segment. */
-		/* ÔËĞĞµ½ÕâÀï£¬ËµÃ÷½ÓÊÕµÄ¶ÎÓë×îºóÒ»¸öÂÒĞòµÄ¶Î²»Á¬Ğø£¬ĞèÒª½øĞĞ²éÕÒ */
+		/* è¿è¡Œåˆ°è¿™é‡Œï¼Œè¯´æ˜æ¥æ”¶çš„æ®µä¸æœ€åä¸€ä¸ªä¹±åºçš„æ®µä¸è¿ç»­ï¼Œéœ€è¦è¿›è¡ŒæŸ¥æ‰¾ */
 		do {
 			if (!after(TCP_SKB_CB(skb1)->seq, seq))
 				break;
-		} while ((skb1 = skb1->prev) !=/* ´Ó¶ÓÎ²ÏòÉÏ±éÀú */
+		} while ((skb1 = skb1->prev) !=/* ä»é˜Ÿå°¾å‘ä¸Šéå† */
 			 (struct sk_buff*)&tp->out_of_order_queue);
 
 		/* Do skb overlap to previous one? */
-		if (skb1 != (struct sk_buff*)&tp->out_of_order_queue &&/* ²»ÊÇ¶ÓÍ·½áµã */
-		    before(seq, TCP_SKB_CB(skb1)->end_seq)) {/* ²¿·ÖÖØµş */
-			if (!after(end_seq, TCP_SKB_CB(skb1)->end_seq)) {/* ÍêÈ«°üº¬ÔÚ¸Ã¶ÎÄÚ */
+		if (skb1 != (struct sk_buff*)&tp->out_of_order_queue &&/* ä¸æ˜¯é˜Ÿå¤´ç»“ç‚¹ */
+		    before(seq, TCP_SKB_CB(skb1)->end_seq)) {/* éƒ¨åˆ†é‡å  */
+			if (!after(end_seq, TCP_SKB_CB(skb1)->end_seq)) {/* å®Œå…¨åŒ…å«åœ¨è¯¥æ®µå†… */
 				/* All the bits are present. Drop. */
-				__kfree_skb(skb);/* ÊÍ·ÅËü */
-				/* ÉèÖÃDSACK£¬²¢Ìø×ªµ½add_sackÌí¼ÓDSACK */
+				__kfree_skb(skb);/* é‡Šæ”¾å®ƒ */
+				/* è®¾ç½®DSACKï¼Œå¹¶è·³è½¬åˆ°add_sackæ·»åŠ DSACK */
 				tcp_dsack_set(tp, seq, end_seq);
 				goto add_sack;
 			}
-			if (after(seq, TCP_SKB_CB(skb1)->seq)) {/* ÔÙ´ÎÈ·ÈÏÊÇ²¿·ÖÖØµş£¬Ó¦¸Ã×ÜÊÇÎªtrue */
+			if (after(seq, TCP_SKB_CB(skb1)->seq)) {/* å†æ¬¡ç¡®è®¤æ˜¯éƒ¨åˆ†é‡å ï¼Œåº”è¯¥æ€»æ˜¯ä¸ºtrue */
 				/* Partial overlap. */
-				/* ÉèÖÃDSACKÊôĞÔ */
+				/* è®¾ç½®DSACKå±æ€§ */
 				tcp_dsack_set(tp, seq, TCP_SKB_CB(skb1)->end_seq);
 			} else {
 				skb1 = skb1->prev;
 			}
 		}
-		/* ½«±¨ÎÄ²åÈëµ½ºÏÊÊµÄÎ»ÖÃ */
+		/* å°†æŠ¥æ–‡æ’å…¥åˆ°åˆé€‚çš„ä½ç½® */
 		__skb_insert(skb, skb1, skb1->next, &tp->out_of_order_queue);
 		
 		/* And clean segments covered by new one as whole. */
-		/* ½«µ±Ç°¶ÎºóÃæµÄËùÓĞ¶ÎÖĞ£¬°üº¬ÔÚµ±Ç°¶ÎÄÚµÄ¶ÎÉ¾³ı */
+		/* å°†å½“å‰æ®µåé¢çš„æ‰€æœ‰æ®µä¸­ï¼ŒåŒ…å«åœ¨å½“å‰æ®µå†…çš„æ®µåˆ é™¤ */
 		while ((skb1 = skb->next) !=
 		       (struct sk_buff*)&tp->out_of_order_queue &&
 		       after(end_seq, TCP_SKB_CB(skb1)->seq)) {
-		       if (before(end_seq, TCP_SKB_CB(skb1)->end_seq)) {/* ²¿·ÖÖØµş */
-			   	   /* ÉèÖÃDSACKºóÍË³ö²éÕÒ¹ı³Ì */
+		       if (before(end_seq, TCP_SKB_CB(skb1)->end_seq)) {/* éƒ¨åˆ†é‡å  */
+			   	   /* è®¾ç½®DSACKåé€€å‡ºæŸ¥æ‰¾è¿‡ç¨‹ */
 			       tcp_dsack_extend(tp, TCP_SKB_CB(skb1)->seq, end_seq);
 			       break;
 		       }
-			   /* ÍêÈ«°üº¬£¬Ôò½«Æä´ÓÂÒĞò¶ÓÁĞÖĞÉ¾³ı²¢ÊÍ·Å£¬Í¬Ê±ÉèÖÃÏà¹ØDSACKÊôĞÔ */
+			   /* å®Œå…¨åŒ…å«ï¼Œåˆ™å°†å…¶ä»ä¹±åºé˜Ÿåˆ—ä¸­åˆ é™¤å¹¶é‡Šæ”¾ï¼ŒåŒæ—¶è®¾ç½®ç›¸å…³DSACKå±æ€§ */
 		       __skb_unlink(skb1, skb1->list);
 		       tcp_dsack_extend(tp, TCP_SKB_CB(skb1)->seq, TCP_SKB_CB(skb1)->end_seq);
 		       __kfree_skb(skb1);
 		}
 
 add_sack:
-		if (tp->rx_opt.sack_ok)/* Èç¹ûË«·½¶¼Ö§³ÖSACK£¬ÔòÉèÖÃSACK¿é */
+		if (tp->rx_opt.sack_ok)/* å¦‚æœåŒæ–¹éƒ½æ”¯æŒSACKï¼Œåˆ™è®¾ç½®SACKå— */
 			tcp_sack_new_ofo_skb(sk, seq, end_seq);
 	}
 }
@@ -4160,17 +4160,17 @@ static int tcp_prune_queue(struct sock *sk)
  * As additional protections, we do not touch cwnd in retransmission phases,
  * and if application hit its sndbuf limit recently.
  */
-/* ¼ì²âÓµÈû´°¿ÚµÄÊ±¼ä³¬¹ıÁËRTO£¬ÖØĞÂµ÷Õû¼ì²âÓµÈû´°¿Ú */
+/* æ£€æµ‹æ‹¥å¡çª—å£çš„æ—¶é—´è¶…è¿‡äº†RTOï¼Œé‡æ–°è°ƒæ•´æ£€æµ‹æ‹¥å¡çª—å£ */
 void tcp_cwnd_application_limited(struct sock *sk)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
 
-	if (tp->ca_state == TCP_CA_Open &&/* µ±Ç°×´Ì¬Îªopen */
-	    sk->sk_socket && !test_bit(SOCK_NOSPACE, &sk->sk_socket->flags)) {/* ·¢ËÍ¶ÓÁĞÎ´Âú£¬¿ÉÄÜÊÇÓ¦ÓÃ³ÌĞò»òÕß¶Ô·½½ÓÊÕ´°¿Ú½øĞĞÁËÏŞÖÆ */
+	if (tp->ca_state == TCP_CA_Open &&/* å½“å‰çŠ¶æ€ä¸ºopen */
+	    sk->sk_socket && !test_bit(SOCK_NOSPACE, &sk->sk_socket->flags)) {/* å‘é€é˜Ÿåˆ—æœªæ»¡ï¼Œå¯èƒ½æ˜¯åº”ç”¨ç¨‹åºæˆ–è€…å¯¹æ–¹æ¥æ”¶çª—å£è¿›è¡Œäº†é™åˆ¶ */
 		/* Limited by application or receiver window. */
-		/* 2ÊÇÓµÈû´°¿ÚµÄ³õÊ¼Öµ */
+		/* 2æ˜¯æ‹¥å¡çª—å£çš„åˆå§‹å€¼ */
 		u32 win_used = max(tp->snd_cwnd_used, 2U);
-		if (win_used < tp->snd_cwnd) {/* µ÷½ÚÓµÈû´°¿Ú */
+		if (win_used < tp->snd_cwnd) {/* è°ƒèŠ‚æ‹¥å¡çª—å£ */
 			tp->snd_ssthresh = tcp_current_ssthresh(tp);
 			tp->snd_cwnd = (tp->snd_cwnd + win_used) >> 1;
 		}
@@ -4244,16 +4244,16 @@ static void __tcp_ack_snd_check(struct sock *sk, int ofo_possible)
 	struct tcp_sock *tp = tcp_sk(sk);
 
 	    /* More than one full frame received... */
-	if (((tp->rcv_nxt - tp->rcv_wup) > tp->ack.rcv_mss/* ½ÓÊÕ´°¿ÚÖĞÓĞ¶à¸öÈ«³ß´ç¶Î»¹Ã»ÓĞÈ·ÈÏ */
+	if (((tp->rcv_nxt - tp->rcv_wup) > tp->ack.rcv_mss/* æ¥æ”¶çª—å£ä¸­æœ‰å¤šä¸ªå…¨å°ºå¯¸æ®µè¿˜æ²¡æœ‰ç¡®è®¤ */
 	     /* ... and right edge of window advances far enough.
 	      * (tcp_recvmsg() will send ACK otherwise). Or...
 	      */
 	     && __tcp_select_window(sk) >= tp->rcv_wnd) ||
 	    /* We ACK each frame or... */
-	    tcp_in_quickack_mode(tp) ||/* µ±Ç°´¦ÓÚ¿ìËÙÈ·ÈÏÄ£Ê½ */
+	    tcp_in_quickack_mode(tp) ||/* å½“å‰å¤„äºå¿«é€Ÿç¡®è®¤æ¨¡å¼ */
 	    /* We have out of order data. */
 	    (ofo_possible &&
-	     skb_peek(&tp->out_of_order_queue))) {/* ĞèÒªÅĞ¶ÏÂÒĞò¶ÓÁĞ£¬²¢ÇÒÂÒĞò¶ÓÁĞÖĞ´æÔÚ¶Î */
+	     skb_peek(&tp->out_of_order_queue))) {/* éœ€è¦åˆ¤æ–­ä¹±åºé˜Ÿåˆ—ï¼Œå¹¶ä¸”ä¹±åºé˜Ÿåˆ—ä¸­å­˜åœ¨æ®µ */
 		/* Then ack it now */
 		tcp_send_ack(sk);
 	} else {
@@ -4262,15 +4262,15 @@ static void __tcp_ack_snd_check(struct sock *sk, int ofo_possible)
 	}
 }
 
-/* ¼ì²éÊÇ·ñÓĞÈ·ÈÏĞèÒª·¢ËÍ */
+/* æ£€æŸ¥æ˜¯å¦æœ‰ç¡®è®¤éœ€è¦å‘é€ */
 static __inline__ void tcp_ack_snd_check(struct sock *sk)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
-	if (!tcp_ack_scheduled(tp)) {/* Ã»ÓĞACKĞèÒª·¢ËÍ£¬ÍË³ö */
+	if (!tcp_ack_scheduled(tp)) {/* æ²¡æœ‰ACKéœ€è¦å‘é€ï¼Œé€€å‡º */
 		/* We sent a data segment already. */
 		return;
 	}
-	/* ÓĞACKĞèÒª·¢ËÍ£¬¸ù¾İÌõ¼şÆô¶¯ÑÓÊ±·¢ËÍ»òÕßÁ¢¼´·¢ËÍ */
+	/* æœ‰ACKéœ€è¦å‘é€ï¼Œæ ¹æ®æ¡ä»¶å¯åŠ¨å»¶æ—¶å‘é€æˆ–è€…ç«‹å³å‘é€ */
 	__tcp_ack_snd_check(sk, 1);
 }
 
@@ -4283,18 +4283,18 @@ static __inline__ void tcp_ack_snd_check(struct sock *sk)
  *	For 1003.1g we should support a new option TCP_STDURG to permit
  *	either form (or just set the sysctl tcp_stdurg).
  */
-/* ¼ì²â½ô¼±Ö¸ÕëÊÇ·ñÓĞĞ§ */
+/* æ£€æµ‹ç´§æ€¥æŒ‡é’ˆæ˜¯å¦æœ‰æ•ˆ */
 static void tcp_check_urg(struct sock * sk, struct tcphdr * th)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
-	u32 ptr = ntohs(th->urg_ptr);/* ¼ÆËã´øÍâÊı¾İµÄÎ»ÖÃ */
+	u32 ptr = ntohs(th->urg_ptr);/* è®¡ç®—å¸¦å¤–æ•°æ®çš„ä½ç½® */
 
-	if (ptr && !sysctl_tcp_stdurg)/* BSDÒ»¿ªÊ¼¾Í´íÎóÁË£¬½«ptr½âÊÍ³ÉURGºóÒ»¸öÖ¸Õë£¬Òò´ËÕâÀïĞèÒªÇ°ÒÆÒ»¸öÖ¸ÕëÖ¸ÏòURG */
+	if (ptr && !sysctl_tcp_stdurg)/* BSDä¸€å¼€å§‹å°±é”™è¯¯äº†ï¼Œå°†ptrè§£é‡ŠæˆURGåä¸€ä¸ªæŒ‡é’ˆï¼Œå› æ­¤è¿™é‡Œéœ€è¦å‰ç§»ä¸€ä¸ªæŒ‡é’ˆæŒ‡å‘URG */
 		ptr--;
 	ptr += ntohl(th->seq);
 
 	/* Ignore urgent data that we've already seen and read. */
-	/* ´øÍâÖ¸ÕëÒÑ¾­±»½ÓÊÕÁË£¬ÍË³ö */
+	/* å¸¦å¤–æŒ‡é’ˆå·²ç»è¢«æ¥æ”¶äº†ï¼Œé€€å‡º */
 	if (after(tp->copied_seq, ptr))
 		return;
 
@@ -4308,17 +4308,17 @@ static void tcp_check_urg(struct sock * sk, struct tcphdr * th)
 	 * situations. But it is worth to think about possibility of some
 	 * DoSes using some hypothetical application level deadlock.
 	 */
-	/* ´øÍâÊı¾İÖ¸ÕëÔÚÔ¤ÆÚ½ÓÊÕ±¨ÎÄÖ®Ç°£¬ËµÃ÷ÒÑ¾­½ÓÊÕ¹ı£¬ÍË³ö */
+	/* å¸¦å¤–æ•°æ®æŒ‡é’ˆåœ¨é¢„æœŸæ¥æ”¶æŠ¥æ–‡ä¹‹å‰ï¼Œè¯´æ˜å·²ç»æ¥æ”¶è¿‡ï¼Œé€€å‡º */
 	if (before(ptr, tp->rcv_nxt))
 		return;
 
 	/* Do we already have a newer (or duplicate) urgent pointer? */
-	/* ÓĞÁíÍâµÄ´øÍâÊı¾İ£¬²¢ÇÒÎ»ÓÚµ±Ç°´øÍâÊı¾İÖ®ºó£¬Ò²ÍË³ö */
+	/* æœ‰å¦å¤–çš„å¸¦å¤–æ•°æ®ï¼Œå¹¶ä¸”ä½äºå½“å‰å¸¦å¤–æ•°æ®ä¹‹åï¼Œä¹Ÿé€€å‡º */
 	if (tp->urg_data && !after(ptr, tp->urg_seq))
 		return;
 
 	/* Tell the world about our new urgent pointer. */
-	/* ÏòµÈ´ıµÄ½ø³Ì·¢ËÍĞÅºÅ£¬¸æÖªËüÓĞ´øÍâÊı¾İµ½´ï */
+	/* å‘ç­‰å¾…çš„è¿›ç¨‹å‘é€ä¿¡å·ï¼Œå‘ŠçŸ¥å®ƒæœ‰å¸¦å¤–æ•°æ®åˆ°è¾¾ */
 	sk_send_sigurg(sk);
 
 	/* We may be adding urgent data when the last byte read was
@@ -4336,58 +4336,58 @@ static void tcp_check_urg(struct sock * sk, struct tcphdr * th)
 	 * decline of BSD again. Verdict: it is better to remove to trap
 	 * buggy users.
 	 */
-	if (tp->urg_seq == tp->copied_seq && tp->urg_data &&/* ´øÍâÊı¾İµÄĞòºÅÕıÊÇÒª¸´ÖÆµ½ÓÃ»§Ì¬µÄĞòºÅ£ */
-	    !sock_flag(sk, SOCK_URGINLINE) &&/* ÓÃ»§²»½ÓÊÕ´øÍâÊı¾İ */
-	    tp->copied_seq != tp->rcv_nxt) {/* Òª¸´ÖÆµÄĞòºÅ²»ÊÇÏÂÒ»¸öÔ¤ÆÚ½ÓÊÕµÄĞòºÅ */
-		struct sk_buff *skb = skb_peek(&sk->sk_receive_queue);/* ½ÓÊÕ¶ÓÁĞÖĞµÄµÚÒ»¸ö¶Î */
-		tp->copied_seq++;/* ´ÓÏÂÒ»¸ö×Ö½Ú¿ªÊ¼¸´ÖÆ£¬ÒòÎªÓÃ»§²»½ÓÊÕ´øÍâÊı¾İ */
-		/* µÚÒ»¸ö±¨ÎÄµÄ×îºóÒ»¸ö×Ö½ÚÕıºÃÊÇ´øÍâÊı¾İ£¬ÒÑ¾­±»½ÓÊÕÁË£¬ÓÃ»§½ø³Ì½«»á´ÓÏÂÒ»¸ö±¨ÎÄ¿ªÊ¼½ÓÊÕ */
+	if (tp->urg_seq == tp->copied_seq && tp->urg_data &&/* å¸¦å¤–æ•°æ®çš„åºå·æ­£æ˜¯è¦å¤åˆ¶åˆ°ç”¨æˆ·æ€çš„åºå· */
+	    !sock_flag(sk, SOCK_URGINLINE) &&/* ç”¨æˆ·ä¸æ¥æ”¶å¸¦å¤–æ•°æ® */
+	    tp->copied_seq != tp->rcv_nxt) {/* è¦å¤åˆ¶çš„åºå·ä¸æ˜¯ä¸‹ä¸€ä¸ªé¢„æœŸæ¥æ”¶çš„åºå· */
+		struct sk_buff *skb = skb_peek(&sk->sk_receive_queue);/* æ¥æ”¶é˜Ÿåˆ—ä¸­çš„ç¬¬ä¸€ä¸ªæ®µ */
+		tp->copied_seq++;/* ä»ä¸‹ä¸€ä¸ªå­—èŠ‚å¼€å§‹å¤åˆ¶ï¼Œå› ä¸ºç”¨æˆ·ä¸æ¥æ”¶å¸¦å¤–æ•°æ® */
+		/* ç¬¬ä¸€ä¸ªæŠ¥æ–‡çš„æœ€åä¸€ä¸ªå­—èŠ‚æ­£å¥½æ˜¯å¸¦å¤–æ•°æ®ï¼Œå·²ç»è¢«æ¥æ”¶äº†ï¼Œç”¨æˆ·è¿›ç¨‹å°†ä¼šä»ä¸‹ä¸€ä¸ªæŠ¥æ–‡å¼€å§‹æ¥æ”¶ */
 		if (skb && !before(tp->copied_seq, TCP_SKB_CB(skb)->end_seq)) {
-			/* ½«¸Ã±¨ÎÄ´Ó¶ÓÁĞÖĞÕª³ı²¢ÊÍ·Å */
+			/* å°†è¯¥æŠ¥æ–‡ä»é˜Ÿåˆ—ä¸­æ‘˜é™¤å¹¶é‡Šæ”¾ */
 			__skb_unlink(skb, skb->list);
 			__kfree_skb(skb);
 		}
 	}
 
-	/* ÉèÖÃ´øÍâÊı¾İ¼°±êºÅ */
+	/* è®¾ç½®å¸¦å¤–æ•°æ®åŠæ ‡å· */
 	tp->urg_data   = TCP_URG_NOTYET;
 	tp->urg_seq    = ptr;
 
 	/* Disable header prediction. */
-	/* ÓÉÓÚ¶ÁÈ¡µ½´øÍâÊı¾İ£¬Òò´Ë½ûÖ¹Ê×²¿Ô¤²â */
+	/* ç”±äºè¯»å–åˆ°å¸¦å¤–æ•°æ®ï¼Œå› æ­¤ç¦æ­¢é¦–éƒ¨é¢„æµ‹ */
 	tp->pred_flags = 0;
 }
 
 /* This is the 'fast' part of urgent handling. */
-/* ´¦ÀíURG£¬´øÍâÊı¾İ */
+/* å¤„ç†URGï¼Œå¸¦å¤–æ•°æ® */
 static void tcp_urg(struct sock *sk, struct sk_buff *skb, struct tcphdr *th)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
 
 	/* Check if we get a new urgent pointer - normally not. */
-	if (th->urg)/* Í·²¿ÓĞURG±êÖ¾ */
-		tcp_check_urg(sk,th);/* ¼ì²é´øÍâÊı¾İÆ«ÒÆÁ¿urg_seqÊÇ·ñÎª·Ç0£¬¼ì²âÊÇ·ñÕı³£ */
+	if (th->urg)/* å¤´éƒ¨æœ‰URGæ ‡å¿— */
+		tcp_check_urg(sk,th);/* æ£€æŸ¥å¸¦å¤–æ•°æ®åç§»é‡urg_seqæ˜¯å¦ä¸ºé0ï¼Œæ£€æµ‹æ˜¯å¦æ­£å¸¸ */
 
 	/* Do we wait for any urgent data? - normally not... */
-	if (tp->urg_data == TCP_URG_NOTYET) {/* µ±Ç°¶ÎÖĞ´øÍâÊı¾İÓĞĞ§ */
-		/* ¼ÆËã´øÍâÊı¾İÎ»ÖÃ */
+	if (tp->urg_data == TCP_URG_NOTYET) {/* å½“å‰æ®µä¸­å¸¦å¤–æ•°æ®æœ‰æ•ˆ */
+		/* è®¡ç®—å¸¦å¤–æ•°æ®ä½ç½® */
 		u32 ptr = tp->urg_seq - ntohl(th->seq) + (th->doff * 4) -
 			  th->syn;
 
 		/* Is the urgent pointer pointing into this packet? */	 
-		if (ptr < skb->len) {/* ´øÍâÊı¾İÔÚ±¾±¨ÎÄÄÚ */
+		if (ptr < skb->len) {/* å¸¦å¤–æ•°æ®åœ¨æœ¬æŠ¥æ–‡å†… */
 			u8 tmp;
-			if (skb_copy_bits(skb, ptr, &tmp, 1))/* ´Ó±¨ÎÄÖĞ¸´ÖÆÒ»¸ö×Ö½ÚµÄURGµ½tmpÖĞ */
+			if (skb_copy_bits(skb, ptr, &tmp, 1))/* ä»æŠ¥æ–‡ä¸­å¤åˆ¶ä¸€ä¸ªå­—èŠ‚çš„URGåˆ°tmpä¸­ */
 				BUG();
-			/* ¼ÇÂ¼ÏÂ´øÍâÊı¾İ£¬²¢ÉèÖÃ±êÖ¾±íÊ¾ÓÃ»§½ø³Ì¿ÉÒÔ¶ÁÈ¡´øÍâÊı¾İ */
+			/* è®°å½•ä¸‹å¸¦å¤–æ•°æ®ï¼Œå¹¶è®¾ç½®æ ‡å¿—è¡¨ç¤ºç”¨æˆ·è¿›ç¨‹å¯ä»¥è¯»å–å¸¦å¤–æ•°æ® */
 			tp->urg_data = TCP_URG_VALID | tmp;
-			if (!sock_flag(sk, SOCK_DEAD))/* Èç¹ûÌ×¿ÚÃ»ÓĞ¹Ø±Õ£¬ÔòÍ¨ÖªÆä¶ÁÈ¡Êı¾İ */
+			if (!sock_flag(sk, SOCK_DEAD))/* å¦‚æœå¥—å£æ²¡æœ‰å…³é—­ï¼Œåˆ™é€šçŸ¥å…¶è¯»å–æ•°æ® */
 				sk->sk_data_ready(sk, 0);
 		}
 	}
 }
 
-/* ½«Êı¾İ¸´ÖÆµ½ÓÃ»§¿Õ¼ä */
+/* å°†æ•°æ®å¤åˆ¶åˆ°ç”¨æˆ·ç©ºé—´ */
 static int tcp_copy_to_iovec(struct sock *sk, struct sk_buff *skb, int hlen)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
@@ -4396,13 +4396,13 @@ static int tcp_copy_to_iovec(struct sock *sk, struct sk_buff *skb, int hlen)
 
 	local_bh_enable();
 	if (skb->ip_summed==CHECKSUM_UNNECESSARY)
-		err = skb_copy_datagram_iovec(skb, hlen, tp->ucopy.iov, chunk);/* ²»½øĞĞĞ£ÑéºÍ¼ì²âÖ±½Ó¸´ÖÆµ½ÓÃ»§¿Õ¼ä */
+		err = skb_copy_datagram_iovec(skb, hlen, tp->ucopy.iov, chunk);/* ä¸è¿›è¡Œæ ¡éªŒå’Œæ£€æµ‹ç›´æ¥å¤åˆ¶åˆ°ç”¨æˆ·ç©ºé—´ */
 	else
 		err = skb_copy_and_csum_datagram_iovec(skb, hlen,
-						       tp->ucopy.iov);/* Ö´ĞĞĞ£ÑéºÍ¼ì²â²¢¸´ÖÆµ½ÓÃ»§¿Õ¼ä */
+						       tp->ucopy.iov);/* æ‰§è¡Œæ ¡éªŒå’Œæ£€æµ‹å¹¶å¤åˆ¶åˆ°ç”¨æˆ·ç©ºé—´ */
 
-	if (!err) {/* ¸´ÖÆ³É¹¦ */
-		/* ¸üĞÂÄË½ø³Ì»º³åÇø³¤¶È£¬ÒÑ¾­¸´ÖÆµÄĞòºÅµÈµÈ */
+	if (!err) {/* å¤åˆ¶æˆåŠŸ */
+		/* æ›´æ–°ä¹ƒè¿›ç¨‹ç¼“å†²åŒºé•¿åº¦ï¼Œå·²ç»å¤åˆ¶çš„åºå·ç­‰ç­‰ */
 		tp->ucopy.len -= chunk;
 		tp->copied_seq += chunk;
 		tcp_rcv_space_adjust(sk);
@@ -4426,7 +4426,7 @@ static int __tcp_checksum_complete_user(struct sock *sk, struct sk_buff *skb)
 	return result;
 }
 
-/* »ùÓÚÎ±Ê×²¿ÀÛ¼ÓºÍ£¬Íê³ÉÈ«°üĞ£ÑéºÍ¼ì²â¡£ÓÃÓÚÒÑ¾­½¨Á¢Á¬½ÓµÄ¶Î */
+/* åŸºäºä¼ªé¦–éƒ¨ç´¯åŠ å’Œï¼Œå®Œæˆå…¨åŒ…æ ¡éªŒå’Œæ£€æµ‹ã€‚ç”¨äºå·²ç»å»ºç«‹è¿æ¥çš„æ®µ */
 static __inline__ int
 tcp_checksum_complete_user(struct sock *sk, struct sk_buff *skb)
 {
@@ -4457,7 +4457,7 @@ tcp_checksum_complete_user(struct sock *sk, struct sk_buff *skb)
  *	the rest is checked inline. Fast processing is turned on in 
  *	tcp_data_queue when everything is OK.
  */
-/* µ±Á¬½ÓÒÑ¾­Õı³£½¨Á¢Ê±£¬´¦Àí½ÓÊÕµ½µÄTCP±¨ÎÄ */
+/* å½“è¿æ¥å·²ç»æ­£å¸¸å»ºç«‹æ—¶ï¼Œå¤„ç†æ¥æ”¶åˆ°çš„TCPæŠ¥æ–‡ */
 int tcp_rcv_established(struct sock *sk, struct sk_buff *skb,
 			struct tcphdr *th, unsigned len)
 {
@@ -4489,8 +4489,8 @@ int tcp_rcv_established(struct sock *sk, struct sk_buff *skb,
 	 *	PSH flag is ignored.
 	 */
 
-	if ((tcp_flag_word(th) & TCP_HP_BITS) == tp->pred_flags &&/* ½«TCPÊ×²¿ÖĞµÚ4¸ö×Ö»ñÈ¡Ò»¶¨µÄÎ»ÊıÓëÔ¤²â±êÖ¾±È½Ï£¬Èç¹û²»ÏàµÈ£¬Ôò²»ÄÜÖ´ĞĞ¿ìËÙÂ·¾¶ */
-		TCP_SKB_CB(skb)->seq == tp->rcv_nxt) {/* ±¾´Î½ÓÊÕµÄ¶ÎĞòºÅÊÇÔ¤ÆÚµÄ¶ÎĞòºÅ */
+	if ((tcp_flag_word(th) & TCP_HP_BITS) == tp->pred_flags &&/* å°†TCPé¦–éƒ¨ä¸­ç¬¬4ä¸ªå­—è·å–ä¸€å®šçš„ä½æ•°ä¸é¢„æµ‹æ ‡å¿—æ¯”è¾ƒï¼Œå¦‚æœä¸ç›¸ç­‰ï¼Œåˆ™ä¸èƒ½æ‰§è¡Œå¿«é€Ÿè·¯å¾„ */
+		TCP_SKB_CB(skb)->seq == tp->rcv_nxt) {/* æœ¬æ¬¡æ¥æ”¶çš„æ®µåºå·æ˜¯é¢„æœŸçš„æ®µåºå· */
 		int tcp_header_len = tp->tcp_header_len;
 
 		/* Timestamp header prediction: tcp_header_len
@@ -4499,16 +4499,16 @@ int tcp_rcv_established(struct sock *sk, struct sk_buff *skb,
 		 */
 
 		/* Check timestamp */
-		/* ÊÇ·ñ¿ÉÄÜ°üº¬Ê±¼ä´ÁÑ¡Ïî */
+		/* æ˜¯å¦å¯èƒ½åŒ…å«æ—¶é—´æˆ³é€‰é¡¹ */
 		if (tcp_header_len == sizeof(struct tcphdr) + TCPOLEN_TSTAMP_ALIGNED) {
 			__u32 *ptr = (__u32 *)(th + 1);
 
 			/* No? Slow path! */
 			if (*ptr != ntohl((TCPOPT_NOP << 24) | (TCPOPT_NOP << 16)
-					  | (TCPOPT_TIMESTAMP << 8) | TCPOLEN_TIMESTAMP))/* ²»ÊÇÊ±¼ä´ÁÑ¡Ïî£¬Ö»ÄÜÖ´ĞĞÂıËÙÂ·¾¶ */
+					  | (TCPOPT_TIMESTAMP << 8) | TCPOLEN_TIMESTAMP))/* ä¸æ˜¯æ—¶é—´æˆ³é€‰é¡¹ï¼Œåªèƒ½æ‰§è¡Œæ…¢é€Ÿè·¯å¾„ */
 				goto slow_path;
 
-			/* ´ÓÑ¡ÏîÖĞ»ñÈ¡Ê±¼ä´Á */
+			/* ä»é€‰é¡¹ä¸­è·å–æ—¶é—´æˆ³ */
 			tp->rx_opt.saw_tstamp = 1;
 			++ptr; 
 			tp->rx_opt.rcv_tsval = ntohl(*ptr);
@@ -4516,7 +4516,7 @@ int tcp_rcv_established(struct sock *sk, struct sk_buff *skb,
 			tp->rx_opt.rcv_tsecr = ntohl(*ptr);
 
 			/* If PAWS failed, check it more carefully in slow path */
-			/* ½«±¨ÎÄÖĞµÄÊ±¼ä´ÁÓë×î½ü½ÓÊÕ¶ÎµÄÊ±¼ä´Á±È½Ï£¬Èç¹û½ÏĞ¡£¬ËµÃ÷½ÓÊÕµ½µÄ¶ÎĞòºÅÊÇÔ¤ÆÚµÄ£¬µ«ÊÇÊ±¼ä´Á¹ıÔç£¬·¢ÉúÁËĞòºÅ»ØÈÆ£¬ĞèÒªÂıËÙ´¦Àí */
+			/* å°†æŠ¥æ–‡ä¸­çš„æ—¶é—´æˆ³ä¸æœ€è¿‘æ¥æ”¶æ®µçš„æ—¶é—´æˆ³æ¯”è¾ƒï¼Œå¦‚æœè¾ƒå°ï¼Œè¯´æ˜æ¥æ”¶åˆ°çš„æ®µåºå·æ˜¯é¢„æœŸçš„ï¼Œä½†æ˜¯æ—¶é—´æˆ³è¿‡æ—©ï¼Œå‘ç”Ÿäº†åºå·å›ç»•ï¼Œéœ€è¦æ…¢é€Ÿå¤„ç† */
 			if ((s32)(tp->rx_opt.rcv_tsval - tp->rx_opt.ts_recent) < 0)
 				goto slow_path;
 
@@ -4527,43 +4527,43 @@ int tcp_rcv_established(struct sock *sk, struct sk_buff *skb,
 			 */
 		}
 
-		if (len <= tcp_header_len) {/* ¸Ã¶ÎÃ»ÓĞ¸ººÉ */
+		if (len <= tcp_header_len) {/* è¯¥æ®µæ²¡æœ‰è´Ÿè· */
 			/* Bulk data transfer: sender */
-			if (len == tcp_header_len) {/* ÓĞĞ§¶Î */
+			if (len == tcp_header_len) {/* æœ‰æ•ˆæ®µ */
 				/* Predicted packet is in window by definition.
 				 * seq == rcv_nxt and rcv_wup <= rcv_nxt.
 				 * Hence, check seq<=rcv_wup reduces to:
 				 */
 				if (tcp_header_len ==
-				    (sizeof(struct tcphdr) + TCPOLEN_TSTAMP_ALIGNED) &&/* Ê×²¿ÖĞ´æÔÚÊ±¼ä´Á£¬ÕâÀïÖ»ĞèÒªÅĞ¶Ï³¤¶È¼´¿É */
-				    tp->rcv_nxt == tp->rcv_wup)/* ËùÓĞ¶Î¶¼È·ÈÏÁË */
-					tcp_store_ts_recent(tp);/* ±£´æÊ±¼ä´Á£¬ÓÃÓÚ·¢ËÍÏÂÒ»¶ÎµÄÊ±¼ä´Á»ØÏÔ */
+				    (sizeof(struct tcphdr) + TCPOLEN_TSTAMP_ALIGNED) &&/* é¦–éƒ¨ä¸­å­˜åœ¨æ—¶é—´æˆ³ï¼Œè¿™é‡Œåªéœ€è¦åˆ¤æ–­é•¿åº¦å³å¯ */
+				    tp->rcv_nxt == tp->rcv_wup)/* æ‰€æœ‰æ®µéƒ½ç¡®è®¤äº† */
+					tcp_store_ts_recent(tp);/* ä¿å­˜æ—¶é—´æˆ³ï¼Œç”¨äºå‘é€ä¸‹ä¸€æ®µçš„æ—¶é—´æˆ³å›æ˜¾ */
 
 				tcp_rcv_rtt_measure_ts(tp, skb);
 
 				/* We know that such packets are checksummed
 				 * on entry.
 				 */
-				/* ¶ÔACK½øĞĞ´¦Àí£¬Èç¸üĞÂ·¢ËÍ´°¿Ú¡¢ÊÍ·ÅÒÑÈ·ÈÏµÄ¶ÎµÈµÈ */
+				/* å¯¹ACKè¿›è¡Œå¤„ç†ï¼Œå¦‚æ›´æ–°å‘é€çª—å£ã€é‡Šæ”¾å·²ç¡®è®¤çš„æ®µç­‰ç­‰ */
 				tcp_ack(sk, skb, 0);
-				__kfree_skb(skb); /* ÊÍ·ÅACK¶Î */
-				tcp_data_snd_check(sk);/* ¼ì²âÊÇ·ñÓĞÊı¾İĞèÒª·¢ËÍ¸ø¶Ô·½£¬Í¬Ê±¼ì²âÊÇ·ñÓĞ±ØÒªÔö¼Ó·¢ËÍ»º³åÇø´óĞ¡ */
+				__kfree_skb(skb); /* é‡Šæ”¾ACKæ®µ */
+				tcp_data_snd_check(sk);/* æ£€æµ‹æ˜¯å¦æœ‰æ•°æ®éœ€è¦å‘é€ç»™å¯¹æ–¹ï¼ŒåŒæ—¶æ£€æµ‹æ˜¯å¦æœ‰å¿…è¦å¢åŠ å‘é€ç¼“å†²åŒºå¤§å° */
 				return 0;
-			} else { /* Header too small *//* ±¨ÎÄÌ«Ğ¡£¬·ÇÔ¤ÆÚµÄ¶Î£¬¶ªÆúËü */
+			} else { /* Header too small *//* æŠ¥æ–‡å¤ªå°ï¼Œéé¢„æœŸçš„æ®µï¼Œä¸¢å¼ƒå®ƒ */
 				TCP_INC_STATS_BH(TCP_MIB_INERRS);
 				goto discard;
 			}
-		} else {/* ÓĞÊı¾İ¸ººÉ */
+		} else {/* æœ‰æ•°æ®è´Ÿè· */
 			int eaten = 0;
 
-			/* ÅĞ¶ÏÕıÔÚ½ÓÊÕµÄ¶ÎÊÇ·ñ¿ÉÒÔÖ±½Ó¸´ÖÆµ½ÓÃ»§¿Õ¼ä */
-			if (tp->ucopy.task == current &&/* ÕıÔÚ½ÓÊÕµÄ¶ÎµÄĞòºÅÊÇ·ñÓëÉĞÎ´´ÓÄÚºË¿Õ¼ä¸´ÖÆµ½ÓÃ»§¿Õ¼äµÄ¶Î×îÇ°ÃæµÄĞòºÅÏàµÈ£¬¼´½ÓÊÕ¶ÓÁĞÓ¦µ±ÊÇ¿ÕµÄ */
+			/* åˆ¤æ–­æ­£åœ¨æ¥æ”¶çš„æ®µæ˜¯å¦å¯ä»¥ç›´æ¥å¤åˆ¶åˆ°ç”¨æˆ·ç©ºé—´ */
+			if (tp->ucopy.task == current &&/* æ­£åœ¨æ¥æ”¶çš„æ®µçš„åºå·æ˜¯å¦ä¸å°šæœªä»å†…æ ¸ç©ºé—´å¤åˆ¶åˆ°ç”¨æˆ·ç©ºé—´çš„æ®µæœ€å‰é¢çš„åºå·ç›¸ç­‰ï¼Œå³æ¥æ”¶é˜Ÿåˆ—åº”å½“æ˜¯ç©ºçš„ */
 			    tp->copied_seq == tp->rcv_nxt &&
-			    len - tcp_header_len <= tp->ucopy.len &&/* TCP¶ÎÖĞµÄÓÃ»§Êı¾İ³¤¶ÈĞ¡ÓÚÓÃ»§¿Õ¼ä»º´æµÄÊ£Óà¿ÉÓÃÁ¿ */
-			    sock_owned_by_user(sk)) {/* Ëø±»µ±Ç°½ø³Ì³ÖÓĞ */
+			    len - tcp_header_len <= tp->ucopy.len &&/* TCPæ®µä¸­çš„ç”¨æˆ·æ•°æ®é•¿åº¦å°äºç”¨æˆ·ç©ºé—´ç¼“å­˜çš„å‰©ä½™å¯ç”¨é‡ */
+			    sock_owned_by_user(sk)) {/* é”è¢«å½“å‰è¿›ç¨‹æŒæœ‰ */
 				__set_current_state(TASK_RUNNING);
 
-				if (!tcp_copy_to_iovec(sk, skb, tcp_header_len)) {/* ½«SKBµÄÊı¾İ¸´ÖÆµ½ÓÃ»§¿Õ¼ä */
+				if (!tcp_copy_to_iovec(sk, skb, tcp_header_len)) {/* å°†SKBçš„æ•°æ®å¤åˆ¶åˆ°ç”¨æˆ·ç©ºé—´ */
 					/* Predicted packet is in window by definition.
 					 * seq == rcv_nxt and rcv_wup <= rcv_nxt.
 					 * Hence, check seq<=rcv_wup reduces to:
@@ -4571,20 +4571,20 @@ int tcp_rcv_established(struct sock *sk, struct sk_buff *skb,
 					if (tcp_header_len ==
 					    (sizeof(struct tcphdr) +
 					     TCPOLEN_TSTAMP_ALIGNED) &&
-					    tp->rcv_nxt == tp->rcv_wup)/* ¸üĞÂÊ±¼ä´Á */
+					    tp->rcv_nxt == tp->rcv_wup)/* æ›´æ–°æ—¶é—´æˆ³ */
 						tcp_store_ts_recent(tp);
 
-					tcp_rcv_rtt_measure_ts(tp, skb);/* ¸üĞÂÍù·µÊ±¼ä */
+					tcp_rcv_rtt_measure_ts(tp, skb);/* æ›´æ–°å¾€è¿”æ—¶é—´ */
 
 					__skb_pull(skb, tcp_header_len);
-					/* ÏÂÒ»¸öÔ¤ÆÚ½ÓÊÕµÄ¶ÎĞòºÅ */
+					/* ä¸‹ä¸€ä¸ªé¢„æœŸæ¥æ”¶çš„æ®µåºå· */
 					tp->rcv_nxt = TCP_SKB_CB(skb)->end_seq;
 					NET_INC_STATS_BH(LINUX_MIB_TCPHPHITSTOUSER);
 					eaten = 1;
 				}
 			}
-			if (!eaten) {/* Ã»ÓĞ½«Êı¾İÖ±½Ó¸´ÖÆµ½ÓÃ»§¿Õ¼ä£¬»òÕß¸´ÖÆµ½ÓÃ»§¿Õ¼äÊ§°Ü */
-				if (tcp_checksum_complete_user(sk, skb))/* ¼ìÑéĞ£ÑéºÍ */
+			if (!eaten) {/* æ²¡æœ‰å°†æ•°æ®ç›´æ¥å¤åˆ¶åˆ°ç”¨æˆ·ç©ºé—´ï¼Œæˆ–è€…å¤åˆ¶åˆ°ç”¨æˆ·ç©ºé—´å¤±è´¥ */
+				if (tcp_checksum_complete_user(sk, skb))/* æ£€éªŒæ ¡éªŒå’Œ */
 					goto csum_error;
 
 				/* Predicted packet is in window by definition.
@@ -4593,37 +4593,37 @@ int tcp_rcv_established(struct sock *sk, struct sk_buff *skb,
 				 */
 				if (tcp_header_len ==
 				    (sizeof(struct tcphdr) + TCPOLEN_TSTAMP_ALIGNED) &&
-				    tp->rcv_nxt == tp->rcv_wup)/* ¸üĞÂÊ±¼ä´Á */
+				    tp->rcv_nxt == tp->rcv_wup)/* æ›´æ–°æ—¶é—´æˆ³ */
 					tcp_store_ts_recent(tp);
 
 				tcp_rcv_rtt_measure_ts(tp, skb);
 
-				if ((int)skb->truesize > sk->sk_forward_alloc)/* Èç¹ûÕû¸öskb»º³åÇø×Ü³¤¶È³¬¹ıÔ¤·ÖÅä»º´æ³åÇø³¤£¬ÔòÖ´ĞĞÂıËÙÂ·¾¶ */
+				if ((int)skb->truesize > sk->sk_forward_alloc)/* å¦‚æœæ•´ä¸ªskbç¼“å†²åŒºæ€»é•¿åº¦è¶…è¿‡é¢„åˆ†é…ç¼“å­˜å†²åŒºé•¿ï¼Œåˆ™æ‰§è¡Œæ…¢é€Ÿè·¯å¾„ */
 					goto step5;
 
 				NET_INC_STATS_BH(LINUX_MIB_TCPHPHITS);
 
 				/* Bulk data transfer: receiver */
-				__skb_pull(skb,tcp_header_len);/* ÒÆ¶¯Ö¸Õë£¬Ìø¹ıTCPÍ·²¿ */
-				__skb_queue_tail(&sk->sk_receive_queue, skb);/* ½«Êı¾İ°üÌí¼Óµ½½ÓÊÕ¶ÓÁĞÖĞ»º´æÆğÀ´£¬µÈ´ı½ø³ÌÖ÷¶¯¶ÁÈ¡ */
-				/* ÉèÖÃskbµÄÊôÖ÷Îªµ±Ç°Ì×¿Ú£¬¸üĞÂÊ¹ÓÃµÄ½ÓÊÕ»º´æ×ÜÁ¿¼°Ô¤·ÖÅä»º´æ³¤¶È */
+				__skb_pull(skb,tcp_header_len);/* ç§»åŠ¨æŒ‡é’ˆï¼Œè·³è¿‡TCPå¤´éƒ¨ */
+				__skb_queue_tail(&sk->sk_receive_queue, skb);/* å°†æ•°æ®åŒ…æ·»åŠ åˆ°æ¥æ”¶é˜Ÿåˆ—ä¸­ç¼“å­˜èµ·æ¥ï¼Œç­‰å¾…è¿›ç¨‹ä¸»åŠ¨è¯»å– */
+				/* è®¾ç½®skbçš„å±ä¸»ä¸ºå½“å‰å¥—å£ï¼Œæ›´æ–°ä½¿ç”¨çš„æ¥æ”¶ç¼“å­˜æ€»é‡åŠé¢„åˆ†é…ç¼“å­˜é•¿åº¦ */
 				sk_stream_set_owner_r(skb, sk);
-				/* ÉèÖÃÔ¤ÆÚĞòºÅ */
+				/* è®¾ç½®é¢„æœŸåºå· */
 				tp->rcv_nxt = TCP_SKB_CB(skb)->end_seq;
 			}
 
-			/* ÑÓÊ±È·ÈÏ¿ØÖÆ¿éµÄ¸üĞÂ */
+			/* å»¶æ—¶ç¡®è®¤æ§åˆ¶å—çš„æ›´æ–° */
 			tcp_event_data_recv(sk, tp, skb);
 
-			if (TCP_SKB_CB(skb)->ack_seq != tp->snd_una) {/* Èç¹û¶ÎÖĞ±êÊ¶µÄackĞòºÅÓëÌ×½Ó¿ÚÎ´È·ÈÏ¶ÎĞòºÅ²»µÈ£¬ÔòĞèÒª´¦Àíack */
+			if (TCP_SKB_CB(skb)->ack_seq != tp->snd_una) {/* å¦‚æœæ®µä¸­æ ‡è¯†çš„ackåºå·ä¸å¥—æ¥å£æœªç¡®è®¤æ®µåºå·ä¸ç­‰ï¼Œåˆ™éœ€è¦å¤„ç†ack */
 				/* Well, only one small jumplet in fast path... */
-				tcp_ack(sk, skb, FLAG_DATA);/* ´¦ÀíACK */
-				tcp_data_snd_check(sk);/* Èç¹ûÓĞÊı¾İĞèÒª·¢ËÍ£¬Ôò´¦Àí */
+				tcp_ack(sk, skb, FLAG_DATA);/* å¤„ç†ACK */
+				tcp_data_snd_check(sk);/* å¦‚æœæœ‰æ•°æ®éœ€è¦å‘é€ï¼Œåˆ™å¤„ç† */
 				if (!tcp_ack_scheduled(tp))
 					goto no_ack;
 			}
 
-			/* ¸ù¾İÇé¿ö×ö¿ìËÙÈ·ÈÏ»òÑÓÊ±È·ÈÏ */
+			/* æ ¹æ®æƒ…å†µåšå¿«é€Ÿç¡®è®¤æˆ–å»¶æ—¶ç¡®è®¤ */
 			if (eaten) {
 				if (tcp_in_quickack_mode(tp)) {
 					tcp_send_ack(sk);
@@ -4635,27 +4635,27 @@ int tcp_rcv_established(struct sock *sk, struct sk_buff *skb,
 			}
 
 no_ack:
-			/* Èç¹ûÊı¾İÒÑ¾­¸´ÖÆµ½ÓÃ»§¿Õ¼ä£¬ÔòÊÍ·Å¸Ãskb */
+			/* å¦‚æœæ•°æ®å·²ç»å¤åˆ¶åˆ°ç”¨æˆ·ç©ºé—´ï¼Œåˆ™é‡Šæ”¾è¯¥skb */
 			if (eaten)
 				__kfree_skb(skb);
-			else/* ·ñÔòËµÃ÷Êı¾İÒÑ¾­¾ÍĞ÷£¬»½ĞÑµÈ´ı¶ÓÁĞÉÏµÄ½ø³Ì£¬Í¨ÖªËüÃÇ¶ÁÈ¡Êı¾İ */
+			else/* å¦åˆ™è¯´æ˜æ•°æ®å·²ç»å°±ç»ªï¼Œå”¤é†’ç­‰å¾…é˜Ÿåˆ—ä¸Šçš„è¿›ç¨‹ï¼Œé€šçŸ¥å®ƒä»¬è¯»å–æ•°æ® */
 				sk->sk_data_ready(sk, 0);
 			return 0;
 		}
 	}
 
-/* Èç¹û±¨ÎÄ²»Âú×ã¿ìËÙÂ·¾¶µÄÌõ¼ş£¬Ôòµ½´ËÖ´ĞĞÂıËÙÂ·¾¶ */
+/* å¦‚æœæŠ¥æ–‡ä¸æ»¡è¶³å¿«é€Ÿè·¯å¾„çš„æ¡ä»¶ï¼Œåˆ™åˆ°æ­¤æ‰§è¡Œæ…¢é€Ÿè·¯å¾„ */
 slow_path:
-	/* ¼ì²â±¨ÎÄ³¤¶ÈÓĞĞ§ĞÔ¼°Ğ£ÑéºÍ */
+	/* æ£€æµ‹æŠ¥æ–‡é•¿åº¦æœ‰æ•ˆæ€§åŠæ ¡éªŒå’Œ */
 	if (len < (th->doff<<2) || tcp_checksum_complete_user(sk, skb))
 		goto csum_error;
 
 	/*
 	 * RFC1323: H1. Apply PAWS check first.
 	 */
-	if (tcp_fast_parse_options(skb, th, tp) && tp->rx_opt.saw_tstamp &&/* ½âÎöTCPÑ¡Ïî£¬²¢¼ì²âÊ±¼ä´ÁÑ¡Ïî */
-	    tcp_paws_discard(tp, skb)) {/* ÓĞÊ±¼ä´ÁÑ¡Ïîµ«PAWS¼ì²âÊ§°Ü */
-		if (!th->rst) {/* Ã»ÓĞRST±êÖ¾ÔòĞèÒªÏò¶Ô·½·¢ËÍDACK£¬ËµÃ÷½ÓÊÕµ½µÄTCP¶Î²»ÔÚ½ÓÊÕ´°¿ÚÄÚ */
+	if (tcp_fast_parse_options(skb, th, tp) && tp->rx_opt.saw_tstamp &&/* è§£æTCPé€‰é¡¹ï¼Œå¹¶æ£€æµ‹æ—¶é—´æˆ³é€‰é¡¹ */
+	    tcp_paws_discard(tp, skb)) {/* æœ‰æ—¶é—´æˆ³é€‰é¡¹ä½†PAWSæ£€æµ‹å¤±è´¥ */
+		if (!th->rst) {/* æ²¡æœ‰RSTæ ‡å¿—åˆ™éœ€è¦å‘å¯¹æ–¹å‘é€DACKï¼Œè¯´æ˜æ¥æ”¶åˆ°çš„TCPæ®µä¸åœ¨æ¥æ”¶çª—å£å†… */
 			NET_INC_STATS_BH(LINUX_MIB_PAWSESTABREJECTED);
 			tcp_send_dupack(sk, skb);
 			goto discard;
@@ -4671,7 +4671,7 @@ slow_path:
 	 *	Standard slow path.
 	 */
 
-	/* Èç¹û½ÓÊÕµÄ¶ÎĞòºÅ²»ÔÚ½ÓÊÕ´°¿ÚÄÚ */
+	/* å¦‚æœæ¥æ”¶çš„æ®µåºå·ä¸åœ¨æ¥æ”¶çª—å£å†… */
 	if (!tcp_sequence(tp, TCP_SKB_CB(skb)->seq, TCP_SKB_CB(skb)->end_seq)) {
 		/* RFC793, page 37: "In all states except SYN-SENT, all reset
 		 * (RST) segments are validated by checking their SEQ-fields."
@@ -4679,20 +4679,20 @@ slow_path:
 		 * an acknowledgment should be sent in reply (unless the RST bit
 		 * is set, if so drop the segment and return)".
 		 */
-		if (!th->rst)/* Ã»ÓĞ¸´Î»±êÖ¾£¬Ôò·¢ËÍdackÏûÏ¢ */
+		if (!th->rst)/* æ²¡æœ‰å¤ä½æ ‡å¿—ï¼Œåˆ™å‘é€dackæ¶ˆæ¯ */
 			tcp_send_dupack(sk, skb);
-		goto discard;/* ¶ªÆú¸Ã±¨ÎÄ */
+		goto discard;/* ä¸¢å¼ƒè¯¥æŠ¥æ–‡ */
 	}
 
-	if(th->rst) {/* ´¦ÀíRSTÇëÇó */
+	if(th->rst) {/* å¤„ç†RSTè¯·æ±‚ */
 		tcp_reset(sk);
 		goto discard;
 	}
 
-	/* Èç¹û´æÔÚÊ±¼ä´ÁÑ¡Ïî²¢ÓĞĞ§£¬Ôò±£´æ¸ÃÊ±¼ä´Á */
+	/* å¦‚æœå­˜åœ¨æ—¶é—´æˆ³é€‰é¡¹å¹¶æœ‰æ•ˆï¼Œåˆ™ä¿å­˜è¯¥æ—¶é—´æˆ³ */
 	tcp_replace_ts_recent(tp, TCP_SKB_CB(skb)->seq);
 
-	/* ±¨ÎÄÓĞĞ§£¬²¢ÇÒÓĞSYNÑ¡Ïî£¬ËµÃ÷¶Ô·½·¢ËÍÁË´íÎóµÄĞÅÏ¢£¬¸´Î»´¦Àí */
+	/* æŠ¥æ–‡æœ‰æ•ˆï¼Œå¹¶ä¸”æœ‰SYNé€‰é¡¹ï¼Œè¯´æ˜å¯¹æ–¹å‘é€äº†é”™è¯¯çš„ä¿¡æ¯ï¼Œå¤ä½å¤„ç† */
 	if (th->syn && !before(TCP_SKB_CB(skb)->seq, tp->rcv_nxt)) {
 		TCP_INC_STATS_BH(TCP_MIB_INERRS);
 		NET_INC_STATS_BH(LINUX_MIB_TCPABORTONSYN);
@@ -4701,20 +4701,20 @@ slow_path:
 	}
 
 step5:
-	if(th->ack)/* Í¨³£¶¼ÓĞACKÎ»£¬Ôò´¦Àíack */
+	if(th->ack)/* é€šå¸¸éƒ½æœ‰ACKä½ï¼Œåˆ™å¤„ç†ack */
 		tcp_ack(sk, skb, FLAG_SLOWPATH);
 
-	/* ²ÉÑù¸üĞÂRTT */
+	/* é‡‡æ ·æ›´æ–°RTT */
 	tcp_rcv_rtt_measure_ts(tp, skb);
 
 	/* Process urgent data. */
-	tcp_urg(sk, skb, th);/* ÅĞ¶Ï´¦Àí´øÍâÊı¾İ */
+	tcp_urg(sk, skb, th);/* åˆ¤æ–­å¤„ç†å¸¦å¤–æ•°æ® */
 
 	/* step 7: process the segment text */
-	tcp_data_queue(sk, skb);/* ´¦Àí¶ÎÖĞµÄÊı¾İ */
+	tcp_data_queue(sk, skb);/* å¤„ç†æ®µä¸­çš„æ•°æ® */
 
-	tcp_data_snd_check(sk);/* ¼ì²éÊÇ·ñÓĞÊı¾İĞèÒª·¢ËÍ */
-	tcp_ack_snd_check(sk);/* ¼ì²éÊÇ·ñÓĞACKÒª·¢ËÍ(¿ìËÙÈ·ÈÏ»òÑÓÊ±È·ÈÏ) */
+	tcp_data_snd_check(sk);/* æ£€æŸ¥æ˜¯å¦æœ‰æ•°æ®éœ€è¦å‘é€ */
+	tcp_ack_snd_check(sk);/* æ£€æŸ¥æ˜¯å¦æœ‰ACKè¦å‘é€(å¿«é€Ÿç¡®è®¤æˆ–å»¶æ—¶ç¡®è®¤) */
 	return 0;
 
 csum_error:
@@ -4725,17 +4725,17 @@ discard:
 	return 0;
 }
 
-/* ÔÚSYN_SENT×´Ì¬ÏÂ´¦Àí½ÓÊÕµ½µÄ¶Î£¬µ«ÊÇ²»´¦Àí´øÍâÊı¾İ */
+/* åœ¨SYN_SENTçŠ¶æ€ä¸‹å¤„ç†æ¥æ”¶åˆ°çš„æ®µï¼Œä½†æ˜¯ä¸å¤„ç†å¸¦å¤–æ•°æ® */
 static int tcp_rcv_synsent_state_process(struct sock *sk, struct sk_buff *skb,
 					 struct tcphdr *th, unsigned len)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
 	int saved_clamp = tp->rx_opt.mss_clamp;
 
-	/* ½âÎöTCPÑ¡Ïî²¢±£´æµ½´«Êä¿ØÖÆ¿éÖĞ */
+	/* è§£æTCPé€‰é¡¹å¹¶ä¿å­˜åˆ°ä¼ è¾“æ§åˆ¶å—ä¸­ */
 	tcp_parse_options(skb, &tp->rx_opt, 0);
 
-	if (th->ack) {/* ´¦ÀíACK±êÖ¾ */
+	if (th->ack) {/* å¤„ç†ACKæ ‡å¿— */
 		/* rfc793:
 		 * "If the state is SYN-SENT then
 		 *    first check the ACK bit
@@ -4765,7 +4765,7 @@ static int tcp_rcv_synsent_state_process(struct sock *sk, struct sk_buff *skb,
 		 *    delete TCB, and return."
 		 */
 
-		if (th->rst) {/* ÊÕµ½ACK+RST¶Î£¬ĞèÒªtcp_resetÉèÖÃ´íÎóÂë£¬²¢¹Ø±ÕÌ×½Ó¿Ú */
+		if (th->rst) {/* æ”¶åˆ°ACK+RSTæ®µï¼Œéœ€è¦tcp_resetè®¾ç½®é”™è¯¯ç ï¼Œå¹¶å…³é—­å¥—æ¥å£ */
 			tcp_reset(sk);
 			goto discard;
 		}
@@ -4777,7 +4777,7 @@ static int tcp_rcv_synsent_state_process(struct sock *sk, struct sk_buff *skb,
 		 *    See note below!
 		 *                                        --ANK(990513)
 		 */
-		if (!th->syn)/* ÔÚSYN_SENT×´Ì¬ÏÂ½ÓÊÕµ½µÄ¶Î±ØĞë´æÔÚSYN±êÖ¾£¬·ñÔòËµÃ÷½ÓÊÕµ½µÄ¶ÎÎŞĞ§£¬¶ªÆú¸Ã¶Î */
+		if (!th->syn)/* åœ¨SYN_SENTçŠ¶æ€ä¸‹æ¥æ”¶åˆ°çš„æ®µå¿…é¡»å­˜åœ¨SYNæ ‡å¿—ï¼Œå¦åˆ™è¯´æ˜æ¥æ”¶åˆ°çš„æ®µæ— æ•ˆï¼Œä¸¢å¼ƒè¯¥æ®µ */
 			goto discard_and_undo;
 
 		/* rfc793:
@@ -4787,12 +4787,12 @@ static int tcp_rcv_synsent_state_process(struct sock *sk, struct sk_buff *skb,
 		 *    state to ESTABLISHED..."
 		 */
 
-		/* ´ÓÊ×²¿±êÖ¾ÖĞ»ñÈ¡ÏÔÊ¾ÓµÈûÍ¨ÖªµÄÌØĞÔ */
+		/* ä»é¦–éƒ¨æ ‡å¿—ä¸­è·å–æ˜¾ç¤ºæ‹¥å¡é€šçŸ¥çš„ç‰¹æ€§ */
 		TCP_ECN_rcv_synack(tp, th);
-		if (tp->ecn_flags&TCP_ECN_OK)/* Èç¹ûÖ§³ÖECN£¬ÔòÉèÖÃ±êÖ¾ */
+		if (tp->ecn_flags&TCP_ECN_OK)/* å¦‚æœæ”¯æŒECNï¼Œåˆ™è®¾ç½®æ ‡å¿— */
 			sk->sk_no_largesend = 1;
 
-		/* ÉèÖÃÓë´°¿ÚÏà¹ØµÄ³ÉÔ±±äÁ¿ */
+		/* è®¾ç½®ä¸çª—å£ç›¸å…³çš„æˆå‘˜å˜é‡ */
 		tp->snd_wl1 = TCP_SKB_CB(skb)->seq;
 		tcp_ack(sk, skb, FLAG_SLOWPATH);
 
@@ -4813,7 +4813,7 @@ static int tcp_rcv_synsent_state_process(struct sock *sk, struct sk_buff *skb,
 			tp->window_clamp = min(tp->window_clamp, 65535U);
 		}
 
-		if (tp->rx_opt.saw_tstamp) {/* ¸ù¾İÊÇ·ñÖ§³ÖÊ±¼ä´ÁÑ¡ÏîÀ´ÉèÖÃ´«Êä¿ØÖÆ¿éµÄÏà¹Ø×Ö¶Î */
+		if (tp->rx_opt.saw_tstamp) {/* æ ¹æ®æ˜¯å¦æ”¯æŒæ—¶é—´æˆ³é€‰é¡¹æ¥è®¾ç½®ä¼ è¾“æ§åˆ¶å—çš„ç›¸å…³å­—æ®µ */
 			tp->rx_opt.tstamp_ok	   = 1;
 			tp->tcp_header_len =
 				sizeof(struct tcphdr) + TCPOLEN_TSTAMP_ALIGNED;
@@ -4823,7 +4823,7 @@ static int tcp_rcv_synsent_state_process(struct sock *sk, struct sk_buff *skb,
 			tp->tcp_header_len = sizeof(struct tcphdr);
 		}
 
-		/* ³õÊ¼»¯PMTU¡¢MSSµÈ³ÉÔ±±äÁ¿ */
+		/* åˆå§‹åŒ–PMTUã€MSSç­‰æˆå‘˜å˜é‡ */
 		if (tp->rx_opt.sack_ok && sysctl_tcp_fack)
 			tp->rx_opt.sack_ok |= 2;
 
@@ -4849,21 +4849,21 @@ static int tcp_rcv_synsent_state_process(struct sock *sk, struct sk_buff *skb,
 
 		tcp_init_buffer_space(sk);
 
-		/* Èç¹ûÆôÓÃÁËÁ¬½Ó±£»î£¬ÔòÆôÓÃÁ¬½Ó±£»î¶¨Ê±Æ÷ */
+		/* å¦‚æœå¯ç”¨äº†è¿æ¥ä¿æ´»ï¼Œåˆ™å¯ç”¨è¿æ¥ä¿æ´»å®šæ—¶å™¨ */
 		if (sock_flag(sk, SOCK_KEEPOPEN))
 			tcp_reset_keepalive_timer(sk, keepalive_time_when(tp));
 
-		if (!tp->rx_opt.snd_wscale)/* Ê×²¿Ô¤²â */
+		if (!tp->rx_opt.snd_wscale)/* é¦–éƒ¨é¢„æµ‹ */
 			__tcp_fast_path_on(tp, tp->snd_wnd);
 		else
 			tp->pred_flags = 0;
 
-		if (!sock_flag(sk, SOCK_DEAD)) {/* Èç¹ûÌ×¿Ú²»´¦ÓÚSOCK_DEAD×´Ì¬£¬Ôò»½ĞÑµÈ´ı¸ÃÌ×½Ó¿ÚµÄ½ø³Ì */
+		if (!sock_flag(sk, SOCK_DEAD)) {/* å¦‚æœå¥—å£ä¸å¤„äºSOCK_DEADçŠ¶æ€ï¼Œåˆ™å”¤é†’ç­‰å¾…è¯¥å¥—æ¥å£çš„è¿›ç¨‹ */
 			sk->sk_state_change(sk);
 			sk_wake_async(sk, 0, POLL_OUT);
 		}
 
-		/* Á¬½Ó½¨Á¢Íê³É£¬¸ù¾İÇé¿ö½øÈëÑÓÊ±È·ÈÏÄ£Ê½ */
+		/* è¿æ¥å»ºç«‹å®Œæˆï¼Œæ ¹æ®æƒ…å†µè¿›å…¥å»¶æ—¶ç¡®è®¤æ¨¡å¼ */
 		if (sk->sk_write_pending || tp->defer_accept || tp->ack.pingpong) {
 			/* Save one ACK. Data will be ready after
 			 * several ticks, if write_pending is set.
@@ -4882,7 +4882,7 @@ static int tcp_rcv_synsent_state_process(struct sock *sk, struct sk_buff *skb,
 discard:
 			__kfree_skb(skb);
 			return 0;
-		} else {/* ²»ĞèÒªÑÓÊ±È·ÈÏ£¬Á¢¼´·¢ËÍACK¶Î */
+		} else {/* ä¸éœ€è¦å»¶æ—¶ç¡®è®¤ï¼Œç«‹å³å‘é€ACKæ®µ */
 			tcp_send_ack(sk);
 		}
 		return -1;
@@ -4890,7 +4890,7 @@ discard:
 
 	/* No ACK in the segment */
 
-	if (th->rst) {/* ÊÕµ½RST¶Î£¬Ôò¶ªÆú´«Êä¿ØÖÆ¿é */
+	if (th->rst) {/* æ”¶åˆ°RSTæ®µï¼Œåˆ™ä¸¢å¼ƒä¼ è¾“æ§åˆ¶å— */
 		/* rfc793:
 		 * "If the RST bit is set
 		 *
@@ -4901,19 +4901,19 @@ discard:
 	}
 
 	/* PAWS check. */
-	/* PAWS¼ì²âÊ§Ğ§£¬Ò²¶ªÆú´«Êä¿ØÖÆ¿é */
+	/* PAWSæ£€æµ‹å¤±æ•ˆï¼Œä¹Ÿä¸¢å¼ƒä¼ è¾“æ§åˆ¶å— */
 	if (tp->rx_opt.ts_recent_stamp && tp->rx_opt.saw_tstamp && tcp_paws_check(&tp->rx_opt, 0))
 		goto discard_and_undo;
 
-	/* ÔÚSYN_SENT×´Ì¬ÏÂÊÕµ½ÁËSYN¶Î²¢ÇÒÃ»ÓĞACK£¬ËµÃ÷ÊÇÁ½¶ËÍ¬Ê±´ò¿ª */
+	/* åœ¨SYN_SENTçŠ¶æ€ä¸‹æ”¶åˆ°äº†SYNæ®µå¹¶ä¸”æ²¡æœ‰ACKï¼Œè¯´æ˜æ˜¯ä¸¤ç«¯åŒæ—¶æ‰“å¼€ */
 	if (th->syn) {
 		/* We see SYN without ACK. It is attempt of
 		 * simultaneous connect with crossed SYNs.
 		 * Particularly, it can be connect to self.
 		 */
-		tcp_set_state(sk, TCP_SYN_RECV);/* ÉèÖÃ×´Ì¬ÎªTCP_SYN_RECV */
+		tcp_set_state(sk, TCP_SYN_RECV);/* è®¾ç½®çŠ¶æ€ä¸ºTCP_SYN_RECV */
 
-		if (tp->rx_opt.saw_tstamp) {/* ÉèÖÃÊ±¼ä´ÁÏà¹ØµÄ×Ö¶Î */
+		if (tp->rx_opt.saw_tstamp) {/* è®¾ç½®æ—¶é—´æˆ³ç›¸å…³çš„å­—æ®µ */
 			tp->rx_opt.tstamp_ok = 1;
 			tcp_store_ts_recent(tp);
 			tp->tcp_header_len =
@@ -4922,7 +4922,7 @@ discard:
 			tp->tcp_header_len = sizeof(struct tcphdr);
 		}
 
-		/* ³õÊ¼»¯´°¿ÚÏà¹ØµÄ³ÉÔ±±äÁ¿ */
+		/* åˆå§‹åŒ–çª—å£ç›¸å…³çš„æˆå‘˜å˜é‡ */
 		tp->rcv_nxt = TCP_SKB_CB(skb)->seq + 1;
 		tp->rcv_wup = TCP_SKB_CB(skb)->seq + 1;
 
@@ -4933,15 +4933,15 @@ discard:
 		tp->snd_wl1    = TCP_SKB_CB(skb)->seq;
 		tp->max_window = tp->snd_wnd;
 
-		TCP_ECN_rcv_syn(tp, th);/* ´ÓÊ×²¿±êÖ¾ÖĞ»ñÈ¡ÏÔÊ½ÓµÈûÍ¨ÖªµÄÌØĞÔ¡£ */
+		TCP_ECN_rcv_syn(tp, th);/* ä»é¦–éƒ¨æ ‡å¿—ä¸­è·å–æ˜¾å¼æ‹¥å¡é€šçŸ¥çš„ç‰¹æ€§ã€‚ */
 		if (tp->ecn_flags&TCP_ECN_OK)
 			sk->sk_no_largesend = 1;
 
-		/* ³õÊ¼»¯MSSÏà¹ØµÄ³ÉÔ±±äÁ¿ */
+		/* åˆå§‹åŒ–MSSç›¸å…³çš„æˆå‘˜å˜é‡ */
 		tcp_sync_mss(sk, tp->pmtu_cookie);
 		tcp_initialize_rcv_mss(sk);
 
-		/* Ïò¶Ô¶Ë·¢ËÍSYN+ACK¶Î£¬²¢¶ªÆú½ÓÊÕµ½µÄSYN¶Î */
+		/* å‘å¯¹ç«¯å‘é€SYN+ACKæ®µï¼Œå¹¶ä¸¢å¼ƒæ¥æ”¶åˆ°çš„SYNæ®µ */
 		tcp_send_synack(sk);
 #if 0
 		/* Note, we could accept data and URG from this segment.
@@ -4980,7 +4980,7 @@ reset_and_undo:
  *	It's called from both tcp_v4_rcv and tcp_v6_rcv and should be
  *	address independent.
  */
-/* ³ıÁËESTABLISHEDºÍTIME_WAIT×´Ì¬Íâ£¬ÆäËû×´Ì¬ÏÂµÄTCP¶Î´¦Àí¶¼ÓÉ±¾º¯ÊıÊµÏÖ */	
+/* é™¤äº†ESTABLISHEDå’ŒTIME_WAITçŠ¶æ€å¤–ï¼Œå…¶ä»–çŠ¶æ€ä¸‹çš„TCPæ®µå¤„ç†éƒ½ç”±æœ¬å‡½æ•°å®ç° */	
 int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb,
 			  struct tcphdr *th, unsigned len)
 {
@@ -4993,15 +4993,15 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb,
 	case TCP_CLOSE:
 		goto discard;
 
-	case TCP_LISTEN:/* TCP_LISTEN×´Ì¬£¬Ö»´¦ÀíSYN¶Î */
-		if(th->ack)/* Èç¹ûÊÇACK±¨ÎÄ£¬ÓÉÓÚÁ¬½Ó»¹Ã»ÓĞ½¨Á¢£¬Òò´Ë·µ»Ø1Ïò¶Ô·½·¢ËÍRST */
+	case TCP_LISTEN:/* TCP_LISTENçŠ¶æ€ï¼Œåªå¤„ç†SYNæ®µ */
+		if(th->ack)/* å¦‚æœæ˜¯ACKæŠ¥æ–‡ï¼Œç”±äºè¿æ¥è¿˜æ²¡æœ‰å»ºç«‹ï¼Œå› æ­¤è¿”å›1å‘å¯¹æ–¹å‘é€RST */
 			return 1;
 
-		if(th->rst)/* RST¶ÎÖ±½Ó¶ªÆú */
+		if(th->rst)/* RSTæ®µç›´æ¥ä¸¢å¼ƒ */
 			goto discard;
 
-		if(th->syn) {/* ´¦ÀíSYN±¨ÎÄÇëÇó */
-			/* ´¦Àí¿Í»§¶ËÁ¬½ÓÇëÇó£¬tcp_v4_conn_request */
+		if(th->syn) {/* å¤„ç†SYNæŠ¥æ–‡è¯·æ±‚ */
+			/* å¤„ç†å®¢æˆ·ç«¯è¿æ¥è¯·æ±‚ï¼Œtcp_v4_conn_request */
 			if(tp->af_specific->conn_request(sk, skb) < 0)
 				return 1;
 
@@ -5028,30 +5028,30 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb,
 		}
 		goto discard;
 
-	case TCP_SYN_SENT:/* Ô¤ÆÚÓ¦µ±´¦ÀíÖ÷¶¯Á¬½ÓµÄµÚ¶ş´ÎÎÕÊÖ */
+	case TCP_SYN_SENT:/* é¢„æœŸåº”å½“å¤„ç†ä¸»åŠ¨è¿æ¥çš„ç¬¬äºŒæ¬¡æ¡æ‰‹ */
 		init_westwood(sk);
 		init_bictcp(tp);
 
-		/* tcp_rcv_synsent_state_process´¦ÀíSYN_SENT×´Ì¬ÏÂ½ÓÊÕµ½µÄTCP¶Î */
+		/* tcp_rcv_synsent_state_processå¤„ç†SYN_SENTçŠ¶æ€ä¸‹æ¥æ”¶åˆ°çš„TCPæ®µ */
 		queued = tcp_rcv_synsent_state_process(sk, skb, th, len);
-		if (queued >= 0)/* Èç¹û·µ»ØÖµ´óÓÚ0£¬±íÊ¾ĞèÒª¸ø¶Ô¶Ë·¢ËÍRST¶Î£¬ÓÉÉÏ²ã´¦Àí */
+		if (queued >= 0)/* å¦‚æœè¿”å›å€¼å¤§äº0ï¼Œè¡¨ç¤ºéœ€è¦ç»™å¯¹ç«¯å‘é€RSTæ®µï¼Œç”±ä¸Šå±‚å¤„ç† */
 			return queued;
 
 		/* Do step6 onward by hand. */
-		/* ´¦ÀíÍêµÚ¶ş´ÎÎÕÊÖºó£¬»¹ĞèÒª´¦Àí´øÍâÊı¾İ */
+		/* å¤„ç†å®Œç¬¬äºŒæ¬¡æ¡æ‰‹åï¼Œè¿˜éœ€è¦å¤„ç†å¸¦å¤–æ•°æ® */
 		tcp_urg(sk, skb, th);
-		/* ÊÍ·Å±¨ÎÄ */
+		/* é‡Šæ”¾æŠ¥æ–‡ */
 		__kfree_skb(skb);
-		/* ¼ì²âÊÇ·ñÓĞÊı¾İĞèÒª·¢ËÍ */
+		/* æ£€æµ‹æ˜¯å¦æœ‰æ•°æ®éœ€è¦å‘é€ */
 		tcp_data_snd_check(sk);
 		return 0;
 	}
 
-	/* SYN_RECV×´Ì¬µÄ´¦Àí */
-	if (tcp_fast_parse_options(skb, th, tp) && tp->rx_opt.saw_tstamp &&/* ½âÎöTCPÑ¡Ïî£¬Èç¹ûÊ×²¿ÖĞ´æÔÚÊ±¼ä´ÁÑ¡Ïî */
-	    tcp_paws_discard(tp, skb)) {/* PAWS¼ì²âÊ§°Ü£¬Ôò¶ªÆú±¨ÎÄ */
-		if (!th->rst) {/* Èç¹û²»ÊÇRST¶Î */
-			/* ·¢ËÍDACK¸ø¶Ô¶Ë£¬ËµÃ÷½ÓÊÕµ½µÄTCP¶ÎÒÑ¾­´¦Àí¹ı */
+	/* SYN_RECVçŠ¶æ€çš„å¤„ç† */
+	if (tcp_fast_parse_options(skb, th, tp) && tp->rx_opt.saw_tstamp &&/* è§£æTCPé€‰é¡¹ï¼Œå¦‚æœé¦–éƒ¨ä¸­å­˜åœ¨æ—¶é—´æˆ³é€‰é¡¹ */
+	    tcp_paws_discard(tp, skb)) {/* PAWSæ£€æµ‹å¤±è´¥ï¼Œåˆ™ä¸¢å¼ƒæŠ¥æ–‡ */
+		if (!th->rst) {/* å¦‚æœä¸æ˜¯RSTæ®µ */
+			/* å‘é€DACKç»™å¯¹ç«¯ï¼Œè¯´æ˜æ¥æ”¶åˆ°çš„TCPæ®µå·²ç»å¤„ç†è¿‡ */
 			NET_INC_STATS_BH(LINUX_MIB_PAWSESTABREJECTED);
 			tcp_send_dupack(sk, skb);
 			goto discard;
@@ -5060,19 +5060,19 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb,
 	}
 
 	/* step 1: check sequence number */
-	if (!tcp_sequence(tp, TCP_SKB_CB(skb)->seq, TCP_SKB_CB(skb)->end_seq)) {/* TCP¶ÎĞòºÅÎŞĞ§ */
-		if (!th->rst)/* Èç¹ûTCP¶ÎÎŞRST±êÖ¾£¬Ôò·¢ËÍDACK¸ø¶Ô·½ */
+	if (!tcp_sequence(tp, TCP_SKB_CB(skb)->seq, TCP_SKB_CB(skb)->end_seq)) {/* TCPæ®µåºå·æ— æ•ˆ */
+		if (!th->rst)/* å¦‚æœTCPæ®µæ— RSTæ ‡å¿—ï¼Œåˆ™å‘é€DACKç»™å¯¹æ–¹ */
 			tcp_send_dupack(sk, skb);
 		goto discard;
 	}
 
 	/* step 2: check RST bit */
-	if(th->rst) {/* Èç¹ûÓĞRST±êÖ¾£¬ÔòÖØÖÃÁ¬½Ó */
+	if(th->rst) {/* å¦‚æœæœ‰RSTæ ‡å¿—ï¼Œåˆ™é‡ç½®è¿æ¥ */
 		tcp_reset(sk);
 		goto discard;
 	}
 
-	/* Èç¹ûÓĞ±ØÒª£¬Ôò¸üĞÂÊ±¼ä´Á */
+	/* å¦‚æœæœ‰å¿…è¦ï¼Œåˆ™æ›´æ–°æ—¶é—´æˆ³ */
 	tcp_replace_ts_recent(tp, TCP_SKB_CB(skb)->seq);
 
 	/* step 3: check security and precedence [ignored] */
@@ -5081,15 +5081,15 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb,
 	 *
 	 *	Check for a SYN in window.
 	 */
-	if (th->syn && !before(TCP_SKB_CB(skb)->seq, tp->rcv_nxt)) {/* Èç¹ûÓĞSYN±êÖ¾²¢ÇÒĞòºÅÔÚ½ÓÊÕ´°¿ÚÄÚ */
+	if (th->syn && !before(TCP_SKB_CB(skb)->seq, tp->rcv_nxt)) {/* å¦‚æœæœ‰SYNæ ‡å¿—å¹¶ä¸”åºå·åœ¨æ¥æ”¶çª—å£å†… */
 		NET_INC_STATS_BH(LINUX_MIB_TCPABORTONSYN);
-		tcp_reset(sk);/* ¸´Î»Á¬½Ó */
+		tcp_reset(sk);/* å¤ä½è¿æ¥ */
 		return 1;
 	}
 
 	/* step 5: check the ACK field */
-	if (th->ack) {/* Èç¹ûÓĞACK±êÖ¾ */
-		/* ¼ì²éACKÊÇ·ñÎªÕı³£µÄµÚÈı´ÎÎÕÊÖ */
+	if (th->ack) {/* å¦‚æœæœ‰ACKæ ‡å¿— */
+		/* æ£€æŸ¥ACKæ˜¯å¦ä¸ºæ­£å¸¸çš„ç¬¬ä¸‰æ¬¡æ¡æ‰‹ */
 		int acceptable = tcp_ack(sk, skb, FLAG_SLOWPATH);
 
 		switch(sk->sk_state) {
@@ -5097,7 +5097,7 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb,
 			if (acceptable) {
 				tp->copied_seq = tp->rcv_nxt;
 				mb();
-				/* Õı³£µÄµÚÈı´ÎÎÕÊÖ£¬ÉèÖÃÁ¬½Ó×´Ì¬ÎªTCP_ESTABLISHED */
+				/* æ­£å¸¸çš„ç¬¬ä¸‰æ¬¡æ¡æ‰‹ï¼Œè®¾ç½®è¿æ¥çŠ¶æ€ä¸ºTCP_ESTABLISHED */
 				tcp_set_state(sk, TCP_ESTABLISHED);
 				sk->sk_state_change(sk);
 
@@ -5106,11 +5106,11 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb,
 				 * are not waked up, because sk->sk_sleep ==
 				 * NULL and sk->sk_socket == NULL.
 				 */
-				if (sk->sk_socket) {/* ×´Ì¬ÒÑ¾­Õı³££¬»½ĞÑÄÇĞ©µÈ´ıµÄÏß³Ì */
+				if (sk->sk_socket) {/* çŠ¶æ€å·²ç»æ­£å¸¸ï¼Œå”¤é†’é‚£äº›ç­‰å¾…çš„çº¿ç¨‹ */
 					sk_wake_async(sk,0,POLL_OUT);
 				}
 
-				/* ³õÊ¼»¯´«Êä¿ØÖÆ¿é£¬Èç¹û´æÔÚÊ±¼ä´ÁÑ¡Ïî£¬Í¬Ê±Æ½»¬RTTÎª0£¬ÔòĞè¼ÆËãÖØ´«³¬Ê±Ê±¼ä */
+				/* åˆå§‹åŒ–ä¼ è¾“æ§åˆ¶å—ï¼Œå¦‚æœå­˜åœ¨æ—¶é—´æˆ³é€‰é¡¹ï¼ŒåŒæ—¶å¹³æ»‘RTTä¸º0ï¼Œåˆ™éœ€è®¡ç®—é‡ä¼ è¶…æ—¶æ—¶é—´ */
 				tp->snd_una = TCP_SKB_CB(skb)->ack_seq;
 				tp->snd_wnd = ntohs(th->window) <<
 					      tp->rx_opt.snd_wscale;
@@ -5131,7 +5131,7 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb,
 				/* Make sure socket is routed, for
 				 * correct metrics.
 				 */
-				/* ½¨Á¢Â·ÓÉ£¬³õÊ¼»¯ÓµÈû¿ØÖÆÄ£¿é */
+				/* å»ºç«‹è·¯ç”±ï¼Œåˆå§‹åŒ–æ‹¥å¡æ§åˆ¶æ¨¡å— */
 				tp->af_specific->rebuild_header(sk);
 
 				tcp_init_metrics(sk);
@@ -5139,37 +5139,37 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb,
 				/* Prevent spurious tcp_cwnd_restart() on
 				 * first data packet.
 				 */
-				tp->lsndtime = tcp_time_stamp;/* ¸üĞÂ×î½üÒ»´Î·¢ËÍÊı¾İ°üµÄÊ±¼ä */
+				tp->lsndtime = tcp_time_stamp;/* æ›´æ–°æœ€è¿‘ä¸€æ¬¡å‘é€æ•°æ®åŒ…çš„æ—¶é—´ */
 
 				tcp_initialize_rcv_mss(sk);
 				tcp_init_buffer_space(sk);
-				tcp_fast_path_on(tp);/* ¼ÆËãÓĞ¹ØTCPÊ×²¿Ô¤²âµÄ±êÖ¾ */
+				tcp_fast_path_on(tp);/* è®¡ç®—æœ‰å…³TCPé¦–éƒ¨é¢„æµ‹çš„æ ‡å¿— */
 			} else {
 				return 1;
 			}
 			break;
 
-		case TCP_FIN_WAIT1:/* ´¦ÀíFIN_WAIT1×´Ì¬ÏÂ½ÓÊÕµ½µÄACK */
-			if (tp->snd_una == tp->write_seq) {/* Í¨¹ıACK¶ÎµÄÈ·ÈÏ£¬ËùÓĞ·¢ËÍ¶Î¶Ô·½¶¼ÒÑ¾­ÊÕµ½£¬ÔòÇ¨ÒÆµ½FIN_WAIT2×´Ì¬ */
+		case TCP_FIN_WAIT1:/* å¤„ç†FIN_WAIT1çŠ¶æ€ä¸‹æ¥æ”¶åˆ°çš„ACK */
+			if (tp->snd_una == tp->write_seq) {/* é€šè¿‡ACKæ®µçš„ç¡®è®¤ï¼Œæ‰€æœ‰å‘é€æ®µå¯¹æ–¹éƒ½å·²ç»æ”¶åˆ°ï¼Œåˆ™è¿ç§»åˆ°FIN_WAIT2çŠ¶æ€ */
 				tcp_set_state(sk, TCP_FIN_WAIT2);
 				sk->sk_shutdown |= SEND_SHUTDOWN;
-				dst_confirm(sk->sk_dst_cache);/* ´Ó¶Ô·½ÊÕµ½ACK¶Î£¬Òò´Ë¿ÉÒÔÈ·ÈÏ´ËÂ·ÓÉ»º´æÓĞĞ§ */
+				dst_confirm(sk->sk_dst_cache);/* ä»å¯¹æ–¹æ”¶åˆ°ACKæ®µï¼Œå› æ­¤å¯ä»¥ç¡®è®¤æ­¤è·¯ç”±ç¼“å­˜æœ‰æ•ˆ */
 
-				if (!sock_flag(sk, SOCK_DEAD))/* ²»ÔÚDEAD×´Ì¬²¢ÇÒ×´Ì¬·¢ÉúÁË±ä»¯£¬Í¨¹ıµÈ´ıµÄÏß³Ì */
+				if (!sock_flag(sk, SOCK_DEAD))/* ä¸åœ¨DEADçŠ¶æ€å¹¶ä¸”çŠ¶æ€å‘ç”Ÿäº†å˜åŒ–ï¼Œé€šè¿‡ç­‰å¾…çš„çº¿ç¨‹ */
 					/* Wake up lingering close() */
 					sk->sk_state_change(sk);
-				else {/* ÔÚDEAD×´Ì¬£¬ÔòĞèÒª¹Ø±Õ´«Êä¿ØÖÆ¿é£¬»òÕßÔÚFIN_WAIT2×´Ì¬µÈ´ı */
+				else {/* åœ¨DEADçŠ¶æ€ï¼Œåˆ™éœ€è¦å…³é—­ä¼ è¾“æ§åˆ¶å—ï¼Œæˆ–è€…åœ¨FIN_WAIT2çŠ¶æ€ç­‰å¾… */
 					int tmo;
 
-					if (tp->linger2 < 0 ||/* ÎŞĞèÒªÔÚFIN_WAIT2×´Ì¬µÈ´ı */
-					    (TCP_SKB_CB(skb)->end_seq != TCP_SKB_CB(skb)->seq &&/* ½ÓÊÕµÄ¶ÎÓĞÊı¾İ²¢ÇÒ½ÓÊÕµÄ¶Î¶¼ÒÑ¾­Íê±Ï */
+					if (tp->linger2 < 0 ||/* æ— éœ€è¦åœ¨FIN_WAIT2çŠ¶æ€ç­‰å¾… */
+					    (TCP_SKB_CB(skb)->end_seq != TCP_SKB_CB(skb)->seq &&/* æ¥æ”¶çš„æ®µæœ‰æ•°æ®å¹¶ä¸”æ¥æ”¶çš„æ®µéƒ½å·²ç»å®Œæ¯• */
 					     after(TCP_SKB_CB(skb)->end_seq - th->fin, tp->rcv_nxt))) {
-						tcp_done(sk);/* ÎŞĞèµÈ´ı£¬Ö±½Ó¹Ø±ÕÌ×½Ó¿Ú */
+						tcp_done(sk);/* æ— éœ€ç­‰å¾…ï¼Œç›´æ¥å…³é—­å¥—æ¥å£ */
 						NET_INC_STATS_BH(LINUX_MIB_TCPABORTONDATA);
 						return 1;
 					}
 
-					/* ÔÚFIN_WAIT2µÈ´ı */
+					/* åœ¨FIN_WAIT2ç­‰å¾… */
 					tmo = tcp_fin_time(tp);
 					if (tmo > TCP_TIMEWAIT_LEN) {
 						tcp_reset_keepalive_timer(sk, tmo - TCP_TIMEWAIT_LEN);
@@ -5189,16 +5189,16 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb,
 			}
 			break;
 
-		case TCP_CLOSING:/* Õâ¸ö×´Ì¬ÊÇ´¦ÀíÍ¬Ê±¹Ø±Õ */
-			if (tp->snd_una == tp->write_seq) {/* ËùÓĞµÄ¶Î¶¼ÒÑ¾­ÊÕµ½ */
-				tcp_time_wait(sk, TCP_TIME_WAIT, 0);/* Ç¨ÒÆµ½wait×´Ì¬ */
+		case TCP_CLOSING:/* è¿™ä¸ªçŠ¶æ€æ˜¯å¤„ç†åŒæ—¶å…³é—­ */
+			if (tp->snd_una == tp->write_seq) {/* æ‰€æœ‰çš„æ®µéƒ½å·²ç»æ”¶åˆ° */
+				tcp_time_wait(sk, TCP_TIME_WAIT, 0);/* è¿ç§»åˆ°waitçŠ¶æ€ */
 				goto discard;
 			}
 			break;
 
 		case TCP_LAST_ACK:
-			if (tp->snd_una == tp->write_seq) {/* ËùÓĞ¶Î¶¼ÒÑ¾­ÊÕµ½ */
-				tcp_update_metrics(sk);/* ¸üĞÂÂ·ÓÉ»º´æ²¢¹Ø±ÕÌ×½Ó¿Ú */
+			if (tp->snd_una == tp->write_seq) {/* æ‰€æœ‰æ®µéƒ½å·²ç»æ”¶åˆ° */
+				tcp_update_metrics(sk);/* æ›´æ–°è·¯ç”±ç¼“å­˜å¹¶å…³é—­å¥—æ¥å£ */
 				tcp_done(sk);
 				goto discard;
 			}
@@ -5208,14 +5208,14 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb,
 		goto discard;
 
 	/* step 6: check the URG bit */
-	tcp_urg(sk, skb, th);/* ¼ì²â´øÍâÊı¾İÎ» */
+	tcp_urg(sk, skb, th);/* æ£€æµ‹å¸¦å¤–æ•°æ®ä½ */
 
 	/* step 7: process the segment text */
 	switch (sk->sk_state) {
 	case TCP_CLOSE_WAIT:
 	case TCP_CLOSING:
 	case TCP_LAST_ACK:
-		/* ÕâÈıÖÖ×´Ì¬£¬Èç¹û½ÓÊÕµ½ÒÑ¾­È·ÈÏ¹ıµÄ¶Î£¬ÔòÖ±½Ó¶ªÆú */
+		/* è¿™ä¸‰ç§çŠ¶æ€ï¼Œå¦‚æœæ¥æ”¶åˆ°å·²ç»ç¡®è®¤è¿‡çš„æ®µï¼Œåˆ™ç›´æ¥ä¸¢å¼ƒ */
 		if (!before(TCP_SKB_CB(skb)->seq, tp->rcv_nxt))
 			break;
 	case TCP_FIN_WAIT1:
@@ -5224,29 +5224,29 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb,
 		 * RFC 1122 says we MUST send a reset. 
 		 * BSD 4.4 also does reset.
 		 */
-		if (sk->sk_shutdown & RCV_SHUTDOWN) {/* ½ÓÊÕ·½ÏòÒÑ¾­¹Ø±Õ */
-			/* ½ÓÊÕµ½ĞÂÊı¾İ */
+		if (sk->sk_shutdown & RCV_SHUTDOWN) {/* æ¥æ”¶æ–¹å‘å·²ç»å…³é—­ */
+			/* æ¥æ”¶åˆ°æ–°æ•°æ® */
 			if (TCP_SKB_CB(skb)->end_seq != TCP_SKB_CB(skb)->seq &&
 			    after(TCP_SKB_CB(skb)->end_seq - th->fin, tp->rcv_nxt)) {
 				NET_INC_STATS_BH(LINUX_MIB_TCPABORTONDATA);
-				tcp_reset(sk);/* ¸ø¶Ô·½·¢ËÍ¸´Î»ÏûÏ¢ */
+				tcp_reset(sk);/* ç»™å¯¹æ–¹å‘é€å¤ä½æ¶ˆæ¯ */
 				return 1;
 			}
 		}
 		/* Fall through */
 	case TCP_ESTABLISHED: 
-		tcp_data_queue(sk, skb);/* ¶ÔÒÑ¾­½ÓÊÕµ½µÄ¶Î½øĞĞÅÅ¶Ó£¬Ó¦¸ÃÊÇÔÚ´¦Àí¿ìËÙTCP£¬ÔÚ·¢ËÍACKµÄÍ¬Ê±·¢ËÍÁËÊı¾İ¶Î */
+		tcp_data_queue(sk, skb);/* å¯¹å·²ç»æ¥æ”¶åˆ°çš„æ®µè¿›è¡Œæ’é˜Ÿï¼Œåº”è¯¥æ˜¯åœ¨å¤„ç†å¿«é€ŸTCPï¼Œåœ¨å‘é€ACKçš„åŒæ—¶å‘é€äº†æ•°æ®æ®µ */
 		queued = 1;
 		break;
 	}
 
 	/* tcp_data could move socket to TIME-WAIT */
-	if (sk->sk_state != TCP_CLOSE) {/* Èç¹ûtcp_dataĞèÒª·¢ËÍÊı¾İºÍACKÔòÔÚÕâÀï´¦Àí */
+	if (sk->sk_state != TCP_CLOSE) {/* å¦‚æœtcp_dataéœ€è¦å‘é€æ•°æ®å’ŒACKåˆ™åœ¨è¿™é‡Œå¤„ç† */
 		tcp_data_snd_check(sk);
 		tcp_ack_snd_check(sk);
 	}
 
-	if (!queued) { /* Èç¹û¶ÎÃ»ÓĞ¼ÓÈë¶ÓÁĞ£¬»òÕßÇ°ÃæµÄÁ÷³ÌĞèÒªÊÍ·Å±¨ÎÄ£¬ÔòÊÍ·ÅËü */
+	if (!queued) { /* å¦‚æœæ®µæ²¡æœ‰åŠ å…¥é˜Ÿåˆ—ï¼Œæˆ–è€…å‰é¢çš„æµç¨‹éœ€è¦é‡Šæ”¾æŠ¥æ–‡ï¼Œåˆ™é‡Šæ”¾å®ƒ */
 discard:
 		__kfree_skb(skb);
 	}

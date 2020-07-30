@@ -25,16 +25,16 @@ struct qdisc_rate_table
 };
 
 /**
- * Á÷Á¿¹ÜÀí¡£
+ * æµé‡ç®¡ç†ã€‚
  */
 struct Qdisc
 {
 	/**
-	 * Ìí¼ÓÒ»¸öÔªËØµ½¶ÓÁĞ¡£
+	 * æ·»åŠ ä¸€ä¸ªå…ƒç´ åˆ°é˜Ÿåˆ—ã€‚
 	 */
 	int 			(*enqueue)(struct sk_buff *skb, struct Qdisc *dev);
 	/**
-	 * ´Ó¶ÓÁĞÖĞÈ¡³öÒ»¸öÔªËØ¡£
+	 * ä»é˜Ÿåˆ—ä¸­å–å‡ºä¸€ä¸ªå…ƒç´ ã€‚
 	 */
 	struct sk_buff *	(*dequeue)(struct Qdisc *dev);
 	unsigned		flags;
@@ -93,7 +93,7 @@ struct Qdisc_class_ops
 };
 
 /**
- * Á÷Á¿¿ØÖÆ¶ÓÁĞ³Í·£Ëã·¨
+ * æµé‡æ§åˆ¶é˜Ÿåˆ—æƒ©ç½šç®—æ³•
  */
 struct Qdisc_ops
 {
@@ -103,15 +103,15 @@ struct Qdisc_ops
 	int			priv_size;
 
 	/**
-	 * Ìí¼ÓÒ»¸öÔªËØµ½¶ÓÁĞ¡£
+	 * æ·»åŠ ä¸€ä¸ªå…ƒç´ åˆ°é˜Ÿåˆ—ã€‚
 	 */
 	int 			(*enqueue)(struct sk_buff *, struct Qdisc *);
 	/**
-	 * ´Ó¶ÓÁĞÖĞÈ¡³öÒ»¸öÔªËØ¡£
+	 * ä»é˜Ÿåˆ—ä¸­å–å‡ºä¸€ä¸ªå…ƒç´ ã€‚
 	 */
 	struct sk_buff *	(*dequeue)(struct Qdisc *);
 	/**
-	 * ĞÂ½«Ò»¸öÔªËØ·Å»Ø¶ÓÁĞ¡£
+	 * æ–°å°†ä¸€ä¸ªå…ƒç´ æ”¾å›é˜Ÿåˆ—ã€‚
 	 */
 	int 			(*requeue)(struct sk_buff *, struct Qdisc *);
 	unsigned int		(*drop)(struct Qdisc *);

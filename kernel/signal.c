@@ -210,8 +210,8 @@ static inline int has_pending_signals(sigset_t *signal, sigset_t *blocked)
 #define PENDING(p,b) has_pending_signals(&(p)->signal, (b))
 
 /**
- * ¼ì²é½ø³ÌÊÇ·ñÓĞ¹ÒÆğµÄĞÅºÅ*£¨¼ì²ét->pending->signal£©£¬»òÕß½ø³ÌËùÊôµÄÏß³Ì×éÓĞ¹ÒÆğµÄĞÅºÅ£¨¼ì²ét->signal->shared_pending->signal£©¡£
- * È»ºó°Ñt->thread_info->flagsµÄTIF_SIGPENDING±êÖ¾ÖÃÎ»¡£
+ * æ£€æŸ¥è¿›ç¨‹æ˜¯å¦æœ‰æŒ‚èµ·çš„ä¿¡å·*ï¼ˆæ£€æŸ¥t->pending->signalï¼‰ï¼Œæˆ–è€…è¿›ç¨‹æ‰€å±çš„çº¿ç¨‹ç»„æœ‰æŒ‚èµ·çš„ä¿¡å·ï¼ˆæ£€æŸ¥t->signal->shared_pending->signalï¼‰ã€‚
+ * ç„¶åæŠŠt->thread_info->flagsçš„TIF_SIGPENDINGæ ‡å¿—ç½®ä½ã€‚
  */
 fastcall void recalc_sigpending_tsk(struct task_struct *t)
 {
@@ -224,7 +224,7 @@ fastcall void recalc_sigpending_tsk(struct task_struct *t)
 }
 
 /**
- * µÈ¼ÛÓÚrecalc_sigpending_tsk(current);
+ * ç­‰ä»·äºrecalc_sigpending_tsk(current);
  */
 void recalc_sigpending(void)
 {
@@ -294,7 +294,7 @@ static inline void __sigqueue_free(struct sigqueue *q)
 }
 
 /**
- * ´Ó¹ÒÆğĞÅºÅ¶ÓÁĞÖĞÉ¾³ıËùÓĞµÄ¹ÒÆğĞÅºÅ¡£
+ * ä»æŒ‚èµ·ä¿¡å·é˜Ÿåˆ—ä¸­åˆ é™¤æ‰€æœ‰çš„æŒ‚èµ·ä¿¡å·ã€‚
  */
 static void flush_sigqueue(struct sigpending *queue)
 {
@@ -313,8 +313,8 @@ static void flush_sigqueue(struct sigpending *queue)
  */
 
 /**
- * É¾³ı·¢ËÍ¸ø½ø³ÌµÄËùÓĞĞÅºÅ¡£ÕâÊÇÍ¨¹ıÇå³ıt->thread_info->flagsÖĞµÄTIF_SIGPENDING±êÖ¾£¬
- * ²¢ÔÚt->pendingºÍt->signal->shared_pendingÉÏÁ½´Îµ÷ÓÃflush_sigqueueÊµÏÖµÄ¡£
+ * åˆ é™¤å‘é€ç»™è¿›ç¨‹çš„æ‰€æœ‰ä¿¡å·ã€‚è¿™æ˜¯é€šè¿‡æ¸…é™¤t->thread_info->flagsä¸­çš„TIF_SIGPENDINGæ ‡å¿—ï¼Œ
+ * å¹¶åœ¨t->pendingå’Œt->signal->shared_pendingä¸Šä¸¤æ¬¡è°ƒç”¨flush_sigqueueå®ç°çš„ã€‚
  */
 void
 flush_signals(struct task_struct *t)
@@ -352,7 +352,7 @@ void exit_sighand(struct task_struct *tsk)
  * This function expects the tasklist_lock write-locked.
  */
 /**
- * É¾³ıËùÓĞµÄ¹ÒÆğĞÅºÅ²¢ÊÍ·Å½ø³ÌµÄsignal_structÃèÊö·û¡£Èç¹ûÃèÊö·û²»±»ÆäËûÏß³ÌÊ¹ÓÃ£¬É¾³ı¸ÃÃèÊö·û¡£
+ * åˆ é™¤æ‰€æœ‰çš„æŒ‚èµ·ä¿¡å·å¹¶é‡Šæ”¾è¿›ç¨‹çš„signal_structæè¿°ç¬¦ã€‚å¦‚æœæè¿°ç¬¦ä¸è¢«å…¶ä»–çº¿ç¨‹ä½¿ç”¨ï¼Œåˆ é™¤è¯¥æè¿°ç¬¦ã€‚
  */
 void __exit_signal(struct task_struct *tsk)
 {
@@ -547,7 +547,7 @@ static int __dequeue_signal(struct sigpending *pending, sigset_t *mask,
 				
 	}
 	/**
-	 * ¸üĞÂTIF_SIGPENDING±êÖ¾
+	 * æ›´æ–°TIF_SIGPENDINGæ ‡å¿—
 	 */
 	recalc_sigpending();
 
@@ -561,18 +561,18 @@ static int __dequeue_signal(struct sigpending *pending, sigset_t *mask,
  * All callers have to hold the siglock.
  */
 /**
- * dequeue_signal±»do_signalº¯ÊıÖØ¸´µ÷ÓÃ¡£
- * ·µ»Ø0±íÊ¾ËùÓĞ¹ÒÆğµÄĞÅºÅ¶¼±»´¦Àí£¬·Ç0±íÊ¾¹ÒÆğµÄĞÅºÅÕıµÈ´ı±»´¦Àí¡£
+ * dequeue_signalè¢«do_signalå‡½æ•°é‡å¤è°ƒç”¨ã€‚
+ * è¿”å›0è¡¨ç¤ºæ‰€æœ‰æŒ‚èµ·çš„ä¿¡å·éƒ½è¢«å¤„ç†ï¼Œé0è¡¨ç¤ºæŒ‚èµ·çš„ä¿¡å·æ­£ç­‰å¾…è¢«å¤„ç†ã€‚
  */
 int dequeue_signal(struct task_struct *tsk, sigset_t *mask, siginfo_t *info)
 {
 	/**
-	 * Ê×ÏÈ¿¼ÂÇË½ÓĞ¹ÒÆğĞÅºÅ¶ÓÁĞÖĞµÄËùÓĞĞÅºÅ¡£²¢´Ó×îµÍ±àºÅµÄ¹ÒÆğĞÅºÅ¿ªÊ¼¡£
+	 * é¦–å…ˆè€ƒè™‘ç§æœ‰æŒ‚èµ·ä¿¡å·é˜Ÿåˆ—ä¸­çš„æ‰€æœ‰ä¿¡å·ã€‚å¹¶ä»æœ€ä½ç¼–å·çš„æŒ‚èµ·ä¿¡å·å¼€å§‹ã€‚
 	 */
 	int signr = __dequeue_signal(&tsk->pending, mask, info);
 	if (!signr)
 		/**
-		 * È»ºó¿¼ÂÇ¹²Ïí¶ÓÁĞÖĞµÄĞÅºÅ¡£
+		 * ç„¶åè€ƒè™‘å…±äº«é˜Ÿåˆ—ä¸­çš„ä¿¡å·ã€‚
 		 */
 		signr = __dequeue_signal(&tsk->signal->shared_pending,
 					 mask, info);
@@ -611,14 +611,14 @@ int dequeue_signal(struct task_struct *tsk, sigset_t *mask, siginfo_t *info)
  * goes through ->blocked
  */
 /**
- * Í¨Öª½ø³ÌÓĞĞÂµÄ¹ÒÆğĞÅºÅ¡£
+ * é€šçŸ¥è¿›ç¨‹æœ‰æ–°çš„æŒ‚èµ·ä¿¡å·ã€‚
  */
 void signal_wake_up(struct task_struct *t, int resume)
 {
 	unsigned int mask;
 
 	/**
-	 * Ê×ÏÈÉèÖÃTIF_SIGPENDING±êÖ¾¡£
+	 * é¦–å…ˆè®¾ç½®TIF_SIGPENDINGæ ‡å¿—ã€‚
 	 */
 	set_tsk_thread_flag(t, TIF_SIGPENDING);
 
@@ -630,18 +630,18 @@ void signal_wake_up(struct task_struct *t, int resume)
 	 * handle its death signal.
 	 */
 	/**
-	 * Ö»ÒªÊÇTASK_INTERRUPTIBLE×´Ì¬£¬¶¼¿ÉÒÔ»½ĞÑ¡£
+	 * åªè¦æ˜¯TASK_INTERRUPTIBLEçŠ¶æ€ï¼Œéƒ½å¯ä»¥å”¤é†’ã€‚
 	 */
 	mask = TASK_INTERRUPTIBLE;
 	/**
-	 * Èç¹ûĞÅºÅÊÇSIGKILL£¬¾Í´¦ÀíTASK_STOPPEDºÍTASK_TRACED×´Ì¬¡£
+	 * å¦‚æœä¿¡å·æ˜¯SIGKILLï¼Œå°±å¤„ç†TASK_STOPPEDå’ŒTASK_TRACEDçŠ¶æ€ã€‚
 	 */
 	if (resume)
 		mask |= TASK_STOPPED | TASK_TRACED;
 	/**
-	 * Èç¹ûtry_to_wake_up·µ»Ø0£¬ËµÃ÷½ø³ÌÊÇ¿ÉÔËĞĞµÄ¡£
-	 * ¼ì²é½ø³ÌÊÇ·ñÔÚÁíÍâµÄCPUÉÏÔËĞĞ£¬Èç¹ûÊÇ¾ÍÏòCPU·¢ËÍÖĞ¶Ï£¬ÒÔÇ¿ÖÆµ±Ç°½ø³ÌÖØĞÂµ÷¶È¡£
-	 * ÕâÑù£¬µ÷¶È³ÌĞò·µ»ØÊ±£¬»á¼ì²éÄ¿±ê½ø³Ì¹ÒÆğµÄĞÅºÅ¡£
+	 * å¦‚æœtry_to_wake_upè¿”å›0ï¼Œè¯´æ˜è¿›ç¨‹æ˜¯å¯è¿è¡Œçš„ã€‚
+	 * æ£€æŸ¥è¿›ç¨‹æ˜¯å¦åœ¨å¦å¤–çš„CPUä¸Šè¿è¡Œï¼Œå¦‚æœæ˜¯å°±å‘CPUå‘é€ä¸­æ–­ï¼Œä»¥å¼ºåˆ¶å½“å‰è¿›ç¨‹é‡æ–°è°ƒåº¦ã€‚
+	 * è¿™æ ·ï¼Œè°ƒåº¦ç¨‹åºè¿”å›æ—¶ï¼Œä¼šæ£€æŸ¥ç›®æ ‡è¿›ç¨‹æŒ‚èµ·çš„ä¿¡å·ã€‚
 	 */
 	if (!wake_up_state(t, mask))
 		kick_process(t);
@@ -654,7 +654,7 @@ void signal_wake_up(struct task_struct *t, int resume)
  * All callers must be holding the siglock.
  */
 /**
- * ´Ó¹ÒÆğĞÅºÅ¶ÓÁĞÖĞÉ¾³ıÓëmaskÎ»ÑÚÂë¶ÔÓ¦µÄ¹ÒÆğĞÅºÅ
+ * ä»æŒ‚èµ·ä¿¡å·é˜Ÿåˆ—ä¸­åˆ é™¤ä¸maskä½æ©ç å¯¹åº”çš„æŒ‚èµ·ä¿¡å·
  */
 static int rm_from_queue(unsigned long mask, struct sigpending *s)
 {
@@ -682,17 +682,17 @@ static int check_kill_permission(int sig, struct siginfo *info,
 {
 	int error = -EINVAL;
 	/**
-	 * ¼ì²é²ÎÊıÊÇ·ñÕıÈ·£¬Èç¹û²»ÕıÈ·£¬»áµ¼ÖÂ¸ö²ãº¯ÊıGroup_send_sig_infoÒ²ÍË³ö
+	 * æ£€æŸ¥å‚æ•°æ˜¯å¦æ­£ç¡®ï¼Œå¦‚æœä¸æ­£ç¡®ï¼Œä¼šå¯¼è‡´ä¸ªå±‚å‡½æ•°Group_send_sig_infoä¹Ÿé€€å‡º
 	 */
 	if (sig < 0 || sig > _NSIG)
 		return error;
 	error = -EPERM;
 	/**
-	 * Èç¹ûÊÇÓÃ»§Ì¬½ø³Ì·¢ËÍµÄ£¬¼ì²âÊÇ·ñÓĞÕâ¸öÈ¨ÏŞ¡£
-	 * ±ØĞëÂú×ãÒÔÏÂ¼¸¸öÌõ¼şÖ®Ò»£º
-	 *     1¡¢·¢ËÍ½ø³ÌµÄÓµÓĞÕßÓĞÊÊµ±µÄÈ¨ÏŞ£¬Èç¹ÜÀíÔ±
-	 *     2¡¢ĞÅºÅÎªSIGCONTÇÒÄ¿±ê½ø³ÌÓë·¢ËÍ½ø³Ì´¦ÓÚÍ¬Ò»¸ö×¢²á»á»°ÖĞ¡£
-	 *     3¡¢Á½¸ö½ø³ÌÊôÓÚÍ¬Ò»¸öÓÃ»§¡£
+	 * å¦‚æœæ˜¯ç”¨æˆ·æ€è¿›ç¨‹å‘é€çš„ï¼Œæ£€æµ‹æ˜¯å¦æœ‰è¿™ä¸ªæƒé™ã€‚
+	 * å¿…é¡»æ»¡è¶³ä»¥ä¸‹å‡ ä¸ªæ¡ä»¶ä¹‹ä¸€ï¼š
+	 *     1ã€å‘é€è¿›ç¨‹çš„æ‹¥æœ‰è€…æœ‰é€‚å½“çš„æƒé™ï¼Œå¦‚ç®¡ç†å‘˜
+	 *     2ã€ä¿¡å·ä¸ºSIGCONTä¸”ç›®æ ‡è¿›ç¨‹ä¸å‘é€è¿›ç¨‹å¤„äºåŒä¸€ä¸ªæ³¨å†Œä¼šè¯ä¸­ã€‚
+	 *     3ã€ä¸¤ä¸ªè¿›ç¨‹å±äºåŒä¸€ä¸ªç”¨æˆ·ã€‚
 	 */
 	if ((!info || ((unsigned long)info != 1 &&
 			(unsigned long)info != 2 && SI_FROMUSER(info)))
@@ -702,12 +702,12 @@ static int check_kill_permission(int sig, struct siginfo *info,
 	    && (current->uid ^ t->suid) && (current->uid ^ t->uid)
 	    && !capable(CAP_KILL))
 	    /**
-	     * ²»ÔÊĞí·¢ËÍĞÅºÅ£¬·µ»ØEPERM
+	     * ä¸å…è®¸å‘é€ä¿¡å·ï¼Œè¿”å›EPERM
 	     */
 		return error;
 	/**
-	 * ¿ÉÒÔÊ¹ÓÃ×Ô¶¨ÒåµÄ°²È«²ßÂÔ£¬·ÀÖ¹·¢ËÍKILLĞÅºÅ¡£
-	 * security_task_kill¼ì²éÕâÑùµÄ°²È«²ßÂÔ¡£
+	 * å¯ä»¥ä½¿ç”¨è‡ªå®šä¹‰çš„å®‰å…¨ç­–ç•¥ï¼Œé˜²æ­¢å‘é€KILLä¿¡å·ã€‚
+	 * security_task_killæ£€æŸ¥è¿™æ ·çš„å®‰å…¨ç­–ç•¥ã€‚
 	 */
 	return security_task_kill(t, info, sig);
 }
@@ -725,14 +725,14 @@ static void do_notify_parent_cldstop(struct task_struct *tsk,
  * signals.  The process stop is done as a signal action for SIG_DFL.
  */
 /**
- * ¼ì²éĞÅºÅÀàĞÍ£¬Èç¹ûÓĞ±ØÒª£¬¾ÍÈÃÄ¿±êÏß³Ì×éµÄÆäËûĞÅºÅÎŞĞ§¡£
+ * æ£€æŸ¥ä¿¡å·ç±»å‹ï¼Œå¦‚æœæœ‰å¿…è¦ï¼Œå°±è®©ç›®æ ‡çº¿ç¨‹ç»„çš„å…¶ä»–ä¿¡å·æ— æ•ˆã€‚
  */
 static void handle_stop_signal(int sig, struct task_struct *p)
 {
 	struct task_struct *t;
 
 	/**
-	 * Ïß³Ì×éÕıÔÚ±»É±ËÀ¡£º¯ÊıÖ±½Ó·µ»Ø¡£
+	 * çº¿ç¨‹ç»„æ­£åœ¨è¢«æ€æ­»ã€‚å‡½æ•°ç›´æ¥è¿”å›ã€‚
 	 */
 	if (p->flags & SIGNAL_GROUP_EXIT)
 		/*
@@ -741,9 +741,9 @@ static void handle_stop_signal(int sig, struct task_struct *p)
 		return;
 
 	/**
-	 * Èç¹ûÊÇSIGSTOP£¬SIGTSTP£¬SIGTTIN£¬SIGTTOUTĞÅºÅ
-	 * ¾Íµ÷ÓÃrm_from_queue´Ó¹²Ïí¹ÒÆğĞÅºÅ¶ÓÁĞÖĞÉ¾³ıËùÓĞSIGSTOP£¬SIGTSTP£¬SIGTTIN£¬SIGTTOUT
-	 * È»ºó´ÓÊôÓÚÏß³Ì×éµÄ½ø³ÌµÄË½ÓĞ¹ÒÆğĞÅºÅ¶ÓÁĞÖĞÉ¾³ıÉÏÊöĞÅºÅ¡£
+	 * å¦‚æœæ˜¯SIGSTOPï¼ŒSIGTSTPï¼ŒSIGTTINï¼ŒSIGTTOUTä¿¡å·
+	 * å°±è°ƒç”¨rm_from_queueä»å…±äº«æŒ‚èµ·ä¿¡å·é˜Ÿåˆ—ä¸­åˆ é™¤æ‰€æœ‰SIGSTOPï¼ŒSIGTSTPï¼ŒSIGTTINï¼ŒSIGTTOUT
+	 * ç„¶åä»å±äºçº¿ç¨‹ç»„çš„è¿›ç¨‹çš„ç§æœ‰æŒ‚èµ·ä¿¡å·é˜Ÿåˆ—ä¸­åˆ é™¤ä¸Šè¿°ä¿¡å·ã€‚
 	 */
 	if (sig_kernel_stop(sig)) {
 		/*
@@ -851,14 +851,14 @@ static void handle_stop_signal(int sig, struct task_struct *p)
 }
 
 /**
- * ÔÚ¹ÒÆğĞÅºÅ¶ÓÁĞÖĞ²åÈëÒ»¸öĞÂÔªËØ¡£
- * sig-ĞÅºÅ±àºÅ
- * info-»òÕßÊÇsiginfo_tµÄµØÖ·£¬»òÕßÊÇÒÔÏÂÖµ
- *     0£ºĞÅºÅÊÇÓÉÓÃ»§Ì¬½ø³Ì·¢ËÍµÄ¡£
- *     1£ºĞÅºÅÊÇÓÉÄÚºË·¢ËÍµÄ¡£
- *     2£ºÓÉÄÚºË·¢ËÍSIGSTOP»òÕßSIGKILLĞÅºÅ¡£
- * t-Ä¿±ê½ø³ÌÃèÊö·û
- * signals-¹ÒÆğĞÅºÅ¶ÓÁĞµÄµØÖ·¡£
+ * åœ¨æŒ‚èµ·ä¿¡å·é˜Ÿåˆ—ä¸­æ’å…¥ä¸€ä¸ªæ–°å…ƒç´ ã€‚
+ * sig-ä¿¡å·ç¼–å·
+ * info-æˆ–è€…æ˜¯siginfo_tçš„åœ°å€ï¼Œæˆ–è€…æ˜¯ä»¥ä¸‹å€¼
+ *     0ï¼šä¿¡å·æ˜¯ç”±ç”¨æˆ·æ€è¿›ç¨‹å‘é€çš„ã€‚
+ *     1ï¼šä¿¡å·æ˜¯ç”±å†…æ ¸å‘é€çš„ã€‚
+ *     2ï¼šç”±å†…æ ¸å‘é€SIGSTOPæˆ–è€…SIGKILLä¿¡å·ã€‚
+ * t-ç›®æ ‡è¿›ç¨‹æè¿°ç¬¦
+ * signals-æŒ‚èµ·ä¿¡å·é˜Ÿåˆ—çš„åœ°å€ã€‚
  */
 static int send_signal(int sig, struct siginfo *info, struct task_struct *t,
 			struct sigpending *signals)
@@ -871,10 +871,10 @@ static int send_signal(int sig, struct siginfo *info, struct task_struct *t,
 	 * or SIGKILL.
 	 */
 	/**
-	 * info == 2£¬±íÊ¾ÊÇÓÉÄÚºËÍ¨¹ıforce_sig_specificº¯Êı·¢ËÍµÄSIGKILL»òÕßSIGSTOP¡£
-	 * ´ËÊ±£¬Ö±½ÓÌø×ªµ½out_set£¬ÄÚºËÇ¿ÖÆÖ´ĞĞÓëÕâĞ©ĞÅºÅÏà¹ØµÄ²Ù×÷¡£¶ø²»»á½«ĞÅºÅ¼ÓÈëµ½¹ÒÆğ¶ÓÁĞ¡£
-	 * ´Ë´¦ÕâÑù´¦ÀíÓĞÒ»¸öÖØÒªµÄÄ¿µÄ£ºÈç¹û¶ñÒâ½ø³ÌÕ¼ÓÃÁËÌ«¶àÄÚºË£¬¶øSIGKILLºÍSIGSTOPĞÅºÅ
-	 * »¹±ØĞë·ÖÅäÄÚ´æµÄ»°£¬SIGKILLĞÅºÅ¾Í¿ÉÄÜÎŞ·¨´«µİ¡£¹ÜÀíÔ±Ò²¾ÍÎŞ·¨É±ËÀ¶ñÒâ½ø³ÌÁË¡£
+	 * info == 2ï¼Œè¡¨ç¤ºæ˜¯ç”±å†…æ ¸é€šè¿‡force_sig_specificå‡½æ•°å‘é€çš„SIGKILLæˆ–è€…SIGSTOPã€‚
+	 * æ­¤æ—¶ï¼Œç›´æ¥è·³è½¬åˆ°out_setï¼Œå†…æ ¸å¼ºåˆ¶æ‰§è¡Œä¸è¿™äº›ä¿¡å·ç›¸å…³çš„æ“ä½œã€‚è€Œä¸ä¼šå°†ä¿¡å·åŠ å…¥åˆ°æŒ‚èµ·é˜Ÿåˆ—ã€‚
+	 * æ­¤å¤„è¿™æ ·å¤„ç†æœ‰ä¸€ä¸ªé‡è¦çš„ç›®çš„ï¼šå¦‚æœæ¶æ„è¿›ç¨‹å ç”¨äº†å¤ªå¤šå†…æ ¸ï¼Œè€ŒSIGKILLå’ŒSIGSTOPä¿¡å·
+	 * è¿˜å¿…é¡»åˆ†é…å†…å­˜çš„è¯ï¼ŒSIGKILLä¿¡å·å°±å¯èƒ½æ— æ³•ä¼ é€’ã€‚ç®¡ç†å‘˜ä¹Ÿå°±æ— æ³•æ€æ­»æ¶æ„è¿›ç¨‹äº†ã€‚
 	 */
 	if ((unsigned long)info == 2)
 		goto out_set;
@@ -888,20 +888,20 @@ static int send_signal(int sig, struct siginfo *info, struct task_struct *t,
 	   pass on the info struct.  */
 
 	/**
-	 * Èç¹û½ø³ÌµÄ¹ÒÆğĞÅºÅÊıÁ¿Ğ¡ÓÚ½ø³ÌµÄ×ÊÔ´ÏŞÖÆ£¬¾ÍÎªĞÂĞÅºÅ·ÖÅäsigqueueÊı¾İ½á¹¹¡£
-	 * Èç¹û·ÖÅä³É¹¦ÁË£¬»¹»áµİÔöuserµÄÒıÓÃ¼ÆÊıºÍ¹ÒÆğĞÅºÅÊıÁ¿¡£
+	 * å¦‚æœè¿›ç¨‹çš„æŒ‚èµ·ä¿¡å·æ•°é‡å°äºè¿›ç¨‹çš„èµ„æºé™åˆ¶ï¼Œå°±ä¸ºæ–°ä¿¡å·åˆ†é…sigqueueæ•°æ®ç»“æ„ã€‚
+	 * å¦‚æœåˆ†é…æˆåŠŸäº†ï¼Œè¿˜ä¼šé€’å¢userçš„å¼•ç”¨è®¡æ•°å’ŒæŒ‚èµ·ä¿¡å·æ•°é‡ã€‚
 	 */
 	q = __sigqueue_alloc(t, GFP_ATOMIC);
 	/**
-	 * Èç¹û³¬³öÏŞÖÆ£¬»òÕß²»ÄÜ·ÖÅäÄÚ´æÁË£¬¾ÍÌøµ½out_set
+	 * å¦‚æœè¶…å‡ºé™åˆ¶ï¼Œæˆ–è€…ä¸èƒ½åˆ†é…å†…å­˜äº†ï¼Œå°±è·³åˆ°out_set
 	 */
 	if (q) {
 		/**
-		 * ÔÚ¹ÒÆğĞÅºÅ¶ÓÁĞÖĞÔö¼Ósigqueue.
+		 * åœ¨æŒ‚èµ·ä¿¡å·é˜Ÿåˆ—ä¸­å¢åŠ sigqueue.
 		 */
 		list_add_tail(&q->list, &signals->list);
 		/**
-		 * Ìî³äinfoÊı¾İ½á¹¹¡£
+		 * å¡«å……infoæ•°æ®ç»“æ„ã€‚
 		 */
 		switch ((unsigned long) info) {
 		case 0:
@@ -920,19 +920,19 @@ static int send_signal(int sig, struct siginfo *info, struct task_struct *t,
 			break;
 		default:
 			/**
-			 * ¸´ÖÆÓÉµ÷ÓÃÕß´«µİµÄsiginfo_t±í¡£
+			 * å¤åˆ¶ç”±è°ƒç”¨è€…ä¼ é€’çš„siginfo_tè¡¨ã€‚
 			 */
 			copy_siginfo(&q->info, info);
 			break;
 		}
 	} else {
 		/**
-		 * ¹ÒÆğĞÅºÅ³¬¹ıÏŞÖÆ£¬»òÕß·ÖÅäÄÚ´æÊ§°Ü¡£
-		 * ´ËÊ±£¬²»ÔÙÏòĞÅºÅ¹ÒÆğ¶ÓÁĞÖĞÔö¼ÓÔªËØ¡£
+		 * æŒ‚èµ·ä¿¡å·è¶…è¿‡é™åˆ¶ï¼Œæˆ–è€…åˆ†é…å†…å­˜å¤±è´¥ã€‚
+		 * æ­¤æ—¶ï¼Œä¸å†å‘ä¿¡å·æŒ‚èµ·é˜Ÿåˆ—ä¸­å¢åŠ å…ƒç´ ã€‚
 		 */
 
 		/**
-		 * ĞÅºÅÊÇÊµÊ±µÄ£¬²¢ÇÒÊÇÍ¨¹ıÄÚºËº¯Êı·¢ËÍµÄ£¬¾Í·µ»ØEAGAIN
+		 * ä¿¡å·æ˜¯å®æ—¶çš„ï¼Œå¹¶ä¸”æ˜¯é€šè¿‡å†…æ ¸å‡½æ•°å‘é€çš„ï¼Œå°±è¿”å›EAGAIN
 		 */
 		if (sig >= SIGRTMIN && info && (unsigned long)info != 1
 		   && info->si_code != SI_USER)
@@ -951,7 +951,7 @@ static int send_signal(int sig, struct siginfo *info, struct task_struct *t,
 
 out_set:
 	/**
-	 * sigaddset°Ñ¶ÓÁĞÎ»ÑÚÂëÖĞÓëĞÅºÅÏà¶ÔµÄÎ»ÖÃ1¡£
+	 * sigaddsetæŠŠé˜Ÿåˆ—ä½æ©ç ä¸­ä¸ä¿¡å·ç›¸å¯¹çš„ä½ç½®1ã€‚
 	 */
 	sigaddset(&signals->signal, sig);
 	return ret;
@@ -961,14 +961,14 @@ out_set:
 	(((sig) < SIGRTMIN) && sigismember(&(sigptr)->signal, (sig)))
 
 /**
- * ÏòÖ¸¶¨µÄ½ø³Ì·¢ËÍĞÅºÅ¡£
- * sig-ĞÅºÅ±àºÅ
- * info-»òÕßÊÇsiginfo_tµÄµØÖ·£¬»òÕßÊÇÒÔÏÂÖµ
- *     0£ºĞÅºÅÊÇÓÉÓÃ»§Ì¬½ø³Ì·¢ËÍµÄ¡£
- *     1£ºĞÅºÅÊÇÓÉÄÚºË·¢ËÍµÄ¡£
- *     2£ºÓÉÄÚºË·¢ËÍSIGSTOP»òÕßSIGKILLĞÅºÅ¡£
- * t-Ä¿±ê½ø³ÌÃèÊö·û
- * ×¢Òâ£º±ØĞëÔÚ¹Ø±¾µØÖĞ¶ÏºÍ»ñµÃt->sighand->siglock×ÔĞıËøµÄÇé¿öÏÂµ÷ÓÃ±¾º¯Êı¡£
+ * å‘æŒ‡å®šçš„è¿›ç¨‹å‘é€ä¿¡å·ã€‚
+ * sig-ä¿¡å·ç¼–å·
+ * info-æˆ–è€…æ˜¯siginfo_tçš„åœ°å€ï¼Œæˆ–è€…æ˜¯ä»¥ä¸‹å€¼
+ *     0ï¼šä¿¡å·æ˜¯ç”±ç”¨æˆ·æ€è¿›ç¨‹å‘é€çš„ã€‚
+ *     1ï¼šä¿¡å·æ˜¯ç”±å†…æ ¸å‘é€çš„ã€‚
+ *     2ï¼šç”±å†…æ ¸å‘é€SIGSTOPæˆ–è€…SIGKILLä¿¡å·ã€‚
+ * t-ç›®æ ‡è¿›ç¨‹æè¿°ç¬¦
+ * æ³¨æ„ï¼šå¿…é¡»åœ¨å…³æœ¬åœ°ä¸­æ–­å’Œè·å¾—t->sighand->siglockè‡ªæ—‹é”çš„æƒ…å†µä¸‹è°ƒç”¨æœ¬å‡½æ•°ã€‚
  */
 static int
 specific_send_sig_info(int sig, struct siginfo *info, struct task_struct *t)
@@ -976,12 +976,12 @@ specific_send_sig_info(int sig, struct siginfo *info, struct task_struct *t)
 	int ret = 0;
 
 	/**
-	 * ÔÙ´ÎÈ·±£±¾µØÖĞ¶Ï±»¹Ø±Õ¡£
+	 * å†æ¬¡ç¡®ä¿æœ¬åœ°ä¸­æ–­è¢«å…³é—­ã€‚
 	 */
 	if (!irqs_disabled())
 		BUG();
 	/**
-	 * ÔÙ´ÎÈ·±£siglock±»»ñµÃ¡£
+	 * å†æ¬¡ç¡®ä¿siglockè¢«è·å¾—ã€‚
 	 */
 	assert_spin_locked(&t->sighand->siglock);
 
@@ -993,11 +993,11 @@ specific_send_sig_info(int sig, struct siginfo *info, struct task_struct *t)
 
 	/* Short-circuit ignored signals.  */
 	/**
-	 * ¼ì²é½ø³ÌÊÇ·ñºöÂÔĞÅºÅ¡£Èç¹ûºöÂÔ¾Í·µ»Ø0¡£
-	 * µ±ÒÔÏÂÌõ¼şÂú×ãÊ±£¬ĞÅºÅ±»ºöÂÔ£º
-	 *     1£º½ø³ÌÃ»ÓĞ±»¸ú×Ù
-	 *     2£ºĞÅºÅÃ»ÓĞ±»×èÈû¡£
-	 *     3£ºÏÔÊ½µÄºöÂÔÁËĞÅºÅ¡£»òÕßÒşº¬µÄºöÂÔÁËĞÅºÅ¡£
+	 * æ£€æŸ¥è¿›ç¨‹æ˜¯å¦å¿½ç•¥ä¿¡å·ã€‚å¦‚æœå¿½ç•¥å°±è¿”å›0ã€‚
+	 * å½“ä»¥ä¸‹æ¡ä»¶æ»¡è¶³æ—¶ï¼Œä¿¡å·è¢«å¿½ç•¥ï¼š
+	 *     1ï¼šè¿›ç¨‹æ²¡æœ‰è¢«è·Ÿè¸ª
+	 *     2ï¼šä¿¡å·æ²¡æœ‰è¢«é˜»å¡ã€‚
+	 *     3ï¼šæ˜¾å¼çš„å¿½ç•¥äº†ä¿¡å·ã€‚æˆ–è€…éšå«çš„å¿½ç•¥äº†ä¿¡å·ã€‚
 	 */
 	if (sig_ignored(t, sig))
 		goto out;
@@ -1006,20 +1006,20 @@ specific_send_sig_info(int sig, struct siginfo *info, struct task_struct *t)
 	   can get more detailed information about the cause of
 	   the signal. */
 	/**
-	 * ¼ì²éĞÅºÅÊÇ·ñÊÇ·ÇÊµÊ±µÄ¡£
-	 * ¶øÇÒÔÚ½ø³ÌµÄË½ÓĞ¹ÒÆğĞÅºÅ¶ÓÁĞÉÏÒÑ¾­ÓĞÁíÍâÒ»¸öÏàÍ¬µÄ¹ÒÆğĞÅºÅ¡£
-	 * Èç¹ûÊÇÕâÑù£¬Ò²·µ»Ø¡£
+	 * æ£€æŸ¥ä¿¡å·æ˜¯å¦æ˜¯éå®æ—¶çš„ã€‚
+	 * è€Œä¸”åœ¨è¿›ç¨‹çš„ç§æœ‰æŒ‚èµ·ä¿¡å·é˜Ÿåˆ—ä¸Šå·²ç»æœ‰å¦å¤–ä¸€ä¸ªç›¸åŒçš„æŒ‚èµ·ä¿¡å·ã€‚
+	 * å¦‚æœæ˜¯è¿™æ ·ï¼Œä¹Ÿè¿”å›ã€‚
 	 */
 	if (LEGACY_QUEUE(&t->pending, sig))
 		goto out;
 
 	/**
-	 * µ÷ÓÃsend_signal°ÑĞÅºÅÌí¼Óµ½½ø³ÌµÄ¹ÒÆğĞÅºÅ¼¯ºÏÖĞ¡£
+	 * è°ƒç”¨send_signalæŠŠä¿¡å·æ·»åŠ åˆ°è¿›ç¨‹çš„æŒ‚èµ·ä¿¡å·é›†åˆä¸­ã€‚
 	 */
 	ret = send_signal(sig, info, t, &t->pending);
 	/**
-	 * Èç¹ûsend_signal³É¹¦£¬²¢ÇÒĞÅºÅ²»±»×èÈû
-	 * ¾Íµ÷ÓÃsignal_wake_upº¯ÊıÍ¨Öª½ø³ÌÓĞĞÂµÄ¹ÒÆğĞÅºÅ¡£
+	 * å¦‚æœsend_signalæˆåŠŸï¼Œå¹¶ä¸”ä¿¡å·ä¸è¢«é˜»å¡
+	 * å°±è°ƒç”¨signal_wake_upå‡½æ•°é€šçŸ¥è¿›ç¨‹æœ‰æ–°çš„æŒ‚èµ·ä¿¡å·ã€‚
 	 */
 	if (!ret && !sigismember(&t->blocked, sig))
 		signal_wake_up(t, sig == SIGKILL);
@@ -1033,7 +1033,7 @@ out:
  */
 
 /**
- * Óëforce_sigÀàËÆ£¬µ«ÊÇ»¹Ê¹ÓÃsiginfo_t½á¹¹ÖĞµÄÀ©Õ¹ĞÅÏ¢
+ * ä¸force_sigç±»ä¼¼ï¼Œä½†æ˜¯è¿˜ä½¿ç”¨siginfo_tç»“æ„ä¸­çš„æ‰©å±•ä¿¡æ¯
  */
 int
 force_sig_info(int sig, struct siginfo *info, struct task_struct *t)
@@ -1054,7 +1054,7 @@ force_sig_info(int sig, struct siginfo *info, struct task_struct *t)
 }
 
 /**
- * Óëforce_sigÀàËÆ£¬µ«ÊÇÓÅ»¯ÁË¶ÔSIGSTOPºÍSIGKILLĞÅºÅµÄ´¦Àí
+ * ä¸force_sigç±»ä¼¼ï¼Œä½†æ˜¯ä¼˜åŒ–äº†å¯¹SIGSTOPå’ŒSIGKILLä¿¡å·çš„å¤„ç†
  */ 
 void
 force_sig_specific(int sig, struct task_struct *t)
@@ -1085,7 +1085,7 @@ force_sig_specific(int sig, struct task_struct *t)
 	 && (task_curr(p) || !signal_pending(p)))
 
 /**
- * É¨ÃèÏß³Ì×éÖĞµÄ½ø³Ì£¬²éÕÒÄÜ¹»½ÓÊÕĞÂĞÅºÅµÄ½ø³Ì¡£
+ * æ‰«æçº¿ç¨‹ç»„ä¸­çš„è¿›ç¨‹ï¼ŒæŸ¥æ‰¾èƒ½å¤Ÿæ¥æ”¶æ–°ä¿¡å·çš„è¿›ç¨‹ã€‚
  */
 static void
 __group_complete_signal(int sig, struct task_struct *p)
@@ -1098,11 +1098,11 @@ __group_complete_signal(int sig, struct task_struct *p)
 	 * SIGKILL will punch through that).
 	 */
 	/**
-	 * ²»Ñ¡ÔñTASK_STOPPED | TASK_TRACED×´Ì¬µÄ½ø³Ì
+	 * ä¸é€‰æ‹©TASK_STOPPED | TASK_TRACEDçŠ¶æ€çš„è¿›ç¨‹
 	 */
 	mask = TASK_STOPPED | TASK_TRACED;
 	/**
-	 * Ö»ÒªÊÇSIGKILLĞÅºÅ£¬¾ÍËæ±ãÑ¡ÔñÒ»¸ö½ø³Ì£¬¶ø²»¹ÜÕâ¸ö½ø³ÌµÄ×´Ì¬¡£
+	 * åªè¦æ˜¯SIGKILLä¿¡å·ï¼Œå°±éšä¾¿é€‰æ‹©ä¸€ä¸ªè¿›ç¨‹ï¼Œè€Œä¸ç®¡è¿™ä¸ªè¿›ç¨‹çš„çŠ¶æ€ã€‚
 	 */
 	if (sig == SIGKILL)
 		mask = 0;
@@ -1114,11 +1114,11 @@ __group_complete_signal(int sig, struct task_struct *p)
 	 * Probably the least surprising to the average bear.
 	 */
 	/**
-	 * Èç¹û½ÓÊÕĞÅºÅµÄ½ø³ÌÂú×ã¹æÔò£¬ÔòÓÅÏÈÑ¡ÔñÕâ¸ö½ø³Ì¡£
-	 * wants_signalÅĞ¶ÏÒÔÏÂÌõ¼ş£º
-	 *     ½ø³ÌÃ»ÓĞ±»É±ËÀ¼´PF_EXITING±êÖ¾Ã»ÓĞÉèÖÃ¡£
-	 *     ½ø³Ì»òÕßÕıÔÚCPUÉÏÔËĞĞ(ÔËĞĞ×´Ì¬²»ÔÚmaskÖĞ)¡£»òÕßËüµÄTIF_SIGPENDING±êÖ¾Ã»ÓĞ±»ÉèÖÃ¡£
-	 *     »½ĞÑÓĞTIF_SIGPENDING±êÖ¾µÄ½ø³ÌÊÇÃ»ÓĞÒâÒåµÄ¡£
+	 * å¦‚æœæ¥æ”¶ä¿¡å·çš„è¿›ç¨‹æ»¡è¶³è§„åˆ™ï¼Œåˆ™ä¼˜å…ˆé€‰æ‹©è¿™ä¸ªè¿›ç¨‹ã€‚
+	 * wants_signalåˆ¤æ–­ä»¥ä¸‹æ¡ä»¶ï¼š
+	 *     è¿›ç¨‹æ²¡æœ‰è¢«æ€æ­»å³PF_EXITINGæ ‡å¿—æ²¡æœ‰è®¾ç½®ã€‚
+	 *     è¿›ç¨‹æˆ–è€…æ­£åœ¨CPUä¸Šè¿è¡Œ(è¿è¡ŒçŠ¶æ€ä¸åœ¨maskä¸­)ã€‚æˆ–è€…å®ƒçš„TIF_SIGPENDINGæ ‡å¿—æ²¡æœ‰è¢«è®¾ç½®ã€‚
+	 *     å”¤é†’æœ‰TIF_SIGPENDINGæ ‡å¿—çš„è¿›ç¨‹æ˜¯æ²¡æœ‰æ„ä¹‰çš„ã€‚
 	 */
 	if (wants_signal(sig, p, mask))
 		t = p;
@@ -1133,7 +1133,7 @@ __group_complete_signal(int sig, struct task_struct *p)
 		 * Otherwise try to find a suitable thread.
 		 */
 		/**
-		 * ´ÓÏß³Ì×éÖĞ£¬ÉÏ´Î½ÓÊÕĞÅºÅµÄ½ø³Ì¿ªÊ¼ËÑË÷
+		 * ä»çº¿ç¨‹ç»„ä¸­ï¼Œä¸Šæ¬¡æ¥æ”¶ä¿¡å·çš„è¿›ç¨‹å¼€å§‹æœç´¢
 		 */
 		t = p->signal->curr_target;
 		if (t == NULL)
@@ -1152,7 +1152,7 @@ __group_complete_signal(int sig, struct task_struct *p)
 				return;
 		}
 		/**
-		 * ËÑË÷µ½Ò»¸ö·ûºÏÌõ¼şµÄ½ø³Ì£¬½«ËüÑ¡Ôñ³öÀ´£¬»½ĞÑËü£¬²¢½«ËüÉèÖÃµ½curr_targetÖĞ¡£
+		 * æœç´¢åˆ°ä¸€ä¸ªç¬¦åˆæ¡ä»¶çš„è¿›ç¨‹ï¼Œå°†å®ƒé€‰æ‹©å‡ºæ¥ï¼Œå”¤é†’å®ƒï¼Œå¹¶å°†å®ƒè®¾ç½®åˆ°curr_targetä¸­ã€‚
 		 */
 		p->signal->curr_target = t;
 	}
@@ -1162,10 +1162,10 @@ __group_complete_signal(int sig, struct task_struct *p)
 	 * then start taking the whole group down immediately.
 	 */
 	/**
-	 * ÕÒµ½ÁËÒ»¸öºÏÊÊµÄ½ø³Ì¡£¾Í¿ªÊ¼Ïò±»Ñ¡ÖĞµÄ½ø³Ì´«µİĞÅºÅ¡£
+	 * æ‰¾åˆ°äº†ä¸€ä¸ªåˆé€‚çš„è¿›ç¨‹ã€‚å°±å¼€å§‹å‘è¢«é€‰ä¸­çš„è¿›ç¨‹ä¼ é€’ä¿¡å·ã€‚
 	 */
 	/**
-	 * Èç¹ûĞÅºÅÊÇÖÂÃüµÄ£¬¾ÍÏò½ø³Ì×éµÄËùÓĞÇáÁ¿¼¶½ø³Ì·¢ËÍSIGKILLĞÅºÅÉ±ËÀÕû¸öÏß³Ì×é¡£
+	 * å¦‚æœä¿¡å·æ˜¯è‡´å‘½çš„ï¼Œå°±å‘è¿›ç¨‹ç»„çš„æ‰€æœ‰è½»é‡çº§è¿›ç¨‹å‘é€SIGKILLä¿¡å·æ€æ­»æ•´ä¸ªçº¿ç¨‹ç»„ã€‚
 	 */
 	if (sig_fatal(p, sig) && !(p->signal->flags & SIGNAL_GROUP_EXIT) &&
 	    !sigismember(&t->real_blocked, sig) &&
@@ -1221,7 +1221,7 @@ __group_complete_signal(int sig, struct task_struct *p)
 	 * Tell the chosen thread to wake up and dequeue it.
 	 */
 	/**
-	 * ĞÅºÅ²»ÊÇÖÂÃüµÄ£¬ÔòÍ¨Öª±»Ñ¡ÖĞµÄ½ø³Ì£ºÓĞĞÂµÄ¹ÒÆğĞÅºÅµ½À´¡£
+	 * ä¿¡å·ä¸æ˜¯è‡´å‘½çš„ï¼Œåˆ™é€šçŸ¥è¢«é€‰ä¸­çš„è¿›ç¨‹ï¼šæœ‰æ–°çš„æŒ‚èµ·ä¿¡å·åˆ°æ¥ã€‚
 	 */
 	signal_wake_up(t, sig == SIGKILL);
 	return;
@@ -1235,7 +1235,7 @@ __group_send_sig_info(int sig, struct siginfo *info, struct task_struct *p)
 
 	assert_spin_locked(&p->sighand->siglock);
 	/**
-	 * µ÷ÓÃhandle_stop_signal£¬¼ì²éĞÅºÅÀàĞÍ£¬ÕâĞ©ÀàĞÍ¿ÉÄÜÊ¹Ä¿±êÏß³Ì×éµÄÆäËû¹ÒÆğĞÅºÅÎŞĞ§¡£
+	 * è°ƒç”¨handle_stop_signalï¼Œæ£€æŸ¥ä¿¡å·ç±»å‹ï¼Œè¿™äº›ç±»å‹å¯èƒ½ä½¿ç›®æ ‡çº¿ç¨‹ç»„çš„å…¶ä»–æŒ‚èµ·ä¿¡å·æ— æ•ˆã€‚
 	 */
 	handle_stop_signal(sig, p);
 
@@ -1247,13 +1247,13 @@ __group_send_sig_info(int sig, struct siginfo *info, struct task_struct *p)
 
 	/* Short-circuit ignored signals.  */
 	/**
-	 * Èç¹ûÏß³Ì×éºöÂÔĞÅºÅ£¬¾Í·µ»Ø0¡£
+	 * å¦‚æœçº¿ç¨‹ç»„å¿½ç•¥ä¿¡å·ï¼Œå°±è¿”å›0ã€‚
 	 */
 	if (sig_ignored(p, sig))
 		return ret;
 
 	/**
-	 * Èç¹ûÊÇ·ÇÊµÊ±½ø³Ì£¬²¢ÇÒÔÚ¹²Ïí¶ÓÁĞÖĞÒÑ¾­ÓĞÍ¬Ò»¸öĞÅºÅ£¬¾ÍÊ²Ã´¶¼²»×ö¡£Ö±½Ó·µ»Ø0
+	 * å¦‚æœæ˜¯éå®æ—¶è¿›ç¨‹ï¼Œå¹¶ä¸”åœ¨å…±äº«é˜Ÿåˆ—ä¸­å·²ç»æœ‰åŒä¸€ä¸ªä¿¡å·ï¼Œå°±ä»€ä¹ˆéƒ½ä¸åšã€‚ç›´æ¥è¿”å›0
 	 */
 	if (LEGACY_QUEUE(&p->signal->shared_pending, sig))
 		/* This is a non-RT signal and we already have one queued.  */
@@ -1265,14 +1265,14 @@ __group_send_sig_info(int sig, struct siginfo *info, struct task_struct *p)
 	 * to avoid several races.
 	 */
 	/**
-	 * µ÷ÓÃsend_signal°ÑĞÅºÅÌí¼Óµ½¹²Ïí¹ÒÆğĞÅºÅ¶ÓÁĞÖĞ¡£
+	 * è°ƒç”¨send_signalæŠŠä¿¡å·æ·»åŠ åˆ°å…±äº«æŒ‚èµ·ä¿¡å·é˜Ÿåˆ—ä¸­ã€‚
 	 */
 	ret = send_signal(sig, info, p, &p->signal->shared_pending);
 	if (unlikely(ret))
 		return ret;
 
 	/**
-	 * __group_complete_signal»½ĞÑÏß³Ì×éÖĞµÄÒ»¸öÇáÁ¿¼¶½ø³Ì¡£
+	 * __group_complete_signalå”¤é†’çº¿ç¨‹ç»„ä¸­çš„ä¸€ä¸ªè½»é‡çº§è¿›ç¨‹ã€‚
 	 */
 	__group_complete_signal(sig, p);
 	return 0;
@@ -1319,7 +1319,7 @@ void zap_other_threads(struct task_struct *p)
  * Must be called with the tasklist_lock held for reading!
  */
 /**
- * ÏòÕû¸öÏß³Ì×é·¢ËÍĞÅºÅ¡£
+ * å‘æ•´ä¸ªçº¿ç¨‹ç»„å‘é€ä¿¡å·ã€‚
  */
 int group_send_sig_info(int sig, struct siginfo *info, struct task_struct *p)
 {
@@ -1327,17 +1327,17 @@ int group_send_sig_info(int sig, struct siginfo *info, struct task_struct *p)
 	int ret;
 
 	/**
-	 * Ê×ÏÈ¼ì²é±ØÒªµÄÈ¨ÏŞ¡£
+	 * é¦–å…ˆæ£€æŸ¥å¿…è¦çš„æƒé™ã€‚
 	 */
 	ret = check_kill_permission(sig, info, p);
 	/**
-	 * ÔÙÅĞ¶ÏsigÊÇ·ñÎª0£¬ÊÇ0Ò²²»²úÉúÈÎºÎĞÅºÅ¡£ÒòÎª0ÊÇÎŞĞ§µÄĞÅºÅ¡£check_kill_permissionÖĞÖ»ÅĞ¶ÏÁË<0µÄÇé¿ö¡£
-	 * µ«ÊÇĞÅºÅ0ÓĞÌØÊâµÄ×÷ÓÃ£ºÓÃ»§¿ÉÒÔ·¢ËÍ£¬ÒÔ¼ì²éÊÇ·ñÓĞÈ¨ÏŞ·¢ËÍĞÅºÅ¡£
-	 * p->sighand == NULL±íÊ¾½ø³ÌÕıÔÚ±»É±ËÀ£¬ÄÇÃ´º¯ÊıÒ²·µ»Ø¡£
+	 * å†åˆ¤æ–­sigæ˜¯å¦ä¸º0ï¼Œæ˜¯0ä¹Ÿä¸äº§ç”Ÿä»»ä½•ä¿¡å·ã€‚å› ä¸º0æ˜¯æ— æ•ˆçš„ä¿¡å·ã€‚check_kill_permissionä¸­åªåˆ¤æ–­äº†<0çš„æƒ…å†µã€‚
+	 * ä½†æ˜¯ä¿¡å·0æœ‰ç‰¹æ®Šçš„ä½œç”¨ï¼šç”¨æˆ·å¯ä»¥å‘é€ï¼Œä»¥æ£€æŸ¥æ˜¯å¦æœ‰æƒé™å‘é€ä¿¡å·ã€‚
+	 * p->sighand == NULLè¡¨ç¤ºè¿›ç¨‹æ­£åœ¨è¢«æ€æ­»ï¼Œé‚£ä¹ˆå‡½æ•°ä¹Ÿè¿”å›ã€‚
 	 */
 	if (!ret && sig && p->sighand) {
 		/**
-		 * Í¨¹ıÁËÈ¨ÏŞ¼ì²é£¬ÄÇÃ´¹Ø±Õ×ÔĞıËøºÍ±¾µØÖĞ¶Ï£¬²¢µ÷ÓÃ__group_send_sig_infoÕæÕıµÄ·¢ËÍĞÅºÅ
+		 * é€šè¿‡äº†æƒé™æ£€æŸ¥ï¼Œé‚£ä¹ˆå…³é—­è‡ªæ—‹é”å’Œæœ¬åœ°ä¸­æ–­ï¼Œå¹¶è°ƒç”¨__group_send_sig_infoçœŸæ­£çš„å‘é€ä¿¡å·
 		 */
 		spin_lock_irqsave(&p->sighand->siglock, flags);
 		ret = __group_send_sig_info(sig, info, p);
@@ -1371,7 +1371,7 @@ int __kill_pg_info(int sig, struct siginfo *info, pid_t pgrp)
 }
 
 /**
- * Óëkill_pgÀàËÆ£¬µ«ÊÇ»¹Ê¹ÓÃÀ©Õ¹ĞÅÏ¢
+ * ä¸kill_pgç±»ä¼¼ï¼Œä½†æ˜¯è¿˜ä½¿ç”¨æ‰©å±•ä¿¡æ¯
  */
 int
 kill_pg_info(int sig, struct siginfo *info, pid_t pgrp)
@@ -1386,7 +1386,7 @@ kill_pg_info(int sig, struct siginfo *info, pid_t pgrp)
 }
 
 /**
- * Óëkill_procÀàËÆ£¬µ«ÊÇ»¹Ê¹ÓÃÀ©Õ¹ĞÅÏ¢¡£
+ * ä¸kill_procç±»ä¼¼ï¼Œä½†æ˜¯è¿˜ä½¿ç”¨æ‰©å±•ä¿¡æ¯ã€‚
  */
 int
 kill_proc_info(int sig, struct siginfo *info, pid_t pid)
@@ -1446,7 +1446,7 @@ static int kill_something_info(int sig, struct siginfo *info, int pid)
  * just to the specific thread.
  */
 /**
- * Óësend_sigÀàËÆ£¬µ«ÊÇ»¹Ê¹ÓÃsiginfo_t½á¹¹ÖĞµÄÀ©Õ¹ĞÅÏ¢
+ * ä¸send_sigç±»ä¼¼ï¼Œä½†æ˜¯è¿˜ä½¿ç”¨siginfo_tç»“æ„ä¸­çš„æ‰©å±•ä¿¡æ¯
  */
 int
 send_sig_info(int sig, struct siginfo *info, struct task_struct *p)
@@ -1476,7 +1476,7 @@ send_sig_info(int sig, struct siginfo *info, struct task_struct *p)
 }
 
 /**
- * Ïòµ¥Ò»½ø³Ì·¢ËÍĞÅºÅ
+ * å‘å•ä¸€è¿›ç¨‹å‘é€ä¿¡å·
  */
 int
 send_sig(int sig, struct task_struct *p, int priv)
@@ -1489,7 +1489,7 @@ send_sig(int sig, struct task_struct *p, int priv)
  * They will go to an appropriate thread in the thread group.
  */
 /**
- * ÏòÄ³Ò»¸ö½ø³Ì×é·¢ËÍĞÅºÅ£¬¸ÃÏß³Ì×éÓÉËüµÄÒ»¸ö³ÉÔ±½ø³Ì±êÊ¶¡£
+ * å‘æŸä¸€ä¸ªè¿›ç¨‹ç»„å‘é€ä¿¡å·ï¼Œè¯¥çº¿ç¨‹ç»„ç”±å®ƒçš„ä¸€ä¸ªæˆå‘˜è¿›ç¨‹æ ‡è¯†ã€‚
  */
 int
 send_group_sig_info(int sig, struct siginfo *info, struct task_struct *p)
@@ -1502,7 +1502,7 @@ send_group_sig_info(int sig, struct siginfo *info, struct task_struct *p)
 }
 
 /**
- * ·¢ËÍ¼È²»ÄÜ±»½ø³ÌÏÔÊ½ºöÂÔ£¬Ò²²»ÄÜ±»½ø³Ì×èÈûµÄĞÅºÅ
+ * å‘é€æ—¢ä¸èƒ½è¢«è¿›ç¨‹æ˜¾å¼å¿½ç•¥ï¼Œä¹Ÿä¸èƒ½è¢«è¿›ç¨‹é˜»å¡çš„ä¿¡å·
  */
 void
 force_sig(int sig, struct task_struct *p)
@@ -1530,7 +1530,7 @@ force_sigsegv(int sig, struct task_struct *p)
 }
 
 /**
- * ÏòÒ»¸ö½ø³Ì×éÖĞµÄËùÓĞÏß³Ì×é·¢ËÍĞÅºÅ
+ * å‘ä¸€ä¸ªè¿›ç¨‹ç»„ä¸­çš„æ‰€æœ‰çº¿ç¨‹ç»„å‘é€ä¿¡å·
  */
 int
 kill_pg(pid_t pgrp, int sig, int priv)
@@ -1539,7 +1539,7 @@ kill_pg(pid_t pgrp, int sig, int priv)
 }
 
 /**
- * ÏòÄ³Ò»¸öÏß³Ì×é·¢ËÍĞÅºÅ£¬¸ÃÏß³Ì×éÓÉËüµÄÒ»¸ö³ÉÔ±½ø³ÌµÄPIDÀ´±êÊ¶
+ * å‘æŸä¸€ä¸ªçº¿ç¨‹ç»„å‘é€ä¿¡å·ï¼Œè¯¥çº¿ç¨‹ç»„ç”±å®ƒçš„ä¸€ä¸ªæˆå‘˜è¿›ç¨‹çš„PIDæ¥æ ‡è¯†
  */
 int
 kill_proc(pid_t pid, int sig, int priv)
@@ -1755,7 +1755,7 @@ void do_notify_parent(struct task_struct *tsk, int sig)
 }
 
 /**
- * Í¨Öª¼à¿Ø½ø³Ì£¬µ±Ç°½ø³Ì½øĞĞÁËĞÅºÅ´¦Àí¡£
+ * é€šçŸ¥ç›‘æ§è¿›ç¨‹ï¼Œå½“å‰è¿›ç¨‹è¿›è¡Œäº†ä¿¡å·å¤„ç†ã€‚
  */
 static void
 do_notify_parent_cldstop(struct task_struct *tsk, struct task_struct *parent,
@@ -1918,7 +1918,7 @@ finish_stop(int stop_count)
  * Returns zero if we didn't stop and still hold the siglock.
  */
 /**
- * ´¦Àí×éÍ£Ö¹ĞÅºÅ¡£Í£Ö¹Õû¸öÏß³Ì×éÖĞµÄÏß³Ì¡£
+ * å¤„ç†ç»„åœæ­¢ä¿¡å·ã€‚åœæ­¢æ•´ä¸ªçº¿ç¨‹ç»„ä¸­çš„çº¿ç¨‹ã€‚
  */
 static int
 do_signal_stop(int signr)
@@ -1928,14 +1928,14 @@ do_signal_stop(int signr)
 	int stop_count = -1;
 
 	/**
-	 * ¼ì²éµ±Ç°Ïß³ÌÊÇ·ñÊÇÏß³Ì×éÖĞµÚÒ»¸ö±»Í£Ö¹µÄ½ø³Ì
-	 * Èç¹û²»ÊÇ£¬ÄÇÃ´½ø³Ì×éÖĞµÄÆäËûÏß³ÌÒÑ¾­µ÷ÓÃÁËdo_signal_stop£¬²»ÓÃÔÙ´ÎÖ´ĞĞdo_signal_stopÍ£Ö¹Õû¸öÏß³Ì×éÁË¡£
+	 * æ£€æŸ¥å½“å‰çº¿ç¨‹æ˜¯å¦æ˜¯çº¿ç¨‹ç»„ä¸­ç¬¬ä¸€ä¸ªè¢«åœæ­¢çš„è¿›ç¨‹
+	 * å¦‚æœä¸æ˜¯ï¼Œé‚£ä¹ˆè¿›ç¨‹ç»„ä¸­çš„å…¶ä»–çº¿ç¨‹å·²ç»è°ƒç”¨äº†do_signal_stopï¼Œä¸ç”¨å†æ¬¡æ‰§è¡Œdo_signal_stopåœæ­¢æ•´ä¸ªçº¿ç¨‹ç»„äº†ã€‚
 	 */
 	if (!likely(sig->flags & SIGNAL_STOP_DEQUEUED))
 		return 0;
 
 	/**
-	 * ÊÇµÚÒ»¸ö±»Í£Ö¹µÄÏß³Ì¡£
+	 * æ˜¯ç¬¬ä¸€ä¸ªè¢«åœæ­¢çš„çº¿ç¨‹ã€‚
 	 */
 	if (sig->group_stop_count > 0) {
 		/*
@@ -2002,7 +2002,7 @@ do_signal_stop(int signr)
 				if (t->state < TASK_STOPPED) {
 					stop_count++;
 					/**
-					 * ±»»½ĞÑµÄÏß³ÌĞèÒª¼ì²égroup_stop_count£¬ÒÔÈ·ÈÏÕıÔÚÖ´ĞĞ×éÍ£Ö¹²Ù×÷¡£È»ºó°Ñ×´Ì¬ÉèÖÃ³ÉTASK_STOPPED
+					 * è¢«å”¤é†’çš„çº¿ç¨‹éœ€è¦æ£€æŸ¥group_stop_countï¼Œä»¥ç¡®è®¤æ­£åœ¨æ‰§è¡Œç»„åœæ­¢æ“ä½œã€‚ç„¶åæŠŠçŠ¶æ€è®¾ç½®æˆTASK_STOPPED
 					 */
 					signal_wake_up(t, 0);
 				}
@@ -2084,25 +2084,25 @@ relock:
 			goto relock;
 
 		/**
-		 * ´ÓË½ÓĞ¹ÒÆğĞÅºÅ¶ÓÁĞºÍ¹²Ïí¹ÒÆğĞÅºÅ¶ÓÁĞÖĞ»ñµÃ´ı´¦ÀíµÄĞÅºÅ
-		 * ÏÈ´ÓË½ÓĞ¶ÓÁĞÖĞ²éÕÒ£¬²¢ÇÒ´Ó×îµÍ±àºÅµÄ¹ÒÆğĞÅºÅ¿ªÊ¼¡£
-		 * È»ºóÔÚ¹²Ïí¶ÓÁĞÖĞ²éÕÒ¡£
-		 * ÕÒµ½·Ç×èÈûµÄ¹ÒÆğĞÅºÅºÅ£¬Ëü»¹»áĞŞ¸ÄÊı¾İ½á¹¹£¬ÒÔ±íÊ¾ĞÅºÅ²»ÔÙÊÇ¹ÒÆğµÄ¡£
+		 * ä»ç§æœ‰æŒ‚èµ·ä¿¡å·é˜Ÿåˆ—å’Œå…±äº«æŒ‚èµ·ä¿¡å·é˜Ÿåˆ—ä¸­è·å¾—å¾…å¤„ç†çš„ä¿¡å·
+		 * å…ˆä»ç§æœ‰é˜Ÿåˆ—ä¸­æŸ¥æ‰¾ï¼Œå¹¶ä¸”ä»æœ€ä½ç¼–å·çš„æŒ‚èµ·ä¿¡å·å¼€å§‹ã€‚
+		 * ç„¶ååœ¨å…±äº«é˜Ÿåˆ—ä¸­æŸ¥æ‰¾ã€‚
+		 * æ‰¾åˆ°éé˜»å¡çš„æŒ‚èµ·ä¿¡å·å·ï¼Œå®ƒè¿˜ä¼šä¿®æ”¹æ•°æ®ç»“æ„ï¼Œä»¥è¡¨ç¤ºä¿¡å·ä¸å†æ˜¯æŒ‚èµ·çš„ã€‚
 		 */
 		signr = dequeue_signal(current, mask, info);
 
 		/**
-		 * Ã»ÓĞĞÅºÅÁË£¬»á·µ»Ø0
+		 * æ²¡æœ‰ä¿¡å·äº†ï¼Œä¼šè¿”å›0
 		 */
 		if (!signr)
 			break; /* will return 0 */
 
 		/**
-		 * ÕÒµ½Ò»¸öĞèÒª´¦ÀíµÄĞÅºÅ£¬¿ªÊ¼´¦ÀíËü¡£
+		 * æ‰¾åˆ°ä¸€ä¸ªéœ€è¦å¤„ç†çš„ä¿¡å·ï¼Œå¼€å§‹å¤„ç†å®ƒã€‚
 		 */
 		 
 		/**
-		 * Èç¹û½ø³ÌÕıÔÚ±»¼à¿Ø¡£¾Íµ÷ÓÃptrace_stopÍ¨Öªµ÷ÊÔ½ø³Ì£º½ø³ÌÕıÔÚ´¦ÀíĞÅºÅ¡£
+		 * å¦‚æœè¿›ç¨‹æ­£åœ¨è¢«ç›‘æ§ã€‚å°±è°ƒç”¨ptrace_stopé€šçŸ¥è°ƒè¯•è¿›ç¨‹ï¼šè¿›ç¨‹æ­£åœ¨å¤„ç†ä¿¡å·ã€‚
 		 */
 		if ((current->ptrace & PT_PTRACED) && signr != SIGKILL) {
 			ptrace_signal_deliver(regs, cookie);
@@ -2137,31 +2137,31 @@ relock:
 		}
 
 		/**
-		 * ½«Òª´¦ÀíĞÅºÅµÄk_sigactionÊı¾İ½á¹¹µØÖ·¸³¸ø¾Ö²¿±äÁ¿ka
+		 * å°†è¦å¤„ç†ä¿¡å·çš„k_sigactionæ•°æ®ç»“æ„åœ°å€èµ‹ç»™å±€éƒ¨å˜é‡ka
 		 */
 		ka = &current->sighand->action[signr-1];
 		/**
-		 * ºöÂÔĞÅºÅ£¬´¦ÀíÏÂÒ»¸ö
+		 * å¿½ç•¥ä¿¡å·ï¼Œå¤„ç†ä¸‹ä¸€ä¸ª
 		 */
 		if (ka->sa.sa_handler == SIG_IGN) /* Do nothing.  */
 			continue;
 		/**
-		 * ²»ÊÇºöÂÔ£¬Ò²²»ÊÇÖ´ĞĞÈ±Ê¡²Ù×÷¡£
-		 * ÄÇ¾ÍÊÇÖ´ĞĞÓÃ»§×Ô¶¨ÒåµÄĞÅºÅ´¦Àí³ÌĞò¡£
+		 * ä¸æ˜¯å¿½ç•¥ï¼Œä¹Ÿä¸æ˜¯æ‰§è¡Œç¼ºçœæ“ä½œã€‚
+		 * é‚£å°±æ˜¯æ‰§è¡Œç”¨æˆ·è‡ªå®šä¹‰çš„ä¿¡å·å¤„ç†ç¨‹åºã€‚
 		 */
 		if (ka->sa.sa_handler != SIG_DFL) {
 			/* Run the handler.  */
 			*return_ka = *ka;
 
 			/**
-			 * SA_ONESHOT±íÊ¾ÓÃ»§ÉèÖÃµÄ´¦Àíº¯Êı½ö½öÏÂÒ»´Î´¦Àí¹ı³ÌÓĞÓÃ¡£
-			 * ÕâÒ»´ÎĞÅºÅ´¦ÀíÍêºó¾ÍÓ¦¸Ã»Ö¸´Ä¬ÈÏ²Ù×÷¡£
+			 * SA_ONESHOTè¡¨ç¤ºç”¨æˆ·è®¾ç½®çš„å¤„ç†å‡½æ•°ä»…ä»…ä¸‹ä¸€æ¬¡å¤„ç†è¿‡ç¨‹æœ‰ç”¨ã€‚
+			 * è¿™ä¸€æ¬¡ä¿¡å·å¤„ç†å®Œåå°±åº”è¯¥æ¢å¤é»˜è®¤æ“ä½œã€‚
 			 */
 			if (ka->sa.sa_flags & SA_ONESHOT)
 				ka->sa.sa_handler = SIG_DFL;
 
 			/**
-			 * ·µ»Ø´ı´¦ÀíĞÅºÅ¸øÉÏÒ»²ãº¯Êı£¬ÉÏÒ»²ãº¯Êı»á½¨Á¢Õ»Ö¡£¬·µ»Øµ½ÓÃ»§Ì¬Ö´ĞĞÓÃ»§´¦Àí³ÌĞò¡£
+			 * è¿”å›å¾…å¤„ç†ä¿¡å·ç»™ä¸Šä¸€å±‚å‡½æ•°ï¼Œä¸Šä¸€å±‚å‡½æ•°ä¼šå»ºç«‹æ ˆå¸§ï¼Œè¿”å›åˆ°ç”¨æˆ·æ€æ‰§è¡Œç”¨æˆ·å¤„ç†ç¨‹åºã€‚
 			 */
 			break; /* will return non-zero "signr" value */
 		}
@@ -2170,28 +2170,28 @@ relock:
 		 * Now we are doing the default action for this signal.
 		 */
 		/**
-		 * Ö´ĞĞµ½´Ë£¬ËµÃ÷ĞèÒªÖ´ĞĞÄ¬ÈÏ²Ù×÷¡£
+		 * æ‰§è¡Œåˆ°æ­¤ï¼Œè¯´æ˜éœ€è¦æ‰§è¡Œé»˜è®¤æ“ä½œã€‚
 		 */
 
 		/**
-		 * SIGCONT,SIGCHLD,SIGWINCH,SIGURG¼¸¸öĞÅºÅµÄÄ¬ÈÏ²Ù×÷¾ÍÊÇ²»²Ù×÷
+		 * SIGCONT,SIGCHLD,SIGWINCH,SIGURGå‡ ä¸ªä¿¡å·çš„é»˜è®¤æ“ä½œå°±æ˜¯ä¸æ“ä½œ
 		 */
 		if (sig_kernel_ignore(signr)) /* Default is nothing. */
 			continue;
 
 		/* Init gets no signals it doesn't want.  */
 		/**
-		 * ¶Ôinit½ø³ÌÀ´Ëµ£¬ºöÂÔËùÓĞĞÅºÅ£¬ÄÑµÀË­ÏëÉ±ËÀinit»òÕß....¡£
-		 * ¶Ô½ø³Ì0À´Ëµ£¬¸ù±¾¾Í²»ÔÊĞí·¢ËÍĞÅºÅ£¬ËùÒÔÔÚ´Ë²»ÅĞ¶ÏÎª0µÄÇé¿ö¡£
-		 * ¶Ô½ø³Ì0ºÍ1·Ö¿ª´¦ÀíÓĞÒ»¸öÔ­Òò£º½ø³Ì0ÓÀÔ¶²»ËÀÍö£¬¶ø½ø³Ì1ÔÊĞíÍ¨¹ıexit×ÔÉ±¡£
-		 * ÎªÊ²Ã´±ØĞë½«½ø³Ì0ºÍ½ø³Ì1·Ö±ğ´¦Àí£¬ÏÖÔÚ»¹²»ÍêÈ«Çå³ş¡£
+		 * å¯¹initè¿›ç¨‹æ¥è¯´ï¼Œå¿½ç•¥æ‰€æœ‰ä¿¡å·ï¼Œéš¾é“è°æƒ³æ€æ­»initæˆ–è€…....ã€‚
+		 * å¯¹è¿›ç¨‹0æ¥è¯´ï¼Œæ ¹æœ¬å°±ä¸å…è®¸å‘é€ä¿¡å·ï¼Œæ‰€ä»¥åœ¨æ­¤ä¸åˆ¤æ–­ä¸º0çš„æƒ…å†µã€‚
+		 * å¯¹è¿›ç¨‹0å’Œ1åˆ†å¼€å¤„ç†æœ‰ä¸€ä¸ªåŸå› ï¼šè¿›ç¨‹0æ°¸è¿œä¸æ­»äº¡ï¼Œè€Œè¿›ç¨‹1å…è®¸é€šè¿‡exitè‡ªæ€ã€‚
+		 * ä¸ºä»€ä¹ˆå¿…é¡»å°†è¿›ç¨‹0å’Œè¿›ç¨‹1åˆ†åˆ«å¤„ç†ï¼Œç°åœ¨è¿˜ä¸å®Œå…¨æ¸…æ¥šã€‚
 		 */
 		if (current->pid == 1)
 			continue;
 
 		/**
-		 * SIGSTOP,SIGTSTP,SIGTTIN,SIGTTOUÕâ¼¸¸öĞÅºÅµÄÄ¬ÈÏ²Ù×÷¿ÉÄÜÍ£Ö¹Ïß³Ì×éµÄËùÓĞ½ø³Ì¡£
-		 * Îª´Ë°Ñ½ø³Ì×´Ì¬ÖÃÎªTASK_STOPPED£¬²¢Ëæºóµ÷ÓÃschedule.
+		 * SIGSTOP,SIGTSTP,SIGTTIN,SIGTTOUè¿™å‡ ä¸ªä¿¡å·çš„é»˜è®¤æ“ä½œå¯èƒ½åœæ­¢çº¿ç¨‹ç»„çš„æ‰€æœ‰è¿›ç¨‹ã€‚
+		 * ä¸ºæ­¤æŠŠè¿›ç¨‹çŠ¶æ€ç½®ä¸ºTASK_STOPPEDï¼Œå¹¶éšåè°ƒç”¨schedule.
 		 */
 		if (sig_kernel_stop(signr)) {
 			/*
@@ -2205,17 +2205,17 @@ relock:
 			 * We need to check for that and bail out if necessary.
 			 */
 			/**
-			 * SIGSTOP×Ü»áÍ£Ö¹Õû¸öÏß³Ì×é£¬¶øÆäËû¼¸¸öĞÅºÅÖ»Í£Ö¹²»ÔÚ¡°¹Â¶ù½ø³Ì×é¡±ÖĞµÄÏß³Ì×é¡£
-			 * POSIX±ê×¼¹æ¶¨£¬Ö»Òª½ø³Ì×éÖĞÓĞÒ»¸ö½ø³ÌÓĞ¸¸½ø³Ì¡£¾¡¹Ü½ø³Ì´¦ÓÚ²»Í¬µÄ½ø³Ì×éÖĞµ«ÔÚÍ¬Ò»¸ö»á»°ÖĞ£¬ÄÇÃ´Õâ¸ö½ø³Ì×é¾Í²»ÊÇ¹Â¶ù¡£
-			 * Òò´Ë£¬Èç¹û¸¸½ø³ÌËÀÍö£¬µ«ÊÇÆô¶¯¸Ã½ø³ÌµÄÓÃ»§ÈÔÈ»ÔÚÏß£¬ÄÇÃ´¸Ã½ø³Ì×é¾Í²»ÊÇÒ»¸ö¹Â¶ù¡£
-			 * xie.baoyou×¢£ºµ½µ×¹Â¶ù½ø³ÌÊÇÈçºÎ³öÏÖµÄÄØ£¿µÇÂ¼»á»°¶¼½áÊøÁË£¬¾¹È»»¹ÓĞ×Ó½ø³Ì´æÔÚ£¬ÕâÑùµÄ¹Â¶ù»¹²»ÈİÒ×É±ËÀ£¿£¿
+			 * SIGSTOPæ€»ä¼šåœæ­¢æ•´ä¸ªçº¿ç¨‹ç»„ï¼Œè€Œå…¶ä»–å‡ ä¸ªä¿¡å·åªåœæ­¢ä¸åœ¨â€œå­¤å„¿è¿›ç¨‹ç»„â€ä¸­çš„çº¿ç¨‹ç»„ã€‚
+			 * POSIXæ ‡å‡†è§„å®šï¼Œåªè¦è¿›ç¨‹ç»„ä¸­æœ‰ä¸€ä¸ªè¿›ç¨‹æœ‰çˆ¶è¿›ç¨‹ã€‚å°½ç®¡è¿›ç¨‹å¤„äºä¸åŒçš„è¿›ç¨‹ç»„ä¸­ä½†åœ¨åŒä¸€ä¸ªä¼šè¯ä¸­ï¼Œé‚£ä¹ˆè¿™ä¸ªè¿›ç¨‹ç»„å°±ä¸æ˜¯å­¤å„¿ã€‚
+			 * å› æ­¤ï¼Œå¦‚æœçˆ¶è¿›ç¨‹æ­»äº¡ï¼Œä½†æ˜¯å¯åŠ¨è¯¥è¿›ç¨‹çš„ç”¨æˆ·ä»ç„¶åœ¨çº¿ï¼Œé‚£ä¹ˆè¯¥è¿›ç¨‹ç»„å°±ä¸æ˜¯ä¸€ä¸ªå­¤å„¿ã€‚
+			 * xie.baoyouæ³¨ï¼šåˆ°åº•å­¤å„¿è¿›ç¨‹æ˜¯å¦‚ä½•å‡ºç°çš„å‘¢ï¼Ÿç™»å½•ä¼šè¯éƒ½ç»“æŸäº†ï¼Œç«Ÿç„¶è¿˜æœ‰å­è¿›ç¨‹å­˜åœ¨ï¼Œè¿™æ ·çš„å­¤å„¿è¿˜ä¸å®¹æ˜“æ€æ­»ï¼Ÿï¼Ÿ
 			 */
-			if (signr != SIGSTOP) {/*²»ÊÇSIGSTOPĞÅºÅ£¬¾ÍÒªÅĞ¶ÏÉÏÃæµÄÇé¿ö*/
+			if (signr != SIGSTOP) {/*ä¸æ˜¯SIGSTOPä¿¡å·ï¼Œå°±è¦åˆ¤æ–­ä¸Šé¢çš„æƒ…å†µ*/
 				spin_unlock_irq(&current->sighand->siglock);
 
 				/* signals can be posted during this window */
 				/**
-				 * Ö»Í£Ö¹²»ÔÚ¹Â¶ù½ø³Ì×éÖĞµÄ½ø³Ì£¬Èç¹û½ø³ÌÔÚ¹Â¶ù½ø³Ì×éÖĞ£¬¾Í²»´¦Àí£¬¼ÌĞø´¦ÀíÏÂÒ»¸öĞÅºÅ¡£
+				 * åªåœæ­¢ä¸åœ¨å­¤å„¿è¿›ç¨‹ç»„ä¸­çš„è¿›ç¨‹ï¼Œå¦‚æœè¿›ç¨‹åœ¨å­¤å„¿è¿›ç¨‹ç»„ä¸­ï¼Œå°±ä¸å¤„ç†ï¼Œç»§ç»­å¤„ç†ä¸‹ä¸€ä¸ªä¿¡å·ã€‚
 				 */
 				if (is_orphaned_pgrp(process_group(current)))
 					goto relock;
@@ -2224,9 +2224,9 @@ relock:
 			}
 
 			/**
-			 * do_signal_stop»á½«½ø³Ì×´Ì¬ÖÃÎªTASK_STOPPED¡£
-			 * ²¢¼ì²écurrentÊÇ·ñÊÇÏß³Ì×éÖĞµÚÒ»¸ö±»Í£Ö¹µÄ½ø³Ì£¬Èç¹ûÊÇ£¬Ëü¼¤»î¡°×éÍ£Ö¹¡±¡£
-			 * ×¢£ºËüÒ»°ã»áµ÷ÓÃschedule£¬ËùÒÔËø»á±»´ò¿ª¡£Ò²¾ÍĞèÒª»Øµ½relock£¬ÖØĞÂ»ñµÃËø¡£
+			 * do_signal_stopä¼šå°†è¿›ç¨‹çŠ¶æ€ç½®ä¸ºTASK_STOPPEDã€‚
+			 * å¹¶æ£€æŸ¥currentæ˜¯å¦æ˜¯çº¿ç¨‹ç»„ä¸­ç¬¬ä¸€ä¸ªè¢«åœæ­¢çš„è¿›ç¨‹ï¼Œå¦‚æœæ˜¯ï¼Œå®ƒæ¿€æ´»â€œç»„åœæ­¢â€ã€‚
+			 * æ³¨ï¼šå®ƒä¸€èˆ¬ä¼šè°ƒç”¨scheduleï¼Œæ‰€ä»¥é”ä¼šè¢«æ‰“å¼€ã€‚ä¹Ÿå°±éœ€è¦å›åˆ°relockï¼Œé‡æ–°è·å¾—é”ã€‚
 			 */
 			if (likely(do_signal_stop(signr))) {
 				/* It released the siglock.  */
@@ -2241,7 +2241,7 @@ relock:
 		}
 
 		/**
-		 * ÔÚdumpºÍkillÇ°£¬µ±È»ĞèÒª°ÑËø´ò¿ªÁË¡£
+		 * åœ¨dumpå’Œkillå‰ï¼Œå½“ç„¶éœ€è¦æŠŠé”æ‰“å¼€äº†ã€‚
 		 */
 		spin_unlock_irq(&current->sighand->siglock);
 
@@ -2250,7 +2250,7 @@ relock:
 		 */
 		current->flags |= PF_SIGNALED;
 		/**
-		 * ¶ÔÈ±Ê¡²Ù×÷ÎªdumpµÄĞÅºÅ£¬¾Í´´½¨×ª´¢ĞÅÏ¢¡£È»ºóÉ±ËÀÕâ¸öÏß³Ì×é¡£
+		 * å¯¹ç¼ºçœæ“ä½œä¸ºdumpçš„ä¿¡å·ï¼Œå°±åˆ›å»ºè½¬å‚¨ä¿¡æ¯ã€‚ç„¶åæ€æ­»è¿™ä¸ªçº¿ç¨‹ç»„ã€‚
 		 */
 		if (sig_kernel_coredump(signr)) {
 			/*
@@ -2268,7 +2268,7 @@ relock:
 		 * Death signals, no core dump.
 		 */
 		/**
-		 * ÆäËûĞÅºÅµÄÈ±Ê¡²Ù×÷ÊÇTerminate¡£¶¼ÊÇÉ±ËÀÏß³Ì×é¡£
+		 * å…¶ä»–ä¿¡å·çš„ç¼ºçœæ“ä½œæ˜¯Terminateã€‚éƒ½æ˜¯æ€æ­»çº¿ç¨‹ç»„ã€‚
 		 */
 		do_group_exit(signr);
 		/* NOTREACHED */
@@ -2559,13 +2559,13 @@ sys_rt_sigtimedwait(const sigset_t __user *uthese,
 }
 
 /**
- * KillÏµÍ³µ÷ÓÃ´¦Àíº¯Êı
- * pid>0 ±íÊ¾°ÑsigĞÅºÅ·¢ËÍµ½ÆäPID==pidµÄ½ø³ÌËùÊôµÄÏß³Ì×é¡£
- * pid==0±íÊ¾°ÑĞÅºÅ·¢ËÍµ½Óëµ÷ÓÃ½ø³ÌÍ¬×éµÄ½ø³ÌËùÓĞÏß³Ì×é¡£
- * pid==-1±íÊ¾°ÑĞÅºÅ·¢ËÍµ½ËùÓĞ½ø³Ì¡£³ıÁËswapper¡£initºÍcurrent
- * pid < -1°ÑĞÅºÅ·¢ËÍµ½½ø³Ì×é-pidÖĞ½ø³ÌµÄËùÓĞÏß³ÌÏß¡£
- * ËäÈ»killÄÜ¹»·¢ËÍ±àºÅÔÚ32-64Ö®¼äµÄÊµÊ±ĞÅºÅ¡£µ«ÊÇËü²»ÄÜÈ·±£°ÑÒ»¸öĞÂµÄÔªËØ¼ÓÈëµ½Ä¿±ê½ø³ÌµÄ¹ÒÆğĞÅºÅ¶ÓÁĞ¡£
- * Òò´Ë£¬·¢ËÍÊµÊ±ĞÅºÅĞèÒªÍ¨¹ırt_sigqueueinfoÏµÍ³µ÷ÓÃ½øĞĞ¡£
+ * Killç³»ç»Ÿè°ƒç”¨å¤„ç†å‡½æ•°
+ * pid>0 è¡¨ç¤ºæŠŠsigä¿¡å·å‘é€åˆ°å…¶PID==pidçš„è¿›ç¨‹æ‰€å±çš„çº¿ç¨‹ç»„ã€‚
+ * pid==0è¡¨ç¤ºæŠŠä¿¡å·å‘é€åˆ°ä¸è°ƒç”¨è¿›ç¨‹åŒç»„çš„è¿›ç¨‹æ‰€æœ‰çº¿ç¨‹ç»„ã€‚
+ * pid==-1è¡¨ç¤ºæŠŠä¿¡å·å‘é€åˆ°æ‰€æœ‰è¿›ç¨‹ã€‚é™¤äº†swapperã€‚initå’Œcurrent
+ * pid < -1æŠŠä¿¡å·å‘é€åˆ°è¿›ç¨‹ç»„-pidä¸­è¿›ç¨‹çš„æ‰€æœ‰çº¿ç¨‹çº¿ã€‚
+ * è™½ç„¶killèƒ½å¤Ÿå‘é€ç¼–å·åœ¨32-64ä¹‹é—´çš„å®æ—¶ä¿¡å·ã€‚ä½†æ˜¯å®ƒä¸èƒ½ç¡®ä¿æŠŠä¸€ä¸ªæ–°çš„å…ƒç´ åŠ å…¥åˆ°ç›®æ ‡è¿›ç¨‹çš„æŒ‚èµ·ä¿¡å·é˜Ÿåˆ—ã€‚
+ * å› æ­¤ï¼Œå‘é€å®æ—¶ä¿¡å·éœ€è¦é€šè¿‡rt_sigqueueinfoç³»ç»Ÿè°ƒç”¨è¿›è¡Œã€‚
  */
 asmlinkage long
 sys_kill(int pid, int sig)
@@ -2573,7 +2573,7 @@ sys_kill(int pid, int sig)
 	struct siginfo info;
 
 	/**
-	 * ½¨Á¢×îĞ¡µÄsiginfo_t±í¡£
+	 * å»ºç«‹æœ€å°çš„siginfo_tè¡¨ã€‚
 	 */
 	info.si_signo = sig;
 	info.si_errno = 0;
@@ -2582,7 +2582,7 @@ sys_kill(int pid, int sig)
 	info.si_uid = current->uid;
 
 	/**
-	 * kill_something_infoÕæÕı´¦ÀíĞÅºÅ·¢ËÍ
+	 * kill_something_infoçœŸæ­£å¤„ç†ä¿¡å·å‘é€
 	 */
 	return kill_something_info(sig, &info, pid);
 }
@@ -2598,7 +2598,7 @@ sys_kill(int pid, int sig)
  *  method solves the problem of threads exiting and PIDs getting reused.
  */
 /**
- * TgkillµÄÏµÍ³µ÷ÓÃ´¦Àíº¯Êı¡£
+ * Tgkillçš„ç³»ç»Ÿè°ƒç”¨å¤„ç†å‡½æ•°ã€‚
  */
 asmlinkage long sys_tgkill(int tgid, int pid, int sig)
 {
@@ -2640,7 +2640,7 @@ asmlinkage long sys_tgkill(int tgid, int pid, int sig)
  *  Send a signal to only one task, even if it's a CLONE_THREAD task.
  */
 /**
- * TkillµÄÏµÍ³µ÷ÓÃ´¦Àíº¯Êı
+ * Tkillçš„ç³»ç»Ÿè°ƒç”¨å¤„ç†å‡½æ•°
  */
 asmlinkage long
 sys_tkill(int pid, int sig)
@@ -2680,7 +2680,7 @@ sys_tkill(int pid, int sig)
 }
 
 /**
- * Rt_sigqueueinfoµÄÏµÍ³µ÷ÓÃ´¦Àíº¯Êı
+ * Rt_sigqueueinfoçš„ç³»ç»Ÿè°ƒç”¨å¤„ç†å‡½æ•°
  */
 asmlinkage long
 sys_rt_sigqueueinfo(int pid, int sig, siginfo_t __user *uinfo)
@@ -2701,7 +2701,7 @@ sys_rt_sigqueueinfo(int pid, int sig, siginfo_t __user *uinfo)
 }
 
 /**
- * °ÑĞÅºÅ²Ù×÷¹Ò½Óµ½½ø³ÌÃèÊö·û
+ * æŠŠä¿¡å·æ“ä½œæŒ‚æ¥åˆ°è¿›ç¨‹æè¿°ç¬¦
  */
 int
 do_sigaction(int sig, const struct k_sigaction *act, struct k_sigaction *oact)
@@ -2712,7 +2712,7 @@ do_sigaction(int sig, const struct k_sigaction *act, struct k_sigaction *oact)
 		return -EINVAL;
 
 	/**
-	 * ĞÅºÅ±àºÅ´Ó1¿ªÊ¼£¬ËùÒÔ´æµ½action[sig-1]¶ø²»ÊÇaction[sig]
+	 * ä¿¡å·ç¼–å·ä»1å¼€å§‹ï¼Œæ‰€ä»¥å­˜åˆ°action[sig-1]è€Œä¸æ˜¯action[sig]
 	 */
 	k = &current->sighand->action[sig-1];
 
@@ -2730,7 +2730,7 @@ do_sigaction(int sig, const struct k_sigaction *act, struct k_sigaction *oact)
 		*oact = *k;
 
 	/**
-	 * POSIX¹æ¶¨£¬µ±È±Ê¡²Ù×÷ÊÇ"Ignore"Ê±£¬°ÑĞÅºÅ²Ù×÷ÉèÖÃ³ÉSIG_IGN»òSIG_DFL½«ÒıÆğÍ¬ÀàĞÍµÄÈÎÒ»ĞÅºÅ±»¶ªÆú¡£
+	 * POSIXè§„å®šï¼Œå½“ç¼ºçœæ“ä½œæ˜¯"Ignore"æ—¶ï¼ŒæŠŠä¿¡å·æ“ä½œè®¾ç½®æˆSIG_IGNæˆ–SIG_DFLå°†å¼•èµ·åŒç±»å‹çš„ä»»ä¸€ä¿¡å·è¢«ä¸¢å¼ƒã€‚
 	 */
 	if (act) {
 		/*
@@ -2759,7 +2759,7 @@ do_sigaction(int sig, const struct k_sigaction *act, struct k_sigaction *oact)
 			spin_lock_irq(&t->sighand->siglock);
 			*k = *act;
 			/**
-			 * SIGKILLºÍSIGSTOP²»ÄÜ±»ÆÁ±Î£¬ËùÒÔ´Ë´¦ÌØÊâ´¦ÀíÒ»ÏÂ¡£
+			 * SIGKILLå’ŒSIGSTOPä¸èƒ½è¢«å±è”½ï¼Œæ‰€ä»¥æ­¤å¤„ç‰¹æ®Šå¤„ç†ä¸€ä¸‹ã€‚
 			 */
 			sigdelsetmask(&k->sa.sa_mask,
 				      sigmask(SIGKILL) | sigmask(SIGSTOP));

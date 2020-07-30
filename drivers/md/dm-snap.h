@@ -28,14 +28,14 @@ typedef sector_t chunk_t;
  * An exception is used where an old chunk of data has been
  * replaced by a new one.
  */
-/* ÀıÍâ½á¹¹£¬±íÊ¾Ô´Éè±¸ÉÏµÄÊı¾İÔÚ¿ìÕÕ´´½¨Ö®ºó½øĞĞ¹ıĞŞ¸Ä */
+/* ä¾‹å¤–ç»“æ„ï¼Œè¡¨ç¤ºæºè®¾å¤‡ä¸Šçš„æ•°æ®åœ¨å¿«ç…§åˆ›å»ºä¹‹åè¿›è¡Œè¿‡ä¿®æ”¹ */
 struct exception {
-	/* Á´Èë¿ìÕÕµÄÒÑ¾­Íê³ÉÁ´±í»ò´ı´¦ÀíÁ´±í */
+	/* é“¾å…¥å¿«ç…§çš„å·²ç»å®Œæˆé“¾è¡¨æˆ–å¾…å¤„ç†é“¾è¡¨ */
 	struct list_head hash_list;
 
-	/* ¾Échunk£¬¼´¿ìÕÕÔ´Éè±¸ÉÏµÄchunk±àºÅ */
+	/* æ—§chunkï¼Œå³å¿«ç…§æºè®¾å¤‡ä¸Šçš„chunkç¼–å· */
 	chunk_t old_chunk;
-	/* ĞÂchunk£¬¼´¿ìÕÕÉè±¸ÉÏµÄchunk±àºÅ */
+	/* æ–°chunkï¼Œå³å¿«ç…§è®¾å¤‡ä¸Šçš„chunkç¼–å· */
 	chunk_t new_chunk;
 };
 
@@ -43,7 +43,7 @@ struct exception {
  * Abstraction to handle the meta/layout of exception stores (the
  * COW device).
  */
-/* ÀıÍâ²Ö¿â */
+/* ä¾‹å¤–ä»“åº“ */
 struct exception_store {
 
 	/*
@@ -55,20 +55,20 @@ struct exception_store {
 	 * The target shouldn't read the COW device until this is
 	 * called.
 	 */
-	/* ¶ÁÈ¡ÔªÊı¾İµÄ»Øµ÷ */
+	/* è¯»å–å…ƒæ•°æ®çš„å›è°ƒ */
 	int (*read_metadata) (struct exception_store *store);
 
 	/*
 	 * Find somewhere to store the next exception.
 	 */
-	/* ×¼±¸ÀıÍâµÄ»Øµ÷º¯Êı */
+	/* å‡†å¤‡ä¾‹å¤–çš„å›è°ƒå‡½æ•° */
 	int (*prepare_exception) (struct exception_store *store,
 				  struct exception *e);
 
 	/*
 	 * Update the metadata with this exception.
 	 */
-	/* Ìá½»ÀıÍâµÄ»Øµ÷º¯Êı */
+	/* æäº¤ä¾‹å¤–çš„å›è°ƒå‡½æ•° */
 	void (*commit_exception) (struct exception_store *store,
 				  struct exception *e,
 				  void (*callback) (void *, int success),
@@ -77,7 +77,7 @@ struct exception_store {
 	/*
 	 * The snapshot is invalid, note this in the metadata.
 	 */
-	/* ¿ìÕÕÎŞĞ§Ê±ÔÚÔªÊı¾İÖĞ¼ÇÂ¼ */
+	/* å¿«ç…§æ— æ•ˆæ—¶åœ¨å…ƒæ•°æ®ä¸­è®°å½• */
 	void (*drop_snapshot) (struct exception_store *store);
 
 	/*
@@ -87,25 +87,25 @@ struct exception_store {
 			       sector_t *numerator,
 			       sector_t *denominator);
 
-	/* ¿ìÕÕË½ÓĞÊı¾İÃèÊö·û */
+	/* å¿«ç…§ç§æœ‰æ•°æ®æè¿°ç¬¦ */
 	struct dm_snapshot *snap;
-	/* ÀıÍâ²Ö¿âÉÏÏÂÎÄ */
+	/* ä¾‹å¤–ä»“åº“ä¸Šä¸‹æ–‡ */
 	void *context;
 };
 
-/* ¿ìÕÕÓ³ÉäË½ÓĞÊı¾İ½á¹¹ */
+/* å¿«ç…§æ˜ å°„ç§æœ‰æ•°æ®ç»“æ„ */
 struct dm_snapshot {
-	/* ±£»¤±¾½á¹¹µÄËø */
+	/* ä¿æŠ¤æœ¬ç»“æ„çš„é” */
 	struct rw_semaphore lock;
 	struct dm_table *table;
 
-	/* ¿ìÕÕÔ´Éè±¸ */
+	/* å¿«ç…§æºè®¾å¤‡ */
 	struct dm_dev *origin;
-	/* COWÉè±¸Ö¸Õë */
+	/* COWè®¾å¤‡æŒ‡é’ˆ */
 	struct dm_dev *cow;
 
 	/* List of snapshots per Origin */
-	/* Á´ÈëËùÊô¿ìÕÕÔ´µÄÁ´±í */
+	/* é“¾å…¥æ‰€å±å¿«ç…§æºçš„é“¾è¡¨ */
 	struct list_head list;
 
 	/* Size of data blocks saved - must be a power of 2 */
@@ -114,7 +114,7 @@ struct dm_snapshot {
 	chunk_t chunk_shift;
 
 	/* You can't use a snapshot if this is 0 (e.g. if full) */
-	/* Èç¹ûÎª0±íÊ¾¿ìÕÕ²»¿ÉÊ¹ÓÃ£¬ÈçÒÑ¾­ÂúÁË */
+	/* å¦‚æœä¸º0è¡¨ç¤ºå¿«ç…§ä¸å¯ä½¿ç”¨ï¼Œå¦‚å·²ç»æ»¡äº† */
 	int valid;
 	int have_metadata;
 
@@ -124,16 +124,16 @@ struct dm_snapshot {
 	/* The last percentage we notified */
 	int last_percent;
 
-	/* ´ı´¦ÀíµÄÀıÍâ±í */
+	/* å¾…å¤„ç†çš„ä¾‹å¤–è¡¨ */
 	struct exception_table pending;
-	/* ÒÑ¾­´¦ÀíÍê³ÉµÄÀıÍâ±í */
+	/* å·²ç»å¤„ç†å®Œæˆçš„ä¾‹å¤–è¡¨ */
 	struct exception_table complete;
 
 	/* The on disk metadata handler */
-	/* ¿ìÕÕµÄÀıÍâ²Ö¿âÃèÊö·ûÖ¸Õë */
+	/* å¿«ç…§çš„ä¾‹å¤–ä»“åº“æè¿°ç¬¦æŒ‡é’ˆ */
 	struct exception_store store;
 
-	/* Îª¿ìÕÕ½øĞĞ¸´ÖÆÈÎÎñµÄÃèÊö·ûÖ¸Õë */
+	/* ä¸ºå¿«ç…§è¿›è¡Œå¤åˆ¶ä»»åŠ¡çš„æè¿°ç¬¦æŒ‡é’ˆ */
 	struct kcopyd_client *kcopyd_client;
 };
 

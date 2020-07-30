@@ -2,8 +2,8 @@
  *
  * Turbo PAM ISDN driver for Linux. (Kernel Driver - CRC encoding)
  *
- * Copyright 1998-2000 AUVERTECH Télécom
- * Copyright 2001 Stelian Pop <stelian.pop@fr.alcove.com>, Alcôve
+ * Copyright 1998-2000 AUVERTECH Tlcom
+ * Copyright 2001 Stelian Pop <stelian.pop@fr.alcove.com>, Alcve
  *
  * This software may be used and distributed according to the terms
  * of the GNU General Public License, incorporated herein by reference.

@@ -11,15 +11,15 @@
 #include <linux/wait.h>
 
 /**
- * ²¹³äÔ­Óï¡£
- * ËüµÄ¹¦ÄÜÓëÐÅºÅÁ¿ÀàËÆ¡£
- * Èç¹ûÔÚSMPÉÏ£¬Ïß³ÌA´´½¨Ò»¸öEMPTYµÄMUTEX£¬²¢°ÑÆäµØÖ·´«¸ø½ø³ÌB¡£
- * È»ºóAÔÚÆäÉÏÖ´ÐÐDOWN£¬±»»½ÐÑºó¼´³·ÏúÐÅºÅÁ¿£¬ÁíÒ»½ø³ÌBÔÚÆäÉÏÖ´ÐÐUP
- * µ«ÊÇ£¬ÐÅºÅÁ¿ÔÊÐíupºÍdownÔÚÍ¬Ò»ÐÅºÅÁ¿ÉÏ²¢·¢½øÐÐ¡£Õâ¾Í¿ÉÄÜÔì³ÉB·ÃÎÊ²»´æÔÚµÄ½á¹¹¡£
- * Èç¹û¸Ä±äÐÅºÅÁ¿µÄupºÍdown£¬»áÓ°ÏìÐÔÄÜ£¬ËùÒÔÎªÁËÕâÖÖÇé¿ö£¬ÒýÈë²¹³äÔ­Óï¡£
- * ¶þÕßµÄÕæÕýÇø±ðÔÚÓÚÈçºÎÊ¹ÓÃwaitÉÏµÄ×ÔÐýËø¡£
- * ²¹³äÔ­ÓïÈ·±£completeºÍwait_for_completion²»»áÍ¬Ê±Ö´ÐÐ¡£
- * ÐÅºÅÁ¿µÄ×ÔÐýËøÓÃÓÚ±ÜÃâ²¢·¢Ö´ÐÐdownÊ¹µÃÐÅºÅÁ¿µÄÊý¾Ý½á¹¹±»ÅªÂÒ¡£
+ * è¡¥å……åŽŸè¯­ã€‚
+ * å®ƒçš„åŠŸèƒ½ä¸Žä¿¡å·é‡ç±»ä¼¼ã€‚
+ * å¦‚æžœåœ¨SMPä¸Šï¼Œçº¿ç¨‹Aåˆ›å»ºä¸€ä¸ªEMPTYçš„MUTEXï¼Œå¹¶æŠŠå…¶åœ°å€ä¼ ç»™è¿›ç¨‹Bã€‚
+ * ç„¶åŽAåœ¨å…¶ä¸Šæ‰§è¡ŒDOWNï¼Œè¢«å”¤é†’åŽå³æ’¤é”€ä¿¡å·é‡ï¼Œå¦ä¸€è¿›ç¨‹Båœ¨å…¶ä¸Šæ‰§è¡ŒUP
+ * ä½†æ˜¯ï¼Œä¿¡å·é‡å…è®¸upå’Œdownåœ¨åŒä¸€ä¿¡å·é‡ä¸Šå¹¶å‘è¿›è¡Œã€‚è¿™å°±å¯èƒ½é€ æˆBè®¿é—®ä¸å­˜åœ¨çš„ç»“æž„ã€‚
+ * å¦‚æžœæ”¹å˜ä¿¡å·é‡çš„upå’Œdownï¼Œä¼šå½±å“æ€§èƒ½ï¼Œæ‰€ä»¥ä¸ºäº†è¿™ç§æƒ…å†µï¼Œå¼•å…¥è¡¥å……åŽŸè¯­ã€‚
+ * äºŒè€…çš„çœŸæ­£åŒºåˆ«åœ¨äºŽå¦‚ä½•ä½¿ç”¨waitä¸Šçš„è‡ªæ—‹é”ã€‚
+ * è¡¥å……åŽŸè¯­ç¡®ä¿completeå’Œwait_for_completionä¸ä¼šåŒæ—¶æ‰§è¡Œã€‚
+ * ä¿¡å·é‡çš„è‡ªæ—‹é”ç”¨äºŽé¿å…å¹¶å‘æ‰§è¡Œdownä½¿å¾—ä¿¡å·é‡çš„æ•°æ®ç»“æž„è¢«å¼„ä¹±ã€‚
  */
 struct completion {
 	unsigned int done;

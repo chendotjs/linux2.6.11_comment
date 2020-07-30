@@ -165,7 +165,7 @@ struct init_timer_opts __initdata timer_pit_init = {
 };
 
 /**
- * ³õÊ¼»¯PIT¡£
+ * åˆå§‹åŒ–PITã€‚
  */
 void setup_pit_timer(void)
 {
@@ -174,16 +174,16 @@ void setup_pit_timer(void)
 
 	spin_lock_irqsave(&i8253_lock, flags);
 	/**
-	 * Ïàµ±ÓÚoutb»ã±à£¬²»¹ı»á¼ÓÈëÒ»¸öÔİÍ£¡£
-	 * ÈÃPITÒÔĞÂµÄÆµÂÊ²úÉúÖĞ¶Ï¡£
+	 * ç›¸å½“äºoutbæ±‡ç¼–ï¼Œä¸è¿‡ä¼šåŠ å…¥ä¸€ä¸ªæš‚åœã€‚
+	 * è®©PITä»¥æ–°çš„é¢‘ç‡äº§ç”Ÿä¸­æ–­ã€‚
 	 */
 	outb_p(0x34,PIT_MODE);		/* binary, mode 2, LSB/MSB, ch 0 */
 	/**
-	 * ÔÙÀ´¸ö¶ÌµÄÑÓ³Ù¡£
+	 * å†æ¥ä¸ªçŸ­çš„å»¶è¿Ÿã€‚
 	 */
 	udelay(10);
 	/**
-	 * ÕâÁ½¸öoutb_pÉè±¸ĞÂµÄÖĞ¶ÏÆµÂÊ¡£½«16Î»µÄLATCH×÷ÎªÁ½¸öÁ¬Ğø×Ö½Ú·¢ËÍµ½0x40¶Ë¿Ú¡£
+	 * è¿™ä¸¤ä¸ªoutb_pè®¾å¤‡æ–°çš„ä¸­æ–­é¢‘ç‡ã€‚å°†16ä½çš„LATCHä½œä¸ºä¸¤ä¸ªè¿ç»­å­—èŠ‚å‘é€åˆ°0x40ç«¯å£ã€‚
 	 */
 	outb_p(LATCH & 0xff , PIT_CH0);	/* LSB */
 	udelay(10);

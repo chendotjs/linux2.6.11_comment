@@ -76,7 +76,7 @@ int nfsd_nrthreads(void)
 }
 
 /**
- * NFS·şÎñÆ÷¶Ë×¢²áÒ»¸öRPC·şÎñ¡£ÔÚÕâ¸ö·şÎñÉÏ½¨Á¢¼¸¸öÏß³Ì£¬ÒÔ¼°socket¡£
+ * NFSæœåŠ¡å™¨ç«¯æ³¨å†Œä¸€ä¸ªRPCæœåŠ¡ã€‚åœ¨è¿™ä¸ªæœåŠ¡ä¸Šå»ºç«‹å‡ ä¸ªçº¿ç¨‹ï¼Œä»¥åŠsocketã€‚
  */
 int
 nfsd_svc(unsigned short port, int nrservs)
@@ -102,14 +102,14 @@ nfsd_svc(unsigned short port, int nrservs)
 		atomic_set(&nfsd_busy, 0);
 		error = -ENOMEM;
 		/**
-		 * ½¨Á¢Ò»¸ösvc_serv½á¹¹£¬²¢ÌîĞ´ÏàÓ¦Êı¾İ.
-		 * µ÷ÓÃsvc_registerÍ¨Öª±¾»úµÄportmapper½ø³Ìunregister¹ıÊ±µÄÏî¡£
+		 * å»ºç«‹ä¸€ä¸ªsvc_servç»“æ„ï¼Œå¹¶å¡«å†™ç›¸åº”æ•°æ®.
+		 * è°ƒç”¨svc_registeré€šçŸ¥æœ¬æœºçš„portmapperè¿›ç¨‹unregisterè¿‡æ—¶çš„é¡¹ã€‚
 		 */
 		nfsd_serv = svc_create(&nfsd_program, NFSD_BUFSIZE);
 		if (nfsd_serv == NULL)
 			goto out;
 		/**
-		 * µ÷ÓÃsvc_create_socketÔÚÖ¸¶¨¶Ë¿ÚÉÏ½¨Á¢Ò»¸öÌ×½Ó×Ö£¬²¢½øĞĞ°ó¶¨£¬È»ºó½¨Á¢Ò»¸ösvc_socket½á¹¹¡£
+		 * è°ƒç”¨svc_create_socketåœ¨æŒ‡å®šç«¯å£ä¸Šå»ºç«‹ä¸€ä¸ªå¥—æ¥å­—ï¼Œå¹¶è¿›è¡Œç»‘å®šï¼Œç„¶åå»ºç«‹ä¸€ä¸ªsvc_socketç»“æ„ã€‚
 		 */
 		error = svc_makesock(nfsd_serv, IPPROTO_UDP, port);
 		if (error < 0)
@@ -125,8 +125,8 @@ nfsd_svc(unsigned short port, int nrservs)
 		nfsd_serv->sv_nrthreads++;
 	nrservs -= (nfsd_serv->sv_nrthreads-1);
 	/**
-	 * ¸ù¾İÇëÇóµÄ¸öÊı£¬ÔÚ¸Õ²Å½¨Á¢µÄsvc_serv ½á¹¹ÉÏµ÷ÓÃkernel_threadº¯Êı´´½¨n¸öÏß³Ì£¬Õân¸öÏß³Ì¶¼Ö´ĞĞnfsd¹ı³Ì¡£
-	 * ÆäÖĞÃ¿Ò»¸önfsd½«²»¶ÏÔÚÌ×½Ó×ÖÉÏµÈ´ıÇëÇóµÄµ½À´£¬Èç¹ûÓĞÇëÇóµ½´ï£¬Ôò½ÓÊÕ²¢´¦Àí¿Í»§¶Ë·¢À´µÄÇëÇó£¬²¢½øĞĞ´¦Àí¡£
+	 * æ ¹æ®è¯·æ±‚çš„ä¸ªæ•°ï¼Œåœ¨åˆšæ‰å»ºç«‹çš„svc_serv ç»“æ„ä¸Šè°ƒç”¨kernel_threadå‡½æ•°åˆ›å»ºnä¸ªçº¿ç¨‹ï¼Œè¿™nä¸ªçº¿ç¨‹éƒ½æ‰§è¡Œnfsdè¿‡ç¨‹ã€‚
+	 * å…¶ä¸­æ¯ä¸€ä¸ªnfsdå°†ä¸æ–­åœ¨å¥—æ¥å­—ä¸Šç­‰å¾…è¯·æ±‚çš„åˆ°æ¥ï¼Œå¦‚æœæœ‰è¯·æ±‚åˆ°è¾¾ï¼Œåˆ™æ¥æ”¶å¹¶å¤„ç†å®¢æˆ·ç«¯å‘æ¥çš„è¯·æ±‚ï¼Œå¹¶è¿›è¡Œå¤„ç†ã€‚
 	 */
 	while (nrservs > 0) {
 		nrservs--;
@@ -183,7 +183,7 @@ update_thread_usage(int busy_threads)
  * This is the NFS server kernel thread
  */
 /**
- * NFS·şÎñÆ÷¶ËÊØ»¤Ïß³Ì£¬´¦Àí¿Í»§¶Ë·¢À´µÄÇëÇó¡£
+ * NFSæœåŠ¡å™¨ç«¯å®ˆæŠ¤çº¿ç¨‹ï¼Œå¤„ç†å®¢æˆ·ç«¯å‘æ¥çš„è¯·æ±‚ã€‚
  */
 static void
 nfsd(struct svc_rqst *rqstp)

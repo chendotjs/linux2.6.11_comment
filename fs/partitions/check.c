@@ -323,86 +323,86 @@ static void disk_sysfs_symlinks(struct gendisk *disk)
 }
 
 /* Not exported, helper to add_disk(). */
-/* ½«´ÅÅÌ×¢²áµ½sysfsÎÄ¼şÏµÍ³£¬²¢É¨ÃèÆä·ÖÇø */
+/* å°†ç£ç›˜æ³¨å†Œåˆ°sysfsæ–‡ä»¶ç³»ç»Ÿï¼Œå¹¶æ‰«æå…¶åˆ†åŒº */
 void register_disk(struct gendisk *disk)
 {
 	struct block_device *bdev;
 	char *s;
 	int err;
 
-	/* ÉèÖÃ´ÅÅÌÃû³Æ */
+	/* è®¾ç½®ç£ç›˜åç§° */
 	strlcpy(disk->kobj.name,disk->disk_name,KOBJ_NAME_LEN);
 	/* ewww... some of these buggers have / in name... */
 	s = strchr(disk->kobj.name, '/');
 	if (s)
 		*s = '!';
-	/* ½«´ÅÅÌÉè±¸Ìí¼Óµ½sysÎÄ¼şÏµÍ³ÖĞ */
+	/* å°†ç£ç›˜è®¾å¤‡æ·»åŠ åˆ°sysæ–‡ä»¶ç³»ç»Ÿä¸­ */
 	if ((err = kobject_add(&disk->kobj)))
 		return;
 	disk_sysfs_symlinks(disk);
 
 	/* No minors to use for partitions */
-	if (disk->minors == 1) {/* Ã»ÓĞÂß¼­·ÖÇø£¬½«Éè±¸Ìí¼Óµ½devÖĞ */
+	if (disk->minors == 1) {/* æ²¡æœ‰é€»è¾‘åˆ†åŒºï¼Œå°†è®¾å¤‡æ·»åŠ åˆ°devä¸­ */
 		if (disk->devfs_name[0] != '\0')
 			devfs_add_disk(disk);
 		return;
 	}
 
 	/* always add handle for the whole disk */
-	/* ´¦Àí´ÅÅÌ·ÖÇø */
+	/* å¤„ç†ç£ç›˜åˆ†åŒº */
 	devfs_add_partitioned(disk);
 
 	/* No such device (e.g., media were just removed) */
-	/* Éè±¸ÒÑ¾­±»ÒÆ³ı£¬ÍË³ö */
+	/* è®¾å¤‡å·²ç»è¢«ç§»é™¤ï¼Œé€€å‡º */
 	if (!get_capacity(disk))
 		return;
 
-	/* »ñÈ¡Éè±¸µÄÒıÓÃ¼ÆÊı */
+	/* è·å–è®¾å¤‡çš„å¼•ç”¨è®¡æ•° */
 	bdev = bdget_disk(disk, 0);
 	if (!bdev)
 		return;
 
-	/* ¶ÁÈ¡´ÅÅÌ·ÖÇø±êÖ¾ */
+	/* è¯»å–ç£ç›˜åˆ†åŒºæ ‡å¿— */
 	bdev->bd_invalidated = 1;
-	/* É¨Ãè´ÅÅÌ·ÖÇø£¬½¨Á¢´ÅÅÌÓë·ÖÇøµÄ¹ØÏµ£¬²¢½«·ÖÇøÌí¼Óµ½ÏµÍ³ÖĞ */
+	/* æ‰«æç£ç›˜åˆ†åŒºï¼Œå»ºç«‹ç£ç›˜ä¸åˆ†åŒºçš„å…³ç³»ï¼Œå¹¶å°†åˆ†åŒºæ·»åŠ åˆ°ç³»ç»Ÿä¸­ */
 	if (blkdev_get(bdev, FMODE_READ, 0) < 0)
 		return;
 	blkdev_put(bdev);
 }
 
-/* É¨Ãè´ÅÅÌ·ÖÇø */
+/* æ‰«æç£ç›˜åˆ†åŒº */
 int rescan_partitions(struct gendisk *disk, struct block_device *bdev)
 {
 	struct parsed_partitions *state;
 	int p, res;
 
-	/* ·ÖÇø´ò¿ª¼ÆÊı´ÎÊı´óÓÚ0£¬±íÊ¾ÓĞ·ÖÇøÔÚÊ¹ÓÃ£¬ÍË³ö */
+	/* åˆ†åŒºæ‰“å¼€è®¡æ•°æ¬¡æ•°å¤§äº0ï¼Œè¡¨ç¤ºæœ‰åˆ†åŒºåœ¨ä½¿ç”¨ï¼Œé€€å‡º */
 	if (bdev->bd_part_count)
 		return -EBUSY;
-	/* ½«ËùÓĞ´ÅÅÌ¿éĞ´Èëµ½´ÅÅÌÖĞ */
+	/* å°†æ‰€æœ‰ç£ç›˜å—å†™å…¥åˆ°ç£ç›˜ä¸­ */
 	res = invalidate_partition(disk, 0);
 	if (res)
 		return res;
 	bdev->bd_invalidated = 0;
-	/* É¾³ıÄÚ´æÖĞµÄ·ÖÇøĞÅÏ¢ */
+	/* åˆ é™¤å†…å­˜ä¸­çš„åˆ†åŒºä¿¡æ¯ */
 	for (p = 1; p < disk->minors; p++)
 		delete_partition(disk, p);
-	/* ¶ÔÄ³Ğ©ÌØ¶¨µÄ´ÅÅÌÀ´Ëµ£¬µ÷ÓÃ»Øµ÷À´Ê¹Æä·ÖÇøÊ§Ğ§ */
+	/* å¯¹æŸäº›ç‰¹å®šçš„ç£ç›˜æ¥è¯´ï¼Œè°ƒç”¨å›è°ƒæ¥ä½¿å…¶åˆ†åŒºå¤±æ•ˆ */
 	if (disk->fops->revalidate_disk)
 		disk->fops->revalidate_disk(disk);
-	/* Èç¹û´ÅÅÌÒÑ¾­±»ÒÆ³ı£¬»òÕßÃ»ÓĞ·ÖÇø±í£¬ÔòÍË³ö */
+	/* å¦‚æœç£ç›˜å·²ç»è¢«ç§»é™¤ï¼Œæˆ–è€…æ²¡æœ‰åˆ†åŒºè¡¨ï¼Œåˆ™é€€å‡º */
 	if (!get_capacity(disk) || !(state = check_partition(disk, bdev)))
 		return 0;
-	/* ½«check_partition¼ì²âµ½µÄ·ÖÇøÌí¼Óµ½ÏµÍ³ÖĞ */
+	/* å°†check_partitionæ£€æµ‹åˆ°çš„åˆ†åŒºæ·»åŠ åˆ°ç³»ç»Ÿä¸­ */
 	for (p = 1; p < state->limit; p++) {
 		sector_t size = state->parts[p].size;
 		sector_t from = state->parts[p].from;
-		if (!size)/* ·ÖÇø³¤¶ÈÎª0£¬ºöÂÔ */
+		if (!size)/* åˆ†åŒºé•¿åº¦ä¸º0ï¼Œå¿½ç•¥ */
 			continue;
-		/* ½«·ÖÇøÌí¼Óµ½ÏµÍ³ÖĞ */
+		/* å°†åˆ†åŒºæ·»åŠ åˆ°ç³»ç»Ÿä¸­ */
 		add_partition(disk, p, from, size);
 #ifdef CONFIG_BLK_DEV_MD
-		if (state->parts[p].flags)/* ¶ÔRAID·ÖÇøÀ´Ëµ£¬µ÷ÓÃmd_autodetect_devÎª×Ô¶¯¼ì²â×ö×¼±¸ */
+		if (state->parts[p].flags)/* å¯¹RAIDåˆ†åŒºæ¥è¯´ï¼Œè°ƒç”¨md_autodetect_devä¸ºè‡ªåŠ¨æ£€æµ‹åšå‡†å¤‡ */
 			md_autodetect_dev(bdev->bd_dev+p);
 #endif
 	}
@@ -435,7 +435,7 @@ fail:
 EXPORT_SYMBOL(read_dev_sector);
 
 /**
- * Ğ¶ÔØ´ÅÅÌ¡£
+ * å¸è½½ç£ç›˜ã€‚
  */
 void del_gendisk(struct gendisk *disk)
 {

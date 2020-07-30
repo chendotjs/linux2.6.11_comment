@@ -252,7 +252,7 @@ svc_register(struct svc_serv *serv, int proto, unsigned short port)
  * Process the RPC request.
  */
 /**
- * ´¦ÀíÌ×¿ÚÉÏ½ÓÊÕµ½µÄRPCÇëÇó¡£
+ * å¤„ç†å¥—å£ä¸Šæ¥æ”¶åˆ°çš„RPCè¯·æ±‚ã€‚
  */
 int
 svc_process(struct svc_serv *serv, struct svc_rqst *rqstp)
@@ -305,7 +305,7 @@ svc_process(struct svc_serv *serv, struct svc_rqst *rqstp)
 	svc_putu32(resv, xdr_zero);		/* ACCEPT */
 
 	/**
-	 * ´Ó·¢À´µÄÇëÇóÖĞÕÒ³öÔ¶³Ìµ÷ÓÃµÄ³ÌĞòºÅ¡¢°æ±¾ºÅÒÔ¼°¹ı³ÌºÅ
+	 * ä»å‘æ¥çš„è¯·æ±‚ä¸­æ‰¾å‡ºè¿œç¨‹è°ƒç”¨çš„ç¨‹åºå·ã€ç‰ˆæœ¬å·ä»¥åŠè¿‡ç¨‹å·
 	 */
 	rqstp->rq_prog = prog = ntohl(svc_getu32(argv));	/* program number */
 	rqstp->rq_vers = vers = ntohl(svc_getu32(argv));	/* version number */
@@ -318,7 +318,7 @@ svc_process(struct svc_serv *serv, struct svc_rqst *rqstp)
 	 * auth verifier.
 	 */
 	/**
-	 * µ÷ÓÃsvc_authenticateº¯Êı¶Ô¼ø±ğĞÅÏ¢½øĞĞ½âÂë£¬²¢°²×°Ğ£Ñéº¯Êı¡£
+	 * è°ƒç”¨svc_authenticateå‡½æ•°å¯¹é‰´åˆ«ä¿¡æ¯è¿›è¡Œè§£ç ï¼Œå¹¶å®‰è£…æ ¡éªŒå‡½æ•°ã€‚
 	 */
 	if (progp->pg_authenticate != NULL)
 		auth_res = progp->pg_authenticate(rqstp, &auth_stat);
@@ -349,7 +349,7 @@ svc_process(struct svc_serv *serv, struct svc_rqst *rqstp)
 		goto err_bad_vers;
 
 	/**
-	 * ¸ù¾İ³ÌĞòºÅ¡¢°æ±¾ºÅÒÔ¼°¹ı³ÌºÅÕÒµ½´¦ÀíÕâ¸öº¯ÊıµÄÖ¸Õë¡£
+	 * æ ¹æ®ç¨‹åºå·ã€ç‰ˆæœ¬å·ä»¥åŠè¿‡ç¨‹å·æ‰¾åˆ°å¤„ç†è¿™ä¸ªå‡½æ•°çš„æŒ‡é’ˆã€‚
 	 */
 	procp = versp->vs_proc + proc;
 	if (proc >= versp->vs_nproc || !procp->pc_func)
@@ -381,20 +381,20 @@ svc_process(struct svc_serv *serv, struct svc_rqst *rqstp)
 	if (!versp->vs_dispatch) {
 		/* Decode arguments */
 		/**
-		 * ¶Ô´«¹ıÀ´µÄ¹ı³Ì²ÎÊı½øĞĞ½âÂë
+		 * å¯¹ä¼ è¿‡æ¥çš„è¿‡ç¨‹å‚æ•°è¿›è¡Œè§£ç 
 		 */
 		xdr = procp->pc_decode;
 		if (xdr && !xdr(rqstp, argv->iov_base, rqstp->rq_argp))
 			goto err_garbage;
 
 		/**
-		 * µ÷ÓÃÔ¶³Ì¹ı³ÌµÄ´¦Àíº¯Êı¡£
+		 * è°ƒç”¨è¿œç¨‹è¿‡ç¨‹çš„å¤„ç†å‡½æ•°ã€‚
 		 */
 		*statp = procp->pc_func(rqstp, rqstp->rq_argp, rqstp->rq_resp);
 
 		/* Encode reply */
 		/**
-		 * ¶Ô·µ»Ø½á¹û½øĞĞÒëÂë£¬²¢·ÅÈë»º´æÖĞ¡£
+		 * å¯¹è¿”å›ç»“æœè¿›è¡Œè¯‘ç ï¼Œå¹¶æ”¾å…¥ç¼“å­˜ä¸­ã€‚
 		 */
 		if (*statp == rpc_success && (xdr = procp->pc_encode)
 		 && !xdr(rqstp, resv->iov_base+resv->iov_len, rqstp->rq_resp)) {
@@ -427,7 +427,7 @@ svc_process(struct svc_serv *serv, struct svc_rqst *rqstp)
 	if (svc_authorise(rqstp))
 		goto dropit;
 	/**
-	 * µ÷ÓÃsvc_sendº¯Êı½«·µ»Ø½á¹û·¢»Ø¸ø¿Í»§¶Ë¡£
+	 * è°ƒç”¨svc_sendå‡½æ•°å°†è¿”å›ç»“æœå‘å›ç»™å®¢æˆ·ç«¯ã€‚
 	 */
 	return svc_send(rqstp);
 

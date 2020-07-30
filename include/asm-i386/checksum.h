@@ -59,10 +59,10 @@ unsigned int csum_partial_copy_from_user(const unsigned char __user *src, unsign
  *	Arnt Gulbrandsen.
  */
 /**
- * ¼ÆËãIPÍ·Ğ£ÑéºÍ¡£
- * ´Ëº¯Êı»áÀûÓÃIP±¨Í·µÄ³¤¶ÈÊ¼ÖÕÊÇ4×Ö½ÚµÄ±¶ÊıÕâÒ»µã£¬ÈÃÒ»Ğ©´¦ÀíÁ÷³ÌµÄĞ§ÂÊ¸ü¸ß¡£
- * µ±¼ÆËãÒ»¸ö±»·¢ËÍµÄ°üµÄIPÍ·µÄĞ£ÑéºÍÊ±£¬iphdr->checkÊ×ÏÈÓ¦µ±±»ÖÃ0£¬ËüÎªĞ£ÑéºÍÓ¦µ±²»·´Ó¦Ğ£ÑéºÍ×Ô¼º¡£
- * Ëü¼È¿ÉÒÔÓÃÀ´ÑéÖ¤Ò»¸öÊäÈë°ü£¬Ò²ÓÃÀ´¼ÆËãÒ»¸öÍâ·¢°üµÄĞ£ÑéºÍ¡£
+ * è®¡ç®—IPå¤´æ ¡éªŒå’Œã€‚
+ * æ­¤å‡½æ•°ä¼šåˆ©ç”¨IPæŠ¥å¤´çš„é•¿åº¦å§‹ç»ˆæ˜¯4å­—èŠ‚çš„å€æ•°è¿™ä¸€ç‚¹ï¼Œè®©ä¸€äº›å¤„ç†æµç¨‹çš„æ•ˆç‡æ›´é«˜ã€‚
+ * å½“è®¡ç®—ä¸€ä¸ªè¢«å‘é€çš„åŒ…çš„IPå¤´çš„æ ¡éªŒå’Œæ—¶ï¼Œiphdr->checké¦–å…ˆåº”å½“è¢«ç½®0ï¼Œå®ƒä¸ºæ ¡éªŒå’Œåº”å½“ä¸ååº”æ ¡éªŒå’Œè‡ªå·±ã€‚
+ * å®ƒæ—¢å¯ä»¥ç”¨æ¥éªŒè¯ä¸€ä¸ªè¾“å…¥åŒ…ï¼Œä¹Ÿç”¨æ¥è®¡ç®—ä¸€ä¸ªå¤–å‘åŒ…çš„æ ¡éªŒå’Œã€‚
  */
 static inline unsigned short ip_fast_csum(unsigned char * iph,
 					  unsigned int ihl)
@@ -100,7 +100,7 @@ static inline unsigned short ip_fast_csum(unsigned char * iph,
  *	Fold a partial checksum
  */
 /**
- * °Ñ32Î»µÄÖµµÄ¸ß16Î»ÕÛµşµ½µÍ16Î»£¬²¢Çó³öÊä³öÖµµÄ²¹Âë¡£Õâ¸ö²Ù×÷Í¨³£ÊÇĞ£ÑéºÍµÄ×îºóÒ»²½¡£
+ * æŠŠ32ä½çš„å€¼çš„é«˜16ä½æŠ˜å åˆ°ä½16ä½ï¼Œå¹¶æ±‚å‡ºè¾“å‡ºå€¼çš„è¡¥ç ã€‚è¿™ä¸ªæ“ä½œé€šå¸¸æ˜¯æ ¡éªŒå’Œçš„æœ€åä¸€æ­¥ã€‚
  */
 static inline unsigned int csum_fold(unsigned int sum)
 {
@@ -134,8 +134,8 @@ static inline unsigned long csum_tcpudp_nofold(unsigned long saddr,
  * returns a 16-bit checksum, already complemented
  */
 /**
- * ¼ÆËãTCPºÍUDPÎ±±¨Í·µÄĞ£ÑéºÍ.
- * µ±Ê¹ÓÃL4Ó²¼şĞ£ÑéºÍ£¬²¢ÇÒ´æÔÚNAT×ª»»Ê±£¬ĞèÒªÖØĞÂ¼ÆËãĞ£ÑéºÍ¡£
+ * è®¡ç®—TCPå’ŒUDPä¼ªæŠ¥å¤´çš„æ ¡éªŒå’Œ.
+ * å½“ä½¿ç”¨L4ç¡¬ä»¶æ ¡éªŒå’Œï¼Œå¹¶ä¸”å­˜åœ¨NATè½¬æ¢æ—¶ï¼Œéœ€è¦é‡æ–°è®¡ç®—æ ¡éªŒå’Œã€‚
  */
 static inline unsigned short int csum_tcpudp_magic(unsigned long saddr,
 						   unsigned long daddr,
@@ -151,7 +151,7 @@ static inline unsigned short int csum_tcpudp_magic(unsigned long saddr,
  * in icmp.c
  */
 /**
- * ¼ÆËãĞ£ÑéºÍµÄÍ¨ÓÃÄ¿µÄµÄº¯Êı¡£Ëü¼òµ¥µÄ½ÓÊÕÒ»¸öÈÎÒâ³¤¶ÈµÄ»º³åÇø×÷ÎªÊäÈë²ÎÊı¡£
+ * è®¡ç®—æ ¡éªŒå’Œçš„é€šç”¨ç›®çš„çš„å‡½æ•°ã€‚å®ƒç®€å•çš„æ¥æ”¶ä¸€ä¸ªä»»æ„é•¿åº¦çš„ç¼“å†²åŒºä½œä¸ºè¾“å…¥å‚æ•°ã€‚
  */
 static inline unsigned short ip_compute_csum(unsigned char * buff, int len)
 {

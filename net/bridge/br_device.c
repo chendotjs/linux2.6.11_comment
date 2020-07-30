@@ -29,7 +29,7 @@ static struct net_device_stats *br_dev_get_stats(struct net_device *dev)
 }
 
 /**
- * ÍøÇÅÉè±¸µÄ·¢°üº¯Êý¡£
+ * ç½‘æ¡¥è®¾å¤‡çš„å‘åŒ…å‡½æ•°ã€‚
  */
 int br_dev_xmit(struct sk_buff *skb, struct net_device *dev)
 {
@@ -45,31 +45,31 @@ int br_dev_xmit(struct sk_buff *skb, struct net_device *dev)
 
 	rcu_read_lock();
 	/**
-	 * Èç¹ûÄ¿±êµØÖ·ÊÇ¹ã²¥µØÖ·
+	 * å¦‚æžœç›®æ ‡åœ°å€æ˜¯å¹¿æ’­åœ°å€
 	 */
 	if (dest[0] & 1) 
-		br_flood_deliver(br, skb, 0);/* ÔÚËùÓÐ¶Ë¿ÚÉÏ½øÐÐÒ»´Îflood·¢ËÍ */
-	else if ((dst = __br_fdb_get(br, dest)) != NULL)/* ÔÚ×ª·¢Êý¾Ý¿âÖÐÕÒµ½Ä¿±êµØÖ·µÄmac */
-		br_deliver(dst->dst, skb);/* ÔÚÖ¸¶¨¶Ë¿ÚÉÏ×ª·¢¡£ */
+		br_flood_deliver(br, skb, 0);/* åœ¨æ‰€æœ‰ç«¯å£ä¸Šè¿›è¡Œä¸€æ¬¡floodå‘é€ */
+	else if ((dst = __br_fdb_get(br, dest)) != NULL)/* åœ¨è½¬å‘æ•°æ®åº“ä¸­æ‰¾åˆ°ç›®æ ‡åœ°å€çš„mac */
+		br_deliver(dst->dst, skb);/* åœ¨æŒ‡å®šç«¯å£ä¸Šè½¬å‘ã€‚ */
 	else
-		br_flood_deliver(br, skb, 0);/* ·ñÔòÒ²½øÐÐÒ»´Îflood·¢ËÍ¡£ */
+		br_flood_deliver(br, skb, 0);/* å¦åˆ™ä¹Ÿè¿›è¡Œä¸€æ¬¡floodå‘é€ã€‚ */
 
 	rcu_read_unlock();
 	return 0;
 }
 
 /**
- * ¼¤»îÍøÇÅÉè±¸¡£
+ * æ¿€æ´»ç½‘æ¡¥è®¾å¤‡ã€‚
  */
 static int br_dev_open(struct net_device *dev)
 {
 	/**
-	 * Í¨¹ýº¯Êýnetif_start_queueÔÊÐíÉè±¸·¢ËÍÊý¾Ý¡£
+	 * é€šè¿‡å‡½æ•°netif_start_queueå…è®¸è®¾å¤‡å‘é€æ•°æ®ã€‚
 	 */
 	netif_start_queue(dev);
 
 	/**
-	 * Í¨¹ýº¯Êýbr_stp_enable_bridgeÔÊÐíÍøÇÅÉè±¸¡£
+	 * é€šè¿‡å‡½æ•°br_stp_enable_bridgeå…è®¸ç½‘æ¡¥è®¾å¤‡ã€‚
 	 */
 	br_stp_enable_bridge(dev->priv);
 
@@ -81,7 +81,7 @@ static void br_dev_set_multicast_list(struct net_device *dev)
 }
 
 /**
- * Í£Ö¹ÍøÇÅÉè±¸¡£
+ * åœæ­¢ç½‘æ¡¥è®¾å¤‡ã€‚
  */
 static int br_dev_stop(struct net_device *dev)
 {
@@ -107,12 +107,12 @@ static int br_dev_accept_fastpath(struct net_device *dev, struct dst_entry *dst)
 }
 
 /**
- * ÔÚ·ÖÅänet_deviceÊ±£¬³õÊ¼»¯net_deviceµÄº¯Êý¡£
+ * åœ¨åˆ†é…net_deviceæ—¶ï¼Œåˆå§‹åŒ–net_deviceçš„å‡½æ•°ã€‚
  */
 void br_dev_setup(struct net_device *dev)
 {
 	/**
-	 * ÍøÇÅMACµØÖ·dev_addr±»Çå³ý£¬ÒòÎªËüÔ´×ÔÓÚÓëÖ®°ó¶¨µÄÉè±¸µÄMACµØÖ·ÅäÖÃ£¨br_stp_recalculate_bridge_id£©¡£
+	 * ç½‘æ¡¥MACåœ°å€dev_addrè¢«æ¸…é™¤ï¼Œå› ä¸ºå®ƒæºè‡ªäºŽä¸Žä¹‹ç»‘å®šçš„è®¾å¤‡çš„MACåœ°å€é…ç½®ï¼ˆbr_stp_recalculate_bridge_idï¼‰ã€‚
 	 */
 	memset(dev->dev_addr, 0, ETH_ALEN);
 
@@ -124,7 +124,7 @@ void br_dev_setup(struct net_device *dev)
 	dev->open = br_dev_open;
 	dev->set_multicast_list = br_dev_set_multicast_list;
 	/**
-	 * µ±ÍøÇÅÉè±¸ÉÏµÄMTU¸Ä±äÊ±£¬ÄÚºË±ØÐëÈ·±£ÐÂÖµ²»»á±ÈËùÓÐ°ó¶¨Éè±¸µÄ×îÐ¡MTU¸ü´ó¡£ÕâÊÇÓÉbr_change_mtu±£Ö¤µÄ¡£
+	 * å½“ç½‘æ¡¥è®¾å¤‡ä¸Šçš„MTUæ”¹å˜æ—¶ï¼Œå†…æ ¸å¿…é¡»ç¡®ä¿æ–°å€¼ä¸ä¼šæ¯”æ‰€æœ‰ç»‘å®šè®¾å¤‡çš„æœ€å°MTUæ›´å¤§ã€‚è¿™æ˜¯ç”±br_change_mtuä¿è¯çš„ã€‚
 	 */
 	dev->change_mtu = br_change_mtu;
 	dev->destructor = free_netdev;
@@ -132,17 +132,17 @@ void br_dev_setup(struct net_device *dev)
 	dev->stop = br_dev_stop;
 	dev->accept_fastpath = br_dev_accept_fastpath;
 	/**
-	 * Ä¬ÈÏµÄ£¬ÍøÇÅÉè±¸²¢²»¶¨Òå¶ÓÁÐ¡£ËüÈÃ°ó¶¨µÄÉè±¸´¦Àí¶ÓÁÐ¡£
-	 * ÕâÒ²½âÊÍÁËÎªÊ²Ã´tx_queue_len±»³õÊ¼»¯Îª0¡£
-	 * µ«ÊÇ¹ÜÀíÔ±¿ÉÒÔÍ¨¹ýifconfig»òÕßip linkÅäÖÃÕâ¸ö²ÎÊý¡£
+	 * é»˜è®¤çš„ï¼Œç½‘æ¡¥è®¾å¤‡å¹¶ä¸å®šä¹‰é˜Ÿåˆ—ã€‚å®ƒè®©ç»‘å®šçš„è®¾å¤‡å¤„ç†é˜Ÿåˆ—ã€‚
+	 * è¿™ä¹Ÿè§£é‡Šäº†ä¸ºä»€ä¹ˆtx_queue_lenè¢«åˆå§‹åŒ–ä¸º0ã€‚
+	 * ä½†æ˜¯ç®¡ç†å‘˜å¯ä»¥é€šè¿‡ifconfigæˆ–è€…ip linké…ç½®è¿™ä¸ªå‚æ•°ã€‚
 	 */
 	dev->tx_queue_len = 0;
 	/**
-	 * ÍøÇÅMACµØÖ·dev_addr±»Çå³ý£¬ÒòÎªËüÔ´×ÔÓÚÓëÖ®°ó¶¨µÄÉè±¸µÄMACµØÖ·ÅäÖÃ£¨br_stp_recalculate_bridge_id£©¡£
+	 * ç½‘æ¡¥MACåœ°å€dev_addrè¢«æ¸…é™¤ï¼Œå› ä¸ºå®ƒæºè‡ªäºŽä¸Žä¹‹ç»‘å®šçš„è®¾å¤‡çš„MACåœ°å€é…ç½®ï¼ˆbr_stp_recalculate_bridge_idï¼‰ã€‚
 	 */
 	dev->set_mac_address = NULL;
 	/**
-	 * IIF_EBRIGE±êÖ¾±»ÉèÖÃ£¬ÕâÑùÄÚºË´úÂë¿ÉÒÔÔÚ±ØÒªÊ±Çø·ÖÍøÇÅÉè±¸ÓëÆäËûÉè±¸µÄÀàÐÍ¡£
+	 * IIF_EBRIGEæ ‡å¿—è¢«è®¾ç½®ï¼Œè¿™æ ·å†…æ ¸ä»£ç å¯ä»¥åœ¨å¿…è¦æ—¶åŒºåˆ†ç½‘æ¡¥è®¾å¤‡ä¸Žå…¶ä»–è®¾å¤‡çš„ç±»åž‹ã€‚
 	 */
 	dev->priv_flags = IFF_EBRIDGE;
 }

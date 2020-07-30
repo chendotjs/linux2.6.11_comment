@@ -476,7 +476,7 @@ static ssize_t store_##name(struct device *dev, const char *buf, size_t n) \
 	int val;						\
 	int i;							\
 	val = simple_strtol(buf, NULL, 10);			\
-	printk(KERN_INFO "Adjusting limits by %d°C\n", val);	\
+	printk(KERN_INFO "Adjusting limits by %dC\n", val);	\
 	limit_adjust = val;					\
 	for (i=0; i < 3; i++)					\
 		set_limit(thermostat, i);			\

@@ -421,8 +421,8 @@ __again:
 						htons(read_eeprom(ioaddr, j));
 			if_port = read_eeprom(ioaddr, 8) >> 14;
 			/**
-			 * ��alloc_etherdev����net_device�ṹ
-			 * alloc_etherdev����Ҳ��ʼ��������̫���豸ͨ�õĲ���
+			 * 由alloc_etherdev分配net_device结构
+			 * alloc_etherdev函数也初始化所有以太网设备通用的参数
 			 */
 			dev = alloc_etherdev(sizeof (struct el3_private));
 			if (!dev) {
@@ -436,7 +436,7 @@ __again:
 			pnp_cards++;
 
 			/**
-			 * ���boot������ָ���Ĳ�����
+			 * 检查boot参数中指定的参数。
 			 */
 			netdev_boot_setup_check(dev);
 			goto found;
@@ -522,8 +522,8 @@ no_pnp:
 	}
 	irq = id_read_eeprom(9) >> 12;
 	/**
-	 * ��alloc_etherdev����net_device�ṹ
-	 * alloc_etherdev����Ҳ����ether_setup��ʼ��������̫���豸ͨ�õĲ���
+	 * 由alloc_etherdev分配net_device结构
+	 * alloc_etherdev函数也调用ether_setup初始化所有以太网设备通用的参数
 	 */
 	dev = alloc_etherdev(sizeof (struct el3_private));
 	if (!dev)
@@ -532,12 +532,12 @@ no_pnp:
 	SET_MODULE_OWNER(dev);
 
 	/**
-	 * ������������е����á�
+	 * 检查启动参数中的设置。
 	 */
 	netdev_boot_setup_check(dev);
 
 	/**
-	 * ������������������
+	 * 以下设置网卡参数。
 	 */
 	/* Set passed-in IRQ or I/O Addr. */
 	if (dev->irq > 1  &&  dev->irq < 16)
@@ -582,7 +582,7 @@ no_pnp:
 	lp->dev = &idev->dev;
 #endif
 	/**
-	 * el3_common_init�����register_netdev�����Խ����豸��ע�����
+	 * el3_common_init会调用register_netdev函数以结束设备的注册过程
 	 */
 	err = el3_common_init(dev);
 
@@ -851,7 +851,7 @@ el3_tx_timeout (struct net_device *dev)
 }
 
 /**
- * ����֡�ص�������
+ * 发送帧回调函数。
  */
 static int
 el3_start_xmit(struct sk_buff *skb, struct net_device *dev)
@@ -861,7 +861,7 @@ el3_start_xmit(struct sk_buff *skb, struct net_device *dev)
 	unsigned long flags;
 
 	/**
-	 * ���Ƚ�ֹ���Ͷ��С�
+	 * 首先禁止发送队列。
 	 */
 	netif_stop_queue (dev);
 
@@ -914,11 +914,11 @@ el3_start_xmit(struct sk_buff *skb, struct net_device *dev)
 #endif
 
 	dev->trans_start = jiffies;
-	if (inw(ioaddr + TX_FREE) > 1536)/* ����豸�����ڴ泬��һ��֡����󳤶ȣ���򿪷��Ͷ��С� */
+	if (inw(ioaddr + TX_FREE) > 1536)/* 如果设备空闲内存超过一个帧的最大长度，则打开发送队列。 */
 		netif_start_queue(dev);
 	else
 		/* Interrupt us when the FIFO has room for max-sized packet. */
-		outw(SetTxThreshold + 1536, ioaddr + EL3_CMD);/* ����֪ͨ�豸�ڿ����ڴ泬��1536ʱ������һ���жϣ����ж��д򿪷��Ͷ��� */
+		outw(SetTxThreshold + 1536, ioaddr + EL3_CMD);/* 否则，通知设备在空闲内存超过1536时，发送一个中断，在中断中打开发送队列 */
 
 	spin_unlock_irqrestore(&lp->lock, flags);
 
@@ -1505,7 +1505,7 @@ el3_up(struct net_device *dev)
 #ifdef CONFIG_PM
 
 /**
- * ���������豸��
+ * 挂起网卡设备。
  */
 static int
 el3_suspend(struct pm_dev *pdev)
@@ -1525,9 +1525,9 @@ el3_suspend(struct pm_dev *pdev)
 	spin_lock_irqsave(&lp->lock, flags);
 
 	/**
-	 * ����������dev->state��__LINK_STATE_PRESENT��־λ����Ϊ�豸��ʱ���ܹ�������
-	 * ����豸��netif_stop_queueʹ�ܻ��ֹ������У��Է�ֹ�豸���ڷ����κ������İ���
-	 * ע�⣺��ע����豸����Ҫʹ�ܣ����豸����֤������ȡ�ں�ָ�ɵ��豸������ע�᣻���ǣ��豸ֱ������ȷ���û���������ʱ����ʹ��(��˿���)��
+	 * 在这里会清除dev->state的__LINK_STATE_PRESENT标志位，因为设备临时不能够操作。
+	 * 如果设备用netif_stop_queue使能或禁止其入队列，以防止设备用于发送任何其它的包。
+	 * 注意：已注册的设备不需要使能：当设备被验证后，它获取内核指派的设备驱动并注册；但是，设备直到有明确的用户配置请求时，才使能(因此可用)。
 	 */
 	if (netif_running(dev))
 		netif_device_detach(dev);

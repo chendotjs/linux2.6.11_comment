@@ -26,7 +26,7 @@
 
 #define BR_PORT_BITS	10
 /**
- * ÿ�������豸���֧�ֵĶ˿�������
+ * 每个网桥设备最多支持的端口数量。
  */
 #define BR_MAX_PORTS	(1<<BR_PORT_BITS)
 
@@ -35,22 +35,22 @@ typedef struct mac_addr mac_addr;
 typedef __u16 port_id;
 
 /**
- * ����ID��������ݽṹû�з�ӳ 802.1t�ı仯��
+ * 网桥ID。这个数据结构没有反映 802.1t的变化。
  */
 struct bridge_id
 {
 	/**
-	 * �������ȼ���
+	 * 网桥优先级。
 	 */
 	unsigned char	prio[2];
 	/**
-	 * ����MAC��ַ��
+	 * 网桥MAC地址。
 	 */
 	unsigned char	addr[6];
 };
 
 /**
- * MAC��ַ��
+ * MAC地址。
  */
 struct mac_addr
 {
@@ -58,212 +58,212 @@ struct mac_addr
 };
 
 /**
- * ת�����ݿ���Ŀ��
- * ÿһ�����Ž��е�ַѧϰʱ��ÿһ��MAC��ַ����һ����������Ŀ��
+ * 转发数据库条目。
+ * 每一个网桥进行地址学习时，每一个MAC地址都有一个这样的条目。
  */
 struct net_bridge_fdb_entry
 {
 	/**
-	 * ���ڽ����ݽṹ����hash���ĳ�ͻ�����С�
+	 * 用于将数据结构链到hash表的冲突链表中。
 	 */
 	struct hlist_node		hlist;
 	/**
-	 * ���Ŷ˿ڡ�
+	 * 网桥端口。
 	 */
 	struct net_bridge_port		*dst;
 	union {
 		struct list_head	age_list;
 		/**
-		 * ��ʹ��RCU��ɾ�������ݽṹʱʹ�á�
+		 * 当使用RCU来删除该数据结构时使用。
 		 */
 		struct rcu_head		rcu;
 	} u;
 	/**
-	 * ���ü�����
+	 * 引用计数。
 	 */
 	atomic_t			use_count;
 	/**
-	 * �ϻ�ʱ�ӡ�
+	 * 老化时钟。
 	 */
 	unsigned long			ageing_timer;
 	/**
-	 * MAC��ַ���������ڲ�ѯ�Ĺؼ��ֶΡ�
+	 * MAC地址。这是用于查询的关键字段。
 	 */
 	mac_addr			addr;
 	/**
-	 * ������־Ϊ1ʱ����ʾMAC��ַ�Ǳ����豸��һ�����á�
+	 * 当本标志为1时，表示MAC地址是本地设备的一个配置。
 	 */
 	unsigned char			is_local;
 	/**
-	 * ������־Ϊ1ʱ����ʾMAC��ַ�Ǿ�̬�ģ����ᳬ�ڡ����б��ص�ַ�����ó�1.
+	 * 当本标志为1时，表示MAC地址是静态的，不会超期。所有本地地址都设置成1.
 	 */
 	unsigned char			is_static;
 };
 
 /**
- * ���Ŷ˿ڡ�
+ * 网桥端口。
  */
 struct net_bridge_port
 {
 	/**
-	 * �����豸
+	 * 网桥设备
 	 */
 	struct net_bridge		*br;
 	/**
-	 * �󶨵��豸��
+	 * 绑定的设备。
 	 */
 	struct net_device		*dev;
 	/**
-	 * ���ڽ����ݽṹ����hash���ĳ�ͻ�����С�
+	 * 用于将数据结构链到hash表的冲突链表中。
 	 */
 	struct list_head		list;
 
 	/* STP */
 	/**
-	 * �˿����ȼ���
+	 * 端口优先级。
 	 */
 	u8				priority;
 	/**
-	 * �˿�״̬����Чֵ��include/linux/if_bridge.h�У���Щö��ֵ����ʽ����BR_STATE_XXX��
+	 * 端口状态，有效值在include/linux/if_bridge.h中，这些枚举值的形式都是BR_STATE_XXX。
 	 */
 	u8				state;
 	/**
-	 * �˿ںš�
+	 * 端口号。
 	 */
 	u16				port_no;
 	/**
-	 * �������־������ʱ�������ڶ˿��Ϸ��͵�����BPDU������TCA��־��
+	 * 当这个标志被设置时，必须在端口上发送的配置BPDU上设置TCA标志。
 	 */
 	unsigned char			topology_change_ack;
 	/**
-	 * ��һ������BPDU���ڱ�HOLDʱ���������ȴ�����ʱ���ñ�־����1��
+	 * 当一个配置BPDU由于被HOLD时钟阻塞而等待发送时，该标志被置1。
 	 */
 	unsigned char			config_pending;
 	/**
-	 * �˿�ID����br_make_port_id���㣬��priority��port_no���ɡ�
+	 * 端口ID，由br_make_port_id计算，由priority和port_no构成。
 	 */
 	port_id				port_id;
 	/**
-	 * �˿��Ͻ��յ����������BPDU�����ȼ���������br_record_config_configuration���ڽ��յ���ÿһ������BPDU���и��¡�
+	 * 端口上接收到最近的配置BPDU的优先级向量。由br_record_config_configuration基于接收到的每一个配置BPDU进行更新。
 	 */
 	port_id				designated_port;
 	bridge_id			designated_root;
 	bridge_id			designated_bridge;
 	/**
-	 * �˿�·�����ȡ�
+	 * 端口路径长度。
 	 */
 	u32				path_cost;
 	u32				designated_cost;
 
 	/**
-	 * �˿�ʱ�ӡ�
+	 * 端口时钟。
 	 */
 	struct timer_list		forward_delay_timer;
 	struct timer_list		hold_timer;
 	struct timer_list		message_age_timer;
 	/**
-	 * ���������豸�ļ���
+	 * 用来生成设备文件。
 	 */
 	struct kobject			kobj;
 	/**
-	 * ����ͨ��RCU���ư�ȫ���ͷ����ݽṹ��
+	 * 用来通过RCU机制安全的释放数据结构。
 	 */
 	struct rcu_head			rcu;
 };
 
 /**
- * �������ŵ���Ϣ��
- * ������ݽṹ�����ӵ�һ��net_device���ݽṹ���Դ���������豸��˵����������˽�����ݽ����������豸�����⡣
+ * 单个网桥的信息。
+ * 这个数据结构被添加到一个net_device数据结构。对大多数虚拟设备来说，它包含的私有数据仅仅被虚拟设备所理解。
  */
 struct net_bridge
 {
 	/**
-	 * ���������޸�net_bridge���ݽṹ��������port_list�е�ĳ���˿ڡ�Ҫ����ֻ�����ʣ�ֻ��Ҫ�򵥵�ʹ��rcu_read_lock��rcu_read_unlock���ɡ�
+	 * 用来串行修改net_bridge数据结构或者它的port_list中的某个端口。要进行只读访问，只需要简单的使用rcu_read_lock和rcu_read_unlock即可。
 	 */
 	spinlock_t			lock;
 	/**
-	 * ���Ŷ˿��б�.
+	 * 网桥端口列表.
 	 */
 	struct list_head		port_list;
 	/**
-	 * �����豸��
+	 * 网桥设备。
 	 */
 	struct net_device		*dev;
 	struct net_device_stats		statistics;
 	/**
-	 * ��ת�����ݿ��Ԫ�ؽ��д��ж�д���ʡ�
-	 * ֻ�����ʿ��Լ򵥵�ʹ��rcu_read_lock��rcu_read_unlock��
+	 * 对转发数据库的元素进行串行读写访问。
+	 * 只读访问可以简单的使用rcu_read_lock和rcu_read_unlock。
 	 */
 	spinlock_t			hash_lock;
 	/**
-	 * ת�����ݿ⡣
+	 * 转发数据库。
 	 */
 	struct hlist_head		hash[BR_HASH_SIZE];
 	/**
-	 * �������Ѿ����ٱ�ʹ�á�
+	 * 该链表已经不再被使用。
 	 */
 	struct list_head		age_list;
 
 	/* STP */
 	/**
-	 * ����ID��
+	 * 根桥ID。
 	 */
 	bridge_id			designated_root;
 	/**
-	 * ����ID��
+	 * 网桥ID。
 	 */
 	bridge_id			bridge_id;
 	/**
-	 * �����ŵ����·���ĳ��ȡ�
+	 * 到根桥的最佳路径的长度。
 	 */
 	u32				root_path_cost;
 	/**
-	 * ����ʱ�ӡ���Щֵ�ɸ������ã����ڽ��յ�����BPDUʱ����br_record_config_timeout_values�����ڱ��ء�
+	 * 网桥时钟。这些值由根桥配置，并在接收到配置BPDU时，由br_record_config_timeout_values保存在本地。
 	 */
 	unsigned long			max_age;
 	unsigned long			hello_time;
 	unsigned long			forward_delay;
 	/**
-	 * �������õ�����ʱ�ӣ����ڸ�����ʹ�á�
+	 * 本地配置的网桥时钟，仅在根桥上使用。
 	 */
 	unsigned long			bridge_max_age;
 	/**
-	 * ת�����ݿ��е�Ԫ�ص�����ϻ�ʱ�䡣
+	 * 转发数据库中的元素的最大老化时间。
 	 */
 	unsigned long			ageing_time;
 	unsigned long			bridge_hello_time;
 	unsigned long			bridge_forward_delay;
 
 	/**
-	 * ���˿ںš�
+	 * 根端口号。
 	 */
 	u16				root_port;
 	/**
-	 * ����ñ�־�����ã���ô���ž�������STP��
+	 * 如果该标志被设置，那么网桥就启用了STP。
 	 */
 	unsigned char			stp_enabled;
 	/**
-	 * �����һ���Ӹ��˿ڽ��յ�������BPDU����TC��־ʱ���ñ�־�����á�
-	 * ���ñ�־������ʱ�����з��͵�����BPDUҲ��������TC��־��
+	 * 当最近一个从根端口接收到的配置BPDU存在TC标志时，该标志被设置。
+	 * 当该标志被设置时，所有发送的配置BPDU也必须设置TC标志。
 	 */
 	unsigned char			topology_change;
 	/**
-	 * �����˱仯�¼�����⵽ʱ�����øñ�־��
+	 * 当拓扑变化事件被检测到时，设置该标志。
 	 */
 	unsigned char			topology_change_detected;
 
 	/**
-	 * ����ʱ�ӡ�
+	 * 网桥时钟。
 	 */
 	struct timer_list		hello_timer;
 	struct timer_list		tcn_timer;
 	struct timer_list		topology_change_timer;
 	/**
-	 * ת�����ݿ���������ʱ�ӡ�
+	 * 转发数据库垃圾回收时钟。
 	 */
 	struct timer_list		gc_timer;
 	/**
-	 * ���������豸�ļ���
+	 * 用来生成设备文件。
 	 */
 	struct kobject			ifobj;
 };
@@ -273,7 +273,7 @@ extern const unsigned char bridge_ula[6];
 
 /* called under bridge lock */
 /**
- * br_is_root_bridge����ָ�����豸�Ƿ��Ǹ����豸��
+ * br_is_root_bridge返回指定的设备是否是根桥设备。
  */
 static inline int br_is_root_bridge(const struct net_bridge *br)
 {

@@ -52,13 +52,13 @@ extern struct rw_semaphore *FASTCALL(rwsem_downgrade_wake(struct rw_semaphore *s
  * the semaphore definition
  */
 /**
- * ¶ÁÐ´ÐÅºÅÁ¿ÃèÊö·û¡£
+ * è¯»å†™ä¿¡å·é‡æè¿°ç¬¦ã€‚
  */
 struct rw_semaphore {
 	/**
-	 * ´æ·ÅÁ½¸ö16Î»µÄ¼ÆÊýÆ÷¡£
-	 * ¸ß16Î»ÒÔ²¹ÂëÐÎÊ½´æ·ÅµÈ´ýÐ´µÄ½ø³ÌÊýÁ¿¡£×¢ÒâÓë¶ÁÐ´×ÔÐýËøµÄ²»Í¬¡£¶ÁÐ´×ÔÐýËø²»¿ÉÄÜÓÐ½ø³ÌÔÚÉÏÃæË¯Ãß£¬ËùÒÔÓÃÒ»¸ö¶þÖµÊý±íÊ¾Ð´µÈ´ý¾ÍÐÐÁË¡£
-	 * µÍ16Î»´æ·Å·ÇµÈ´ýµÄ¶ÁÕßºÍÐ´Õß×ÜÊý¡£
+	 * å­˜æ”¾ä¸¤ä¸ª16ä½çš„è®¡æ•°å™¨ã€‚
+	 * é«˜16ä½ä»¥è¡¥ç å½¢å¼å­˜æ”¾ç­‰å¾…å†™çš„è¿›ç¨‹æ•°é‡ã€‚æ³¨æ„ä¸Žè¯»å†™è‡ªæ—‹é”çš„ä¸åŒã€‚è¯»å†™è‡ªæ—‹é”ä¸å¯èƒ½æœ‰è¿›ç¨‹åœ¨ä¸Šé¢ç¡çœ ï¼Œæ‰€ä»¥ç”¨ä¸€ä¸ªäºŒå€¼æ•°è¡¨ç¤ºå†™ç­‰å¾…å°±è¡Œäº†ã€‚
+	 * ä½Ž16ä½å­˜æ”¾éžç­‰å¾…çš„è¯»è€…å’Œå†™è€…æ€»æ•°ã€‚
 	 */
 	signed long		count;
 #define RWSEM_UNLOCKED_VALUE		0x00000000
@@ -68,12 +68,12 @@ struct rw_semaphore {
 #define RWSEM_ACTIVE_READ_BIAS		RWSEM_ACTIVE_BIAS
 #define RWSEM_ACTIVE_WRITE_BIAS		(RWSEM_WAITING_BIAS + RWSEM_ACTIVE_BIAS)
 	/**
-	 * ×ÔÐýËø£¬±£»¤µÈ´ý¶ÓÁÐÁ´±íºÍ½á¹¹±¾Éí¡£
+	 * è‡ªæ—‹é”ï¼Œä¿æŠ¤ç­‰å¾…é˜Ÿåˆ—é“¾è¡¨å’Œç»“æž„æœ¬èº«ã€‚
 	 */
 	spinlock_t		wait_lock;
 	/**
-	 * µÈ´ý½ø³ÌÁ´±í¡£Ã¿¸ö½áµãÊÇÒ»¸örwsem_waiter½á¹¹¡£
-	 * ¸Ã½á¹¹°üº¬Ò»¸ö±íÊ¾µÈ´ý½ø³ÌÃèÊö·ûµÄÖ¸ÕëºÍÒ»¸ö±íÊ¾µÈ´ý¶Á»òÕßÐ´µÄ±êÖ¾¡£
+	 * ç­‰å¾…è¿›ç¨‹é“¾è¡¨ã€‚æ¯ä¸ªç»“ç‚¹æ˜¯ä¸€ä¸ªrwsem_waiterç»“æž„ã€‚
+	 * è¯¥ç»“æž„åŒ…å«ä¸€ä¸ªè¡¨ç¤ºç­‰å¾…è¿›ç¨‹æè¿°ç¬¦çš„æŒ‡é’ˆå’Œä¸€ä¸ªè¡¨ç¤ºç­‰å¾…è¯»æˆ–è€…å†™çš„æ ‡å¿—ã€‚
 	 */
 	struct list_head	wait_list;
 #if RWSEM_DEBUG

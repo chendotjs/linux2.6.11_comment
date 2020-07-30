@@ -41,7 +41,7 @@ extern void kmap_init(void);
  * chunk of RAM.
  */
 /**
- * ÓÀ¾ÃÄÚºËÓ³ÉäµÄÒ³±íÏî¸öÊý¡£¿ÉÄÜÎª512»òÕß1024Ïî¡£
+ * æ°¸ä¹…å†…æ ¸æ˜ å°„çš„é¡µè¡¨é¡¹ä¸ªæ•°ã€‚å¯èƒ½ä¸º512æˆ–è€…1024é¡¹ã€‚
  */
 #ifdef CONFIG_X86_PAE
 #define LAST_PKMAP 512
@@ -64,7 +64,7 @@ extern void kmap_init(void);
  * high_memory
  */
 /**
- * ÓÀ¾ÃÄÚºËÓ³ÉäµÄÏßÐÔµØÖ·ÆðÊ¼´¦¡£
+ * æ°¸ä¹…å†…æ ¸æ˜ å°„çš„çº¿æ€§åœ°å€èµ·å§‹å¤„ã€‚
  */
 #define PKMAP_BASE ( (FIXADDR_BOOT_START - PAGE_SIZE*(LAST_PKMAP + 1)) & PMD_MASK )
 #define LAST_PKMAP_MASK (LAST_PKMAP-1)

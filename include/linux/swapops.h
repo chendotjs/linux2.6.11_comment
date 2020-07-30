@@ -16,7 +16,7 @@
  * Store a type+offset into a swp_entry_t in an arch-independent format
  */
 /**
- * ¸ù¾İ½»»»ÇøË÷ÒıtypeºÍÒ³²ÛË÷Òıoffset¹¹Ôì»»³öÒ³±êÊ¶·û¡£
+ * æ ¹æ®äº¤æ¢åŒºç´¢å¼•typeå’Œé¡µæ§½ç´¢å¼•offsetæ„é€ æ¢å‡ºé¡µæ ‡è¯†ç¬¦ã€‚
  */
 static inline swp_entry_t swp_entry(unsigned long type, pgoff_t offset)
 {
@@ -32,7 +32,7 @@ static inline swp_entry_t swp_entry(unsigned long type, pgoff_t offset)
  * arch-independent format
  */
 /**
- * ´Ó»»³öÒ³±êÊ¶·ûÖĞÌáÈ¡³ö½»»»ÇøË÷Òı¡£
+ * ä»æ¢å‡ºé¡µæ ‡è¯†ç¬¦ä¸­æå–å‡ºäº¤æ¢åŒºç´¢å¼•ã€‚
  */
 static inline unsigned swp_type(swp_entry_t entry)
 {
@@ -44,7 +44,7 @@ static inline unsigned swp_type(swp_entry_t entry)
  * arch-independent format
  */
 /**
- * ´Ó»»³öÒ³±êÊ¶·ûÖĞÌáÈ¡³öÒ³²ÛË÷Òı¡£
+ * ä»æ¢å‡ºé¡µæ ‡è¯†ç¬¦ä¸­æå–å‡ºé¡µæ§½ç´¢å¼•ã€‚
  */
 static inline pgoff_t swp_offset(swp_entry_t entry)
 {

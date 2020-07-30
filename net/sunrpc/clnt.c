@@ -380,11 +380,11 @@ out:
  * New rpc_call implementation
  */
 /**
- * RPCºËĞÄº¯Êı£¬½øĞĞÔ¶³Ì¹ı³Ìµ÷ÓÃ¡£
- *		msg			:µ÷ÓÃµÄ¹ı³ÌºÅ¡¢²ÎÊı¡¢·µ»Ø½á¹ûµÈ¡£
- *		flag		:µ÷ÓÃ±êÖ¾¡£
- *		callback	:»Øµ÷º¯Êı¡£
- *		data		:»Øµ÷º¯ÊıµÄ²ÎÊı¡£
+ * RPCæ ¸å¿ƒå‡½æ•°ï¼Œè¿›è¡Œè¿œç¨‹è¿‡ç¨‹è°ƒç”¨ã€‚
+ *		msg			:è°ƒç”¨çš„è¿‡ç¨‹å·ã€å‚æ•°ã€è¿”å›ç»“æœç­‰ã€‚
+ *		flag		:è°ƒç”¨æ ‡å¿—ã€‚
+ *		callback	:å›è°ƒå‡½æ•°ã€‚
+ *		data		:å›è°ƒå‡½æ•°çš„å‚æ•°ã€‚
  */
 int
 rpc_call_async(struct rpc_clnt *clnt, struct rpc_message *msg, int flags,
@@ -396,13 +396,13 @@ rpc_call_async(struct rpc_clnt *clnt, struct rpc_message *msg, int flags,
 
 	/* If this client is slain all further I/O fails */
 	/**
-	 * ÓÉÓÚIOµÄÔ­Òò£¬´Ë¿Í»§¶ËÒÑ¾­²»¿ÉÓÃ£¬Ö±½Ó·µ»Ø¡£
+	 * ç”±äºIOçš„åŸå› ï¼Œæ­¤å®¢æˆ·ç«¯å·²ç»ä¸å¯ç”¨ï¼Œç›´æ¥è¿”å›ã€‚
 	 */
 	if (clnt->cl_dead) 
 		return -EIO;
 
 	/**
-	 * ÉèÖÃÒì²½Ö´ĞĞ±êÖ¾¡£
+	 * è®¾ç½®å¼‚æ­¥æ‰§è¡Œæ ‡å¿—ã€‚
 	 */
 	flags |= RPC_TASK_ASYNC;
 
@@ -413,20 +413,20 @@ rpc_call_async(struct rpc_clnt *clnt, struct rpc_message *msg, int flags,
 		callback = rpc_default_callback;
 	status = -ENOMEM;
 	/**
-	 * ´´½¨Ò»¸örpc_task½á¹¹£¬²¢½øĞĞÒ»Ğ©³õÊ¼»¯¡£
+	 * åˆ›å»ºä¸€ä¸ªrpc_taskç»“æ„ï¼Œå¹¶è¿›è¡Œä¸€äº›åˆå§‹åŒ–ã€‚
 	 */
 	if (!(task = rpc_new_task(clnt, callback, flags)))
 		goto out;
 	task->tk_calldata = data;
 
 	/**
-	 * ¶Ô²ÎÊıºÍ·µ»Ø½á¹ûÖ¸ÕëÒÔ¼°tk_action½øĞĞ³õÊ¼»¯¡£
+	 * å¯¹å‚æ•°å’Œè¿”å›ç»“æœæŒ‡é’ˆä»¥åŠtk_actionè¿›è¡Œåˆå§‹åŒ–ã€‚
 	 */
 	rpc_call_setup(task, msg, 0);
 
 	/* Set up the call info struct and execute the task */
 	/**
-	 * µ÷ÓÃrpc_executeº¯ÊıÖ´ĞĞÕâ¸öÈÎÎñ¡£ÆäÖĞ»áÖ´ĞĞtk_actionÖ¸ÕëÖ¸ÏòµÄº¯Êı£¬¼´Ê×ÏÈÖ´ĞĞcall_start
+	 * è°ƒç”¨rpc_executeå‡½æ•°æ‰§è¡Œè¿™ä¸ªä»»åŠ¡ã€‚å…¶ä¸­ä¼šæ‰§è¡Œtk_actionæŒ‡é’ˆæŒ‡å‘çš„å‡½æ•°ï¼Œå³é¦–å…ˆæ‰§è¡Œcall_start
 	 */
 	if (task->tk_status == 0)
 		status = rpc_execute(task);

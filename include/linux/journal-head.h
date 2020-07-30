@@ -15,28 +15,28 @@ typedef struct transaction_s	transaction_t;	/* Compound transaction type */
 struct buffer_head;
 
 /**
- * JBDÓÃ´ËÃèÊö·û¹ÜÀí´ÅÅÌ¿é
- * Óëbuffer_head¶ÔÓ¦
+ * JBDç”¨æ­¤æè¿°ç¬¦ç®¡ç†ç£ç›˜å—
+ * ä¸buffer_headå¯¹åº”
  */
 struct journal_head {
 	/*
 	 * Points back to our buffer_head. [jbd_lock_bh_journal_head()]
 	 */
-	/* Ö¸ÏòËù¹ÜÀíµÄ´ÅÅÌ¿é */
+	/* æŒ‡å‘æ‰€ç®¡ç†çš„ç£ç›˜å— */
 	struct buffer_head *b_bh;
 
 	/*
 	 * Reference count - see description in journal.c
 	 * [jbd_lock_bh_journal_head()]
 	 */
-	/* ÒıÓÃ¼ÆÊı */
+	/* å¼•ç”¨è®¡æ•° */
 	int b_jcount;
 
 	/*
 	 * Journalling list for this buffer [jbd_lock_bh_state()]
 	 */
 	/**
-	 * µ±Ç°»º³åÇøÎ»ÓÚÈÕÖ¾µÄÄÄ¸öÁ´±íÖĞ¡£
+	 * å½“å‰ç¼“å†²åŒºä½äºæ—¥å¿—çš„å“ªä¸ªé“¾è¡¨ä¸­ã€‚
 	 */
 	unsigned b_jlist;
 
@@ -45,8 +45,8 @@ struct journal_head {
 	 * [jbd_lock_bh_state()]
 	 */
 	/**
-	 * Èç¹ûĞèÒª×ªÒå£¬¾Í½«buffer_headÖĞµÄÊı¾İ¸´ÖÆµ½ÕâÀï
-	 * ½«±¸·İµÄÊı¾İĞ´µ½ÈÕÖ¾ÖĞ
+	 * å¦‚æœéœ€è¦è½¬ä¹‰ï¼Œå°±å°†buffer_headä¸­çš„æ•°æ®å¤åˆ¶åˆ°è¿™é‡Œ
+	 * å°†å¤‡ä»½çš„æ•°æ®å†™åˆ°æ—¥å¿—ä¸­
 	 */
 	char *b_frozen_data;
 
@@ -56,8 +56,8 @@ struct journal_head {
 	 * uncommitted deletes. [jbd_lock_bh_state()]
 	 */
 	/**
-	 * Î»Í¼´ÅÅÌ»º³åÇø
-	 * ÕâÀï½«Æä¸´ÖÆÒ»·İĞ´µ½ÈÕÖ¾ÖĞ
+	 * ä½å›¾ç£ç›˜ç¼“å†²åŒº
+	 * è¿™é‡Œå°†å…¶å¤åˆ¶ä¸€ä»½å†™åˆ°æ—¥å¿—ä¸­
 	 */
 	char *b_committed_data;
 
@@ -68,7 +68,7 @@ struct journal_head {
 	 * transaction's data or metadata journaling list.
 	 * [j_list_lock] [jbd_lock_bh_state()]
 	 */
-	/* Ö¸ÏòËùÊôÊÂÎñ */
+	/* æŒ‡å‘æ‰€å±äº‹åŠ¡ */
 	transaction_t *b_transaction;
 
 	/*
@@ -78,8 +78,8 @@ struct journal_head {
 	 * [t_list_lock] [jbd_lock_bh_state()]
 	 */
 	/**
-	 * ÕıÔÚĞŞ¸Ä»º³åÇøµÄÊÂÎñ¡£
-	 * ´ËÊ±ÒÑ¾­ÓĞÒ»¸öÊÂÎñÔÚÌá½»»º³åÇø£¬¶øĞÂÊÂÎñÔÚ·ÃÎÊËü
+	 * æ­£åœ¨ä¿®æ”¹ç¼“å†²åŒºçš„äº‹åŠ¡ã€‚
+	 * æ­¤æ—¶å·²ç»æœ‰ä¸€ä¸ªäº‹åŠ¡åœ¨æäº¤ç¼“å†²åŒºï¼Œè€Œæ–°äº‹åŠ¡åœ¨è®¿é—®å®ƒ
 	 */
 	transaction_t *b_next_transaction;
 
@@ -88,7 +88,7 @@ struct journal_head {
 	 * forget queue. [t_list_lock] [jbd_lock_bh_state()]
 	 */
 	/**
-	 * Í¨¹ıÕâÁ½¸ö×Ö¶Î½«»º³åÇøÁ´½Óµ½ÊÂÎñµÄÁ´±íÖĞ
+	 * é€šè¿‡è¿™ä¸¤ä¸ªå­—æ®µå°†ç¼“å†²åŒºé“¾æ¥åˆ°äº‹åŠ¡çš„é“¾è¡¨ä¸­
 	 */
 	struct journal_head *b_tnext, *b_tprev;
 
@@ -98,7 +98,7 @@ struct journal_head {
 	 * [j_list_lock]
 	 */
 	/**
-	 * ÕıÔÚcheckpoint±¾»º³åÇøµÄÊÂÎñ
+	 * æ­£åœ¨checkpointæœ¬ç¼“å†²åŒºçš„äº‹åŠ¡
 	 */
 	transaction_t *b_cp_transaction;
 
@@ -108,7 +108,7 @@ struct journal_head {
 	 * [j_list_lock]
 	 */
 	/**
-	 * Í¨¹ıÕâÁ½¸ö×Ö¶Î£¬½«ÆäÁ´½Óµ½ÊÂÎñµÄcheckpointÁ´±íÖĞ
+	 * é€šè¿‡è¿™ä¸¤ä¸ªå­—æ®µï¼Œå°†å…¶é“¾æ¥åˆ°äº‹åŠ¡çš„checkpointé“¾è¡¨ä¸­
 	 */
 	struct journal_head *b_cpnext, *b_cpprev;
 };

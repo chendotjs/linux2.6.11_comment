@@ -175,11 +175,11 @@ static void group_release_blocks(struct super_block *sb, int group_no,
 
 /* Free given blocks, update quota and i_blocks field */
 /**
- * ÊÍ·ÅÒ»×éº¬ÓĞÒ»¸ö»ò¶à¸öÏàÁÚ¿éµÄÊı¾İ¿é¡£³ıext2_truncateÍâ£¬¶ªÆúÎÄ¼şµÄÔ¤·ÖÅä¿éÒ²µ÷ÓÃËü¡£
- * ext2_truncate»òÕß¶ªÆúÎÄ¼şµÄÔ¤·ÖÅä¿éÊ±¶¼»áµ÷ÓÃËü¡£
- * inode-ÎÄ¼şË÷Òı½áµã¶ÔÏóµÄµØÖ·¡£
- * block-ÒªÊÍ·ÅµÄµÚÒ»¸ö¿éµÄÂß¼­ºÅ¡£
- * count-ÒªÊÍ·ÅµÄÏàÁÚ¿éÊı¡£
+ * é‡Šæ”¾ä¸€ç»„å«æœ‰ä¸€ä¸ªæˆ–å¤šä¸ªç›¸é‚»å—çš„æ•°æ®å—ã€‚é™¤ext2_truncateå¤–ï¼Œä¸¢å¼ƒæ–‡ä»¶çš„é¢„åˆ†é…å—ä¹Ÿè°ƒç”¨å®ƒã€‚
+ * ext2_truncateæˆ–è€…ä¸¢å¼ƒæ–‡ä»¶çš„é¢„åˆ†é…å—æ—¶éƒ½ä¼šè°ƒç”¨å®ƒã€‚
+ * inode-æ–‡ä»¶ç´¢å¼•ç»“ç‚¹å¯¹è±¡çš„åœ°å€ã€‚
+ * block-è¦é‡Šæ”¾çš„ç¬¬ä¸€ä¸ªå—çš„é€»è¾‘å·ã€‚
+ * count-è¦é‡Šæ”¾çš„ç›¸é‚»å—æ•°ã€‚
  */
 void ext2_free_blocks (struct inode * inode, unsigned long block,
 		       unsigned long count)
@@ -223,7 +223,7 @@ do_more:
 	}
 	brelse(bitmap_bh);
 	/**
-	 * »ñµÃÒªÊÍ·ÅµÄ¿éµÄÎ»Í¼¡£
+	 * è·å¾—è¦é‡Šæ”¾çš„å—çš„ä½å›¾ã€‚
 	 */
 	bitmap_bh = read_block_bitmap(sb, block_group);
 	if (!bitmap_bh)
@@ -245,7 +245,7 @@ do_more:
 			    block, count);
 
 	/**
-	 * ½«¿éÎ»Í¼Çå0¡£
+	 * å°†å—ä½å›¾æ¸…0ã€‚
 	 */
 	for (i = 0, group_freed = 0; i < count; i++) {
 		if (!ext2_clear_bit_atomic(sb_bgl_lock(sbi, block_group),
@@ -258,14 +258,14 @@ do_more:
 	}
 
 	/**
-	 * ½«Î»Í¼ËùÔÚµÄ»º³åÇøÉèÖÃÎªÔà¡£
+	 * å°†ä½å›¾æ‰€åœ¨çš„ç¼“å†²åŒºè®¾ç½®ä¸ºè„ã€‚
 	 */
 	mark_buffer_dirty(bitmap_bh);
-	if (sb->s_flags & MS_SYNCHRONOUS)/* Èç¹ûÉèÖÃÁË´Ë±êÖ¾£¬ÔòµÈ´ıÎ»Í¼»º³åÇø±»Ğ´Èë´ÅÅÌ */
+	if (sb->s_flags & MS_SYNCHRONOUS)/* å¦‚æœè®¾ç½®äº†æ­¤æ ‡å¿—ï¼Œåˆ™ç­‰å¾…ä½å›¾ç¼“å†²åŒºè¢«å†™å…¥ç£ç›˜ */
 		sync_dirty_buffer(bitmap_bh);
 
 	/**
-	 * Ôö¼Ó¿é×éÃèÊö·ûµÄ¿ÕÏĞ¿é×Ö¶Î£¬²¢½«ÏàÓ¦µÄ»º³åÇø±ê¼ÇÎªÔà¡£°Ñ³¬¼¶¿éÒ²ÉèÖÃÎªÔà¡£
+	 * å¢åŠ å—ç»„æè¿°ç¬¦çš„ç©ºé—²å—å­—æ®µï¼Œå¹¶å°†ç›¸åº”çš„ç¼“å†²åŒºæ ‡è®°ä¸ºè„ã€‚æŠŠè¶…çº§å—ä¹Ÿè®¾ç½®ä¸ºè„ã€‚
 	 */
 	group_release_blocks(sb, block_group, desc, bh2, group_freed);
 	freed += group_freed;
@@ -343,7 +343,7 @@ got_it:
  * This function also updates quota and i_blocks field.
  */
 /**
- * ÔÚext2·ÖÇøÄÚËÑÑ°Ò»¸ö¿ÕÏĞ¿é¡£µ±Ô¤·ÖÅäµÄ¿éÊ§Ğ§Ê±Ê¹ÓÃ¡£
+ * åœ¨ext2åˆ†åŒºå†…æœå¯»ä¸€ä¸ªç©ºé—²å—ã€‚å½“é¢„åˆ†é…çš„å—å¤±æ•ˆæ—¶ä½¿ç”¨ã€‚
  */
 int ext2_new_block(struct inode *inode, unsigned long goal,
 			u32 *prealloc_count, u32 *prealloc_block, int *err)

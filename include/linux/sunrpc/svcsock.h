@@ -15,32 +15,32 @@
  * RPC server socket.
  */
 /**
- * RPC·şÎñÆ÷Ì×½Ó×Ö£¬ÊÇ¶ÔSOCKETµÄÒ»¸ö·â×°¡£
+ * RPCæœåŠ¡å™¨å¥—æ¥å­—ï¼Œæ˜¯å¯¹SOCKETçš„ä¸€ä¸ªå°è£…ã€‚
  */
 struct svc_sock {
 	/**
-	 * ×¼±¸ºÃµÄsvc_socketµÄÁ´±í
+	 * å‡†å¤‡å¥½çš„svc_socketçš„é“¾è¡¨
 	 */
 	struct list_head	sk_ready;	/* list of ready sockets */
 	/**
-	 * ËùÓĞµÄsvc_socket
+	 * æ‰€æœ‰çš„svc_socket
 	 */
 	struct list_head	sk_list;	/* list of all sockets */
 	/** 
-	 * berkeley socket ²ãÌ×½Ó×Ö¡£
+	 * berkeley socket å±‚å¥—æ¥å­—ã€‚
 	 */
 	struct socket *		sk_sock;	/* berkeley socket layer */
 	/** 
-	 * INET²ã 
+	 * INETå±‚ 
 	 */
 	struct sock *		sk_sk;		/* INET layer */
 
 	/** 
-	 * ¶ÔÓ¦Õâ¸ösocketµÄserv½á¹¹ 
+	 * å¯¹åº”è¿™ä¸ªsocketçš„servç»“æ„ 
 	 */
 	struct svc_serv *	sk_server;	/* service for this socket */
 	/**
-	 * Ê¹ÓÃ¼ÆÊı 
+	 * ä½¿ç”¨è®¡æ•° 
 	 */
 	unsigned int		sk_inuse;	/* use count */
 	unsigned long		sk_flags;
@@ -69,15 +69,15 @@ struct svc_sock {
 
 	/* private TCP part */
 	/** 
-	 * ¼ÇÂ¼³¤¶È 
+	 * è®°å½•é•¿åº¦ 
 	 */
 	int			sk_reclen;	/* length of record */
 	/**
-	 * ÏÖÔÚ¶Á³¤¶È 
+	 * ç°åœ¨è¯»é•¿åº¦ 
 	 */
 	int			sk_tcplen;	/* current read length */
 	/**
-	 * ×îºóÒ»´Î½ÓÊÕÊ±¼ä¡£
+	 * æœ€åä¸€æ¬¡æ¥æ”¶æ—¶é—´ã€‚
 	 */
 	time_t			sk_lastrecv;	/* time of last received request */
 };

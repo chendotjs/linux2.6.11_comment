@@ -150,7 +150,7 @@ try_get_root_bridge_busnr(acpi_handle handle, int *busnum)
 }
 
 /**
- * É¨ÃèACPI PCI×ÜÏßÊ÷¡£
+ * æ‰«æACPI PCIæ€»çº¿æ ‘ã€‚
  */
 static int
 acpi_pci_root_add (
@@ -169,7 +169,7 @@ acpi_pci_root_add (
 		return_VALUE(-EINVAL);
 
 	/**
-	 * ·ÖÅäÒ»¸öacpi_pci_root½á¹¹¡£
+	 * åˆ†é…ä¸€ä¸ªacpi_pci_rootç»“æž„ã€‚
 	 */
 	root = kmalloc(sizeof(struct acpi_pci_root), GFP_KERNEL);
 	if (!root)
@@ -263,8 +263,8 @@ acpi_pci_root_add (
 
  	/* TBD: Locking */
 	/**
-	 * ½«acpi_pci_root½á¹¹¼Óµ½acpi_pci_roots¶ÓÁÐÖÐ¡£
-	 * acpi_pci_roots°üº¬ÁËËùÓÐacpi_pciÖ÷ÇÅ¡£¶Ô¶àÊýx86ÌåÏµ½á¹¹ÖÐ£¬Ö»ÓÐÒ»¸öÖ÷ÇÅ¡£
+	 * å°†acpi_pci_rootç»“æž„åŠ åˆ°acpi_pci_rootsé˜Ÿåˆ—ä¸­ã€‚
+	 * acpi_pci_rootsåŒ…å«äº†æ‰€æœ‰acpi_pciä¸»æ¡¥ã€‚å¯¹å¤šæ•°x86ä½“ç³»ç»“æž„ä¸­ï¼Œåªæœ‰ä¸€ä¸ªä¸»æ¡¥ã€‚
 	 */
  	list_add_tail(&root->node, &acpi_pci_roots);
 
@@ -280,7 +280,7 @@ acpi_pci_root_add (
 	 * thus the root bridge's pci_dev does not exist).
 	 */
 	/**
-	 * Ê¹ÄÜACPIºó£¬µ÷ÓÃpci_acpi_scan_rootÍê³ÉPCIÉè±¸µÄÃ¶¾Ù¡£·ñÔòÊ¹ÓÃpcibios_scan_root¡£
+	 * ä½¿èƒ½ACPIåŽï¼Œè°ƒç”¨pci_acpi_scan_rootå®ŒæˆPCIè®¾å¤‡çš„æžšä¸¾ã€‚å¦åˆ™ä½¿ç”¨pcibios_scan_rootã€‚
 	 */
 	root->bus = pci_acpi_scan_root(device, root->id.segment, root->id.bus);
 	if (!root->bus) {
@@ -297,7 +297,7 @@ acpi_pci_root_add (
 	 * Thus binding the ACPI and PCI devices.
 	 */
 	/**
-	 * °ó¶¨acpi_deviceÓëpci_bus½á¹¹¡£
+	 * ç»‘å®šacpi_deviceä¸Žpci_busç»“æž„ã€‚
 	 */
 	result = acpi_pci_bind_root(device, &root->id, root->bus);
 	if (result)
@@ -311,7 +311,7 @@ acpi_pci_root_add (
 	status = acpi_get_handle(root->handle, METHOD_NAME__PRT, &handle);
 	if (ACPI_SUCCESS(status))
 		/**
-		 * ·ÖÎöµ±Ç°´¦ÀíÆ÷ÏµÍ³µÄÖÐ¶ÏÂ·ÓÉ±í¡£
+		 * åˆ†æžå½“å‰å¤„ç†å™¨ç³»ç»Ÿçš„ä¸­æ–­è·¯ç”±è¡¨ã€‚
 		 */
 		result = acpi_pci_irq_add_prt(root->handle, root->id.segment,
 			root->id.bus);
@@ -357,8 +357,8 @@ static int __init acpi_pci_root_init (void)
 	 */
 
 	/**
-	 * acpi_bus_register_driver×¢²áACPIÇý¶¯¡£
-	 * Õâ×îÖÕµ¼ÖÂacpi_pci_root_addº¯Êý±»µ÷ÓÃ¡£
+	 * acpi_bus_register_driveræ³¨å†ŒACPIé©±åŠ¨ã€‚
+	 * è¿™æœ€ç»ˆå¯¼è‡´acpi_pci_root_addå‡½æ•°è¢«è°ƒç”¨ã€‚
 	 */
 	if (acpi_bus_register_driver(&acpi_pci_root_driver) < 0)
 		return_VALUE(-ENODEV);

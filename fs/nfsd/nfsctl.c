@@ -389,7 +389,7 @@ static struct file_system_type nfsd_fs_type = {
 };
 
 /**
- * ³õÊ¼»¯NFSD·þÎñ¡£ÔÚ¼ÓÔØÄ£¿éÊ±µ÷ÓÃ¡£
+ * åˆå§‹åŒ–NFSDæœåŠ¡ã€‚åœ¨åŠ è½½æ¨¡å—æ—¶è°ƒç”¨ã€‚
  */
 static int __init init_nfsd(void)
 {
@@ -397,19 +397,19 @@ static int __init init_nfsd(void)
 	printk(KERN_INFO "Installing knfsd (copyright (C) 1996 okir@monad.swb.de).\n");
 
 	/**
-	 * Í³¼Æ³õÊ¼»¯ 
+	 * ç»Ÿè®¡åˆå§‹åŒ– 
 	 */
 	nfsd_stat_init();	/* Statistics */
 	/**
-	 * RPCÓ¦´ð»º³åÇø³õÊ¼»¯ 
+	 * RPCåº”ç­”ç¼“å†²åŒºåˆå§‹åŒ– 
 	 */
 	nfsd_cache_init();	/* RPC reply cache */
 	/**
-	 * ¿ÉÒÔÌá¹©·þÎñÁÐ±í³õÊ¼»¯ 
+	 * å¯ä»¥æä¾›æœåŠ¡åˆ—è¡¨åˆå§‹åŒ– 
 	 */
 	nfsd_export_init();	/* Exports table */
 	/**
-	 * lockd->nfsd»Øµ÷º¯Êý³õÊ¼»¯
+	 * lockd->nfsdå›žè°ƒå‡½æ•°åˆå§‹åŒ–
 	 */
 	nfsd_lockd_init();	/* lockd->nfsd callbacks */
 #ifdef CONFIG_NFSD_V4

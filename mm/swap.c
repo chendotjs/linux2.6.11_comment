@@ -100,9 +100,9 @@ int rotate_reclaimable_page(struct page *page)
  * FIXME: speed this up?
  */
 /**
- * ¼ì²éPG_active±êÖ¾£¬Èç¹ûÃ»ÓĞÖÃÎ»(Ò³ÔÚ·Ç»î¶¯Á´±íÖĞ)£¬½«Ò³ÒÆµ½»î¶¯Á´±íÖĞ¡£
- * ÒÀ´Îµ÷ÓÃdel_page_from_inactive_listºÍadd_page_to_active_list£¬×îºó½«PG_active±êÖ¾ÖÃÎ»¡£
- * ÔÚÒÆ¶¯Ò³Ö®Ç°£¬»ñµÃ¹ÜÀíÇøµÄlru_lock×ÔĞıËø¡£
+ * æ£€æŸ¥PG_activeæ ‡å¿—ï¼Œå¦‚æœæ²¡æœ‰ç½®ä½(é¡µåœ¨éæ´»åŠ¨é“¾è¡¨ä¸­)ï¼Œå°†é¡µç§»åˆ°æ´»åŠ¨é“¾è¡¨ä¸­ã€‚
+ * ä¾æ¬¡è°ƒç”¨del_page_from_inactive_listå’Œadd_page_to_active_listï¼Œæœ€åå°†PG_activeæ ‡å¿—ç½®ä½ã€‚
+ * åœ¨ç§»åŠ¨é¡µä¹‹å‰ï¼Œè·å¾—ç®¡ç†åŒºçš„lru_lockè‡ªæ—‹é”ã€‚
  */
 void fastcall activate_page(struct page *page)
 {
@@ -126,13 +126,13 @@ void fastcall activate_page(struct page *page)
  * active,unreferenced		->	active,referenced
  */
 /**
- * ½«Ò»¸öÒ³±ê¼ÇÎª·ÃÎÊ¹ı¡£Ö»ÓĞµ±PG_referenced±êÖ¾ÖÃÎ»Ê±£¬Ëü°ÑÒ³´Ó·Ç»î¶¯Á´±íÒÆµ½»î¶¯Á´±í¡£ÒÔÏÂÇé¿ö»áµ÷ÓÃ±¾º¯Êı:
- *		µ±°´Ğè×°Èë½ø³ÌµÄÒ»¸öÄäÃûÒ³Ê±¡£
- *		µ±°´Ğè×°ÈëÄÚ´æÓ³ÉäÎÄ¼şµÄÒ»¸öÒ³Ê±¡£
- *		µ±°´Ğè×°ÈëIPC¹²ÏíÄÚ´æÇøµÄÒ»¸öÒ³Ê±¡£
- *		µ±´ÓÎÄ¼ş¶ÁÈ¡Êı¾İÒ³Ê±¡£
- *		µ±»»ÈëÒ»¸öÒ³Ê±¡£
- *		µ±ÔÚ¸ßËÙ»º´æÖĞËÑË÷Ò»¸ö»º³åÇøÒ³Ê±¡£
+ * å°†ä¸€ä¸ªé¡µæ ‡è®°ä¸ºè®¿é—®è¿‡ã€‚åªæœ‰å½“PG_referencedæ ‡å¿—ç½®ä½æ—¶ï¼Œå®ƒæŠŠé¡µä»éæ´»åŠ¨é“¾è¡¨ç§»åˆ°æ´»åŠ¨é“¾è¡¨ã€‚ä»¥ä¸‹æƒ…å†µä¼šè°ƒç”¨æœ¬å‡½æ•°:
+ *		å½“æŒ‰éœ€è£…å…¥è¿›ç¨‹çš„ä¸€ä¸ªåŒ¿åé¡µæ—¶ã€‚
+ *		å½“æŒ‰éœ€è£…å…¥å†…å­˜æ˜ å°„æ–‡ä»¶çš„ä¸€ä¸ªé¡µæ—¶ã€‚
+ *		å½“æŒ‰éœ€è£…å…¥IPCå…±äº«å†…å­˜åŒºçš„ä¸€ä¸ªé¡µæ—¶ã€‚
+ *		å½“ä»æ–‡ä»¶è¯»å–æ•°æ®é¡µæ—¶ã€‚
+ *		å½“æ¢å…¥ä¸€ä¸ªé¡µæ—¶ã€‚
+ *		å½“åœ¨é«˜é€Ÿç¼“å­˜ä¸­æœç´¢ä¸€ä¸ªç¼“å†²åŒºé¡µæ—¶ã€‚
  */
 void fastcall mark_page_accessed(struct page *page)
 {
@@ -154,7 +154,7 @@ static DEFINE_PER_CPU(struct pagevec, lru_add_pvecs) = { 0, };
 static DEFINE_PER_CPU(struct pagevec, lru_add_active_pvecs) = { 0, };
 
 /**
- * Èç¹ûÒ³²»ÔÚLRUÁ´±íÖĞ£¬½«PG_lru±êÖ¾ÖÃÎ»£¬µÃµ½¹ÜÀíÇøµÄlru_lock×ÔĞ»Ëø£¬µ÷ÓÃadd_page_to_inactive_list°ÑÒ³²åÈë¹ÜÀíÇøµÄ·Ç»î¶¯Á´±í¡£
+ * å¦‚æœé¡µä¸åœ¨LRUé“¾è¡¨ä¸­ï¼Œå°†PG_lruæ ‡å¿—ç½®ä½ï¼Œå¾—åˆ°ç®¡ç†åŒºçš„lru_lockè‡ªè°¢é”ï¼Œè°ƒç”¨add_page_to_inactive_listæŠŠé¡µæ’å…¥ç®¡ç†åŒºçš„éæ´»åŠ¨é“¾è¡¨ã€‚
  */
 void fastcall lru_cache_add(struct page *page)
 {
@@ -167,7 +167,7 @@ void fastcall lru_cache_add(struct page *page)
 }
 
 /**
- * Èç¹ûÒ³²»ÔÚLRUÁ´±íÖĞ£¬½«PG_lruºÍPG_active±êÖ¾ÖÃÎ»£¬µÃµ½¹ÜÀíÇøµÄlru_lock×ÔĞıËø£¬µ÷ÓÃadd_page_to_active_list°ÑÒ³²åÈë¹ÜÀíÇøµÄ»î¶¯Á´±í¡£
+ * å¦‚æœé¡µä¸åœ¨LRUé“¾è¡¨ä¸­ï¼Œå°†PG_lruå’ŒPG_activeæ ‡å¿—ç½®ä½ï¼Œå¾—åˆ°ç®¡ç†åŒºçš„lru_lockè‡ªæ—‹é”ï¼Œè°ƒç”¨add_page_to_active_listæŠŠé¡µæ’å…¥ç®¡ç†åŒºçš„æ´»åŠ¨é“¾è¡¨ã€‚
  */
 void fastcall lru_cache_add_active(struct page *page)
 {

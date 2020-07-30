@@ -97,17 +97,17 @@
  *	This is an Ethernet frame header.
  */
 /**
- * ��̫��֡ͷ������ethhdr�ṹ�������������ֶ�(LLC��SNAP)��
+ * 以太网帧头。允许ethhdr结构后面添加其他字段(LLC和SNAP)。
  */
 struct ethhdr {
 	unsigned char	h_dest[ETH_ALEN];	/* destination eth addr	*/
 	unsigned char	h_source[ETH_ALEN];	/* source ether addr	*/
 	/**
-	 * ��ʵ�ʼȱ���ʹ�õ�Э�飬Ҳ����֡�ĳ��ȡ�
-	 * ������Ϊ���������ֽڣ� ������̫��֡����󳤶���1500(1536)�ֽ�
-	 * Ϊ�˽�ʡ�ռ䣬IEEE����ʹ�ô���1536��ֵ��ʾ��̫��Э�顣
-	 * > 1536��ʾһ���Э����(ETH_P_IP)
-	 * < 1500��ʾ֧��LLC����SNAP
+	 * 它实际既保存使用的协议，也保存帧的长度。
+	 * 这是因为它有两个字节， 但是以太网帧的最大长度是1500(1536)字节
+	 * 为了节省空间，IEEE决定使用大于1536的值表示以太网协议。
+	 * > 1536表示一般的协议如(ETH_P_IP)
+	 * < 1500表示支持LLC或者SNAP
 	 */
 	unsigned short	h_proto;		/* packet type ID field	*/
 } __attribute__((packed));

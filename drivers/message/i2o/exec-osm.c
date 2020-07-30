@@ -15,8 +15,8 @@
  *
  *	Fixes/additions:
  *		Philipp Rumpf
- *		Juha Sievänen <Juha.Sievanen@cs.Helsinki.FI>
- *		Auvo Häkkinen <Auvo.Hakkinen@cs.Helsinki.FI>
+ *		Juha Sievnen <Juha.Sievanen@cs.Helsinki.FI>
+ *		Auvo Hkkinen <Auvo.Hakkinen@cs.Helsinki.FI>
  *		Deepak Saxena <deepak@plexity.net>
  *		Boji T Kannanthanam <boji.t.kannanthanam@intel.com>
  *		Alan Cox <alan@redhat.com>:

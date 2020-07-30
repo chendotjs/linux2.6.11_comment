@@ -325,9 +325,9 @@ void journal_destroy_revoke(journal_t *journal)
  */
 
 /** 
- * ³·Ïú¿é
- * Õë¶ÔÔªÊı¾İ
- * ¼Ó¿ìreplayµÄËÙ¶È
+ * æ’¤é”€å—
+ * é’ˆå¯¹å…ƒæ•°æ®
+ * åŠ å¿«replayçš„é€Ÿåº¦
  */
 int journal_revoke(handle_t *handle, unsigned long blocknr, 
 		   struct buffer_head *bh_in)
@@ -351,7 +351,7 @@ int journal_revoke(handle_t *handle, unsigned long blocknr,
 	bh = bh_in;
 
 	if (!bh) {
-		/* ¶ÁÈ¡¶ÔÓ¦µÄ»º³åÇø */
+		/* è¯»å–å¯¹åº”çš„ç¼“å†²åŒº */
 		bh = __find_get_block(bdev, blocknr, journal->j_blocksize);
 		if (bh)
 			BUFFER_TRACE(bh, "found on hash");
@@ -401,7 +401,7 @@ int journal_revoke(handle_t *handle, unsigned long blocknr,
 
 	jbd_debug(2, "insert revoke for block %lu, bh_in=%p\n", blocknr, bh_in);
 	/**
-	 * ½«¿é¼ÓÈëµ½³·Ïú±íÖĞ
+	 * å°†å—åŠ å…¥åˆ°æ’¤é”€è¡¨ä¸­
 	 */
 	err = insert_revoke_hash(journal, blocknr,
 				handle->h_transaction->t_tid);
@@ -654,17 +654,17 @@ int journal_set_revoke(journal_t *journal,
 {
 	struct jbd_revoke_record_s *record;
 
-	/* ³·Ïú¿éÔÚ¹şÏ£±íÖĞ´æÔÚÂğ? */
+	/* æ’¤é”€å—åœ¨å“ˆå¸Œè¡¨ä¸­å­˜åœ¨å—? */
 	record = find_revoke_record(journal, blocknr);
-	if (record) {/* ´æÔÚ */
+	if (record) {/* å­˜åœ¨ */
 		/* If we have multiple occurrences, only record the
 		 * latest sequence number in the hashed record */
-		/* ĞÂµÄÊÂÎñĞòºÅ¸ü´óÂğ? */
+		/* æ–°çš„äº‹åŠ¡åºå·æ›´å¤§å—? */
 		if (tid_gt(sequence, record->sequence))
-			record->sequence = sequence;/* ¼ÇÂ¼×îĞÂµÄÊÂÎñºÅ */
+			record->sequence = sequence;/* è®°å½•æœ€æ–°çš„äº‹åŠ¡å· */
 		return 0;
 	} 
-	/* »¹²»´æÔÚ£¬Ö±½Ó²åÈëµ½¹şÏ£±í */
+	/* è¿˜ä¸å­˜åœ¨ï¼Œç›´æ¥æ’å…¥åˆ°å“ˆå¸Œè¡¨ */
 	return insert_revoke_hash(journal, blocknr, sequence);
 }
 

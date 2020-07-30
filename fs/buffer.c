@@ -112,9 +112,9 @@ static void buffer_io_error(struct buffer_head *bh)
  * unlock the buffer. This is what ll_rw_block uses too.
  */
 /**
- * ll_rw_blockĞèÒª°Ñ»º³åÇøÊ×²¿´«µİµ½Í¨ÓÃ¿é²ã£¬ÕâÑù¾ÍÔö¼ÓÁËbhµÄÒıÓÃ¼ÆÊı¡£
- * ÄÇÃ´£¬ÔÚÍê³ÉÁËIO´«Êäºó£¬¾ÍĞèÒª¼õÉÙÒıÓÃ¼ÆÊı¡£Õâ¸ö¹¤×÷ÊÇÔÚbhµÄb_end_ioÖĞÍê³ÉµÄ¡£
- * b_end_io×îÖÕºóµ÷ÓÃend_buffer_read_sync»òÕßend_buffer_write_sync
+ * ll_rw_blockéœ€è¦æŠŠç¼“å†²åŒºé¦–éƒ¨ä¼ é€’åˆ°é€šç”¨å—å±‚ï¼Œè¿™æ ·å°±å¢åŠ äº†bhçš„å¼•ç”¨è®¡æ•°ã€‚
+ * é‚£ä¹ˆï¼Œåœ¨å®Œæˆäº†IOä¼ è¾“åï¼Œå°±éœ€è¦å‡å°‘å¼•ç”¨è®¡æ•°ã€‚è¿™ä¸ªå·¥ä½œæ˜¯åœ¨bhçš„b_end_ioä¸­å®Œæˆçš„ã€‚
+ * b_end_ioæœ€ç»ˆåè°ƒç”¨end_buffer_read_syncæˆ–è€…end_buffer_write_sync
  */
 void end_buffer_read_sync(struct buffer_head *bh, int uptodate)
 {
@@ -129,9 +129,9 @@ void end_buffer_read_sync(struct buffer_head *bh, int uptodate)
 }
 
 /**
- * ll_rw_blockĞèÒª°Ñ»º³åÇøÊ×²¿´«µİµ½Í¨ÓÃ¿é²ã£¬ÕâÑù¾ÍÔö¼ÓÁËbhµÄÒıÓÃ¼ÆÊı¡£
- * ÄÇÃ´£¬ÔÚÍê³ÉÁËIO´«Êäºó£¬¾ÍĞèÒª¼õÉÙÒıÓÃ¼ÆÊı¡£Õâ¸ö¹¤×÷ÊÇÔÚbhµÄb_end_ioÖĞÍê³ÉµÄ¡£
- * b_end_io×îÖÕºóµ÷ÓÃend_buffer_read_sync»òÕßend_buffer_write_sync
+ * ll_rw_blockéœ€è¦æŠŠç¼“å†²åŒºé¦–éƒ¨ä¼ é€’åˆ°é€šç”¨å—å±‚ï¼Œè¿™æ ·å°±å¢åŠ äº†bhçš„å¼•ç”¨è®¡æ•°ã€‚
+ * é‚£ä¹ˆï¼Œåœ¨å®Œæˆäº†IOä¼ è¾“åï¼Œå°±éœ€è¦å‡å°‘å¼•ç”¨è®¡æ•°ã€‚è¿™ä¸ªå·¥ä½œæ˜¯åœ¨bhçš„b_end_ioä¸­å®Œæˆçš„ã€‚
+ * b_end_ioæœ€ç»ˆåè°ƒç”¨end_buffer_read_syncæˆ–è€…end_buffer_write_sync
  */
 void end_buffer_write_sync(struct buffer_head *bh, int uptodate)
 {
@@ -288,26 +288,26 @@ EXPORT_SYMBOL(thaw_bdev);
 static void do_sync(unsigned long wait)
 {
 	/**
-	 * Æô¶¯pdflushÄÚºËÏß³Ì¡£½«ËùÓĞÔàÒ³Ğ´Èëµ½´ÅÅÌ¡£
+	 * å¯åŠ¨pdflushå†…æ ¸çº¿ç¨‹ã€‚å°†æ‰€æœ‰è„é¡µå†™å…¥åˆ°ç£ç›˜ã€‚
 	 */
 	wakeup_bdflush(0);
 	/**
-	 * É¨Ãè³¬¼¶¿éµÄÁ´±í£¬ÒÔËÑË÷ÒªË¢ĞÂµÄÔàË÷Òı½Úµã¡£
+	 * æ‰«æè¶…çº§å—çš„é“¾è¡¨ï¼Œä»¥æœç´¢è¦åˆ·æ–°çš„è„ç´¢å¼•èŠ‚ç‚¹ã€‚
 	 */
 	sync_inodes(0);		/* All mappings, inodes and their blockdevs */
 	DQUOT_SYNC(NULL);
 	/**
-	 * °ÑÔà³¬¼¶¿éĞ´µ½´ÅÅÌ¡£
+	 * æŠŠè„è¶…çº§å—å†™åˆ°ç£ç›˜ã€‚
 	 */
 	sync_supers();		/* Write the superblocks */
 	/**
-	 * ÎªËùÓĞ¿ÉĞ´µÄÎÄ¼şÏµÍ³Ö´ĞĞsys_fs³¬¼¶¿é·½·¨¡£
-	 * ÕâÊÇÎÄ¼şÏµÍ³µÄÒ»¸ö¹³×Ó£¬Ïóext3ÕâÑùµÄÈÕÖ¾ÎÄ¼şÏµÍ³Ê¹ÓÃÕâ¸ö·½·¨¡£
+	 * ä¸ºæ‰€æœ‰å¯å†™çš„æ–‡ä»¶ç³»ç»Ÿæ‰§è¡Œsys_fsè¶…çº§å—æ–¹æ³•ã€‚
+	 * è¿™æ˜¯æ–‡ä»¶ç³»ç»Ÿçš„ä¸€ä¸ªé’©å­ï¼Œè±¡ext3è¿™æ ·çš„æ—¥å¿—æ–‡ä»¶ç³»ç»Ÿä½¿ç”¨è¿™ä¸ªæ–¹æ³•ã€‚
 	 */
 	sync_filesystems(0);	/* Start syncing the filesystems */
 	/**
-	 * sync_filesystemsºÍsync_inodes±»ÔÙ´Îµ÷ÓÃ¡£
-	 * ÕâÁ½¸öº¯ÊıµÄ²ÎÊıÓĞÁË±ä»¯¡£
+	 * sync_filesystemså’Œsync_inodesè¢«å†æ¬¡è°ƒç”¨ã€‚
+	 * è¿™ä¸¤ä¸ªå‡½æ•°çš„å‚æ•°æœ‰äº†å˜åŒ–ã€‚
 	 */
 	sync_filesystems(wait);	/* Waitingly sync the filesystems */
 	sync_inodes(wait);	/* Mappings, inodes and blockdevs, again. */
@@ -318,7 +318,7 @@ static void do_sync(unsigned long wait)
 }
 
 /**
- * syncÏµÍ³µ÷ÓÃµÄÊµÏÖº¯Êı¡£
+ * syncç³»ç»Ÿè°ƒç”¨çš„å®ç°å‡½æ•°ã€‚
  */
 asmlinkage long sys_sync(void)
 {
@@ -361,8 +361,8 @@ int file_fsync(struct file *filp, struct dentry *dentry, int datasync)
 }
 
 /**
- * ÏµÍ³µ÷ÓÃfsyncµÄÊµÏÖ¡£
- * ½«fd¶ÔÓ¦µÄËùÓĞÔà»º³åÇøĞ´µ½´ÅÅÌÖĞ£¬Èç¹ûĞèÒª£¬»¹°üÀ¨´æÓĞË÷Òı½ÚµãµÄ»º³åÇø¡£
+ * ç³»ç»Ÿè°ƒç”¨fsyncçš„å®ç°ã€‚
+ * å°†fdå¯¹åº”çš„æ‰€æœ‰è„ç¼“å†²åŒºå†™åˆ°ç£ç›˜ä¸­ï¼Œå¦‚æœéœ€è¦ï¼Œè¿˜åŒ…æ‹¬å­˜æœ‰ç´¢å¼•èŠ‚ç‚¹çš„ç¼“å†²åŒºã€‚
  */
 asmlinkage long sys_fsync(unsigned int fd)
 {
@@ -372,7 +372,7 @@ asmlinkage long sys_fsync(unsigned int fd)
 
 	ret = -EBADF;
 	/**
-	 * »ñµÃÎÄ¼ş¶ÔÏóµÄµØÖ·¡£
+	 * è·å¾—æ–‡ä»¶å¯¹è±¡çš„åœ°å€ã€‚
 	 */
 	file = fget(fd);
 	if (!file)
@@ -395,8 +395,8 @@ asmlinkage long sys_fsync(unsigned int fd)
 	 */
 	down(&mapping->host->i_sem);
 	/**
-	 * µ÷ÓÃÎÄ¼ş¶ÔÏóµÄfsync·½·¨½øĞĞÊı¾İÍ¬²½¡£
-	 * ¸Ã»Øµ÷º¯ÊıÍ¨³£ÊÇ__writeback_single_inode¡£
+	 * è°ƒç”¨æ–‡ä»¶å¯¹è±¡çš„fsyncæ–¹æ³•è¿›è¡Œæ•°æ®åŒæ­¥ã€‚
+	 * è¯¥å›è°ƒå‡½æ•°é€šå¸¸æ˜¯__writeback_single_inodeã€‚
 	 */
 	err = file->f_op->fsync(file, file->f_dentry, 0);
 	if (!ret)
@@ -460,7 +460,7 @@ out:
  * private_lock is contended then so is mapping->tree_lock).
  */
 /**
- * ÔÚ¸ßËÙ»º´æÖĞËÑË÷»º³åÇøÊ×²¿¡£
+ * åœ¨é«˜é€Ÿç¼“å­˜ä¸­æœç´¢ç¼“å†²åŒºé¦–éƒ¨ã€‚
  */
 static struct buffer_head *
 __find_get_block_slow(struct block_device *bdev, sector_t block, int unused)
@@ -475,16 +475,16 @@ __find_get_block_slow(struct block_device *bdev, sector_t block, int unused)
 	int all_mapped = 1;
 
 	/**
-	 * ¸ù¾İ¿éºÅºÍ¿é´óĞ¡µÃµ½Óë¿éÉè±¸Ïà¹ØµÄÒ³Ë÷Òı¡£
+	 * æ ¹æ®å—å·å’Œå—å¤§å°å¾—åˆ°ä¸å—è®¾å¤‡ç›¸å…³çš„é¡µç´¢å¼•ã€‚
 	 */
 	index = block >> (PAGE_CACHE_SHIFT - bd_inode->i_blkbits);
 	/**
-	 * µ÷ÓÃfind_get_pageÈ·¶¨ÇëÇóµÄ¿é»º³åÇøÒ³µÄ»áÔÚÒ³¸ßËÙ»º´æÖĞµÄÎ»ÖÃ¡£
+	 * è°ƒç”¨find_get_pageç¡®å®šè¯·æ±‚çš„å—ç¼“å†²åŒºé¡µçš„ä¼šåœ¨é¡µé«˜é€Ÿç¼“å­˜ä¸­çš„ä½ç½®ã€‚
 	 */
 	page = find_get_page(bd_mapping, index);
 
 	/**
-	 * Ò³Ã»ÓĞÔÚ¸ßËÙ»º´æÖĞ£¬¿éÒ²µ±È»²»ÔÚ¸ßËÙ»º´æÖĞ¡£
+	 * é¡µæ²¡æœ‰åœ¨é«˜é€Ÿç¼“å­˜ä¸­ï¼Œå—ä¹Ÿå½“ç„¶ä¸åœ¨é«˜é€Ÿç¼“å­˜ä¸­ã€‚
 	 */
 	if (!page)
 		goto out;
@@ -495,7 +495,7 @@ __find_get_block_slow(struct block_device *bdev, sector_t block, int unused)
 	head = page_buffers(page);
 	bh = head;
 	/**
-	 * ÔÚÒ³µÄ»º³åÇøÊ×²¿Á´±íÖĞËÑË÷Âß¼­¿éºÅµÈÓÚblockµÄ¿é¡£
+	 * åœ¨é¡µçš„ç¼“å†²åŒºé¦–éƒ¨é“¾è¡¨ä¸­æœç´¢é€»è¾‘å—å·ç­‰äºblockçš„å—ã€‚
 	 */
 	do {
 		if (bh->b_blocknr == block) {
@@ -523,7 +523,7 @@ __find_get_block_slow(struct block_device *bdev, sector_t block, int unused)
 out_unlock:
 	spin_unlock(&bd_mapping->private_lock);
 	/**
-	 * µİ¼õÃèÊö·ûµÄcount×Ö¶Î(find_get_pageÔøµİÔöËüµÄÖµ)¡£
+	 * é€’å‡æè¿°ç¬¦çš„countå­—æ®µ(find_get_pageæ›¾é€’å¢å®ƒçš„å€¼)ã€‚
 	 */
 	page_cache_release(page);
 out:
@@ -577,7 +577,7 @@ void invalidate_bdev(struct block_device *bdev, int destroy_dirty_buffers)
  * Kick pdflush then try to free up some ZONE_NORMAL memory.
  */
 /**
- * ÄÚ´æ½ôÈ±»ØÊÕ¡£ÔÚ·ÖÅäVFS»º³åÇø»ò»º³åÇøÊ×²¿Ê±£¬ÄÚºËµ÷ÓÃ´Ëº¯Êı¡£
+ * å†…å­˜ç´§ç¼ºå›æ”¶ã€‚åœ¨åˆ†é…VFSç¼“å†²åŒºæˆ–ç¼“å†²åŒºé¦–éƒ¨æ—¶ï¼Œå†…æ ¸è°ƒç”¨æ­¤å‡½æ•°ã€‚
  */
 static void free_more_memory(void)
 {
@@ -585,22 +585,22 @@ static void free_more_memory(void)
 	pg_data_t *pgdat;
 
 	/**
-	 * »½ĞÑpdflush£¬²¢´¥·¢Ò³¸ßËÙ»º´æÖĞ1024¸öÔàÒ³µÄĞ´²Ù×÷¡£
-	 * Ğ´ÔàÒ³µ½´ÅÅÌµÄ²Ù×÷½«×îÖÕÊ¹°üº¬»º³åÇø¡¢»º³åÇøÊ×²¿ºÍÆäËûVFSÊı¾İ½á¹¹µÄÒ³¿ò³ÉÎª¿ÉÊÍ·ÅµÄ¡£
+	 * å”¤é†’pdflushï¼Œå¹¶è§¦å‘é¡µé«˜é€Ÿç¼“å­˜ä¸­1024ä¸ªè„é¡µçš„å†™æ“ä½œã€‚
+	 * å†™è„é¡µåˆ°ç£ç›˜çš„æ“ä½œå°†æœ€ç»ˆä½¿åŒ…å«ç¼“å†²åŒºã€ç¼“å†²åŒºé¦–éƒ¨å’Œå…¶ä»–VFSæ•°æ®ç»“æ„çš„é¡µæ¡†æˆä¸ºå¯é‡Šæ”¾çš„ã€‚
 	 */
 	wakeup_bdflush(1024);
 	/**
-	 * µ÷ÓÃyieldÊ¹pdflushÄÚºËÏß³ÌÄÜ¹»ÓĞ»ú»áµÃµ½Ö´ĞĞ¡£
+	 * è°ƒç”¨yieldä½¿pdflushå†…æ ¸çº¿ç¨‹èƒ½å¤Ÿæœ‰æœºä¼šå¾—åˆ°æ‰§è¡Œã€‚
 	 */
 	yield();
 
 	/**
-	 * ¶ÔÏµÍ³µÄËùÓĞÄÚ´æ½Úµã£¬Æô¶¯Ò»¸öÑ­»·¡£
+	 * å¯¹ç³»ç»Ÿçš„æ‰€æœ‰å†…å­˜èŠ‚ç‚¹ï¼Œå¯åŠ¨ä¸€ä¸ªå¾ªç¯ã€‚
 	 */
 	for_each_pgdat(pgdat) {
 		zones = pgdat->node_zonelists[GFP_NOFS&GFP_ZONEMASK].zones;
 		/**
-		 * ¶ÔÃ¿¸ö½Úµã£¬µ÷ÓÃtry_to_free_pages£¬½«½ôÈ±ÄÚ´æ¹ÜÀíÇøÁ´±í×÷Îª²ÎÊı¡£
+		 * å¯¹æ¯ä¸ªèŠ‚ç‚¹ï¼Œè°ƒç”¨try_to_free_pagesï¼Œå°†ç´§ç¼ºå†…å­˜ç®¡ç†åŒºé“¾è¡¨ä½œä¸ºå‚æ•°ã€‚
 		 */
 		if (*zones)
 			try_to_free_pages(zones, GFP_NOFS, 0);
@@ -612,8 +612,8 @@ static void free_more_memory(void)
  * which come unlocked at the end of I/O.
  */
 /**
- * ÊÇ»º³åÇøÊ×²¿µÄÍê³É·½·¨¡£¶Ô¿é»º³åÇøµÄIOÊı¾İ´«ÊäÒ»½áÊø£¬Ëü¾ÍÖ´ĞĞ¡£
- * ËüÊÇblock_read_full_pageµÄI/OÍê³É´¦Àíº¯Êı¡£
+ * æ˜¯ç¼“å†²åŒºé¦–éƒ¨çš„å®Œæˆæ–¹æ³•ã€‚å¯¹å—ç¼“å†²åŒºçš„IOæ•°æ®ä¼ è¾“ä¸€ç»“æŸï¼Œå®ƒå°±æ‰§è¡Œã€‚
+ * å®ƒæ˜¯block_read_full_pageçš„I/Oå®Œæˆå¤„ç†å‡½æ•°ã€‚
  */
 static void end_buffer_async_read(struct buffer_head *bh, int uptodate)
 {
@@ -623,14 +623,14 @@ static void end_buffer_async_read(struct buffer_head *bh, int uptodate)
 	struct page *page;
 	int page_uptodate = 1;
 
-	/* ÔÚblock_read_full_pageÖĞÓ¦µ±ÉèÖÃÁË´Ë±êÖ¾£¬ÔÚ´ËÈ·ÈÏ */
+	/* åœ¨block_read_full_pageä¸­åº”å½“è®¾ç½®äº†æ­¤æ ‡å¿—ï¼Œåœ¨æ­¤ç¡®è®¤ */
 	BUG_ON(!buffer_async_read(bh));
 
 	page = bh->b_page;
-	if (uptodate) {/* IOÖ´ĞĞ³É¹¦£¬ÉèÖÃuptodate±êÖ¾ */
+	if (uptodate) {/* IOæ‰§è¡ŒæˆåŠŸï¼Œè®¾ç½®uptodateæ ‡å¿— */
 		set_buffer_uptodate(bh);
 	} else {
-		/* ·ñÔòÉèÖÃÒ³Ãæ´íÎó±êÖ¾ */
+		/* å¦åˆ™è®¾ç½®é¡µé¢é”™è¯¯æ ‡å¿— */
 		clear_buffer_uptodate(bh);
 		if (printk_ratelimit())
 			buffer_io_error(bh);
@@ -646,12 +646,12 @@ static void end_buffer_async_read(struct buffer_head *bh, int uptodate)
 	clear_buffer_async_read(bh);
 	unlock_buffer(bh);
 	tmp = bh;
-	do {/* Ñ­»·¼ì²éÒ³ÃæÖĞµÄËùÓĞ»º³åÇøÊ×²¿ */
-		if (!buffer_uptodate(tmp))/* Ä³¸ö»º³åÇøÊ×²¿»¹Ã»ÓĞ¸üĞÂ£¬ÔòÇå³ıÒ³Ãæuptodate±êÖ¾ */
+	do {/* å¾ªç¯æ£€æŸ¥é¡µé¢ä¸­çš„æ‰€æœ‰ç¼“å†²åŒºé¦–éƒ¨ */
+		if (!buffer_uptodate(tmp))/* æŸä¸ªç¼“å†²åŒºé¦–éƒ¨è¿˜æ²¡æœ‰æ›´æ–°ï¼Œåˆ™æ¸…é™¤é¡µé¢uptodateæ ‡å¿— */
 			page_uptodate = 0;
-		if (buffer_async_read(tmp)) {/* Ä³¸ö»º³åÇø»¹Ã»ÓĞÍê³É£¬ÈÔÈ»´æÔÚBH_Async_Read±êÖ¾ */
+		if (buffer_async_read(tmp)) {/* æŸä¸ªç¼“å†²åŒºè¿˜æ²¡æœ‰å®Œæˆï¼Œä»ç„¶å­˜åœ¨BH_Async_Readæ ‡å¿— */
 			BUG_ON(!buffer_locked(tmp));
-			goto still_busy;/* Õû¸öÒ³Ãæ»¹Ã»ÓĞÍê³É£¬ÍË³ö£¬´ıËùÓĞ»º³åÇøÊ×²¿¶¼Íê³ÉºóÔÙ¼ÌĞø */
+			goto still_busy;/* æ•´ä¸ªé¡µé¢è¿˜æ²¡æœ‰å®Œæˆï¼Œé€€å‡ºï¼Œå¾…æ‰€æœ‰ç¼“å†²åŒºé¦–éƒ¨éƒ½å®Œæˆåå†ç»§ç»­ */
 		}
 		tmp = tmp->b_this_page;
 	} while (tmp != bh);
@@ -661,9 +661,9 @@ static void end_buffer_async_read(struct buffer_head *bh, int uptodate)
 	 * If none of the buffers had errors and they are all
 	 * uptodate then we can set the page uptodate.
 	 */
-	if (page_uptodate && !PageError(page))/* Õû¸öÒ³Ãæ¶¼Íê³ÉÁË£¬²¢ÇÒÃ»ÓĞ´íÎó */
-		SetPageUptodate(page);/* ÉèÖÃÒ³Ãæ¸üĞÂ±êÖ¾ */
-	/* ½âËøÒ³Ãæ */
+	if (page_uptodate && !PageError(page))/* æ•´ä¸ªé¡µé¢éƒ½å®Œæˆäº†ï¼Œå¹¶ä¸”æ²¡æœ‰é”™è¯¯ */
+		SetPageUptodate(page);/* è®¾ç½®é¡µé¢æ›´æ–°æ ‡å¿— */
+	/* è§£é”é¡µé¢ */
 	unlock_page(page);
 	return;
 
@@ -676,7 +676,7 @@ still_busy:
  * Completion handler for block_write_full_page() - pages which are unlocked
  * during I/O, and which have PageWriteback cleared upon I/O completion.
  */
-/* ¿é»º³åÇø±»³É¹¦Ğ´Èë´ÅÅÌºó,»Øµ÷´Ëº¯Êı */
+/* å—ç¼“å†²åŒºè¢«æˆåŠŸå†™å…¥ç£ç›˜å,å›è°ƒæ­¤å‡½æ•° */
 void end_buffer_async_write(struct buffer_head *bh, int uptodate)
 {
 	char b[BDEVNAME_SIZE];
@@ -685,40 +685,40 @@ void end_buffer_async_write(struct buffer_head *bh, int uptodate)
 	struct buffer_head *tmp;
 	struct page *page;
 
-	/* ÔÚblock_write_full_pageº¯ÊıÖĞ£¬ÎªÔà¿éÉèÖÃÁË´Ë±êÖ¾£¬ÕâÀï¼ì²â±êÖ¾£¬±ÜÃâÄÚ´æ·½ÃæµÄÎÊÌâ */
+	/* åœ¨block_write_full_pageå‡½æ•°ä¸­ï¼Œä¸ºè„å—è®¾ç½®äº†æ­¤æ ‡å¿—ï¼Œè¿™é‡Œæ£€æµ‹æ ‡å¿—ï¼Œé¿å…å†…å­˜æ–¹é¢çš„é—®é¢˜ */
 	BUG_ON(!buffer_async_write(bh));
 
 	page = bh->b_page;
-	if (uptodate) {/* ³É¹¦»ØĞ´£¬ÉèÖÃuptodate±êÖ¾±íÊ¾»º³åÇøÒÑ¾­¸üĞÂ */
+	if (uptodate) {/* æˆåŠŸå›å†™ï¼Œè®¾ç½®uptodateæ ‡å¿—è¡¨ç¤ºç¼“å†²åŒºå·²ç»æ›´æ–° */
 		set_buffer_uptodate(bh);
 	} else {
-		if (printk_ratelimit()) {/* ´òÓ¡ÌáÊ¾ĞÅÏ¢ */
+		if (printk_ratelimit()) {/* æ‰“å°æç¤ºä¿¡æ¯ */
 			buffer_io_error(bh);
 			printk(KERN_WARNING "lost page write due to "
 					"I/O error on %s\n",
 			       bdevname(bh->b_bdev, b));
 		}
-		/* ÉèÖÃ´íÎó±êÖ¾£¬Çå³ıuptodate±êÖ¾ */
+		/* è®¾ç½®é”™è¯¯æ ‡å¿—ï¼Œæ¸…é™¤uptodateæ ‡å¿— */
 		set_bit(AS_EIO, &page->mapping->flags);
 		clear_buffer_uptodate(bh);
 		SetPageError(page);
 	}
 
 	spin_lock_irqsave(&page_uptodate_lock, flags);
-	/* Çå³ı´Ë±êÖ¾£¬±íÊ¾Ğ´ÒÑ¾­Íê³É */
+	/* æ¸…é™¤æ­¤æ ‡å¿—ï¼Œè¡¨ç¤ºå†™å·²ç»å®Œæˆ */
 	clear_buffer_async_write(bh);
 	unlock_buffer(bh);
 	tmp = bh->b_this_page;
-	/* ±éÀú»º³åÇø,²¢¼ì²éÆäÔà±êÖ¾ */
+	/* éå†ç¼“å†²åŒº,å¹¶æ£€æŸ¥å…¶è„æ ‡å¿— */
 	while (tmp != bh) {
-		if (buffer_async_write(tmp)) {/* Èç¹ûÄ³¸ö»º³åÇø¿é»¹Ã»ÓĞĞ´Íê,Ôò±íÊ¾Ò³ÃæÎ´ÍêÈ«Íê³É */
+		if (buffer_async_write(tmp)) {/* å¦‚æœæŸä¸ªç¼“å†²åŒºå—è¿˜æ²¡æœ‰å†™å®Œ,åˆ™è¡¨ç¤ºé¡µé¢æœªå®Œå…¨å®Œæˆ */
 			BUG_ON(!buffer_locked(tmp));
 			goto still_busy;
 		}
 		tmp = tmp->b_this_page;
 	}
 	spin_unlock_irqrestore(&page_uptodate_lock, flags);
-	/* Ò³ÃæÒÑ¾­È«²¿»ØĞ´,ÉèÖÃÒ³ÃæµÄ±êÖ¾ */
+	/* é¡µé¢å·²ç»å…¨éƒ¨å›å†™,è®¾ç½®é¡µé¢çš„æ ‡å¿— */
 	end_page_writeback(page);
 	return;
 
@@ -872,17 +872,17 @@ repeat:
  * the blockdev which "owns" the buffers and @mapping is a file or directory
  * which needs those buffers to be written for a successful fsync().
  */
-/* ½«»º³åÇøÍ¬²½µ½´ÅÅÌ£¬²¢µÈ´ıÆä½áÊø */
+/* å°†ç¼“å†²åŒºåŒæ­¥åˆ°ç£ç›˜ï¼Œå¹¶ç­‰å¾…å…¶ç»“æŸ */
 int sync_mapping_buffers(struct address_space *mapping)
 {
-	/* »ñµÃºÍÎÄ¼şinodeµØÖ·¿Õ¼äÏà¹ØÁªµÄµØÖ·¿Õ¼ä£¬¼´¿éÉè±¸inodeµÄµØÖ·¿Õ¼ä */
+	/* è·å¾—å’Œæ–‡ä»¶inodeåœ°å€ç©ºé—´ç›¸å…³è”çš„åœ°å€ç©ºé—´ï¼Œå³å—è®¾å¤‡inodeçš„åœ°å€ç©ºé—´ */
 	struct address_space *buffer_mapping = mapping->assoc_mapping;
 
-	/* È·±£¿éÉè±¸µØÖ·¿Õ¼ä²»Îª¿Õ£¬²¢ÇÒÆäprivate_listÊÇ¿éÉè±¸µÄÍ¬²½ÔªÊı¾İ²»Îª¿Õ(±íÊ¾ÓĞÔªÊı¾İĞèÒªÍ¬²½) */
+	/* ç¡®ä¿å—è®¾å¤‡åœ°å€ç©ºé—´ä¸ä¸ºç©ºï¼Œå¹¶ä¸”å…¶private_listæ˜¯å—è®¾å¤‡çš„åŒæ­¥å…ƒæ•°æ®ä¸ä¸ºç©º(è¡¨ç¤ºæœ‰å…ƒæ•°æ®éœ€è¦åŒæ­¥) */
 	if (buffer_mapping == NULL || list_empty(&mapping->private_list))
 		return 0;
 
-	/* ½«¿éÉè±¸µÄÔªÊı¾İÍ¬²½µ½´ÅÅÌ */
+	/* å°†å—è®¾å¤‡çš„å…ƒæ•°æ®åŒæ­¥åˆ°ç£ç›˜ */
 	return fsync_buffers_list(&buffer_mapping->private_lock,
 					&mapping->private_list);
 }
@@ -1116,8 +1116,8 @@ int remove_inode_buffers(struct inode *inode)
  * which may not fail from ordinary buffer allocations.
  */
 /**
- * ¸ù¾İÒ³ÖĞËùÇëÇóµÄ¿é´óĞ¡·ÖÅä»º³åÇøÊ×²¿£¬²¢°ÑËüÃÇ²åÈëÓÉb_this_page×Ö¶ÎÊµÏÖµÄµ¥ÏòÑ­»·Á´±í
- * ´ËÍâ£¬º¯ÊıÓÃÒ³ÃèÊö·ûµÄµØÖ·³õÊ¼»¯»º³åÇøÊ×²¿µÄb_page×Ö¶Î¡£ÓÃ¿é»º³åÇøÔÚÒ³ÄÚµÄÏßĞÔµØÖ·»òÆ«ÒÆÁ¿³õÊ¼»¯b_data×Ö¶Î
+ * æ ¹æ®é¡µä¸­æ‰€è¯·æ±‚çš„å—å¤§å°åˆ†é…ç¼“å†²åŒºé¦–éƒ¨ï¼Œå¹¶æŠŠå®ƒä»¬æ’å…¥ç”±b_this_pageå­—æ®µå®ç°çš„å•å‘å¾ªç¯é“¾è¡¨
+ * æ­¤å¤–ï¼Œå‡½æ•°ç”¨é¡µæè¿°ç¬¦çš„åœ°å€åˆå§‹åŒ–ç¼“å†²åŒºé¦–éƒ¨çš„b_pageå­—æ®µã€‚ç”¨å—ç¼“å†²åŒºåœ¨é¡µå†…çš„çº¿æ€§åœ°å€æˆ–åç§»é‡åˆå§‹åŒ–b_dataå­—æ®µ
  */
 struct buffer_head *alloc_page_buffers(struct page *page, unsigned long size,
 		int retry)
@@ -1225,7 +1225,7 @@ init_page_buffers(struct page *page, struct block_device *bdev,
  * This is user purely for blockdev mappings.
  */
 /**
- * ´´½¨ĞÂµÄ¿éÉè±¸»º³åÇøÒ³¡£
+ * åˆ›å»ºæ–°çš„å—è®¾å¤‡ç¼“å†²åŒºé¡µã€‚
  */
 static struct page *
 grow_dev_page(struct block_device *bdev, sector_t block,
@@ -1236,8 +1236,8 @@ grow_dev_page(struct block_device *bdev, sector_t block,
 	struct buffer_head *bh;
 
 	/**
-	 * µ÷ÓÃfind_or_create_page£¬´«µİµÄ²ÎÊıÊÇ¿éÉè±¸µÄaddress_space¶ÔÏó¡¢Ò³Æ«ÒÆindexÒÔ¼°GFP_NOFS±êÖ¾¡£
-	 * ¸Ãº¯ÊıÔÚÒ³µ÷Õû»º´æÖĞËÑË÷ĞèÒªµÄÒ³£¬Èç¹ûĞèÒª£¬¾Í°ÑĞÂÒ³²åÈëÒ³µ÷Õû»º´æ¡£
+	 * è°ƒç”¨find_or_create_pageï¼Œä¼ é€’çš„å‚æ•°æ˜¯å—è®¾å¤‡çš„address_spaceå¯¹è±¡ã€é¡µåç§»indexä»¥åŠGFP_NOFSæ ‡å¿—ã€‚
+	 * è¯¥å‡½æ•°åœ¨é¡µè°ƒæ•´ç¼“å­˜ä¸­æœç´¢éœ€è¦çš„é¡µï¼Œå¦‚æœéœ€è¦ï¼Œå°±æŠŠæ–°é¡µæ’å…¥é¡µè°ƒæ•´ç¼“å­˜ã€‚
 	 */
 	page = find_or_create_page(inode->i_mapping, index, GFP_NOFS);
 	if (!page)
@@ -1247,22 +1247,22 @@ grow_dev_page(struct block_device *bdev, sector_t block,
 		BUG();
 
 	/**
-	 * Ò³ÒÑ¾­ÔÚÒ³¸ßËÙ»º´æÖĞ¡£¼ì²éËüµÄPG_private±êÖ¾¡£
+	 * é¡µå·²ç»åœ¨é¡µé«˜é€Ÿç¼“å­˜ä¸­ã€‚æ£€æŸ¥å®ƒçš„PG_privateæ ‡å¿—ã€‚
 	 */
 	if (page_has_buffers(page)) {
 		/**
-		 * Ò³ÒÑ¾­ÊÇ»º³åÇøÒ³¡£´ÓÒ³ÃèÊö·ûµÄprivate×Ö¶Î»ñµÃµÚÒ»¸ö»º³åÇøÊ×²¿µÄµØÖ·bh¡£
+		 * é¡µå·²ç»æ˜¯ç¼“å†²åŒºé¡µã€‚ä»é¡µæè¿°ç¬¦çš„privateå­—æ®µè·å¾—ç¬¬ä¸€ä¸ªç¼“å†²åŒºé¦–éƒ¨çš„åœ°å€bhã€‚
 		 */
 		bh = page_buffers(page);
 		/**
-		 * ¼ì²éÒ³ÖĞ¿éµÄ´óĞ¡
+		 * æ£€æŸ¥é¡µä¸­å—çš„å¤§å°
 		 */
 		if (bh->b_size == size) {
 			init_page_buffers(page, bdev, block, size);
 			return page;
 		}
 		/**
-		 * Ò³ÖĞ¿éµÄ´óĞ¡ÓĞ´íÎó£¬¾Íµ÷ÓÃtry_to_free_buffersÊÍ·Å»º³åÇøÒ³µÄÉÏÒ»¸ö»º³åÇøÊ×²¿¡£
+		 * é¡µä¸­å—çš„å¤§å°æœ‰é”™è¯¯ï¼Œå°±è°ƒç”¨try_to_free_buffersé‡Šæ”¾ç¼“å†²åŒºé¡µçš„ä¸Šä¸€ä¸ªç¼“å†²åŒºé¦–éƒ¨ã€‚
 		 */
 		if (!try_to_free_buffers(page))
 			goto failed;
@@ -1272,9 +1272,9 @@ grow_dev_page(struct block_device *bdev, sector_t block,
 	 * Allocate some buffers for this page
 	 */
 	/**
-	 * Ò³»¹²»ÊÇ»º³åÇøÒ³£¬µ÷ÓÃalloc_page_buffers¸ù¾İÒ³ÖĞÇëÇóµÄ¿é´óĞ¡·ÖÅä»º³åÇøÊ×²¿¡£
-	 * ²¢½«ËüÃÇ²åÈëÓÉb_this_page×Ö¶ÎÊµÏÖµÄµ¥ÏòÑ­»·Á´±íÖĞ¡£
-	 * ´ËÍâ£¬º¯ÊıÓÃÒ³ÃèÊö·ûµÄµØÖ·³õÊ¼»¯»º³åÇøÊ×²¿µÄb_page×Ö¶Î£¬ÓÃ¿é»º³åÇøÔÚÒ³ÄÚµÄ´¿ÊôµØÖ·»òÕßÆ«ÒÆÁ¿³õÊ¼»¯b_data×Ö¶Î¡£
+	 * é¡µè¿˜ä¸æ˜¯ç¼“å†²åŒºé¡µï¼Œè°ƒç”¨alloc_page_buffersæ ¹æ®é¡µä¸­è¯·æ±‚çš„å—å¤§å°åˆ†é…ç¼“å†²åŒºé¦–éƒ¨ã€‚
+	 * å¹¶å°†å®ƒä»¬æ’å…¥ç”±b_this_pageå­—æ®µå®ç°çš„å•å‘å¾ªç¯é“¾è¡¨ä¸­ã€‚
+	 * æ­¤å¤–ï¼Œå‡½æ•°ç”¨é¡µæè¿°ç¬¦çš„åœ°å€åˆå§‹åŒ–ç¼“å†²åŒºé¦–éƒ¨çš„b_pageå­—æ®µï¼Œç”¨å—ç¼“å†²åŒºåœ¨é¡µå†…çš„çº¯å±åœ°å€æˆ–è€…åç§»é‡åˆå§‹åŒ–b_dataå­—æ®µã€‚
 	 */
 	bh = alloc_page_buffers(page, size, 0);
 	if (!bh)
@@ -1286,13 +1286,13 @@ grow_dev_page(struct block_device *bdev, sector_t block,
 	 * run under the page lock.
 	 */
 	/**
-	 * ÔÚ×Ö¶ÎprivateÖĞ´æ·ÅµÚÒ»¸ö»º³åÇøÊ×²¿µÄµØÖ·£¬°ÑPG_private×Ö¶ÎÖÃÎ»¡£²¢µİÔöÒ³µÄÊ¹ÓÃ¼ÆÊıÆ÷¡£
+	 * åœ¨å­—æ®µprivateä¸­å­˜æ”¾ç¬¬ä¸€ä¸ªç¼“å†²åŒºé¦–éƒ¨çš„åœ°å€ï¼ŒæŠŠPG_privateå­—æ®µç½®ä½ã€‚å¹¶é€’å¢é¡µçš„ä½¿ç”¨è®¡æ•°å™¨ã€‚
 	 */ 
 	spin_lock(&inode->i_mapping->private_lock);
 	link_dev_buffers(page, bh);
 	/**
-	 * init_page_buffersº¯Êı³õÊ¼»¯Á¬½Óµ½Ò³µÄ»º³åÇøÊ×²¿µÄb_bdev¡¢b+blocknrºÍb_bstate×Ö¶Î¡£
-	 * ÒòÎªËùÓĞµÄ¿éÔÚ´ÅÅÌÉÏ¶¼ÊÇÏàÁÚµÄ£¬Òò´ËÂß¼­¿éºÅÊÇÁ¬ĞøµÄ¡£
+	 * init_page_bufferså‡½æ•°åˆå§‹åŒ–è¿æ¥åˆ°é¡µçš„ç¼“å†²åŒºé¦–éƒ¨çš„b_bdevã€b+blocknrå’Œb_bstateå­—æ®µã€‚
+	 * å› ä¸ºæ‰€æœ‰çš„å—åœ¨ç£ç›˜ä¸Šéƒ½æ˜¯ç›¸é‚»çš„ï¼Œå› æ­¤é€»è¾‘å—å·æ˜¯è¿ç»­çš„ã€‚
 	 */
 	init_page_buffers(page, bdev, block, size);
 	spin_unlock(&inode->i_mapping->private_lock);
@@ -1315,10 +1315,10 @@ failed:
  * grow_dev_page() will go BUG() if this happens.
  */
 /**
- * °Ñ¿éÉè±¸»º³åÇøÒ³Ìí¼Óµ½Ò³¸ßËÙ»º´æÖĞ¡£
- * bdev:		¿éÉè±¸ÃèÊö·û
- * block:		Âß¼­¿éºÅ
- * size:		¿é´óĞ¡
+ * æŠŠå—è®¾å¤‡ç¼“å†²åŒºé¡µæ·»åŠ åˆ°é¡µé«˜é€Ÿç¼“å­˜ä¸­ã€‚
+ * bdev:		å—è®¾å¤‡æè¿°ç¬¦
+ * block:		é€»è¾‘å—å·
+ * size:		å—å¤§å°
  */
 static inline int
 grow_buffers(struct block_device *bdev, sector_t block, int size)
@@ -1328,7 +1328,7 @@ grow_buffers(struct block_device *bdev, sector_t block, int size)
 	int sizebits;
 
 	/**
-	  * ¼ÆËãÊı¾İÒ³ÔÚËùÇëÇó¿éµÄ¿éÉè±¸ÖĞµÄÆ«ÒÆÁ¿
+	  * è®¡ç®—æ•°æ®é¡µåœ¨æ‰€è¯·æ±‚å—çš„å—è®¾å¤‡ä¸­çš„åç§»é‡
 	  */
 	sizebits = -1;
 	do {
@@ -1340,24 +1340,24 @@ grow_buffers(struct block_device *bdev, sector_t block, int size)
 
 	/* Create a page with the proper size buffers.. */
 	/**
-	 * µ÷ÓÃgrow_dev_page´´½¨ĞÂµÄ¿éÉè±¸»º³åÇøÒ³¡£
+	 * è°ƒç”¨grow_dev_pageåˆ›å»ºæ–°çš„å—è®¾å¤‡ç¼“å†²åŒºé¡µã€‚
 	 */
 	page = grow_dev_page(bdev, block, index, size);
 	if (!page)
 		return 0;
 	/**
-	 * ÎªÒ³½âËø£¬ÒòÎªÔÚgrow_dev_pageÖĞÎªpage¼ÓÁËËø¡£
+	 * ä¸ºé¡µè§£é”ï¼Œå› ä¸ºåœ¨grow_dev_pageä¸­ä¸ºpageåŠ äº†é”ã€‚
 	 */
 	unlock_page(page);
 	/**
-	 * µİ¼õÒ³µÄÊ¹ÓÃ¼ÆÊıÆ÷(º¯Êıfind_or_create_pageÔøµİÔöÁË¼ÆÊıÆ÷)
+	 * é€’å‡é¡µçš„ä½¿ç”¨è®¡æ•°å™¨(å‡½æ•°find_or_create_pageæ›¾é€’å¢äº†è®¡æ•°å™¨)
 	 */
 	page_cache_release(page);
 	return 1;
 }
 
 /**
- * ÎªÇëÇóµÄÒ³·ÖÅäµÄÒ»¸öĞÂµÄ»º³åÇø¡£
+ * ä¸ºè¯·æ±‚çš„é¡µåˆ†é…çš„ä¸€ä¸ªæ–°çš„ç¼“å†²åŒºã€‚
  */
 struct buffer_head *
 __getblk_slow(struct block_device *bdev, sector_t block, int size)
@@ -1378,17 +1378,17 @@ __getblk_slow(struct block_device *bdev, sector_t block, int size)
 		struct buffer_head * bh;
 
 		/**
-		 * È·¶¨»º³åÇøÊÇ·ñÒÑ¾­ÔÚÒ³µ÷Õû»º´æÖĞ¡£
+		 * ç¡®å®šç¼“å†²åŒºæ˜¯å¦å·²ç»åœ¨é¡µè°ƒæ•´ç¼“å­˜ä¸­ã€‚
 		 */
 		bh = __find_get_block(bdev, block, size);
 		if (bh)
 			return bh;
 
 		/**
-		 * ²»ÔÚÒ³¸ßËÙ»º´æÖĞ£¬Ôòµ÷ÓÃgrow_buffersÎªËùÇëÇóµÄÒ³·ÖÅäÒ»¸öĞÂµÄ»º³åÇøÒ³¡£
+		 * ä¸åœ¨é¡µé«˜é€Ÿç¼“å­˜ä¸­ï¼Œåˆ™è°ƒç”¨grow_buffersä¸ºæ‰€è¯·æ±‚çš„é¡µåˆ†é…ä¸€ä¸ªæ–°çš„ç¼“å†²åŒºé¡µã€‚
 		 */
 		if (!grow_buffers(bdev, block, size))
-			free_more_memory();/* ·ÖÅäÒ³Ê§°Ü£¬ÔòÊÔÍ¼Í¨¹ıµ÷ÓÃº¯Êıfree_more_memory»ØÊÕÒ»²¿·ÖÄÚ´æ */
+			free_more_memory();/* åˆ†é…é¡µå¤±è´¥ï¼Œåˆ™è¯•å›¾é€šè¿‡è°ƒç”¨å‡½æ•°free_more_memoryå›æ”¶ä¸€éƒ¨åˆ†å†…å­˜ */
 	}
 }
 
@@ -1440,8 +1440,8 @@ void fastcall mark_buffer_dirty(struct buffer_head *bh)
  * a page but it ends up not being freed, and buffers may later be reattached).
  */
 /**
- * µ±ÄÚºË¿ØÖÆÂ·¾¶Í£Ö¹·ÃÎÊ¿é»º³åÇøÊ±£¬ĞèÒªµ÷ÓÃbrelseµİ¼õÏàÓ¦µÄÒıÓÃ¼ÆÊıÆ÷¡£
- * Çë×¢ÒâËüÓë__bforgetÖ®¼äµÄ²î±ğ¡£
+ * å½“å†…æ ¸æ§åˆ¶è·¯å¾„åœæ­¢è®¿é—®å—ç¼“å†²åŒºæ—¶ï¼Œéœ€è¦è°ƒç”¨brelseé€’å‡ç›¸åº”çš„å¼•ç”¨è®¡æ•°å™¨ã€‚
+ * è¯·æ³¨æ„å®ƒä¸__bforgetä¹‹é—´çš„å·®åˆ«ã€‚
  */
 void __brelse(struct buffer_head * buf)
 {
@@ -1458,10 +1458,10 @@ void __brelse(struct buffer_head * buf)
  * potentially dirty data.
  */
 /**
- * µ±ÄÚºËÍ£Ö¹·ÃÎÊ¿é»º³åÇøÊ±£¬Ó¦¸Ãµ÷ÓÃ__brelse»òÕß__bforgetµİ¼õÏàÓ¦µÄÒıÓÃ¼ÆÊıÆ÷¡£
- * Êµ¼ÊÉÏ£¬__bforget»¹»á£º´Ó¼ä½Ó¿éÁ´±í£¨»º³åÇøÊ×²¿µÄb_assoc_buufers×Ö¶Î£©ÖĞÉ¾³ı¿é¡£
- * ²¢°Ñ¸Ã»º³åÇø±ê¼ÇÎª¸É¾»µÄ¡£Òò´ËÇ¿ÖÆÄÚºËºöÂÔ¶Ô»º³åÇøËù×öµÄÈÎºÎĞŞ¸Ä¡£
- * µ«ÊÇ£¬Êµ¼ÊÉÏ»º³åÇøÈÔÈ»±ØĞë±»Ğ´»Ø´ÅÅÌ¡£
+ * å½“å†…æ ¸åœæ­¢è®¿é—®å—ç¼“å†²åŒºæ—¶ï¼Œåº”è¯¥è°ƒç”¨__brelseæˆ–è€…__bforgeté€’å‡ç›¸åº”çš„å¼•ç”¨è®¡æ•°å™¨ã€‚
+ * å®é™…ä¸Šï¼Œ__bforgetè¿˜ä¼šï¼šä»é—´æ¥å—é“¾è¡¨ï¼ˆç¼“å†²åŒºé¦–éƒ¨çš„b_assoc_buuferså­—æ®µï¼‰ä¸­åˆ é™¤å—ã€‚
+ * å¹¶æŠŠè¯¥ç¼“å†²åŒºæ ‡è®°ä¸ºå¹²å‡€çš„ã€‚å› æ­¤å¼ºåˆ¶å†…æ ¸å¿½ç•¥å¯¹ç¼“å†²åŒºæ‰€åšçš„ä»»ä½•ä¿®æ”¹ã€‚
+ * ä½†æ˜¯ï¼Œå®é™…ä¸Šç¼“å†²åŒºä»ç„¶å¿…é¡»è¢«å†™å›ç£ç›˜ã€‚
  */
 void __bforget(struct buffer_head *bh)
 {
@@ -1476,7 +1476,7 @@ void __bforget(struct buffer_head *bh)
 	__brelse(bh);
 }
 /**
- * ´Ó¿éÉè±¸ÖĞ¶ÁÈ¡»º³åÇøÊ×²¿
+ * ä»å—è®¾å¤‡ä¸­è¯»å–ç¼“å†²åŒºé¦–éƒ¨
  */
 static struct buffer_head *__bread_slow(struct buffer_head *bh)
 {
@@ -1486,19 +1486,19 @@ static struct buffer_head *__bread_slow(struct buffer_head *bh)
 		return bh;
 	} else {
 		/**
-		 * Ê×ÏÈÔö¼Ó»º³åÇøµÄÒıÓÃ¼ÆÊı¡£
+		 * é¦–å…ˆå¢åŠ ç¼“å†²åŒºçš„å¼•ç”¨è®¡æ•°ã€‚
 		 */
 		get_bh(bh);
 		/**
-		 * ½«end_buffer_read_sync¸³¸øb_end_io¡£µ±¿éÉè±¸¶ÁÈ¡ÍêÊı¾İºó£¬»á»Øµ÷´Ëº¯Êı¡£
+		 * å°†end_buffer_read_syncèµ‹ç»™b_end_ioã€‚å½“å—è®¾å¤‡è¯»å–å®Œæ•°æ®åï¼Œä¼šå›è°ƒæ­¤å‡½æ•°ã€‚
 		 */
 		bh->b_end_io = end_buffer_read_sync;
 		/**
-		 * submit_bh°Ñ»º³åÇøÊ×²¿´«ËÍµ½Í¨ÓÃ¿é²ã¡£
+		 * submit_bhæŠŠç¼“å†²åŒºé¦–éƒ¨ä¼ é€åˆ°é€šç”¨å—å±‚ã€‚
 		 */
 		submit_bh(READ, bh);
 		/**
-		 * °Ñµ±Ç°½øÈë²åÈëµ½µÈ´ı¶ÓÁĞ£¬Ö±µ½I/O²Ù×÷Íê³É¡£
+		 * æŠŠå½“å‰è¿›å…¥æ’å…¥åˆ°ç­‰å¾…é˜Ÿåˆ—ï¼Œç›´åˆ°I/Oæ“ä½œå®Œæˆã€‚
 		 */
 		wait_on_buffer(bh);
 		if (buffer_uptodate(bh))
@@ -1529,11 +1529,11 @@ struct bh_lru {
 };
 
 /**
- * ÔÚÒ³¸ßËÙ»º´æÖĞËÑË÷¿éÊ±£¬ÎªÁËÌá¸ßĞÔÄÜ£¬ÄÚºËÎ¬³ÖÒ»¸öĞ¡µÄ´ÅÅÌ¸ßËÙ»º´æÊı×ébh_lrus£¨Ã¿CPU±äÁ¿£©¡£
- * ¼´ËùÎ½µÄ×î½ü×îÉÙÊ¹ÓÃ£¨LRU£©¿é¸ßËÙ»º´æ¡£
- * Ã¿¸ö´ÅÅÌ¸ßËÙ»º´æÓĞ8¸öÖ¸Õë£¬Ö¸Ïò±»Ö¸¶¨CPU×î½ü·ÃÎÊ¹ıµÄ»º³åÇøÊ×²¿¡£
- * ¶ÔÃ¿¸öCPUµÄÊı¾İ½øĞĞÅÅĞò¡£Ê¹Ö¸Ïò×îºó±»Ê¹ÓÃ¹ıµÄÄÇ¸ö»º³åÇøÊ×²¿µÄÖ¸ÕëË÷ÒıÎª0¡£
- * ÏàÍ¬µÄ»º³åÇøÊ×²¿¿ÉÄÜ³öÏÖÔÚ¼¸¸öCPUÊı×éÖĞ¡£
+ * åœ¨é¡µé«˜é€Ÿç¼“å­˜ä¸­æœç´¢å—æ—¶ï¼Œä¸ºäº†æé«˜æ€§èƒ½ï¼Œå†…æ ¸ç»´æŒä¸€ä¸ªå°çš„ç£ç›˜é«˜é€Ÿç¼“å­˜æ•°ç»„bh_lrusï¼ˆæ¯CPUå˜é‡ï¼‰ã€‚
+ * å³æ‰€è°“çš„æœ€è¿‘æœ€å°‘ä½¿ç”¨ï¼ˆLRUï¼‰å—é«˜é€Ÿç¼“å­˜ã€‚
+ * æ¯ä¸ªç£ç›˜é«˜é€Ÿç¼“å­˜æœ‰8ä¸ªæŒ‡é’ˆï¼ŒæŒ‡å‘è¢«æŒ‡å®šCPUæœ€è¿‘è®¿é—®è¿‡çš„ç¼“å†²åŒºé¦–éƒ¨ã€‚
+ * å¯¹æ¯ä¸ªCPUçš„æ•°æ®è¿›è¡Œæ’åºã€‚ä½¿æŒ‡å‘æœ€åè¢«ä½¿ç”¨è¿‡çš„é‚£ä¸ªç¼“å†²åŒºé¦–éƒ¨çš„æŒ‡é’ˆç´¢å¼•ä¸º0ã€‚
+ * ç›¸åŒçš„ç¼“å†²åŒºé¦–éƒ¨å¯èƒ½å‡ºç°åœ¨å‡ ä¸ªCPUæ•°ç»„ä¸­ã€‚
  */
 static DEFINE_PER_CPU(struct bh_lru, bh_lrus) = {{ NULL }};
 
@@ -1634,30 +1634,30 @@ lookup_bh_lru(struct block_device *bdev, sector_t block, int size)
  * NULL
  */
 /**
- * ·µ»ØÒ³¸ßËÙ»º´æÖĞµÄ¿é»º³åÇø¶ÔÓ¦µÄ»º³åÇøÊ×²¿µÄµØÖ·¡£Èç¹û²»´æÔÚ£¬¾Í·µ»ØNULL¡£
- * bdev:	Éè±¸ÃèÊö·û¡£
- * block:	ÒªËÑË÷µÄ¿éºÅ¡£
- * size:	¿é´óĞ¡¡£
+ * è¿”å›é¡µé«˜é€Ÿç¼“å­˜ä¸­çš„å—ç¼“å†²åŒºå¯¹åº”çš„ç¼“å†²åŒºé¦–éƒ¨çš„åœ°å€ã€‚å¦‚æœä¸å­˜åœ¨ï¼Œå°±è¿”å›NULLã€‚
+ * bdev:	è®¾å¤‡æè¿°ç¬¦ã€‚
+ * block:	è¦æœç´¢çš„å—å·ã€‚
+ * size:	å—å¤§å°ã€‚
  */
 struct buffer_head *
 __find_get_block(struct block_device *bdev, sector_t block, int size)
 {
 	/**
-	 * ¼ì²éCPUµÄLRU¿éµ÷Õû»º´æÊı×éÖĞÊÇ·ñÓĞÒ»¸ö»º³åÇøÊ×²¿¡£
-	 * Èç¹û»º³åÇøÊ×²¿ÔÚLRU¿éµ÷Õû»º´æÖĞ£¬¾ÍË¢ĞÂÊı×éÖĞµÄÔªËØ£¬ÒÔ±ãÈÃÖ¸ÕëÖ¸ÔÚµÚÒ»¸öÎ»ÖÃ£¬µİÔöËüµÄb_count×Ö¶Î¡£
+	 * æ£€æŸ¥CPUçš„LRUå—è°ƒæ•´ç¼“å­˜æ•°ç»„ä¸­æ˜¯å¦æœ‰ä¸€ä¸ªç¼“å†²åŒºé¦–éƒ¨ã€‚
+	 * å¦‚æœç¼“å†²åŒºé¦–éƒ¨åœ¨LRUå—è°ƒæ•´ç¼“å­˜ä¸­ï¼Œå°±åˆ·æ–°æ•°ç»„ä¸­çš„å…ƒç´ ï¼Œä»¥ä¾¿è®©æŒ‡é’ˆæŒ‡åœ¨ç¬¬ä¸€ä¸ªä½ç½®ï¼Œé€’å¢å®ƒçš„b_countå­—æ®µã€‚
 	 */
 	struct buffer_head *bh = lookup_bh_lru(bdev, block, size);
 
 	if (bh == NULL) {
 		/**
-		 * »º³åÇøÊ×²¿²»ÔÚLRU¿éµ÷Õû»º´æÖĞ£¬Ôòµ÷ÓÃ__find_get_block_slowÔÚ¸ßËÙ»º´æÖĞËÑË÷¡£
+		 * ç¼“å†²åŒºé¦–éƒ¨ä¸åœ¨LRUå—è°ƒæ•´ç¼“å­˜ä¸­ï¼Œåˆ™è°ƒç”¨__find_get_block_slowåœ¨é«˜é€Ÿç¼“å­˜ä¸­æœç´¢ã€‚
 		 */
 		bh = __find_get_block_slow(bdev, block, size);
 		if (bh)
 			bh_lru_install(bh);
 	}
 	/**
-	 * Èç¹ûÓĞ±ØÒª£¬¾Íµ÷ÓÃmark_page_accessed°Ñ»º³åÇøÒÆÖÁÊÊµ±µÄLRUÁ´±íÖĞ¡£
+	 * å¦‚æœæœ‰å¿…è¦ï¼Œå°±è°ƒç”¨mark_page_accessedæŠŠç¼“å†²åŒºç§»è‡³é€‚å½“çš„LRUé“¾è¡¨ä¸­ã€‚
 	 */
 	if (bh)
 		touch_buffer(bh);
@@ -1678,26 +1678,26 @@ EXPORT_SYMBOL(__find_get_block);
  * attempt is failing.  FIXME, perhaps?
  */
 /**
- * È·¶¨¿éÔÚÒ³¸ßËÙ»º´æÖĞµÄÎ»ÖÃ¡£
- * Ëü×Ô¶¯Íê³ÉÒıÓÃ¼ÆÊıµÄÔö¼Ó£¬Òò´Ë¸ß²ãº¯Êı²»±ØÔÙÔö¼Ó¿é»º³åÇøµÄÒıÓÃ¼ÆÊıÆ÷¡£
+ * ç¡®å®šå—åœ¨é¡µé«˜é€Ÿç¼“å­˜ä¸­çš„ä½ç½®ã€‚
+ * å®ƒè‡ªåŠ¨å®Œæˆå¼•ç”¨è®¡æ•°çš„å¢åŠ ï¼Œå› æ­¤é«˜å±‚å‡½æ•°ä¸å¿…å†å¢åŠ å—ç¼“å†²åŒºçš„å¼•ç”¨è®¡æ•°å™¨ã€‚
  *
- * ·µ»ØÒ³¸ßËÙ»º´æÖĞµÄ¿é»º³åÇø¶ÔÓ¦µÄ»º³åÇøÊ×²¿µÄµØÖ·¡£Èç¹û²»´æÔÚ£¬¾Í·ÖÅä¿éÉè±¸»º³åÇøÒ³²¢·µ»Ø»º³åÇøÊ×²¿Ö¸Õë¡£
- * bdev:	Éè±¸ÃèÊö·û¡£
- * block:	ÒªËÑË÷µÄ¿éºÅ¡£
- * size:	¿é´óĞ¡¡£
+ * è¿”å›é¡µé«˜é€Ÿç¼“å­˜ä¸­çš„å—ç¼“å†²åŒºå¯¹åº”çš„ç¼“å†²åŒºé¦–éƒ¨çš„åœ°å€ã€‚å¦‚æœä¸å­˜åœ¨ï¼Œå°±åˆ†é…å—è®¾å¤‡ç¼“å†²åŒºé¡µå¹¶è¿”å›ç¼“å†²åŒºé¦–éƒ¨æŒ‡é’ˆã€‚
+ * bdev:	è®¾å¤‡æè¿°ç¬¦ã€‚
+ * block:	è¦æœç´¢çš„å—å·ã€‚
+ * size:	å—å¤§å°ã€‚
  */
  struct buffer_head *
 __getblk(struct block_device *bdev, sector_t block, int size)
 {
 	/**
-	 * __find_get_block¼ì²é¿éÊÇ·ñÒÑ¾­ÔÚÒ³¸ßËÙ»º´æÖĞ¡£Èç¹ûÕÒµ½£¬¾Í·µ»Ø»º³åÇøÊ×²¿µØÖ·¡£
+	 * __find_get_blockæ£€æŸ¥å—æ˜¯å¦å·²ç»åœ¨é¡µé«˜é€Ÿç¼“å­˜ä¸­ã€‚å¦‚æœæ‰¾åˆ°ï¼Œå°±è¿”å›ç¼“å†²åŒºé¦–éƒ¨åœ°å€ã€‚
 	 */
 	struct buffer_head *bh = __find_get_block(bdev, block, size);
 
 	might_sleep();
 	/**
-	 * Ã»ÓĞÔÚµ÷Õû»º´æÊ×²¿ÕÒµ½ËùÇëÇóµÄÒ³¡£
-	 * Ôòµ÷ÓÃgrow_buffersÎªËùÇëÇóµÄÒ³·ÖÅäÒ»¸öĞÂµÄ»º³åÇøÒ³¡£
+	 * æ²¡æœ‰åœ¨è°ƒæ•´ç¼“å­˜é¦–éƒ¨æ‰¾åˆ°æ‰€è¯·æ±‚çš„é¡µã€‚
+	 * åˆ™è°ƒç”¨grow_buffersä¸ºæ‰€è¯·æ±‚çš„é¡µåˆ†é…ä¸€ä¸ªæ–°çš„ç¼“å†²åŒºé¡µã€‚
 	 */
 	if (bh == NULL)
 		bh = __getblk_slow(bdev, block, size);
@@ -1725,22 +1725,22 @@ EXPORT_SYMBOL(__breadahead);
  *  It returns NULL if the block was unreadable.
  */
 /**
- * ¸Ãº¯ÊıÓë__getblkÀàËÆ£¬µ«ÊÇÓë__getblkÏà·´µÄÊÇ£¬Èç¹ûĞèÒªµÄ»°£¬Ëü¾Í»áÔÚ·µ»Ø»º³åÇøÊ×²¿Ö®Ç°´Ó´ÅÅÌÖĞ¶ÁÈ¡¿éµÄÄÚÈİ¡£
+ * è¯¥å‡½æ•°ä¸__getblkç±»ä¼¼ï¼Œä½†æ˜¯ä¸__getblkç›¸åçš„æ˜¯ï¼Œå¦‚æœéœ€è¦çš„è¯ï¼Œå®ƒå°±ä¼šåœ¨è¿”å›ç¼“å†²åŒºé¦–éƒ¨ä¹‹å‰ä»ç£ç›˜ä¸­è¯»å–å—çš„å†…å®¹ã€‚
  */
 struct buffer_head *
 __bread(struct block_device *bdev, sector_t block, int size)
 {
 	/**
-	 * µ÷ÓÃ__getblkÔÚÒ³¸ßËÙ»º´æÖĞ²éÕÒÓëËùÇëÇóµÄ¿éÏà¹ØµÄ»º³åÇøÒ³¡£²¢»ñµÃÖ¸ÏòÏàÓ¦µÄ»º³åÇøÊ×²¿µÄÖ¸Õë¡£
+	 * è°ƒç”¨__getblkåœ¨é¡µé«˜é€Ÿç¼“å­˜ä¸­æŸ¥æ‰¾ä¸æ‰€è¯·æ±‚çš„å—ç›¸å…³çš„ç¼“å†²åŒºé¡µã€‚å¹¶è·å¾—æŒ‡å‘ç›¸åº”çš„ç¼“å†²åŒºé¦–éƒ¨çš„æŒ‡é’ˆã€‚
 	 */
 	struct buffer_head *bh = __getblk(bdev, block, size);
 
 	/**
-	 * ¿éÖĞ»¹Ã»ÓĞ°üº¬ÓĞĞ§Êı¾İ(BH_Uptodate±êÖ¾Ã»ÓĞ±»ÖÃÎ»)
+	 * å—ä¸­è¿˜æ²¡æœ‰åŒ…å«æœ‰æ•ˆæ•°æ®(BH_Uptodateæ ‡å¿—æ²¡æœ‰è¢«ç½®ä½)
 	 */
 	if (!buffer_uptodate(bh))
 		/**
-		 * __bread_slow»áµ÷ÓÃÍ¨ÓÃ¿é²ãµÄº¯Êı¶ÁÈ¡Êı¾İµ½ÄÚ´æÖĞ¡£
+		 * __bread_slowä¼šè°ƒç”¨é€šç”¨å—å±‚çš„å‡½æ•°è¯»å–æ•°æ®åˆ°å†…å­˜ä¸­ã€‚
 		 */
 		bh = __bread_slow(bh);
 	return bh;
@@ -1817,8 +1817,8 @@ static inline void discard_buffer(struct buffer_head * bh)
  * NOTE: @gfp_mask may go away, and this function may become non-blocking.
  */
 /**
- * ÊÍ·Å»º³åÇøÒ³¡£
- * page:	ÒªÊÍ·ÅµÄÒ³ÃèÊö·ûµØÖ·¡£
+ * é‡Šæ”¾ç¼“å†²åŒºé¡µã€‚
+ * page:	è¦é‡Šæ”¾çš„é¡µæè¿°ç¬¦åœ°å€ã€‚
  */
 int try_to_release_page(struct page *page, int gfp_mask)
 {
@@ -1826,19 +1826,19 @@ int try_to_release_page(struct page *page, int gfp_mask)
 
 	BUG_ON(!PageLocked(page));
 	/**
-	 * ÕıÔÚÊÔÍ¼½«Ò³Ğ´»Ø´ÅÅÌ£¬Òò´Ë²»ÄÜ½«Ò³ÊÍ·Å¡£
+	 * æ­£åœ¨è¯•å›¾å°†é¡µå†™å›ç£ç›˜ï¼Œå› æ­¤ä¸èƒ½å°†é¡µé‡Šæ”¾ã€‚
 	 */ 
 	if (PageWriteback(page))
 		return 0;
 
 	/**
-	 * Èç¹û¶¨ÒåÁË¿éÉè±¸µÄaddress_space¶ÔÏóµÄreleasepage·½·¨£¬¾Íµ÷ÓÃËü¡£
-	 * ¸Ã»Øµ÷º¯ÊıÍ¨³£ÊÇÃ»ÓĞ¶¨ÒåµÄ¡£
+	 * å¦‚æœå®šä¹‰äº†å—è®¾å¤‡çš„address_spaceå¯¹è±¡çš„releasepageæ–¹æ³•ï¼Œå°±è°ƒç”¨å®ƒã€‚
+	 * è¯¥å›è°ƒå‡½æ•°é€šå¸¸æ˜¯æ²¡æœ‰å®šä¹‰çš„ã€‚
 	 */
 	if (mapping && mapping->a_ops->releasepage)
 		return mapping->a_ops->releasepage(page, gfp_mask);
 	/**
-	 * try_to_free_buffersº¯ÊıÒÀ´Î¼ì²éÒ³ÖĞµÄ»º³åÇøÊ×²¿±êÖ¾¡£
+	 * try_to_free_bufferså‡½æ•°ä¾æ¬¡æ£€æŸ¥é¡µä¸­çš„ç¼“å†²åŒºé¦–éƒ¨æ ‡å¿—ã€‚
 	 */
 	return try_to_free_buffers(page);
 }
@@ -1902,7 +1902,7 @@ EXPORT_SYMBOL(block_invalidatepage);
  * is already excluded via the page lock.
  */
 /**
- * ÎªÒ³Ëùº¬¿é»º³åÇø·ÖÅä»º³åÇøÊ×²¿¡£
+ * ä¸ºé¡µæ‰€å«å—ç¼“å†²åŒºåˆ†é…ç¼“å†²åŒºé¦–éƒ¨ã€‚
  */
 void create_empty_buffers(struct page *page,
 			unsigned long blocksize, unsigned long b_state)
@@ -2002,10 +2002,10 @@ static int __block_write_full_page(struct inode *inode, struct page *page,
 
 	BUG_ON(!PageLocked(page));
 
-	/* ¼ÆËãÎÄ¼ş×îºóÒ»¸ö¿éµÄ±àºÅ */
+	/* è®¡ç®—æ–‡ä»¶æœ€åä¸€ä¸ªå—çš„ç¼–å· */
 	last_block = (i_size_read(inode) - 1) >> inode->i_blkbits;
 	/**
-	 * Ïóblock_read_full_pageÒ»Ñù£¬Èç¹û»¹Ã»ÓĞÔÚ»º³åÇøÒ³ÖĞ£¬¾Í·ÖÅä»º³åÇøÊ×²¿
+	 * è±¡block_read_full_pageä¸€æ ·ï¼Œå¦‚æœè¿˜æ²¡æœ‰åœ¨ç¼“å†²åŒºé¡µä¸­ï¼Œå°±åˆ†é…ç¼“å†²åŒºé¦–éƒ¨
 	 */
 	if (!page_has_buffers(page)) {
 		create_empty_buffers(page, 1 << inode->i_blkbits,
@@ -2030,9 +2030,9 @@ static int __block_write_full_page(struct inode *inode, struct page *page,
 	 * Get all the dirty buffers mapped to disk addresses and
 	 * handle any aliases from the underlying blockdev's mapping.
 	 */
-	/* È·±£ÒÑ¾­Ó³ÉäÁËËùÓĞ»º³åÇø */
+	/* ç¡®ä¿å·²ç»æ˜ å°„äº†æ‰€æœ‰ç¼“å†²åŒº */
 	do {
-		if (block > last_block) {/* ³¬¹ıÁËÎÄ¼ş¿é */
+		if (block > last_block) {/* è¶…è¿‡äº†æ–‡ä»¶å— */
 			/*
 			 * mapped buffers outside i_size will occur, because
 			 * this page can be outside i_size when there is a
@@ -2041,11 +2041,11 @@ static int __block_write_full_page(struct inode *inode, struct page *page,
 			/*
 			 * The buffer was zeroed by block_write_full_page()
 			 */
-			/* ÉÏ²ãµ÷ÓÃÕß±ØĞëÇå³ıÁËÒ³ÃæÄÚÈİ£¬ÕâÀï½«»º³åÇøÔà±ê¼ÇÇå³ı£¬²¢ÉèÖÃuptodate±êÖ¾ */
+			/* ä¸Šå±‚è°ƒç”¨è€…å¿…é¡»æ¸…é™¤äº†é¡µé¢å†…å®¹ï¼Œè¿™é‡Œå°†ç¼“å†²åŒºè„æ ‡è®°æ¸…é™¤ï¼Œå¹¶è®¾ç½®uptodateæ ‡å¿— */
 			clear_buffer_dirty(bh);
 			set_buffer_uptodate(bh);
-		} else if (!buffer_mapped(bh) && buffer_dirty(bh)) {/* Èç¹û»¹Ã»ÓĞÓ³Éäµ½´ÅÅÌ£¬²¢ÇÒ»º³åÇøÎªÔà */
-			/* »ñµÃ´ÅÅÌÂß¼­¿é£¬±ØÒªÊ±´´½¨¼ä½Ó¿é */
+		} else if (!buffer_mapped(bh) && buffer_dirty(bh)) {/* å¦‚æœè¿˜æ²¡æœ‰æ˜ å°„åˆ°ç£ç›˜ï¼Œå¹¶ä¸”ç¼“å†²åŒºä¸ºè„ */
+			/* è·å¾—ç£ç›˜é€»è¾‘å—ï¼Œå¿…è¦æ—¶åˆ›å»ºé—´æ¥å— */
 			err = get_block(inode, block, bh, 1);
 			if (err)
 				goto recover;
@@ -2056,15 +2056,15 @@ static int __block_write_full_page(struct inode *inode, struct page *page,
 							bh->b_blocknr);
 			}
 		}
-		/* ´¦ÀíÏÂÒ»¸ö»º³åÇøÊ×²¿ */
+		/* å¤„ç†ä¸‹ä¸€ä¸ªç¼“å†²åŒºé¦–éƒ¨ */
 		bh = bh->b_this_page;
 		block++;
 	} while (bh != head);
 
-	/* Ëø×¡»º³åÇø */
+	/* é”ä½ç¼“å†²åŒº */
 	do {
 		get_bh(bh);
-		if (!buffer_mapped(bh))/* ³¬³öÎÄ¼ş´óĞ¡µÄ»º³åÇø£¬²»ĞèÒª´¦Àí */
+		if (!buffer_mapped(bh))/* è¶…å‡ºæ–‡ä»¶å¤§å°çš„ç¼“å†²åŒºï¼Œä¸éœ€è¦å¤„ç† */
 			continue;
 		/*
 		 * If it's a fully non-blocking write attempt and we cannot
@@ -2073,19 +2073,19 @@ static int __block_write_full_page(struct inode *inode, struct page *page,
 		 * activity, but those code paths have their own higher-level
 		 * throttling.
 		 */
-		if (wbc->sync_mode != WB_SYNC_NONE || !wbc->nonblocking) {/* ÒªÇóÍêÕûµÄ»ØĞ´ÎÄ¼ş£¬»òÕßÔÊĞí×èÈû */
-			/* Ëø¶¨»º³åÇø */
+		if (wbc->sync_mode != WB_SYNC_NONE || !wbc->nonblocking) {/* è¦æ±‚å®Œæ•´çš„å›å†™æ–‡ä»¶ï¼Œæˆ–è€…å…è®¸é˜»å¡ */
+			/* é”å®šç¼“å†²åŒº */
 			lock_buffer(bh);
-		} else if (test_set_buffer_locked(bh)) {/* ³¢ÊÔ»ñµÃËø£¬Èç¹û²»ÄÜ»ñµÃÔò¼ÌĞø´¦ÀíÏÂÒ»¸ö»º³åÇø */
-			redirty_page_for_writepage(wbc, page);/* ÖØĞÂ±ê¼ÇÒ³ÃæÎªÔà */
+		} else if (test_set_buffer_locked(bh)) {/* å°è¯•è·å¾—é”ï¼Œå¦‚æœä¸èƒ½è·å¾—åˆ™ç»§ç»­å¤„ç†ä¸‹ä¸€ä¸ªç¼“å†²åŒº */
+			redirty_page_for_writepage(wbc, page);/* é‡æ–°æ ‡è®°é¡µé¢ä¸ºè„ */
 			continue;
 		}
-		/* ÔËĞĞµ½´Ë£¬ÒÑ¾­³É¹¦»ñµÃ»º³åÇøÊ×²¿µÄËø */
+		/* è¿è¡Œåˆ°æ­¤ï¼Œå·²ç»æˆåŠŸè·å¾—ç¼“å†²åŒºé¦–éƒ¨çš„é” */
 		if (test_clear_buffer_dirty(bh)) {
-			/* Èç¹ûÒ³ÃæÎªÔà£¬ÕâÀïÉèÖÃÆä»Øµ÷º¯Êı£¬²¢ÉèÖÃBH_Async_Write±êÖ¾£¬ÉÔºó½«ÆäĞ´Èë´ÅÅÌ */
+			/* å¦‚æœé¡µé¢ä¸ºè„ï¼Œè¿™é‡Œè®¾ç½®å…¶å›è°ƒå‡½æ•°ï¼Œå¹¶è®¾ç½®BH_Async_Writeæ ‡å¿—ï¼Œç¨åå°†å…¶å†™å…¥ç£ç›˜ */
 			mark_buffer_async_write(bh);
 		} else {
-			unlock_buffer(bh);/* Èç¹û²»ÊÇÔà»º³åÇø£¬Ôò½âËø£¬²»±ØĞ´µ½´ÅÅÌÉÏ */
+			unlock_buffer(bh);/* å¦‚æœä¸æ˜¯è„ç¼“å†²åŒºï¼Œåˆ™è§£é”ï¼Œä¸å¿…å†™åˆ°ç£ç›˜ä¸Š */
 		}
 	} while ((bh = bh->b_this_page) != head);
 
@@ -2093,17 +2093,17 @@ static int __block_write_full_page(struct inode *inode, struct page *page,
 	 * The page and its buffers are protected by PageWriteback(), so we can
 	 * drop the bh refcounts early.
 	 */
-	/* È·±£Ã»ÓĞÉèÖÃ»ØĞ´±êÖ¾,²¢½«»ØĞ´±êÖ¾ÖÃÉÏ£¬»ØĞ´±êÖ¾½«±£»¤Ò³ÃæºÍËüµÄ¿é»º³åÇø */
+	/* ç¡®ä¿æ²¡æœ‰è®¾ç½®å›å†™æ ‡å¿—,å¹¶å°†å›å†™æ ‡å¿—ç½®ä¸Šï¼Œå›å†™æ ‡å¿—å°†ä¿æŠ¤é¡µé¢å’Œå®ƒçš„å—ç¼“å†²åŒº */
 	BUG_ON(PageWriteback(page));
 	set_page_writeback(page);
 	unlock_page(page);
 
 	/**
-	 * ¶ÔÃ¿»º³åÇøµ÷ÓÃsubmit_bhº¯ÊıÀ´Ö´ĞĞĞ´²Ù×÷¡£
+	 * å¯¹æ¯ç¼“å†²åŒºè°ƒç”¨submit_bhå‡½æ•°æ¥æ‰§è¡Œå†™æ“ä½œã€‚
 	 */
 	do {
 		struct buffer_head *next = bh->b_this_page;
-		if (buffer_async_write(bh)) {/* »º³åÇøÔà£¬ĞèÒªÌá½» */
+		if (buffer_async_write(bh)) {/* ç¼“å†²åŒºè„ï¼Œéœ€è¦æäº¤ */
 			submit_bh(WRITE, bh);
 			nr_underway++;
 		}
@@ -2178,7 +2178,7 @@ recover:
 }
 
 /**
- * ÎªÎÄ¼şÒ³µÄ»º³åÇøºÍ»º³åÇøÊ×²¿×ö×¼±¸
+ * ä¸ºæ–‡ä»¶é¡µçš„ç¼“å†²åŒºå’Œç¼“å†²åŒºé¦–éƒ¨åšå‡†å¤‡
  */
 static int __block_prepare_write(struct inode *inode, struct page *page,
 		unsigned from, unsigned to, get_block_t *get_block)
@@ -2196,8 +2196,8 @@ static int __block_prepare_write(struct inode *inode, struct page *page,
 
 	blocksize = 1 << inode->i_blkbits;
 	/**
-	 * ¼ì²éÄ³Ò³ÊÇ·ñÊÇÒ»¸ö»º³åÇøÒ³£¨Èç¹ûÊÇÔòPG_Private±êÖ¾ÖÃÎ»£©¡£
-	 * Èç¹ûÃ»ÓĞÉèÖÃ¸Ã±êÖ¾£¬Ôòµ÷ÓÃcreate_empty_buffersÎªÒ³ÖĞËùÓĞµÄ»º³åÇø·ÖÅä»º³åÇøÊ×²¿
+	 * æ£€æŸ¥æŸé¡µæ˜¯å¦æ˜¯ä¸€ä¸ªç¼“å†²åŒºé¡µï¼ˆå¦‚æœæ˜¯åˆ™PG_Privateæ ‡å¿—ç½®ä½ï¼‰ã€‚
+	 * å¦‚æœæ²¡æœ‰è®¾ç½®è¯¥æ ‡å¿—ï¼Œåˆ™è°ƒç”¨create_empty_buffersä¸ºé¡µä¸­æ‰€æœ‰çš„ç¼“å†²åŒºåˆ†é…ç¼“å†²åŒºé¦–éƒ¨
 	 */
 	if (!page_has_buffers(page))
 		create_empty_buffers(page, blocksize, 0);
@@ -2207,7 +2207,7 @@ static int __block_prepare_write(struct inode *inode, struct page *page,
 	block = (sector_t)page->index << (PAGE_CACHE_SHIFT - bbits);
 
 	/**
-	 * ¶ÔÒ³ÖĞ°üº¬µÄ»º³åÇø¶ÔÓ¦µÄÃ¿¸ö»º³åÇøÊ×²¿£¬¼°ÊÜĞ´²Ù×÷Ó°ÏìµÄÃ¿¸ö»º³åÇøÊ×²¿¡£
+	 * å¯¹é¡µä¸­åŒ…å«çš„ç¼“å†²åŒºå¯¹åº”çš„æ¯ä¸ªç¼“å†²åŒºé¦–éƒ¨ï¼ŒåŠå—å†™æ“ä½œå½±å“çš„æ¯ä¸ªç¼“å†²åŒºé¦–éƒ¨ã€‚
 	 */
 	for(bh = head, block_start = 0; bh != head || !block_start;
 	    block++, block_start=block_end, bh = bh->b_this_page) {
@@ -2220,32 +2220,32 @@ static int __block_prepare_write(struct inode *inode, struct page *page,
 			continue;
 		}
 		/**
-		 * Èç¹ûBH_New±êÖ¾ÖÃÎ»£¬¾Í½«ËüÇå0¡£
+		 * å¦‚æœBH_Newæ ‡å¿—ç½®ä½ï¼Œå°±å°†å®ƒæ¸…0ã€‚
 		 */
 		if (buffer_new(bh))
 			clear_buffer_new(bh);
 		/**
-		 * Èç¹ûBH_New±êÖ¾ÒÑ¾­Çå0£¬Ôò
+		 * å¦‚æœBH_Newæ ‡å¿—å·²ç»æ¸…0ï¼Œåˆ™
 		 */
 		if (!buffer_mapped(bh)) {
 			/**
-			 * get_blockÊÇ´«µİ¹ıÀ´µÄÒÀÀµÓÚÎÄ¼şÏµÍ³µÄº¯Êı¡£²é¿´Õâ¸öÎÄ¼şÏµÍ³´ÅÅÌÊı¾İ½á¹¹²¢²éÕÒ»º³åÇøµÄÂß¼­¿éºÅ¡£
-			 * £¨Ïà¶ÔÓÚ·ÖÇøµÄÆğÊ¼Î»ÖÃ¶ø²»ÊÇÆÕÍ¨ÎÄ¼şµÄÆğÊ¼Î»ÖÃ£©
-			 * ÓëÎÄ¼şÏµÍ³Ïà¹ØµÄº¯Êı°ÑÕâ¸öÊı´æ·ÅÔÚ¶ÔÓ¦»º³åÇøÊ×²¿µÄb_blicknr×Ö¶Î¡£²¢ÉèÖÃËüµÄBH_Mapped±êÖ¾¡£
-			 * ÓëÎÄ¼şÏµÍ³Ïà¹ØµÄº¯Êı¿ÉÄÜÎªÎÄ¼ş·ÖÅäÒ»¸öĞÂµÄÎïÀí¿é£¨Èç£º·ÃÎÊµÄ¿éµô½øÎÄ¼şµÄ¡°¶´¡±ÖĞ£©¡£ÕâÖÖÇé¿öÏÂ£¬ÉèÖÃBH_NewÖµ
+			 * get_blockæ˜¯ä¼ é€’è¿‡æ¥çš„ä¾èµ–äºæ–‡ä»¶ç³»ç»Ÿçš„å‡½æ•°ã€‚æŸ¥çœ‹è¿™ä¸ªæ–‡ä»¶ç³»ç»Ÿç£ç›˜æ•°æ®ç»“æ„å¹¶æŸ¥æ‰¾ç¼“å†²åŒºçš„é€»è¾‘å—å·ã€‚
+			 * ï¼ˆç›¸å¯¹äºåˆ†åŒºçš„èµ·å§‹ä½ç½®è€Œä¸æ˜¯æ™®é€šæ–‡ä»¶çš„èµ·å§‹ä½ç½®ï¼‰
+			 * ä¸æ–‡ä»¶ç³»ç»Ÿç›¸å…³çš„å‡½æ•°æŠŠè¿™ä¸ªæ•°å­˜æ”¾åœ¨å¯¹åº”ç¼“å†²åŒºé¦–éƒ¨çš„b_blicknrå­—æ®µã€‚å¹¶è®¾ç½®å®ƒçš„BH_Mappedæ ‡å¿—ã€‚
+			 * ä¸æ–‡ä»¶ç³»ç»Ÿç›¸å…³çš„å‡½æ•°å¯èƒ½ä¸ºæ–‡ä»¶åˆ†é…ä¸€ä¸ªæ–°çš„ç‰©ç†å—ï¼ˆå¦‚ï¼šè®¿é—®çš„å—æ‰è¿›æ–‡ä»¶çš„â€œæ´â€ä¸­ï¼‰ã€‚è¿™ç§æƒ…å†µä¸‹ï¼Œè®¾ç½®BH_Newå€¼
 			 */
 			err = get_block(inode, block, bh, 1);
 			if (err)
 				goto out;
 			/**
-			 * ¼ì²éBH_New±êÖ¾µÄÖµ
+			 * æ£€æŸ¥BH_Newæ ‡å¿—çš„å€¼
 			 */
 			if (buffer_new(bh)) {
 				clear_buffer_new(bh);
 				/**
-				 * ÉèÖÃÁËBH_New±êÖ¾µÄÖµ£¬µ÷ÓÃunmap_underlying_metadata¼ì²éÒ³¸ßËÙ»º´æÄÚµÄÄ³¸ö¿éÉè±¸»º³åÇøÒ³ÖĞÊÇ·ñ°üº¬Ö¸Ïò´ÅÅÌÍ¬Ò»¿éµÄÒ»¸ö»º³åÇø
-				 * ¾¡¹Ü¿ÉÄÜĞÔ²»´ó£¬µ«ÔÚÒ»¸öÓÃ»§Ö±½ÓÏò¿éÉè±¸ÎÄ¼şĞ´Êı¾İ¿éÊ±£¬»¹ÊÇ»á³öÏÖÕâÖÖÇé¿ö£¬´Ó¶øÔ½¹ıÎÄ¼şÏµÍ³¡£
-				 * ¸Ãº¯ÊıÊµ¼ÊÉÏµ÷ÓÃ__find_get_blockÔÚÒ³¸ßËÙ»º´æÄÚ²éÕÒÒ»¸ö¾É¿é¡£Èç¹ûÕÒµ½Ò»¿é£¬º¯Êı½«BH_Dirty±êÖ¾Çå0²¢µÈ´ıÖ±µ½¸Ã»º³åÇøµÄIO´«ÊäÍê±Ï¡£
+				 * è®¾ç½®äº†BH_Newæ ‡å¿—çš„å€¼ï¼Œè°ƒç”¨unmap_underlying_metadataæ£€æŸ¥é¡µé«˜é€Ÿç¼“å­˜å†…çš„æŸä¸ªå—è®¾å¤‡ç¼“å†²åŒºé¡µä¸­æ˜¯å¦åŒ…å«æŒ‡å‘ç£ç›˜åŒä¸€å—çš„ä¸€ä¸ªç¼“å†²åŒº
+				 * å°½ç®¡å¯èƒ½æ€§ä¸å¤§ï¼Œä½†åœ¨ä¸€ä¸ªç”¨æˆ·ç›´æ¥å‘å—è®¾å¤‡æ–‡ä»¶å†™æ•°æ®å—æ—¶ï¼Œè¿˜æ˜¯ä¼šå‡ºç°è¿™ç§æƒ…å†µï¼Œä»è€Œè¶Šè¿‡æ–‡ä»¶ç³»ç»Ÿã€‚
+				 * è¯¥å‡½æ•°å®é™…ä¸Šè°ƒç”¨__find_get_blockåœ¨é¡µé«˜é€Ÿç¼“å­˜å†…æŸ¥æ‰¾ä¸€ä¸ªæ—§å—ã€‚å¦‚æœæ‰¾åˆ°ä¸€å—ï¼Œå‡½æ•°å°†BH_Dirtyæ ‡å¿—æ¸…0å¹¶ç­‰å¾…ç›´åˆ°è¯¥ç¼“å†²åŒºçš„IOä¼ è¾“å®Œæ¯•ã€‚
 				 */
 				unmap_underlying_metadata(bh->b_bdev,
 							bh->b_blocknr);
@@ -2254,7 +2254,7 @@ static int __block_prepare_write(struct inode *inode, struct page *page,
 					continue;
 				}
 				/**
-				 * ÁíÍâ£¬Èç¹ûĞ´²Ù×÷²»¶ÔÕû¸ö»º³åÇøÖØĞ´£¬ÔòÓÃ0ÌîĞ´Î´Ğ´ÇøÓò¡£
+				 * å¦å¤–ï¼Œå¦‚æœå†™æ“ä½œä¸å¯¹æ•´ä¸ªç¼“å†²åŒºé‡å†™ï¼Œåˆ™ç”¨0å¡«å†™æœªå†™åŒºåŸŸã€‚
 				 */
 				if (block_end > to || block_start < from) {
 					void *kaddr;
@@ -2278,9 +2278,9 @@ static int __block_prepare_write(struct inode *inode, struct page *page,
 			continue; 
 		}
 		/**
-		 * ²»ÖØĞ´Õû¸ö»º³åÇø£¬ÇÒËüµÄBH_DelayºÍBH_Uptodate±êÖ¾Î´ÖÃÎ»
-		 * £¨¼´ÒÑ¾­ÔÚ´ÅÅÌÎÄ¼şÏµÍ³Êı¾İ½á¹¹ÖĞ·ÖÅäÁË¿é£¬µ«ÊÇRAMµÄ»º³åÇøÖĞ²¢Ã»ÓĞÓĞĞ§µÄÊı¾İÓ³Ïñ£©
-		 * º¯Êı¶Ô¸Ã¿éµ÷ÓÃll_rw_block´Ó´ÅÅÌ¶ÁÈ¡ËüµÄÄÚÈİ
+		 * ä¸é‡å†™æ•´ä¸ªç¼“å†²åŒºï¼Œä¸”å®ƒçš„BH_Delayå’ŒBH_Uptodateæ ‡å¿—æœªç½®ä½
+		 * ï¼ˆå³å·²ç»åœ¨ç£ç›˜æ–‡ä»¶ç³»ç»Ÿæ•°æ®ç»“æ„ä¸­åˆ†é…äº†å—ï¼Œä½†æ˜¯RAMçš„ç¼“å†²åŒºä¸­å¹¶æ²¡æœ‰æœ‰æ•ˆçš„æ•°æ®æ˜ åƒï¼‰
+		 * å‡½æ•°å¯¹è¯¥å—è°ƒç”¨ll_rw_blockä»ç£ç›˜è¯»å–å®ƒçš„å†…å®¹
 		 */
 		if (!buffer_uptodate(bh) && !buffer_delay(bh) &&
 		     (block_start < from || block_end > to)) {
@@ -2292,7 +2292,7 @@ static int __block_prepare_write(struct inode *inode, struct page *page,
 	 * If we issued read requests - let them complete.
 	 */
 	/**
-	 * ×èÈûµ±Ç°½ø³Ì£¬Ö±µ½ll_rw_blockÒªÇóµÄËùÓĞ¶Á²Ù×÷¶¼È«²¿Íê³É¡£
+	 * é˜»å¡å½“å‰è¿›ç¨‹ï¼Œç›´åˆ°ll_rw_blockè¦æ±‚çš„æ‰€æœ‰è¯»æ“ä½œéƒ½å…¨éƒ¨å®Œæˆã€‚
 	 */
 	while(wait_bh > wait) {
 		wait_on_buffer(*--wait_bh);
@@ -2342,7 +2342,7 @@ static int __block_commit_write(struct inode *inode, struct page *page,
 	blocksize = 1 << inode->i_blkbits;
 
 	/**
-	 * ¿¼ÂÇÒ³ÖĞÊÜĞ´²Ù×÷Ó°ÏìµÄËùÓĞ»º³åÇø¡£¶ÔÓÚÆäÖĞµÄÃ¿¸ö»º³åÇø£¬½«¶ÔÓ¦»º³åÇøÊ×²¿µÄBH_UptodateºÍBH_Dirty±êÖ¾ÖÃÎ»¡£
+	 * è€ƒè™‘é¡µä¸­å—å†™æ“ä½œå½±å“çš„æ‰€æœ‰ç¼“å†²åŒºã€‚å¯¹äºå…¶ä¸­çš„æ¯ä¸ªç¼“å†²åŒºï¼Œå°†å¯¹åº”ç¼“å†²åŒºé¦–éƒ¨çš„BH_Uptodateå’ŒBH_Dirtyæ ‡å¿—ç½®ä½ã€‚
 	 */
 	for(bh = head = page_buffers(page), block_start = 0;
 	    bh != head || !block_start;
@@ -2364,7 +2364,7 @@ static int __block_commit_write(struct inode *inode, struct page *page,
 	 * uptodate as a result of this (potentially partial) write.
 	 */
 	/**
-	 * Èç¹û»º³åÇøÒ³ÖĞµÄËùÓĞ»º³åÇøÊÇ×îĞÂµÄ£¬Ôò½«PG_uptodate±êÖ¾ÖÃÎ»¡£
+	 * å¦‚æœç¼“å†²åŒºé¡µä¸­çš„æ‰€æœ‰ç¼“å†²åŒºæ˜¯æœ€æ–°çš„ï¼Œåˆ™å°†PG_uptodateæ ‡å¿—ç½®ä½ã€‚
 	 */
 	if (!partial)
 		SetPageUptodate(page);
@@ -2379,11 +2379,11 @@ static int __block_commit_write(struct inode *inode, struct page *page,
  * page struct once IO has completed.
  */
 /**
- * ¿éÉè±¸ÎÄ¼şµÄreadpage·½·¨×ÜÊÇÏàÍ¬µÄ£¬ËüÊÇÓÉblkdev_readpage£¬¶øblkdev_readpage»áµ÷ÓÃ±¾·½·¨¡£
- * get_block°ÑÏà¶ÔÓÚÎÄ¼ş¿ªÊ¼´¦µÄÎÄ¼ş¿éºÅ×ª»»ÎªÏà¶ÔÓÚ¿éÉè±¸¿ªÊ¼´¦µÄÂß¼­¿éºÅ¡£
- * ²»¹ı¶Ô¿éÉè±¸ÎÄ¼şÀ´Ëµ£¬ÕâÁ½¸öÊıÊÇÒ»ÖÂµÄ¡£
- * block_read_full_pageÒÔÒ»´Î¶ÁÒ»¿éµÄ·½Ê½¶ÁÒ»Ò³Êı¾İ¡£
- * µ±¶Á¿éÉè±¸ÎÄ¼şºÍ´ÅÅÌÉÏ¿é²»ÏàÁÚµÄÆÕÍ¨ÎÄ¼şÊ±¶¼Ê¹ÓÃ¸Ãº¯Êı¡£
+ * å—è®¾å¤‡æ–‡ä»¶çš„readpageæ–¹æ³•æ€»æ˜¯ç›¸åŒçš„ï¼Œå®ƒæ˜¯ç”±blkdev_readpageï¼Œè€Œblkdev_readpageä¼šè°ƒç”¨æœ¬æ–¹æ³•ã€‚
+ * get_blockæŠŠç›¸å¯¹äºæ–‡ä»¶å¼€å§‹å¤„çš„æ–‡ä»¶å—å·è½¬æ¢ä¸ºç›¸å¯¹äºå—è®¾å¤‡å¼€å§‹å¤„çš„é€»è¾‘å—å·ã€‚
+ * ä¸è¿‡å¯¹å—è®¾å¤‡æ–‡ä»¶æ¥è¯´ï¼Œè¿™ä¸¤ä¸ªæ•°æ˜¯ä¸€è‡´çš„ã€‚
+ * block_read_full_pageä»¥ä¸€æ¬¡è¯»ä¸€å—çš„æ–¹å¼è¯»ä¸€é¡µæ•°æ®ã€‚
+ * å½“è¯»å—è®¾å¤‡æ–‡ä»¶å’Œç£ç›˜ä¸Šå—ä¸ç›¸é‚»çš„æ™®é€šæ–‡ä»¶æ—¶éƒ½ä½¿ç”¨è¯¥å‡½æ•°ã€‚
  */
 int block_read_full_page(struct page *page, get_block_t *get_block)
 {
@@ -2398,15 +2398,15 @@ int block_read_full_page(struct page *page, get_block_t *get_block)
 		PAGE_BUG(page);
 	blocksize = 1 << inode->i_blkbits;
 	/**
-	 * ¼ì²éÒ³ÃèÊö·ûµÄ±êÖ¾PG_private£¬Èç¹ûÖÃÎ»£¬Ôò¸ÃÒ³ÓëÃèÊö×é³ÉÒ³µÄ¿éµÄ»º³åÇøÊ×²¿Á´±íÏà¹Ø£¨°Ñ¿é´æ·ÅÔÚÒ³¸ßËÙ»º´æÖĞ£©
-	 * ·ñÔò£¬µ÷ÓÃcreate_empty_buffersÎª¸ÃÒ³Ëùº¬µÄËùÓĞ¿é»º³åÇø·ÖÅä»º³åÇøÊ×²¿¡£
+	 * æ£€æŸ¥é¡µæè¿°ç¬¦çš„æ ‡å¿—PG_privateï¼Œå¦‚æœç½®ä½ï¼Œåˆ™è¯¥é¡µä¸æè¿°ç»„æˆé¡µçš„å—çš„ç¼“å†²åŒºé¦–éƒ¨é“¾è¡¨ç›¸å…³ï¼ˆæŠŠå—å­˜æ”¾åœ¨é¡µé«˜é€Ÿç¼“å­˜ä¸­ï¼‰
+	 * å¦åˆ™ï¼Œè°ƒç”¨create_empty_buffersä¸ºè¯¥é¡µæ‰€å«çš„æ‰€æœ‰å—ç¼“å†²åŒºåˆ†é…ç¼“å†²åŒºé¦–éƒ¨ã€‚
 	 */
 	if (!page_has_buffers(page))
 		create_empty_buffers(page, blocksize, 0);
 	head = page_buffers(page);
 
 	/**
-	 * ´ÓÏà¶ÔÓÚÒ³µÄÎÄ¼şÆ«ÒÆÁ¿(page->index)¼ÆËã³öÒ³ÖĞµÚÒ»¿éµÄÎÄ¼ş¿éºÅ
+	 * ä»ç›¸å¯¹äºé¡µçš„æ–‡ä»¶åç§»é‡(page->index)è®¡ç®—å‡ºé¡µä¸­ç¬¬ä¸€å—çš„æ–‡ä»¶å—å·
 	 */
 	iblock = (sector_t)page->index << (PAGE_CACHE_SHIFT - inode->i_blkbits);
 	lblock = (i_size_read(inode)+blocksize-1) >> inode->i_blkbits;
@@ -2415,29 +2415,29 @@ int block_read_full_page(struct page *page, get_block_t *get_block)
 	i = 0;
 
 	/**
-	 * ¶Ô¸ÃÒ³ÖĞÃ¿¸ö»º³åÇøÊ×²¿£¬Ö´ĞĞÒÔÏÂ²Ù×÷
+	 * å¯¹è¯¥é¡µä¸­æ¯ä¸ªç¼“å†²åŒºé¦–éƒ¨ï¼Œæ‰§è¡Œä»¥ä¸‹æ“ä½œ
 	 */
 	do {
 		/**
-		 * Èç¹ûBH_UptodateÖÃÎ»£¬ÔòÌø¹ı¸Ã»º³åÇø¼ÌĞø´¦Àí¸ÃÒ³µÄÏÂÒ»¸ö»º³åÇø
+		 * å¦‚æœBH_Uptodateç½®ä½ï¼Œåˆ™è·³è¿‡è¯¥ç¼“å†²åŒºç»§ç»­å¤„ç†è¯¥é¡µçš„ä¸‹ä¸€ä¸ªç¼“å†²åŒº
 		 */
 		if (buffer_uptodate(bh))
 			continue;
 
 		/**
-		 * Èç¹ûBH_MappedÎ´ÖÃÎ»
+		 * å¦‚æœBH_Mappedæœªç½®ä½
 		 */
 		if (!buffer_mapped(bh)) {
 			fully_mapped = 0;
 			/**
-			 * ²¢ÇÒ¸Ã¿éÃ»ÓĞ³¬³öÎÄ¼şÎ²
+			 * å¹¶ä¸”è¯¥å—æ²¡æœ‰è¶…å‡ºæ–‡ä»¶å°¾
 			 */
 			if (iblock < lblock) {
 				/**
-				 * µ÷ÓÃÒÀÀµÓÚÎÄ¼şÏµÍ³µÄget_blockº¯Êı¡£¸Ãº¯Êı×öÎª²ÎÊı´«Èë¡£
-				 * ¶ÔÓÚÆÕÍ¨ÎÄ¼ş£¬¸Ãº¯ÊıÔÚÎÄ¼şÏµÍ³µÄ´ÅÅÌÊı¾İ½á¹¹ÖĞ²éÕÒ£¬µÃµ½Ïà¶ÔÓÚ´ÅÅÌ»ò·ÖÇø¿ªÊ¼´¦µÄ»º³åÇøÂß¼­¿éºÅ
-				 * ¶ÔÓÚ¿éÉè±¸ÎÄ¼ş£¬²»Í¬µÄÊÇ¸Ãº¯Êı°ÑÎÄ¼ş¿éºÅµ±×÷Âß¼­¿éºÅ¡£
-				 * ¶ÔÕâÁ½ÖÖÇéĞÎ£¬º¯Êı¶¼½«Âß¼­¿éºÅ´æ·ÅÔÚÏàÓ¦»º³åÇøÊ×²¿µÄb_blocknr×Ö¶ÎÖĞ£¬²¢½«±êÖ¾BH_Mapped±êÖ¾ÖÃÎ»
+				 * è°ƒç”¨ä¾èµ–äºæ–‡ä»¶ç³»ç»Ÿçš„get_blockå‡½æ•°ã€‚è¯¥å‡½æ•°åšä¸ºå‚æ•°ä¼ å…¥ã€‚
+				 * å¯¹äºæ™®é€šæ–‡ä»¶ï¼Œè¯¥å‡½æ•°åœ¨æ–‡ä»¶ç³»ç»Ÿçš„ç£ç›˜æ•°æ®ç»“æ„ä¸­æŸ¥æ‰¾ï¼Œå¾—åˆ°ç›¸å¯¹äºç£ç›˜æˆ–åˆ†åŒºå¼€å§‹å¤„çš„ç¼“å†²åŒºé€»è¾‘å—å·
+				 * å¯¹äºå—è®¾å¤‡æ–‡ä»¶ï¼Œä¸åŒçš„æ˜¯è¯¥å‡½æ•°æŠŠæ–‡ä»¶å—å·å½“ä½œé€»è¾‘å—å·ã€‚
+				 * å¯¹è¿™ä¸¤ç§æƒ…å½¢ï¼Œå‡½æ•°éƒ½å°†é€»è¾‘å—å·å­˜æ”¾åœ¨ç›¸åº”ç¼“å†²åŒºé¦–éƒ¨çš„b_blocknrå­—æ®µä¸­ï¼Œå¹¶å°†æ ‡å¿—BH_Mappedæ ‡å¿—ç½®ä½
 				 */
 				if (get_block(inode, iblock, bh, 0))
 					SetPageError(page);
@@ -2455,27 +2455,27 @@ int block_read_full_page(struct page *page, get_block_t *get_block)
 			 * synchronously
 			 */
 			/**
-			 * ÔÙ´Î¼ì²éBH_Uptodate±êÖ¾¡£ÒòÎªÒÀÀµÓÚÎÄ¼şÏµÍ³µÄget_blockº¯Êı¿ÉÄÜÒÑ¾­½Ç·¢ÁË¿éIO²Ù×÷¶ø¸üĞÂÁË»º³åÇø¡£
-			 * Èç¹ûBH_UptodateÖÃÎ»ÁË£¬¾Í¼ÌĞø´¦ÀíÏÂÒ»»º³åÇø¡£
+			 * å†æ¬¡æ£€æŸ¥BH_Uptodateæ ‡å¿—ã€‚å› ä¸ºä¾èµ–äºæ–‡ä»¶ç³»ç»Ÿçš„get_blockå‡½æ•°å¯èƒ½å·²ç»è§’å‘äº†å—IOæ“ä½œè€Œæ›´æ–°äº†ç¼“å†²åŒºã€‚
+			 * å¦‚æœBH_Uptodateç½®ä½äº†ï¼Œå°±ç»§ç»­å¤„ç†ä¸‹ä¸€ç¼“å†²åŒºã€‚
 			 */
 			if (buffer_uptodate(bh))
 				continue;
 		}
 		/**
-		 * ½«»º³åÇøÊ×²¿µÄµØÖ·´æ·ÅÔÚ¾Ö²¿Êı×éattÖĞ£¬¼ÌĞø¸ÃÒ³µÄÏÂÒ»¸ö»º³åÇø
+		 * å°†ç¼“å†²åŒºé¦–éƒ¨çš„åœ°å€å­˜æ”¾åœ¨å±€éƒ¨æ•°ç»„attä¸­ï¼Œç»§ç»­è¯¥é¡µçš„ä¸‹ä¸€ä¸ªç¼“å†²åŒº
 		 */
 		arr[nr++] = bh;
 	} while (i++, iblock++, (bh = bh->b_this_page) != head);
 
 	/**
-	 * Èç¹ûÃ»ÓĞÓöµ½ÎÄ¼ş¶´£¬ÔòÉèÖÃPG_mappedtodisk±êÖ¾
+	 * å¦‚æœæ²¡æœ‰é‡åˆ°æ–‡ä»¶æ´ï¼Œåˆ™è®¾ç½®PG_mappedtodiskæ ‡å¿—
 	 */
 	if (fully_mapped)
 		SetPageMappedToDisk(page);
 
 	/**
-	 * arrÖĞ´æ·ÅÁËÒ»Ğ©»º³åÇøÊ×²¿µÄµØÖ·£¬ÓëÆä¶ÔÓ¦µÄ»º³åÇøµÄÄÚÈİ²»ÊÇ×îĞÂµÄ¡£
-	 * Èç¹ûÊı×éÎª¿Õ£¬ÄÇÃ´Ò³ÖĞËùÓĞ»º³åÇø¶¼ÊÇÓĞĞ§µÄ¡£Òò´Ë£¬ÉèÖÃÒ³µÄPG_uptodate±êÖ¾
+	 * arrä¸­å­˜æ”¾äº†ä¸€äº›ç¼“å†²åŒºé¦–éƒ¨çš„åœ°å€ï¼Œä¸å…¶å¯¹åº”çš„ç¼“å†²åŒºçš„å†…å®¹ä¸æ˜¯æœ€æ–°çš„ã€‚
+	 * å¦‚æœæ•°ç»„ä¸ºç©ºï¼Œé‚£ä¹ˆé¡µä¸­æ‰€æœ‰ç¼“å†²åŒºéƒ½æ˜¯æœ‰æ•ˆçš„ã€‚å› æ­¤ï¼Œè®¾ç½®é¡µçš„PG_uptodateæ ‡å¿—
 	 */
 	if (!nr) {
 		/*
@@ -2485,7 +2485,7 @@ int block_read_full_page(struct page *page, get_block_t *get_block)
 		if (!PageError(page))
 			SetPageUptodate(page);
 		/**
-		 * ÉèÖÃPG_uptodate±êÖ¾ºó£¬µ÷ÓÃunlock_page²¢·µ»Ø¡£
+		 * è®¾ç½®PG_uptodateæ ‡å¿—åï¼Œè°ƒç”¨unlock_pageå¹¶è¿”å›ã€‚
 		 */
 		unlock_page(page);
 		return 0;
@@ -2493,17 +2493,17 @@ int block_read_full_page(struct page *page, get_block_t *get_block)
 
 	/* Stage two: lock the buffers */
 	/**
-	 * arr·Ç¿Õ£¬¶ÔÊı×éÖĞµÄÃ¿¸ö»º³åÇøÊ×²¿Ö´ĞĞÒÔÏÂ²Ù×÷
+	 * arréç©ºï¼Œå¯¹æ•°ç»„ä¸­çš„æ¯ä¸ªç¼“å†²åŒºé¦–éƒ¨æ‰§è¡Œä»¥ä¸‹æ“ä½œ
 	 */
 	for (i = 0; i < nr; i++) {
 		bh = arr[i];
 		/**
-		 * ½«BH_LockÖÃÎ»¡£Ò»µ©ÖÃÎ»£¬º¯Êı½«Ò»Ö±µÈ´ı¸Ã»º³åÇøÊÍ·Å¡£
+		 * å°†BH_Lockç½®ä½ã€‚ä¸€æ—¦ç½®ä½ï¼Œå‡½æ•°å°†ä¸€ç›´ç­‰å¾…è¯¥ç¼“å†²åŒºé‡Šæ”¾ã€‚
 		 */
 		lock_buffer(bh);
 		/**
-		 * ½«»º³åÇøÊ×²¿µÄb_end_io×Ö¶ÎÉèÎªend_buffer_async_readº¯ÊıµÄµØÖ·¡£
-		 * ²¢½«»º³åÇøÊ×²¿µÄBH_Async_Read±êÖ¾ÖÃÎ»
+		 * å°†ç¼“å†²åŒºé¦–éƒ¨çš„b_end_ioå­—æ®µè®¾ä¸ºend_buffer_async_readå‡½æ•°çš„åœ°å€ã€‚
+		 * å¹¶å°†ç¼“å†²åŒºé¦–éƒ¨çš„BH_Async_Readæ ‡å¿—ç½®ä½
 		 */
 		mark_buffer_async_read(bh);
 	}
@@ -2514,7 +2514,7 @@ int block_read_full_page(struct page *page, get_block_t *get_block)
 	 * the underlying blockdev brought it uptodate (the sct fix).
 	 */
 	/**
-	 * ¶ÔarrÖĞµÄÃ¿¸ö»º³åÇøÊ×²¿£¬µ÷ÓÃsubmit_bh£¬½«²Ù×÷ÀàĞÍÉèÎªREADºó£¬Ëü»á´¥·¢ÏàÓ¦¿éµÄIOÊı¾İ´«Êä¡£
+	 * å¯¹arrä¸­çš„æ¯ä¸ªç¼“å†²åŒºé¦–éƒ¨ï¼Œè°ƒç”¨submit_bhï¼Œå°†æ“ä½œç±»å‹è®¾ä¸ºREADåï¼Œå®ƒä¼šè§¦å‘ç›¸åº”å—çš„IOæ•°æ®ä¼ è¾“ã€‚
 	 */
 	for (i = 0; i < nr; i++) {
 		bh = arr[i];
@@ -2659,7 +2659,7 @@ out:
 }
 
 /**
- * ÎªÎÄ¼şÒ³µÄ»º³åÇøºÍ»º³åÇøÊ×²¿×ö×¼±¸
+ * ä¸ºæ–‡ä»¶é¡µçš„ç¼“å†²åŒºå’Œç¼“å†²åŒºé¦–éƒ¨åšå‡†å¤‡
  */
 int block_prepare_write(struct page *page, unsigned from, unsigned to,
 			get_block_t *get_block)
@@ -2679,7 +2679,7 @@ int block_commit_write(struct page *page, unsigned from, unsigned to)
 }
 
 /**
- * address_space¶ÔÏóµÄcommit_write·½·¨¡£Õâ¸ö·½·¨¼¸ºõÊÊÓÃÓÚËùÓĞ·ÇÈÕÖ¾ĞÍ´ÅÅÌÎÄ¼şÏµÍ³¡£
+ * address_spaceå¯¹è±¡çš„commit_writeæ–¹æ³•ã€‚è¿™ä¸ªæ–¹æ³•å‡ ä¹é€‚ç”¨äºæ‰€æœ‰éæ—¥å¿—å‹ç£ç›˜æ–‡ä»¶ç³»ç»Ÿã€‚
  */
 int generic_commit_write(struct file *file, struct page *page,
 		unsigned from, unsigned to)
@@ -2693,7 +2693,7 @@ int generic_commit_write(struct file *file, struct page *page,
 	 * cannot change under us because we hold i_sem.
 	 */
 	/**
-	 * ¼ì²éĞ´²Ù×÷ÊÇ·ñ½«ÎÄ¼şÔö´ó£¬Èç¹ûÔö´óÔò¸üĞÂÎÄ¼şË÷Òı½áµã¶ÔÏóµÄi_size×Ö¶Î¡£
+	 * æ£€æŸ¥å†™æ“ä½œæ˜¯å¦å°†æ–‡ä»¶å¢å¤§ï¼Œå¦‚æœå¢å¤§åˆ™æ›´æ–°æ–‡ä»¶ç´¢å¼•ç»“ç‚¹å¯¹è±¡çš„i_sizeå­—æ®µã€‚
 	 */
 	if (pos > inode->i_size) {
 		i_size_write(inode, pos);
@@ -3012,8 +3012,8 @@ out:
  * The generic ->writepage function for buffer-backed address_spaces
  */
 /**
- * Ext2ÎÄ¼şÏµÍ³ËùÊµÏÖµÄwritepage·½·¨ÊÇÒ»¸öÍ¨ÓÃµÄblock_write_full_pageµÄ·â×°º¯Êı£¬²¢»á´«µİÒ»¸öget_block²ÎÊı
- * ¶Ô¿éÉè±¸À´Ëµ£¬Ëü²»»áÖ±½Óµ÷ÓÃblock_write_full_page£¬¶øÊÇµ÷ÓÃblock_write_full_pageµÄ·â×°º¯Êıblkdev_writepageº¯ÊıÊµÏÖwritepage
+ * Ext2æ–‡ä»¶ç³»ç»Ÿæ‰€å®ç°çš„writepageæ–¹æ³•æ˜¯ä¸€ä¸ªé€šç”¨çš„block_write_full_pageçš„å°è£…å‡½æ•°ï¼Œå¹¶ä¼šä¼ é€’ä¸€ä¸ªget_blockå‚æ•°
+ * å¯¹å—è®¾å¤‡æ¥è¯´ï¼Œå®ƒä¸ä¼šç›´æ¥è°ƒç”¨block_write_full_pageï¼Œè€Œæ˜¯è°ƒç”¨block_write_full_pageçš„å°è£…å‡½æ•°blkdev_writepageå‡½æ•°å®ç°writepage
  */
 int block_write_full_page(struct page *page, get_block_t *get_block,
 			struct writeback_control *wbc)
@@ -3025,22 +3025,22 @@ int block_write_full_page(struct page *page, get_block_t *get_block,
 	void *kaddr;
 
 	/* Is the page fully inside i_size? */
-	/* Ò³ÃæÄÚÈİÍêÈ«ÔÚÎÄ¼ş·¶Î§ÄÚ */
+	/* é¡µé¢å†…å®¹å®Œå…¨åœ¨æ–‡ä»¶èŒƒå›´å†… */
 	if (page->index < end_index)
-		/* Ğ´Õû¸öÒ³Ãæ */
+		/* å†™æ•´ä¸ªé¡µé¢ */
 		return __block_write_full_page(inode, page, get_block, wbc);
 
 	/* Is the page fully outside i_size? (truncate in progress) */
 	offset = i_size & (PAGE_CACHE_SIZE-1);
-	if (page->index >= end_index+1 || !offset) {/* Ò³ÃæÍêÈ«²»ÔÚÎÄ¼şÄÚ */
+	if (page->index >= end_index+1 || !offset) {/* é¡µé¢å®Œå…¨ä¸åœ¨æ–‡ä»¶å†… */
 		/*
 		 * The page may have dirty, unmapped buffers.  For example,
 		 * they may have been added in ext3_writepage().  Make them
 		 * freeable here, so the page does not leak.
 		 */
-		/* Ê¹Õû¸öÒ³ÃæÊ§Ğ§ */
+		/* ä½¿æ•´ä¸ªé¡µé¢å¤±æ•ˆ */
 		block_invalidatepage(page, 0);
-		/* ½âËøÒ³Ãæ²¢ÍË³ö */
+		/* è§£é”é¡µé¢å¹¶é€€å‡º */
 		unlock_page(page);
 		return 0; /* don't care */
 	}
@@ -3052,13 +3052,13 @@ int block_write_full_page(struct page *page, get_block_t *get_block,
 	 * the  page size, the remaining memory is zeroed when mapped, and
 	 * writes to that region are not written out to the file."
 	 */
-	/* Ò³ÃæÎ»ÓÚÎÄ¼ş×îºó£¬Ê×ÏÈÓ³ÉäÒ³Ãæ */
+	/* é¡µé¢ä½äºæ–‡ä»¶æœ€åï¼Œé¦–å…ˆæ˜ å°„é¡µé¢ */
 	kaddr = kmap_atomic(page, KM_USER0);
-	/* ½«³¬³ö²¿·ÖÇå0£¬±ÜÃâÏò´ÅÅÌĞ´ÈëÀ¬»øÊı¾İ */
+	/* å°†è¶…å‡ºéƒ¨åˆ†æ¸…0ï¼Œé¿å…å‘ç£ç›˜å†™å…¥åƒåœ¾æ•°æ® */
 	memset(kaddr + offset, 0, PAGE_CACHE_SIZE - offset);
 	flush_dcache_page(page);
 	kunmap_atomic(kaddr, KM_USER0);
-	/* ½«Õû¸öÒ³ÃæĞ´Èëµ½´ÅÅÌ */
+	/* å°†æ•´ä¸ªé¡µé¢å†™å…¥åˆ°ç£ç›˜ */
 	return __block_write_full_page(inode, page, get_block, wbc);
 }
 
@@ -3074,13 +3074,13 @@ sector_t generic_block_bmap(struct address_space *mapping, sector_t block,
 }
 
 /**
- * µ±Õë¶ÔBIOÉÏµÄIOÊı¾İ´«ÊäÖÕÖ¹Ê±£¬ÄÚºËµ÷ÓÃbi_end_io·½·¨
- * Ò»°ãÀ´Ëµ£¬bi_end_ioÊÇend_bio_bh_io_sync
+ * å½“é’ˆå¯¹BIOä¸Šçš„IOæ•°æ®ä¼ è¾“ç»ˆæ­¢æ—¶ï¼Œå†…æ ¸è°ƒç”¨bi_end_ioæ–¹æ³•
+ * ä¸€èˆ¬æ¥è¯´ï¼Œbi_end_ioæ˜¯end_bio_bh_io_sync
  */
 static int end_bio_bh_io_sync(struct bio *bio, unsigned int bytes_done, int err)
 {
 	/**
-	 * ´Óbi_privateÖĞ»ñµÃ»º³åÇøÊ×²¿µÄµØÖ·
+	 * ä»bi_privateä¸­è·å¾—ç¼“å†²åŒºé¦–éƒ¨çš„åœ°å€
 	 */
 	struct buffer_head *bh = bio->bi_private;
 
@@ -3093,20 +3093,20 @@ static int end_bio_bh_io_sync(struct bio *bio, unsigned int bytes_done, int err)
 	}
 
 	/**
-	 * µ÷ÓÃ»º³åÇøÊ×²¿µÄb_end_io£¬Èçend_buffer_async_read
+	 * è°ƒç”¨ç¼“å†²åŒºé¦–éƒ¨çš„b_end_ioï¼Œå¦‚end_buffer_async_read
 	 */
 	bh->b_end_io(bh, test_bit(BIO_UPTODATE, &bio->bi_flags));
 	/**
-	 * ÊÍ·Åbio.
+	 * é‡Šæ”¾bio.
 	 */
 	bio_put(bio);
 	return 0;
 }
 
 /**
- * ÏòÄÚºËÍ¨ÓÃ¿é²ã´«µİÒ»¸ö»º³åÇøÊ×²¿¡£²¢ÓÉ´ËÇëÇó´«ÊäÒ»¸öÊı¾İ¿é¡£
- * rw:		Êı¾İ´«Êä·½Ïò(¶Á»òÕßĞ´)
- * bh:		Òª´«ËÍÊı¾İµÄ¿é»º³åÇøÊ×²¿¡£
+ * å‘å†…æ ¸é€šç”¨å—å±‚ä¼ é€’ä¸€ä¸ªç¼“å†²åŒºé¦–éƒ¨ã€‚å¹¶ç”±æ­¤è¯·æ±‚ä¼ è¾“ä¸€ä¸ªæ•°æ®å—ã€‚
+ * rw:		æ•°æ®ä¼ è¾“æ–¹å‘(è¯»æˆ–è€…å†™)
+ * bh:		è¦ä¼ é€æ•°æ®çš„å—ç¼“å†²åŒºé¦–éƒ¨ã€‚
  */
 int submit_bh(int rw, struct buffer_head * bh)
 {
@@ -3125,8 +3125,8 @@ int submit_bh(int rw, struct buffer_head * bh)
 	 * include WRITE_SYNC as well?
 	 */
 	/**
-	 * test_set_buffer_reqÉèÖÃ»º³åÇøÊ×²¿µÄBH_Req±êÖ¾£¬ÒÔ±íÊ¾¿éÖÁÉÙ±»·ÃÎÊ¹ıÒ»´Î¡£
-	 * Èç¹ûÊı¾İ´«Êä·½ÏòÊÇWRITE£¬¾Í½«BH_Write_EIO±êÖ¾Çå0.
+	 * test_set_buffer_reqè®¾ç½®ç¼“å†²åŒºé¦–éƒ¨çš„BH_Reqæ ‡å¿—ï¼Œä»¥è¡¨ç¤ºå—è‡³å°‘è¢«è®¿é—®è¿‡ä¸€æ¬¡ã€‚
+	 * å¦‚æœæ•°æ®ä¼ è¾“æ–¹å‘æ˜¯WRITEï¼Œå°±å°†BH_Write_EIOæ ‡å¿—æ¸…0.
 	 */
 	if (test_set_buffer_req(bh) && (rw == WRITE || rw == WRITE_BARRIER))
 		clear_buffer_write_io_error(bh);
@@ -3136,18 +3136,18 @@ int submit_bh(int rw, struct buffer_head * bh)
 	 * submit_bio -> generic_make_request may further map this bio around
 	 */
 	/**
-	 * ·ÖÅäÒ»¸öĞÂµÄBIOÃèÊö·û¡£
+	 * åˆ†é…ä¸€ä¸ªæ–°çš„BIOæè¿°ç¬¦ã€‚
 	 */
 	bio = bio_alloc(GFP_NOIO, 1);
 
 	/**
-	 * ¸ù¾İ»º³åÇøÊ×²¿µÄÄÚÈİ³õÊ¼»¯bioÃèÊö·ûµÄ×Ö¶Î¡£
-	 * °Ñ¿éÖĞµÄµÚÒ»¸öÉÈÇøµÄºÅ¸³¸øbi_sector¡£
-	 * °Ñ¿éÉè±¸ÃèÊö·ûµÄµØÖ·¸³¸øbi_bdev¡£
-	 * °Ñ¿é´óĞ¡¸³¸øbi_size¡£
-	 * ³õÊ¼»¯bi_io_vecµÄµÚÒ»¸öÔªËØ£¬ÒÔÊ¹¸Ã¶Î¶ÔÓ¦ÓÚ¿é»º³åÇø¡£
-	 * °Ñbi_vcntÖÃÎª1(Ö»ÓĞÒ»¸öbioµÄ¶Î)£¬²¢°Ñbi_idxÖÃÎª0.
-	 * °Ñend_bio_bh_io_syncµÄµØÖ·¸³¸øbi_end_io×Ö¶Î£¬²¢°Ñ»º³åÇøÊ×²¿µÄµØÖ·¸³¸øbi_private×Ö¶Î¡£
+	 * æ ¹æ®ç¼“å†²åŒºé¦–éƒ¨çš„å†…å®¹åˆå§‹åŒ–bioæè¿°ç¬¦çš„å­—æ®µã€‚
+	 * æŠŠå—ä¸­çš„ç¬¬ä¸€ä¸ªæ‰‡åŒºçš„å·èµ‹ç»™bi_sectorã€‚
+	 * æŠŠå—è®¾å¤‡æè¿°ç¬¦çš„åœ°å€èµ‹ç»™bi_bdevã€‚
+	 * æŠŠå—å¤§å°èµ‹ç»™bi_sizeã€‚
+	 * åˆå§‹åŒ–bi_io_vecçš„ç¬¬ä¸€ä¸ªå…ƒç´ ï¼Œä»¥ä½¿è¯¥æ®µå¯¹åº”äºå—ç¼“å†²åŒºã€‚
+	 * æŠŠbi_vcntç½®ä¸º1(åªæœ‰ä¸€ä¸ªbioçš„æ®µ)ï¼Œå¹¶æŠŠbi_idxç½®ä¸º0.
+	 * æŠŠend_bio_bh_io_syncçš„åœ°å€èµ‹ç»™bi_end_ioå­—æ®µï¼Œå¹¶æŠŠç¼“å†²åŒºé¦–éƒ¨çš„åœ°å€èµ‹ç»™bi_privateå­—æ®µã€‚
 	 */
 	bio->bi_sector = bh->b_blocknr * (bh->b_size >> 9);
 	bio->bi_bdev = bh->b_bdev;
@@ -3159,16 +3159,16 @@ int submit_bh(int rw, struct buffer_head * bh)
 	bio->bi_idx = 0;
 	bio->bi_size = bh->b_size;
 
-	bio->bi_end_io = end_bio_bh_io_sync;/* ÔÚbioÍê³ÉºóÔÙÊÍ·ÅËü */
+	bio->bi_end_io = end_bio_bh_io_sync;/* åœ¨bioå®Œæˆåå†é‡Šæ”¾å®ƒ */
 	bio->bi_private = bh;
 
 	/**
-	 * µİÔöbioµÄÒıÓÃ¼ÆÊı¡£
+	 * é€’å¢bioçš„å¼•ç”¨è®¡æ•°ã€‚
 	 */
 	bio_get(bio);
 	/**
-	 * submit_bio°Ñbi_rw±êÖ¾ÉèÖÃÎªÊı¾İ´«ÊäµÄ·½Ïò¡£¸üĞÂÃ¿CPU±äÁ¿page_statesÒÔ±íÊ¾¶ÁºÍĞ´µÄÉÈÇøÊı¡£
-	 * ²¢¶ÔbioÃèÊö·ûµ÷ÓÃgeneric_make_requestº¯Êı¡£
+	 * submit_bioæŠŠbi_rwæ ‡å¿—è®¾ç½®ä¸ºæ•°æ®ä¼ è¾“çš„æ–¹å‘ã€‚æ›´æ–°æ¯CPUå˜é‡page_statesä»¥è¡¨ç¤ºè¯»å’Œå†™çš„æ‰‡åŒºæ•°ã€‚
+	 * å¹¶å¯¹bioæè¿°ç¬¦è°ƒç”¨generic_make_requestå‡½æ•°ã€‚
 	 */
 	submit_bio(rw, bio);
 
@@ -3176,7 +3176,7 @@ int submit_bh(int rw, struct buffer_head * bh)
 		ret = -EOPNOTSUPP;
 
 	/**
-	 * µİ¼õbioµÄÊ¹ÓÃ¼ÆÊıÆ÷¡£ÒòÎªbioÃèÊö·ûÏÖÔÚÒÑ¾­±»²åÈëIOµ÷¶È³ÌĞòµÄ¶ÓÁĞ£¬ËùÒÔÃ»ÓĞÊÍ·ÅbioÃèÊö·û¡£
+	 * é€’å‡bioçš„ä½¿ç”¨è®¡æ•°å™¨ã€‚å› ä¸ºbioæè¿°ç¬¦ç°åœ¨å·²ç»è¢«æ’å…¥IOè°ƒåº¦ç¨‹åºçš„é˜Ÿåˆ—ï¼Œæ‰€ä»¥æ²¡æœ‰é‡Šæ”¾bioæè¿°ç¬¦ã€‚
 	 */
 	bio_put(bio);
 	return ret;
@@ -3208,71 +3208,71 @@ int submit_bh(int rw, struct buffer_head * bh)
  * multiple of the current approved size for the device.
  */
 /**
- * ½øĞĞ¼¸¸öÊı¾İ¿éµÄÊı¾İ´«Êä£¬ÕâĞ©Êı¾İ¿é²»Ò»¶¨ÎïÀíÉÏÏàÁÚ¡£
- * ×¢Òâ:	ÔÚIoÍê³ÉÖ®Ç°£¬»º³åÇø±»Ëø×¡¡£
- * rw:		Êı¾İ´«ÊäµÄ·½Ïò¡£
- * nr:		Òª´«ÊäµÄÊı¾İ¿éµÄ¿éÊıÁ¿¡£
- * bhs:		Ö¸Ïò¿é»º³åÇøËù¶ÔÓ¦µÄ»º³åÇøÊ×²¿µÄÖ¸ÕëÊı×é¡£
+ * è¿›è¡Œå‡ ä¸ªæ•°æ®å—çš„æ•°æ®ä¼ è¾“ï¼Œè¿™äº›æ•°æ®å—ä¸ä¸€å®šç‰©ç†ä¸Šç›¸é‚»ã€‚
+ * æ³¨æ„:	åœ¨Ioå®Œæˆä¹‹å‰ï¼Œç¼“å†²åŒºè¢«é”ä½ã€‚
+ * rw:		æ•°æ®ä¼ è¾“çš„æ–¹å‘ã€‚
+ * nr:		è¦ä¼ è¾“çš„æ•°æ®å—çš„å—æ•°é‡ã€‚
+ * bhs:		æŒ‡å‘å—ç¼“å†²åŒºæ‰€å¯¹åº”çš„ç¼“å†²åŒºé¦–éƒ¨çš„æŒ‡é’ˆæ•°ç»„ã€‚
  */
 void ll_rw_block(int rw, int nr, struct buffer_head *bhs[])
 {
 	int i;
 
 	/**
-	 * ÔÚËùÓĞ»º³åÇøÊ×²¿ÉÏÑ­»·¡£
+	 * åœ¨æ‰€æœ‰ç¼“å†²åŒºé¦–éƒ¨ä¸Šå¾ªç¯ã€‚
 	 */
 	for (i = 0; i < nr; i++) {
 		struct buffer_head *bh = bhs[i];
 
 		/**
-		 * ¼ì²é²¢ÉèÖÃ»º³åÇøÊ×²¿µÄBH_Lock±êÖ¾¡£
-		 * Èç¹û»º³åÇøÒÑ¾­±»Ëø×¡£¬¶øÁíÍâÒ»¸öÄÚºË¿ØÖÆÂ·¾¶ÒÑ¾­¼¤»îÁËÊı¾İ´«Êä£¬¾Í²»´¦ÀíÕâ¸ö»º³åÇø¡£
+		 * æ£€æŸ¥å¹¶è®¾ç½®ç¼“å†²åŒºé¦–éƒ¨çš„BH_Lockæ ‡å¿—ã€‚
+		 * å¦‚æœç¼“å†²åŒºå·²ç»è¢«é”ä½ï¼Œè€Œå¦å¤–ä¸€ä¸ªå†…æ ¸æ§åˆ¶è·¯å¾„å·²ç»æ¿€æ´»äº†æ•°æ®ä¼ è¾“ï¼Œå°±ä¸å¤„ç†è¿™ä¸ªç¼“å†²åŒºã€‚
 		 */
 		if (test_set_buffer_locked(bh))
 			continue;
 
 		/**
-		 * °Ñ»º³åÇøÊ×²¿µÄÊ¹ÓÃ¼ÆÊıÆ÷b_count¼Ó1.
+		 * æŠŠç¼“å†²åŒºé¦–éƒ¨çš„ä½¿ç”¨è®¡æ•°å™¨b_countåŠ 1.
 		 */
 		get_bh(bh);
 		if (rw == WRITE) {
 			/**
-			 * Èç¹ûÊı¾İ´«ÊäµÄ·½ÏòÊÇWRITE£¬¾ÍÈÃ»º³åÇøÊ×²¿µÄ·½·¨b_end_ioÖ¸Ïòº¯Êıend_buffer_write_sync
+			 * å¦‚æœæ•°æ®ä¼ è¾“çš„æ–¹å‘æ˜¯WRITEï¼Œå°±è®©ç¼“å†²åŒºé¦–éƒ¨çš„æ–¹æ³•b_end_ioæŒ‡å‘å‡½æ•°end_buffer_write_sync
 			 */
 			bh->b_end_io = end_buffer_write_sync;
 			/**
-			 * ¼ì²é²¢Çå³ı»º³åÇøÊ×²¿µÄBH_Dirty±êÖ¾¡£
-			 * Èç¹û¸Ã±êÖ¾Ã»ÓĞÖÃÎ»£¬¾Í²»±Ø°Ñ¿éĞ´Èë´ÅÅÌ¡£
+			 * æ£€æŸ¥å¹¶æ¸…é™¤ç¼“å†²åŒºé¦–éƒ¨çš„BH_Dirtyæ ‡å¿—ã€‚
+			 * å¦‚æœè¯¥æ ‡å¿—æ²¡æœ‰ç½®ä½ï¼Œå°±ä¸å¿…æŠŠå—å†™å…¥ç£ç›˜ã€‚
 			 */
 			if (test_clear_buffer_dirty(bh)) {
 				/**
-				 * ĞèÒª¶Á»òÕßĞ´¿é£¬µ÷ÓÃsubmit_bh°Ñ»º³åÇøÊ×²¿´«µİµ½Í¨ÓÃ¿é¿é¡£
+				 * éœ€è¦è¯»æˆ–è€…å†™å—ï¼Œè°ƒç”¨submit_bhæŠŠç¼“å†²åŒºé¦–éƒ¨ä¼ é€’åˆ°é€šç”¨å—å—ã€‚
 				 */
 				submit_bh(WRITE, bh);
 				continue;
 			}
 		} else {
 			/**
-			 * Èç¹ûÊı¾İ´«ÊäµÄ·½Ïò²»ÊÇWRITE£¬¾ÍÈÃ»º³åÇøÊ×²¿µÄ·½·¨b_end_ioÖ¸Ïòº¯Êıend_buffer_read_sync
+			 * å¦‚æœæ•°æ®ä¼ è¾“çš„æ–¹å‘ä¸æ˜¯WRITEï¼Œå°±è®©ç¼“å†²åŒºé¦–éƒ¨çš„æ–¹æ³•b_end_ioæŒ‡å‘å‡½æ•°end_buffer_read_sync
 			 */
 			bh->b_end_io = end_buffer_read_sync;
 			/**
-			 * Èç¹ûÊı¾İ´«Êä·½Ïò²»ÊÇWRITE£¬¾ÍÅĞ¶Ï»º³åÇøÊ×²¿µÄBH_Uptodate±êÖ¾ÊÇ·ñ±»ÖÃÎ»£¬Èç¹ûÊÇ£¬¾Í²»±Ø´Ó´ÅÅÌ¶Á¿é¡£
+			 * å¦‚æœæ•°æ®ä¼ è¾“æ–¹å‘ä¸æ˜¯WRITEï¼Œå°±åˆ¤æ–­ç¼“å†²åŒºé¦–éƒ¨çš„BH_Uptodateæ ‡å¿—æ˜¯å¦è¢«ç½®ä½ï¼Œå¦‚æœæ˜¯ï¼Œå°±ä¸å¿…ä»ç£ç›˜è¯»å—ã€‚
 			 */
 			if (!buffer_uptodate(bh)) {
 				/**
-				 * ĞèÒª¶Á»òÕßĞ´¿é£¬µ÷ÓÃsubmit_bh°Ñ»º³åÇøÊ×²¿´«µİµ½Í¨ÓÃ¿é¿é¡£
+				 * éœ€è¦è¯»æˆ–è€…å†™å—ï¼Œè°ƒç”¨submit_bhæŠŠç¼“å†²åŒºé¦–éƒ¨ä¼ é€’åˆ°é€šç”¨å—å—ã€‚
 				 */
 				submit_bh(rw, bh);
 				continue;
 			}
 		}
 		/**
-		 * Í¨¹ıÇå³ıBH_Lock±êÖ¾Îª»º³åÇøÊ×²¿½âËø£¬È»ºó»½ĞÑËùÓĞµÈ´ı¿é½âËøµÄ½ø³Ì¡£
+		 * é€šè¿‡æ¸…é™¤BH_Lockæ ‡å¿—ä¸ºç¼“å†²åŒºé¦–éƒ¨è§£é”ï¼Œç„¶åå”¤é†’æ‰€æœ‰ç­‰å¾…å—è§£é”çš„è¿›ç¨‹ã€‚
 		 */
 		unlock_buffer(bh);
 		/**
-		 * µİ¼õ»º³åÇøÊ×²¿µÄb_count×Ö¶Î¡£
+		 * é€’å‡ç¼“å†²åŒºé¦–éƒ¨çš„b_countå­—æ®µã€‚
 		 */
 		put_bh(bh);
 	}
@@ -3369,7 +3369,7 @@ int try_to_free_buffers(struct page *page)
 
 	BUG_ON(!PageLocked(page));
 	/**
-	 * ¼ì²éÒ³ÖĞËùÓĞ»º³åÇøµÄÊ×²¿±êÖ¾¡£Èç¹ûÕıÔÚĞ´»Ø£¬ËµÃ÷²»ÄÜÊÍ·ÅÕâĞ©»º³åÇø£¬·µ»Ø0.
+	 * æ£€æŸ¥é¡µä¸­æ‰€æœ‰ç¼“å†²åŒºçš„é¦–éƒ¨æ ‡å¿—ã€‚å¦‚æœæ­£åœ¨å†™å›ï¼Œè¯´æ˜ä¸èƒ½é‡Šæ”¾è¿™äº›ç¼“å†²åŒºï¼Œè¿”å›0.
 	 */
 	if (PageWriteback(page))
 		return 0;
@@ -3381,7 +3381,7 @@ int try_to_free_buffers(struct page *page)
 
 	spin_lock(&mapping->private_lock);
 	/**
-	 * Èç¹û»º³åÇøÊ×²¿ÔÚ¼ä½Ó»º³åÇøµÄÁ´±íÖĞ£¬Ôò´ÓÁ´±íÖĞÉ¾³ıËü¡£
+	 * å¦‚æœç¼“å†²åŒºé¦–éƒ¨åœ¨é—´æ¥ç¼“å†²åŒºçš„é“¾è¡¨ä¸­ï¼Œåˆ™ä»é“¾è¡¨ä¸­åˆ é™¤å®ƒã€‚
 	 */
 	ret = drop_buffers(page, &buffers_to_free);
 	if (ret) {
@@ -3394,7 +3394,7 @@ int try_to_free_buffers(struct page *page)
 		 * succeeds but the page is not freed.
 		 */
 		/** 
-		 * Çå³ıÒ³µÄPG_dirty±êÖ¾¡£
+		 * æ¸…é™¤é¡µçš„PG_dirtyæ ‡å¿—ã€‚
 		 */
 		clear_page_dirty(page);
 	}
@@ -3404,7 +3404,7 @@ out:
 		struct buffer_head *bh = buffers_to_free;
 
 		/**
-		 * ·´¸´µ÷ÓÃfree_buffer_head£¬ÒÔÊÍ·ÅÒ³µÄËùÓĞ»º³åÇøÊ×²¿¡£
+		 * åå¤è°ƒç”¨free_buffer_headï¼Œä»¥é‡Šæ”¾é¡µçš„æ‰€æœ‰ç¼“å†²åŒºé¦–éƒ¨ã€‚
 		 */
 		do {
 			struct buffer_head *next = bh->b_this_page;
@@ -3458,7 +3458,7 @@ asmlinkage long sys_bdflush(int func, long data)
  * Buffer-head allocation
  */
 /**
- * »º³åÇøÊ×²¿ÓĞËü×Ô¼ºµÄslab·ÖÅäÆ÷¸ßËÙ»º´æ¡£ÆäÃèÊö·ûkmem_cache_s´æ·ÅÔÚ±äÁ¿bh_cachepÖĞ
+ * ç¼“å†²åŒºé¦–éƒ¨æœ‰å®ƒè‡ªå·±çš„slabåˆ†é…å™¨é«˜é€Ÿç¼“å­˜ã€‚å…¶æè¿°ç¬¦kmem_cache_så­˜æ”¾åœ¨å˜é‡bh_cachepä¸­
  */
 static kmem_cache_t *bh_cachep;
 
@@ -3491,8 +3491,8 @@ static void recalc_bh_state(void)
 }
 
 /**
- * Ò³¸ßËÙ»º³åÇøÊ×²¿ÓĞ×Ô¼ºµÄslab·ÖÅäÆ÷£ºbh_cachep
- * alloc_buffer_headº¯ÊıÓÃÓÚ»ñÈ¡»º³åÇøÊ×²¿
+ * é¡µé«˜é€Ÿç¼“å†²åŒºé¦–éƒ¨æœ‰è‡ªå·±çš„slabåˆ†é…å™¨ï¼šbh_cachep
+ * alloc_buffer_headå‡½æ•°ç”¨äºè·å–ç¼“å†²åŒºé¦–éƒ¨
  */
 struct buffer_head *alloc_buffer_head(int gfp_flags)
 {
@@ -3508,7 +3508,7 @@ struct buffer_head *alloc_buffer_head(int gfp_flags)
 EXPORT_SYMBOL(alloc_buffer_head);
 
 /**
- * ÊÍ·Å»º³åÇøÊ×²¿¡£
+ * é‡Šæ”¾ç¼“å†²åŒºé¦–éƒ¨ã€‚
  */
 void free_buffer_head(struct buffer_head *bh)
 {

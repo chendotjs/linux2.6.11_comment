@@ -1,7 +1,7 @@
 /*
  *	w83627hf WDT driver
  *
- *	(c) Copyright 2003 Pádraig Brady <P@draigBrady.com>
+ *	(c) Copyright 2003 Pdraig Brady <P@draigBrady.com>
  *
  *	Based on advantechwdt.c which is based on wdt.c.
  *	Original copyright messages:
@@ -357,6 +357,6 @@ module_init(wdt_init);
 module_exit(wdt_exit);
 
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Pádraig Brady <P@draigBrady.com>");
+MODULE_AUTHOR("Pdraig Brady <P@draigBrady.com>");
 MODULE_DESCRIPTION("w38627hf WDT driver");
 MODULE_ALIAS_MISCDEV(WATCHDOG_MINOR);

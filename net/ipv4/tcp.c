@@ -267,7 +267,7 @@
 #include <asm/uaccess.h>
 #include <asm/ioctls.h>
 
-/* ¶ÔÓÚ±¾¶Ë¶Ï¿ªµÄÌ×½Ó¿ÚÁ¬½Ó£¬±£³ÖÔÚFIN_WAIT_2×´Ì¬µÄÊ±¼ä¡£Ã¿¸öFIN_WAIT_2×´Ì¬µÄÁ¬½ÓÏûºÄÔ¼1.5KµÄÄÚ´æ */
+/* å¯¹äºæœ¬ç«¯æ–­å¼€çš„å¥—æ¥å£è¿æ¥ï¼Œä¿æŒåœ¨FIN_WAIT_2çŠ¶æ€çš„æ—¶é—´ã€‚æ¯ä¸ªFIN_WAIT_2çŠ¶æ€çš„è¿æ¥æ¶ˆè€—çº¦1.5Kçš„å†…å­˜ */
 int sysctl_tcp_fin_timeout = TCP_FIN_TIMEOUT;
 
 DEFINE_SNMP_STAT(struct tcp_mib, tcp_statistics);
@@ -277,26 +277,26 @@ kmem_cache_t *tcp_bucket_cachep;
 kmem_cache_t *tcp_timewait_cachep;
 
 /**
- * TCP´«Êä²ãÖĞ´ıÏú»ÙµÄÌ×½Ó¿ÚÊıÄ¿¡£
+ * TCPä¼ è¾“å±‚ä¸­å¾…é”€æ¯çš„å¥—æ¥å£æ•°ç›®ã€‚
  */
 atomic_t tcp_orphan_count = ATOMIC_INIT(0);
 
 /**
- * Èı¸öÄÚ´æ¿ØÖÆÖµ¡£¶ÔÓ¦ÓÚlow£¬pressure£¬highÈı¸ö·§Öµ¡£
- *	low:	µ±TCPÊ¹ÓÃµÄÄÚ´æÒ³ÃæÊıÁ¿µÍÓÚ´ËÖµÊ±£¬TCP²»ÊÍ·ÅÄÚ´æ£¬ÇÒ×ÜÄÜ·ÖÅä³É¹¦¡£
- *	pressure:	µ±TCPÊ¹ÓÃµÄÄÚ´æÊıÁ¿³¬¹ı¸ÃÖµÊ±£¬½øÈë¸æ¾¯×´Ì¬¡£·ÖÅäÄÚ´æ»á¸ù¾İ²ÎÊıÀ´ÓÀ¶¨±¾´Î·ÖÅäÊÇ·ñ³É¹¦¡£
- *	high:	Ò»µ©ÒÑ¾­·ÖÅäµÄ»º³åÇø×Ü´óĞ¡³¬³ö¸ÃÖµ£¬»á¸ù¾İÇé¿ö¶Ô·¢ËÍºÍ½ÓÊÕ»º´æ×ö¾ßÌåµÄÈ·ÈÏ¡£	
+ * ä¸‰ä¸ªå†…å­˜æ§åˆ¶å€¼ã€‚å¯¹åº”äºlowï¼Œpressureï¼Œhighä¸‰ä¸ªé˜€å€¼ã€‚
+ *	low:	å½“TCPä½¿ç”¨çš„å†…å­˜é¡µé¢æ•°é‡ä½äºæ­¤å€¼æ—¶ï¼ŒTCPä¸é‡Šæ”¾å†…å­˜ï¼Œä¸”æ€»èƒ½åˆ†é…æˆåŠŸã€‚
+ *	pressure:	å½“TCPä½¿ç”¨çš„å†…å­˜æ•°é‡è¶…è¿‡è¯¥å€¼æ—¶ï¼Œè¿›å…¥å‘Šè­¦çŠ¶æ€ã€‚åˆ†é…å†…å­˜ä¼šæ ¹æ®å‚æ•°æ¥æ°¸å®šæœ¬æ¬¡åˆ†é…æ˜¯å¦æˆåŠŸã€‚
+ *	high:	ä¸€æ—¦å·²ç»åˆ†é…çš„ç¼“å†²åŒºæ€»å¤§å°è¶…å‡ºè¯¥å€¼ï¼Œä¼šæ ¹æ®æƒ…å†µå¯¹å‘é€å’Œæ¥æ”¶ç¼“å­˜åšå…·ä½“çš„ç¡®è®¤ã€‚	
  */
 int sysctl_tcp_mem[3];
 /**
- * ·¢ËÍ»º³åÇø¿ØÖÆ 
- *		min:		·¢ËÍ¶ÓÁĞ×Ü³¤¶ÈµÄÉÏÏŞ
- *		default:	·¢ËÍ»º³åÇø³¤¶ÈÉÏÏŞµÄ³õÊ¼Öµ¡£ÓÃÓÚ³õÊ¼»¯sock½á¹¹µÄsk_sndbuf¡£
- *		max:		·¢ËÍ»º³åÇø³¤¶ÈÉÏÏŞµÄ×î´óÖµ¡£
+ * å‘é€ç¼“å†²åŒºæ§åˆ¶ 
+ *		min:		å‘é€é˜Ÿåˆ—æ€»é•¿åº¦çš„ä¸Šé™
+ *		default:	å‘é€ç¼“å†²åŒºé•¿åº¦ä¸Šé™çš„åˆå§‹å€¼ã€‚ç”¨äºåˆå§‹åŒ–sockç»“æ„çš„sk_sndbufã€‚
+ *		max:		å‘é€ç¼“å†²åŒºé•¿åº¦ä¸Šé™çš„æœ€å¤§å€¼ã€‚
  */
 int sysctl_tcp_wmem[3] = { 4 * 1024, 16 * 1024, 128 * 1024 };
 /**
- * ½ÓÊÕ»º´æ·§Öµ¡£
+ * æ¥æ”¶ç¼“å­˜é˜€å€¼ã€‚
  */
 int sysctl_tcp_rmem[3] = { 4 * 1024, 87380, 87380 * 2 };
 
@@ -320,7 +320,7 @@ int tcp_memory_pressure;
 
 EXPORT_SYMBOL(tcp_memory_pressure);
 
-/* µ±TCPÄÚ´æ·ÖÅä½øÈë¸æ¾¯×´Ì¬Ê±£¬µ÷ÓÃ´Ëº¯ÊıÉèÖÃ¸æ¾¯±êÖ¾ */
+/* å½“TCPå†…å­˜åˆ†é…è¿›å…¥å‘Šè­¦çŠ¶æ€æ—¶ï¼Œè°ƒç”¨æ­¤å‡½æ•°è®¾ç½®å‘Šè­¦æ ‡å¿— */
 void tcp_enter_memory_pressure(void)
 {
 	if (!tcp_memory_pressure) {
@@ -432,15 +432,15 @@ unsigned int tcp_poll(struct file *file, struct socket *sock, poll_table *wait)
 	return mask;
 }
 
-/* TCPµÄioctlÊµÏÖ */
+/* TCPçš„ioctlå®ç° */
 int tcp_ioctl(struct sock *sk, int cmd, unsigned long arg)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
 	int answ;
 
 	switch (cmd) {
-	case SIOCINQ:/* »ñÈ¡½ÓÊÕ»º´æÖĞµÄÎ´¶ÁµÄÊı¾İÁ¿¡£ */
-		if (sk->sk_state == TCP_LISTEN)/* Èç¹ûÔÚlisten×´Ì¬£¬·µ»Ø´íÎó¡£ */
+	case SIOCINQ:/* è·å–æ¥æ”¶ç¼“å­˜ä¸­çš„æœªè¯»çš„æ•°æ®é‡ã€‚ */
+		if (sk->sk_state == TCP_LISTEN)/* å¦‚æœåœ¨listençŠ¶æ€ï¼Œè¿”å›é”™è¯¯ã€‚ */
 			return -EINVAL;
 
 		lock_sock(sk);
@@ -460,10 +460,10 @@ int tcp_ioctl(struct sock *sk, int cmd, unsigned long arg)
 			answ = tp->urg_seq - tp->copied_seq;
 		release_sock(sk);
 		break;
-	case SIOCATMARK:/* ¼ì²â´øÍâÊı¾İÊÇ·ñÒÑ¾­±»ÓÃ»§½ø³Ì½ÓÊÕ */
+	case SIOCATMARK:/* æ£€æµ‹å¸¦å¤–æ•°æ®æ˜¯å¦å·²ç»è¢«ç”¨æˆ·è¿›ç¨‹æ¥æ”¶ */
 		answ = tp->urg_data && tp->urg_seq == tp->copied_seq;
 		break;
-	case SIOCOUTQ:/* »ñÈ¡ÔÚ·¢ËÍ¶ÓÁĞ»º´æÖĞÎ´·¢ËÍ³öÈ¥µÄÊı¾İÁ¿¡£ */
+	case SIOCOUTQ:/* è·å–åœ¨å‘é€é˜Ÿåˆ—ç¼“å­˜ä¸­æœªå‘é€å‡ºå»çš„æ•°æ®é‡ã€‚ */
 		if (sk->sk_state == TCP_LISTEN)
 			return -EINVAL;
 
@@ -486,15 +486,15 @@ int tcp_listen_start(struct sock *sk)
 	struct tcp_sock *tp = tcp_sk(sk);
 	struct tcp_listen_opt *lopt;
 
-	/* ³õÊ¼Á¬½Ó¶ÓÁĞ³¤¶ÈÉÏÏŞ */
+	/* åˆå§‹è¿æ¥é˜Ÿåˆ—é•¿åº¦ä¸Šé™ */
 	sk->sk_max_ack_backlog = 0;
 	sk->sk_ack_backlog = 0;
 	tp->accept_queue = tp->accept_queue_tail = NULL;
-	/* ³õÊ¼»¯´«Êä¿ØÖÆ¿éÖĞÓëÑÓÊ±·¢ËÍACKÓĞ¹ØµÄÊı¾İ½á¹¹ */
+	/* åˆå§‹åŒ–ä¼ è¾“æ§åˆ¶å—ä¸­ä¸å»¶æ—¶å‘é€ACKæœ‰å…³çš„æ•°æ®ç»“æ„ */
 	rwlock_init(&tp->syn_wait_lock);
 	tcp_delack_init(tp);
 
-	/* Îª¹ÜÀíÁ¬½ÓÇëÇó¿éµÄÉ¢ÁĞ±í·ÖÅä´æ´¢¿Õ¼ä£¬Èç¹ûÊ§°ÜÔòÍË³ö */
+	/* ä¸ºç®¡ç†è¿æ¥è¯·æ±‚å—çš„æ•£åˆ—è¡¨åˆ†é…å­˜å‚¨ç©ºé—´ï¼Œå¦‚æœå¤±è´¥åˆ™é€€å‡º */
 	lopt = kmalloc(sizeof(struct tcp_listen_opt), GFP_KERNEL);
 	if (!lopt)
 		return -ENOMEM;
@@ -503,10 +503,10 @@ int tcp_listen_start(struct sock *sk)
 	for (lopt->max_qlen_log = 6; ; lopt->max_qlen_log++)
 		if ((1 << lopt->max_qlen_log) >= sysctl_max_syn_backlog)
 			break;
-	/* ¼ÆËã¹şÏ£±íµÄ¹şÏ£ÖÖ×Ó */
+	/* è®¡ç®—å“ˆå¸Œè¡¨çš„å“ˆå¸Œç§å­ */
 	get_random_bytes(&lopt->hash_rnd, 4);
 
-	/* ½«É¢ÁĞ¿éÓë´«Êä¿ØÖÆ¿é°ó¶¨ */
+	/* å°†æ•£åˆ—å—ä¸ä¼ è¾“æ§åˆ¶å—ç»‘å®š */
 	write_lock_bh(&tp->syn_wait_lock);
 	tp->listen_opt = lopt;
 	write_unlock_bh(&tp->syn_wait_lock);
@@ -516,23 +516,23 @@ int tcp_listen_start(struct sock *sk)
 	 * It is OK, because this socket enters to hash table only
 	 * after validation is complete.
 	 */
-	sk->sk_state = TCP_LISTEN;/* ÉèÖÃ¿ØÖÆ¿éµÄ×´Ì¬ */
-	if (!sk->sk_prot->get_port(sk, inet->num)) {/* ½øĞĞ¶Ë¿Ú°ó¶¨ */
-		inet->sport = htons(inet->num);/* ÉèÖÃÍøÂç×Ö½ÚĞòµÄ¶Ë¿ÚºÅ */
+	sk->sk_state = TCP_LISTEN;/* è®¾ç½®æ§åˆ¶å—çš„çŠ¶æ€ */
+	if (!sk->sk_prot->get_port(sk, inet->num)) {/* è¿›è¡Œç«¯å£ç»‘å®š */
+		inet->sport = htons(inet->num);/* è®¾ç½®ç½‘ç»œå­—èŠ‚åºçš„ç«¯å£å· */
 
-		sk_dst_reset(sk);/* Çå³ıÂ·ÓÉ»º´æ */
-		sk->sk_prot->hash(sk);/* ½«´«Êä¿ØÖÆ¿éÌí¼Óµ½ÕìÌıÉ¢ÁĞ±íÖĞ */
+		sk_dst_reset(sk);/* æ¸…é™¤è·¯ç”±ç¼“å­˜ */
+		sk->sk_prot->hash(sk);/* å°†ä¼ è¾“æ§åˆ¶å—æ·»åŠ åˆ°ä¾¦å¬æ•£åˆ—è¡¨ä¸­ */
 
 		return 0;
 	}
 
-	/* °ó¶¨Ê§°Ü£¬ÉèÖÃÆä×´Ì¬ */
+	/* ç»‘å®šå¤±è´¥ï¼Œè®¾ç½®å…¶çŠ¶æ€ */
 	sk->sk_state = TCP_CLOSE;
-	/* ½â³ıÕìÌıÁ¬½ÓÇëÇó¿éÓë´«Êä¿ØÖÆ¿éµÄ°ó¶¨ */
+	/* è§£é™¤ä¾¦å¬è¿æ¥è¯·æ±‚å—ä¸ä¼ è¾“æ§åˆ¶å—çš„ç»‘å®š */
 	write_lock_bh(&tp->syn_wait_lock);
 	tp->listen_opt = NULL;
 	write_unlock_bh(&tp->syn_wait_lock);
-	kfree(lopt);/* ÊÍ·ÅÕìÌıÁ¬½ÓÇëÇó¿é */
+	kfree(lopt);/* é‡Šæ”¾ä¾¦å¬è¿æ¥è¯·æ±‚å— */
 	return -EADDRINUSE;
 }
 
@@ -540,7 +540,7 @@ int tcp_listen_start(struct sock *sk)
  *	This routine closes sockets which have been at least partially
  *	opened, but not yet accepted.
  */
-/* ¹Ø±ÕÌ×½Ó¿ÚÊ±£¬ÖÕÖ¹ÕìÌı¶Ë¿Ú */
+/* å…³é—­å¥—æ¥å£æ—¶ï¼Œç»ˆæ­¢ä¾¦å¬ç«¯å£ */
 static void tcp_listen_stop (struct sock *sk)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
@@ -549,21 +549,21 @@ static void tcp_listen_stop (struct sock *sk)
 	struct open_request *req;
 	int i;
 
-	/* Í£Ö¹sk_timer¶¨Ê±Æ÷ */
+	/* åœæ­¢sk_timerå®šæ—¶å™¨ */
 	tcp_delete_keepalive_timer(sk);
 
 	/* make all the listen_opt local to us */
-	write_lock_bh(&tp->syn_wait_lock);/* ÉèÖÃlisten_optºó£¬Ó¦µ±²»»áÔÙ½ÓÊÜĞÂµÄÁ¬½ÓÇëÇóÁË */
+	write_lock_bh(&tp->syn_wait_lock);/* è®¾ç½®listen_optåï¼Œåº”å½“ä¸ä¼šå†æ¥å—æ–°çš„è¿æ¥è¯·æ±‚äº† */
 	tp->listen_opt = NULL;
 	write_unlock_bh(&tp->syn_wait_lock);
 	tp->accept_queue = tp->accept_queue_tail = NULL;
 
-	if (lopt->qlen) {/* ÇëÇóÁ¬½ÓÕßÊıÁ¿´óÓÚ0 */
-		for (i = 0; i < TCP_SYNQ_HSIZE; i++) {/* ±éÀú°ëÁ¬½Ó¹şÏ£±í */
-			while ((req = lopt->syn_table[i]) != NULL) {/* ±éÀúÁ´±íÖĞµÄ°ëÁ¬½Ó */
+	if (lopt->qlen) {/* è¯·æ±‚è¿æ¥è€…æ•°é‡å¤§äº0 */
+		for (i = 0; i < TCP_SYNQ_HSIZE; i++) {/* éå†åŠè¿æ¥å“ˆå¸Œè¡¨ */
+			while ((req = lopt->syn_table[i]) != NULL) {/* éå†é“¾è¡¨ä¸­çš„åŠè¿æ¥ */
 				lopt->syn_table[i] = req->dl_next;
 				lopt->qlen--;
-				tcp_openreq_free(req);/* ¹Ø±Õ°ëÁ¬½Ó */
+				tcp_openreq_free(req);/* å…³é—­åŠè¿æ¥ */
 
 		/* Following specs, it would be better either to send FIN
 		 * (and enter FIN-WAIT-1, it is normal close)
@@ -580,7 +580,7 @@ static void tcp_listen_stop (struct sock *sk)
 
 	kfree(lopt);
 
-	while ((req = acc_req) != NULL) {/* ÒÑ¾­Á¬½Óµ«ÊÇ»¹Ã»ÓĞ±»acceptµÄÁ¬½Ó */
+	while ((req = acc_req) != NULL) {/* å·²ç»è¿æ¥ä½†æ˜¯è¿˜æ²¡æœ‰è¢«acceptçš„è¿æ¥ */
 		struct sock *child = req->sk;
 
 		acc_req = req->dl_next;
@@ -590,7 +590,7 @@ static void tcp_listen_stop (struct sock *sk)
 		BUG_TRAP(!sock_owned_by_user(child));
 		sock_hold(child);
 
-		/* ¶Ï¿ªÒÑ¾­½¨Á¢Á¬½Óµ«ÊÇ»¹Ã»ÓĞ±»acceptµÄÁ¬½Ó */
+		/* æ–­å¼€å·²ç»å»ºç«‹è¿æ¥ä½†æ˜¯è¿˜æ²¡æœ‰è¢«acceptçš„è¿æ¥ */
 		tcp_disconnect(child, O_NONBLOCK);
 
 		sock_orphan(child);
@@ -646,7 +646,7 @@ static inline void tcp_mark_urg(struct tcp_sock *tp, int flags,
 	}
 }
 
-/* Ôö¼ÓPSH±êÖ¾ºó½«±¨ÎÄ·¢ËÍ³öÈ¥ */
+/* å¢åŠ PSHæ ‡å¿—åå°†æŠ¥æ–‡å‘é€å‡ºå» */
 static inline void tcp_push(struct sock *sk, struct tcp_sock *tp, int flags,
 			    int mss_now, int nonagle)
 {
@@ -815,7 +815,7 @@ static inline int select_size(struct sock *sk, struct tcp_sock *tp)
 	return tmp;
 }
 
-/* sendmsgÏµÍ³µ÷ÓÃÔÚTCP²ãµÄÊµÏÖ */
+/* sendmsgç³»ç»Ÿè°ƒç”¨åœ¨TCPå±‚çš„å®ç° */
 int tcp_sendmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *msg,
 		size_t size)
 {
@@ -827,61 +827,61 @@ int tcp_sendmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *msg,
 	int err, copied;
 	long timeo;
 
-	/* »ñÈ¡Ì×½Ó¿ÚµÄËø */
+	/* è·å–å¥—æ¥å£çš„é” */
 	lock_sock(sk);
 	TCP_CHECK_TIMER(sk);
 
-	/* ¸ù¾İ±êÖ¾¼ÆËã×èÈû³¬Ê±Ê±¼ä */
+	/* æ ¹æ®æ ‡å¿—è®¡ç®—é˜»å¡è¶…æ—¶æ—¶é—´ */
 	flags = msg->msg_flags;
 	timeo = sock_sndtimeo(sk, flags & MSG_DONTWAIT);
 
 	/* Wait for a connection to finish. */
-	if ((1 << sk->sk_state) & ~(TCPF_ESTABLISHED | TCPF_CLOSE_WAIT))/* Ö»ÓĞÕâÁ½ÖÖ×´Ì¬²ÅÄÜ·¢ËÍÏûÏ¢ */
-		if ((err = sk_stream_wait_connect(sk, &timeo)) != 0)/* ÆäËü×´Ì¬ÏÂµÈ´ıÁ¬½ÓÕıÈ·½¨Á¢£¬³¬Ê±Ôò½øĞĞ´íÎó´¦Àí */
+	if ((1 << sk->sk_state) & ~(TCPF_ESTABLISHED | TCPF_CLOSE_WAIT))/* åªæœ‰è¿™ä¸¤ç§çŠ¶æ€æ‰èƒ½å‘é€æ¶ˆæ¯ */
+		if ((err = sk_stream_wait_connect(sk, &timeo)) != 0)/* å…¶å®ƒçŠ¶æ€ä¸‹ç­‰å¾…è¿æ¥æ­£ç¡®å»ºç«‹ï¼Œè¶…æ—¶åˆ™è¿›è¡Œé”™è¯¯å¤„ç† */
 			goto out_err;
 
 	/* This should be in poll */
 	clear_bit(SOCK_ASYNC_NOSPACE, &sk->sk_socket->flags);
 
-	/* »ñµÃÓĞĞ§µÄMSS£¬Èç¹ûÖ§³ÖOOB£¬Ôò²»ÄÜÖ§³ÖTSO£¬MSSÔòÓ¦µ±ÊÇ±È½ÏĞ¡µÄÖµ */
+	/* è·å¾—æœ‰æ•ˆçš„MSSï¼Œå¦‚æœæ”¯æŒOOBï¼Œåˆ™ä¸èƒ½æ”¯æŒTSOï¼ŒMSSåˆ™åº”å½“æ˜¯æ¯”è¾ƒå°çš„å€¼ */
 	mss_now = tcp_current_mss(sk, !(flags&MSG_OOB));
 
 	/* Ok commence sending. */
-	/* »ñÈ¡´ı·¢ËÍÊı¾İ¿éÊı¼°Êı¾İ¿éÖ¸Õë */
+	/* è·å–å¾…å‘é€æ•°æ®å—æ•°åŠæ•°æ®å—æŒ‡é’ˆ */
 	iovlen = msg->msg_iovlen;
 	iov = msg->msg_iov;
-	/* copied±íÊ¾´ÓÓÃ»§Êı¾İ¿é¸´ÖÆµ½skbÖĞµÄ×Ö½ÚÊı¡£ */
+	/* copiedè¡¨ç¤ºä»ç”¨æˆ·æ•°æ®å—å¤åˆ¶åˆ°skbä¸­çš„å­—èŠ‚æ•°ã€‚ */
 	copied = 0;
 
 	err = -EPIPE;
-	/* Èç¹ûÌ×½Ó¿Ú´æÔÚ´íÎó£¬Ôò²»ÔÊĞí·¢ËÍÊı¾İ£¬·µ»ØEPIPE´íÎó */
+	/* å¦‚æœå¥—æ¥å£å­˜åœ¨é”™è¯¯ï¼Œåˆ™ä¸å…è®¸å‘é€æ•°æ®ï¼Œè¿”å›EPIPEé”™è¯¯ */
 	if (sk->sk_err || (sk->sk_shutdown & SEND_SHUTDOWN))
 		goto do_error;
 
-	while (--iovlen >= 0) {/* ´¦ÀíËùÓĞ´ı·¢ËÍÊı¾İ¿é */
+	while (--iovlen >= 0) {/* å¤„ç†æ‰€æœ‰å¾…å‘é€æ•°æ®å— */
 		int seglen = iov->iov_len;
 		unsigned char __user *from = iov->iov_base;
 
 		iov++;
 
-		while (seglen > 0) {/* ´¦Àíµ¥¸öÊı¾İ¿éÖĞµÄËùÓĞÊı¾İ */
+		while (seglen > 0) {/* å¤„ç†å•ä¸ªæ•°æ®å—ä¸­çš„æ‰€æœ‰æ•°æ® */
 			int copy;
 
 			skb = sk->sk_write_queue.prev;
 
-			if (!sk->sk_send_head ||/* ·¢ËÍ¶ÓÁĞÎª¿Õ£¬Ç°ÃæÈ¡µÃµÄskbÎŞĞ§ */
-			    (copy = mss_now - skb->len) <= 0) {/* Èç¹ûskbÓĞĞ§£¬µ«ÊÇËüÒÑ¾­Ã»ÓĞ¶àÓàµÄ¿Õ¼ä¸´ÖÆĞÂÊı¾İÁË */
+			if (!sk->sk_send_head ||/* å‘é€é˜Ÿåˆ—ä¸ºç©ºï¼Œå‰é¢å–å¾—çš„skbæ— æ•ˆ */
+			    (copy = mss_now - skb->len) <= 0) {/* å¦‚æœskbæœ‰æ•ˆï¼Œä½†æ˜¯å®ƒå·²ç»æ²¡æœ‰å¤šä½™çš„ç©ºé—´å¤åˆ¶æ–°æ•°æ®äº† */
 
 new_segment:
 				/* Allocate new segment. If the interface is SG,
 				 * allocate skb fitting to single page.
 				 */
-				if (!sk_stream_memory_free(sk))/* ·¢ËÍ¶ÓÁĞÖĞÊı¾İ³¤¶È´ïµ½·¢ËÍ»º³åÇøµÄÉÏÏŞ£¬µÈ´ı»º³åÇø */
+				if (!sk_stream_memory_free(sk))/* å‘é€é˜Ÿåˆ—ä¸­æ•°æ®é•¿åº¦è¾¾åˆ°å‘é€ç¼“å†²åŒºçš„ä¸Šé™ï¼Œç­‰å¾…ç¼“å†²åŒº */
 					goto wait_for_sndbuf;
 
 				skb = sk_stream_alloc_pskb(sk, select_size(sk, tp),
-							   0, sk->sk_allocation);/* ·ÖÅäĞÂµÄskb */
-				if (!skb)/* ·ÖÅäÊ§°Ü£¬ËµÃ÷ÏµÍ³ÄÚ´æ²»×ã£¬µÈ´ı */
+							   0, sk->sk_allocation);/* åˆ†é…æ–°çš„skb */
+				if (!skb)/* åˆ†é…å¤±è´¥ï¼Œè¯´æ˜ç³»ç»Ÿå†…å­˜ä¸è¶³ï¼Œç­‰å¾… */
 					goto wait_for_memory;
 
 				/*
@@ -889,76 +889,76 @@ new_segment:
 				 */
 				if (sk->sk_route_caps &
 				    (NETIF_F_IP_CSUM | NETIF_F_NO_CSUM |
-				     NETIF_F_HW_CSUM))/* ¸ù¾İÂ·ÓÉÍøÂçÉè±¸µÄÌØĞÔ£¬È·¶¨ÊÇ·ñÓÉÓ²¼şÖ´ĞĞĞ£ÑéºÍ */
+				     NETIF_F_HW_CSUM))/* æ ¹æ®è·¯ç”±ç½‘ç»œè®¾å¤‡çš„ç‰¹æ€§ï¼Œç¡®å®šæ˜¯å¦ç”±ç¡¬ä»¶æ‰§è¡Œæ ¡éªŒå’Œ */
 					skb->ip_summed = CHECKSUM_HW;
 
-				skb_entail(sk, tp, skb);/* ½«SKBÌí¼Óµ½·¢ËÍ¶ÓÁĞÎ²²¿ */
-				copy = mss_now;/* ±¾´ÎĞèÒª¸´ÖÆµÄÊı¾İÁ¿ÊÇMSS */
+				skb_entail(sk, tp, skb);/* å°†SKBæ·»åŠ åˆ°å‘é€é˜Ÿåˆ—å°¾éƒ¨ */
+				copy = mss_now;/* æœ¬æ¬¡éœ€è¦å¤åˆ¶çš„æ•°æ®é‡æ˜¯MSS */
 			}
 
 			/* Try to append data to the end of skb. */
-			if (copy > seglen)/* Òª¸´ÖÆµÄÊı¾İ²»ÄÜ´óÓÚµ±Ç°¶ÎµÄ³¤¶È */
+			if (copy > seglen)/* è¦å¤åˆ¶çš„æ•°æ®ä¸èƒ½å¤§äºå½“å‰æ®µçš„é•¿åº¦ */
 				copy = seglen;
 
 			/* Where to copy to? */
-			if (skb_tailroom(skb) > 0) {/* skbÏßĞÔ´æ´¢Çøµ×²¿»¹ÓĞ¿Õ¼ä */
+			if (skb_tailroom(skb) > 0) {/* skbçº¿æ€§å­˜å‚¨åŒºåº•éƒ¨è¿˜æœ‰ç©ºé—´ */
 				/* We have some space in skb head. Superb! */
-				if (copy > skb_tailroom(skb))/* ±¾´ÎÖ»¸´ÖÆskb´æ´¢Çøµ×²¿Ê£Óà¿Õ¼ä´óĞ¡µÄÊı¾İÁ¿ */
+				if (copy > skb_tailroom(skb))/* æœ¬æ¬¡åªå¤åˆ¶skbå­˜å‚¨åŒºåº•éƒ¨å‰©ä½™ç©ºé—´å¤§å°çš„æ•°æ®é‡ */
 					copy = skb_tailroom(skb);
-				/* ´ÓÓÃ»§¿Õ¼ä¸´ÖÆÖ¸¶¨³¤¶ÈµÄÊı¾İµ½skbÖĞ£¬Èç¹ûÊ§°Ü£¬ÔòÍË³ö */
+				/* ä»ç”¨æˆ·ç©ºé—´å¤åˆ¶æŒ‡å®šé•¿åº¦çš„æ•°æ®åˆ°skbä¸­ï¼Œå¦‚æœå¤±è´¥ï¼Œåˆ™é€€å‡º */
 				if ((err = skb_add_data(skb, from, copy)) != 0)
 					goto do_fault;
-			} else {/* ÏßĞÔ´æ´¢Çøµ×²¿ÒÑ¾­Ã»ÓĞ¿Õ¼äÁË£¬¸´ÖÆµ½·ÖÉ¢/¾Û¼¯´æ´¢ÇøÖĞ */
-				int merge = 0;/* ÊÇ·ñÔÚÒ³ÖĞÌí¼ÓÊı¾İ */
-				int i = skb_shinfo(skb)->nr_frags;/* ·ÖÉ¢/¾Û¼¯Æ¬¶ÏÊı */
-				struct page *page = TCP_PAGE(sk);/* ·ÖÆ¬Ò³Ò³ */
-				int off = TCP_OFF(sk);/* ·ÖÆ¬ÄÚµÄÆ«ÒÆ */
+			} else {/* çº¿æ€§å­˜å‚¨åŒºåº•éƒ¨å·²ç»æ²¡æœ‰ç©ºé—´äº†ï¼Œå¤åˆ¶åˆ°åˆ†æ•£/èšé›†å­˜å‚¨åŒºä¸­ */
+				int merge = 0;/* æ˜¯å¦åœ¨é¡µä¸­æ·»åŠ æ•°æ® */
+				int i = skb_shinfo(skb)->nr_frags;/* åˆ†æ•£/èšé›†ç‰‡æ–­æ•° */
+				struct page *page = TCP_PAGE(sk);/* åˆ†ç‰‡é¡µé¡µ */
+				int off = TCP_OFF(sk);/* åˆ†ç‰‡å†…çš„åç§» */
 
 				if (skb_can_coalesce(skb, i, page, off) &&
-				    off != PAGE_SIZE) {/* µ±Ç°·ÖÆ¬»¹ÄÜÌí¼ÓÊı¾İ */
+				    off != PAGE_SIZE) {/* å½“å‰åˆ†ç‰‡è¿˜èƒ½æ·»åŠ æ•°æ® */
 					/* We can extend the last page
 					 * fragment. */
 					merge = 1;
-				} else if (i == MAX_SKB_FRAGS ||/* Ä¿Ç°skbÖĞµÄÒ³²»ÄÜÌí¼ÓÊı¾İ£¬ÕâÀïÅĞ¶ÏÊÇ·ñÄÜÔÙ·ÖÅäÒ³ */
+				} else if (i == MAX_SKB_FRAGS ||/* ç›®å‰skbä¸­çš„é¡µä¸èƒ½æ·»åŠ æ•°æ®ï¼Œè¿™é‡Œåˆ¤æ–­æ˜¯å¦èƒ½å†åˆ†é…é¡µ */
 					   (!i &&
-					   !(sk->sk_route_caps & NETIF_F_SG))) {/* Íø¿¨²»Ö§³ÖS/G£¬²»ÄÜ·ÖÆ¬ */
+					   !(sk->sk_route_caps & NETIF_F_SG))) {/* ç½‘å¡ä¸æ”¯æŒS/Gï¼Œä¸èƒ½åˆ†ç‰‡ */
 					/* Need to add new fragment and cannot
 					 * do this because interface is non-SG,
 					 * or because all the page slots are
 					 * busy. */
-					tcp_mark_push(tp, skb);/* SKB¿ÉÒÔÌá½»ÁË */
-					goto new_segment;/* ÖØĞÂ·ÖÅäskb */
-				} else if (page) {/* ·ÖÒ³ÊıÁ¿Î´´ïµ½ÉÏÏŞ£¬ÅĞ¶Ïµ±Ç°Ò³ÊÇ·ñ»¹ÓĞ¿Õ¼ä */
+					tcp_mark_push(tp, skb);/* SKBå¯ä»¥æäº¤äº† */
+					goto new_segment;/* é‡æ–°åˆ†é…skb */
+				} else if (page) {/* åˆ†é¡µæ•°é‡æœªè¾¾åˆ°ä¸Šé™ï¼Œåˆ¤æ–­å½“å‰é¡µæ˜¯å¦è¿˜æœ‰ç©ºé—´ */
 					/* If page is cached, align
 					 * offset to L1 cache boundary
 					 */
 					off = (off + L1_CACHE_BYTES - 1) &
 					      ~(L1_CACHE_BYTES - 1);
-					if (off == PAGE_SIZE) {/* ×îºóÒ»¸ö·ÖÒ³Êı¾İÒÑ¾­Âú£¬ĞèÒª·ÖÅäĞÂÒ³ */
+					if (off == PAGE_SIZE) {/* æœ€åä¸€ä¸ªåˆ†é¡µæ•°æ®å·²ç»æ»¡ï¼Œéœ€è¦åˆ†é…æ–°é¡µ */
 						put_page(page);
 						TCP_PAGE(sk) = page = NULL;
 					}
 				}
 
-				if (!page) {/* ĞèÒª·ÖÅäĞÂÒ³ */
+				if (!page) {/* éœ€è¦åˆ†é…æ–°é¡µ */
 					/* Allocate new cache page. */
-					if (!(page = sk_stream_alloc_page(sk)))/* ·ÖÅäĞÂÒ³£¬Èç¹ûÄÚ´æ²»×ãÔòµÈ´ıÄÚ´æ */
+					if (!(page = sk_stream_alloc_page(sk)))/* åˆ†é…æ–°é¡µï¼Œå¦‚æœå†…å­˜ä¸è¶³åˆ™ç­‰å¾…å†…å­˜ */
 						goto wait_for_memory;
 					off = 0;
 				}
 
-				if (copy > PAGE_SIZE - off)/* ´ı¸´ÖÆµÄÊı¾İ²»ÄÜ´óÓÚÒ³ÖĞÊ£Óà¿Õ¼ä */
+				if (copy > PAGE_SIZE - off)/* å¾…å¤åˆ¶çš„æ•°æ®ä¸èƒ½å¤§äºé¡µä¸­å‰©ä½™ç©ºé—´ */
 					copy = PAGE_SIZE - off;
 
 				/* Time to copy data. We are close to
 				 * the end! */
 				err = skb_copy_to_page(sk, from, skb, page,
-						       off, copy);/* ´ÓÓÃ»§Ì¬¸´ÖÆÊı¾İµ½Ò³ÖĞ */
-				if (err) {/* ¸´ÖÆÊ§°ÜÁË */
+						       off, copy);/* ä»ç”¨æˆ·æ€å¤åˆ¶æ•°æ®åˆ°é¡µä¸­ */
+				if (err) {/* å¤åˆ¶å¤±è´¥äº† */
 					/* If this page was new, give it to the
 					 * socket so it does not get leaked.
 					 */
-					if (!TCP_PAGE(sk)) {/* Èç¹ûÊÇĞÂ·ÖÅäµÄÒ³£¬Ôò½«Ò³¼ÇÂ¼µ½skbÖĞ£¬¹©½ñºóÊ¹ÓÃ */
+					if (!TCP_PAGE(sk)) {/* å¦‚æœæ˜¯æ–°åˆ†é…çš„é¡µï¼Œåˆ™å°†é¡µè®°å½•åˆ°skbä¸­ï¼Œä¾›ä»Šåä½¿ç”¨ */
 						TCP_PAGE(sk) = page;
 						TCP_OFF(sk) = 0;
 					}
@@ -966,12 +966,12 @@ new_segment:
 				}
 
 				/* Update the skb. */
-				/* ¸üĞÂskbµÄ·Ö¶ÎĞÅÏ¢ */
-				if (merge) {/* ÔÚ×îºóÒ»¸öÒ³ÖĞ×·¼ÓÊı¾İ */
+				/* æ›´æ–°skbçš„åˆ†æ®µä¿¡æ¯ */
+				if (merge) {/* åœ¨æœ€åä¸€ä¸ªé¡µä¸­è¿½åŠ æ•°æ® */
 					skb_shinfo(skb)->frags[i - 1].size +=
-									copy;/* ¸üĞÂ×îºóÒ»Ò³µÄÊı¾İ³¤¶È */
-				} else {/* ĞÂ·ÖÅäµÄÒ³ */
-					/* ¸üĞÂskbÖĞ·ÖÆ¬ĞÅÏ¢ */
+									copy;/* æ›´æ–°æœ€åä¸€é¡µçš„æ•°æ®é•¿åº¦ */
+				} else {/* æ–°åˆ†é…çš„é¡µ */
+					/* æ›´æ–°skbä¸­åˆ†ç‰‡ä¿¡æ¯ */
 					skb_fill_page_desc(skb, i, page, off, copy);
 					if (TCP_PAGE(sk)) {
 						get_page(page);
@@ -981,65 +981,65 @@ new_segment:
 					}
 				}
 
-				/* ¸üĞÂÒ³ÄÚÆ«ÒÆ */
+				/* æ›´æ–°é¡µå†…åç§» */
 				TCP_OFF(sk) = off + copy;
 			}
 
-			if (!copied)/* Èç¹ûÃ»ÓĞ¸´ÖÆÊı¾İ£¬ÔòÈ¡ÏûPSH±êÖ¾ */
+			if (!copied)/* å¦‚æœæ²¡æœ‰å¤åˆ¶æ•°æ®ï¼Œåˆ™å–æ¶ˆPSHæ ‡å¿— */
 				TCP_SKB_CB(skb)->flags &= ~TCPCB_FLAG_PSH;
 
-			tp->write_seq += copy;/* ¸üĞÂ·¢ËÍ¶ÓÁĞ×îºóÒ»¸ö°üµÄĞòºÅ */
-			TCP_SKB_CB(skb)->end_seq += copy;/* ¸üĞÂskbµÄĞòºÅ */
+			tp->write_seq += copy;/* æ›´æ–°å‘é€é˜Ÿåˆ—æœ€åä¸€ä¸ªåŒ…çš„åºå· */
+			TCP_SKB_CB(skb)->end_seq += copy;/* æ›´æ–°skbçš„åºå· */
 			skb_shinfo(skb)->tso_segs = 0;
 
-			/* ¸üĞÂÊı¾İ¸´ÖÆµÄÖ¸Õë */
+			/* æ›´æ–°æ•°æ®å¤åˆ¶çš„æŒ‡é’ˆ */
 			from += copy;
 			copied += copy;
-			/* Èç¹ûËùÓĞÊı¾İÒÑ¾­¸´ÖÆÍê±ÏÔòÍË³ö */
+			/* å¦‚æœæ‰€æœ‰æ•°æ®å·²ç»å¤åˆ¶å®Œæ¯•åˆ™é€€å‡º */
 			if ((seglen -= copy) == 0 && iovlen == 0)
 				goto out;
 
-			/* Èç¹ûµ±Ç°skbÖĞµÄÊı¾İĞ¡ÓÚmss£¬ËµÃ÷¿ÉÒÔÍùÀïÃæ¼ÌĞø¸´ÖÆÊı¾İ¡£»òÕß·¢ËÍµÄÊÇOOBÊı¾İ£¬ÔòÒ²Ìø¹ı·¢ËÍ¹ı³Ì£¬¼ÌĞø¸´ÖÆÊı¾İ */
+			/* å¦‚æœå½“å‰skbä¸­çš„æ•°æ®å°äºmssï¼Œè¯´æ˜å¯ä»¥å¾€é‡Œé¢ç»§ç»­å¤åˆ¶æ•°æ®ã€‚æˆ–è€…å‘é€çš„æ˜¯OOBæ•°æ®ï¼Œåˆ™ä¹Ÿè·³è¿‡å‘é€è¿‡ç¨‹ï¼Œç»§ç»­å¤åˆ¶æ•°æ® */
 			if (skb->len != mss_now || (flags & MSG_OOB))
 				continue;
 
-			if (forced_push(tp)) {/* ±ØĞëÁ¢¼´·¢ËÍÊı¾İ£¬¼´ÉÏ´Î·¢ËÍºó²úÉúµÄÊı¾İÒÑ¾­³¬¹ıÍ¨¸æ´°¿ÚÖµµÄÒ»°ë */
-				/* ÉèÖÃPSH±êÖ¾ºó·¢ËÍÊı¾İ */
+			if (forced_push(tp)) {/* å¿…é¡»ç«‹å³å‘é€æ•°æ®ï¼Œå³ä¸Šæ¬¡å‘é€åäº§ç”Ÿçš„æ•°æ®å·²ç»è¶…è¿‡é€šå‘Šçª—å£å€¼çš„ä¸€åŠ */
+				/* è®¾ç½®PSHæ ‡å¿—åå‘é€æ•°æ® */
 				tcp_mark_push(tp, skb);
 				__tcp_push_pending_frames(sk, tp, mss_now, TCP_NAGLE_PUSH);
-			} else if (skb == sk->sk_send_head)/* ËäÈ»²»ÊÇ±ØĞë·¢ËÍÊı¾İ£¬µ«ÊÇ·¢ËÍ¶ÓÁĞÉÏÖ»´æÔÚµ±Ç°¶Î£¬Ò²½«Æä·¢ËÍ³öÈ¥ */
+			} else if (skb == sk->sk_send_head)/* è™½ç„¶ä¸æ˜¯å¿…é¡»å‘é€æ•°æ®ï¼Œä½†æ˜¯å‘é€é˜Ÿåˆ—ä¸Šåªå­˜åœ¨å½“å‰æ®µï¼Œä¹Ÿå°†å…¶å‘é€å‡ºå» */
 				tcp_push_one(sk, mss_now);
 			continue;
 
 wait_for_sndbuf:
-			/* ÓÉÓÚ·¢ËÍ¶ÓÁĞÂúµÄÔ­Òòµ¼ÖÂµÈ´ı */
+			/* ç”±äºå‘é€é˜Ÿåˆ—æ»¡çš„åŸå› å¯¼è‡´ç­‰å¾… */
 			set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
 wait_for_memory:
-			if (copied)/* ËäÈ»Ã»ÓĞÄÚ´æÁË£¬µ«ÊÇ±¾´Îµ÷ÓÃ¸´ÖÆÁËÊı¾İµ½»º³åÇø£¬µ÷ÓÃtcp_push½«Æä·¢ËÍ³öÈ¥ */
+			if (copied)/* è™½ç„¶æ²¡æœ‰å†…å­˜äº†ï¼Œä½†æ˜¯æœ¬æ¬¡è°ƒç”¨å¤åˆ¶äº†æ•°æ®åˆ°ç¼“å†²åŒºï¼Œè°ƒç”¨tcp_pushå°†å…¶å‘é€å‡ºå» */
 				tcp_push(sk, tp, flags & ~MSG_MORE, mss_now, TCP_NAGLE_PUSH);
 
-			/* µÈ´ıÄÚ´æ¿ÉÓÃ */
+			/* ç­‰å¾…å†…å­˜å¯ç”¨ */
 			if ((err = sk_stream_wait_memory(sk, &timeo)) != 0)
-				goto do_error;/* È·ÊµÃ»ÓĞÄÚ´æÁË£¬³¬Ê±ºó·µ»ØÊ§°Ü */
+				goto do_error;/* ç¡®å®æ²¡æœ‰å†…å­˜äº†ï¼Œè¶…æ—¶åè¿”å›å¤±è´¥ */
 
-			/* Ë¯Ãßºó£¬MSS¿ÉÄÜ·¢ÉúÁË±ä»¯£¬ÖØĞÂ¼ÆËã */
+			/* ç¡çœ åï¼ŒMSSå¯èƒ½å‘ç”Ÿäº†å˜åŒ–ï¼Œé‡æ–°è®¡ç®— */
 			mss_now = tcp_current_mss(sk, !(flags&MSG_OOB));
 		}
 	}
 
 out:
-	if (copied)/* ´ÓÓÃ»§Ì¬¸´ÖÆÁËÊı¾İ£¬·¢ËÍËü */
+	if (copied)/* ä»ç”¨æˆ·æ€å¤åˆ¶äº†æ•°æ®ï¼Œå‘é€å®ƒ */
 		tcp_push(sk, tp, flags, mss_now, tp->nonagle);
 	TCP_CHECK_TIMER(sk);
-	release_sock(sk);/* ÊÍ·ÅËøÒÔºó·µ»Ø */
+	release_sock(sk);/* é‡Šæ”¾é”ä»¥åè¿”å› */
 	return copied;
 
 do_fault:
-	if (!skb->len) {/* ¸´ÖÆÊı¾İÊ§°ÜÁË£¬Èç¹ûskb³¤¶ÈÎª0£¬ËµÃ÷ÊÇĞÂ·ÖÅäµÄ£¬ÊÍ·ÅËü */
-		if (sk->sk_send_head == skb)/* Èç¹ûskbÊÇ·¢ËÍ¶ÓÁĞÍ·£¬ÔòÇå¿Õ¶ÓÁĞÍ· */
+	if (!skb->len) {/* å¤åˆ¶æ•°æ®å¤±è´¥äº†ï¼Œå¦‚æœskbé•¿åº¦ä¸º0ï¼Œè¯´æ˜æ˜¯æ–°åˆ†é…çš„ï¼Œé‡Šæ”¾å®ƒ */
+		if (sk->sk_send_head == skb)/* å¦‚æœskbæ˜¯å‘é€é˜Ÿåˆ—å¤´ï¼Œåˆ™æ¸…ç©ºé˜Ÿåˆ—å¤´ */
 			sk->sk_send_head = NULL;
 		__skb_unlink(skb, skb->list);
-		sk_stream_free_skb(sk, skb);/* ÊÍ·Åskb */
+		sk_stream_free_skb(sk, skb);/* é‡Šæ”¾skb */
 	}
 
 do_error:
@@ -1056,7 +1056,7 @@ out_err:
  *	Handle reading urgent data. BSD has very simple semantics for
  *	this, no blocking and very strange errors 8)
  */
-/* ½«±£´æÔÚ´«Êä¿ØÖÆ¿éÖĞµÄ´øÍâÊı¾İ¶ÁÈ¡µ½ÓÃ»§¿Õ¼äÖĞ£¬µ±ÓÃ»§Í¨¹ırecvµ÷ÓÃ¶ÁÈ¡´øÍâÊı¾İÊ±Ê¹ÓÃ */
+/* å°†ä¿å­˜åœ¨ä¼ è¾“æ§åˆ¶å—ä¸­çš„å¸¦å¤–æ•°æ®è¯»å–åˆ°ç”¨æˆ·ç©ºé—´ä¸­ï¼Œå½“ç”¨æˆ·é€šè¿‡recvè°ƒç”¨è¯»å–å¸¦å¤–æ•°æ®æ—¶ä½¿ç”¨ */
 static int tcp_recv_urg(struct sock *sk, long timeo,
 			struct msghdr *msg, int len, int flags,
 			int *addr_len)
@@ -1064,34 +1064,34 @@ static int tcp_recv_urg(struct sock *sk, long timeo,
 	struct tcp_sock *tp = tcp_sk(sk);
 
 	/* No URG data to read. */
-	if (sock_flag(sk, SOCK_URGINLINE) || !tp->urg_data ||/* ½«URG¶Áµ½Õı³£Êı¾İÁ÷£¬»òÕßÃ»ÓĞ´øÍâÊı¾İ */
-	    tp->urg_data == TCP_URG_READ)/* ´øÍâÊı¾İÒÑ¾­±»¶ÁÈ¡ */
+	if (sock_flag(sk, SOCK_URGINLINE) || !tp->urg_data ||/* å°†URGè¯»åˆ°æ­£å¸¸æ•°æ®æµï¼Œæˆ–è€…æ²¡æœ‰å¸¦å¤–æ•°æ® */
+	    tp->urg_data == TCP_URG_READ)/* å¸¦å¤–æ•°æ®å·²ç»è¢«è¯»å– */
 		return -EINVAL;	/* Yes this is right ! */
 
-	if (sk->sk_state == TCP_CLOSE && !sock_flag(sk, SOCK_DONE))/* »¹Ã»ÓĞÁ¬½Ó£¬²»ÄÜ¶ÁÈ¡´øÍâÊı¾İ */
+	if (sk->sk_state == TCP_CLOSE && !sock_flag(sk, SOCK_DONE))/* è¿˜æ²¡æœ‰è¿æ¥ï¼Œä¸èƒ½è¯»å–å¸¦å¤–æ•°æ® */
 		return -ENOTCONN;
 
-	if (tp->urg_data & TCP_URG_VALID) {/* ´øÍâÊı¾İÓĞĞ§ */
+	if (tp->urg_data & TCP_URG_VALID) {/* å¸¦å¤–æ•°æ®æœ‰æ•ˆ */
 		int err = 0;
 		char c = tp->urg_data;
 
-		if (!(flags & MSG_PEEK))/* Èç¹û²»ÊÇ²é¿´£¬ÔòÉèÖÃREAD±êÖ¾±íÊ¾Êı¾İÒÑ¾­±»¶Á×ß */
+		if (!(flags & MSG_PEEK))/* å¦‚æœä¸æ˜¯æŸ¥çœ‹ï¼Œåˆ™è®¾ç½®READæ ‡å¿—è¡¨ç¤ºæ•°æ®å·²ç»è¢«è¯»èµ° */
 			tp->urg_data = TCP_URG_READ;
 
 		/* Read urgent data. */
-		msg->msg_flags |= MSG_OOB;/* ÏòÓÃ»§·µ»Ø±êÖ¾£¬±íÊ¾¶ÁÈ¡ÁË´øÍâÊı¾İ */
+		msg->msg_flags |= MSG_OOB;/* å‘ç”¨æˆ·è¿”å›æ ‡å¿—ï¼Œè¡¨ç¤ºè¯»å–äº†å¸¦å¤–æ•°æ® */
 
-		if (len > 0) {/* ÓÃ»§Ö¸¶¨ÁË½ÓÊÕ»º³åÇø */
-			if (!(flags & MSG_TRUNC))/* ÓÃ»§²»ÊÇÏëÇå³ı´øÍâÊı¾İ */
-				err = memcpy_toiovec(msg->msg_iov, &c, 1);/* ½«´øÍâÊı¾İ¸´ÖÆµ½ÓÃ»§»º³åÇø */
+		if (len > 0) {/* ç”¨æˆ·æŒ‡å®šäº†æ¥æ”¶ç¼“å†²åŒº */
+			if (!(flags & MSG_TRUNC))/* ç”¨æˆ·ä¸æ˜¯æƒ³æ¸…é™¤å¸¦å¤–æ•°æ® */
+				err = memcpy_toiovec(msg->msg_iov, &c, 1);/* å°†å¸¦å¤–æ•°æ®å¤åˆ¶åˆ°ç”¨æˆ·ç¼“å†²åŒº */
 			len = 1;
 		} else
-			msg->msg_flags |= MSG_TRUNC;/* ·µ»Ø´Ë±êÖ¾±íÊ¾»º³åÇø²»×ã£¬Êı¾İ±»½Ø¶Ï */
+			msg->msg_flags |= MSG_TRUNC;/* è¿”å›æ­¤æ ‡å¿—è¡¨ç¤ºç¼“å†²åŒºä¸è¶³ï¼Œæ•°æ®è¢«æˆªæ–­ */
 
 		return err ? -EFAULT : len;
 	}
 
-	if (sk->sk_state == TCP_CLOSE || (sk->sk_shutdown & RCV_SHUTDOWN))/* ´ËÊ±·µ»Ø0±íÊ¾Ã»ÓĞ¶Áµ½Êı¾İ */
+	if (sk->sk_state == TCP_CLOSE || (sk->sk_shutdown & RCV_SHUTDOWN))/* æ­¤æ—¶è¿”å›0è¡¨ç¤ºæ²¡æœ‰è¯»åˆ°æ•°æ® */
 		return 0;
 
 	/* Fixed the recv(..., MSG_OOB) behaviour.  BSD docs and
@@ -1100,7 +1100,7 @@ static int tcp_recv_urg(struct sock *sk, long timeo,
 	 * blocking state of the socket.
 	 * Mike <pall@rz.uni-karlsruhe.de>
 	 */
-	/* »áÔËĞĞµ½ÕâÀïÂğ? */
+	/* ä¼šè¿è¡Œåˆ°è¿™é‡Œå—? */
 	return -EAGAIN;
 }
 
@@ -1110,7 +1110,7 @@ static int tcp_recv_urg(struct sock *sk, long timeo,
  * calculation of whether or not we must ACK for the sake of
  * a window update.
  */
-/* ½«½ÓÊÕ¶ÓÁĞÖĞµÄÊı¾İ¸´ÖÆµ½ÓÃ»§¿Õ¼äºó£¬ÎªÂú¸ººÉµÄ¶ÎÇåÀí½ÓÊÕ»º³åÇø£¬È»ºó¸ù¾İĞèÒªÈ·¶¨ÊÇ·ñ·¢ËÍACK¶Î */
+/* å°†æ¥æ”¶é˜Ÿåˆ—ä¸­çš„æ•°æ®å¤åˆ¶åˆ°ç”¨æˆ·ç©ºé—´åï¼Œä¸ºæ»¡è´Ÿè·çš„æ®µæ¸…ç†æ¥æ”¶ç¼“å†²åŒºï¼Œç„¶åæ ¹æ®éœ€è¦ç¡®å®šæ˜¯å¦å‘é€ACKæ®µ */
 static void cleanup_rbuf(struct sock *sk, int copied)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
@@ -1122,20 +1122,20 @@ static void cleanup_rbuf(struct sock *sk, int copied)
 	BUG_TRAP(!skb || before(tp->copied_seq, TCP_SKB_CB(skb)->end_seq));
 #endif
 
-	/* È·¶¨ÊÇ·ñĞèÒªÁ¢¼´·¢ËÍACK¸ø¶Ô·½ */
+	/* ç¡®å®šæ˜¯å¦éœ€è¦ç«‹å³å‘é€ACKç»™å¯¹æ–¹ */
 	if (tcp_ack_scheduled(tp)) {
 		   /* Delayed ACKs frequently hit locked sockets during bulk
 		    * receive. */
-		if (tp->ack.blocked ||/* ÓÉÓÚËø±»Õ¼ÓÃ£¬Òò´ËACK±»ÑÓ³Ù·¢ËÍ */
+		if (tp->ack.blocked ||/* ç”±äºé”è¢«å ç”¨ï¼Œå› æ­¤ACKè¢«å»¶è¿Ÿå‘é€ */
 		    /* Once-per-two-segments ACK was not sent by tcp_input.c */
-		    tp->rcv_nxt - tp->rcv_wup > tp->ack.rcv_mss ||/* ÓĞÒ»¸öÒÔÉÏµÄÈ«³ß´ç¶Î»¹Ã»ÓĞ¸ø¶Ô·½È·ÈÏ */
+		    tp->rcv_nxt - tp->rcv_wup > tp->ack.rcv_mss ||/* æœ‰ä¸€ä¸ªä»¥ä¸Šçš„å…¨å°ºå¯¸æ®µè¿˜æ²¡æœ‰ç»™å¯¹æ–¹ç¡®è®¤ */
 		    /*
 		     * If this read emptied read buffer, we send ACK, if
 		     * connection is not bidirectional, user drained
 		     * receive buffer and there was a small segment
 		     * in queue.
 		     */
-		    (copied > 0 && (tp->ack.pending & TCP_ACK_PUSHED) &&/* ·¢ËÍµ½ÓÃ»§¿Õ¼äµÄÊı¾İÁ¿´óÓÚ0£¬²¢ÇÒ·¢ËÍ½ô¼±³Ì¶ÈÎªTCP_ACK_PUSHED */
+		    (copied > 0 && (tp->ack.pending & TCP_ACK_PUSHED) &&/* å‘é€åˆ°ç”¨æˆ·ç©ºé—´çš„æ•°æ®é‡å¤§äº0ï¼Œå¹¶ä¸”å‘é€ç´§æ€¥ç¨‹åº¦ä¸ºTCP_ACK_PUSHED */
 		     !tp->ack.pingpong && !atomic_read(&sk->sk_rmem_alloc)))
 			time_to_ack = 1;
 	}
@@ -1146,12 +1146,12 @@ static void cleanup_rbuf(struct sock *sk, int copied)
 	 * Even if window raised up to infinity, do not send window open ACK
 	 * in states, where we will not receive more. It is useless.
 	 */
-	/* ÆäËûÇé¿öÏÂ£¬Èç¹û»¹ĞèÒª½ÓÊÕ±¨ÎÄÔò¼ÌĞøÅĞ¶Ï */
+	/* å…¶ä»–æƒ…å†µä¸‹ï¼Œå¦‚æœè¿˜éœ€è¦æ¥æ”¶æŠ¥æ–‡åˆ™ç»§ç»­åˆ¤æ–­ */
 	if (copied > 0 && !time_to_ack && !(sk->sk_shutdown & RCV_SHUTDOWN)) {
 		__u32 rcv_window_now = tcp_receive_window(tp);
 
 		/* Optimize, __tcp_select_window() is not cheap. */
-		if (2*rcv_window_now <= tp->window_clamp) {/* µ±Ç°½ÓÊÕ´°¿ÚĞ¡ÓÚ½ÓÊÕ´°¿ÚÉÏÏŞµÄÒ»°ë */
+		if (2*rcv_window_now <= tp->window_clamp) {/* å½“å‰æ¥æ”¶çª—å£å°äºæ¥æ”¶çª—å£ä¸Šé™çš„ä¸€åŠ */
 			__u32 new_window = __tcp_select_window(sk);
 
 			/* Send ACK now, if this read freed lots of space
@@ -1274,7 +1274,7 @@ int tcp_read_sock(struct sock *sk, read_descriptor_t *desc,
  *	Probably, code can be easily improved even more.
  */
 
-/* recvmsgÏµÍ³µ÷ÓÃµÄ´«Êä²ãÊµÏÖ */
+/* recvmsgç³»ç»Ÿè°ƒç”¨çš„ä¼ è¾“å±‚å®ç° */
 int tcp_recvmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *msg,
 		size_t len, int nonblock, int flags, int *addr_len)
 {
@@ -1288,27 +1288,27 @@ int tcp_recvmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *msg,
 	long timeo;
 	struct task_struct *user_recv = NULL;
 
-	lock_sock(sk);/* Ê×ÏÈ»ñÈ¡Ì×½Ó¿ÚµÄËø */
+	lock_sock(sk);/* é¦–å…ˆè·å–å¥—æ¥å£çš„é” */
 
 	TCP_CHECK_TIMER(sk);
 
 	err = -ENOTCONN;
-	if (sk->sk_state == TCP_LISTEN)/* LISTEN×´Ì¬µÄÌ×½Ó¿ÚÊÇ²»ÄÜ¶ÁÈ¡Êı¾İµÄ */
+	if (sk->sk_state == TCP_LISTEN)/* LISTENçŠ¶æ€çš„å¥—æ¥å£æ˜¯ä¸èƒ½è¯»å–æ•°æ®çš„ */
 		goto out;
 
-	timeo = sock_rcvtimeo(sk, nonblock);/* ¼ÆËã³¬Ê±Ê±¼ä */
+	timeo = sock_rcvtimeo(sk, nonblock);/* è®¡ç®—è¶…æ—¶æ—¶é—´ */
 
 	/* Urgent data needs to be handled specially. */
-	if (flags & MSG_OOB)/* ´øÍâÊı¾İµÄ´¦Àí±È½Ï¸´ÔÓ£¬ÌØÊâ´¦Àí */
+	if (flags & MSG_OOB)/* å¸¦å¤–æ•°æ®çš„å¤„ç†æ¯”è¾ƒå¤æ‚ï¼Œç‰¹æ®Šå¤„ç† */
 		goto recv_urg;
 
-	seq = &tp->copied_seq;/* Ä¬ÈÏÇé¿öÏÂ£¬ÊÇ½«±¨ÎÄ´ÓÄÚºËÌ¬¶Áµ½ÓÃ»§Ì¬£¬ĞèÒª¸üĞÂcopied_seq */
-	if (flags & MSG_PEEK) {/* Èç¹ûÖ»²é¿´¶ø²»È¡×ßÊı¾İ£¬Ôò²»ÄÜ¸üĞÂcopied_seq£¬ºóÃæ¾ÍÖ»¸üĞÂÁÙÊ±±äÁ¿peek_seqÁË */
+	seq = &tp->copied_seq;/* é»˜è®¤æƒ…å†µä¸‹ï¼Œæ˜¯å°†æŠ¥æ–‡ä»å†…æ ¸æ€è¯»åˆ°ç”¨æˆ·æ€ï¼Œéœ€è¦æ›´æ–°copied_seq */
+	if (flags & MSG_PEEK) {/* å¦‚æœåªæŸ¥çœ‹è€Œä¸å–èµ°æ•°æ®ï¼Œåˆ™ä¸èƒ½æ›´æ–°copied_seqï¼Œåé¢å°±åªæ›´æ–°ä¸´æ—¶å˜é‡peek_seqäº† */
 		peek_seq = tp->copied_seq;
 		seq = &peek_seq;
 	}
 
-	/* targetÊÇ±¾´Î¸´ÖÆÊı¾İµÄ³¤¶È£¬Èç¹ûÖ¸¶¨ÁËMSG_WAITALL£¬¾ÍĞèÒª¶ÁÈ¡ÓÃ»§Ö¸¶¨³¤¶ÈµÄÊı¾İ£¬·ñÔò¿ÉÒÔÖ»¶ÁÈ¡²¿·ÖÊı¾İ */
+	/* targetæ˜¯æœ¬æ¬¡å¤åˆ¶æ•°æ®çš„é•¿åº¦ï¼Œå¦‚æœæŒ‡å®šäº†MSG_WAITALLï¼Œå°±éœ€è¦è¯»å–ç”¨æˆ·æŒ‡å®šé•¿åº¦çš„æ•°æ®ï¼Œå¦åˆ™å¯ä»¥åªè¯»å–éƒ¨åˆ†æ•°æ® */
 	target = sock_rcvlowat(sk, flags & MSG_WAITALL, len);
 
 	do {
@@ -1316,10 +1316,10 @@ int tcp_recvmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *msg,
 		u32 offset;
 
 		/* Are we at urgent data? Stop if we have read anything or have SIGURG pending. */
-		if (tp->urg_data && tp->urg_seq == *seq) {/* µ±Ç°Óöµ½ÁË´øÍâÊı¾İ */
-			if (copied)/* Èç¹ûÒÑ¾­¸´ÖÆÁË²¿·ÖÊı¾İµ½ÓÃ»§Ì¬£¬ÔòÍË³ö */
+		if (tp->urg_data && tp->urg_seq == *seq) {/* å½“å‰é‡åˆ°äº†å¸¦å¤–æ•°æ® */
+			if (copied)/* å¦‚æœå·²ç»å¤åˆ¶äº†éƒ¨åˆ†æ•°æ®åˆ°ç”¨æˆ·æ€ï¼Œåˆ™é€€å‡º */
 				break;
-			if (signal_pending(current)) {/* Èç¹û½ÓÊÕµ½ĞÅºÅ£¬Ò²ÍË³ö */
+			if (signal_pending(current)) {/* å¦‚æœæ¥æ”¶åˆ°ä¿¡å·ï¼Œä¹Ÿé€€å‡º */
 				copied = timeo ? sock_intr_errno(timeo) : -EAGAIN;
 				break;
 			}
@@ -1327,26 +1327,26 @@ int tcp_recvmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *msg,
 
 		/* Next get a buffer. */
 
-		skb = skb_peek(&sk->sk_receive_queue);/* »ñÈ¡ÏÂÒ»¸ö´ı¶ÁÈ¡µÄ¶Î */
+		skb = skb_peek(&sk->sk_receive_queue);/* è·å–ä¸‹ä¸€ä¸ªå¾…è¯»å–çš„æ®µ */
 		do {
-			if (!skb)/* ½ÓÊÕ¶ÓÁĞÎª¿Õ£¬ÍË³ö£¬´¦Àíprequeue¶ÓÁĞºÍºó±¸¶ÓÁĞ */
+			if (!skb)/* æ¥æ”¶é˜Ÿåˆ—ä¸ºç©ºï¼Œé€€å‡ºï¼Œå¤„ç†prequeueé˜Ÿåˆ—å’Œåå¤‡é˜Ÿåˆ— */
 				break;
 
 			/* Now that we have two receive queues this
 			 * shouldn't happen.
 			 */
-			if (before(*seq, TCP_SKB_CB(skb)->seq)) {/* ÏÂÒ»¸ö¶Î²»ÊÇÔ¤ÆÚ¶ÁÈ¡µÄ¶Î£¬Ö»ÄÜÍË³ö´¦Àíprequeue¶ÓÁĞºÍºó±¸¶ÓÁĞ£¬Êµ¼ÊÉÏÕâ²»¿ÉÄÜ·¢Éú */
+			if (before(*seq, TCP_SKB_CB(skb)->seq)) {/* ä¸‹ä¸€ä¸ªæ®µä¸æ˜¯é¢„æœŸè¯»å–çš„æ®µï¼Œåªèƒ½é€€å‡ºå¤„ç†prequeueé˜Ÿåˆ—å’Œåå¤‡é˜Ÿåˆ—ï¼Œå®é™…ä¸Šè¿™ä¸å¯èƒ½å‘ç”Ÿ */
 				printk(KERN_INFO "recvmsg bug: copied %X "
 				       "seq %X\n", *seq, TCP_SKB_CB(skb)->seq);
 				break;
 			}
-			/* ¼ÆËãÎÒÃÇÓ¦µ±ÔÚ¸Ã¶ÎµÄºÎ´¦¿ªÊ¼¸´ÖÆÊı¾İ£¬ÒòÎªÉÏ´Îrecvµ÷ÓÃ¿ÉÄÜÒÑ¾­¶ÁÈ¡ÁË²¿·ÖÊı¾İ */
+			/* è®¡ç®—æˆ‘ä»¬åº”å½“åœ¨è¯¥æ®µçš„ä½•å¤„å¼€å§‹å¤åˆ¶æ•°æ®ï¼Œå› ä¸ºä¸Šæ¬¡recvè°ƒç”¨å¯èƒ½å·²ç»è¯»å–äº†éƒ¨åˆ†æ•°æ® */
 			offset = *seq - TCP_SKB_CB(skb)->seq;
-			if (skb->h.th->syn)/* syn±êÖ¾Õ¼ÓÃÒ»¸öĞòºÅ£¬Òò´ËĞèÒªµ÷ÕûÆ«ÒÆ */
+			if (skb->h.th->syn)/* synæ ‡å¿—å ç”¨ä¸€ä¸ªåºå·ï¼Œå› æ­¤éœ€è¦è°ƒæ•´åç§» */
 				offset--;
-			if (offset < skb->len)/* Æ«ÒÆ»¹ÔÚ¶Î·¶Î§ÄÚ£¬ËµÃ÷µ±Ç°¶ÎÊÇÓĞĞ§µÄ£¬´Ó¸Ã¶ÎÖĞ¶ÁÈ¡Êı¾İ */
+			if (offset < skb->len)/* åç§»è¿˜åœ¨æ®µèŒƒå›´å†…ï¼Œè¯´æ˜å½“å‰æ®µæ˜¯æœ‰æ•ˆçš„ï¼Œä»è¯¥æ®µä¸­è¯»å–æ•°æ® */
 				goto found_ok_skb;
-			if (skb->h.th->fin)/* ¸Ã¶ÎµÄÊı¾İÒÑ¾­¶ÁÈ¡Íê±Ï£¬Èç¹ûfin±êÖ¾£¬ÄÇÃ´²»ÄÜ¼ÌĞø´¦ÀíºóÃæµÄÊı¾İÁË */
+			if (skb->h.th->fin)/* è¯¥æ®µçš„æ•°æ®å·²ç»è¯»å–å®Œæ¯•ï¼Œå¦‚æœfinæ ‡å¿—ï¼Œé‚£ä¹ˆä¸èƒ½ç»§ç»­å¤„ç†åé¢çš„æ•°æ®äº† */
 				goto found_fin_ok;
 			BUG_TRAP(flags & MSG_PEEK);
 			skb = skb->next;
@@ -1354,32 +1354,32 @@ int tcp_recvmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *msg,
 
 		/* Well, if we have backlog, try to process it now yet. */
 
-		/* Êı¾İÒÑ¾­¶ÁÍê£¬²¢ÇÒºó±¸¶ÓÁĞÎª¿Õ£¬Ö±½ÓÍË³ö */
+		/* æ•°æ®å·²ç»è¯»å®Œï¼Œå¹¶ä¸”åå¤‡é˜Ÿåˆ—ä¸ºç©ºï¼Œç›´æ¥é€€å‡º */
 		if (copied >= target && !sk->sk_backlog.tail)
 			break;
 
-		if (copied) {/* ¸´ÖÆÁË²¿·ÖÊı¾İ£¬¼ì²éÊÇ·ñÓĞÍË³öÊÂ¼şĞèÒª´¦Àí */
-			if (sk->sk_err ||/* SOCK·¢ÉúÁË´íÎó */
-			    sk->sk_state == TCP_CLOSE ||/* Ì×¿ÚÒÑ¾­¹Ø±Õ */
-			    (sk->sk_shutdown & RCV_SHUTDOWN) ||/* Í£Ö¹½ÓÊÕ */
-			    !timeo ||/* ³¬Ê±Ê±¼äµ½ */
-			    signal_pending(current) ||/* ½ÓÊÕµ½ĞÅºÅ */
-			    (flags & MSG_PEEK))/* ½ö½ö²é¿´Êı¾İ */
-				break;/* ÕâĞ©ÊÂ¼ş¶¼µ¼ÖÂ½ÓÊÕ¹ı³ÌÍË³ö */
+		if (copied) {/* å¤åˆ¶äº†éƒ¨åˆ†æ•°æ®ï¼Œæ£€æŸ¥æ˜¯å¦æœ‰é€€å‡ºäº‹ä»¶éœ€è¦å¤„ç† */
+			if (sk->sk_err ||/* SOCKå‘ç”Ÿäº†é”™è¯¯ */
+			    sk->sk_state == TCP_CLOSE ||/* å¥—å£å·²ç»å…³é—­ */
+			    (sk->sk_shutdown & RCV_SHUTDOWN) ||/* åœæ­¢æ¥æ”¶ */
+			    !timeo ||/* è¶…æ—¶æ—¶é—´åˆ° */
+			    signal_pending(current) ||/* æ¥æ”¶åˆ°ä¿¡å· */
+			    (flags & MSG_PEEK))/* ä»…ä»…æŸ¥çœ‹æ•°æ® */
+				break;/* è¿™äº›äº‹ä»¶éƒ½å¯¼è‡´æ¥æ”¶è¿‡ç¨‹é€€å‡º */
 		} else {
-			if (sock_flag(sk, SOCK_DONE))/* TCP»á»°ÒÑ¾­½áÊø£¬ÊÕµ½ÁËFIN±¨ÎÄ */
+			if (sock_flag(sk, SOCK_DONE))/* TCPä¼šè¯å·²ç»ç»“æŸï¼Œæ”¶åˆ°äº†FINæŠ¥æ–‡ */
 				break;
 
-			if (sk->sk_err) {/* ÓĞ´íÎó·¢Éú£¬ÍË³ö */
+			if (sk->sk_err) {/* æœ‰é”™è¯¯å‘ç”Ÿï¼Œé€€å‡º */
 				copied = sock_error(sk);
 				break;
 			}
 
-			if (sk->sk_shutdown & RCV_SHUTDOWN)/* Í£Ö¹½ÓÊÕ */
+			if (sk->sk_shutdown & RCV_SHUTDOWN)/* åœæ­¢æ¥æ”¶ */
 				break;
 
 			if (sk->sk_state == TCP_CLOSE) {
-				if (!sock_flag(sk, SOCK_DONE)) {/* ¿ÉÄÜÊÇÁ¬½Ó»¹Ã»ÓĞ½¨Á¢ */
+				if (!sock_flag(sk, SOCK_DONE)) {/* å¯èƒ½æ˜¯è¿æ¥è¿˜æ²¡æœ‰å»ºç«‹ */
 					/* This occurs when user tries to read
 					 * from never connected socket.
 					 */
@@ -1389,30 +1389,30 @@ int tcp_recvmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *msg,
 				break;
 			}
 
-			if (!timeo) {/* ·Ç×èÈû¶Á£¬ÍË³ö */
+			if (!timeo) {/* éé˜»å¡è¯»ï¼Œé€€å‡º */
 				copied = -EAGAIN;
 				break;
 			}
 
-			if (signal_pending(current)) {/* ½ÓÊÕµ½ĞÅºÅ */
+			if (signal_pending(current)) {/* æ¥æ”¶åˆ°ä¿¡å· */
 				copied = sock_intr_errno(timeo);
 				break;
 			}
 		}
 
-		/* ¼ì²âÊÇ·ñÓĞÈ·ÈÏĞèÒª·¢ËÍ */
+		/* æ£€æµ‹æ˜¯å¦æœ‰ç¡®è®¤éœ€è¦å‘é€ */
 		cleanup_rbuf(sk, copied);
 
 		if (tp->ucopy.task == user_recv) {
 			/* Install new reader */
-			/* µÚÒ»´Î¼ì²â´¦Àí */
+			/* ç¬¬ä¸€æ¬¡æ£€æµ‹å¤„ç† */
 			if (!user_recv && !(flags & (MSG_TRUNC | MSG_PEEK))) {
 				user_recv = current;
 				tp->ucopy.task = user_recv;
 				tp->ucopy.iov = msg->msg_iov;
 			}
 
-			tp->ucopy.len = len;/* ¸üĞÂ¿ÉÊ¹ÓÃµÄÓÃ»§Ì¬»º´æ´óĞ¡ */
+			tp->ucopy.len = len;/* æ›´æ–°å¯ä½¿ç”¨çš„ç”¨æˆ·æ€ç¼“å­˜å¤§å° */
 
 			BUG_TRAP(tp->copied_seq == tp->rcv_nxt ||
 				 (flags & (MSG_PEEK | MSG_TRUNC)));
@@ -1443,40 +1443,40 @@ int tcp_recvmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *msg,
 			 * is not empty. It is more elegant, but eats cycles,
 			 * unfortunately.
 			 */
-			/* Èç¹ûprequeue²»Îª¿Õ£¬Ôò´¦Àíprequeue¶ÓÁĞ */
+			/* å¦‚æœprequeueä¸ä¸ºç©ºï¼Œåˆ™å¤„ç†prequeueé˜Ÿåˆ— */
 			if (skb_queue_len(&tp->ucopy.prequeue))
 				goto do_prequeue;
 
 			/* __ Set realtime policy in scheduler __ */
 		}
 
-		if (copied >= target) {/* Êı¾İ¶ÁÈ¡Íê±Ï */
+		if (copied >= target) {/* æ•°æ®è¯»å–å®Œæ¯• */
 			/* Do not sleep, just process backlog. */
-			release_sock(sk);/* ÊÍ·ÅËø£¬Ö÷ÒªÊÇ´¦Àíºó±¸¶ÓÁĞ */
-			lock_sock(sk);/* ÔÙ´Î»ñÈ¡Ëø */
+			release_sock(sk);/* é‡Šæ”¾é”ï¼Œä¸»è¦æ˜¯å¤„ç†åå¤‡é˜Ÿåˆ— */
+			lock_sock(sk);/* å†æ¬¡è·å–é” */
 		} else
-			sk_wait_data(sk, &timeo);/* µÈ´ıĞÂÊı¾İµ½À´£¬»òÕß³¬Ê±¡£ÔÚ´ËÆÚ¼äÈíÖĞ¶Ï¿ÉÄÜ¸´ÖÆÊı¾İµ½ÓÃ»§Ì¬ */
+			sk_wait_data(sk, &timeo);/* ç­‰å¾…æ–°æ•°æ®åˆ°æ¥ï¼Œæˆ–è€…è¶…æ—¶ã€‚åœ¨æ­¤æœŸé—´è½¯ä¸­æ–­å¯èƒ½å¤åˆ¶æ•°æ®åˆ°ç”¨æˆ·æ€ */
 
 		if (user_recv) {
 			int chunk;
 
 			/* __ Restore normal policy in scheduler __ */
 
-			/* Ë¯ÃßÆÚ¼ä£¬¸´ÖÆÁËÊı¾İµ½ÓÃ»§Ì¬ */
+			/* ç¡çœ æœŸé—´ï¼Œå¤åˆ¶äº†æ•°æ®åˆ°ç”¨æˆ·æ€ */
 			if ((chunk = len - tp->ucopy.len) != 0) {
 				NET_ADD_STATS_USER(LINUX_MIB_TCPDIRECTCOPYFROMBACKLOG, chunk);
-				len -= chunk;/* ¸üĞÂ¼ÆÊı */
+				len -= chunk;/* æ›´æ–°è®¡æ•° */
 				copied += chunk;
 			}
 
-			if (tp->rcv_nxt == tp->copied_seq &&/* ½ÓÊÕ¶ÓÁĞÖĞµÄÊı¾İÒÑ¾­È«²¿¸´ÖÆµ½ÓÃ»§Ì¬ */
-			    skb_queue_len(&tp->ucopy.prequeue)) {/* prequeue»¹ÓĞÊı¾İ */
+			if (tp->rcv_nxt == tp->copied_seq &&/* æ¥æ”¶é˜Ÿåˆ—ä¸­çš„æ•°æ®å·²ç»å…¨éƒ¨å¤åˆ¶åˆ°ç”¨æˆ·æ€ */
+			    skb_queue_len(&tp->ucopy.prequeue)) {/* prequeueè¿˜æœ‰æ•°æ® */
 do_prequeue:
-				tcp_prequeue_process(sk);/* ´¦Àíprequeue¶ÓÁĞ */
+				tcp_prequeue_process(sk);/* å¤„ç†prequeueé˜Ÿåˆ— */
 
-				if ((chunk = len - tp->ucopy.len) != 0) {/* ´Óprequeue¶ÓÁĞ¸´ÖÆÁËÊı¾İµ½ÓÃ»§Ì¬ */
+				if ((chunk = len - tp->ucopy.len) != 0) {/* ä»prequeueé˜Ÿåˆ—å¤åˆ¶äº†æ•°æ®åˆ°ç”¨æˆ·æ€ */
 					NET_ADD_STATS_USER(LINUX_MIB_TCPDIRECTCOPYFROMPREQUEUE, chunk);
-					len -= chunk;/* ¸üĞÂ¼ÆÊı */
+					len -= chunk;/* æ›´æ–°è®¡æ•° */
 					copied += chunk;
 				}
 			}
@@ -1487,34 +1487,34 @@ do_prequeue:
 				       current->comm, current->pid);
 			peek_seq = tp->copied_seq;
 		}
-		continue;/* ¼ÌĞø´¦Àí´ı¶ÁÈ¡µÄ¶Î */
+		continue;/* ç»§ç»­å¤„ç†å¾…è¯»å–çš„æ®µ */
 
 	found_ok_skb:
 		/* Ok so how much can we use? */
-		used = skb->len - offset;/* ±¾¶ÎÖĞ¿ÉÒÔ¶ÁÈ¡µÄ³¤¶È */
-		if (len < used)/* Èç¹û¿É¶ÁµÄ³¤¶È½Ï³¤£¬ÔòÖ»¶ÁÈ¡ÓÃ»§ÆÚÍû¶ÁÈ¡µÄ³¤¶È */
+		used = skb->len - offset;/* æœ¬æ®µä¸­å¯ä»¥è¯»å–çš„é•¿åº¦ */
+		if (len < used)/* å¦‚æœå¯è¯»çš„é•¿åº¦è¾ƒé•¿ï¼Œåˆ™åªè¯»å–ç”¨æˆ·æœŸæœ›è¯»å–çš„é•¿åº¦ */
 			used = len;
 
 		/* Do we have urgent data here? */
-		if (tp->urg_data) {/* ÓĞ´øÍâÊı¾İ */
+		if (tp->urg_data) {/* æœ‰å¸¦å¤–æ•°æ® */
 			u32 urg_offset = tp->urg_seq - *seq;
-			if (urg_offset < used) {/* ´øÍâÊı¾İÔÚ¿É¶ÁÊı¾İÄÚ£¬±íÊ¾´øÍâÊı¾İÓĞĞ§ */
-				if (!urg_offset) {/* Æ«ÒÆÎª0£¬±íÊ¾µ±Ç°Òª¶ÁµÄÎ»ÖÃÕıºÃÊÇ´øÍâÊı¾İ */
-					if (!sock_flag(sk, SOCK_URGINLINE)) {/* ´øÍâÊı¾İ²»·ÅÈëÊı¾İÁ÷ */
-						++*seq;/* µ÷Õû¶ÁÈ¡Î»ÖÃ */
+			if (urg_offset < used) {/* å¸¦å¤–æ•°æ®åœ¨å¯è¯»æ•°æ®å†…ï¼Œè¡¨ç¤ºå¸¦å¤–æ•°æ®æœ‰æ•ˆ */
+				if (!urg_offset) {/* åç§»ä¸º0ï¼Œè¡¨ç¤ºå½“å‰è¦è¯»çš„ä½ç½®æ­£å¥½æ˜¯å¸¦å¤–æ•°æ® */
+					if (!sock_flag(sk, SOCK_URGINLINE)) {/* å¸¦å¤–æ•°æ®ä¸æ”¾å…¥æ•°æ®æµ */
+						++*seq;/* è°ƒæ•´è¯»å–ä½ç½® */
 						offset++;
 						used--;
-						if (!used)/* µ÷Õûºó¿É¶ÁÊı¾İÎª0£¬ËµÃ÷Ã»ÓĞÊı¾İ¿É¶Á£¬Ìø¹ı */
+						if (!used)/* è°ƒæ•´åå¯è¯»æ•°æ®ä¸º0ï¼Œè¯´æ˜æ²¡æœ‰æ•°æ®å¯è¯»ï¼Œè·³è¿‡ */
 							goto skip_copy;
 					}
-				} else/* µ±Ç°Î»ÖÃ²»ÊÇ´øÍâÊı¾İ£¬Ôòµ÷ÕûÎ»ÖÃ£¬Ö»¶Áµ½´øÍâÊı¾İ´¦ */
+				} else/* å½“å‰ä½ç½®ä¸æ˜¯å¸¦å¤–æ•°æ®ï¼Œåˆ™è°ƒæ•´ä½ç½®ï¼Œåªè¯»åˆ°å¸¦å¤–æ•°æ®å¤„ */
 					used = urg_offset;
 			}
 		}
 
-		if (!(flags & MSG_TRUNC)) {/* ²»ÊÇ½Ø¶ÏÊı¾İ£¬±íÊ¾Òª½«Êı¾İ¸´ÖÆµ½ÓÃ»§Ì¬ */
+		if (!(flags & MSG_TRUNC)) {/* ä¸æ˜¯æˆªæ–­æ•°æ®ï¼Œè¡¨ç¤ºè¦å°†æ•°æ®å¤åˆ¶åˆ°ç”¨æˆ·æ€ */
 			err = skb_copy_datagram_iovec(skb, offset,
-						      msg->msg_iov, used);/* ½«Êı¾İ¸´ÖÆµ½ÓÃ»§Ì¬ */
+						      msg->msg_iov, used);/* å°†æ•°æ®å¤åˆ¶åˆ°ç”¨æˆ·æ€ */
 			if (err) {
 				/* Exception. Bailout! */
 				if (!copied)
@@ -1523,47 +1523,47 @@ do_prequeue:
 			}
 		}
 
-		/* µ÷ÕûÒ»Ğ©²ÎÊı */
+		/* è°ƒæ•´ä¸€äº›å‚æ•° */
 		*seq += used;
 		copied += used;
 		len -= used;
 
-		/* µ÷ÕûºÏÀíµÄTCP½ÓÊÕ»º³åÇø´óĞ¡ */
+		/* è°ƒæ•´åˆç†çš„TCPæ¥æ”¶ç¼“å†²åŒºå¤§å° */
 		tcp_rcv_space_adjust(sk);
 
 skip_copy:
-		/* Èç¹ûÍê³ÉÁË´øÍâÊı¾İµÄ´¦Àí£¬ÔòÇå³ı±êÖ¾£¬ÉèÖÃÊ×²¿Ô¤²â±êÖ¾ */
+		/* å¦‚æœå®Œæˆäº†å¸¦å¤–æ•°æ®çš„å¤„ç†ï¼Œåˆ™æ¸…é™¤æ ‡å¿—ï¼Œè®¾ç½®é¦–éƒ¨é¢„æµ‹æ ‡å¿— */
 		if (tp->urg_data && after(tp->copied_seq, tp->urg_seq)) {
 			tp->urg_data = 0;
 			tcp_fast_path_check(sk, tp);
 		}
-		/* »¹ÓĞÊı¾İÃ»ÓĞ¸´ÖÆµ½ÓÃ»§Ì¬£¬¾Í²»ÄÜÉ¾³ıÕâ¸ö¶Î */
+		/* è¿˜æœ‰æ•°æ®æ²¡æœ‰å¤åˆ¶åˆ°ç”¨æˆ·æ€ï¼Œå°±ä¸èƒ½åˆ é™¤è¿™ä¸ªæ®µ */
 		if (used + offset < skb->len)
 			continue;
 
-		if (skb->h.th->fin)/* ´¦ÀíÍê¸Ã¶Î£¬¼ì²âFIN±êÖ¾ */
+		if (skb->h.th->fin)/* å¤„ç†å®Œè¯¥æ®µï¼Œæ£€æµ‹FINæ ‡å¿— */
 			goto found_fin_ok;
-		if (!(flags & MSG_PEEK))/* Èç¹ûÊÇ¶ÁÈ¡¶ø²»ÊÇ²é¿´±¨ÎÄ£¬²¢ÇÒ´¦ÀíÍê±¾¶Î±¨ÎÄ£¬ÔòÉ¾³ıËü */
+		if (!(flags & MSG_PEEK))/* å¦‚æœæ˜¯è¯»å–è€Œä¸æ˜¯æŸ¥çœ‹æŠ¥æ–‡ï¼Œå¹¶ä¸”å¤„ç†å®Œæœ¬æ®µæŠ¥æ–‡ï¼Œåˆ™åˆ é™¤å®ƒ */
 			sk_eat_skb(sk, skb);
-		continue;/* ¼ÌĞø´¦ÀíÏÂÒ»¸ö¶Î */
+		continue;/* ç»§ç»­å¤„ç†ä¸‹ä¸€ä¸ªæ®µ */
 
 	found_fin_ok:
 		/* Process the FIN. */
-		++*seq;/* FINÕ¼ÓÃÒ»¸öĞòºÅ£¬Òò´ËµİÔöĞòºÅ */
-		if (!(flags & MSG_PEEK))/* ²»ÊÇ²é¿´Êı¾İ£¬½«Æä´Ó¶ÓÁĞÖĞÉ¾³ı */
+		++*seq;/* FINå ç”¨ä¸€ä¸ªåºå·ï¼Œå› æ­¤é€’å¢åºå· */
+		if (!(flags & MSG_PEEK))/* ä¸æ˜¯æŸ¥çœ‹æ•°æ®ï¼Œå°†å…¶ä»é˜Ÿåˆ—ä¸­åˆ é™¤ */
 			sk_eat_skb(sk, skb);
-		break;/* ÊÕµ½FIN£¬²»ĞèÒª¼ÌĞø´¦ÀíºóĞøµÄ¶Î£¬ÍË³ö */
+		break;/* æ”¶åˆ°FINï¼Œä¸éœ€è¦ç»§ç»­å¤„ç†åç»­çš„æ®µï¼Œé€€å‡º */
 	} while (len > 0);
 
 	if (user_recv) {
-		if (skb_queue_len(&tp->ucopy.prequeue)) {/* prequeue¶ÓÁĞ²»Îª¿Õ */
+		if (skb_queue_len(&tp->ucopy.prequeue)) {/* prequeueé˜Ÿåˆ—ä¸ä¸ºç©º */
 			int chunk;
 
 			tp->ucopy.len = copied > 0 ? len : 0;
 
-			tcp_prequeue_process(sk);/* ´¦Àíprequeue¶ÓÁĞ */
+			tcp_prequeue_process(sk);/* å¤„ç†prequeueé˜Ÿåˆ— */
 
-			/* ÔÚ´¦ÀíprequeueµÄ¹ı³ÌÖĞ£¬ÓĞÊı¾İ¸´ÖÆµ½ÓÃ»§Ì¬ */
+			/* åœ¨å¤„ç†prequeueçš„è¿‡ç¨‹ä¸­ï¼Œæœ‰æ•°æ®å¤åˆ¶åˆ°ç”¨æˆ·æ€ */
 			if (copied > 0 && (chunk = len - tp->ucopy.len) != 0) {
 				NET_ADD_STATS_USER(LINUX_MIB_TCPDIRECTCOPYFROMPREQUEUE, chunk);
 				len -= chunk;
@@ -1571,7 +1571,7 @@ skip_copy:
 			}
 		}
 
-		/* Çå³ıtaskºÍlen£¬±íÊ¾ÓÃ»§µ±Ç°Ã»ÓĞ¶ÁÈ¡Êı¾İ¡£ÕâÑù´¦Àíprequeue¶ÓÁĞÊ±¾Í²»»áÏòÓÃ»§Ì¬¸´ÖÆÁË */
+		/* æ¸…é™¤taskå’Œlenï¼Œè¡¨ç¤ºç”¨æˆ·å½“å‰æ²¡æœ‰è¯»å–æ•°æ®ã€‚è¿™æ ·å¤„ç†prequeueé˜Ÿåˆ—æ—¶å°±ä¸ä¼šå‘ç”¨æˆ·æ€å¤åˆ¶äº† */
 		tp->ucopy.task = NULL;
 		tp->ucopy.len = 0;
 	}
@@ -1581,20 +1581,20 @@ skip_copy:
 	 */
 
 	/* Clean up data we have read: This will do ACK frames. */
-	/* ÔÙ´Î¼ì²éÊÇ·ñÁ¢¼´·¢ËÍACK */
+	/* å†æ¬¡æ£€æŸ¥æ˜¯å¦ç«‹å³å‘é€ACK */
 	cleanup_rbuf(sk, copied);
 
 	TCP_CHECK_TIMER(sk);
-	release_sock(sk);/* ½âËø´«Êä¿ØÖÆ¿é */
-	return copied;/* ·µ»Ø¸´ÖÆµÄ×Ö½ÚÊı */
+	release_sock(sk);/* è§£é”ä¼ è¾“æ§åˆ¶å— */
+	return copied;/* è¿”å›å¤åˆ¶çš„å­—èŠ‚æ•° */
 
-out:/* ½ÓÊÕ¹ı³ÌÖĞ£¬Èç¹û·¢Éú´íÎó£¬Ôò½âËøºó·µ»Ø */
+out:/* æ¥æ”¶è¿‡ç¨‹ä¸­ï¼Œå¦‚æœå‘ç”Ÿé”™è¯¯ï¼Œåˆ™è§£é”åè¿”å› */
 	TCP_CHECK_TIMER(sk);
 	release_sock(sk);
 	return err;
 
 recv_urg:
-	/* µ÷ÓÃtcp_recv_urg´¦Àí´øÍâÊı¾İ  */
+	/* è°ƒç”¨tcp_recv_urgå¤„ç†å¸¦å¤–æ•°æ®  */
 	err = tcp_recv_urg(sk, timeo, msg, len, flags, addr_len);
 	goto out;
 }
@@ -1636,22 +1636,22 @@ static int tcp_close_state(struct sock *sk)
  *	Shutdown the sending side of a connection. Much like close except
  *	that we don't receive shut down or set_sock_flag(sk, SOCK_DEAD).
  */
-/* shutdownÏµÍ³µ÷ÓÃµÄ´«Êä²ãÊµÏÖ */
+/* shutdownç³»ç»Ÿè°ƒç”¨çš„ä¼ è¾“å±‚å®ç° */
 void tcp_shutdown(struct sock *sk, int how)
 {
 	/*	We need to grab some memory, and put together a FIN,
 	 *	and then put it into the queue to be sent.
 	 *		Tim MacKenzie(tym@dibbler.cs.monash.edu.au) 4 Dec '92.
 	 */
-	if (!(how & SEND_SHUTDOWN))/* ²ÎÊı´íÎó£¬·µ»Ø */
+	if (!(how & SEND_SHUTDOWN))/* å‚æ•°é”™è¯¯ï¼Œè¿”å› */
 		return;
 
 	/* If we've already sent a FIN, or it's a closed state, skip this. */
 	if ((1 << sk->sk_state) &
 	    (TCPF_ESTABLISHED | TCPF_SYN_SENT |
-	     TCPF_SYN_RECV | TCPF_CLOSE_WAIT)) {/* ÕâĞ©×´Ì¬Ã»ÓĞ·¢ËÍFIN */
+	     TCPF_SYN_RECV | TCPF_CLOSE_WAIT)) {/* è¿™äº›çŠ¶æ€æ²¡æœ‰å‘é€FIN */
 		/* Clear out any half completed packets.  FIN if needed. */
-		if (tcp_close_state(sk))/* Èç¹ûĞèÒª·¢ËÍFIN£¬Ôò·¢ËÍ */
+		if (tcp_close_state(sk))/* å¦‚æœéœ€è¦å‘é€FINï¼Œåˆ™å‘é€ */
 			tcp_send_fin(sk);
 	}
 }
@@ -1690,20 +1690,20 @@ void tcp_destroy_sock(struct sock *sk)
 	sock_put(sk);
 }
 
-/* closeÏµÍ³µ÷ÓÃµÄ´«Êä²ãÊµÏÖ */
+/* closeç³»ç»Ÿè°ƒç”¨çš„ä¼ è¾“å±‚å®ç° */
 void tcp_close(struct sock *sk, long timeout)
 {
 	struct sk_buff *skb;
 	int data_was_unread = 0;
 
-	lock_sock(sk);/* »ñÈ¡Ì×½Ó¿ÚËø */
-	sk->sk_shutdown = SHUTDOWN_MASK;/* ±íÊ¾Á½¸ö·½ÏòµÄÉÏµÄ¹Ø±Õ */
+	lock_sock(sk);/* è·å–å¥—æ¥å£é” */
+	sk->sk_shutdown = SHUTDOWN_MASK;/* è¡¨ç¤ºä¸¤ä¸ªæ–¹å‘çš„ä¸Šçš„å…³é—­ */
 
-	if (sk->sk_state == TCP_LISTEN) {/* LISTEN×´Ì¬ */
-		tcp_set_state(sk, TCP_CLOSE);/* ÉèÖÃÆä×´Ì¬ÎªCLOSE */
+	if (sk->sk_state == TCP_LISTEN) {/* LISTENçŠ¶æ€ */
+		tcp_set_state(sk, TCP_CLOSE);/* è®¾ç½®å…¶çŠ¶æ€ä¸ºCLOSE */
 
 		/* Special case. */
-		tcp_listen_stop(sk);/* ÖÕÖ¹ÕìÌı */
+		tcp_listen_stop(sk);/* ç»ˆæ­¢ä¾¦å¬ */
 
 		goto adjudge_to_death;
 	}
@@ -1712,18 +1712,18 @@ void tcp_close(struct sock *sk, long timeout)
 	 *  descriptor close, not protocol-sourced closes, because the
 	 *  reader process may not have drained the data yet!
 	 */
-	/* ±éÀú½ÓÊÕ¶ÓÁĞÖĞµÄ¶Î */
+	/* éå†æ¥æ”¶é˜Ÿåˆ—ä¸­çš„æ®µ */
 	while ((skb = __skb_dequeue(&sk->sk_receive_queue)) != NULL) {
-		/* ¶ÎÖĞÊı¾İ³¤¶È£¬Èç¹ûÊÇfin¶Î£¬Ôò¼õÉÙÒ»¸ö×Ö½Ú³¤¶È£¬ÒòÎªfinÕ¼ÓÃÒ»¸öĞòºÅ */
+		/* æ®µä¸­æ•°æ®é•¿åº¦ï¼Œå¦‚æœæ˜¯finæ®µï¼Œåˆ™å‡å°‘ä¸€ä¸ªå­—èŠ‚é•¿åº¦ï¼Œå› ä¸ºfinå ç”¨ä¸€ä¸ªåºå· */
 		u32 len = TCP_SKB_CB(skb)->end_seq - TCP_SKB_CB(skb)->seq -
 			  skb->h.th->fin;
-		/* Î´¶ÁÈ¡µÄ¶Î³¤¶È */
+		/* æœªè¯»å–çš„æ®µé•¿åº¦ */
 		data_was_unread += len;
-		/* ÊÍ·Å¶Î */
+		/* é‡Šæ”¾æ®µ */
 		__kfree_skb(skb);
 	}
 
-	/* ÊÍ·ÅÌ×½Ó¿ÚÕ¼ÓÃµÄ»º´æ */
+	/* é‡Šæ”¾å¥—æ¥å£å ç”¨çš„ç¼“å­˜ */
 	sk_stream_mem_reclaim(sk);
 
 	/* As outlined in draft-ietf-tcpimpl-prob-03.txt, section
@@ -1735,18 +1735,18 @@ void tcp_close(struct sock *sk, long timeout)
 	 * the FTP client, wheee...  Note: timeout is always zero
 	 * in such a case.
 	 */
-	if (data_was_unread) {/* ÓĞÎ´¶ÁÊı¾İ */
+	if (data_was_unread) {/* æœ‰æœªè¯»æ•°æ® */
 		/* Unread data was tossed, zap the connection. */
 		NET_INC_STATS_USER(LINUX_MIB_TCPABORTONCLOSE);
 		tcp_set_state(sk, TCP_CLOSE);
-		/* ·¢ËÍRST±íÊ¾·ÇÕı³£µÄ½áÊø£¬²»ÄÜ·¢ËÍFIN */
+		/* å‘é€RSTè¡¨ç¤ºéæ­£å¸¸çš„ç»“æŸï¼Œä¸èƒ½å‘é€FIN */
 		tcp_send_active_reset(sk, GFP_KERNEL);
-	} else if (sock_flag(sk, SOCK_LINGER) && !sk->sk_lingertime) {/* ËäÈ»ÉèÖÃÁËSOCK_LINGERÑ¡Ïî£¬µ«ÊÇÑÓÊ±Ê±¼äÎª0 */
+	} else if (sock_flag(sk, SOCK_LINGER) && !sk->sk_lingertime) {/* è™½ç„¶è®¾ç½®äº†SOCK_LINGERé€‰é¡¹ï¼Œä½†æ˜¯å»¶æ—¶æ—¶é—´ä¸º0 */
 		/* Check zero linger _after_ checking for unread data. */
-		/* µ÷ÓÃdisconnect¶Ï¿ª¡¢É¾³ı²¢ÊÍ·ÅÒÑ½¨Á¢Á¬½Óµ«ÊÇÎ´±»acceptµÄ´«Êä¿ØÖÆ¿é£¬Í¬Ê±É¾³ı²¢ÊÍ·ÅÒÑ¾­½ÓÊÕµ½½ÓÊÕ¶ÓÁĞºÍÊ§Ğò¶ÓÁĞÉÏµÄ¶ÎºÍ·¢ËÍ¶ÓÁĞÉÏµÄ¶Î */
+		/* è°ƒç”¨disconnectæ–­å¼€ã€åˆ é™¤å¹¶é‡Šæ”¾å·²å»ºç«‹è¿æ¥ä½†æ˜¯æœªè¢«acceptçš„ä¼ è¾“æ§åˆ¶å—ï¼ŒåŒæ—¶åˆ é™¤å¹¶é‡Šæ”¾å·²ç»æ¥æ”¶åˆ°æ¥æ”¶é˜Ÿåˆ—å’Œå¤±åºé˜Ÿåˆ—ä¸Šçš„æ®µå’Œå‘é€é˜Ÿåˆ—ä¸Šçš„æ®µ */
 		sk->sk_prot->disconnect(sk, 0);
 		NET_INC_STATS_USER(LINUX_MIB_TCPABORTONDATA);
-	} else if (tcp_close_state(sk)) {/* ÆäËûÇé¿ö£¬°üÀ¨Ã»ÓĞÉèÖÃSOCK_LINGER»òÕßÆôÓÃÁËSOCK_LINGERÇÒÑÓÊ±Ê±¼ä²»Îª0£¬×ª»»µ±Ç°×´Ì¬µ½¶ÔÓ¦µÄ×´Ì¬£¬Èç¹ûĞÂ×´Ì¬ĞèÒª·¢ËÍFIN */
+	} else if (tcp_close_state(sk)) {/* å…¶ä»–æƒ…å†µï¼ŒåŒ…æ‹¬æ²¡æœ‰è®¾ç½®SOCK_LINGERæˆ–è€…å¯ç”¨äº†SOCK_LINGERä¸”å»¶æ—¶æ—¶é—´ä¸ä¸º0ï¼Œè½¬æ¢å½“å‰çŠ¶æ€åˆ°å¯¹åº”çš„çŠ¶æ€ï¼Œå¦‚æœæ–°çŠ¶æ€éœ€è¦å‘é€FIN */
 		/* We FIN if the application ate all the data before
 		 * zapping the connection.
 		 */
@@ -1772,26 +1772,26 @@ void tcp_close(struct sock *sk, long timeout)
 		 * Probably, I missed some more holelets.
 		 * 						--ANK
 		 */
-		tcp_send_fin(sk);/* ·¢ËÍFIN¶Î£¬½«·¢ËÍ¶ÓÁĞÉÏÎ´·¢ËÍµÄ¶Î·¢ËÍ³öÈ¥ */
+		tcp_send_fin(sk);/* å‘é€FINæ®µï¼Œå°†å‘é€é˜Ÿåˆ—ä¸Šæœªå‘é€çš„æ®µå‘é€å‡ºå» */
 	}
 
-	/* ÔÚ¸ø¶Ô¶Ë·¢ËÍRST»òFIN¶Îºó£¬µÈ´ıÌ×½Ó¿ÚµÄ¹Ø±Õ£¬Ö±µ½TCP×´Ì¬ÎªFIN_WAIT_1¡¢CLOSING¡¢LAST_ACK»òµÈ´ı³¬Ê± */
+	/* åœ¨ç»™å¯¹ç«¯å‘é€RSTæˆ–FINæ®µåï¼Œç­‰å¾…å¥—æ¥å£çš„å…³é—­ï¼Œç›´åˆ°TCPçŠ¶æ€ä¸ºFIN_WAIT_1ã€CLOSINGã€LAST_ACKæˆ–ç­‰å¾…è¶…æ—¶ */
 	sk_stream_wait_close(sk, timeout);
 
 adjudge_to_death:
 	/* It is the last release_sock in its life. It will remove backlog. */
-	release_sock(sk);/* ÊÍ·ÅËøµÄÄ¿µÄ£¬ÊÇÎªÁË´¦Àíºó±¸¶ÓÁĞ£¬ĞÂ°æ±¾½«ÆäÒÆ¶¯µ½ºóÃæ£¬ÕâÀïÓ¦µ±ÓĞÒ»¸öBUG */
+	release_sock(sk);/* é‡Šæ”¾é”çš„ç›®çš„ï¼Œæ˜¯ä¸ºäº†å¤„ç†åå¤‡é˜Ÿåˆ—ï¼Œæ–°ç‰ˆæœ¬å°†å…¶ç§»åŠ¨åˆ°åé¢ï¼Œè¿™é‡Œåº”å½“æœ‰ä¸€ä¸ªBUG */
 
 
 	/* Now socket is owned by kernel and we acquire BH lock
 	   to finish close. No need to check for user refs.
 	 */
-	local_bh_disable();/* ¹Ø±ÕÏÂ°ë²¿²¢»ñµÃËø */
+	local_bh_disable();/* å…³é—­ä¸‹åŠéƒ¨å¹¶è·å¾—é” */
 	bh_lock_sock(sk);
 	BUG_TRAP(!sock_owned_by_user(sk));
 
 	sock_hold(sk);
-	sock_orphan(sk);/* ÉèÖÃÌ×½Ó¿ÚÎªDEAD×´Ì¬£¬³ÉÎª¹Â¶ùÌ×½Ó¿Ú£¬Í¬Ê±¸üĞÂÏµÍ³ÖĞ¹Â¶ùÌ×½Ó¿ÚÊı */
+	sock_orphan(sk);/* è®¾ç½®å¥—æ¥å£ä¸ºDEADçŠ¶æ€ï¼Œæˆä¸ºå­¤å„¿å¥—æ¥å£ï¼ŒåŒæ—¶æ›´æ–°ç³»ç»Ÿä¸­å­¤å„¿å¥—æ¥å£æ•° */
 
 	/*	This is a (useful) BSD violating of the RFC. There is a
 	 *	problem with TCP as specified in that the other end could
@@ -1807,47 +1807,47 @@ adjudge_to_death:
 	 *	linger2	option.					--ANK
 	 */
 
-	if (sk->sk_state == TCP_FIN_WAIT2) {/* µ±Ç°×´Ì¬ÎªTCP_FIN_WAIT2 */
+	if (sk->sk_state == TCP_FIN_WAIT2) {/* å½“å‰çŠ¶æ€ä¸ºTCP_FIN_WAIT2 */
 		struct tcp_sock *tp = tcp_sk(sk);
-		if (tp->linger2 < 0) {/* ¸ÃÖµĞ¡ÓÚ0£¬±íÊ¾¿ÉÒÔ´ÓTCP_FIN_WAIT2×´Ì¬Ö±½Ó×ª»»ÎªTCP_CLOSE×´Ì¬ */
-			/* ÉèÖÃÎªCLOSE×´Ì¬ */
+		if (tp->linger2 < 0) {/* è¯¥å€¼å°äº0ï¼Œè¡¨ç¤ºå¯ä»¥ä»TCP_FIN_WAIT2çŠ¶æ€ç›´æ¥è½¬æ¢ä¸ºTCP_CLOSEçŠ¶æ€ */
+			/* è®¾ç½®ä¸ºCLOSEçŠ¶æ€ */
 			tcp_set_state(sk, TCP_CLOSE);
-			/* Ïò¶Ô·½·¢ËÍRST¶Î */
+			/* å‘å¯¹æ–¹å‘é€RSTæ®µ */
 			tcp_send_active_reset(sk, GFP_ATOMIC);
 			NET_INC_STATS_BH(LINUX_MIB_TCPABORTONLINGER);
-		} else {/* ĞèÒªµÈ´ı²Å½øÈëCLOSE×´Ì¬ */
-			int tmo = tcp_fin_time(tp);/* ±£³ÖTCP_FIN_WAIT2×´Ì¬µÄÊ±¼ä */
+		} else {/* éœ€è¦ç­‰å¾…æ‰è¿›å…¥CLOSEçŠ¶æ€ */
+			int tmo = tcp_fin_time(tp);/* ä¿æŒTCP_FIN_WAIT2çŠ¶æ€çš„æ—¶é—´ */
 
-			if (tmo > TCP_TIMEWAIT_LEN) {/* ³¬¹ı60s */
-				/* Í¨¹ıFIN_WAIT_2¶¨Ê±Æ÷À´´¦Àí×´Ì¬×ª»» */
+			if (tmo > TCP_TIMEWAIT_LEN) {/* è¶…è¿‡60s */
+				/* é€šè¿‡FIN_WAIT_2å®šæ—¶å™¨æ¥å¤„ç†çŠ¶æ€è½¬æ¢ */
 				tcp_reset_keepalive_timer(sk, tcp_fin_time(tp));
 			} else {
 				atomic_inc(&tcp_orphan_count);
-				/* Ğ¡ÓÚ60s£¬ÔòµÈ´ı£¬Ö±µ½×´Ì¬×ª»»³É¹¦ */
+				/* å°äº60sï¼Œåˆ™ç­‰å¾…ï¼Œç›´åˆ°çŠ¶æ€è½¬æ¢æˆåŠŸ */
 				tcp_time_wait(sk, TCP_FIN_WAIT2, tmo);
 				goto out;
 			}
 		}
 	}
-	if (sk->sk_state != TCP_CLOSE) {/* ´ËÊ±²»´¦ÓÚCLOSE×´Ì¬ */
-		sk_stream_mem_reclaim(sk);/* ÊÍ·ÅÄÚ´æ»º´æ */
-		if (atomic_read(&tcp_orphan_count) > sysctl_tcp_max_orphans ||/* ¹Â¶ùÌ×½Ó¿ÚÊıÁ¿Ì«¶à */
-		    (sk->sk_wmem_queued > SOCK_MIN_SNDBUF &&/* ·¢ËÍ¶ÓÁĞÖĞµÄ¶ÎÊıÁ¿´óÓÚÏÂÏŞ */
-		     atomic_read(&tcp_memory_allocated) > sysctl_tcp_mem[2])) {/* ÇÒÏµÍ³ÖĞ×ÜµÄTCP´«Êä²ã»º³åÇø·ÖÅäµÄÄÚ´æ³¬¹ı»º´æÇø´óĞ¡µÄ×î¸ßÓ²ĞÔÏŞÖÆ */
+	if (sk->sk_state != TCP_CLOSE) {/* æ­¤æ—¶ä¸å¤„äºCLOSEçŠ¶æ€ */
+		sk_stream_mem_reclaim(sk);/* é‡Šæ”¾å†…å­˜ç¼“å­˜ */
+		if (atomic_read(&tcp_orphan_count) > sysctl_tcp_max_orphans ||/* å­¤å„¿å¥—æ¥å£æ•°é‡å¤ªå¤š */
+		    (sk->sk_wmem_queued > SOCK_MIN_SNDBUF &&/* å‘é€é˜Ÿåˆ—ä¸­çš„æ®µæ•°é‡å¤§äºä¸‹é™ */
+		     atomic_read(&tcp_memory_allocated) > sysctl_tcp_mem[2])) {/* ä¸”ç³»ç»Ÿä¸­æ€»çš„TCPä¼ è¾“å±‚ç¼“å†²åŒºåˆ†é…çš„å†…å­˜è¶…è¿‡ç¼“å­˜åŒºå¤§å°çš„æœ€é«˜ç¡¬æ€§é™åˆ¶ */
 			if (net_ratelimit())
 				printk(KERN_INFO "TCP: too many of orphaned "
 				       "sockets\n");
-			/* ÕâÖÖÇé¿öÏÂĞèÒªÁ¢¼´¹Ø±ÕÌ×½Ó¿Ú£¬ÉèÖÃÆä×´Ì¬ÎªCLOSE */
+			/* è¿™ç§æƒ…å†µä¸‹éœ€è¦ç«‹å³å…³é—­å¥—æ¥å£ï¼Œè®¾ç½®å…¶çŠ¶æ€ä¸ºCLOSE */
 			tcp_set_state(sk, TCP_CLOSE);
-			/* Ïò¶Ô·½·¢ËÍRST×´Ì¬ */
+			/* å‘å¯¹æ–¹å‘é€RSTçŠ¶æ€ */
 			tcp_send_active_reset(sk, GFP_ATOMIC);
 			NET_INC_STATS_BH(LINUX_MIB_TCPABORTONMEMORY);
 		}
 	}
-	/* Ôö¼Ó¹Â¶ùÌ×½Ó¿ÚÊıÁ¿£¬ÎÒ¾õµÃÕâÀïÓĞµã²»Í× */
+	/* å¢åŠ å­¤å„¿å¥—æ¥å£æ•°é‡ï¼Œæˆ‘è§‰å¾—è¿™é‡Œæœ‰ç‚¹ä¸å¦¥ */
 	atomic_inc(&tcp_orphan_count);
 
-	if (sk->sk_state == TCP_CLOSE)/* Èç¹û×´Ì¬ÎªCLOSE£¬Ôò¿ÉÒÔÊÍ·Å´«Êä¿é¼°ÆäÕ¼ÓÃµÄ×ÊÔ´ */
+	if (sk->sk_state == TCP_CLOSE)/* å¦‚æœçŠ¶æ€ä¸ºCLOSEï¼Œåˆ™å¯ä»¥é‡Šæ”¾ä¼ è¾“å—åŠå…¶å ç”¨çš„èµ„æº */
 		tcp_destroy_sock(sk);
 	/* Otherwise, socket is reprieved until protocol close. */
 
@@ -1976,7 +1976,7 @@ static int wait_for_connect(struct sock *sk, long timeo)
 /*
  *	This will accept the next outstanding connection.
  */
-/* acceptµ÷ÓÃµÄ´«Êä²ãÊµÏÖ */
+/* acceptè°ƒç”¨çš„ä¼ è¾“å±‚å®ç° */
 struct sock *tcp_accept(struct sock *sk, int flags, int *err)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
@@ -1990,19 +1990,19 @@ struct sock *tcp_accept(struct sock *sk, int flags, int *err)
 	 * and that it has something pending.
 	 */
 	error = -EINVAL;
-	if (sk->sk_state != TCP_LISTEN)/* ±¾µ÷ÓÃ½ö½öÕë¶ÔÕìÌıÌ×¿Ú£¬²»ÊÇ´Ë×´Ì¬µÄÌ×¿ÚÔòÍË³ö */
+	if (sk->sk_state != TCP_LISTEN)/* æœ¬è°ƒç”¨ä»…ä»…é’ˆå¯¹ä¾¦å¬å¥—å£ï¼Œä¸æ˜¯æ­¤çŠ¶æ€çš„å¥—å£åˆ™é€€å‡º */
 		goto out;
 
 	/* Find already established connection */
-	if (!tp->accept_queue) {/* accept¶ÓÁĞÎª¿Õ£¬ËµÃ÷»¹Ã»ÓĞÊÕµ½ĞÂÁ¬½Ó */
-		long timeo = sock_rcvtimeo(sk, flags & O_NONBLOCK);/* Èç¹ûÌ×¿ÚÊÇ·Ç×èÈûµÄ£¬»òÕßÔÚÒ»¶¨Ê±¼äÄÚÃ»ÓĞĞÂÁ¬½Ó£¬Ôò·µ»Ø */
+	if (!tp->accept_queue) {/* accepté˜Ÿåˆ—ä¸ºç©ºï¼Œè¯´æ˜è¿˜æ²¡æœ‰æ”¶åˆ°æ–°è¿æ¥ */
+		long timeo = sock_rcvtimeo(sk, flags & O_NONBLOCK);/* å¦‚æœå¥—å£æ˜¯éé˜»å¡çš„ï¼Œæˆ–è€…åœ¨ä¸€å®šæ—¶é—´å†…æ²¡æœ‰æ–°è¿æ¥ï¼Œåˆ™è¿”å› */
 
 		/* If this is a non blocking socket don't sleep */
 		error = -EAGAIN;
-		if (!timeo)/* ³¬Ê±Ê±¼äµ½£¬Ã»ÓĞĞÂÁ¬½Ó£¬ÍË³ö */
+		if (!timeo)/* è¶…æ—¶æ—¶é—´åˆ°ï¼Œæ²¡æœ‰æ–°è¿æ¥ï¼Œé€€å‡º */
 			goto out;
 
-		/* ÔËĞĞµ½ÕâÀï£¬ËµÃ÷ÓĞĞÂÁ¬½Óµ½À´£¬ÔòµÈ´ıĞÂµÄ´«Êä¿ØÖÆ¿é */
+		/* è¿è¡Œåˆ°è¿™é‡Œï¼Œè¯´æ˜æœ‰æ–°è¿æ¥åˆ°æ¥ï¼Œåˆ™ç­‰å¾…æ–°çš„ä¼ è¾“æ§åˆ¶å— */
 		error = wait_for_connect(sk, timeo);
 		if (error)
 			goto out;
@@ -2028,7 +2028,7 @@ out:
 /*
  *	Socket option code for TCP.
  */
-/* ÉèÖÃtcpÑ¡Ïî */
+/* è®¾ç½®tcpé€‰é¡¹ */
 int tcp_setsockopt(struct sock *sk, int level, int optname, char __user *optval,
 		   int optlen)
 {
@@ -2036,7 +2036,7 @@ int tcp_setsockopt(struct sock *sk, int level, int optname, char __user *optval,
 	int val;
 	int err = 0;
 
-	if (level != SOL_TCP)/* Èç¹û²»ÊÇTCP¼¶±ğµÄÑ¡Ïî£¬¾Íµ÷ÓÃ½Ó¿Ú´¦Àíip²ãµÄÑ¡Ïî */
+	if (level != SOL_TCP)/* å¦‚æœä¸æ˜¯TCPçº§åˆ«çš„é€‰é¡¹ï¼Œå°±è°ƒç”¨æ¥å£å¤„ç†ipå±‚çš„é€‰é¡¹ */
 		return tp->af_specific->setsockopt(sk, level, optname,
 						   optval, optlen);
 
@@ -2046,21 +2046,21 @@ int tcp_setsockopt(struct sock *sk, int level, int optname, char __user *optval,
 	if (get_user(val, (int __user *)optval))
 		return -EFAULT;
 
-	lock_sock(sk);/* »ñµÃÁ¬½ÓËøºóÉèÖÃÆäÑ¡Ïî */
+	lock_sock(sk);/* è·å¾—è¿æ¥é”åè®¾ç½®å…¶é€‰é¡¹ */
 
 	switch (optname) {
-	case TCP_MAXSEG:/* ÉèÖÃÓ¦ÓÃ²ãµÄMSSÉÏÏŞ */
+	case TCP_MAXSEG:/* è®¾ç½®åº”ç”¨å±‚çš„MSSä¸Šé™ */
 		/* Values greater than interface MTU won't take effect. However
 		 * at the point when this call is done we typically don't yet
 		 * know which interface is going to be used */
-		if (val < 8 || val > MAX_TCP_WINDOW) {/* ÓĞĞ§µÄMSSÖµÔÚ8µ½32767Ö®¼ä */
+		if (val < 8 || val > MAX_TCP_WINDOW) {/* æœ‰æ•ˆçš„MSSå€¼åœ¨8åˆ°32767ä¹‹é—´ */
 			err = -EINVAL;
 			break;
 		}
-		tp->rx_opt.user_mss = val;/* ÉèÖÃÁ¬½ÓµÄÓÃ»§²ãMSS */
+		tp->rx_opt.user_mss = val;/* è®¾ç½®è¿æ¥çš„ç”¨æˆ·å±‚MSS */
 		break;
 
-	case TCP_NODELAY:/* ½ûÖ¹»òÕßÆôÓÃÌ×½Ó¿ÚÉÏµÄNagleËã·¨ */
+	case TCP_NODELAY:/* ç¦æ­¢æˆ–è€…å¯ç”¨å¥—æ¥å£ä¸Šçš„Nagleç®—æ³• */
 		if (val) {
 			/* TCP_NODELAY is weaker than TCP_CORK, so that
 			 * this option on corked socket is remembered, but
@@ -2070,14 +2070,14 @@ int tcp_setsockopt(struct sock *sk, int level, int optname, char __user *optval,
 			 * an explicit push, which overrides even TCP_CORK
 			 * for currently queued segments.
 			 */
-			tp->nonagle |= TCP_NAGLE_OFF|TCP_NAGLE_PUSH;/* ½ûÓÃNagleËã·¨ */
-			tcp_push_pending_frames(sk, tp);/* ½«Á¬½ÓÖĞµÄ´ı·¢ËÍÊı¾İ·¢³öÈ¥ */
+			tp->nonagle |= TCP_NAGLE_OFF|TCP_NAGLE_PUSH;/* ç¦ç”¨Nagleç®—æ³• */
+			tcp_push_pending_frames(sk, tp);/* å°†è¿æ¥ä¸­çš„å¾…å‘é€æ•°æ®å‘å‡ºå» */
 		} else {
 			tp->nonagle &= ~TCP_NAGLE_OFF;
 		}
 		break;
 
-	case TCP_CORK:/* Ê¹ÄÜ´ËÑ¡Ïîºó£¬»á¶ÔNagle½øĞĞÓÅ»¯£¬200msÄÚ·¢ËÍµÄÊı¾İ»á±»×éºÏ³É´óµÄ±¨ÎÄ */
+	case TCP_CORK:/* ä½¿èƒ½æ­¤é€‰é¡¹åï¼Œä¼šå¯¹Nagleè¿›è¡Œä¼˜åŒ–ï¼Œ200mså†…å‘é€çš„æ•°æ®ä¼šè¢«ç»„åˆæˆå¤§çš„æŠ¥æ–‡ */
 		/* When set indicates to always queue non-full frames.
 		 * Later the user clears this option and we transmit
 		 * any pending partial frames in the queue.  This is
@@ -2099,14 +2099,14 @@ int tcp_setsockopt(struct sock *sk, int level, int optname, char __user *optval,
 		}
 		break;
 
-	case TCP_KEEPIDLE:/* ÉèÖÃ±£»îÌ½²âÇ°TCP¿ÕÏĞÊ±¼ä */
-		if (val < 1 || val > MAX_TCP_KEEPIDLE)/* ²ÎÊı¼ì²â */
+	case TCP_KEEPIDLE:/* è®¾ç½®ä¿æ´»æ¢æµ‹å‰TCPç©ºé—²æ—¶é—´ */
+		if (val < 1 || val > MAX_TCP_KEEPIDLE)/* å‚æ•°æ£€æµ‹ */
 			err = -EINVAL;
 		else {
-			tp->keepalive_time = val * HZ;/* ÉèÖÃ±£»îÆô¶¯Ê±¼ä */
+			tp->keepalive_time = val * HZ;/* è®¾ç½®ä¿æ´»å¯åŠ¨æ—¶é—´ */
 			if (sock_flag(sk, SOCK_KEEPOPEN) &&
 			    !((1 << sk->sk_state) &
-			      (TCPF_CLOSE | TCPF_LISTEN))) {/* ÅĞ¶Ïµ±Ç°ÊÇ·ñĞèÒªÆô¶¯±£»î¶¨Ê±Æ÷ */
+			      (TCPF_CLOSE | TCPF_LISTEN))) {/* åˆ¤æ–­å½“å‰æ˜¯å¦éœ€è¦å¯åŠ¨ä¿æ´»å®šæ—¶å™¨ */
 				__u32 elapsed = tcp_time_stamp - tp->rcv_tstamp;
 				if (tp->keepalive_time > elapsed)
 					elapsed = tp->keepalive_time - elapsed;
@@ -2116,26 +2116,26 @@ int tcp_setsockopt(struct sock *sk, int level, int optname, char __user *optval,
 			}
 		}
 		break;
-	case TCP_KEEPINTVL:/* ÉèÖÃ±£»îÌ½²â¼ä¸ôÊ±¼ä */
+	case TCP_KEEPINTVL:/* è®¾ç½®ä¿æ´»æ¢æµ‹é—´éš”æ—¶é—´ */
 		if (val < 1 || val > MAX_TCP_KEEPINTVL)
 			err = -EINVAL;
 		else
 			tp->keepalive_intvl = val * HZ;
 		break;
-	case TCP_KEEPCNT:/* ÉèÖÃ±£»îÌ½²â´ÎÊı£¬³¬¹ı´ËÖµ£¬ÔòÈÏÎªÁ¬½ÓÒÑ¾­¶Ï¿ª */
+	case TCP_KEEPCNT:/* è®¾ç½®ä¿æ´»æ¢æµ‹æ¬¡æ•°ï¼Œè¶…è¿‡æ­¤å€¼ï¼Œåˆ™è®¤ä¸ºè¿æ¥å·²ç»æ–­å¼€ */
 		if (val < 1 || val > MAX_TCP_KEEPCNT)
 			err = -EINVAL;
 		else
 			tp->keepalive_probes = val;
 		break;
-	case TCP_SYNCNT:/* Îª½¨Á¢Á¬½Ó¶øÖØ·¢SYNµÄ´ÎÊı */
+	case TCP_SYNCNT:/* ä¸ºå»ºç«‹è¿æ¥è€Œé‡å‘SYNçš„æ¬¡æ•° */
 		if (val < 1 || val > MAX_TCP_SYNCNT)
 			err = -EINVAL;
 		else
 			tp->syn_retries = val;
 		break;
 
-	case TCP_LINGER2:/* ±£³ÖÔÚFIN_WAIT_2×´Ì¬µÄÊ±¼ä */
+	case TCP_LINGER2:/* ä¿æŒåœ¨FIN_WAIT_2çŠ¶æ€çš„æ—¶é—´ */
 		if (val < 0)
 			tp->linger2 = -1;
 		else if (val > sysctl_tcp_fin_timeout / HZ)
@@ -2144,7 +2144,7 @@ int tcp_setsockopt(struct sock *sk, int level, int optname, char __user *optval,
 			tp->linger2 = val * HZ;
 		break;
 
-	case TCP_DEFER_ACCEPT:/* ÑÓ³Ùaccept£¬ÕâÑù¿ÉÒÔ½«ack·Åµ½Êı¾İ±¨ÎÄÖĞ½øĞĞÓ¦´ğ¡£¶ÔHTTPÀ´ËµÓĞÓÃ¡£ */
+	case TCP_DEFER_ACCEPT:/* å»¶è¿Ÿacceptï¼Œè¿™æ ·å¯ä»¥å°†ackæ”¾åˆ°æ•°æ®æŠ¥æ–‡ä¸­è¿›è¡Œåº”ç­”ã€‚å¯¹HTTPæ¥è¯´æœ‰ç”¨ã€‚ */
 		tp->defer_accept = 0;
 		if (val > 0) {
 			/* Translate value in seconds to number of
@@ -2157,7 +2157,7 @@ int tcp_setsockopt(struct sock *sk, int level, int optname, char __user *optval,
 		}
 		break;
 
-	case TCP_WINDOW_CLAMP:/* ÉèÖÃ»¬¶¯´°¿ÚÉÏÏŞ */
+	case TCP_WINDOW_CLAMP:/* è®¾ç½®æ»‘åŠ¨çª—å£ä¸Šé™ */
 		if (!val) {
 			if (sk->sk_state != TCP_CLOSE) {
 				err = -EINVAL;
@@ -2169,7 +2169,7 @@ int tcp_setsockopt(struct sock *sk, int level, int optname, char __user *optval,
 						SOCK_MIN_RCVBUF / 2 : val;
 		break;
 
-	case TCP_QUICKACK:/* ÆôÓÃ»òÕß½ûÓÃ¿ìËÙÈ·ÈÏÄ£Ê½£¬¸Ã±êÖ¾ÊÇÔİÊ±ĞÔµÄ¡£ */
+	case TCP_QUICKACK:/* å¯ç”¨æˆ–è€…ç¦ç”¨å¿«é€Ÿç¡®è®¤æ¨¡å¼ï¼Œè¯¥æ ‡å¿—æ˜¯æš‚æ—¶æ€§çš„ã€‚ */
 		if (!val) {
 			tp->ack.pingpong = 1;
 		} else {
@@ -2354,7 +2354,7 @@ void __init tcp_init(void)
 	struct sk_buff *skb = NULL;
 	int order, i;
 
-	/* cb½á¹¹±ØĞëÄÜ¹»ÈİÄÉtcp_skb_cb£¬·ñÔò±¨¸æ´íÎó */
+	/* cbç»“æ„å¿…é¡»èƒ½å¤Ÿå®¹çº³tcp_skb_cbï¼Œå¦åˆ™æŠ¥å‘Šé”™è¯¯ */
 	if (sizeof(struct tcp_skb_cb) > sizeof(skb->cb))
 		__skb_cb_too_small_for_tcp(sizeof(struct tcp_skb_cb),
 					   sizeof(skb->cb));
@@ -2366,7 +2366,7 @@ void __init tcp_init(void)
 	if (!tcp_openreq_cachep)
 		panic("tcp_init: Cannot alloc open_request cache.");
 
-	/* ·ÖÅä¸ßËÙ»º´æ£¬ÓÃÓÚ±£´æÒÑ¾­°ó¶¨¶Ë¿ÚµÄĞÅÏ¢ */
+	/* åˆ†é…é«˜é€Ÿç¼“å­˜ï¼Œç”¨äºä¿å­˜å·²ç»ç»‘å®šç«¯å£çš„ä¿¡æ¯ */
 	tcp_bucket_cachep = kmem_cache_create("tcp_bind_bucket",
 					      sizeof(struct tcp_bind_bucket),
 					      0, SLAB_HWCACHE_ALIGN,
@@ -2386,7 +2386,7 @@ void __init tcp_init(void)
 	 *
 	 * The methodology is similar to that of the buffer cache.
 	 */
-	/* ·ÖÅäÒÑ¾­½¨Á¢µÄÁ¬½ÓÏîµÄ¹şÏ£±íÄÚ´æ£¬thash_entriesÊÇÄÚºË²ÎÊı */
+	/* åˆ†é…å·²ç»å»ºç«‹çš„è¿æ¥é¡¹çš„å“ˆå¸Œè¡¨å†…å­˜ï¼Œthash_entriesæ˜¯å†…æ ¸å‚æ•° */
 	tcp_ehash = (struct tcp_ehash_bucket *)
 		alloc_large_system_hash("TCP established",
 					sizeof(struct tcp_ehash_bucket),
@@ -2404,7 +2404,7 @@ void __init tcp_init(void)
 		INIT_HLIST_HEAD(&tcp_ehash[i].chain);
 	}
 
-	/* ·ÖÅä°ó¶¨¶Ë¿ÚµÄÉ¢ÁĞ±í¡£ */
+	/* åˆ†é…ç»‘å®šç«¯å£çš„æ•£åˆ—è¡¨ã€‚ */
 	tcp_bhash = (struct tcp_bind_hashbucket *)
 		alloc_large_system_hash("TCP bind",
 					sizeof(struct tcp_bind_hashbucket),
@@ -2425,12 +2425,12 @@ void __init tcp_init(void)
 	/* Try to be a bit smarter and adjust defaults depending
 	 * on available memory.
 	 */
-	/* ½«¹şÏ£±íµÄ´óĞ¡ÕÛËã³ÉorderÖµ */
+	/* å°†å“ˆå¸Œè¡¨çš„å¤§å°æŠ˜ç®—æˆorderå€¼ */
 	for (order = 0; ((1 << order) << PAGE_SHIFT) <
 			(tcp_bhash_size * sizeof(struct tcp_bind_hashbucket));
 			order++)
 		;
-	if (order > 4) {/* ¸ù¾İorderÖµ»ù±¾ÉÏ¿ÉÒÔ¾ö¶¨ÊÇ·şÎñÆ÷»¹ÊÇÒ»°ãµÄ×ÀÃæÏµÍ³£¬¾İ´ËÉèÖÃÏàÓ¦²ÎÊı */
+	if (order > 4) {/* æ ¹æ®orderå€¼åŸºæœ¬ä¸Šå¯ä»¥å†³å®šæ˜¯æœåŠ¡å™¨è¿˜æ˜¯ä¸€èˆ¬çš„æ¡Œé¢ç³»ç»Ÿï¼Œæ®æ­¤è®¾ç½®ç›¸åº”å‚æ•° */
 		sysctl_local_port_range[0] = 32768;
 		sysctl_local_port_range[1] = 61000;
 		sysctl_tcp_max_tw_buckets = 180000;
@@ -2444,7 +2444,7 @@ void __init tcp_init(void)
 	}
 	tcp_port_rover = sysctl_local_port_range[0] - 1;
 
-	/* ³õÊ¼»¯ÄÚ´æ¿ØÖÆ²ÎÊı */
+	/* åˆå§‹åŒ–å†…å­˜æ§åˆ¶å‚æ•° */
 	sysctl_tcp_mem[0] =  768 << order;
 	sysctl_tcp_mem[1] = 1024 << order;
 	sysctl_tcp_mem[2] = 1536 << order;

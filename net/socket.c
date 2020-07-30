@@ -121,7 +121,7 @@ static ssize_t sock_sendpage(struct file *file, struct page *page,
  */
 
 /**
- * Ì×½Ó¿ÚÎÄ¼şµÄ½Ó¿Ú
+ * å¥—æ¥å£æ–‡ä»¶çš„æ¥å£
  */
 static struct file_operations socket_file_ops = {
 	.owner =	THIS_MODULE,
@@ -280,18 +280,18 @@ static struct inode *sock_alloc_inode(struct super_block *sb)
 {
 	struct socket_alloc *ei;
 	/**
-	 * ·ÖÅäsocket_allocÓÃÓÚ´æ·Åsocket inode
+	 * åˆ†é…socket_allocç”¨äºå­˜æ”¾socket inode
 	 */
 	ei = (struct socket_alloc *)kmem_cache_alloc(sock_inode_cachep, SLAB_KERNEL);
 	if (!ei)
 		return NULL;
 	/**
-	 * ³õÊ¼»¯Ì×½Ó¿ÚµÄµÈ´ı¶ÓÁĞ
+	 * åˆå§‹åŒ–å¥—æ¥å£çš„ç­‰å¾…é˜Ÿåˆ—
 	 */
 	init_waitqueue_head(&ei->socket.wait);
 
 	/**
-	 * ³õÊ¼»¯Ì×½Ó¿ÚµÄÆäËûĞÅÏ¢¡£
+	 * åˆå§‹åŒ–å¥—æ¥å£çš„å…¶ä»–ä¿¡æ¯ã€‚
 	 */
 	ei->socket.fasync_list = NULL;
 	ei->socket.state = SS_UNCONNECTED;
@@ -307,7 +307,7 @@ static struct inode *sock_alloc_inode(struct super_block *sb)
 static void sock_destroy_inode(struct inode *inode)
 {
 	/**
-	 * ÊÍ·ÅsocketÎÄ¼şµÄinode
+	 * é‡Šæ”¾socketæ–‡ä»¶çš„inode
 	 */
 	kmem_cache_free(sock_inode_cachep,
 			container_of(inode, struct socket_alloc, vfs_inode));
@@ -334,19 +334,19 @@ static int init_inodecache(void)
 }
 
 /**
- * socketÎÄ¼şÏµÍ³³¬¼¶¿é½Ó¿Ú
+ * socketæ–‡ä»¶ç³»ç»Ÿè¶…çº§å—æ¥å£
  */
 static struct super_operations sockfs_ops = {
 	/**
-	 * ·ÖÅäinode
+	 * åˆ†é…inode
 	 */
 	.alloc_inode =	sock_alloc_inode,
 	/**
-	 * ÊÍ·Åindoe
+	 * é‡Šæ”¾indoe
 	 */
 	.destroy_inode =sock_destroy_inode,
 	/**
-	 * »ñÈ¡ÎÄ¼şÏµÍ³×´Ì¬ĞÅÏ¢
+	 * è·å–æ–‡ä»¶ç³»ç»ŸçŠ¶æ€ä¿¡æ¯
 	 */
 	.statfs =	simple_statfs,
 };
@@ -360,7 +360,7 @@ static struct super_block *sockfs_get_sb(struct file_system_type *fs_type,
 static struct vfsmount *sock_mnt;
 
 /**
- * socketÎÄ¼şÏµÍ³
+ * socketæ–‡ä»¶ç³»ç»Ÿ
  */
 static struct file_system_type sock_fs_type = {
 	.name =		"sockfs",
@@ -393,7 +393,7 @@ static struct dentry_operations sockfs_dentry_operations = {
  */
 
 /**
- * ½«Ì×½Ó¿ÚÓëÎÄ¼şÃèÊö·û°ó¶¨¡£
+ * å°†å¥—æ¥å£ä¸æ–‡ä»¶æè¿°ç¬¦ç»‘å®šã€‚
  */
 int sock_map_fd(struct socket *sock)
 {
@@ -405,10 +405,10 @@ int sock_map_fd(struct socket *sock)
 	 *	Find a file descriptor suitable for return to the user. 
 	 */
 	/**
-	 * »ñµÃ¿ÕÏĞµÄÎÄ¼şÃèÊö·û¡£
+	 * è·å¾—ç©ºé—²çš„æ–‡ä»¶æè¿°ç¬¦ã€‚
 	 */
 	fd = get_unused_fd();
-	if (fd >= 0) {/* ³É¹¦·ÖÅäÎÄ¼şÃèÊö·û */
+	if (fd >= 0) {/* æˆåŠŸåˆ†é…æ–‡ä»¶æè¿°ç¬¦ */
 		struct file *file = get_empty_filp();
 
 		if (!file) {
@@ -423,7 +423,7 @@ int sock_map_fd(struct socket *sock)
 		this.hash = SOCK_INODE(sock)->i_ino;
 
 		/**
-		 * ·ÖÅäÎÄ¼şÄ¿Â¼Ïî¡£
+		 * åˆ†é…æ–‡ä»¶ç›®å½•é¡¹ã€‚
 		 */
 		file->f_dentry = d_alloc(sock_mnt->mnt_sb->s_root, &this);
 		if (!file->f_dentry) {
@@ -442,7 +442,7 @@ int sock_map_fd(struct socket *sock)
 		file->f_mode = FMODE_READ | FMODE_WRITE;
 		file->f_flags = O_RDWR;
 		file->f_pos = 0;
-		/* ½«ÎÄ¼şÃèÊö·ûÊµÀıÔö¼Óµ½ÒÑ¾­´ò¿ªµÄÎÄ¼şÁĞ±íÖĞ£¬Íê³ÉÎÄ¼şÓë½ø³ÌµÄ°ó¶¨ */
+		/* å°†æ–‡ä»¶æè¿°ç¬¦å®ä¾‹å¢åŠ åˆ°å·²ç»æ‰“å¼€çš„æ–‡ä»¶åˆ—è¡¨ä¸­ï¼Œå®Œæˆæ–‡ä»¶ä¸è¿›ç¨‹çš„ç»‘å®š */
 		fd_install(fd, file);
 	}
 
@@ -464,7 +464,7 @@ out:
  */
 
 /**
- * ¸ù¾İÎÄ¼şÃèÊö·ûµÃµ½Ì×½Ó¿Ú½á¹¹¡£
+ * æ ¹æ®æ–‡ä»¶æè¿°ç¬¦å¾—åˆ°å¥—æ¥å£ç»“æ„ã€‚
  */
 struct socket *sockfd_lookup(int fd, int *err)
 {
@@ -472,21 +472,21 @@ struct socket *sockfd_lookup(int fd, int *err)
 	struct inode *inode;
 	struct socket *sock;
 
-	if (!(file = fget(fd)))/* ¸ù¾İÎÄ¼şÃèÊö·ûµÃµ½ÎÄ¼ş½á¹¹ */
+	if (!(file = fget(fd)))/* æ ¹æ®æ–‡ä»¶æè¿°ç¬¦å¾—åˆ°æ–‡ä»¶ç»“æ„ */
 	{
 		*err = -EBADF;
 		return NULL;
 	}
 
-	inode = file->f_dentry->d_inode;/* ÎÄ¼ş¶ÔÓ¦µÄinode */
-	if (!inode->i_sock || !(sock = SOCKET_I(inode)))/* inodeÃ»ÓĞÓësocket¹ØÁª£¬»òÕß¹ØÁªµÄsocketÎª¿Õ */
+	inode = file->f_dentry->d_inode;/* æ–‡ä»¶å¯¹åº”çš„inode */
+	if (!inode->i_sock || !(sock = SOCKET_I(inode)))/* inodeæ²¡æœ‰ä¸socketå…³è”ï¼Œæˆ–è€…å…³è”çš„socketä¸ºç©º */
 	{
 		*err = -ENOTSOCK;
 		fput(file);
 		return NULL;
 	}
 
-	if (sock->file != file) {/* sockÖ¸ÏòµÄÎÄ¼ş¶ÔÏó²»Ò»ÖÂ£¬Êı¾İÓĞ´íÎó */
+	if (sock->file != file) {/* sockæŒ‡å‘çš„æ–‡ä»¶å¯¹è±¡ä¸ä¸€è‡´ï¼Œæ•°æ®æœ‰é”™è¯¯ */
 		printk(KERN_ERR "socki_lookup: socket file changed!\n");
 		sock->file = file;
 	}
@@ -549,18 +549,18 @@ struct file_operations bad_sock_fops = {
  
 void sock_release(struct socket *sock)
 {
-	if (sock->ops) {/* ´æÔÚ´«Êä²ã½Ó¿Ú */
+	if (sock->ops) {/* å­˜åœ¨ä¼ è¾“å±‚æ¥å£ */
 		struct module *owner = sock->ops->owner;
 
-		sock->ops->release(sock);/* µ÷ÓÃreleaseÊÍ·Å´«Êä¿ØÖÆ¿é£¬Èçinet_release */
+		sock->ops->release(sock);/* è°ƒç”¨releaseé‡Šæ”¾ä¼ è¾“æ§åˆ¶å—ï¼Œå¦‚inet_release */
 		sock->ops = NULL;
-		module_put(owner);/* ¼õÉÙÄ£¿éÒıÓÃ¼ÆÊı */
+		module_put(owner);/* å‡å°‘æ¨¡å—å¼•ç”¨è®¡æ•° */
 	}
 
-	if (sock->fasync_list)/* ´ËÊ±Òì²½Í¨Öª¶ÓÁĞÓ¦µ±Îª¿Õ£¬²»Îª¿ÕËµÃ÷ÓĞÎÊÌâ£¬´òÓ¡¾¯¸æĞÅÏ¢ */
+	if (sock->fasync_list)/* æ­¤æ—¶å¼‚æ­¥é€šçŸ¥é˜Ÿåˆ—åº”å½“ä¸ºç©ºï¼Œä¸ä¸ºç©ºè¯´æ˜æœ‰é—®é¢˜ï¼Œæ‰“å°è­¦å‘Šä¿¡æ¯ */
 		printk(KERN_ERR "sock_release: fasync list not empty!\n");
 
-	get_cpu_var(sockets_in_use)--;/* µ±Ç°´ò¿ªµÄÌ×½Ó¿ÚÎÄ¼şÊıÁ¿¼õ1 */
+	get_cpu_var(sockets_in_use)--;/* å½“å‰æ‰“å¼€çš„å¥—æ¥å£æ–‡ä»¶æ•°é‡å‡1 */
 	put_cpu_var(sockets_in_use);
 	if (!sock->file) {
 		iput(SOCK_INODE(sock));
@@ -872,7 +872,7 @@ EXPORT_SYMBOL(dlci_ioctl_set);
  */
 
 /**
- * Í¨¹ıÎÄ¼şÏµÍ³ioctl±»µ÷ÓÃ¡£
+ * é€šè¿‡æ–‡ä»¶ç³»ç»Ÿioctlè¢«è°ƒç”¨ã€‚
  */
 static long sock_ioctl(struct file *file, unsigned cmd, unsigned long arg)
 {
@@ -880,12 +880,12 @@ static long sock_ioctl(struct file *file, unsigned cmd, unsigned long arg)
 	void __user *argp = (void __user *)arg;
 	int pid, err;
 
-	sock = SOCKET_I(file->f_dentry->d_inode);/* ÎÄ¼ş¶ÔÓ¦µÄÌ×½Ó¿Ú */
-	if (cmd >= SIOCDEVPRIVATE && cmd <= (SIOCDEVPRIVATE + 15)) {/* Éè±¸×Ô¶¨ÒåµÄioctlÃüÁî */
+	sock = SOCKET_I(file->f_dentry->d_inode);/* æ–‡ä»¶å¯¹åº”çš„å¥—æ¥å£ */
+	if (cmd >= SIOCDEVPRIVATE && cmd <= (SIOCDEVPRIVATE + 15)) {/* è®¾å¤‡è‡ªå®šä¹‰çš„ioctlå‘½ä»¤ */
 		err = dev_ioctl(cmd, argp);
 	} else
 #ifdef WIRELESS_EXT
-	if (cmd >= SIOCIWFIRST && cmd <= SIOCIWLAST) {/* WIFIÉè±¸ÃüÁî×Ö */
+	if (cmd >= SIOCIWFIRST && cmd <= SIOCIWLAST) {/* WIFIè®¾å¤‡å‘½ä»¤å­— */
 		err = dev_ioctl(cmd, argp);
 	} else
 #endif	/* WIRELESS_EXT */
@@ -893,13 +893,13 @@ static long sock_ioctl(struct file *file, unsigned cmd, unsigned long arg)
 		case FIOSETOWN:
 		case SIOCSPGRP:
 			err = -EFAULT;
-			if (get_user(pid, (int __user *)argp))/* »ñµÃ½ø³Ìid²ÎÊı */
+			if (get_user(pid, (int __user *)argp))/* è·å¾—è¿›ç¨‹idå‚æ•° */
 				break;
-			err = f_setown(sock->file, pid, 1);/* ÉèÖÃÎÄ¼şµÄ½ø³Ìid */
+			err = f_setown(sock->file, pid, 1);/* è®¾ç½®æ–‡ä»¶çš„è¿›ç¨‹id */
 			break;
 		case FIOGETOWN:
 		case SIOCGPGRP:
-			err = put_user(sock->file->f_owner.pid, (int __user *)argp);/* »ñµÃ½ø³Ìid */
+			err = put_user(sock->file->f_owner.pid, (int __user *)argp);/* è·å¾—è¿›ç¨‹id */
 			break;
 		case SIOCGIFBR:
 		case SIOCSIFBR:
@@ -911,7 +911,7 @@ static long sock_ioctl(struct file *file, unsigned cmd, unsigned long arg)
 
 			down(&br_ioctl_mutex);
 			if (br_ioctl_hook) 
-				err = br_ioctl_hook(cmd, argp);/* ´¦ÀíÇÅ½ÓÏà¹ØµÄioctl */
+				err = br_ioctl_hook(cmd, argp);/* å¤„ç†æ¡¥æ¥ç›¸å…³çš„ioctl */
 			up(&br_ioctl_mutex);
 			break;
 		case SIOCGIFVLAN:
@@ -922,7 +922,7 @@ static long sock_ioctl(struct file *file, unsigned cmd, unsigned long arg)
 
 			down(&vlan_ioctl_mutex);
 			if (vlan_ioctl_hook)
-				err = vlan_ioctl_hook(argp);/* vlanÏà¹ØµÄioctl */
+				err = vlan_ioctl_hook(argp);/* vlanç›¸å…³çš„ioctl */
 			up(&vlan_ioctl_mutex);
 			break;
 		case SIOCGIFDIVERT:
@@ -938,13 +938,13 @@ static long sock_ioctl(struct file *file, unsigned cmd, unsigned long arg)
 
 			if (dlci_ioctl_hook) {
 				down(&dlci_ioctl_mutex);
-				err = dlci_ioctl_hook(cmd, argp);/* ´´½¨»òÕßÉ¾³ıDLCIÉè±¸ */
+				err = dlci_ioctl_hook(cmd, argp);/* åˆ›å»ºæˆ–è€…åˆ é™¤DLCIè®¾å¤‡ */
 				up(&dlci_ioctl_mutex);
 			}
 			break;
 		default:
 			/**
-			 * Ä¬ÈÏÇé¿öÏÂ£¬µ÷ÓÃÌ×½Ó¿Ú²ãµÄioctl£¬¶Ôipv4À´Ëµ£¬¾ÍÊÇinet_ioctl¡£
+			 * é»˜è®¤æƒ…å†µä¸‹ï¼Œè°ƒç”¨å¥—æ¥å£å±‚çš„ioctlï¼Œå¯¹ipv4æ¥è¯´ï¼Œå°±æ˜¯inet_ioctlã€‚
 			 */
 			err = sock->ops->ioctl(sock, cmd, arg);
 			break;
@@ -993,7 +993,7 @@ static int sock_mmap(struct file * file, struct vm_area_struct * vma)
 	return sock->ops->mmap(file, sock, vma);
 }
 
-/* µ±¹Ø±ÕsockÎÄ¼şÊ±£¬µ÷ÓÃ´Ëº¯Êı */
+/* å½“å…³é—­sockæ–‡ä»¶æ—¶ï¼Œè°ƒç”¨æ­¤å‡½æ•° */
 int sock_close(struct inode *inode, struct file *filp)
 {
 	/*
@@ -1001,14 +1001,14 @@ int sock_close(struct inode *inode, struct file *filp)
 	 *	closing an unfinished socket. 
 	 */
 
-	if (!inode)/* ¼ìÑé²ÎÊıºÏ·¨ĞÔ */
+	if (!inode)/* æ£€éªŒå‚æ•°åˆæ³•æ€§ */
 	{
 		printk(KERN_DEBUG "sock_close: NULL inode\n");
 		return 0;
 	}
-	/* ´ÓÎÄ¼şÃèÊö·ûÏà¹ØµÄÒì²½Í¨Öª¶ÓÁĞÖĞÉ¾³ıÓëÎÄ¼şÃèÊö·ûÓĞ¹ØµÄÒì³£Í¨Öª½áµã */
+	/* ä»æ–‡ä»¶æè¿°ç¬¦ç›¸å…³çš„å¼‚æ­¥é€šçŸ¥é˜Ÿåˆ—ä¸­åˆ é™¤ä¸æ–‡ä»¶æè¿°ç¬¦æœ‰å…³çš„å¼‚å¸¸é€šçŸ¥ç»“ç‚¹ */
 	sock_fasync(-1, filp, 0);
-	/* ÊÍ·ÅÌ×½Ó¿Ú */
+	/* é‡Šæ”¾å¥—æ¥å£ */
 	sock_release(SOCKET_I(inode));
 	return 0;
 }
@@ -1028,7 +1028,7 @@ int sock_close(struct inode *inode, struct file *filp)
  *							--ANK (990710)
  */
 /**
- * ¶ÔÌ×½Ó¿ÚµÄÒì²½Í¨Öª¶ÓÁĞµÄÔö¼Ó¡¢É¾³ı²Ù×÷¡£
+ * å¯¹å¥—æ¥å£çš„å¼‚æ­¥é€šçŸ¥é˜Ÿåˆ—çš„å¢åŠ ã€åˆ é™¤æ“ä½œã€‚
  */
 static int sock_fasync(int fd, struct file *filp, int on)
 {
@@ -1036,15 +1036,15 @@ static int sock_fasync(int fd, struct file *filp, int on)
 	struct socket *sock;
 	struct sock *sk;
 
-	if (on)/* Ôö¼Ó²Ù×÷ */
+	if (on)/* å¢åŠ æ“ä½œ */
 	{
-		/* ·ÖÅäÒì²½Í¨Öª½Úµã */
+		/* åˆ†é…å¼‚æ­¥é€šçŸ¥èŠ‚ç‚¹ */
 		fna=(struct fasync_struct *)kmalloc(sizeof(struct fasync_struct), GFP_KERNEL);
 		if(fna==NULL)
 			return -ENOMEM;
 	}
 
-	sock = SOCKET_I(filp->f_dentry->d_inode);/* »ñÈ¡ÎÄ¼şµÄÌ×½Ó¿ÚºÍ´«Êä¿ØÖÆ¿é */
+	sock = SOCKET_I(filp->f_dentry->d_inode);/* è·å–æ–‡ä»¶çš„å¥—æ¥å£å’Œä¼ è¾“æ§åˆ¶å— */
 
 	if ((sk=sock->sk) == NULL) {
 		if (fna)
@@ -1052,18 +1052,18 @@ static int sock_fasync(int fd, struct file *filp, int on)
 		return -EINVAL;
 	}
 
-	lock_sock(sk);/* Ëø´«ÊäÌ×½Ó¿Ú */
+	lock_sock(sk);/* é”ä¼ è¾“å¥—æ¥å£ */
 
 	prev=&(sock->fasync_list);
 
-	/* ÔÚÌ×½Ó¿ÚµÄÒì²½Í¨ÖªÁ´±íÖĞËÑË÷Æ¥ÅäµÄ½Úµã */
+	/* åœ¨å¥—æ¥å£çš„å¼‚æ­¥é€šçŸ¥é“¾è¡¨ä¸­æœç´¢åŒ¹é…çš„èŠ‚ç‚¹ */
 	for (fa=*prev; fa!=NULL; prev=&fa->fa_next,fa=*prev)
 		if (fa->fa_file==filp)
 			break;
 
-	if(on)/* Ìí¼Ó²Ù×÷ */
+	if(on)/* æ·»åŠ æ“ä½œ */
 	{
-		if(fa!=NULL)/* ÒÑ¾­ÓĞÒì²½Í¨Öª½ÚµãÁË£¬¸üĞÂÒÑÓĞ½Úµã */
+		if(fa!=NULL)/* å·²ç»æœ‰å¼‚æ­¥é€šçŸ¥èŠ‚ç‚¹äº†ï¼Œæ›´æ–°å·²æœ‰èŠ‚ç‚¹ */
 		{
 			write_lock_bh(&sk->sk_callback_lock);
 			fa->fa_fd=fd;
@@ -1072,7 +1072,7 @@ static int sock_fasync(int fd, struct file *filp, int on)
 			kfree(fna);
 			goto out;
 		}
-		/* ·ñÔòĞÂÔö½Úµã */
+		/* å¦åˆ™æ–°å¢èŠ‚ç‚¹ */
 		fna->fa_file=filp;
 		fna->fa_fd=fd;
 		fna->magic=FASYNC_MAGIC;
@@ -1081,9 +1081,9 @@ static int sock_fasync(int fd, struct file *filp, int on)
 		sock->fasync_list=fna;
 		write_unlock_bh(&sk->sk_callback_lock);
 	}
-	else/* É¾³ı²Ù×÷ */
+	else/* åˆ é™¤æ“ä½œ */
 	{
-		if (fa!=NULL)/* ËÑË÷µÄ½Úµã´æÔÚ£¬É¾³ıËü */
+		if (fa!=NULL)/* æœç´¢çš„èŠ‚ç‚¹å­˜åœ¨ï¼Œåˆ é™¤å®ƒ */
 		{
 			write_lock_bh(&sk->sk_callback_lock);
 			*prev=fa->fa_next;
@@ -1098,41 +1098,41 @@ out:
 }
 
 /* This function may be called only under socket lock or callback_lock */
-/* »½ĞÑÒì³£µÈ´ıµÄÏß³Ì */
+/* å”¤é†’å¼‚å¸¸ç­‰å¾…çš„çº¿ç¨‹ */
 int sock_wake_async(struct socket *sock, int how, int band)
 {
-	if (!sock || !sock->fasync_list)/* ¼ì²éÒì²½µÈ´ı¶ÓÁĞÊÇ·ñÓĞĞ§ */
+	if (!sock || !sock->fasync_list)/* æ£€æŸ¥å¼‚æ­¥ç­‰å¾…é˜Ÿåˆ—æ˜¯å¦æœ‰æ•ˆ */
 		return -1;
 	switch (how)
 	{
 	case 1:
 		
-		if (test_bit(SOCK_ASYNC_WAITDATA, &sock->flags))/* Ó¦ÓÃ³ÌĞòÕıÔÚµÈ´ı½ÓÊÕÊı¾İ£¬²»ĞèÒªÒì²½»½ĞÑ */
+		if (test_bit(SOCK_ASYNC_WAITDATA, &sock->flags))/* åº”ç”¨ç¨‹åºæ­£åœ¨ç­‰å¾…æ¥æ”¶æ•°æ®ï¼Œä¸éœ€è¦å¼‚æ­¥å”¤é†’ */
 			break;
-		goto call_kill;/* ·¢ËÍkillĞÅºÅ»½ĞÑÈÎÎñ */
+		goto call_kill;/* å‘é€killä¿¡å·å”¤é†’ä»»åŠ¡ */
 	case 2:
-		/* Ã»ÓĞµÈ´ı»º³åÇøµÄ½ø³Ì£¬ÍË³ö */
+		/* æ²¡æœ‰ç­‰å¾…ç¼“å†²åŒºçš„è¿›ç¨‹ï¼Œé€€å‡º */
 		if (!test_and_clear_bit(SOCK_ASYNC_NOSPACE, &sock->flags))
 			break;
 		/* fall through */
-		/* ÓĞ½ø³ÌÔÚµÈ´ı£¬»½ĞÑËü */
-	case 0:/* ÆÕÍ¨Êı¾İ£¬¸ø½ø³Ì·¢ËÍSIGIOĞÅºÅ */
+		/* æœ‰è¿›ç¨‹åœ¨ç­‰å¾…ï¼Œå”¤é†’å®ƒ */
+	case 0:/* æ™®é€šæ•°æ®ï¼Œç»™è¿›ç¨‹å‘é€SIGIOä¿¡å· */
 	call_kill:
 		__kill_fasync(sock->fasync_list, SIGIO, band);
 		break;
-	case 3:/* ´øÍâÊı¾İ£¬·¢ËÍSIGURGĞÅºÅ */
+	case 3:/* å¸¦å¤–æ•°æ®ï¼Œå‘é€SIGURGä¿¡å· */
 		__kill_fasync(sock->fasync_list, SIGURG, band);
 	}
 	return 0;
 }
 
 /**
- * ´´½¨Ò»¸öÌ×½Ó¿Ú
- *		family:		Ì×½Ó¿ÚĞ­Òé×å
- *		type:		Ì×½Ó¿ÚÀàĞÍ
- *		protocol:	´«Êä²ãĞ­Òé
- *		res:		Êä³ö²ÎÊı£¬´´½¨³É¹¦µÄÌ×½Ó¿ÚÖ¸Õë
- *		kern:		ÓÉÄÚºË»¹ÊÇÓ¦ÓÃ³ÌĞò´´½¨¡£
+ * åˆ›å»ºä¸€ä¸ªå¥—æ¥å£
+ *		family:		å¥—æ¥å£åè®®æ—
+ *		type:		å¥—æ¥å£ç±»å‹
+ *		protocol:	ä¼ è¾“å±‚åè®®
+ *		res:		è¾“å‡ºå‚æ•°ï¼Œåˆ›å»ºæˆåŠŸçš„å¥—æ¥å£æŒ‡é’ˆ
+ *		kern:		ç”±å†…æ ¸è¿˜æ˜¯åº”ç”¨ç¨‹åºåˆ›å»ºã€‚
  */
 static int __sock_create(int family, int type, int protocol, struct socket **res, int kern)
 {
@@ -1142,7 +1142,7 @@ static int __sock_create(int family, int type, int protocol, struct socket **res
 	/*
 	 *	Check protocol is in range
 	 */
-	if (family < 0 || family >= NPROTO)/* ²ÎÊıºÏ·¨ĞÔ¼ì²â */
+	if (family < 0 || family >= NPROTO)/* å‚æ•°åˆæ³•æ€§æ£€æµ‹ */
 		return -EAFNOSUPPORT;
 	if (type < 0 || type >= SOCK_MAX)
 		return -EINVAL;
@@ -1153,8 +1153,8 @@ static int __sock_create(int family, int type, int protocol, struct socket **res
 	   deadlock in module load.
 	 */
 	/**
-	 * IPV4Ğ­Òé×åµÄSOCK_PACKETÀàĞÍÌ×½Ó¿ÚÒÑ¾­²»±»Ö§³Ö
-	 * Îª¼æÈİ¾É³ÌĞò£¬×ª»»ÎªPF_PACKET */
+	 * IPV4åè®®æ—çš„SOCK_PACKETç±»å‹å¥—æ¥å£å·²ç»ä¸è¢«æ”¯æŒ
+	 * ä¸ºå…¼å®¹æ—§ç¨‹åºï¼Œè½¬æ¢ä¸ºPF_PACKET */
 	if (family == PF_INET && type == SOCK_PACKET) {
 		static int warned; 
 		if (!warned) {
@@ -1164,7 +1164,7 @@ static int __sock_create(int family, int type, int protocol, struct socket **res
 		family = PF_PACKET;
 	}
 
-	/* ÓÉ°²È«Ä£¿é¶Ô´´½¨¹ı³Ì½øĞĞÉó¼Æ */
+	/* ç”±å®‰å…¨æ¨¡å—å¯¹åˆ›å»ºè¿‡ç¨‹è¿›è¡Œå®¡è®¡ */
 	err = security_socket_create(family, type, protocol, kern);
 	if (err)
 		return err;
@@ -1176,15 +1176,15 @@ static int __sock_create(int family, int type, int protocol, struct socket **res
 	 * requested real, full-featured networking support upon configuration.
 	 * Otherwise module support will break!
 	 */
-	if (net_families[family]==NULL)/* ÏàÓ¦µÄĞ­Òé×åÔÚÄÚºËÖĞÉĞ²»´æÔÚ£¬¼ÓÔØÄ£¿éÒÔÖ§³Ö¸ÃĞ­Òé×å */
+	if (net_families[family]==NULL)/* ç›¸åº”çš„åè®®æ—åœ¨å†…æ ¸ä¸­å°šä¸å­˜åœ¨ï¼ŒåŠ è½½æ¨¡å—ä»¥æ”¯æŒè¯¥åè®®æ— */
 	{
 		request_module("net-pf-%d",family);
 	}
 #endif
 
-	/* µÈ´ı£¬Ö±µ½Ëø±»ÊÍ·Å */
+	/* ç­‰å¾…ï¼Œç›´åˆ°é”è¢«é‡Šæ”¾ */
 	net_family_read_lock();
-	if (net_families[family] == NULL) {/* Èç¹ûĞ­Òé×åÈÔÈ»²»´æÔÚ£¬ËµÃ÷²»Ö§³Ö´ËĞ­Òé×å */
+	if (net_families[family] == NULL) {/* å¦‚æœåè®®æ—ä»ç„¶ä¸å­˜åœ¨ï¼Œè¯´æ˜ä¸æ”¯æŒæ­¤åè®®æ— */
 		err = -EAFNOSUPPORT;
 		goto out;
 	}
@@ -1195,31 +1195,31 @@ static int __sock_create(int family, int type, int protocol, struct socket **res
  *	default.
  */
 
-	if (!(sock = sock_alloc())) {/* ·ÖÅäÓëinode¹ØÁªµÄÌ×½Ó¿Ú */
+	if (!(sock = sock_alloc())) {/* åˆ†é…ä¸inodeå…³è”çš„å¥—æ¥å£ */
 		printk(KERN_WARNING "socket: no more sockets\n");
 		err = -ENFILE;		/* Not exactly a match, but its the
 					   closest posix thing */
 		goto out;
 	}
 
-	sock->type  = type;/* ÉèÖÃÌ×½Ó¿ÚÀàĞÍ¡£ */
+	sock->type  = type;/* è®¾ç½®å¥—æ¥å£ç±»å‹ã€‚ */
 
 	/*
 	 * We will call the ->create function, that possibly is in a loadable
 	 * module, so we have to bump that loadable module refcnt first.
 	 */
 	err = -EAFNOSUPPORT;
-	if (!try_module_get(net_families[family]->owner))/* Ôö¼Ó¶ÔĞ­Òé×åÄ£¿éµÄÒıÓÃ£¬Èç¹ûÊ§°ÜÔòÍË³ö */
+	if (!try_module_get(net_families[family]->owner))/* å¢åŠ å¯¹åè®®æ—æ¨¡å—çš„å¼•ç”¨ï¼Œå¦‚æœå¤±è´¥åˆ™é€€å‡º */
 		goto out_release;
 
-	/* µ÷ÓÃĞ­Òé×åµÄ´´½¨·½·¨£¬¶ÔIPV4À´Ëµ£¬µ÷ÓÃµÄÊÇinet_create */
+	/* è°ƒç”¨åè®®æ—çš„åˆ›å»ºæ–¹æ³•ï¼Œå¯¹IPV4æ¥è¯´ï¼Œè°ƒç”¨çš„æ˜¯inet_create */
 	if ((err = net_families[family]->create(sock, protocol)) < 0)
 		goto out_module_put;
 	/*
 	 * Now to bump the refcnt of the [loadable] module that owns this
 	 * socket at sock_release time we decrement its refcnt.
 	 */
-	if (!try_module_get(sock->ops->owner)) {/* Ôö¼Ó´«Êä²ãÄ£¿éµÄÒıÓÃ¼ÆÊı */
+	if (!try_module_get(sock->ops->owner)) {/* å¢åŠ ä¼ è¾“å±‚æ¨¡å—çš„å¼•ç”¨è®¡æ•° */
 		sock->ops = NULL;
 		goto out_module_put;
 	}
@@ -1227,10 +1227,10 @@ static int __sock_create(int family, int type, int protocol, struct socket **res
 	 * Now that we're done with the ->create function, the [loadable]
 	 * module can have its refcnt decremented
 	 */
-	/* Ôö¼ÓÁË´«Êä²ãÄ£¿éµÄÒıÓÃ¼ÆÊıºó£¬¿ÉÒÔÊÍ·ÅĞ­Òé×åµÄÄ£¿éÒıÓÃ¼ÆÊı */
+	/* å¢åŠ äº†ä¼ è¾“å±‚æ¨¡å—çš„å¼•ç”¨è®¡æ•°åï¼Œå¯ä»¥é‡Šæ”¾åè®®æ—çš„æ¨¡å—å¼•ç”¨è®¡æ•° */
 	module_put(net_families[family]->owner);
 	*res = sock;
-	/* Í¨Öª°²È«Ä£¿é£¬¶Ô´´½¨¹ı³Ì½øĞĞ¼ì²é¡£ */
+	/* é€šçŸ¥å®‰å…¨æ¨¡å—ï¼Œå¯¹åˆ›å»ºè¿‡ç¨‹è¿›è¡Œæ£€æŸ¥ã€‚ */
 	security_socket_post_create(sock, family, type, protocol, kern);
 
 out:
@@ -1245,7 +1245,7 @@ out_release:
 
 int sock_create(int family, int type, int protocol, struct socket **res)
 {
-	/* ´«Èë0±íÊ¾ÊÇÓÃ»§Ì¬½ø³Ì´´½¨Ì×½Ó¿Ú */
+	/* ä¼ å…¥0è¡¨ç¤ºæ˜¯ç”¨æˆ·æ€è¿›ç¨‹åˆ›å»ºå¥—æ¥å£ */
 	return __sock_create(family, type, protocol, res, 0);
 }
 
@@ -1259,12 +1259,12 @@ asmlinkage long sys_socket(int family, int type, int protocol)
 	int retval;
 	struct socket *sock;
 
-	/* ¸ù¾İĞ­Òé×å¡¢Ì×¿ÚÀàĞÍ¡¢´«Êä²ãĞ­Òé´´½¨Ì×¿Ú */
+	/* æ ¹æ®åè®®æ—ã€å¥—å£ç±»å‹ã€ä¼ è¾“å±‚åè®®åˆ›å»ºå¥—å£ */
 	retval = sock_create(family, type, protocol, &sock);
 	if (retval < 0)
 		goto out;
 
-	/* Îª´´½¨µÄÌ×½Ó¿Ú·ÖÅäÒ»¸öÎÄ¼şÃèÊö·û²¢½øĞĞ°ó¶¨ */
+	/* ä¸ºåˆ›å»ºçš„å¥—æ¥å£åˆ†é…ä¸€ä¸ªæ–‡ä»¶æè¿°ç¬¦å¹¶è¿›è¡Œç»‘å®š */
 	retval = sock_map_fd(sock);
 	if (retval < 0)
 		goto out_release;
@@ -1353,7 +1353,7 @@ out:
  */
 
 /**
- * bindÏµÍ³µ÷ÓÃ£¬½«±¾µØµØÖ·¼°´«Êä²ã¶Ë¿ÚÓëÌ×½Ó¿Ú¹ØÁªÆğÀ´¡£
+ * bindç³»ç»Ÿè°ƒç”¨ï¼Œå°†æœ¬åœ°åœ°å€åŠä¼ è¾“å±‚ç«¯å£ä¸å¥—æ¥å£å…³è”èµ·æ¥ã€‚
  */
 asmlinkage long sys_bind(int fd, struct sockaddr __user *umyaddr, int addrlen)
 {
@@ -1361,18 +1361,18 @@ asmlinkage long sys_bind(int fd, struct sockaddr __user *umyaddr, int addrlen)
 	char address[MAX_SOCK_ADDR];
 	int err;
 
-	if((sock = sockfd_lookup(fd,&err))!=NULL)/* ¸ù¾İÎÄ¼şÃèÊö·û²éÕÒÌ×½Ó¿Ú */
+	if((sock = sockfd_lookup(fd,&err))!=NULL)/* æ ¹æ®æ–‡ä»¶æè¿°ç¬¦æŸ¥æ‰¾å¥—æ¥å£ */
 	{
-		if((err=move_addr_to_kernel(umyaddr,addrlen,address))>=0) {/* ´ÓÓÃ»§Ì¬¸´ÖÆµØÖ·µ½ÄÚºËÖĞ */
-			err = security_socket_bind(sock, (struct sockaddr *)address, addrlen);/* °²È«Éó¼Æ */
+		if((err=move_addr_to_kernel(umyaddr,addrlen,address))>=0) {/* ä»ç”¨æˆ·æ€å¤åˆ¶åœ°å€åˆ°å†…æ ¸ä¸­ */
+			err = security_socket_bind(sock, (struct sockaddr *)address, addrlen);/* å®‰å…¨å®¡è®¡ */
 			if (err) {
 				sockfd_put(sock);
 				return err;
 			}
-			/* µ÷ÓÃÌ×½Ó¿Ú²ãµÄbind»Øµ÷£¬¶ÔIPV4À´Ëµ£¬¾ÍÊÇinet_bind */
+			/* è°ƒç”¨å¥—æ¥å£å±‚çš„bindå›è°ƒï¼Œå¯¹IPV4æ¥è¯´ï¼Œå°±æ˜¯inet_bind */
 			err = sock->ops->bind(sock, (struct sockaddr *)address, addrlen);
 		}
-		/* ÊÍ·Å¶ÔÎÄ¼ş¾ä±úµÄÒıÓÃ */
+		/* é‡Šæ”¾å¯¹æ–‡ä»¶å¥æŸ„çš„å¼•ç”¨ */
 		sockfd_put(sock);
 	}			
 	return err;
@@ -1384,28 +1384,28 @@ asmlinkage long sys_bind(int fd, struct sockaddr __user *umyaddr, int addrlen)
  *	necessary for a listen, and if that works, we mark the socket as
  *	ready for listening.
  */
-/* ÔÚÕìÌıÊ±£¬ÔÊĞíÃ¿¸öÌ×½Ó¿ÚÁ¬½Ó¶ÓÁĞ³¤¶ÈµÄ×î´óÖµ¡£Ä¬ÈÏÎª128¡£ */
+/* åœ¨ä¾¦å¬æ—¶ï¼Œå…è®¸æ¯ä¸ªå¥—æ¥å£è¿æ¥é˜Ÿåˆ—é•¿åº¦çš„æœ€å¤§å€¼ã€‚é»˜è®¤ä¸º128ã€‚ */
 int sysctl_somaxconn = SOMAXCONN;
 
 /**
- * listenÏµÍ³µ÷ÓÃ
+ * listenç³»ç»Ÿè°ƒç”¨
  */
 asmlinkage long sys_listen(int fd, int backlog)
 {
 	struct socket *sock;
 	int err;
 	
-	if ((sock = sockfd_lookup(fd, &err)) != NULL) {/* ¸ù¾İÎÄ¼şÃèÊö·û»ñµÃÌ×½Ó¿ÚÖ¸Õë */
-		if ((unsigned) backlog > sysctl_somaxconn)/* ×î´óÁ¬½ÓÊıÁ¿£¬³¬¹ı´ËÊıÁ¿µÄÎ´acceptÁ¬½Ó½«±»¶ªÆú */
+	if ((sock = sockfd_lookup(fd, &err)) != NULL) {/* æ ¹æ®æ–‡ä»¶æè¿°ç¬¦è·å¾—å¥—æ¥å£æŒ‡é’ˆ */
+		if ((unsigned) backlog > sysctl_somaxconn)/* æœ€å¤§è¿æ¥æ•°é‡ï¼Œè¶…è¿‡æ­¤æ•°é‡çš„æœªacceptè¿æ¥å°†è¢«ä¸¢å¼ƒ */
 			backlog = sysctl_somaxconn;
 
-		err = security_socket_listen(sock, backlog);/* °²È«Éó¼Æ */
+		err = security_socket_listen(sock, backlog);/* å®‰å…¨å®¡è®¡ */
 		if (err) {
-			sockfd_put(sock);/* °²È«Éó¼ÆÊ§°ÜÔòÊÍ·ÅÎÄ¼şÒıÓÃ¼ÆÊı */
+			sockfd_put(sock);/* å®‰å…¨å®¡è®¡å¤±è´¥åˆ™é‡Šæ”¾æ–‡ä»¶å¼•ç”¨è®¡æ•° */
 			return err;
 		}
 
-		err=sock->ops->listen(sock, backlog);/* µ÷ÓÃ´«Êä²ãµÄlisten»Øµ÷£¬Èçinet_listen */
+		err=sock->ops->listen(sock, backlog);/* è°ƒç”¨ä¼ è¾“å±‚çš„listenå›è°ƒï¼Œå¦‚inet_listen */
 		sockfd_put(sock);
 	}
 	return err;
@@ -1430,19 +1430,19 @@ asmlinkage long sys_accept(int fd, struct sockaddr __user *upeer_sockaddr, int _
 	int err, len;
 	char address[MAX_SOCK_ADDR];
 
-	sock = sockfd_lookup(fd, &err);/* »ñµÃÕìÌı¶Ë¿ÚµÄsocket */
+	sock = sockfd_lookup(fd, &err);/* è·å¾—ä¾¦å¬ç«¯å£çš„socket */
 	if (!sock)
 		goto out;
 
 	err = -ENFILE;
-	if (!(newsock = sock_alloc()))/* ·ÖÅäÒ»¸öĞÂµÄÌ×½Ó¿Ú£¬ÓÃÀ´´¦ÀíÓë¿Í»§¶ËµÄÁ¬½Ó */ 
+	if (!(newsock = sock_alloc()))/* åˆ†é…ä¸€ä¸ªæ–°çš„å¥—æ¥å£ï¼Œç”¨æ¥å¤„ç†ä¸å®¢æˆ·ç«¯çš„è¿æ¥ */ 
 		goto out_put;
 
-	/* ¸ù¾İÕìÌıÌ×½Ó¿ÚÀ´³õÊ¼»¯ĞÂÁ¬½ÓµÄÀàĞÍºÍ»Øµ÷±í */
+	/* æ ¹æ®ä¾¦å¬å¥—æ¥å£æ¥åˆå§‹åŒ–æ–°è¿æ¥çš„ç±»å‹å’Œå›è°ƒè¡¨ */
 	newsock->type = sock->type;
 	newsock->ops = sock->ops;
 
-	err = security_socket_accept(sock, newsock);/* °²È«Éó¼Æ */
+	err = security_socket_accept(sock, newsock);/* å®‰å…¨å®¡è®¡ */
 	if (err)
 		goto out_release;
 
@@ -1450,20 +1450,20 @@ asmlinkage long sys_accept(int fd, struct sockaddr __user *upeer_sockaddr, int _
 	 * We don't need try_module_get here, as the listening socket (sock)
 	 * has the protocol module (sock->ops->owner) held.
 	 */
-	__module_get(newsock->ops->owner);/* Ôö¼ÓÄ£¿éÒıÓÃ¼ÆÊı */
+	__module_get(newsock->ops->owner);/* å¢åŠ æ¨¡å—å¼•ç”¨è®¡æ•° */
 
-	/* µ÷ÓÃ´«Êä²ãµÄaccept£¬¶ÔTCPÀ´Ëµ£¬ÊÇinet_accept */
+	/* è°ƒç”¨ä¼ è¾“å±‚çš„acceptï¼Œå¯¹TCPæ¥è¯´ï¼Œæ˜¯inet_accept */
 	err = sock->ops->accept(sock, newsock, sock->file->f_flags);
 	if (err < 0)
 		goto out_release;
 
-	if (upeer_sockaddr) {/* µ÷ÓÃÕßĞèÒª»ñÈ¡¶Ô·½Ì×½Ó¿ÚµØÖ·ºÍ¶Ë¿Ú */
-		/* µ÷ÓÃ´«Êä²ã»Øµ÷»ñµÃ¶Ô·½µÄµØÖ·ºÍ¶Ë¿Ú */
+	if (upeer_sockaddr) {/* è°ƒç”¨è€…éœ€è¦è·å–å¯¹æ–¹å¥—æ¥å£åœ°å€å’Œç«¯å£ */
+		/* è°ƒç”¨ä¼ è¾“å±‚å›è°ƒè·å¾—å¯¹æ–¹çš„åœ°å€å’Œç«¯å£ */
 		if(newsock->ops->getname(newsock, (struct sockaddr *)address, &len, 2)<0) {
 			err = -ECONNABORTED;
 			goto out_release;
 		}
-		/* ³É¹¦ºó¸´ÖÆµ½ÓÃ»§Ì¬ */
+		/* æˆåŠŸåå¤åˆ¶åˆ°ç”¨æˆ·æ€ */
 		err = move_addr_to_user(address, len, upeer_sockaddr, upeer_addrlen);
 		if (err < 0)
 			goto out_release;
@@ -1471,10 +1471,10 @@ asmlinkage long sys_accept(int fd, struct sockaddr __user *upeer_sockaddr, int _
 
 	/* File flags are not inherited via accept() unlike another OSes. */
 
-	if ((err = sock_map_fd(newsock)) < 0)/* ÎªĞÂÁ¬½Ó·ÖÅäÎÄ¼şÃèÊö·û */
+	if ((err = sock_map_fd(newsock)) < 0)/* ä¸ºæ–°è¿æ¥åˆ†é…æ–‡ä»¶æè¿°ç¬¦ */
 		goto out_release;
 
-	security_socket_post_accept(sock, newsock);/* °²È«Éó¼Æ */
+	security_socket_post_accept(sock, newsock);/* å®‰å…¨å®¡è®¡ */
 
 out_put:
 	sockfd_put(sock);
@@ -1499,7 +1499,7 @@ out_release:
  */
 
 /**
- * connetÏµÍ³µ÷ÓÃ
+ * connetç³»ç»Ÿè°ƒç”¨
  */
 asmlinkage long sys_connect(int fd, struct sockaddr __user *uservaddr, int addrlen)
 {
@@ -1507,20 +1507,20 @@ asmlinkage long sys_connect(int fd, struct sockaddr __user *uservaddr, int addrl
 	char address[MAX_SOCK_ADDR];
 	int err;
 
-	sock = sockfd_lookup(fd, &err);/* ²éÕÒÎÄ¼ş¾ä±ú¶ÔÓ¦µÄsocket */
+	sock = sockfd_lookup(fd, &err);/* æŸ¥æ‰¾æ–‡ä»¶å¥æŸ„å¯¹åº”çš„socket */
 	if (!sock)
 		goto out;
-	/* ´ÓÓÃ»§Ì¬¸´ÖÆµØÖ·²ÎÊıµ½ÄÚºËÖĞ */
+	/* ä»ç”¨æˆ·æ€å¤åˆ¶åœ°å€å‚æ•°åˆ°å†…æ ¸ä¸­ */
 	err = move_addr_to_kernel(uservaddr, addrlen, address);
 	if (err < 0)
 		goto out_put;
 
-	/* °²È«Éó¼Æ */
+	/* å®‰å…¨å®¡è®¡ */
 	err = security_socket_connect(sock, (struct sockaddr *)address, addrlen);
 	if (err)
 		goto out_put;
 
-	/* µ÷ÓÃ´«Êä²ãµÄconnet·½·¨inet_stream_connect»òinet_dgram_connect */
+	/* è°ƒç”¨ä¼ è¾“å±‚çš„connetæ–¹æ³•inet_stream_connectæˆ–inet_dgram_connect */
 	err = sock->ops->connect(sock, (struct sockaddr *) address, addrlen,
 				 sock->file->f_flags);
 out_put:
@@ -1535,7 +1535,7 @@ out:
  */
 
 /**
- * getsocknameÏµÍ³µ÷ÓÃ£¬·µ»Ø±¾µØµØÖ·ºÍ¶Ë¿Ú
+ * getsocknameç³»ç»Ÿè°ƒç”¨ï¼Œè¿”å›æœ¬åœ°åœ°å€å’Œç«¯å£
  */
 asmlinkage long sys_getsockname(int fd, struct sockaddr __user *usockaddr, int __user *usockaddr_len)
 {
@@ -1543,23 +1543,23 @@ asmlinkage long sys_getsockname(int fd, struct sockaddr __user *usockaddr, int _
 	char address[MAX_SOCK_ADDR];
 	int len, err;
 	
-	sock = sockfd_lookup(fd, &err);/* ¸ù¾İÎÄ¼şÃèÊö·û»ñÈ¡Ì×½Ó¿Ú */
+	sock = sockfd_lookup(fd, &err);/* æ ¹æ®æ–‡ä»¶æè¿°ç¬¦è·å–å¥—æ¥å£ */
 	if (!sock)
 		goto out;
 
-	err = security_socket_getsockname(sock);/* °²È«Éó¼Æ */
+	err = security_socket_getsockname(sock);/* å®‰å…¨å®¡è®¡ */
 	if (err)
 		goto out_put;
 
-	/* µ÷ÓÃ´«Êä²ãµÄ½Ó¿ÚÀ´»ñÈ¡µØÖ·ºÍ¶Ë¿Ú¡£ipv4µÄ½Ó¿ÚÊÇinet_getname */
+	/* è°ƒç”¨ä¼ è¾“å±‚çš„æ¥å£æ¥è·å–åœ°å€å’Œç«¯å£ã€‚ipv4çš„æ¥å£æ˜¯inet_getname */
 	err = sock->ops->getname(sock, (struct sockaddr *)address, &len, 0);
 	if (err)
 		goto out_put;
-	/* ½«»ñÈ¡µ½µÄµØÖ·ĞÅÏ¢¸´ÖÆµ½ÓÃ»§¿Õ¼ä */
+	/* å°†è·å–åˆ°çš„åœ°å€ä¿¡æ¯å¤åˆ¶åˆ°ç”¨æˆ·ç©ºé—´ */
 	err = move_addr_to_user(address, len, usockaddr, usockaddr_len);
 
 out_put:
-	sockfd_put(sock);/* µİ¼õÎÄ¼şÒıÓÃ¼ÆÊı */
+	sockfd_put(sock);/* é€’å‡æ–‡ä»¶å¼•ç”¨è®¡æ•° */
 out:
 	return err;
 }
@@ -1597,7 +1597,7 @@ asmlinkage long sys_getpeername(int fd, struct sockaddr __user *usockaddr, int _
  *	the protocol.
  */
 /**
- * sendtoÏµÍ³µ÷ÓÃ
+ * sendtoç³»ç»Ÿè°ƒç”¨
  */
 asmlinkage long sys_sendto(int fd, void __user * buff, size_t len, unsigned flags,
 			   struct sockaddr __user *addr, int addr_len)
@@ -1608,10 +1608,10 @@ asmlinkage long sys_sendto(int fd, void __user * buff, size_t len, unsigned flag
 	struct msghdr msg;
 	struct iovec iov;
 	
-	sock = sockfd_lookup(fd, &err);/* ¸ù¾İÎÄ¼şÃèÊö·ûµÃµ½socket */
+	sock = sockfd_lookup(fd, &err);/* æ ¹æ®æ–‡ä»¶æè¿°ç¬¦å¾—åˆ°socket */
 	if (!sock)
 		goto out;
-	/* ×¼±¸Êä³ö½á¹¹µÄÏûÏ¢Í· */
+	/* å‡†å¤‡è¾“å‡ºç»“æ„çš„æ¶ˆæ¯å¤´ */
 	iov.iov_base=buff;
 	iov.iov_len=len;
 	msg.msg_name=NULL;
@@ -1620,7 +1620,7 @@ asmlinkage long sys_sendto(int fd, void __user * buff, size_t len, unsigned flag
 	msg.msg_control=NULL;
 	msg.msg_controllen=0;
 	msg.msg_namelen=0;
-	if(addr)/* Èç¹ûÖ¸¶¨ÁËÄ¿µÄµØÖ·£¬Ôò´ÓÓÃ»§¿Õ¼ä¸´ÖÆÄ¿µÄµØÖ·µ½ÄÚºËÖĞ¡£ */
+	if(addr)/* å¦‚æœæŒ‡å®šäº†ç›®çš„åœ°å€ï¼Œåˆ™ä»ç”¨æˆ·ç©ºé—´å¤åˆ¶ç›®çš„åœ°å€åˆ°å†…æ ¸ä¸­ã€‚ */
 	{
 		err = move_addr_to_kernel(addr, addr_len, address);
 		if (err < 0)
@@ -1628,10 +1628,10 @@ asmlinkage long sys_sendto(int fd, void __user * buff, size_t len, unsigned flag
 		msg.msg_name=address;
 		msg.msg_namelen=addr_len;
 	}
-	if (sock->file->f_flags & O_NONBLOCK)/* Èç¹ûÎÄ¼şÖ¸¶¨ÁË·Ç×èÈû·½Ê½£¬ÔòÉèÖÃ·¢ËÍ±êÖ¾ */
+	if (sock->file->f_flags & O_NONBLOCK)/* å¦‚æœæ–‡ä»¶æŒ‡å®šäº†éé˜»å¡æ–¹å¼ï¼Œåˆ™è®¾ç½®å‘é€æ ‡å¿— */
 		flags |= MSG_DONTWAIT;
 	msg.msg_flags = flags;
-	err = sock_sendmsg(sock, &msg, len);/* ·¢ËÍÊı¾İ */
+	err = sock_sendmsg(sock, &msg, len);/* å‘é€æ•°æ® */
 
 out_put:		
 	sockfd_put(sock);
@@ -1645,7 +1645,7 @@ out:
 
 asmlinkage long sys_send(int fd, void __user * buff, size_t len, unsigned flags)
 {
-	/* ²»Ö¸¶¨Ä¿µÄµØÖ·£¬Ôò·¢ËÍµ½Ä¬ÈÏµØÖ· */
+	/* ä¸æŒ‡å®šç›®çš„åœ°å€ï¼Œåˆ™å‘é€åˆ°é»˜è®¤åœ°å€ */
 	return sys_sendto(fd, buff, len, flags, NULL, 0);
 }
 
@@ -1705,29 +1705,29 @@ asmlinkage long sys_recv(int fd, void __user * ubuf, size_t size, unsigned flags
  *	to pass the user mode parameter for the protocols to sort out.
  */
 
-/* ÉèÖÃÌ×½Ó¿ÚÑ¡ÏîµÄ×ÜÈë¿Úº¯Êı */
+/* è®¾ç½®å¥—æ¥å£é€‰é¡¹çš„æ€»å…¥å£å‡½æ•° */
 asmlinkage long sys_setsockopt(int fd, int level, int optname, char __user *optval, int optlen)
 {
 	int err;
 	struct socket *sock;
 
-	if (optlen < 0)/* ²ÎÊı¼ì²â */
+	if (optlen < 0)/* å‚æ•°æ£€æµ‹ */
 		return -EINVAL;
 			
-	if ((sock = sockfd_lookup(fd, &err))!=NULL)/* ²éÕÒÎÄ¼şÃèÊö·û¶ÔÓ¦µÄÌ×½Ó¿Ú */
+	if ((sock = sockfd_lookup(fd, &err))!=NULL)/* æŸ¥æ‰¾æ–‡ä»¶æè¿°ç¬¦å¯¹åº”çš„å¥—æ¥å£ */
 	{
-		err = security_socket_setsockopt(sock,level,optname);/* °²È«Éó¼Æ */
+		err = security_socket_setsockopt(sock,level,optname);/* å®‰å…¨å®¡è®¡ */
 		if (err) {
 			sockfd_put(sock);
 			return err;
 		}
 
-		if (level == SOL_SOCKET)/* Í¨ÓÃÌ×½Ó¿Ú²ãµÄÑ¡ÏîÉèÖÃ */
+		if (level == SOL_SOCKET)/* é€šç”¨å¥—æ¥å£å±‚çš„é€‰é¡¹è®¾ç½® */
 			err=sock_setsockopt(sock,level,optname,optval,optlen);
 		else
 			/**
-			 * µ÷ÓÃÌ×½Ó¿Ú²ãsetsockopt£¬¶ÔSOCK_STREAM¡¢SOCK_DGRAM¡¢SOCK_RAWÀ´Ëµ£¬¶¼ÊÇµ÷ÓÃsock_common_setsockopt¡£
-			 * sock_common_setsockoptÔòµ÷ÓÃ´«Êä²ãµÄsetsockopt
+			 * è°ƒç”¨å¥—æ¥å£å±‚setsockoptï¼Œå¯¹SOCK_STREAMã€SOCK_DGRAMã€SOCK_RAWæ¥è¯´ï¼Œéƒ½æ˜¯è°ƒç”¨sock_common_setsockoptã€‚
+			 * sock_common_setsockoptåˆ™è°ƒç”¨ä¼ è¾“å±‚çš„setsockopt
 			 */
 			err=sock->ops->setsockopt(sock, level, optname, optval, optlen);
 		sockfd_put(sock);
@@ -1781,7 +1781,7 @@ asmlinkage long sys_shutdown(int fd, int how)
 			return err;
 		}
 				
-		err=sock->ops->shutdown(sock, how);/* ¶ÔIPV4À´Ëµ£¬ÊÇinet_shutdown */
+		err=sock->ops->shutdown(sock, how);/* å¯¹IPV4æ¥è¯´ï¼Œæ˜¯inet_shutdown */
 		sockfd_put(sock);
 	}
 	return err;
@@ -1799,7 +1799,7 @@ asmlinkage long sys_shutdown(int fd, int how)
  *	BSD sendmsg interface
  */
 /**
- * sendmsgÏµÍ³µ÷ÓÃ
+ * sendmsgç³»ç»Ÿè°ƒç”¨
  */
 asmlinkage long sys_sendmsg(int fd, struct msghdr __user *msg, unsigned flags)
 {
@@ -1813,45 +1813,45 @@ asmlinkage long sys_sendmsg(int fd, struct msghdr __user *msg, unsigned flags)
 	int err, ctl_len, iov_size, total_len;
 	
 	err = -EFAULT;
-	if (MSG_CMSG_COMPAT & flags) {/* ¼æÈİÄ£Ê½ */
-		if (get_compat_msghdr(&msg_sys, msg_compat))/* ÒÔ¼æÈİÄ£Ê½¸´ÖÆÓÃ»§Ì¬²ÎÊı */
+	if (MSG_CMSG_COMPAT & flags) {/* å…¼å®¹æ¨¡å¼ */
+		if (get_compat_msghdr(&msg_sys, msg_compat))/* ä»¥å…¼å®¹æ¨¡å¼å¤åˆ¶ç”¨æˆ·æ€å‚æ•° */
 			return -EFAULT;
-	} else if (copy_from_user(&msg_sys, msg, sizeof(struct msghdr)))/* Õı³£¸´ÖÆmsghdr */
+	} else if (copy_from_user(&msg_sys, msg, sizeof(struct msghdr)))/* æ­£å¸¸å¤åˆ¶msghdr */
 		return -EFAULT;
 
-	sock = sockfd_lookup(fd, &err);/* ²éÕÒÎÄ¼şÃèÊö·û¶ÔÓ¦µÄÌ×½Ó¿Ú */
+	sock = sockfd_lookup(fd, &err);/* æŸ¥æ‰¾æ–‡ä»¶æè¿°ç¬¦å¯¹åº”çš„å¥—æ¥å£ */
 	if (!sock) 
 		goto out;
 
 	/* do not move before msg_sys is valid */
 	err = -EMSGSIZE;
-	if (msg_sys.msg_iovlen > UIO_MAXIOV)/* Êı¾İ¿éÊıÁ¿³¬¹ıÉÏÏŞ */
+	if (msg_sys.msg_iovlen > UIO_MAXIOV)/* æ•°æ®å—æ•°é‡è¶…è¿‡ä¸Šé™ */
 		goto out_put;
 
 	/* Check whether to allocate the iovec area*/
 	err = -ENOMEM;
-	iov_size = msg_sys.msg_iovlen * sizeof(struct iovec);/* ¼ÆÊıiovec»º´æ´óĞ¡ */
-	if (msg_sys.msg_iovlen > UIO_FASTIOV) {/* iovec»º´æ½Ï´ó£¬²»ÄÜÊ¹ÓÃÕ»ÖĞµÄ»º´æ */
-		iov = sock_kmalloc(sock->sk, iov_size, GFP_KERNEL);/* ·ÖÅäiovec»º´æ */
+	iov_size = msg_sys.msg_iovlen * sizeof(struct iovec);/* è®¡æ•°iovecç¼“å­˜å¤§å° */
+	if (msg_sys.msg_iovlen > UIO_FASTIOV) {/* iovecç¼“å­˜è¾ƒå¤§ï¼Œä¸èƒ½ä½¿ç”¨æ ˆä¸­çš„ç¼“å­˜ */
+		iov = sock_kmalloc(sock->sk, iov_size, GFP_KERNEL);/* åˆ†é…iovecç¼“å­˜ */
 		if (!iov)
 			goto out_put;
 	}
 
 	/* This will also move the address data into kernel space */
-	if (MSG_CMSG_COMPAT & flags) {/* ³õ²½ÑéÖ¤iovecµÄÓĞĞ§ĞÔ */
+	if (MSG_CMSG_COMPAT & flags) {/* åˆæ­¥éªŒè¯iovecçš„æœ‰æ•ˆæ€§ */
 		err = verify_compat_iovec(&msg_sys, iov, address, VERIFY_READ);
 	} else
 		err = verify_iovec(&msg_sys, iov, address, VERIFY_READ);
 	if (err < 0) 
 		goto out_freeiov;
-	total_len = err;/* Èç¹ûiovecÑéÖ¤Í¨¹ı£¬Ôò·µ»ØÖµÊÇËùÓĞiovec»º´æ³¤¶ÈºÍ */
+	total_len = err;/* å¦‚æœiovecéªŒè¯é€šè¿‡ï¼Œåˆ™è¿”å›å€¼æ˜¯æ‰€æœ‰iovecç¼“å­˜é•¿åº¦å’Œ */
 
 	err = -ENOBUFS;
 
-	if (msg_sys.msg_controllen > INT_MAX)/* ¼ì²é¿ØÖÆĞÅÏ¢³¤¶È */
+	if (msg_sys.msg_controllen > INT_MAX)/* æ£€æŸ¥æ§åˆ¶ä¿¡æ¯é•¿åº¦ */
 		goto out_freeiov;
 	ctl_len = msg_sys.msg_controllen; 
-	if ((MSG_CMSG_COMPAT & flags) && ctl_len) {/* ¸´ÖÆ¿ØÖÆĞÅÏ¢µ½ÄÚ´æ */
+	if ((MSG_CMSG_COMPAT & flags) && ctl_len) {/* å¤åˆ¶æ§åˆ¶ä¿¡æ¯åˆ°å†…å­˜ */
 		err = cmsghdr_from_user_compat_to_kern(&msg_sys, ctl, sizeof(ctl));
 		if (err)
 			goto out_freeiov;
@@ -1875,12 +1875,12 @@ asmlinkage long sys_sendmsg(int fd, struct msghdr __user *msg, unsigned flags)
 	}
 	msg_sys.msg_flags = flags;
 
-	if (sock->file->f_flags & O_NONBLOCK)/* Èç¹ûÎÄ¼şÏµÍ³ÊÇ·Ç×èÈû·½Ê½£¬Ôò·¢ËÍÒ²ÊÇ·Ç×èÈû·½Ê½ */
+	if (sock->file->f_flags & O_NONBLOCK)/* å¦‚æœæ–‡ä»¶ç³»ç»Ÿæ˜¯éé˜»å¡æ–¹å¼ï¼Œåˆ™å‘é€ä¹Ÿæ˜¯éé˜»å¡æ–¹å¼ */
 		msg_sys.msg_flags |= MSG_DONTWAIT;
-	err = sock_sendmsg(sock, &msg_sys, total_len);/* ·¢ËÍ±¨ÎÄ */
+	err = sock_sendmsg(sock, &msg_sys, total_len);/* å‘é€æŠ¥æ–‡ */
 
 out_freectl:
-	if (ctl_buf != ctl)    /* Èç¹ûÁÙÊ±ÉêÇëÁË»º³åÇø£¬ÔòÊÍ·Å */
+	if (ctl_buf != ctl)    /* å¦‚æœä¸´æ—¶ç”³è¯·äº†ç¼“å†²åŒºï¼Œåˆ™é‡Šæ”¾ */
 		sock_kfree_s(sock->sk, ctl_buf, ctl_len);
 out_freeiov:
 	if (iov != iovstack)
@@ -2008,7 +2008,7 @@ static unsigned char nargs[18]={AL(0),AL(3),AL(3),AL(3),AL(2),AL(3),
  */
 
 /**
- * ÓësocketÏà¹ØµÄÏµÍ³µ÷ÓÃ×ÜÈë¿Ú¡£
+ * ä¸socketç›¸å…³çš„ç³»ç»Ÿè°ƒç”¨æ€»å…¥å£ã€‚
  */
 asmlinkage long sys_socketcall(int call, unsigned long __user *args)
 {
@@ -2139,7 +2139,7 @@ int sock_unregister(int family)
 extern void sk_init(void);
 
 /**
- * Ì×½Ó¿Ú²ã³õÊ¼»¯¡£
+ * å¥—æ¥å£å±‚åˆå§‹åŒ–ã€‚
  */
 void __init sock_init(void)
 {
@@ -2147,22 +2147,22 @@ void __init sock_init(void)
 	 *	Initialize sock SLAB cache.
 	 */
 	 
-	sk_init();/* ³õÊ¼»¯Ì×½Ó¿Ú²ãµÄSLAB»º´æ */
+	sk_init();/* åˆå§‹åŒ–å¥—æ¥å£å±‚çš„SLABç¼“å­˜ */
 
 #ifdef SLAB_SKB
 	/*
 	 *	Initialize skbuff SLAB cache 
 	 */
-	skb_init();/* ³õÊ¼»¯SKB»º´æ */
+	skb_init();/* åˆå§‹åŒ–SKBç¼“å­˜ */
 #endif
 
 	/*
 	 *	Initialize the protocols module. 
 	 */
 
-	/* ³õÊ¼»¯Ì×½Ó¿Ú²ãµÄinode slab»º´æ */
+	/* åˆå§‹åŒ–å¥—æ¥å£å±‚çš„inode slabç¼“å­˜ */
 	init_inodecache();
-	/* ×¢²áÌ×½Ó¿ÚÎÄ¼şÏµÍ³ */
+	/* æ³¨å†Œå¥—æ¥å£æ–‡ä»¶ç³»ç»Ÿ */
 	register_filesystem(&sock_fs_type);
 	sock_mnt = kern_mount(&sock_fs_type);
 	/* The real protocol initialization is performed when

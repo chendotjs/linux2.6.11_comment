@@ -32,7 +32,7 @@
  *	even pass file to fsync ?
  */
 /**
- * ext2µÄfsyncÊµÏÖ¡£
+ * ext2çš„fsyncå®ç°ã€‚
  */
 int ext2_sync_file(struct file *file, struct dentry *dentry, int datasync)
 {

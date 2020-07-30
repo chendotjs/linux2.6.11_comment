@@ -492,8 +492,8 @@ struct call_data_struct {
 };
 
 /**
- * CALL_FUNCTION_VECTORÀàÐÍµÄÖÐ¶Ï·¢ÍùËùÓÐÆäËûCPU£¬µ«ÊÇ²»°üº¬·¢ËÍÕß¡£
- * ÆäËûCPU»áÖ´ÐÐcall_dataÖÐµÄº¯Êý¡£
+ * CALL_FUNCTION_VECTORç±»åž‹çš„ä¸­æ–­å‘å¾€æ‰€æœ‰å…¶ä»–CPUï¼Œä½†æ˜¯ä¸åŒ…å«å‘é€è€…ã€‚
+ * å…¶ä»–CPUä¼šæ‰§è¡Œcall_dataä¸­çš„å‡½æ•°ã€‚
  */
 static struct call_data_struct * call_data;
 

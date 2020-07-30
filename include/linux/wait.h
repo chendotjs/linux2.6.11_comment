@@ -31,26 +31,26 @@ typedef int (*wait_queue_func_t)(wait_queue_t *wait, unsigned mode, int sync, vo
 int default_wake_function(wait_queue_t *wait, unsigned mode, int sync, void *key);
 
 /**
- * µÈ´ı¶ÓÁĞÖĞµÄÔªËØ£¬Ã¿¸öÔªËØ´ú±íÒ»¸öË¯ÃßµÄ½ø³Ì¡£
- * ¸Ã½ø³ÌµÈ´ıÄ³Ò»¸öÊÂ¼şµÄ·¢Éú¡£
+ * ç­‰å¾…é˜Ÿåˆ—ä¸­çš„å…ƒç´ ï¼Œæ¯ä¸ªå…ƒç´ ä»£è¡¨ä¸€ä¸ªç¡çœ çš„è¿›ç¨‹ã€‚
+ * è¯¥è¿›ç¨‹ç­‰å¾…æŸä¸€ä¸ªäº‹ä»¶çš„å‘ç”Ÿã€‚
  */
 struct __wait_queue {
 	/**
-	 * Èç¹ûflagsÎª1,±íÊ¾µÈ´ı½ø³ÌÊÇ»¥³âµÄ¡£µÈ´ı·ÃÎÊÁÙ½ç×ÊÔ´µÄ½ø³Ì¾ÍÊÇµäĞÍµÄ»¥³â½ø³Ì¡£
-	 * Èç¹ûflagsÎª0£¬±íÊ¾µÈ´ı½ø³ÌÊÇ·Ç»¥³âµÄ¡£µÈ´ıÏà¹ØÊÂ¼şµÄ½ø³ÌÊÇ·Ç»¥³âµÄ¡£
+	 * å¦‚æœflagsä¸º1,è¡¨ç¤ºç­‰å¾…è¿›ç¨‹æ˜¯äº’æ–¥çš„ã€‚ç­‰å¾…è®¿é—®ä¸´ç•Œèµ„æºçš„è¿›ç¨‹å°±æ˜¯å…¸å‹çš„äº’æ–¥è¿›ç¨‹ã€‚
+	 * å¦‚æœflagsä¸º0ï¼Œè¡¨ç¤ºç­‰å¾…è¿›ç¨‹æ˜¯éäº’æ–¥çš„ã€‚ç­‰å¾…ç›¸å…³äº‹ä»¶çš„è¿›ç¨‹æ˜¯éäº’æ–¥çš„ã€‚
 	 */
 	unsigned int flags;
 #define WQ_FLAG_EXCLUSIVE	0x01
 	/**
-	 * Ë¯ÃßÔÚ¶ÓÁĞÉÏµÄ½ø³ÌÃèÊö·û¡£
+	 * ç¡çœ åœ¨é˜Ÿåˆ—ä¸Šçš„è¿›ç¨‹æè¿°ç¬¦ã€‚
 	 */
 	struct task_struct * task;
 	/**
-	 * µÈ´ı¶ÓÁĞÖĞµÄË¯Ãß½ø³ÌÒÔºÎÖÖ·½Ê½»½ĞÑ¡£
+	 * ç­‰å¾…é˜Ÿåˆ—ä¸­çš„ç¡çœ è¿›ç¨‹ä»¥ä½•ç§æ–¹å¼å”¤é†’ã€‚
 	 */
 	wait_queue_func_t func;
 	/**
-	 * Í¨¹ı´ËÖ¸Õë½«Ë¯Ãß½ø³ÌÁ´½ÓÆğÀ´¡£
+	 * é€šè¿‡æ­¤æŒ‡é’ˆå°†ç¡çœ è¿›ç¨‹é“¾æ¥èµ·æ¥ã€‚
 	 */
 	struct list_head task_list;
 };
@@ -66,16 +66,16 @@ struct wait_bit_queue {
 };
 
 /**
- * µÈ´ı¶ÓÁĞµÄÍ·
+ * ç­‰å¾…é˜Ÿåˆ—çš„å¤´
  */
 struct __wait_queue_head {
 	/**
-	 * ÓÉÓÚµÈ´ı¶ÓÁĞ¿ÉÄÜÓÉÖĞ¶Ï´¦Àí³ÌĞòºÍÄÚºËº¯ÊıĞŞ¸Ä£¬ËùÒÔ±ØĞë¶ÔË«ÏòÁ´±í½øĞĞ±£»¤£¬ÒÔÃâ¶ÔÆä½øĞĞÍ¬Ê±·ÃÎÊ¡£
-	 * ÆäÍ¬²½ÊÇÓÉlock×ÔĞıËø´ïµ½µÄ¡£
+	 * ç”±äºç­‰å¾…é˜Ÿåˆ—å¯èƒ½ç”±ä¸­æ–­å¤„ç†ç¨‹åºå’Œå†…æ ¸å‡½æ•°ä¿®æ”¹ï¼Œæ‰€ä»¥å¿…é¡»å¯¹åŒå‘é“¾è¡¨è¿›è¡Œä¿æŠ¤ï¼Œä»¥å…å¯¹å…¶è¿›è¡ŒåŒæ—¶è®¿é—®ã€‚
+	 * å…¶åŒæ­¥æ˜¯ç”±lockè‡ªæ—‹é”è¾¾åˆ°çš„ã€‚
 	 */
 	spinlock_t lock;
 	/**
-	 * µÈ´ı½ø³ÌÁ´±íµÄÍ·¡£
+	 * ç­‰å¾…è¿›ç¨‹é“¾è¡¨çš„å¤´ã€‚
 	 */
 	struct list_head task_list;
 };
@@ -99,7 +99,7 @@ typedef struct __wait_queue_head wait_queue_head_t;
 	.task_list	= { &(name).task_list, &(name).task_list } }
 
 /**
- * ¸Ãºê¶¨ÒåÒ»¸öĞÂµÈ´ı¶ÓÁĞµÄÍ·£¬Ëü¾²Ì¬µÄÉùÃ÷Ò»¸ö½ĞnameµÄµÈ´ı¶ÓÁĞµÄÍ·±äÁ¿²¢¶Ô¸Ã±äÁ¿µÄlockºÍtask_list×Ö¶Î½øĞĞ³õÊ¼»¯
+ * è¯¥å®å®šä¹‰ä¸€ä¸ªæ–°ç­‰å¾…é˜Ÿåˆ—çš„å¤´ï¼Œå®ƒé™æ€çš„å£°æ˜ä¸€ä¸ªå«nameçš„ç­‰å¾…é˜Ÿåˆ—çš„å¤´å˜é‡å¹¶å¯¹è¯¥å˜é‡çš„lockå’Œtask_listå­—æ®µè¿›è¡Œåˆå§‹åŒ–
  */
 #define DECLARE_WAIT_QUEUE_HEAD(name) \
 	wait_queue_head_t name = __WAIT_QUEUE_HEAD_INITIALIZER(name)
@@ -108,7 +108,7 @@ typedef struct __wait_queue_head wait_queue_head_t;
 	{ .flags = word, .bit_nr = bit, }
 
 /**
- * ÓÃÀ´³õÊ¼»¯¶¯Ì¬·ÖÅäµÄµÈ´ı¶ÓÁĞµÄÍ·±äÁ¿
+ * ç”¨æ¥åˆå§‹åŒ–åŠ¨æ€åˆ†é…çš„ç­‰å¾…é˜Ÿåˆ—çš„å¤´å˜é‡
  */
 static inline void init_waitqueue_head(wait_queue_head_t *q)
 {
@@ -117,7 +117,7 @@ static inline void init_waitqueue_head(wait_queue_head_t *q)
 }
 
 /**
- * ³õÊ¼»¯wait_queue_t½á¹¹µÄ±äÁ¿
+ * åˆå§‹åŒ–wait_queue_tç»“æ„çš„å˜é‡
  */
 static inline void init_waitqueue_entry(wait_queue_t *q, struct task_struct *p)
 {
@@ -127,7 +127,7 @@ static inline void init_waitqueue_entry(wait_queue_t *q, struct task_struct *p)
 }
 
 /**
- * ×Ô¶¨ÒåµÈ´ı¶ÓÁĞÉÏµÄ»½ĞÑº¯Êı¡£²¢³õÊ¼»¯µÈ´ı¶ÓÁĞµÄÆäËûÔªËØ¡£
+ * è‡ªå®šä¹‰ç­‰å¾…é˜Ÿåˆ—ä¸Šçš„å”¤é†’å‡½æ•°ã€‚å¹¶åˆå§‹åŒ–ç­‰å¾…é˜Ÿåˆ—çš„å…¶ä»–å…ƒç´ ã€‚
  */
 static inline void init_waitqueue_func_entry(wait_queue_t *q,
 					wait_queue_func_t func)
@@ -138,7 +138,7 @@ static inline void init_waitqueue_func_entry(wait_queue_t *q,
 }
 
 /**
- * ¼ì²éÒ»¸ö¸ø¶¨µÄµÈ´ı¶ÓÁĞÊÇ·ñÎª¿Õ¡£
+ * æ£€æŸ¥ä¸€ä¸ªç»™å®šçš„ç­‰å¾…é˜Ÿåˆ—æ˜¯å¦ä¸ºç©ºã€‚
  */
 static inline int waitqueue_active(wait_queue_head_t *q)
 {
@@ -212,7 +212,7 @@ do {									\
 } while (0)
 
 /**
- * Ê¹µ÷ÓÃ½ø³ÌÔÚµÈ´ı¶ÓÁĞÉÏË¯Ãß£¬Ö±µ½ĞŞ¸ÄÁË¸ø¶¨Ìõ¼şÎªÖ¹¡£
+ * ä½¿è°ƒç”¨è¿›ç¨‹åœ¨ç­‰å¾…é˜Ÿåˆ—ä¸Šç¡çœ ï¼Œç›´åˆ°ä¿®æ”¹äº†ç»™å®šæ¡ä»¶ä¸ºæ­¢ã€‚
  */
 #define wait_event(wq, condition) 					\
 do {									\
@@ -368,7 +368,7 @@ int autoremove_wake_function(wait_queue_t *wait, unsigned mode, int sync, void *
 int wake_bit_function(wait_queue_t *wait, unsigned mode, int sync, void *key);
 
 /**
- * ÉùÃ÷Ò»¸öwait_queue_tÀàĞÍµÄĞÂ±äÁ¿
+ * å£°æ˜ä¸€ä¸ªwait_queue_tç±»å‹çš„æ–°å˜é‡
  */
 #define DEFINE_WAIT(name)						\
 	wait_queue_t name = {						\

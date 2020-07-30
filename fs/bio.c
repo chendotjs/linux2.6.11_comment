@@ -92,7 +92,7 @@ static inline struct bio_vec *bvec_alloc(int gfp_mask, int nr, unsigned long *id
  * default destructor for a bio allocated with bio_alloc()
  */
 /**
- * ÊÍ·ÅbioÊ±µÄ»Øµ÷º¯Êý
+ * é‡Šæ”¾bioæ—¶çš„å›žè°ƒå‡½æ•°
  */
 static void bio_destructor(struct bio *bio)
 {
@@ -134,9 +134,9 @@ inline void bio_init(struct bio *bio)
  *   for a &struct bio to become free.
  **/
 /**
- * ·ÖÅäÒ»¸öÐÂµÄBIO½á¹¹£¬Í¨³££¬BIO½á¹¹ÊÇÓÉslab·ÖÅäÆ÷·ÖÅäµÄ¡£
- * µ«ÊÇ£¬µ±ÄÚ´æ²»×ãÊ±£¬ÄÚºËÒ²»áÊ¹ÓÃÒ»¸ö±¸ÓÃµÄBIOÐ¡ÄÚ´æ³Ø¡£
- * ÄÚºËÒ²»áÎªBIO-VEV½á¹¹·ÖÅäÄÚ´æ³Ø-±Ï¾¹£¬·ÖÅäBIO½á¹¹¶ø²»ÄÜ·ÖÅäÆäÖÐµÄ¶ÎÃèÊö·ûÒ²ÊÇÃ»ÓÐÊ²Ã´ÒâÒåµÄ¡£
+ * åˆ†é…ä¸€ä¸ªæ–°çš„BIOç»“æž„ï¼Œé€šå¸¸ï¼ŒBIOç»“æž„æ˜¯ç”±slabåˆ†é…å™¨åˆ†é…çš„ã€‚
+ * ä½†æ˜¯ï¼Œå½“å†…å­˜ä¸è¶³æ—¶ï¼Œå†…æ ¸ä¹Ÿä¼šä½¿ç”¨ä¸€ä¸ªå¤‡ç”¨çš„BIOå°å†…å­˜æ± ã€‚
+ * å†…æ ¸ä¹Ÿä¼šä¸ºBIO-VEVç»“æž„åˆ†é…å†…å­˜æ± -æ¯•ç«Ÿï¼Œåˆ†é…BIOç»“æž„è€Œä¸èƒ½åˆ†é…å…¶ä¸­çš„æ®µæè¿°ç¬¦ä¹Ÿæ˜¯æ²¡æœ‰ä»€ä¹ˆæ„ä¹‰çš„ã€‚
  */
 struct bio *bio_alloc(int gfp_mask, int nr_iovecs)
 {
@@ -174,7 +174,7 @@ out:
  *   bio_alloc or bio_get. The last put of a bio will free it.
  **/
 /**
- * bio_putº¯Êý¼õÉÙbioÖÐÒýÓÃ¼ÆÊýÆ÷£¨bi_cnt£©µÄÖµ£¬Èç¹û¸ÃÖµµÈÓÚ0£¬ÔòÊÍ·Åbio½á¹¹ÒÔ¼°Ïà¹ØµÄbio_vec½á¹¹
+ * bio_putå‡½æ•°å‡å°‘bioä¸­å¼•ç”¨è®¡æ•°å™¨ï¼ˆbi_cntï¼‰çš„å€¼ï¼Œå¦‚æžœè¯¥å€¼ç­‰äºŽ0ï¼Œåˆ™é‡Šæ”¾bioç»“æž„ä»¥åŠç›¸å…³çš„bio_vecç»“æž„
  */
 void bio_put(struct bio *bio)
 {
@@ -811,24 +811,24 @@ void bio_check_pages_dirty(struct bio *bio)
  *   a bio unless they own it and thus know that it has an end_io function.
  **/
 /**
- * BIOÉÏµÄIO²Ù×÷Íê³ÉÊ±ËùÖ´ÐÐ»Øµ÷º¯Êý£¬Ö»ÓÐ¸ÃbioÉÏÓÐÊý¾Ý´«Êä¾Í»áµ÷ÓÃ´Ëº¯Êý
+ * BIOä¸Šçš„IOæ“ä½œå®Œæˆæ—¶æ‰€æ‰§è¡Œå›žè°ƒå‡½æ•°ï¼Œåªæœ‰è¯¥bioä¸Šæœ‰æ•°æ®ä¼ è¾“å°±ä¼šè°ƒç”¨æ­¤å‡½æ•°
  */
 void bio_endio(struct bio *bio, unsigned int bytes_done, int error)
 {
-	if (error)/* ÓÐ´íÎó£¬Çå³ýBIO_UPTODATE±êÖ¾ */
+	if (error)/* æœ‰é”™è¯¯ï¼Œæ¸…é™¤BIO_UPTODATEæ ‡å¿— */
 		clear_bit(BIO_UPTODATE, &bio->bi_flags);
 
-	if (unlikely(bytes_done > bio->bi_size)) {/* Õâ²»Ó¦µ±·¢Éú */
+	if (unlikely(bytes_done > bio->bi_size)) {/* è¿™ä¸åº”å½“å‘ç”Ÿ */
 		printk("%s: want %u bytes done, only %u left\n", __FUNCTION__,
 						bytes_done, bio->bi_size);
 		bytes_done = bio->bi_size;
 	}
 
-	/* ¸üÐÂÎ´Íê³É×Ö½ÚÊý£¬ÆðÊ¼ÉÈÇø±àºÅ */
+	/* æ›´æ–°æœªå®Œæˆå­—èŠ‚æ•°ï¼Œèµ·å§‹æ‰‡åŒºç¼–å· */
 	bio->bi_size -= bytes_done;
 	bio->bi_sector += (bytes_done >> 9);
 
-	if (bio->bi_end_io)/* »Øµ÷bioµÄº¯Êý£¬×öÒ»Ð©ºó¼Ì´¦Àí£¬Èçµ¯ÐÔ»º³åÇø´¦Àí */
+	if (bio->bi_end_io)/* å›žè°ƒbioçš„å‡½æ•°ï¼Œåšä¸€äº›åŽç»§å¤„ç†ï¼Œå¦‚å¼¹æ€§ç¼“å†²åŒºå¤„ç† */
 		bio->bi_end_io(bio, bytes_done, error);
 }
 

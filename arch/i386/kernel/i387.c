@@ -69,8 +69,8 @@ void init_fpu(struct task_struct *tsk)
  */
 
 /**
- * ���ں�̬ʹ�ø���Ĵ���ǰ��������ô˺�����
- * �����Ƚ�ֹ��ռ�������ǰ����ʹ����FPU���򱣴�FPU�����ģ�Ȼ����ts��־��
+ * 在内核态使用浮点寄存器前，必须调用此函数。
+ * 它首先禁止抢占，如果当前进程使用了FPU，则保存FPU上下文，然后置ts标志。
  */
 void kernel_fpu_begin(void)
 {

@@ -51,19 +51,19 @@ struct linger {
  */
  
 /**
- * ÃèÊösocketÊäÈëÊä³ö»º³åÇø
+ * æè¿°socketè¾“å…¥è¾“å‡ºç¼“å†²åŒº
  */
 struct msghdr {
-	/* Ö¸Ïòsock_addr½á¹¹µÄÖ¸Õë¼°Æä³¤¶È */
+	/* æŒ‡å‘sock_addrç»“æ„çš„æŒ‡é’ˆåŠå…¶é•¿åº¦ */
 	void	*	msg_name;	/* Socket name			*/
 	int		msg_namelen;	/* Length of name		*/
-	/* ·¢ËÍ¡¢½ÓÊÕ»º³åÇøÊı×éÖ¸Õë¼°Æä³¤¶È */
+	/* å‘é€ã€æ¥æ”¶ç¼“å†²åŒºæ•°ç»„æŒ‡é’ˆåŠå…¶é•¿åº¦ */
 	struct iovec *	msg_iov;	/* Data blocks			*/
 	__kernel_size_t	msg_iovlen;	/* Number of blocks		*/
-	/* Ö¸Ïòcmsghdr½á¹¹ÀàĞÍµÄÊı×é¼°Æä³¤¶È */
+	/* æŒ‡å‘cmsghdrç»“æ„ç±»å‹çš„æ•°ç»„åŠå…¶é•¿åº¦ */
 	void 	*	msg_control;	/* Per protocol magic (eg BSD file descriptor passing) */
 	__kernel_size_t	msg_controllen;	/* Length of cmsg list */
-	/* ½ÓÊÕ±êÖ¾ÈçMSG_OOB */
+	/* æ¥æ”¶æ ‡å¿—å¦‚MSG_OOB */
 	unsigned	msg_flags;
 };
 
@@ -74,11 +74,11 @@ struct msghdr {
  */
 
 struct cmsghdr {
-	/* ¿ØÖÆÏûÏ¢³¤¶È£¬°üº¬±¾½á¹¹µÄ³¤¶È¡£ */
+	/* æ§åˆ¶æ¶ˆæ¯é•¿åº¦ï¼ŒåŒ…å«æœ¬ç»“æ„çš„é•¿åº¦ã€‚ */
 	__kernel_size_t	cmsg_len;	/* data byte count, including hdr */
-	/* ¿ØÖÆÏûÏ¢µÄ¼¶±ğ£¬ÈçSOL_SOCKET */
+	/* æ§åˆ¶æ¶ˆæ¯çš„çº§åˆ«ï¼Œå¦‚SOL_SOCKET */
         int		cmsg_level;	/* originating protocol */
-	/* ¿ØÖÆÏûÏ¢µÄÀàĞÍÈçIP_TTL */
+	/* æ§åˆ¶æ¶ˆæ¯çš„ç±»å‹å¦‚IP_TTL */
         int		cmsg_type;	/* protocol-specific type */
 };
 
@@ -232,34 +232,34 @@ struct ucred {
    Added those for 1003.1g not all are supported yet
  */
  
-/* ½ÓÊÕ»òÕß·¢ËÍ´øÍâÊı¾İ */
+/* æ¥æ”¶æˆ–è€…å‘é€å¸¦å¤–æ•°æ® */
 #define MSG_OOB		1
-/* ²é¿´¶ø²»È¡×ßÊı¾İ */
+/* æŸ¥çœ‹è€Œä¸å–èµ°æ•°æ® */
 #define MSG_PEEK	2
-/* Ä¿µÄÍøÂçÎ»ÓÚ±¾µØ×ÓÍø£¬ÎŞĞèÂ·ÓÉ */
+/* ç›®çš„ç½‘ç»œä½äºæœ¬åœ°å­ç½‘ï¼Œæ— éœ€è·¯ç”± */
 #define MSG_DONTROUTE	4
 #define MSG_TRYHARD     4       /* Synonym for MSG_DONTROUTE for DECnet */
-/* ÓÉÓÚ»º³åÇø²»×ã£¬Ò»Ğ©Êı¾İÒÑ¾­±»¶ªÆú */
+/* ç”±äºç¼“å†²åŒºä¸è¶³ï¼Œä¸€äº›æ•°æ®å·²ç»è¢«ä¸¢å¼ƒ */
 #define MSG_CTRUNC	8
-/* ²»ÕæÕı´«µİÊı¾İ£¬½ö½ö½øĞĞMTUµÄÌ½²â */
+/* ä¸çœŸæ­£ä¼ é€’æ•°æ®ï¼Œä»…ä»…è¿›è¡ŒMTUçš„æ¢æµ‹ */
 #define MSG_PROBE	0x10	/* Do not send. Only probe path f.e. for MTU */
-/* ·µ»Ø°üµÄÕæÊµ³¤¶È£¬²¢½Ø¶Ï°üµÄÊı¾İ */
+/* è¿”å›åŒ…çš„çœŸå®é•¿åº¦ï¼Œå¹¶æˆªæ–­åŒ…çš„æ•°æ® */
 #define MSG_TRUNC	0x20
-/* ·Ç×èÈûIO */
+/* éé˜»å¡IO */
 #define MSG_DONTWAIT	0x40	/* Nonblocking io		 */
 #define MSG_EOR         0x80	/* End of record */
-/* Ò»Ö±µÈ´ı£¬Ö±µ½ËùÓĞÊı¾İ½ÓÊÕÍê±Ï */
+/* ä¸€ç›´ç­‰å¾…ï¼Œç›´åˆ°æ‰€æœ‰æ•°æ®æ¥æ”¶å®Œæ¯• */
 #define MSG_WAITALL	0x100	/* Wait for a full request */
 #define MSG_FIN         0x200
 #define MSG_SYN		0x400
-/* ±íÊ¾Íø¹ØÓĞĞ§ */
+/* è¡¨ç¤ºç½‘å…³æœ‰æ•ˆ */
 #define MSG_CONFIRM	0x800	/* Confirm path validity */
 #define MSG_RST		0x1000
-/* ½ÓÊÕ´íÎó¶ÓÁĞÖĞµÄ´íÎó */
+/* æ¥æ”¶é”™è¯¯é˜Ÿåˆ—ä¸­çš„é”™è¯¯ */
 #define MSG_ERRQUEUE	0x2000	/* Fetch message from error queue */
-/* µ±ÁíÒ»¶ËÖÕÖ¹Á¬½ÓÊ±£¬ÔÚÌ×½Ó×ÖÉÏ²»Òª·¢ËÍSIGPIPEĞÅºÅ */
+/* å½“å¦ä¸€ç«¯ç»ˆæ­¢è¿æ¥æ—¶ï¼Œåœ¨å¥—æ¥å­—ä¸Šä¸è¦å‘é€SIGPIPEä¿¡å· */
 #define MSG_NOSIGNAL	0x4000	/* Do not generate SIGPIPE */
-/* ºóĞø»¹ÓĞÊı¾İÒª·¢ËÍ */
+/* åç»­è¿˜æœ‰æ•°æ®è¦å‘é€ */
 #define MSG_MORE	0x8000	/* Sender will send more */
 
 #define MSG_EOF         MSG_FIN

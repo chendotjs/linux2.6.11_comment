@@ -96,7 +96,7 @@ static struct pci_raw_ops pci_mmcfg = {
 };
 
 /**
- * Ì½²âECAM·½Ê½·ÃÎÊpciµÄ·½·¨¡£
+ * æ¢æµ‹ECAMæ–¹å¼è®¿é—®pciçš„æ–¹æ³•ã€‚
  */
 static int __init pci_mmcfg_init(void)
 {

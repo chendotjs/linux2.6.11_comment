@@ -29,16 +29,16 @@ struct thread_info {
 	struct task_struct	*task;		/* main task structure */
 	struct exec_domain	*exec_domain;	/* execution domain */
 	/**
-	 * Èç¹ûÓĞTIF_NEED_RESCHED±êÖ¾£¬Ôò±ØĞëµ÷ÓÃµ÷¶È³ÌĞò¡£
+	 * å¦‚æœæœ‰TIF_NEED_RESCHEDæ ‡å¿—ï¼Œåˆ™å¿…é¡»è°ƒç”¨è°ƒåº¦ç¨‹åºã€‚
 	 */
 	unsigned long		flags;		/* low level flags */
 	/**
-	 * Ïß³Ì±êÖ¾:
-	 *     TS_USEDFPU:±íÊ¾½ø³ÌÔÚµ±Ç°Ö´ĞĞ¹ı³ÌÖĞ£¬ÊÇ·ñÊ¹ÓÃ¹ıFPU¡¢MMXºÍXMM¼Ä´æÆ÷¡£
+	 * çº¿ç¨‹æ ‡å¿—:
+	 *     TS_USEDFPU:è¡¨ç¤ºè¿›ç¨‹åœ¨å½“å‰æ‰§è¡Œè¿‡ç¨‹ä¸­ï¼Œæ˜¯å¦ä½¿ç”¨è¿‡FPUã€MMXå’ŒXMMå¯„å­˜å™¨ã€‚
 	 */
 	unsigned long		status;		/* thread-synchronous flags */
 	/**
-	 * ¿ÉÔËĞĞ½ø³ÌËùÔÚÔËĞĞ¶ÓÁĞµÄCPUÂß¼­ºÅ¡£
+	 * å¯è¿è¡Œè¿›ç¨‹æ‰€åœ¨è¿è¡Œé˜Ÿåˆ—çš„CPUé€»è¾‘å·ã€‚
 	 */
 	__u32			cpu;		/* current CPU */
 	__s32			preempt_count; /* 0 => preemptable, <0 => BUG */
@@ -96,7 +96,7 @@ struct thread_info {
 
 /* how to get the thread information struct from C */
 /**
- * »ñµÃµ±Ç°Ïß³Ì»ù±¾ĞÅÏ¢¡£
+ * è·å¾—å½“å‰çº¿ç¨‹åŸºæœ¬ä¿¡æ¯ã€‚
  */
 static inline struct thread_info *current_thread_info(void)
 {
@@ -111,7 +111,7 @@ register unsigned long current_stack_pointer asm("esp") __attribute_used__;
 /* thread information allocation */
 
 /**
- * alloc_thread_info·ÖÅäÒ»¸öthread_info
+ * alloc_thread_infoåˆ†é…ä¸€ä¸ªthread_info
  */
 #ifdef CONFIG_DEBUG_STACK_USAGE
 #define alloc_thread_info(tsk)					\
@@ -128,7 +128,7 @@ register unsigned long current_stack_pointer asm("esp") __attribute_used__;
 #endif
 
 /**
- * ÊÍ·Åthread_info£¬¼°ÄÚºËÕ»
+ * é‡Šæ”¾thread_infoï¼ŒåŠå†…æ ¸æ ˆ
  */
 #define free_thread_info(info)	kfree(info)
 #define get_thread_info(ti) get_task_struct((ti)->task)
@@ -154,41 +154,41 @@ register unsigned long current_stack_pointer asm("esp") __attribute_used__;
  * - other flags in MSW
  */
 /**
- * ÕıÔÚ¸ú×ÙÏµÍ³µ÷ÓÃ
- * ÔÚdo_forkÖĞ£¬Ç¿ÖÆ½«×Ó½ø³ÌµÄÕâ¸ö±êÖ¾Çå³ı¡£ÒòÎª×Ó½ø³Ì·µ»ØÊ±Òª½øÈëret_from_fork¡£
- * ret_from_fork»á½øÈëÒì³£´¦ÀíÍË³öÁ÷³Ì¡£Èç¹û²»Çå³ıÕâ¸ö±êÖ¾£¬¾Í¿ÉÄÜ¸øµ÷ÊÔ½ø³Ì·¢ËÍÏµÍ³µ÷ÓÃ½áÊøµÄÏûÏ¢¡£
+ * æ­£åœ¨è·Ÿè¸ªç³»ç»Ÿè°ƒç”¨
+ * åœ¨do_forkä¸­ï¼Œå¼ºåˆ¶å°†å­è¿›ç¨‹çš„è¿™ä¸ªæ ‡å¿—æ¸…é™¤ã€‚å› ä¸ºå­è¿›ç¨‹è¿”å›æ—¶è¦è¿›å…¥ret_from_forkã€‚
+ * ret_from_forkä¼šè¿›å…¥å¼‚å¸¸å¤„ç†é€€å‡ºæµç¨‹ã€‚å¦‚æœä¸æ¸…é™¤è¿™ä¸ªæ ‡å¿—ï¼Œå°±å¯èƒ½ç»™è°ƒè¯•è¿›ç¨‹å‘é€ç³»ç»Ÿè°ƒç”¨ç»“æŸçš„æ¶ˆæ¯ã€‚
  */
 #define TIF_SYSCALL_TRACE	0	/* syscall trace active */
 /**
- * X86ÉÏÎ´ÓÃ
+ * X86ä¸Šæœªç”¨
  */
 #define TIF_NOTIFY_RESUME	1	/* resumption notification requested */
 /**
- * ½ø³ÌÓĞ¹ÒÆğĞÅºÅ
+ * è¿›ç¨‹æœ‰æŒ‚èµ·ä¿¡å·
  */
 #define TIF_SIGPENDING		2	/* signal pending */
 /**
- * ÔÚ·µ»ØÓÃ»§Ì¬Ç°£¬ĞèÒª½øĞĞµ÷¶È
+ * åœ¨è¿”å›ç”¨æˆ·æ€å‰ï¼Œéœ€è¦è¿›è¡Œè°ƒåº¦
  */
 #define TIF_NEED_RESCHED	3	/* rescheduling necessary */
 /**
- * ÔÚ·µ»ØÓÃ»§Ì¬Ç°£¬»Ö¸´µ¥²½Ö´ĞĞ
+ * åœ¨è¿”å›ç”¨æˆ·æ€å‰ï¼Œæ¢å¤å•æ­¥æ‰§è¡Œ
  */
 #define TIF_SINGLESTEP		4	/* restore singlestep on return to user mode */
 /**
- * Í¨¹ıiret¶ø²»ÊÇsysexit·µ»ØÓÃ»§Ì¬
+ * é€šè¿‡iretè€Œä¸æ˜¯sysexitè¿”å›ç”¨æˆ·æ€
  */
 #define TIF_IRET		5	/* return with iret */
 /**
- * ÏµÍ³µ÷ÓÃÕı±»Éó¼Æ??
+ * ç³»ç»Ÿè°ƒç”¨æ­£è¢«å®¡è®¡??
  */
 #define TIF_SYSCALL_AUDIT	7	/* syscall auditing active */
 /**
- * idle½ø³ÌÔÚÂÖÑ¯TIF_NEED_RESHED±êÖ¾¡£
+ * idleè¿›ç¨‹åœ¨è½®è¯¢TIF_NEED_RESHEDæ ‡å¿—ã€‚
  */
 #define TIF_POLLING_NRFLAG	16	/* true if poll_idle() is polling TIF_NEED_RESCHED */
 /**
- * µ±ÄÚ´æ²»×ãÊ±£¬µ±Ç°½ø³ÌÕı±»É±ËÀ£¬ÒÔ»ØÊÕÄÚ´æ¡£
+ * å½“å†…å­˜ä¸è¶³æ—¶ï¼Œå½“å‰è¿›ç¨‹æ­£è¢«æ€æ­»ï¼Œä»¥å›æ”¶å†…å­˜ã€‚
  */
 #define TIF_MEMDIE		17
 
@@ -214,7 +214,7 @@ register unsigned long current_stack_pointer asm("esp") __attribute_used__;
  * have to worry about atomic accesses.
  */
 /**
- * ±íÊ¾½ø³ÌÔÚµ±Ç°Ö´ĞĞ¹ı³ÌÖĞ£¬ÊÇ·ñÊ¹ÓÃ¹ıFPU¡¢MMXºÍXMM¼Ä´æÆ÷¡£
+ * è¡¨ç¤ºè¿›ç¨‹åœ¨å½“å‰æ‰§è¡Œè¿‡ç¨‹ä¸­ï¼Œæ˜¯å¦ä½¿ç”¨è¿‡FPUã€MMXå’ŒXMMå¯„å­˜å™¨ã€‚
  */
 #define TS_USEDFPU		0x0001	/* FPU was used by this task this quantum (SMP) */
 

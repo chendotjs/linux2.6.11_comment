@@ -127,43 +127,43 @@ typedef struct journal_s	journal_t;	/* Journal control structure */
  */
 
 /**
- * ÈÕÖ¾¿é£¬ÆäÊı¾İÀ´×ÔÓÚÎÄ¼şÏµÍ³£¬²¢ÇÒÒªĞ´»ØÎÄ¼şÏµÍ³ 
- * ²Î¼ûjournal_block_tag_s
+ * æ—¥å¿—å—ï¼Œå…¶æ•°æ®æ¥è‡ªäºæ–‡ä»¶ç³»ç»Ÿï¼Œå¹¶ä¸”è¦å†™å›æ–‡ä»¶ç³»ç»Ÿ 
+ * å‚è§journal_block_tag_s
  */
 #define JFS_DESCRIPTOR_BLOCK	1
 /**
- * Ìá½»¿é 
+ * æäº¤å— 
  *
  */
 #define JFS_COMMIT_BLOCK	2
-/** ÈÕÖ¾³¬¼¶¿é
- * ²Î¼ûjournal_superblock_s
+/** æ—¥å¿—è¶…çº§å—
+ * å‚è§journal_superblock_s
  */
 #define JFS_SUPERBLOCK_V1	3
 #define JFS_SUPERBLOCK_V2	4
-/* ³·Ïú¿é */
+/* æ’¤é”€å— */
 #define JFS_REVOKE_BLOCK	5
 
 /*
  * Standard header for all descriptor blocks:
  */
 /**
- * ÃèÊö·û¿éµÄÍ·
+ * æè¿°ç¬¦å—çš„å¤´
  */
 typedef struct journal_header_s
 {
 	/**
-	 * ÃèÊö·ûµÄÄ§ÊõÖµ£¬Èç:
+	 * æè¿°ç¬¦çš„é­”æœ¯å€¼ï¼Œå¦‚:
 	 *		JFS_MAGIC_NUMBER
 	 */
 	__be32		h_magic;
 	/**
-	 * ÃèÊö·û¿éµÄÀàĞÍ£¬Èç:
+	 * æè¿°ç¬¦å—çš„ç±»å‹ï¼Œå¦‚:
 	 *		JFS_DESCRIPTOR_BLOCK
 	 */
 	__be32		h_blocktype;
 	/**
-	 * ÊÂÎñĞòºÅ
+	 * äº‹åŠ¡åºå·
 	 */
 	__be32		h_sequence;
 } journal_header_t;
@@ -175,11 +175,11 @@ typedef struct journal_header_s
 typedef struct journal_block_tag_s
 {
 	/**
-	 * Êı¾İÔÚÎÄ¼şÏµÍ³ÖĞµÄ´ÅÅÌ¿éºÅ
+	 * æ•°æ®åœ¨æ–‡ä»¶ç³»ç»Ÿä¸­çš„ç£ç›˜å—å·
 	 */
 	__be32		t_blocknr;	/* The on-disk block number */
 	/**
-	 * ±êÖ¾£¬ÈçJFS_FLAG_ESCAPE
+	 * æ ‡å¿—ï¼Œå¦‚JFS_FLAG_ESCAPE
 	 */
 	__be32		t_flags;	/* See below */
 } journal_block_tag_t;
@@ -191,19 +191,19 @@ typedef struct journal_block_tag_s
 typedef struct journal_revoke_header_s
 {
 	journal_header_t r_header;
-	/* Õ¼ÓÃ×Ö½ÚÊı£¬º¬Í· */
+	/* å ç”¨å­—èŠ‚æ•°ï¼Œå«å¤´ */
 	__be32		 r_count;	/* Count of bytes used in the block */
 } journal_revoke_header_t;
 
 
 /* Definitions for the journal tag flags word: */
-/* Êı¾İ±»×ªÒå£¬Ğ´»ØÇ°ĞèÒª×ª»ØÈ¥ */
+/* æ•°æ®è¢«è½¬ä¹‰ï¼Œå†™å›å‰éœ€è¦è½¬å›å» */
 #define JFS_FLAG_ESCAPE		1	/* on-disk block is escaped */
-/* ÓëÉÏÒ»¸öÃèÊö·û¿éµÄUUIDÏàÍ¬ */
+/* ä¸ä¸Šä¸€ä¸ªæè¿°ç¬¦å—çš„UUIDç›¸åŒ */
 #define JFS_FLAG_SAME_UUID	2	/* block has same uuid as previous */
-/* Î´ÓÃ */
+/* æœªç”¨ */
 #define JFS_FLAG_DELETED	4	/* block deleted by this transaction */
-/* ½áÊø·û£¬±íÊ¾Ò»¸öÊÂÎñµÄ½áÊø */
+/* ç»“æŸç¬¦ï¼Œè¡¨ç¤ºä¸€ä¸ªäº‹åŠ¡çš„ç»“æŸ */
 #define JFS_FLAG_LAST_TAG	8	/* last tag in this descriptor block */
 
 
@@ -211,33 +211,33 @@ typedef struct journal_revoke_header_s
  * The journal superblock.  All fields are in big-endian byte order.
  */
 /**
- * ÈÕÖ¾³¬¼¶¿éÃèÊö·û
+ * æ—¥å¿—è¶…çº§å—æè¿°ç¬¦
  */
 typedef struct journal_superblock_s
 {
 /* 0x0000 */
 	/**
-	 * ÈÕÖ¾¿éÃèÊö£¬Ó¦¸ÃÓÃ³¬¼¶¿éµÄÃèÊö¿é
+	 * æ—¥å¿—å—æè¿°ï¼Œåº”è¯¥ç”¨è¶…çº§å—çš„æè¿°å—
 	 */
 	journal_header_t s_header;
 
 /* 0x000C */
 	/* Static information describing the journal */
-	/* ÈÕÖ¾Éè±¸µÄ¿é´óĞ¡ */
+	/* æ—¥å¿—è®¾å¤‡çš„å—å¤§å° */
 	__be32	s_blocksize;		/* journal device blocksize */
-	/* ÈÕÖ¾×Ü¿éÊı */
+	/* æ—¥å¿—æ€»å—æ•° */
 	__be32	s_maxlen;		/* total blocks in journal file */
 	/**
-	 * ÈÕÖ¾¿éµÄµÚÒ»¸ö¿éºÅ 
-	 * ³õÊ¼Îª1
+	 * æ—¥å¿—å—çš„ç¬¬ä¸€ä¸ªå—å· 
+	 * åˆå§‹ä¸º1
 	 */
 	__be32	s_first;		/* first block of log information */
 
 /* 0x0018 */
 	/* Dynamic information describing the current state of the log */
-	/* ×îÀÏµÄÊÂÎñ±àºÅ */
+	/* æœ€è€çš„äº‹åŠ¡ç¼–å· */
 	__be32	s_sequence;		/* first commit ID expected in log */
-	/* ÈÕÖ¾¿ªÊ¼µÄ¿éºÅ£¬Îª0±íÊ¾ÈÕÖ¾Îª¿Õ */
+	/* æ—¥å¿—å¼€å§‹çš„å—å·ï¼Œä¸º0è¡¨ç¤ºæ—¥å¿—ä¸ºç©º */
 	__be32	s_start;		/* blocknr of start of log */
 
 /* 0x0020 */
@@ -423,26 +423,26 @@ struct jbd_revoke_table_s;
  * in so it can be fixed later. 
  */
 /**
- * ´ú±íJBDÖĞÒ»¸öÔ­×Ó²Ù×÷
- * ¿ÉÒÔ°üº¬¶à¸ö´ÅÅÌ¿é
+ * ä»£è¡¨JBDä¸­ä¸€ä¸ªåŸå­æ“ä½œ
+ * å¯ä»¥åŒ…å«å¤šä¸ªç£ç›˜å—
  */
 struct handle_s 
 {
 	/* Which compound transaction is this update a part of? */
 	/**
-	 * ±¾Ô­×Ó²Ù×÷ÊôÓÚÄÄ¸öÊÂÎñ
+	 * æœ¬åŸå­æ“ä½œå±äºå“ªä¸ªäº‹åŠ¡
 	 */
 	transaction_t		*h_transaction;
 
 	/* Number of remaining buffers we are allowed to dirty: */
 	/**
-	 * ±¾Ô­×Ó²Ù×÷¿ÉÓÃµÄ¶î¶È£¬Ò²¾ÍÊÇ»¹¿ÉÒÔÓÃ¶àÉÙ¸ö´ÅÅÌ¿é
+	 * æœ¬åŸå­æ“ä½œå¯ç”¨çš„é¢åº¦ï¼Œä¹Ÿå°±æ˜¯è¿˜å¯ä»¥ç”¨å¤šå°‘ä¸ªç£ç›˜å—
 	 */
 	int			h_buffer_credits;
 
 	/* Reference count on this handle */
 	/**
-	 * ÒıÓÃ¼ÆÊı
+	 * å¼•ç”¨è®¡æ•°
 	 */
 	int			h_ref;
 
@@ -452,7 +452,7 @@ struct handle_s
 
 	/* Flags [no locking] */
 	/**
-	 * ´¦ÀíÍêÔ­×Ó²Ù×÷ºó£¬Á¢¼´Ìá½»ÊÂÎñ
+	 * å¤„ç†å®ŒåŸå­æ“ä½œåï¼Œç«‹å³æäº¤äº‹åŠ¡
 	 */
 	unsigned int	h_sync:		1;	/* sync-on-close */
 	unsigned int	h_jdata:	1;	/* force data journaling */
@@ -496,19 +496,19 @@ struct handle_s
  *
  */
 /**
- * Ò»¸öÍêÕûµÄÊÂÎñ£¬¿ÉÒÔ°üº¬¶à¸öÔ­×Ó²Ù×÷¡£
+ * ä¸€ä¸ªå®Œæ•´çš„äº‹åŠ¡ï¼Œå¯ä»¥åŒ…å«å¤šä¸ªåŸå­æ“ä½œã€‚
  */
 struct transaction_s 
 {
 	/* Pointer to the journal for this transaction. [no locking] */
 	/**
-	 * ËùÊôµÄÈÕÖ¾
+	 * æ‰€å±çš„æ—¥å¿—
 	 */
 	journal_t		*t_journal;
 
 	/* Sequence number for this transaction [no locking] */
 	/**
-	 * ±¾ÊÂÎñµÄĞòºÅ
+	 * æœ¬äº‹åŠ¡çš„åºå·
 	 */
 	tid_t			t_tid;
 
@@ -519,26 +519,26 @@ struct transaction_s
 	 * KLUDGE: [use j_state_lock]
 	 */
 	/**
-	 * ÊÂÎñµ±Ç°µÄ×´Ì¬
+	 * äº‹åŠ¡å½“å‰çš„çŠ¶æ€
 	 */
 	enum {
 		/*
-		 * ÊÂÎñÕıÔÚÔËĞĞ£¬¿ÉÒÔ½ÓÊÕĞÂµÄÔ­×Ó²Ù×÷¡£
+		 * äº‹åŠ¡æ­£åœ¨è¿è¡Œï¼Œå¯ä»¥æ¥æ”¶æ–°çš„åŸå­æ“ä½œã€‚
 		 */
 		T_RUNNING,
 		/**
-		 * ÊÂÎñÒÑ¾­±»Ëø£¬²»½ÓÊÕĞÂµÄÔ­×Ó²Ù×÷¡£
+		 * äº‹åŠ¡å·²ç»è¢«é”ï¼Œä¸æ¥æ”¶æ–°çš„åŸå­æ“ä½œã€‚
 		 */
 		T_LOCKED,
 		T_RUNDOWN,
 		/**
-		 * ÊÂÎñÕı×¼±¸±»Ìá½»µ½ÈÕÖ¾ÖĞ¡£
-		 * ĞÂµÄÔ­×Ó²Ù×÷£¬ĞèÒª·Åµ½ĞÂµÄÊÂÎñÖĞ¡£
-		 * Í¬Ê±ÕıÔÚ½«Êı¾İ¿éÌá½»µ½´ÅÅÌ
+		 * äº‹åŠ¡æ­£å‡†å¤‡è¢«æäº¤åˆ°æ—¥å¿—ä¸­ã€‚
+		 * æ–°çš„åŸå­æ“ä½œï¼Œéœ€è¦æ”¾åˆ°æ–°çš„äº‹åŠ¡ä¸­ã€‚
+		 * åŒæ—¶æ­£åœ¨å°†æ•°æ®å—æäº¤åˆ°ç£ç›˜
 		 */
 		T_FLUSH,
 		/**
-		 * ÕıÔÚ½«ÊÂÎñµÄÔªÊı¾İÌá½»µ½ÈÕÖ¾ÖĞ¡£
+		 * æ­£åœ¨å°†äº‹åŠ¡çš„å…ƒæ•°æ®æäº¤åˆ°æ—¥å¿—ä¸­ã€‚
 		 */
 		T_COMMIT,
 		T_FINISHED 
@@ -548,13 +548,13 @@ struct transaction_s
 	 * Where in the log does this transaction's commit start? [no locking]
 	 */
 	/**
-	 * ±¾ÊÂÎñ´ÓÈÕÖ¾µÄÄÄÒ»¸ö¿é¿ªÊ¼
+	 * æœ¬äº‹åŠ¡ä»æ—¥å¿—çš„å“ªä¸€ä¸ªå—å¼€å§‹
 	 */
 	unsigned long		t_log_start;
 
 	/* Number of buffers on the t_buffers list [j_list_lock] */
 	/**
-	 * ±¾ÊÂÎñÖĞ»º³åÇøµÄ¸öÊı
+	 * æœ¬äº‹åŠ¡ä¸­ç¼“å†²åŒºçš„ä¸ªæ•°
 	 */
 	int			t_nr_buffers;
 
@@ -563,8 +563,8 @@ struct transaction_s
 	 * modified by this transaction [j_list_lock]
 	 */
 	/**
-	 * ±»ÊÂÎñËù±£Áô£¬µ«ÊÇÃ»ÓĞÊ¹ÓÃµÄ»º³åÇø
-	 * ÔÚÌá½»ÊÂÎñÇ°±»ÊÍ·Å
+	 * è¢«äº‹åŠ¡æ‰€ä¿ç•™ï¼Œä½†æ˜¯æ²¡æœ‰ä½¿ç”¨çš„ç¼“å†²åŒº
+	 * åœ¨æäº¤äº‹åŠ¡å‰è¢«é‡Šæ”¾
 	 */
 	struct journal_head	*t_reserved_list;
 
@@ -573,9 +573,9 @@ struct transaction_s
 	 * commit [j_list_lock]
 	 */
 	/**
-	 * ±»Ëø×¡µÄ»º³åÇø
-	 * ÕâĞ©»º³åÇøÔÚÎÄ¼şÏµÍ³ÖĞ±»Ôİ»ºÌá½»
-	 * Ö±µ½ÈÕÖ¾±»Ìá½»ºó²ÅÌá½»¡£
+	 * è¢«é”ä½çš„ç¼“å†²åŒº
+	 * è¿™äº›ç¼“å†²åŒºåœ¨æ–‡ä»¶ç³»ç»Ÿä¸­è¢«æš‚ç¼“æäº¤
+	 * ç›´åˆ°æ—¥å¿—è¢«æäº¤åæ‰æäº¤ã€‚
 	 */
 	struct journal_head	*t_locked_list;
 
@@ -584,7 +584,7 @@ struct transaction_s
 	 * transaction [j_list_lock]
 	 */
 	/**
-	 * ËùÓĞÔªÊı¾İ»º³åÇøµÄÁ´±í¡£
+	 * æ‰€æœ‰å…ƒæ•°æ®ç¼“å†²åŒºçš„é“¾è¡¨ã€‚
 	 */
 	struct journal_head	*t_buffers;
 
@@ -593,8 +593,8 @@ struct transaction_s
 	 * flushed before this transaction can be committed [j_list_lock]
 	 */
 	/**
-	 * Óëµ±Ç°ÊÂÎñÏà¹ØµÄÊı¾İ»º³åÇø¡£
-	 * ÔÚorderedÄ£Ê½ÏÂ£¬Ó¦µ±Ê×ÏÈ½«ÆäĞ´Èë´ÅÅÌ£¬ÔÙĞ´ÈëÔªÊı¾İ¡£
+	 * ä¸å½“å‰äº‹åŠ¡ç›¸å…³çš„æ•°æ®ç¼“å†²åŒºã€‚
+	 * åœ¨orderedæ¨¡å¼ä¸‹ï¼Œåº”å½“é¦–å…ˆå°†å…¶å†™å…¥ç£ç›˜ï¼Œå†å†™å…¥å…ƒæ•°æ®ã€‚
 	 */
 	struct journal_head	*t_sync_datalist;
 
@@ -604,8 +604,8 @@ struct transaction_s
 	 * [j_list_lock]
 	 */
 	/**
-	 * Ò»µ©±¾ÊÂÎñ±»Ìá½»£¬¾Í¿ÉÒÔ·ÏÆúµÄ»º³åÇø¡£
-	 * Ö÷ÒªÊÇÓëÇ°ÃæµÄÊÂÎñ¹²ÏíµÄÔªÊı¾İ»º³åÇø¡£
+	 * ä¸€æ—¦æœ¬äº‹åŠ¡è¢«æäº¤ï¼Œå°±å¯ä»¥åºŸå¼ƒçš„ç¼“å†²åŒºã€‚
+	 * ä¸»è¦æ˜¯ä¸å‰é¢çš„äº‹åŠ¡å…±äº«çš„å…ƒæ•°æ®ç¼“å†²åŒºã€‚
 	 */
 	struct journal_head	*t_forget;
 
@@ -614,7 +614,7 @@ struct transaction_s
 	 * this transaction can be checkpointed. [j_list_lock]
 	 */
 	/**
-	 * ÔÚcheckpointÊ±£¬ÒÑ¾­Ìá½»½øĞĞIOµÄ»º³åÇøÁ´±í
+	 * åœ¨checkpointæ—¶ï¼Œå·²ç»æäº¤è¿›è¡ŒIOçš„ç¼“å†²åŒºé“¾è¡¨
 	 */
 	struct journal_head	*t_checkpoint_list;
 
@@ -623,10 +623,10 @@ struct transaction_s
 	 * IO in the log [j_list_lock]
 	 */
 	/**
-	 * µ±Ç°ÕıÔÚµÈ´ıIOĞ´ÈëµÄÁ´±í¡£
-	 * ´ËÁ´±íÖĞµÄÊı¾İ£¬°üº¬ÁËÒªĞ´Èëµ½ÈÕÖ¾ÖĞµÄÔªÊı¾İ»º³åÇø¡£
-	 * ÒÔ¼°³·Ïú±íµÈµÈ
-	 * ĞèÒªµÈ´ı´ËÁ´±íÖĞÊı¾İÈ«²¿Ğ´Èëºó£¬²ÅÄÜĞ´ÈëÌá½»¿é
+	 * å½“å‰æ­£åœ¨ç­‰å¾…IOå†™å…¥çš„é“¾è¡¨ã€‚
+	 * æ­¤é“¾è¡¨ä¸­çš„æ•°æ®ï¼ŒåŒ…å«äº†è¦å†™å…¥åˆ°æ—¥å¿—ä¸­çš„å…ƒæ•°æ®ç¼“å†²åŒºã€‚
+	 * ä»¥åŠæ’¤é”€è¡¨ç­‰ç­‰
+	 * éœ€è¦ç­‰å¾…æ­¤é“¾è¡¨ä¸­æ•°æ®å…¨éƒ¨å†™å…¥åï¼Œæ‰èƒ½å†™å…¥æäº¤å—
 	 */
 	struct journal_head	*t_iobuf_list;
 
@@ -636,9 +636,9 @@ struct transaction_s
 	 * list match each other one for one at all times. [j_list_lock]
 	 */
 	/**
-	 * Óët_iobuf_listÒ»Æğ¹¹³ÉÁËÔªÊı¾İÁ´±í
-	 * ÕâĞ©»º³åÇø¶¼»á±»Ğ´ÈëÈÕÖ¾
-	 * ´¦Àí×ªÒå??
+	 * ä¸t_iobuf_listä¸€èµ·æ„æˆäº†å…ƒæ•°æ®é“¾è¡¨
+	 * è¿™äº›ç¼“å†²åŒºéƒ½ä¼šè¢«å†™å…¥æ—¥å¿—
+	 * å¤„ç†è½¬ä¹‰??
 	 */
 	struct journal_head	*t_shadow_list;
 
@@ -647,8 +647,8 @@ struct transaction_s
 	 * log. [j_list_lock]
 	 */
 	/**
-	 * µÈ´ıĞ´ÈëIOµÄÁ´±í¡£
-	 * ´ËÁ´±íÖĞµÄÊı¾İ£¬°üº¬ÒªĞ´Èëµ½ÈÕÖ¾ÖĞµÄ¿ØÖÆ¿é¡£
+	 * ç­‰å¾…å†™å…¥IOçš„é“¾è¡¨ã€‚
+	 * æ­¤é“¾è¡¨ä¸­çš„æ•°æ®ï¼ŒåŒ…å«è¦å†™å…¥åˆ°æ—¥å¿—ä¸­çš„æ§åˆ¶å—ã€‚
 	 */
 	struct journal_head	*t_log_list;
 
@@ -656,7 +656,7 @@ struct transaction_s
 	 * Protects info related to handles
 	 */
 	/**
-	 * ±£»¤Ô­×Ó²Ù×÷µÄËø
+	 * ä¿æŠ¤åŸå­æ“ä½œçš„é”
 	 */
 	spinlock_t		t_handle_lock;
 
@@ -665,9 +665,9 @@ struct transaction_s
 	 * [t_handle_lock]
 	 */
 	/**
-	 * ÕıÔÚÊ¹ÓÃ±¾ÊÂÎñµÄÔ­×Ó²Ù×÷ÊıÁ¿
-	 * ÔÚÌá½»Ç°£¬ĞèÒªµÈ´ıÆäÖµÎª0£¬±íÊ¾Ã»ÓĞÔ­×Ó²Ù×÷ÏòËüÌá½»ÇëÇó¡£
-	 * ÔÚjournal_startÊ±¼Ó1£¬journal_stop¼õ1
+	 * æ­£åœ¨ä½¿ç”¨æœ¬äº‹åŠ¡çš„åŸå­æ“ä½œæ•°é‡
+	 * åœ¨æäº¤å‰ï¼Œéœ€è¦ç­‰å¾…å…¶å€¼ä¸º0ï¼Œè¡¨ç¤ºæ²¡æœ‰åŸå­æ“ä½œå‘å®ƒæäº¤è¯·æ±‚ã€‚
+	 * åœ¨journal_startæ—¶åŠ 1ï¼Œjournal_stopå‡1
 	 */
 	int			t_updates;
 
@@ -676,8 +676,8 @@ struct transaction_s
 	 * handle but not yet modified. [t_handle_lock]
 	 */
 	/**
-	 * ±£Áô¸øÔ­×Ó²Ù×÷Ê¹ÓÃ£¬µ«ÊÇ»¹Ã»ÓĞ±»Ê¹ÓÃµÄ»º³åÇø¶î¶È
-	 * ÔÚĞ´ÈÕÖ¾Ê±µİ¼õ
+	 * ä¿ç•™ç»™åŸå­æ“ä½œä½¿ç”¨ï¼Œä½†æ˜¯è¿˜æ²¡æœ‰è¢«ä½¿ç”¨çš„ç¼“å†²åŒºé¢åº¦
+	 * åœ¨å†™æ—¥å¿—æ—¶é€’å‡
 	 */
 	int			t_outstanding_credits;
 
@@ -686,8 +686,8 @@ struct transaction_s
 	 * awaiting checkpoint. [j_list_lock]
 	 */
 	/**
-	 * Í¨¹ıÕâÁ½¸öÖ¸Õë
-	 * ½«ÊÂÎñÁ´½Óµ½ÈÕÖ¾µÄcheckpoint¶ÓÁĞÖĞ
+	 * é€šè¿‡è¿™ä¸¤ä¸ªæŒ‡é’ˆ
+	 * å°†äº‹åŠ¡é“¾æ¥åˆ°æ—¥å¿—çš„checkpointé˜Ÿåˆ—ä¸­
 	 */
 	transaction_t		*t_cpnext, *t_cpprev;
 
@@ -696,8 +696,8 @@ struct transaction_s
 	 * [no locking]
 	 */
 	/**
-	 * ÊÂÎñµÄ³¬Ê±Ê±¼ä
-	 * µ±³¬¹ı´ËÊ±¼äÊ±£¬¼´Ê¹ÊÂÎñÖĞ»º³åÇø½ÏÉÙ£¬Ò²»áÌá½»¡£
+	 * äº‹åŠ¡çš„è¶…æ—¶æ—¶é—´
+	 * å½“è¶…è¿‡æ­¤æ—¶é—´æ—¶ï¼Œå³ä½¿äº‹åŠ¡ä¸­ç¼“å†²åŒºè¾ƒå°‘ï¼Œä¹Ÿä¼šæäº¤ã€‚
 	 */
 	unsigned long		t_expires;
 
@@ -705,7 +705,7 @@ struct transaction_s
 	 * How many handles used this transaction? [t_handle_lock]
 	 */
 	/**
-	 * ±¾ÊÂÎñÖĞ°üº¬ÁË¶àÉÙ¸öÔ­×Ó²Ù×÷
+	 * æœ¬äº‹åŠ¡ä¸­åŒ…å«äº†å¤šå°‘ä¸ªåŸå­æ“ä½œ
 	 */
 	int t_handle_count;
 
@@ -766,12 +766,12 @@ struct transaction_s
  *     current transaction.
  */
 /**
- * ÈÕÖ¾ÃèÊö·û
+ * æ—¥å¿—æè¿°ç¬¦
  */
 struct journal_s
 {
 	/* General journaling state flags [j_state_lock] */
-	/* ÈÕÖ¾µÄ×´Ì¬±êÖ¾*/
+	/* æ—¥å¿—çš„çŠ¶æ€æ ‡å¿—*/
 	unsigned long		j_flags;
 
 	/*
@@ -781,7 +781,7 @@ struct journal_s
 	int			j_errno;
 
 	/* The superblock buffer */
-	/* ÈÕÖ¾µÄ³¬¼¶¿é»º³åÇø */
+	/* æ—¥å¿—çš„è¶…çº§å—ç¼“å†²åŒº */
 	struct buffer_head	*j_sb_buffer;
 	journal_superblock_t	*j_superblock;
 
@@ -797,7 +797,7 @@ struct journal_s
 	 * Number of processes waiting to create a barrier lock [j_state_lock]
 	 */
 	/**
-	 * µÈ´ı´´½¨ÆÁÕÏµÄÈÎÎñÊı
+	 * ç­‰å¾…åˆ›å»ºå±éšœçš„ä»»åŠ¡æ•°
 	 */
 	int			j_barrier_count;
 
@@ -809,9 +809,9 @@ struct journal_s
 	 * [j_state_lock] [caller holding open handle]
 	 */
 	/**
-	 * µ±Ç°ÕıÔÚÔËĞĞµÄÊÂÎñ¡£
-	 * Èç¹ûÎªNULL£¬ĞèÒªÎªĞÂµÄÔ­×Ó²Ù×÷´´½¨ĞÂµÄÊÂÎñ¡£
-	 * Õâ¸öÊÂÎñÕıÔÚ½ÓÊÜĞÂµÄÔ­×Ó²Ù×÷ÇëÇó¡£
+	 * å½“å‰æ­£åœ¨è¿è¡Œçš„äº‹åŠ¡ã€‚
+	 * å¦‚æœä¸ºNULLï¼Œéœ€è¦ä¸ºæ–°çš„åŸå­æ“ä½œåˆ›å»ºæ–°çš„äº‹åŠ¡ã€‚
+	 * è¿™ä¸ªäº‹åŠ¡æ­£åœ¨æ¥å—æ–°çš„åŸå­æ“ä½œè¯·æ±‚ã€‚
 	 */
 	transaction_t		*j_running_transaction;
 
@@ -820,7 +820,7 @@ struct journal_s
 	 * [j_state_lock] [caller holding open handle]
 	 */
 	/**
-	 * µ±Ç°ÕıÔÚÌá½»µÄÊÂÎñ¡£
+	 * å½“å‰æ­£åœ¨æäº¤çš„äº‹åŠ¡ã€‚
 	 */
 	transaction_t		*j_committing_transaction;
 
@@ -829,7 +829,7 @@ struct journal_s
 	 * checkpointing. [j_list_lock]
 	 */
 	/**
-	 * µÈ´ıcheckpointµÄÊÂÎñÁ´±íÍ·
+	 * ç­‰å¾…checkpointçš„äº‹åŠ¡é“¾è¡¨å¤´
 	 */
 	transaction_t		*j_checkpoint_transactions;
 
@@ -838,8 +838,8 @@ struct journal_s
 	 * or for a barrier lock to be released
 	 */
 	/**
-	 * µ±¿ªÊ¼½øĞĞÒ»¸öĞÂÊÂÎñÌá½»Ê±
-	 * »½ĞÑµÈ´ı¼ÇÂ¼ÈÕÖ¾µÄÏß³Ì£¬±íÊ¾¿ÉÒÔ¿ªÊ¼Ò»¸öĞÂÊÂÎñÁË
+	 * å½“å¼€å§‹è¿›è¡Œä¸€ä¸ªæ–°äº‹åŠ¡æäº¤æ—¶
+	 * å”¤é†’ç­‰å¾…è®°å½•æ—¥å¿—çš„çº¿ç¨‹ï¼Œè¡¨ç¤ºå¯ä»¥å¼€å§‹ä¸€ä¸ªæ–°äº‹åŠ¡äº†
 	 */
 	wait_queue_head_t	j_wait_transaction_locked;
 
@@ -848,9 +848,9 @@ struct journal_s
 
 	/* Wait queue for waiting for commit to complete */
 	/**
-	 * µÈ´ı¶ÓÁĞ
-	 * Ïß³ÌÕıÔÚ´Ë¶ÓÁĞÉÏµÈ´ıÈÕÖ¾±»Ìá½»
-	 * ÓÉÈÕÖ¾Ïß³Ì»½ĞÑ¶ÓÁĞÉÏµÄµÈ´ıÏß³Ì
+	 * ç­‰å¾…é˜Ÿåˆ—
+	 * çº¿ç¨‹æ­£åœ¨æ­¤é˜Ÿåˆ—ä¸Šç­‰å¾…æ—¥å¿—è¢«æäº¤
+	 * ç”±æ—¥å¿—çº¿ç¨‹å”¤é†’é˜Ÿåˆ—ä¸Šçš„ç­‰å¾…çº¿ç¨‹
 	 */
 	wait_queue_head_t	j_wait_done_commit;
 
@@ -859,21 +859,21 @@ struct journal_s
 
 	/* Wait queue to trigger commit */
 	/**
-	 * µÈ´ı¶ÓÁĞ
-	 * ÈÕÖ¾Ïß³Ì»áÔÚ´Ë¶ÓÁĞÉÏµÈ´ı
+	 * ç­‰å¾…é˜Ÿåˆ—
+	 * æ—¥å¿—çº¿ç¨‹ä¼šåœ¨æ­¤é˜Ÿåˆ—ä¸Šç­‰å¾…
 	 */
 	wait_queue_head_t	j_wait_commit;
 
 	/* Wait queue to wait for updates to complete */
 	/**
-	 * µÈ´ı¶ÓÁĞ
-	 * ÈÕÖ¾Ïß³ÌÔÚ´Ë¶ÓÁĞÉÏµÈ´ı
-	 * µ±½áÊøÔ­×Ó²Ù×÷Ê±»½ĞÑ
+	 * ç­‰å¾…é˜Ÿåˆ—
+	 * æ—¥å¿—çº¿ç¨‹åœ¨æ­¤é˜Ÿåˆ—ä¸Šç­‰å¾…
+	 * å½“ç»“æŸåŸå­æ“ä½œæ—¶å”¤é†’
 	 */
 	wait_queue_head_t	j_wait_updates;
 
 	/* Semaphore for locking against concurrent checkpoints */
-	/* ±£»¤checkpointÁ´±íµÄ»¥³âËø */
+	/* ä¿æŠ¤checkpointé“¾è¡¨çš„äº’æ–¥é” */
 	struct semaphore 	j_checkpoint_sem;
 
 	/*
@@ -881,7 +881,7 @@ struct journal_s
 	 * [j_state_lock]
 	 */
 	/**
-	 *  µÚÒ»¸öÎ´Ê¹ÓÃµÄÈÕÖ¾¿é
+	 *  ç¬¬ä¸€ä¸ªæœªä½¿ç”¨çš„æ—¥å¿—å—
 	 */
 	unsigned long		j_head;
 
@@ -890,7 +890,7 @@ struct journal_s
 	 * [j_state_lock]
 	 */
 	/**
-	 * ×îºóÒ»¸öÈÔÈ»ÔÚÊ¹ÓÃµÄÈÕÖ¾¿é
+	 * æœ€åä¸€ä¸ªä»ç„¶åœ¨ä½¿ç”¨çš„æ—¥å¿—å—
 	 */
 	unsigned long		j_tail;
 
@@ -899,7 +899,7 @@ struct journal_s
 	 * [j_state_lock]
 	 */
 	/**
-	 * ÈÕÖ¾ÖĞÊ£ÓàµÄ¿ÕÏĞ¿é£¬Îª0±íÊ¾ÒÑ¾­ÂúÁË
+	 * æ—¥å¿—ä¸­å‰©ä½™çš„ç©ºé—²å—ï¼Œä¸º0è¡¨ç¤ºå·²ç»æ»¡äº†
 	 */
 	unsigned long		j_free;
 
@@ -908,7 +908,7 @@ struct journal_s
 	 * and one beyond the last usable block in the journal. [j_state_lock]
 	 */
 	/**
-	 * ¸ñÊ½»¯Ê±£¬È·¶¨µÄÆğÊ¼½áÊø¿éºÅ
+	 * æ ¼å¼åŒ–æ—¶ï¼Œç¡®å®šçš„èµ·å§‹ç»“æŸå—å·
 	 */
 	unsigned long		j_first;
 	unsigned long		j_last;
@@ -918,14 +918,14 @@ struct journal_s
 	 * store the journal.
 	 */
 	/**
-	 * ÈÕÖ¾¿éÉè±¸
+	 * æ—¥å¿—å—è®¾å¤‡
 	 */
 	struct block_device	*j_dev;
 	/**
-	 * ¿é´óĞ¡
+	 * å—å¤§å°
 	 */
 	int			j_blocksize;
-	/* ÈÕÖ¾ÔÚ¿éÉè±¸ÖĞÆ«ÒÆÁ¿ */
+	/* æ—¥å¿—åœ¨å—è®¾å¤‡ä¸­åç§»é‡ */
 	unsigned int		j_blk_offset;
 
 	/*
@@ -933,13 +933,13 @@ struct journal_s
 	 * equal to j_dev.
 	 */
 	/**
-	 * ÓëÈÕÖ¾°ó¶¨µÄÎÄ¼şÏµÍ³£¬ÆäËùÔÚµÄÉè±¸
+	 * ä¸æ—¥å¿—ç»‘å®šçš„æ–‡ä»¶ç³»ç»Ÿï¼Œå…¶æ‰€åœ¨çš„è®¾å¤‡
 	 */
 	struct block_device	*j_fs_dev;
 
 	/* Total maximum capacity of the journal region on disk. */
 	/**
-	 * ÈÕÖ¾ÔÚ´ÅÅÌÖĞµÄ×î´óÈİÁ¿
+	 * æ—¥å¿—åœ¨ç£ç›˜ä¸­çš„æœ€å¤§å®¹é‡
 	 */
 	unsigned int		j_maxlen;
 
@@ -956,20 +956,20 @@ struct journal_s
 	/*
 	 * Sequence number of the oldest transaction in the log [j_state_lock]
 	 */
-	/* ÈÕÖ¾ÖĞ×îÀÏµÄÊÂÎñ±àºÅ */
+	/* æ—¥å¿—ä¸­æœ€è€çš„äº‹åŠ¡ç¼–å· */
 	tid_t			j_tail_sequence;
 
 	/*
 	 * Sequence number of the next transaction to grant [j_state_lock]
 	 */
-	/* ÏÂÒ»¸öÊÂÎñµÄ±àºÅ */
+	/* ä¸‹ä¸€ä¸ªäº‹åŠ¡çš„ç¼–å· */
 	tid_t			j_transaction_sequence;
 
 	/*
 	 * Sequence number of the most recently committed transaction
 	 * [j_state_lock].
 	 */
-	/* ×î½üÌá½»µÄÊÂÎñ±àºÅ */
+	/* æœ€è¿‘æäº¤çš„äº‹åŠ¡ç¼–å· */
 	tid_t			j_commit_sequence;
 
 	/*
@@ -977,9 +977,9 @@ struct journal_s
 	 * [j_state_lock]
 	 */
 	/**
-	 * ×î½üÏëÌá½»µÄÊÂÎñ±àºÅ 
-	 * µ÷ÓÃÕßÔÚ¸ÃÊÂÎñIDÉÏµ÷ÓÃÁËjournal_stop
-	 * ²¢ÇÒÏ£ÍûÌá½»´ËÊÂÎñ
+	 * æœ€è¿‘æƒ³æäº¤çš„äº‹åŠ¡ç¼–å· 
+	 * è°ƒç”¨è€…åœ¨è¯¥äº‹åŠ¡IDä¸Šè°ƒç”¨äº†journal_stop
+	 * å¹¶ä¸”å¸Œæœ›æäº¤æ­¤äº‹åŠ¡
 	 */
 	tid_t			j_commit_request;
 
@@ -992,14 +992,14 @@ struct journal_s
 	__u8			j_uuid[16];
 
 	/* Pointer to the current commit thread for this journal */
-	/* ÈÕÖ¾Ïß³Ì */
+	/* æ—¥å¿—çº¿ç¨‹ */
 	struct task_struct	*j_task;
 
 	/*
 	 * Maximum number of metadata buffers to allow in a single compound
 	 * commit transaction
 	 */
-	/* Ò»´ÎÔÊĞíÌá½»µÄÈÕÖ¾»º³åÇø¸öÊı */
+	/* ä¸€æ¬¡å…è®¸æäº¤çš„æ—¥å¿—ç¼“å†²åŒºä¸ªæ•° */
 	int			j_max_transaction_buffers;
 
 	/*
@@ -1008,25 +1008,25 @@ struct journal_s
 	unsigned long		j_commit_interval;
 
 	/* The timer used to wakeup the commit thread: */
-	/* ¶¨ÆÚ»½ĞÑÏß³ÌµÄ¶¨Ê±Æ÷ */
+	/* å®šæœŸå”¤é†’çº¿ç¨‹çš„å®šæ—¶å™¨ */
 	struct timer_list	*j_commit_timer;
 
 	/*
 	 * The revoke table: maintains the list of revoked blocks in the
 	 * current transaction.  [j_revoke_lock]
 	 */
-	/* ±£»¤³·Ïú¿éµÄËø */
+	/* ä¿æŠ¤æ’¤é”€å—çš„é” */
 	spinlock_t		j_revoke_lock;
-	/* ÕıÔÚÊ¹ÓÃµÄ³·Ïú¹şÏ£±í */
+	/* æ­£åœ¨ä½¿ç”¨çš„æ’¤é”€å“ˆå¸Œè¡¨ */
 	struct jbd_revoke_table_s *j_revoke;
-	/* Á½¸ö³·Ïú±í£¬Ò»¸ö±¸ÓÃ£¬Ò»¸öÕıÔÚÓÃ */
+	/* ä¸¤ä¸ªæ’¤é”€è¡¨ï¼Œä¸€ä¸ªå¤‡ç”¨ï¼Œä¸€ä¸ªæ­£åœ¨ç”¨ */
 	struct jbd_revoke_table_s *j_revoke_table[2];
 
 	/*
 	 * An opaque pointer to fs-private information.  ext3 puts its
 	 * superblock pointer here
 	 */
-	/* ¶Ôext3À´Ëµ£¬Ö¸ÏòÆä³¬¼¶¿é */
+	/* å¯¹ext3æ¥è¯´ï¼ŒæŒ‡å‘å…¶è¶…çº§å— */
 	void *j_private;
 };
 
@@ -1038,7 +1038,7 @@ struct journal_s
 #define JFS_ACK_ERR	0x004	/* The errno in the sb has been acked */
 #define JFS_FLUSHED	0x008	/* The journal superblock has been flushed */
 #define JFS_LOADED	0x010	/* The journal superblock has been loaded */
-/* ´ÅÅÌIO´æÔÚÂÒĞòÎÊÌâ£¬ĞèÒª³ÌĞòÌØÊâ´¦Àí */
+/* ç£ç›˜IOå­˜åœ¨ä¹±åºé—®é¢˜ï¼Œéœ€è¦ç¨‹åºç‰¹æ®Šå¤„ç† */
 #define JFS_BARRIER	0x020	/* Use IDE barriers */
 
 /* 
@@ -1285,12 +1285,12 @@ static inline int jbd_space_needed(journal_t *journal)
 /* journaling buffer types */
 #define BJ_None		0	/* Not journaled */
 #define BJ_SyncData	1	/* Normal data: flush before commit */
-/* »º³åÇøÎ»ÓÚÔªÊı¾İ¶ÓÁĞ */
+/* ç¼“å†²åŒºä½äºå…ƒæ•°æ®é˜Ÿåˆ— */
 #define BJ_Metadata	2	/* Normal journaled metadata */
 #define BJ_Forget	3	/* Buffer superseded by this transaction */
-/* ×ªÒåºóµÄ£¬ÕæÕıĞèÒªĞ´ÈëÈÕÖ¾µÄ */
+/* è½¬ä¹‰åçš„ï¼ŒçœŸæ­£éœ€è¦å†™å…¥æ—¥å¿—çš„ */
 #define BJ_IO		4	/* Buffer is for temporary IO use */
-/* »º³åÇøÎ»ÓÚShadow¶ÓÁĞ£¬±íÊ¾ÕıÔÚĞ´ÈëÈÕÖ¾ */
+/* ç¼“å†²åŒºä½äºShadowé˜Ÿåˆ—ï¼Œè¡¨ç¤ºæ­£åœ¨å†™å…¥æ—¥å¿— */
 #define BJ_Shadow	5	/* Buffer contents being shadowed to the log */
 #define BJ_LogCtl	6	/* Buffer contains log descriptors */
 #define BJ_Reserved	7	/* Buffer is reserved for access by journal */

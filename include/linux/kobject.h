@@ -32,40 +32,40 @@
 extern u64 hotplug_seqnum;
 
 /**
- * �豸��������ģ�͵ĺ������ݽṹ����Ӧ��sysfs�ļ�ϵͳ��ÿһ��Ŀ¼��
- * ��ͨ�����ŵ��豸���������һ���������С����͵����������ߡ��豸������������������
+ * 设备驱动程序模型的核心数据结构。对应于sysfs文件系统中每一个目录。
+ * 它通常被放到设备驱动程序的一个大容器中。典型的容器有总线、设备及驱动程序描述符。
  */
 struct kobject {
 	/**
-	 * ָ���������ơ�
+	 * 指向容器名称。
 	 */
 	char			* k_name;
 	/**
-	 * ����������Ʋ�����20���ַ����ʹ������
+	 * 如果容器名称不超过20个字符，就存在这里。
 	 */
 	char			name[KOBJ_NAME_LEN];
 	/**
-	 * ���������ü�����
+	 * 容器的引用计数。
 	 */
 	struct kref		kref;
 	/**
-	 * ���ڽ�kobject����ĳ��������
+	 * 用于将kobject插入某个链表。
 	 */
 	struct list_head	entry;
 	/**
-	 * ָ��kobject
+	 * 指向父kobject
 	 */
 	struct kobject		* parent;
 	/**
-	 * ָ�������kset,kset��ͬ���͵�kobject�ṹ��һ�������塣
+	 * 指向包含的kset,kset是同类型的kobject结构的一个集合体。
 	 */
 	struct kset		* kset;
 	/**
-	 * ָ��kobject��������������
+	 * 指向kobject的类型描述符。
 	 */
 	struct kobj_type	* ktype;
 	/**
-	 * ָ����kobject��Ӧ��sysfs�ļ���dentry���ݽṹ��
+	 * 指向与kobject对应的sysfs文件的dentry数据结构。
 	 */
 	struct dentry		* dentry;
 };
@@ -95,19 +95,19 @@ extern void kobject_put(struct kobject *);
 extern char * kobject_get_path(struct kobject *, int);
 
 /**
- * ��������kobject����Ľṹ���͡�
+ * 描述包含kobject对象的结构类型。
  */
 struct kobj_type {
 	/**
-	 * kobject���͵�release������
+	 * kobject类型的release函数。
 	 */
 	void (*release)(struct kobject *);
 	/**
-	 * ʵ�ֶ������Եķ�����
+	 * 实现对象属性的方法。
 	 */
 	struct sysfs_ops	* sysfs_ops;
 	/**
-	 * ������kobjectʱ������ö����Ĭ�����ԡ�
+	 * 当创建kobject时，赋予该对象的默认属性。
 	 */
 	struct attribute	** default_attrs;
 };
@@ -132,51 +132,51 @@ struct kobj_type {
  *      environment being passed to the hotplug helper.
  */
 /**
- * �����Ȳ岦�¼��Ľṹ����kset��hotplug_opsָ��ýṹ��
- * ���kset������һ��ָ����kobject������sysfs�ֲ�ṹ�н���������ֱ���ҵ�һ��������kset��kobjectΪֹ��Ȼ��ʹ�����kset���Ȳ岦������
+ * 控制热插拨事件的结构。由kset的hotplug_ops指向该结构。
+ * 如果kset不包含一个指定的kobject，则在sysfs分层结构中进行搜索，直到找到一个包含有kset的kobject为止，然后使用这个kset的热插拨操作。
  */
 struct kset_hotplug_ops {
 	/**
-	 * ���ۺ�ʱ�����ں�ҪΪָ����kobject�����¼�ʱ����Ҫ����filter���������filter��������0�����������¼���
-	 * ��ˣ��ú�����ksetһ�����ᣬ���ھ����Ƿ����û��ռ䴫��ָ�����¼���
-	 * ʹ�ô˺�����һ�������ǿ��豸��ϵͳ����block_hotplug_filter�У�ֻΪkobject�������̺ͷ����¼���������Ϊ�������kobject�����¼���
+	 * 无论何时，当内核要为指定的kobject产生事件时，都要调用filter函数。如果filter函数返回0，将不产生事件。
+	 * 因此，该函数给kset一个机会，用于决定是否向用户空间传递指定的事件。
+	 * 使用此函数的一个例子是块设备子系统。在block_hotplug_filter中，只为kobject产生磁盘和分区事件，而不会为请求队列kobject产生事件。
 	 */
 	int (*filter)(struct kset *kset, struct kobject *kobj);
 	/**
-	 * �ڵ����û��ռ���Ȳ岦����ʱ�������ϵͳ�����ֽ���ΪΨһ�Ĳ������ݸ�����
-	 * name���������ṩ�����֡���������һ���ʺϴ��ݸ��û��ռ���ַ�����
+	 * 在调用用户空间的热插拨程序时，相关子系统的名字将作为唯一的参数传递给它。
+	 * name方法负责提供此名字。它将返回一个适合传递给用户空间的字符串。
 	 */
 	char *(*name)(struct kset *kset, struct kobject *kobj);
 	/**
-	 * �κ��Ȳ岦�ű�����Ҫ֪������Ϣ��ͨ�������������ݡ����һ��hotplug�������ڵ��ýű�ǰ���ṩ���ӻ��������Ļ��ᡣ
+	 * 任何热插拨脚本所需要知道的信息将通过环境变量传递。最后一个hotplug方法会在调用脚本前，提供添加环境变量的机会。
 	 */
 	int (*hotplug)(struct kset *kset, struct kobject *kobj, char **envp,
 			int num_envp, char *buffer, int buffer_size);
 };
 
 /**
- * Ƕ����ͬ���ͽṹ��kobject���ϡ�
- * ������һ��kobject����ʱ��ͨ����Ҫ�����Ǽ��뵽kset�С�
+ * 嵌入相同类型结构的kobject集合。
+ * 当创建一个kobject对象时，通常需要将它们加入到kset中。
  */
 struct 	 {
 	/**
-	 * ������ϵͳ��
+	 * 所属子系统。
 	 */
 	struct subsystem	* subsys;
 	/**
-	 * ��������kobjec�����͡�
+	 * 所包含的kobjec的类型。
 	 */
 	struct kobj_type	* ktype;
 	/**
-	 * ��һ��kobject�ڵ㡣
+	 * 第一个kobject节点。
 	 */
 	struct list_head	list;
 	/**
-	 * Ƕ���kobject
+	 * 嵌入的kobject
 	 */
 	struct kobject		kobj;
 	/**
-	 * ���ڴ���kobject�ṹ�Ĺ��˺��Ȳ岦�����Ļص���������
+	 * 用于处理kobject结构的过滤和热插拨操作的回调函数表。
 	 */
 	struct kset_hotplug_ops	* hotplug_ops;
 };
@@ -222,22 +222,22 @@ extern struct kobject * kset_find_obj(struct kset *, const char *);
 
 
 /**
- * ��ϵͳ��ͨ����ʾ��sysfs�ֲ�ṹ�еĶ��㡣
- * ����block_subsys��devices_subsys�Լ��������ߵ���ϵͳ����Ӧ��sys/block��sys/devices��Ŀ¼��
+ * 子系统。通常显示在sysfs分层结构中的顶层。
+ * 包含block_subsys、devices_subsys以及各种总线等子系统，对应于sys/block、sys/devices等目录。
  */
 struct subsystem {
 	/**
-	 * �²���󼯺ϡ�
+	 * 下层对象集合。
 	 */
 	struct kset		kset;
 	/**
-	 * ������ϵͳ���õĶ�д�ź�����
+	 * 访问子系统所用的读写信号量。
 	 */
 	struct rw_semaphore	rwsem;
 };
 
 /**
- * ����һ����ϵͳ��
+ * 定义一个子系统。
  */
 #define decl_subsys(_name,_type,_hotplug_ops) \
 struct subsystem _name##_subsys = { \

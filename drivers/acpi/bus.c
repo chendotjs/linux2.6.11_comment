@@ -596,7 +596,7 @@ acpi_bus_init_irq (void)
 }
 
 /**
- * ACPI³õÊ¼»¯¹ı³Ì¡£
+ * ACPIåˆå§‹åŒ–è¿‡ç¨‹ã€‚
  */
 void __init
 acpi_early_init (void)
@@ -655,7 +655,7 @@ acpi_early_init (void)
 #endif
 
 	/**
-	 * acpi_enable_subsystem»á°²×°SCIÖĞ¶Ï´¦Àíº¯Êıµ½do_IRQÖĞ¡£
+	 * acpi_enable_subsystemä¼šå®‰è£…SCIä¸­æ–­å¤„ç†å‡½æ•°åˆ°do_IRQä¸­ã€‚
 	 */
 	status = acpi_enable_subsystem(~(ACPI_NO_HARDWARE_INIT | ACPI_NO_ACPI_ENABLE));
 	if (ACPI_FAILURE(status)) {

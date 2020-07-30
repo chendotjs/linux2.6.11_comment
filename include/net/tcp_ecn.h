@@ -5,11 +5,11 @@
 
 #define TCP_HP_BITS (~(TCP_RESERVED_BITS|TCP_FLAG_PSH))
 
-/* ��ʶ�����Ƿ�֧����ʽӵ��֪ͨ���ڽ���TCP���ӹ����и���tcp_ecnϵͳ������TCP�ײ��е�ECE,CWR��־λ���� */
+/* 标识本端是否支持显式拥塞通知，在建立TCP连接过程中根据tcp_ecn系统参数和TCP首部中的ECE,CWR标志位设置 */
 #define	TCP_ECN_OK		1
-/* ��ʶ���ͷ������յ���ʽӵ��֪ͨ������ӵ��״̬ */
+/* 标识发送方由于收到显式拥塞通知而进入拥塞状态 */
 #define TCP_ECN_QUEUE_CWR	2
-/* ��ʶ���յĶξ�����ӵ�� */
+/* 标识接收的段经历了拥塞 */
 #define TCP_ECN_DEMAND_CWR	4
 
 static inline void TCP_ECN_queue_cwr(struct tcp_sock *tp)

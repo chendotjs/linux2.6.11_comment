@@ -1067,7 +1067,7 @@ int mp_register_gsi (u32 gsi, int edge_level, int active_high_low)
 #endif
 
 	/**
-	 * ÕÒµ½GSI¶ÔÓ¦µÄIO APIC¡£
+	 * æ‰¾åˆ°GSIå¯¹åº”çš„IO APICã€‚
 	 */
 	ioapic = mp_find_ioapic(gsi);
 	if (ioapic < 0) {
@@ -1076,7 +1076,7 @@ int mp_register_gsi (u32 gsi, int edge_level, int active_high_low)
 	}
 
 	/**
-	 * ÕÒµ½¸ÃIO APICÉÏ¶ÔÓ¦µÄÒý½Å¡£
+	 * æ‰¾åˆ°è¯¥IO APICä¸Šå¯¹åº”çš„å¼•è„šã€‚
 	 */
 	ioapic_pin = gsi - mp_ioapic_routing[ioapic].gsi_base;
 
@@ -1105,7 +1105,7 @@ int mp_register_gsi (u32 gsi, int edge_level, int active_high_low)
 	mp_ioapic_routing[ioapic].pin_programmed[idx] |= (1<<bit);
 
 	/**
-	 * ÉèÖÃIO APIC¼Ä´æÆ÷¡£
+	 * è®¾ç½®IO APICå¯„å­˜å™¨ã€‚
 	 */
 	io_apic_set_pci_routing(ioapic, ioapic_pin, gsi,
 		    edge_level == ACPI_EDGE_SENSITIVE ? 0 : 1,

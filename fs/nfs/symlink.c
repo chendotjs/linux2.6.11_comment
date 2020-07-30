@@ -61,7 +61,7 @@ error:
 }
 
 /**
- * ¶ÔNFSµÄÁ´½ÓÎÄ¼ş½øĞĞ²Ù×÷¡£
+ * å¯¹NFSçš„é“¾æ¥æ–‡ä»¶è¿›è¡Œæ“ä½œã€‚
  */
 static int nfs_follow_link(struct dentry *dentry, struct nameidata *nd)
 {

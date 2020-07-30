@@ -295,10 +295,10 @@ acpi_pci_irq_lookup (
 		segment, bus_nr, device, ('A' + pin)));
 
 	/**
-	 * ´ÓprtÁ´±íÖÐÕÒµ½PCIÉè±¸µÄÖÐ¶ÏÂ·ÓÉ¡£
+	 * ä»Žprté“¾è¡¨ä¸­æ‰¾åˆ°PCIè®¾å¤‡çš„ä¸­æ–­è·¯ç”±ã€‚
 	 */
 	entry = acpi_pci_irq_find_prt_entry(segment, bus_nr, device, pin); 
-	if (!entry) {/* Èç¹ûÎª¿Õ£¬ËµÃ÷Ê¹ÓÃIO APIC¹ÜÀíÍâ²¿ÖÐ¶Ï£¬¶ø²»ÊÇ8259A¡£ */
+	if (!entry) {/* å¦‚æžœä¸ºç©ºï¼Œè¯´æ˜Žä½¿ç”¨IO APICç®¡ç†å¤–éƒ¨ä¸­æ–­ï¼Œè€Œä¸æ˜¯8259Aã€‚ */
 		ACPI_DEBUG_PRINT((ACPI_DB_INFO, "PRT entry not found\n"));
 		return_VALUE(-1);
 	}
@@ -415,8 +415,8 @@ acpi_pci_irq_enable (
 	 * values override any BIOS-assigned IRQs set during boot.
 	 */
 	/**
-	 * ´Óacpi_prt_listÖÐÕÒµ½Ò»¸öacpi_ptr_entry¡£¸ÃÁ´±í´æ·ÅPCI×ÜÏßµÄÖÐ¶ÏÂ·ÓÉ±í¡£
-	 * Õâ¸öentryÖÐ£¬´æ·ÅÁËPCIÉè±¸Ê¹ÓÃµÄsegment¡¢bus¡¢deviceºÍfunctionºÅ¡£
+	 * ä»Žacpi_prt_listä¸­æ‰¾åˆ°ä¸€ä¸ªacpi_ptr_entryã€‚è¯¥é“¾è¡¨å­˜æ”¾PCIæ€»çº¿çš„ä¸­æ–­è·¯ç”±è¡¨ã€‚
+	 * è¿™ä¸ªentryä¸­ï¼Œå­˜æ”¾äº†PCIè®¾å¤‡ä½¿ç”¨çš„segmentã€busã€deviceå’Œfunctionå·ã€‚
 	 */
  	irq = acpi_pci_irq_lookup(dev->bus, PCI_SLOT(dev->devfn), pin, &edge_level, &active_high_low);
 
@@ -449,8 +449,8 @@ acpi_pci_irq_enable (
 		pci_write_config_byte(dev, PCI_INTERRUPT_LINE, irq & 15);
 
 	/**
-	 * acpi_register_gsi½«GSIºÅ×ª»»ÎªÏµÍ³Èí¼þÊ¹ÓÃµÄIRQºÅ¡£
-	 * ¸Ãº¯ÊýÍ¬Ê±»¹»á½¨Á¢GSIºÅÓëREDIR_TBL±íÖÐµÄÖÐ¶ÏÏòÁ¿Ö®¼äµÄ¶ÔÓ¦¹ØÏµ¡£
+	 * acpi_register_gsiå°†GSIå·è½¬æ¢ä¸ºç³»ç»Ÿè½¯ä»¶ä½¿ç”¨çš„IRQå·ã€‚
+	 * è¯¥å‡½æ•°åŒæ—¶è¿˜ä¼šå»ºç«‹GSIå·ä¸ŽREDIR_TBLè¡¨ä¸­çš„ä¸­æ–­å‘é‡ä¹‹é—´çš„å¯¹åº”å…³ç³»ã€‚
 	 */
 	dev->irq = acpi_register_gsi(irq, edge_level, active_high_low);
 

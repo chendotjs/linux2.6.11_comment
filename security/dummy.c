@@ -835,8 +835,8 @@ static int dummy_setprocattr(struct task_struct *p, char *name, void *value, siz
 
 
 /**
- * °²È«¹Ò¹³¡£
- * ±ÈÈç£¬settimeºÍsettimeofdayº¯Êı»áµ÷ÓÃsettime¹Ò¹³£¬À´¼ì²éµ±Ç°½ø³ÌÊÇ·ñÓĞCAP_SYS_TIMEÈ¨ÏŞ¡£
+ * å®‰å…¨æŒ‚é’©ã€‚
+ * æ¯”å¦‚ï¼Œsettimeå’Œsettimeofdayå‡½æ•°ä¼šè°ƒç”¨settimeæŒ‚é’©ï¼Œæ¥æ£€æŸ¥å½“å‰è¿›ç¨‹æ˜¯å¦æœ‰CAP_SYS_TIMEæƒé™ã€‚
  */
 struct security_operations dummy_security_ops;
 

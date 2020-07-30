@@ -49,68 +49,68 @@ static kmem_cache_t *fn_hash_kmem;
 static kmem_cache_t *fn_alias_kmem;
 
 /**
- * Ò»ÌõÂ·ÓÉ±íÏî¡£
- * ÀıÈç£¬¸ÃÊı¾İ½á¹¹ÓÃÓÚ´æ´¢ÓÉroute add»òip route addÃüÁîÌí¼ÓÒ»ÌõÂ·ÓÉÊ±Éú³ÉµÄĞÅÏ¢¡£
- * ÄÚºËÂ·ÓÉÏîÖĞÃ¿Ò»¸öÎ¨Ò»µÄÄ¿µÄÍøÂç¶ÔÓ¦Ò»¸öfib_nodeÊµÀı¡£Ä¿µÄÍøÂçÏàÍ¬µ«ÆäËüÅäÖÃ²ÎÊı²»Í¬µÄÂ·ÓÉÏî¹²ÏíÍ¬Ò»¸öfib_nodeÊµÀı¡£
+ * ä¸€æ¡è·¯ç”±è¡¨é¡¹ã€‚
+ * ä¾‹å¦‚ï¼Œè¯¥æ•°æ®ç»“æ„ç”¨äºå­˜å‚¨ç”±route addæˆ–ip route addå‘½ä»¤æ·»åŠ ä¸€æ¡è·¯ç”±æ—¶ç”Ÿæˆçš„ä¿¡æ¯ã€‚
+ * å†…æ ¸è·¯ç”±é¡¹ä¸­æ¯ä¸€ä¸ªå”¯ä¸€çš„ç›®çš„ç½‘ç»œå¯¹åº”ä¸€ä¸ªfib_nodeå®ä¾‹ã€‚ç›®çš„ç½‘ç»œç›¸åŒä½†å…¶å®ƒé…ç½®å‚æ•°ä¸åŒçš„è·¯ç”±é¡¹å…±äº«åŒä¸€ä¸ªfib_nodeå®ä¾‹ã€‚
  */
 struct fib_node {
 	/**
-	 * fib_nodeÔªËØÊÇÓÃ¹şÏ£±íÀ´×éÖ¯µÄ¡£
-	 * Õâ¸öÖ¸ÕëÓÃÓÚ½«·Ö²¼ÔÚÒ»ÕÅ¹şÏ£±íÖĞµÄÒ»¸öÍ°ÄÚËùÓĞµÄfib_nodeÔªËØÁ´½ÓÔÚÒ»Æğ¡£
+	 * fib_nodeå…ƒç´ æ˜¯ç”¨å“ˆå¸Œè¡¨æ¥ç»„ç»‡çš„ã€‚
+	 * è¿™ä¸ªæŒ‡é’ˆç”¨äºå°†åˆ†å¸ƒåœ¨ä¸€å¼ å“ˆå¸Œè¡¨ä¸­çš„ä¸€ä¸ªæ¡¶å†…æ‰€æœ‰çš„fib_nodeå…ƒç´ é“¾æ¥åœ¨ä¸€èµ·ã€‚
 	 */
 	struct hlist_node	fn_hash;
 	/**
-	 * Í¬Ò»Íø¶ÎÄÚµÄËùÓĞÂ·ÓÉÏî¡£
-	 * Ã¿¸öfib_node½á¹¹Óë°üº¬Ò»¸ö»ò¶à¸öfib_alias½á¹¹µÄÁ´±íÏà¹ØÁª¡£fn_aliasÖ¸ÕëÖ¸Ïò¸ÃÁ´±íµÄÍ·²¿¡£
+	 * åŒä¸€ç½‘æ®µå†…çš„æ‰€æœ‰è·¯ç”±é¡¹ã€‚
+	 * æ¯ä¸ªfib_nodeç»“æ„ä¸åŒ…å«ä¸€ä¸ªæˆ–å¤šä¸ªfib_aliasç»“æ„çš„é“¾è¡¨ç›¸å…³è”ã€‚fn_aliasæŒ‡é’ˆæŒ‡å‘è¯¥é“¾è¡¨çš„å¤´éƒ¨ã€‚
 	 */
 	struct list_head	fn_alias;
 	/**
-	 * ¹Ø¼ü×Ö£¬¶ÔÓ¦Â·ÓÉÍø¶Î¡£
-	 * ÕâÊÇÂ·ÓÉÏîµÄÇ°×º£¨»òÍøÂçµØÖ·£¬ÓÃÂ·ÓÉÏîµÄnetmask×Ö¶ÎÀ´±íÊ¾£©¡£¸Ã×Ö¶Î±»ÓÃ×÷²éÕÒÂ·ÓÉ±íÊ±µÄËÑË÷key¡£
+	 * å…³é”®å­—ï¼Œå¯¹åº”è·¯ç”±ç½‘æ®µã€‚
+	 * è¿™æ˜¯è·¯ç”±é¡¹çš„å‰ç¼€ï¼ˆæˆ–ç½‘ç»œåœ°å€ï¼Œç”¨è·¯ç”±é¡¹çš„netmaskå­—æ®µæ¥è¡¨ç¤ºï¼‰ã€‚è¯¥å­—æ®µè¢«ç”¨ä½œæŸ¥æ‰¾è·¯ç”±è¡¨æ—¶çš„æœç´¢keyã€‚
 	 */
 	u32			fn_key;
 };
 
 /**
- * Ò»¸özone±íÊ¾ÍøÂçÑÚÂë³¤¶ÈÏàÍ¬µÄÒ»×éÂ·ÓÉ±íÏî¡£
- * ÒòÎªÍøÂçÑÚÂëÕ¼ÓÃ32±ÈÌØ£¨¶ÔIPv4¶øÑÔ£©£¬Òò¶øÃ¿¸öÂ·ÓÉ±íÓĞ33¸özone¡£
- * ÕâÑù£¬µ½´ï×ÓÍø10.0.1.0/24Óë10.0.2.0/24µÄÂ·ÓÉÏî¶¼½«·ÅÔÚ24±ÈÌØµÄzoneÁ´±í£¨¼´µÚ25¸özone£©ÄÚ£¬µ½´ï×ÓÍø10.0.3.128/25µÄÂ·ÓÉÏî½«·ÅÔÚ25±ÈÌØµÄzoneÁ´±íÄÚ¡£
+ * ä¸€ä¸ªzoneè¡¨ç¤ºç½‘ç»œæ©ç é•¿åº¦ç›¸åŒçš„ä¸€ç»„è·¯ç”±è¡¨é¡¹ã€‚
+ * å› ä¸ºç½‘ç»œæ©ç å ç”¨32æ¯”ç‰¹ï¼ˆå¯¹IPv4è€Œè¨€ï¼‰ï¼Œå› è€Œæ¯ä¸ªè·¯ç”±è¡¨æœ‰33ä¸ªzoneã€‚
+ * è¿™æ ·ï¼Œåˆ°è¾¾å­ç½‘10.0.1.0/24ä¸10.0.2.0/24çš„è·¯ç”±é¡¹éƒ½å°†æ”¾åœ¨24æ¯”ç‰¹çš„zoneé“¾è¡¨ï¼ˆå³ç¬¬25ä¸ªzoneï¼‰å†…ï¼Œåˆ°è¾¾å­ç½‘10.0.3.128/25çš„è·¯ç”±é¡¹å°†æ”¾åœ¨25æ¯”ç‰¹çš„zoneé“¾è¡¨å†…ã€‚
  */
 struct fn_zone {
 	/**
-	 * ½«»î¶¯zonesÁ´½ÓÔÚÒ»ÆğµÄÖ¸Õë¡£
-	 * ¸ÃÁ´±íµÄÍ·²¿ÓÉfn_zone_listÀ´¸ú×Ù£¬fn_zone_listÊÇfn_hashÊı¾İ½á¹¹µÄÒ»¸ö×Ö¶Î¡£
+	 * å°†æ´»åŠ¨zonesé“¾æ¥åœ¨ä¸€èµ·çš„æŒ‡é’ˆã€‚
+	 * è¯¥é“¾è¡¨çš„å¤´éƒ¨ç”±fn_zone_listæ¥è·Ÿè¸ªï¼Œfn_zone_listæ˜¯fn_hashæ•°æ®ç»“æ„çš„ä¸€ä¸ªå­—æ®µã€‚
 	 */
 	struct fn_zone		*fz_next;	/* Next not empty zone	*/
 	/**
-	 * Ö¸Ïò´æ´¢¸ÃzoneÖĞÂ·ÓÉÏîµÄ¹şÏ£±í¡£
+	 * æŒ‡å‘å­˜å‚¨è¯¥zoneä¸­è·¯ç”±é¡¹çš„å“ˆå¸Œè¡¨ã€‚
 	 */
 	struct hlist_head	*fz_hash;	/* Hash table pointer	*/
 	/**
-	 * ÔÚ¸ÃzoneÖĞÂ·ÓÉÏîµÄÊıÄ¿£¨¼´ÔÚ¸ÃzoneµÄ¹şÏ£±íÖĞfib_nodeÊµÀıµÄÊıÄ¿£©¡£
-	 * Õâ¸öÖµ¿ÉÒÔÓÃÓÚ¼ì²éÊÇ·ñĞèÒª¸Ä±ä¸Ã¹şÏ£±íµÄÈİÁ¿
+	 * åœ¨è¯¥zoneä¸­è·¯ç”±é¡¹çš„æ•°ç›®ï¼ˆå³åœ¨è¯¥zoneçš„å“ˆå¸Œè¡¨ä¸­fib_nodeå®ä¾‹çš„æ•°ç›®ï¼‰ã€‚
+	 * è¿™ä¸ªå€¼å¯ä»¥ç”¨äºæ£€æŸ¥æ˜¯å¦éœ€è¦æ”¹å˜è¯¥å“ˆå¸Œè¡¨çš„å®¹é‡
 	 */
 	int			fz_nent;	/* Number of entries	*/
 
 	/**
-	 * HASH±íÍ°ÊıÁ¿¡£
-	 * ¹şÏ£±ífz_hashµÄÈİÁ¿£¨Í°µÄÊıÄ¿£©
+	 * HASHè¡¨æ¡¶æ•°é‡ã€‚
+	 * å“ˆå¸Œè¡¨fz_hashçš„å®¹é‡ï¼ˆæ¡¶çš„æ•°ç›®ï¼‰
 	 */
 	int			fz_divisor;	/* Hash divisor		*/
 	/**
-	 * ÕâÎªfz_divisor-1£¬Ìá¹©¸Ã×Ö¶ÎµÄÀíÓÉÊÇ¿ÉÒÔÓÃ²Ù×÷Êı¸üÉÙµÄ°´Î»Óë²Ù×÷£¬¶ø²»ÊÇÓÃ²Ù×÷Êı¸ü¶àµÄÈ¡Ä£²Ù×÷À´¼ÆËãÒ»¸öÖµ¶Ôfz_divisorÈ¡Ä£²Ù×÷
+	 * è¿™ä¸ºfz_divisor-1ï¼Œæä¾›è¯¥å­—æ®µçš„ç†ç”±æ˜¯å¯ä»¥ç”¨æ“ä½œæ•°æ›´å°‘çš„æŒ‰ä½ä¸æ“ä½œï¼Œè€Œä¸æ˜¯ç”¨æ“ä½œæ•°æ›´å¤šçš„å–æ¨¡æ“ä½œæ¥è®¡ç®—ä¸€ä¸ªå€¼å¯¹fz_divisorå–æ¨¡æ“ä½œ
 	 */
 	u32			fz_hashmask;	/* (fz_divisor - 1)	*/
 #define FZ_HASHMASK(fz)		((fz)->fz_hashmask)
 
 	/**
-	 * ÔÚÍøÂçÑÚÂëfz_maskÖĞ£¨ËùÓĞÁ¬Ğø£©µÄ±ÈÌØÊıÄ¿£¬ÔÚ´úÂëÖĞÒ²ÓÃprefixlenÀ´±íÊ¾¡£
-	 * ÀıÈç£¬ÍøÂçÑÚÂë255.255.255.0Ëù¶ÔÓ¦µÄfz_orderÎª24¡£
+	 * åœ¨ç½‘ç»œæ©ç fz_maskä¸­ï¼ˆæ‰€æœ‰è¿ç»­ï¼‰çš„æ¯”ç‰¹æ•°ç›®ï¼Œåœ¨ä»£ç ä¸­ä¹Ÿç”¨prefixlenæ¥è¡¨ç¤ºã€‚
+	 * ä¾‹å¦‚ï¼Œç½‘ç»œæ©ç 255.255.255.0æ‰€å¯¹åº”çš„fz_orderä¸º24ã€‚
 	 */
 	int			fz_order;	/* Zone order		*/
 	/**
-	 * ÓÃfz_order¹¹ÔìµÄÍøÂçÑÚÂë¡£
-	 * ÀıÈçÉèfz_orderÖµÈ¡3£¬ÔòÉú³ÉµÄfz_maskµÄ¶ş½øÖÆ±íÊ¾Îª11100000.00000000.00000000.00000000£¬ÆäÊ®½øÖÆ±íÊ¾Îª224.0.0.0¡£
+	 * ç”¨fz_orderæ„é€ çš„ç½‘ç»œæ©ç ã€‚
+	 * ä¾‹å¦‚è®¾fz_orderå€¼å–3ï¼Œåˆ™ç”Ÿæˆçš„fz_maskçš„äºŒè¿›åˆ¶è¡¨ç¤ºä¸º11100000.00000000.00000000.00000000ï¼Œå…¶åè¿›åˆ¶è¡¨ç¤ºä¸º224.0.0.0ã€‚
 	 */
 	u32			fz_mask;
 #define FZ_MASK(fz)		((fz)->fz_mask)
@@ -120,8 +120,8 @@ struct fn_zone {
  * can be cheaper than memory lookup, so that FZ_* macros are used.
  */
 /**
- * ¸Ã½á¹¹ÄÚ°üº¬Ö¸Ïò33¸öfn_zoneÁ´±íµÄÍ·Ö¸Õë£¬ÒÔ¼°½«»î¶¯zone£¨active zone£¬¼´ÄÇĞ©ÖÁÉÙÓĞÒ»¸öÔªËØµÄzone£©Á´½ÓÔÚÒ»ÆğµÄÒ»¸öÁ´±í¡£
- * ºóÃæÒ»¸öÁ´±íÖĞµÄÔªËØ°´ÕÕÍøÂçÑÚÂë³¤¶ÈµÄ½µĞòÅÅÁĞ¡£
+ * è¯¥ç»“æ„å†…åŒ…å«æŒ‡å‘33ä¸ªfn_zoneé“¾è¡¨çš„å¤´æŒ‡é’ˆï¼Œä»¥åŠå°†æ´»åŠ¨zoneï¼ˆactive zoneï¼Œå³é‚£äº›è‡³å°‘æœ‰ä¸€ä¸ªå…ƒç´ çš„zoneï¼‰é“¾æ¥åœ¨ä¸€èµ·çš„ä¸€ä¸ªé“¾è¡¨ã€‚
+ * åé¢ä¸€ä¸ªé“¾è¡¨ä¸­çš„å…ƒç´ æŒ‰ç…§ç½‘ç»œæ©ç é•¿åº¦çš„é™åºæ’åˆ—ã€‚
  */
 struct fn_hash {
 	struct fn_zone	*fn_zones[33];
@@ -144,7 +144,7 @@ static inline u32 fz_key(u32 dst, struct fn_zone *fz)
 }
 
 /**
- * Õâ¸ö¶ÁĞ´spinËø£¨rwlock£©±£»¤ËùÓĞµÄÂ·ÓÉ±í¡£
+ * è¿™ä¸ªè¯»å†™spiné”ï¼ˆrwlockï¼‰ä¿æŠ¤æ‰€æœ‰çš„è·¯ç”±è¡¨ã€‚
  */
 static DEFINE_RWLOCK(fib_hash_lock);
 
@@ -295,14 +295,14 @@ fn_new_zone(struct fn_hash *table, int z)
 }
 
 /**
- * ËùÓĞµÄÂ·ÓÉ±í²éÕÒ£¬²»ÂÛÂ·ÓÉ±íÊÇ·ñÓÉ²ßÂÔÂ·ÓÉÌá¹©£¬Ò²²»ÂÛÁ÷Á¿·½ÏòÈçºÎ£¬¶¼ÊÇÀûÓÃfn_hash_lookupÀ´²éÕÒ¡£
- *		tb:		ËÑË÷µÄÂ·ÓÉ±í¡£
- *		flp:	ËÑË÷key¡£
- *		res:	²éÕÒ³É¹¦Ê±£¬ÀûÓÃÂ·ÓÉĞÅÏ¢À´³õÊ¼»¯res¡£
- * ·µ»ØÖµ:
- *		0:		³É¹¦¡£ÒÑ¾­¸ù¾İ×ª·¢ĞÅÏ¢³õÊ¼»¯res£¨Í¨¹ıfib_semantic_matchº¯Êı£©¡£
- *		1:		Ê§°Ü¡£Ã»ÓĞÓëËÑË÷keyÆ¥ÅäµÄÂ·ÓÉÏî¡£
- *		Ğ¡ÓÚ0£º	¹ÜÀíÊ§°Ü¡£Õâ±íÊ¾²éÕÒ²»³É¹¦£¬ÒòÎª²éÕÒµ½µÄÂ·ÓÉÃ»ÓĞ¼ÛÖµ£ºÀıÈçÏà¹ØµÄÖ÷»ú¿ÉÄÜ±»±ê¼ÇÎª²»¿É´ï¡£
+ * æ‰€æœ‰çš„è·¯ç”±è¡¨æŸ¥æ‰¾ï¼Œä¸è®ºè·¯ç”±è¡¨æ˜¯å¦ç”±ç­–ç•¥è·¯ç”±æä¾›ï¼Œä¹Ÿä¸è®ºæµé‡æ–¹å‘å¦‚ä½•ï¼Œéƒ½æ˜¯åˆ©ç”¨fn_hash_lookupæ¥æŸ¥æ‰¾ã€‚
+ *		tb:		æœç´¢çš„è·¯ç”±è¡¨ã€‚
+ *		flp:	æœç´¢keyã€‚
+ *		res:	æŸ¥æ‰¾æˆåŠŸæ—¶ï¼Œåˆ©ç”¨è·¯ç”±ä¿¡æ¯æ¥åˆå§‹åŒ–resã€‚
+ * è¿”å›å€¼:
+ *		0:		æˆåŠŸã€‚å·²ç»æ ¹æ®è½¬å‘ä¿¡æ¯åˆå§‹åŒ–resï¼ˆé€šè¿‡fib_semantic_matchå‡½æ•°ï¼‰ã€‚
+ *		1:		å¤±è´¥ã€‚æ²¡æœ‰ä¸æœç´¢keyåŒ¹é…çš„è·¯ç”±é¡¹ã€‚
+ *		å°äº0ï¼š	ç®¡ç†å¤±è´¥ã€‚è¿™è¡¨ç¤ºæŸ¥æ‰¾ä¸æˆåŠŸï¼Œå› ä¸ºæŸ¥æ‰¾åˆ°çš„è·¯ç”±æ²¡æœ‰ä»·å€¼ï¼šä¾‹å¦‚ç›¸å…³çš„ä¸»æœºå¯èƒ½è¢«æ ‡è®°ä¸ºä¸å¯è¾¾ã€‚
  */
 static int
 fn_hash_lookup(struct fib_table *tb, const struct flowi *flp, struct fib_result *res)
@@ -313,38 +313,38 @@ fn_hash_lookup(struct fib_table *tb, const struct flowi *flp, struct fib_result 
 
 	read_lock(&fib_hash_lock);
 	/**
-	 * ´Ó±íÊ¾×î³¤ÍøÂçÑÚÂëµÄzone¿ªÊ¼±éÀúÂ·ÓÉ¡£
+	 * ä»è¡¨ç¤ºæœ€é•¿ç½‘ç»œæ©ç çš„zoneå¼€å§‹éå†è·¯ç”±ã€‚
 	 */
 	for (fz = t->fn_zone_list; fz; fz = fz->fz_next) {
 		struct hlist_head *head;
 		struct hlist_node *node;
 		struct fib_node *f;
 		/**
-		 * ½«Ä¿µÄIPµØÖ·Óë¼ì²éµÄactive zoneµÄÍøÂçÑÚÂëÏàÓë£¨ANDs£©£¬Óë²Ù×÷µÄ½á¹û×÷ÎªËÑË÷key¡£
+		 * å°†ç›®çš„IPåœ°å€ä¸æ£€æŸ¥çš„active zoneçš„ç½‘ç»œæ©ç ç›¸ä¸ï¼ˆANDsï¼‰ï¼Œä¸æ“ä½œçš„ç»“æœä½œä¸ºæœç´¢keyã€‚
 		 */
 		u32 k = fz_key(flp->fl4_dst, fz);
 
 		/**
-		 * ÒòÎªÂ·ÓÉ±»´æ´¢ÔÚ¹şÏ£±í£¨fz_hash£©ÄÚ£¬ËùÒÔÊ×ÏÈÍ¨¹ıÒ»¸ö¹şÏ£º¯Êı¶ÔËÑË÷key k½øĞĞ¹şÏ££¬µÃµ½ÏàÓ¦µÄ¹şÏ£Í°head¡£
+		 * å› ä¸ºè·¯ç”±è¢«å­˜å‚¨åœ¨å“ˆå¸Œè¡¨ï¼ˆfz_hashï¼‰å†…ï¼Œæ‰€ä»¥é¦–å…ˆé€šè¿‡ä¸€ä¸ªå“ˆå¸Œå‡½æ•°å¯¹æœç´¢key kè¿›è¡Œå“ˆå¸Œï¼Œå¾—åˆ°ç›¸åº”çš„å“ˆå¸Œæ¡¶headã€‚
 		 */
 		head = &fz->fz_hash[fn_hash(k, fz)];
 		/**
-		 * ±éÀúÓë¸Ã¹şÏ£Í°Ïà¹ØµÄÂ·ÓÉÁ´±í£¨fib_node½á¹¹£©£¬²éÕÒÓëkÆ¥ÅäµÄÂ·ÓÉÏî¡£
+		 * éå†ä¸è¯¥å“ˆå¸Œæ¡¶ç›¸å…³çš„è·¯ç”±é“¾è¡¨ï¼ˆfib_nodeç»“æ„ï¼‰ï¼ŒæŸ¥æ‰¾ä¸kåŒ¹é…çš„è·¯ç”±é¡¹ã€‚
 		 */
 		hlist_for_each_entry(f, node, head, fn_hash) {
 			if (f->fn_key != k)
 				continue;
 
 			/**
-			 * Ò»¸öfib_node¸²¸ÇÁËÍ¬Ò»×ÓÍøÄÚµÄËùÓĞÂ·ÓÉÏî£¬µ«ÕâĞ©Â·ÓÉÏîÔÚÖîÈçTOSµÈÆäËû×Ö¶ÎÉÏ¿ÉÄÜ²»Í¬¡£
-			 * ÏÖÔÚ£¬Èç¹ûfn_hash_lookupº¯ÊıÕÒµ½ÁËÓëËÑË÷key kÆ¥ÅäµÄfib_node£¬Ëü»¹ĞèÒª¼ì²éÃ¿Ò»¸öÇ±ÔÚµÄÂ·ÓÉÏî£¬À´²éÕÒÓëÊäÈë²ÎÊıflpÖĞÆäËûËÑË÷×Ö¶ÎÏàÆ¥ÅäµÄÂ·ÓÉ¡£
-			 * Õâ¸öÏêÏ¸¼ì²éÊÇÓÉfib_semantic_matchÀ´Íê³ÉµÄ
+			 * ä¸€ä¸ªfib_nodeè¦†ç›–äº†åŒä¸€å­ç½‘å†…çš„æ‰€æœ‰è·¯ç”±é¡¹ï¼Œä½†è¿™äº›è·¯ç”±é¡¹åœ¨è¯¸å¦‚TOSç­‰å…¶ä»–å­—æ®µä¸Šå¯èƒ½ä¸åŒã€‚
+			 * ç°åœ¨ï¼Œå¦‚æœfn_hash_lookupå‡½æ•°æ‰¾åˆ°äº†ä¸æœç´¢key kåŒ¹é…çš„fib_nodeï¼Œå®ƒè¿˜éœ€è¦æ£€æŸ¥æ¯ä¸€ä¸ªæ½œåœ¨çš„è·¯ç”±é¡¹ï¼Œæ¥æŸ¥æ‰¾ä¸è¾“å…¥å‚æ•°flpä¸­å…¶ä»–æœç´¢å­—æ®µç›¸åŒ¹é…çš„è·¯ç”±ã€‚
+			 * è¿™ä¸ªè¯¦ç»†æ£€æŸ¥æ˜¯ç”±fib_semantic_matchæ¥å®Œæˆçš„
 			 */
 			err = fib_semantic_match(&f->fn_alias,
 						 flp, res,
 						 fz->fz_order);
 			/**
-			 * fib_semantic_matchÒ²ÓÃ²éÕÒ½á¹ûÀ´³õÊ¼»¯ÊäÈë²ÎÊıres£¬Èç¹ûËü·µ»Ø³É¹¦£¬fn_hash_lookup¾Í½«¸Ã½á¹û·µ»Ø¸øµ÷ÓÃ·½¡£
+			 * fib_semantic_matchä¹Ÿç”¨æŸ¥æ‰¾ç»“æœæ¥åˆå§‹åŒ–è¾“å…¥å‚æ•°resï¼Œå¦‚æœå®ƒè¿”å›æˆåŠŸï¼Œfn_hash_lookupå°±å°†è¯¥ç»“æœè¿”å›ç»™è°ƒç”¨æ–¹ã€‚
 			 */
 			if (err <= 0)
 				goto out;
@@ -359,8 +359,8 @@ out:
 static int fn_hash_last_dflt=-1;
 
 /**
- * IPV4ÖĞ£¬È·¶¨Ò»¸öÈ±Ê¡Íø¹Ø¡£
- *		res:		fib_lookup·µ»ØµÄÂ·ÓÉ²éÕÒ½á¹û¡£
+ * IPV4ä¸­ï¼Œç¡®å®šä¸€ä¸ªç¼ºçœç½‘å…³ã€‚
+ *		res:		fib_lookupè¿”å›çš„è·¯ç”±æŸ¥æ‰¾ç»“æœã€‚
  */
 static void
 fn_hash_select_default(struct fib_table *tb, const struct flowi *flp, struct fib_result *res)
@@ -387,25 +387,25 @@ fn_hash_select_default(struct fib_table *tb, const struct flowi *flp, struct fib
 		list_for_each_entry(fa, &f->fn_alias, fa_list) {
 			struct fib_info *next_fi = fa->fa_info;
 
-			if (fa->fa_scope != res->scope || /* ÎªÁË±»Ñ¡ÖĞ£¬È±Ê¡Â·ÓÉµÄscope±ØĞëÓëres->scopeÏàÍ¬ */
+			if (fa->fa_scope != res->scope || /* ä¸ºäº†è¢«é€‰ä¸­ï¼Œç¼ºçœè·¯ç”±çš„scopeå¿…é¡»ä¸res->scopeç›¸åŒ */
 			    fa->fa_type != RTN_UNICAST)
 				continue;
 
 			/**
-			 * ÓÅÏÈ¼¶ÒªĞ¡ÓÚ»òµÈÓÚres->fi->fib_priority
+			 * ä¼˜å…ˆçº§è¦å°äºæˆ–ç­‰äºres->fi->fib_priority
 			 */
 			if (next_fi->fib_priority > res->fi->fib_priority)
 				break;
 			if (!next_fi->fib_nh[0].nh_gw ||
-			    next_fi->fib_nh[0].nh_scope != RT_SCOPE_LINK)/* ÏÂÒ»ÌøµÄscope±ØĞëÎªRT_SCOPE_LINK */
+			    next_fi->fib_nh[0].nh_scope != RT_SCOPE_LINK)/* ä¸‹ä¸€è·³çš„scopeå¿…é¡»ä¸ºRT_SCOPE_LINK */
 				continue;
 			fa->fa_state |= FA_S_ACCESSED;
 
 			if (fi == NULL) {
 				if (next_fi != res->fi)
 					break;
-			} else if (!fib_detect_death(fi, order, &last_resort,/* fib_detect_deathº¯Êı½«Â·ÓÉÏîÖĞL3µØÖ·ÒÑ¾­±»½âÎöÎªL2µØÖ·µÄÏÂÒ»Ìø£¨¼´×´Ì¬ÎªNUD_REACHABLE£©¸øÓè¸ü¸ßµÄÓÅÏÈ¼¶¡£ */
-						     &last_idx, &fn_hash_last_dflt)) {/* Ñ¡Ôñ³öµÄÈ±Ê¡Â·ÓÉ±»±£´æÔÚÈ«¾Ö±äÁ¿fn_hash_last_dfltÖĞ¡£ */
+			} else if (!fib_detect_death(fi, order, &last_resort,/* fib_detect_deathå‡½æ•°å°†è·¯ç”±é¡¹ä¸­L3åœ°å€å·²ç»è¢«è§£æä¸ºL2åœ°å€çš„ä¸‹ä¸€è·³ï¼ˆå³çŠ¶æ€ä¸ºNUD_REACHABLEï¼‰ç»™äºˆæ›´é«˜çš„ä¼˜å…ˆçº§ã€‚ */
+						     &last_idx, &fn_hash_last_dflt)) {/* é€‰æ‹©å‡ºçš„ç¼ºçœè·¯ç”±è¢«ä¿å­˜åœ¨å…¨å±€å˜é‡fn_hash_last_dfltä¸­ã€‚ */
 				if (res->fi)
 					fib_info_put(res->fi);
 				res->fi = fi;
@@ -468,7 +468,7 @@ static struct fib_node *fib_find_node(struct fn_zone *fz, u32 key)
 }
 
 /**
- * Ìí¼ÓÂ·ÓÉ±íÏî
+ * æ·»åŠ è·¯ç”±è¡¨é¡¹
  */
 static int
 fn_hash_insert(struct fib_table *tb, struct rtmsg *r, struct kern_rta *rta,
@@ -627,7 +627,7 @@ out:
 
 
 /**
- * É¾³ıÂ·ÓÉ±íÏî
+ * åˆ é™¤è·¯ç”±è¡¨é¡¹
  */
 static int
 fn_hash_delete(struct fib_table *tb, struct rtmsg *r, struct kern_rta *rta,
@@ -647,7 +647,7 @@ fn_hash_delete(struct fib_table *tb, struct rtmsg *r, struct kern_rta *rta,
 		return -ESRCH;
 
 	/**
-	 * ¹¹ÔìËÑË÷key
+	 * æ„é€ æœç´¢key
 	 */
 	key = 0;
 	if (rta->rta_dst) {
@@ -659,7 +659,7 @@ fn_hash_delete(struct fib_table *tb, struct rtmsg *r, struct kern_rta *rta,
 	}
 
 	/**
-	 * ²éÕÒ´ıÉ¾³ıµÄ±íÏîÊÇ·ñ»¹´æÔÚ¡£
+	 * æŸ¥æ‰¾å¾…åˆ é™¤çš„è¡¨é¡¹æ˜¯å¦è¿˜å­˜åœ¨ã€‚
 	 */
 	f = fib_find_node(fz, key);
 
@@ -671,7 +671,7 @@ fn_hash_delete(struct fib_table *tb, struct rtmsg *r, struct kern_rta *rta,
 		return -ESRCH;
 
 	/**
-	 * µ±²éÕÒµ½fib_alias½á¹¹Ê±£¬¾ÍÉ¾³ıËü
+	 * å½“æŸ¥æ‰¾åˆ°fib_aliasç»“æ„æ—¶ï¼Œå°±åˆ é™¤å®ƒ
 	 */
 	fa_to_delete = NULL;
 	fa = list_entry(fa->fa_list.prev, struct fib_alias, fa_list);
@@ -698,7 +698,7 @@ fn_hash_delete(struct fib_table *tb, struct rtmsg *r, struct kern_rta *rta,
 
 		fa = fa_to_delete;
 		/**
-		 * Í¨¹ıNetlink¹ã²¥Í¨Öª¸ĞĞËÈ¤µÄ×ÓÏµÍ³
+		 * é€šè¿‡Netlinkå¹¿æ’­é€šçŸ¥æ„Ÿå…´è¶£çš„å­ç³»ç»Ÿ
 		 */
 		rtmsg_fib(RTM_DELROUTE, key, fa, z, tb->tb_id, n, req);
 
@@ -712,7 +712,7 @@ fn_hash_delete(struct fib_table *tb, struct rtmsg *r, struct kern_rta *rta,
 		write_unlock_bh(&fib_hash_lock);
 
 		/**
-		 * Èç¹û¸ÃÂ·ÓÉ±íÏîÒÑ¾­±»Ê¹ÓÃ£¨¼´ÉèÖÃÁËFA_S_ACCESSED±êÖ¾£©ÔòflushÂ·ÓÉ»º´æ±í¡£
+		 * å¦‚æœè¯¥è·¯ç”±è¡¨é¡¹å·²ç»è¢«ä½¿ç”¨ï¼ˆå³è®¾ç½®äº†FA_S_ACCESSEDæ ‡å¿—ï¼‰åˆ™flushè·¯ç”±ç¼“å­˜è¡¨ã€‚
 		 */
 		if (fa->fa_state & FA_S_ACCESSED)
 			rt_cache_flush(-1);
@@ -869,14 +869,14 @@ static int fn_hash_dump(struct fib_table *tb, struct sk_buff *skb, struct netlin
 }
 
 /**
- * Â·ÓÉ±í³õÊ¼»¯¹ı³Ì
+ * è·¯ç”±è¡¨åˆå§‹åŒ–è¿‡ç¨‹
  */
 #ifdef CONFIG_IP_MULTIPLE_TABLES
 struct fib_table * fib_hash_init(int id)
 #else
 /**
- * Â·ÓÉ±í³õÊ¼»¯¡£±»IPÂ·ÓÉ×ÓÏµÍ³µÄip_fib)initµ÷ÓÃ¡£
- * ÔÚÅäÖÃ²ßÂÔÂ·ÓÉµÄÇé¿öÏÂ£¬¿ÉÒÔÔÚÈÎÒâÊ±¿Ì´´½¨Ò»¸öĞÂÂ·ÓÉ±í¡£ËùÒÔfib_hash_init²»´øÓĞ__initºê¡£
+ * è·¯ç”±è¡¨åˆå§‹åŒ–ã€‚è¢«IPè·¯ç”±å­ç³»ç»Ÿçš„ip_fib)initè°ƒç”¨ã€‚
+ * åœ¨é…ç½®ç­–ç•¥è·¯ç”±çš„æƒ…å†µä¸‹ï¼Œå¯ä»¥åœ¨ä»»æ„æ—¶åˆ»åˆ›å»ºä¸€ä¸ªæ–°è·¯ç”±è¡¨ã€‚æ‰€ä»¥fib_hash_initä¸å¸¦æœ‰__initå®ã€‚
  */
 struct fib_table * __init fib_hash_init(int id)
 #endif
@@ -884,7 +884,7 @@ struct fib_table * __init fib_hash_init(int id)
 	struct fib_table *tb;
 
 	/**
-	 * ´´½¨ÓÃÓÚ·ÖÅäfib_nodeÊı¾İ½á¹¹µÄÄÚ´æ³Øfn_hash_kmem¡£
+	 * åˆ›å»ºç”¨äºåˆ†é…fib_nodeæ•°æ®ç»“æ„çš„å†…å­˜æ± fn_hash_kmemã€‚
 	 */
 	if (fn_hash_kmem == NULL)
 		fn_hash_kmem = kmem_cache_create("ip_fib_hash",
@@ -904,7 +904,7 @@ struct fib_table * __init fib_hash_init(int id)
 		return NULL;
 
 	/**
-	 * ·ÖÅä²¢³õÊ¼fib_table£¬²¢ÉèÖÃ33¸öÂ·ÓÉ±íÎª¿Õ¡£
+	 * åˆ†é…å¹¶åˆå§‹fib_tableï¼Œå¹¶è®¾ç½®33ä¸ªè·¯ç”±è¡¨ä¸ºç©ºã€‚
 	 */
 	tb->tb_id = id;
 	tb->tb_lookup = fn_hash_lookup;
@@ -921,7 +921,7 @@ struct fib_table * __init fib_hash_init(int id)
 #ifdef CONFIG_PROC_FS
 
 /**
- * µ±±éÀú×é³ÉÒ»ÕÅÂ·ÓÉ±íµÄÊı¾İ½á¹¹ÊµÀıÊ±´æ´¢µÄÉÏÏÂÎÄĞÅÏ¢£¬ÔÚ´¦Àí/proc½Ó¿ÚµÄ´úÂëÖĞÊ¹ÓÃ¸ÃÊı¾İ½á¹¹¡£
+ * å½“éå†ç»„æˆä¸€å¼ è·¯ç”±è¡¨çš„æ•°æ®ç»“æ„å®ä¾‹æ—¶å­˜å‚¨çš„ä¸Šä¸‹æ–‡ä¿¡æ¯ï¼Œåœ¨å¤„ç†/procæ¥å£çš„ä»£ç ä¸­ä½¿ç”¨è¯¥æ•°æ®ç»“æ„ã€‚
  */
 struct fib_iter_state {
 	struct fn_zone	*zone;

@@ -27,23 +27,23 @@ struct scsi_pointer {
 	volatile int phase;
 };
 
-/* SCSIÃüÁîÃèÊö·û */
+/* SCSIå‘½ä»¤æè¿°ç¬¦ */
 struct scsi_cmnd {
 	int     sc_magic;
 
-	/* ËùÊôÉè±¸ */
+	/* æ‰€å±è®¾å¤‡ */
 	struct scsi_device *device;
 	unsigned short state;
 	unsigned short owner;
 	struct scsi_request *sc_request;
 
-	/* Á´Èëµ½ËùÊôSCSIÉè±¸µÄÃüÁîÁ´±í */
+	/* é“¾å…¥åˆ°æ‰€å±SCSIè®¾å¤‡çš„å‘½ä»¤é“¾è¡¨ */
 	struct list_head list;  /* scsi_cmnd participates in queue lists */
 
-	/* Á´Èëµ½Ö÷»úÊÊÅäÆ÷µÄ´íÎó»Ö¸´Á´±í */
+	/* é“¾å…¥åˆ°ä¸»æœºé€‚é…å™¨çš„é”™è¯¯æ¢å¤é“¾è¡¨ */
 	struct list_head eh_entry; /* entry for the host eh_cmd_q */
 	int eh_state;		/* Used for state tracking in error handlr */
-	/* ´íÎó»Ö¸´´¦ÀíµÄ±êÖ¾ */
+	/* é”™è¯¯æ¢å¤å¤„ç†çš„æ ‡å¿— */
 	int eh_eflags;		/* Used by error handlr */
 	void (*done) (struct scsi_cmnd *);	/* Mid-level done function */
 
@@ -60,13 +60,13 @@ struct scsi_cmnd {
 	 * for another command, so that we can avoid incorrectly aborting or
 	 * resetting the new command.
 	 */
-	/* ÃüÁîµÄĞòºÅ£¬±êÊ¶Ò»¸öÇëÇó£¬ÓÃÓÚ´íÎó»Ö¸´ºÍµ÷ÊÔÄ¿µÄ */
+	/* å‘½ä»¤çš„åºå·ï¼Œæ ‡è¯†ä¸€ä¸ªè¯·æ±‚ï¼Œç”¨äºé”™è¯¯æ¢å¤å’Œè°ƒè¯•ç›®çš„ */
 	unsigned long serial_number;
 	unsigned long serial_number_at_timeout;
 
-	/* ÒÑ¾­ÖØÊÔµÄ´ÎÊı */
+	/* å·²ç»é‡è¯•çš„æ¬¡æ•° */
 	int retries;
-	/* ¿ÉÔÊĞíµÄÖØÊÔ´ÎÊı */
+	/* å¯å…è®¸çš„é‡è¯•æ¬¡æ•° */
 	int allowed;
 	int timeout_per_command;
 	int timeout_total;
@@ -78,16 +78,16 @@ struct scsi_cmnd {
 	 */
 	unsigned volatile char internal_timeout;
 
-	/* SCSIÃüÁîµÄ³¤¶È */
+	/* SCSIå‘½ä»¤çš„é•¿åº¦ */
 	unsigned char cmd_len;
 	unsigned char old_cmd_len;
-	/* Êı¾İ´«Êä·½Ïò£¬¶Á»¹ÊÇĞ´ */
+	/* æ•°æ®ä¼ è¾“æ–¹å‘ï¼Œè¯»è¿˜æ˜¯å†™ */
 	enum dma_data_direction sc_data_direction;
 	enum dma_data_direction sc_old_data_direction;
 
 	/* These elements define the operation we are about to perform */
 #define MAX_COMMAND_SIZE	16
-	/* SCSI¹æ·¶¸ñÊ½µÄÃüÁî×Ö·û´®Ö¸Õë */
+	/* SCSIè§„èŒƒæ ¼å¼çš„å‘½ä»¤å­—ç¬¦ä¸²æŒ‡é’ˆ */
 	unsigned char cmnd[MAX_COMMAND_SIZE];
 	unsigned request_bufflen;	/* Actual request size */
 
@@ -105,13 +105,13 @@ struct scsi_cmnd {
 	unsigned bufflen;	/* Size of data buffer */
 	void *buffer;		/* Data buffer */
 
-	/* Èç¹û´«ÊäµÄÊı¾İĞ¡ÓÚÕâ¸öÖµ£¬Ôò·µ»Ø´íÎó */
+	/* å¦‚æœä¼ è¾“çš„æ•°æ®å°äºè¿™ä¸ªå€¼ï¼Œåˆ™è¿”å›é”™è¯¯ */
 	unsigned underflow;	/* Return error if less than
 				   this amount is transferred */
 	unsigned old_underflow;	/* save underflow here when reusing the
 				 * command for error handling */
 
-	/* ´«Êä³¤¶È£¬Ó¦¸ÃµÈÓÚÉÈÇø³¤¶È */
+	/* ä¼ è¾“é•¿åº¦ï¼Œåº”è¯¥ç­‰äºæ‰‡åŒºé•¿åº¦ */
 	unsigned transfersize;	/* How much we are guaranteed to
 				   transfer with each SCSI transfer
 				   (ie, between disconnect / 
@@ -122,12 +122,12 @@ struct scsi_cmnd {
 				   transferred less actual number
 				   transferred (0 if not supported) */
 
-	/* ¶ÔÓ¦µÄ¿éÉè±¸²ãÇëÇóÃèÊö·û */
+	/* å¯¹åº”çš„å—è®¾å¤‡å±‚è¯·æ±‚æè¿°ç¬¦ */
 	struct request *request;	/* The command we are
 				   	   working on */
 
 #define SCSI_SENSE_BUFFERSIZE 	96
-	/* SCSIÃüÁîµÄ¸Ğ²âÊı¾İ»º³åÇø */
+	/* SCSIå‘½ä»¤çš„æ„Ÿæµ‹æ•°æ®ç¼“å†²åŒº */
 	unsigned char sense_buffer[SCSI_SENSE_BUFFERSIZE];		/* obtained by REQUEST SENSE
 						 * when CHECK CONDITION is
 						 * received on original command 
@@ -135,17 +135,17 @@ struct scsi_cmnd {
 
 	/* Low-level done function - can be used by low-level driver to point
 	 *        to completion function.  Not used by mid/upper level code. */
-	/* µ±µ×²ãÇı¶¯Ê¹ÓÃ£¬Ö¸ÏòÍê³Éº¯Êı£¬Í¨³£ÉèÖÃÎªqueuecommndº¯ÊıÖĞ´«ÈëµÄdone²ÎÊı */
+	/* å½“åº•å±‚é©±åŠ¨ä½¿ç”¨ï¼ŒæŒ‡å‘å®Œæˆå‡½æ•°ï¼Œé€šå¸¸è®¾ç½®ä¸ºqueuecommndå‡½æ•°ä¸­ä¼ å…¥çš„doneå‚æ•° */
 	void (*scsi_done) (struct scsi_cmnd *);
 
 	/*
 	 * The following fields can be written to by the host specific code. 
 	 * Everything else should be left alone. 
 	 */
-	/* Ä³Ğ©Ö÷»úÊÊÅäÆ÷ĞèÒªÊ¹ÓÃµÄScratchpad */
+	/* æŸäº›ä¸»æœºé€‚é…å™¨éœ€è¦ä½¿ç”¨çš„Scratchpad */
 	struct scsi_pointer SCp;	/* Scratchpad used by some host adapters */
 
-	/* µ×²ãÇı¶¯Ê¹ÓÃ */
+	/* åº•å±‚é©±åŠ¨ä½¿ç”¨ */
 	unsigned char *host_scribble;	/* The host adapter is allowed to
 					   * call scsi_malloc and get some memory
 					   * and hang it here.     The host adapter
@@ -154,10 +154,10 @@ struct scsi_cmnd {
 					   * obtained by scsi_malloc is guaranteed
 					   * to be at an address < 16Mb). */
 
-	/* µ×²ãÇı¶¯·µ»ØµÄ×´Ì¬Âë */
+	/* åº•å±‚é©±åŠ¨è¿”å›çš„çŠ¶æ€ç  */
 	int result;		/* Status code from lower level driver */
 
-	/* ÃüÁî±êÇ© */
+	/* å‘½ä»¤æ ‡ç­¾ */
 	unsigned char tag;	/* SCSI-II queued command tag */
 	unsigned long pid;	/* Process ID, starts at 0 */
 };

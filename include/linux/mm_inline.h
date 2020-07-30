@@ -1,5 +1,5 @@
 /**
- * ½«Ò³¼ÓÈë¹ÜÀíÇøµÄ»î¶¯Á´±íÍ·²¿²¢µİÔö¹ÜÀíÇøÃèÊö·ûµÄnr_active×Ö¶Î
+ * å°†é¡µåŠ å…¥ç®¡ç†åŒºçš„æ´»åŠ¨é“¾è¡¨å¤´éƒ¨å¹¶é€’å¢ç®¡ç†åŒºæè¿°ç¬¦çš„nr_activeå­—æ®µ
  */
 static inline void
 add_page_to_active_list(struct zone *zone, struct page *page)
@@ -9,7 +9,7 @@ add_page_to_active_list(struct zone *zone, struct page *page)
 }
 
 /**
- * ½«Ò³¼ÓÈë¹ÜÀíÇøµÄ·Ç»î¶¯Á´±íÍ·²¿²¢µİÔö¹ÜÀíÇøÃèÊö·ûµÄnr_inactive×Ö¶Î
+ * å°†é¡µåŠ å…¥ç®¡ç†åŒºçš„éæ´»åŠ¨é“¾è¡¨å¤´éƒ¨å¹¶é€’å¢ç®¡ç†åŒºæè¿°ç¬¦çš„nr_inactiveå­—æ®µ
  */
 static inline void
 add_page_to_inactive_list(struct zone *zone, struct page *page)
@@ -19,7 +19,7 @@ add_page_to_inactive_list(struct zone *zone, struct page *page)
 }
 
 /**
- * ´Ó¹ÜÀíÇøµÄ»î¶¯Á´±íÖĞÉ¾³ıÒ³²¢µİ¼õ¹ÜÀíÇøÃèÊö·ûµÄnr_active
+ * ä»ç®¡ç†åŒºçš„æ´»åŠ¨é“¾è¡¨ä¸­åˆ é™¤é¡µå¹¶é€’å‡ç®¡ç†åŒºæè¿°ç¬¦çš„nr_active
  */
 static inline void
 del_page_from_active_list(struct zone *zone, struct page *page)
@@ -29,7 +29,7 @@ del_page_from_active_list(struct zone *zone, struct page *page)
 }
 
 /**
- * ´Ó¹ÜÀíÇøµÄ·Ç»î¶¯Á´±íÖĞÉ¾³ıÒ³²¢µİ¼õ¹ÜÀíÇøÃèÊö·ûµÄnr_active
+ * ä»ç®¡ç†åŒºçš„éæ´»åŠ¨é“¾è¡¨ä¸­åˆ é™¤é¡µå¹¶é€’å‡ç®¡ç†åŒºæè¿°ç¬¦çš„nr_active
  */
 static inline void
 del_page_from_inactive_list(struct zone *zone, struct page *page)
@@ -39,8 +39,8 @@ del_page_from_inactive_list(struct zone *zone, struct page *page)
 }
 
 /**
- * ¼ì²éÒ³µÄPG_active±êÖ¾£¬¸ù¾İ¼ì²é½á¹û£¬ÉèÖÃÏàÓ¦µÄ±êÖ¾¡£
- * ²¢½«Ò³´ÓlruÁ´±íÖĞÉ¾³ı
+ * æ£€æŸ¥é¡µçš„PG_activeæ ‡å¿—ï¼Œæ ¹æ®æ£€æŸ¥ç»“æœï¼Œè®¾ç½®ç›¸åº”çš„æ ‡å¿—ã€‚
+ * å¹¶å°†é¡µä»lrué“¾è¡¨ä¸­åˆ é™¤
  * 
  */
 static inline void

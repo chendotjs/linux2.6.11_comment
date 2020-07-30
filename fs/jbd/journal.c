@@ -158,14 +158,14 @@ loop:
 		journal->j_commit_sequence, journal->j_commit_request);
 
 	/**
-	 * Ï£ÍûÌá½»µÄÈÕÖ¾±àºÅ£¬ÓëÒÑ¾­Ìá½»µÄ±àºÅ²»ÏàµÈ
-	 * ËµÃ÷ÓĞÌá½»ÈÕÖ¾µÄĞèÇó
+	 * å¸Œæœ›æäº¤çš„æ—¥å¿—ç¼–å·ï¼Œä¸å·²ç»æäº¤çš„ç¼–å·ä¸ç›¸ç­‰
+	 * è¯´æ˜æœ‰æäº¤æ—¥å¿—çš„éœ€æ±‚
 	 */
 	if (journal->j_commit_sequence != journal->j_commit_request) {
 		jbd_debug(1, "OK, requests differ\n");
 		spin_unlock(&journal->j_state_lock);
 		del_timer_sync(journal->j_commit_timer);
-		/* Ìá½»ÈÕÖ¾ */
+		/* æäº¤æ—¥å¿— */
 		journal_commit_transaction(journal);
 		spin_lock(&journal->j_state_lock);
 		goto loop;
@@ -441,28 +441,28 @@ int __log_space_left(journal_t *journal)
  * Called under j_state_lock.  Returns true if a transaction was started.
  */
 /**
- * »½ĞÑÈÕÖ¾Ïß³Ì£¬´¦ÀíÊÂÎñ
+ * å”¤é†’æ—¥å¿—çº¿ç¨‹ï¼Œå¤„ç†äº‹åŠ¡
  */
 int __log_start_commit(journal_t *journal, tid_t target)
 {
 	/*
 	 * Are we already doing a recent enough commit?
 	 */
-	if (!tid_geq(journal->j_commit_request, target)) {/* ĞÂµÄÇëÇó */
+	if (!tid_geq(journal->j_commit_request, target)) {/* æ–°çš„è¯·æ±‚ */
 		/*
 		 * We want a new commit: OK, mark the request and wakup the
 		 * commit thread.  We do _not_ do the commit ourselves.
 		 */
 
 		/**
-		 * ±ê¼ÇÇëÇóµÄIDºÅ
+		 * æ ‡è®°è¯·æ±‚çš„IDå·
 		 */
 		journal->j_commit_request = target;
 		jbd_debug(1, "JBD: requesting commit %d/%d\n",
 			  journal->j_commit_request,
 			  journal->j_commit_sequence);
 		/**
-		 * »½ĞÑÈÕÖ¾Ïß³Ì£¬¿ªÊ¼¸É»îÁË:)
+		 * å”¤é†’æ—¥å¿—çº¿ç¨‹ï¼Œå¼€å§‹å¹²æ´»äº†:)
 		 */
 		wake_up(&journal->j_wait_commit);
 		return 1;
@@ -545,7 +545,7 @@ int journal_start_commit(journal_t *journal, tid_t *ptid)
  * The caller may not hold the journal lock.
  */
 /**
- * µÈ´ıÄ³¸öÊÂÎñÍê³É
+ * ç­‰å¾…æŸä¸ªäº‹åŠ¡å®Œæˆ
  */
 int log_wait_commit(journal_t *journal, tid_t tid)
 {
@@ -562,16 +562,16 @@ int log_wait_commit(journal_t *journal, tid_t tid)
 #endif
 	spin_lock(&journal->j_state_lock);
 	/**
-	 * µ±Ç°ÊÂÎñ»¹Ã»ÓĞ±»Ìá½»
+	 * å½“å‰äº‹åŠ¡è¿˜æ²¡æœ‰è¢«æäº¤
 	 */
 	while (tid_gt(tid, journal->j_commit_sequence)) {
 		jbd_debug(1, "JBD: want %d, j_commit_sequence=%d\n",
 				  tid, journal->j_commit_sequence);
-		/* »½ĞÑÈÕÖ¾Ïß³Ì */
+		/* å”¤é†’æ—¥å¿—çº¿ç¨‹ */
 		wake_up(&journal->j_wait_commit);
-		/* µÈ´ıÖ®Ç°ĞèÒª¹Ø±Õ×ÔĞıËø */
+		/* ç­‰å¾…ä¹‹å‰éœ€è¦å…³é—­è‡ªæ—‹é” */
 		spin_unlock(&journal->j_state_lock);
-		/* µÈ´ıÈÕÖ¾Ïß³ÌÍê³Éºó½«µ±Ç°ÈÎÎñ»½ĞÑ */
+		/* ç­‰å¾…æ—¥å¿—çº¿ç¨‹å®Œæˆåå°†å½“å‰ä»»åŠ¡å”¤é†’ */
 		wait_event(journal->j_wait_done_commit,
 				!tid_gt(tid, journal->j_commit_sequence));
 		spin_lock(&journal->j_state_lock);
